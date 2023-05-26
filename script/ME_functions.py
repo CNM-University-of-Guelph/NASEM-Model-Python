@@ -93,11 +93,14 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0,
   # Km_ME_NE: Conversion of NE to ME
   
   An_NEmUse_NS = 0.10*An_BW**0.75                                 # Line 2781
-  An_NEmUse_Env = 0                                              # Line 2785
+  An_NEmUse_Env = 0                                               # Line 2785
   An_MBW = An_BW**0.75                                            # Line 223
-#   An_NEm_Act_Graze = ifelse(Dt_PastIn/Dt_DMIn < 0.005, 0, 
-#                              0.0075*An_MBW*(600-12*Dt_PastSupplIn)/600)   # Line 2793
-  An_NEm_Act_Graze = 0 if (Dt_PastIn/Dt_DMIn < 0.005) else 0.0075*An_MBW*(600-12*Dt_PastSupplIn)/600
+
+  if Dt_PastIn/Dt_DMIn < 0.005:                                   # Line 2793 
+     An_NEm_Act_Graze = 0
+  else:
+     An_NEm_Act_Graze = 0.0075*An_MBW*(600-12*Dt_PastSupplIn)/600
+
   An_NEm_Act_Parlor =  (0.00035*Env_DistParlor/1000) * Env_TripsParlor * An_BW # Line 2795
   An_NEm_Act_Topo = 0.0067*Env_Topo/1000 * An_BW                 # Line 2796
   An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo # Line 2797
@@ -144,10 +147,13 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain,
   Rsrv_CPgain = CPGain_FrmGain * Rsrv_Gain_empty                 # Line 2470
   Rsrv_NEgain = 9.4*Rsrv_Fatgain + 5.55*Rsrv_CPgain              # Line 2866
   Kr_ME_RE = 0.60                                                # Line 2834
-#   Kr_ME_RE = ifelse(Trg_MilkProd > 0 & Trg_RsrvGain > 0, 0.75, Kr_ME_RE) # Line 2835
-  Kr_ME_RE = 0.75 if Trg_MilkProd > 0 and Trg_RsrvGain > 0 else Kr_ME_RE
-#   Kr_ME_RE = ifelse(Trg_RsrvGain <= 0, 0.89, Kr_ME_RE)           # Line 2836
-  Kr_ME_RE = 0.89 if Trg_RsrvGain <= 0 else Kr_ME_RE
+
+  if Trg_MilkProd > 0 and Trg_RsrvGain > 0:                      # Line 2835
+     Kr_ME_RE = 0.75          
+
+  if Trg_RsrvGain <= 0:                                          # Line 2836
+     Kr_ME_RE = 0.89            
+
   Rsrv_MEgain = Rsrv_NEgain / Kr_ME_RE                           # Line 2871
 
   # FatGain_FrmGain: Fat gain per unit frame gain, g/g EBW (Empty body weight)
@@ -224,6 +230,9 @@ def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
   Uter_Kdeg = 0.20                                              # Line 2308
   
   Uter_Wt = 0.204                                               # Line 2312-2318
+
+# For the series of if statements I'm not sure if 'elif' can be used. It looks like it changes the value of Uter_Wt
+# but then changes it back to the default of 0.204 if the resulting values do not make sense
 
 #   Uter_Wt = ifelse(An_AgeDay < 240, 0, Uter_Wt)
   if An_GestDay < 240:
