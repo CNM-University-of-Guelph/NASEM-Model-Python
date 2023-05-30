@@ -12,7 +12,7 @@ import pandas as pd
 #'
 #' @param An_BW Number. Animal Body Weight in kg.
 #' @param Dt_DMIn Number. Animal Dry Matter Intake in kg/day.
-#' @param Trg_MilkProd Number.Animal Milk Production in kg/day.
+#' @param Trg_MilkProd Number. Animal Milk Production in kg/day.
 #' @param An_BW_mature Number. Animal Mature Liveweight in kg. 
 #' @param Trg_FrmGain Number. Target gain in body Frame Weight in kg fresh weight/day.
 #' @param An_GestDay Number. Day of Gestation.
