@@ -1,6 +1,6 @@
 # Above each function is the documentation used in the R code version. This needs to be replaced with documentation for python.
 import math
-
+import pandas as pd
 
 #' Calculate ME Requirements
 #' 
@@ -80,36 +80,35 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
 #' 
 #' @export
 #'
-def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, 
-                        Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):  
-  # An_NEmUse_NS: NE required for maintenance in unstressed cow, mcal/d
-  # An_NEmUse_Env: NE cost of environmental stress, the model only considers this for calves
-  # An_MBW: Metabolic body weight
-  # An_NEm_Act_Graze: NE use for grazing activity
-  # An_NEm_Act_Parlor: NE use walking to parlor
-  # An_NEm_Act_Topo: NE use due to topography
-  # An_NEmUse_Act: Total NE use for activity on pasture
-  # An_NEmUse: Total NE use for maintenance
-  # Km_ME_NE: Conversion of NE to ME
-  
-  An_NEmUse_NS = 0.10*An_BW**0.75                                 # Line 2781
-  An_NEmUse_Env = 0                                               # Line 2785
-  An_MBW = An_BW**0.75                                            # Line 223
+def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):
+    # An_NEmUse_NS: NE required for maintenance in unstressed cow, mcal/d
+    # An_NEmUse_Env: NE cost of environmental stress, the model only considers this for calves
+    # An_MBW: Metabolic body weight
+    # An_NEm_Act_Graze: NE use for grazing activity
+    # An_NEm_Act_Parlor: NE use walking to parlor
+    # An_NEm_Act_Topo: NE use due to topography
+    # An_NEmUse_Act: Total NE use for activity on pasture
+    # An_NEmUse: Total NE use for maintenance
+    # Km_ME_NE: Conversion of NE to ME
 
-  if Dt_PastIn/Dt_DMIn < 0.005:                                   # Line 2793 
-     An_NEm_Act_Graze = 0
-  else:
-     An_NEm_Act_Graze = 0.0075*An_MBW*(600-12*Dt_PastSupplIn)/600
+    An_NEmUse_NS = 0.10 * An_BW ** 0.75                             # Line 2781
+    An_NEmUse_Env = 0                                               # Line 2785
+    An_MBW = An_BW ** 0.75                                          # Line 223
 
-  An_NEm_Act_Parlor =  (0.00035*Env_DistParlor/1000) * Env_TripsParlor * An_BW # Line 2795
-  An_NEm_Act_Topo = 0.0067*Env_Topo/1000 * An_BW                 # Line 2796
-  An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo # Line 2797
-  
-  An_NEmUse = An_NEmUse_NS + An_NEmUse_Env + An_NEmUse_Act       # Line 2801
-  Km_ME_NE = 0.66                                                # Line 2817
-  
-  An_MEmUse = An_NEmUse / Km_ME_NE                               # Line 2844
-  return(An_MEmUse)
+    if Dt_PastIn / Dt_DMIn < 0.005:                                 # Line 2793
+        An_NEm_Act_Graze = 0
+    else:
+        An_NEm_Act_Graze = 0.0075 * An_MBW * (600 - 12 * Dt_PastSupplIn) / 600
+
+    An_NEm_Act_Parlor = (0.00035 * Env_DistParlor / 1000) * Env_TripsParlor * An_BW  # Line 2795
+    An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW              # Line 2796
+    An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2797
+
+    An_NEmUse = An_NEmUse_NS + An_NEmUse_Env + An_NEmUse_Act        # Line 2801
+    Km_ME_NE = 0.66                                                 # Line 2817
+
+    An_MEmUse = An_NEmUse / Km_ME_NE                                # Line 2844
+    return An_MEmUse
 
 
 #' Calculate Metabolizable Energy Requirements for Growth
@@ -336,3 +335,57 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
   Kl_ME_NE = 0.66                                                # Line 2823
   Trg_Mlk_MEout = Trg_Mlk_NEout / Kl_ME_NE                       # Line 2889
   return(Trg_Mlk_MEout)
+
+
+#' Execute ME function with a dataframe
+#' 
+#' This is a helper function takes a data frame as input with 1 row of data and the following
+#' columns and is given to [calculate_ME_requirement]: 
+#' "An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain", 
+#' "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", 
+#' "An_Parity_rl", "Trg_MilkFatp", "Trg_MilkTPp", "Trg_MilkLacp" and "Trg_RsrvGain"
+#'
+#' The columns required in the data frame are described in the [calculate_ME_requirement] function.
+#'
+#' @param df_in A data frame with 1 row of data and the required columns
+#'
+#' @return Trg_MEuse, A single number representing the Metabolizable Energy requirements (Mcal/d)
+#' @export
+#'
+def execute_ME_requirement(row):
+    # Check if series contains all the required column names
+    required_columns = ["An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
+                        "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",
+                        "An_Parity_rl", "Trg_MilkFatp", "Trg_MilkTPp", "Trg_MilkLacp", "Trg_RsrvGain"]
+
+    if not set(required_columns).issubset(row.index):
+        missing_columns = list(set(required_columns) - set(row.index))
+        raise ValueError(f"Required columns are missing: {missing_columns}")
+
+    ##########################################################################
+    # Calculate Metabolizable Energy
+    ##########################################################################
+    An_BW = row['An_BW']
+    Dt_DMIn = row['Dt_DMIn']
+    Trg_MilkProd = row['Trg_MilkProd']
+    An_BW_mature = row['An_BW_mature']
+    Trg_FrmGain = row['Trg_FrmGain']
+    An_GestDay = row['An_GestDay']
+    An_GestLength = row['An_GestLength']
+    An_AgeDay = row['An_AgeDay']
+    Fet_BWbrth = row['Fet_BWbrth']
+    An_LactDay = row['An_LactDay']
+    An_Parity_rl = row['An_Parity_rl']
+    Trg_MilkFatp = row['Trg_MilkFatp']
+    Trg_MilkTPp = row['Trg_MilkTPp']
+    Trg_MilkLacp = row['Trg_MilkLacp']
+    Trg_RsrvGain = row['Trg_RsrvGain']
+
+    # Call the function with the extracted values
+    Trg_MEuse = calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
+                                         Trg_FrmGain, An_GestDay, An_GestLength,
+                                         An_AgeDay, Fet_BWbrth, An_LactDay,
+                                         An_Parity_rl, Trg_MilkFatp, Trg_MilkTPp,
+                                         Trg_MilkLacp, Trg_RsrvGain)
+
+    return(Trg_MEuse)

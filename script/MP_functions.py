@@ -1,5 +1,6 @@
 # Above each function is the documentation from the R version. This needs to be replaced.
 import math
+import pandas as pd
 
 #' Calculate MP Requirements
 #'
@@ -301,3 +302,57 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp):
   
   Mlk_MPUse_g_Trg = Trg_Mlk_NP_g/ Kl_MP_NP_Trg                     # Line 2677
   return(Mlk_MPUse_g_Trg)
+
+
+#' Execute MP function with a dataframe 
+#'
+#' This is a helper function takes a data frame as input with 1 row of data and the following
+#' columns and is given to [calculate_MP_requirement]: 
+#' "Dt_NDFIn", "An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain", 
+#' "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", 
+#' "An_Parity_rl", "Trg_MilkTPp", and "Trg_RsrvGain"
+#'
+#' The columns required in the data frame are described in the [calculate_MP_requirement] function.
+#'
+#' @param df_in A data frame with 1 row of data and the required columns
+#'
+#' @return An_MPuse_g_Trg, A single number representing the metabolizable Protein requirements (g/d)
+#' 
+#' @export
+#'
+def dev_execute_MP_requirement(row):
+    # Check if the series contains the required column names
+    required_columns = {"An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
+                        "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",
+                        "An_Parity_rl", "Trg_MilkTPp", "Trg_RsrvGain", "Dt_NDFIn"}
+
+    if not required_columns.issubset(row.index):
+        missing_columns = list(required_columns - set(row.index))
+        raise ValueError(f"Required columns are missing: {missing_columns}")
+
+    ##########################################################################
+    # Calculate Metabolizable Protein
+    ##########################################################################
+    Dt_NDFIn = row['Dt_NDFIn']
+    Dt_DMIn = row['Dt_DMIn']
+    An_BW = row['An_BW']
+    An_BW_mature = row['An_BW_mature']
+    Trg_FrmGain = row['Trg_FrmGain']
+    Trg_RsrvGain = row['Trg_RsrvGain']
+    An_GestDay = row['An_GestDay']
+    An_GestLength = row['An_GestLength']
+    An_AgeDay = row['An_AgeDay']
+    Fet_BWbrth = row['Fet_BWbrth']
+    An_LactDay = row['An_LactDay']
+    An_Parity_rl = row['An_Parity_rl']
+    Trg_MilkProd = row['Trg_MilkProd']
+    Trg_MilkTPp = row['Trg_MilkTPp']
+
+    # Call the function with the extracted values
+    An_MPuse_g_Trg = calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature,
+                                              Trg_FrmGain, Trg_RsrvGain, An_GestDay,
+                                              An_GestLength, An_AgeDay, Fet_BWbrth,
+                                              An_LactDay, An_Parity_rl, Trg_MilkProd,
+                                              Trg_MilkTPp)
+
+    return An_MPuse_g_Trg
