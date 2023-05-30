@@ -41,9 +41,9 @@ def clean_data(df):
 
 # Create a nested data frame
 
-    data = df.drop(df.columns[:2], axis=1)
-    ID = df.drop(df.columns[2:], axis=1)
-    input_data_clean = pd.DataFrame({'idx':[1,2], 'dfs':[ID, data]})
+    # data = df.drop(df.columns[:2], axis=1)
+    # ID = df.drop(df.columns[2:], axis=1)
+    # input_data_clean = pd.DataFrame({'idx':[1,2], 'dfs':[ID, data]})
 
 # print(input_data_clean['dfs'].iloc[0]) # This will access the 'ID' Dataframe
 # print(input_data_clean['dfs'].iloc[1]) # This will access the 'data' Dataframe
@@ -57,5 +57,5 @@ def clean_data(df):
  # would be to access if done this way
 
     # input_data_nested = df.groupby(['cow_id', 'DIM_bins_w'])
-    # input_data_clean = df
+    input_data_clean = df
     return(input_data_clean)

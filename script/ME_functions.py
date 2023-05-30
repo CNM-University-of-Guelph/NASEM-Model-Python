@@ -31,7 +31,6 @@ import pandas as pd
 #'
 #' @export
 #'
-
 def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
                              Trg_FrmGain, An_GestDay, An_GestLength,
                              An_AgeDay, Fet_BWbrth, An_LactDay,
