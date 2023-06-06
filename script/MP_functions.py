@@ -86,13 +86,13 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW):
   An_NDF = Dt_NDFIn / Dt_DMIn * 100                                # Lines 942, 944
   Fe_CPend_g = (12 + 0.12*An_NDF) * (Dt_DMIn)                      # Line 1186, Infusions removed
   Fe_CPend = Fe_CPend_g / 1000                                     # Line 1189
-  Fe_NPend = Fe_CPend * 0.73	                                      # Line 1191
+  Fe_NPend = Fe_CPend * 0.73	                                     # Line 1191
   Fe_NPend_g = Fe_NPend * 1000                                     # Line 1192
   Km_MP_NP_Trg = 0.69                                              # Lines 54, 2596, 2651 and 2652
   Fe_MPendUse_g_Trg = Fe_NPend_g / Km_MP_NP_Trg                    # Line 2668
   
   #Scrf_MPUse_g_Trg
-  Scrf_CP_g = 0.20 * An_BW**0.60                                    # Line 1964
+  Scrf_CP_g = 0.20 * An_BW**0.60                                   # Line 1964
   Body_NP_CP = 0.86                                                # Line 1963
   Scrf_NP_g = Scrf_CP_g * Body_NP_CP                               # Line 1966
   Scrf_MPUse_g_Trg = Scrf_NP_g / Km_MP_NP_Trg                      # Line 2670
@@ -320,7 +320,7 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp):
 #' 
 #' @export
 #'
-def dev_execute_MP_requirement(row):
+def execute_MP_requirement(row):
     # Check if the series contains the required column names
     required_columns = {"An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
                         "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",

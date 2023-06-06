@@ -233,7 +233,7 @@ def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
 # but then changes it back to the default of 0.204 if the resulting values do not make sense
 
 #   Uter_Wt = ifelse(An_AgeDay < 240, 0, Uter_Wt)
-  if An_GestDay < 240:
+  if An_AgeDay < 240:
      Uter_Wt = 0 
 
 #   Uter_Wt = ifelse(An_GestDay > 0 & An_GestDay <= An_GestLength, 
@@ -304,6 +304,7 @@ def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
      Ky_ME_NE = 0.14
   else: 
      Ky_ME_NE = 0.89
+     
   Gest_MEuse = Gest_REgain / Ky_ME_NE                             # Line 2859
   return(Gest_MEuse)
 
