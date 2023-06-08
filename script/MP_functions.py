@@ -1,38 +1,37 @@
-# Above each function is the documentation from the R version. This needs to be replaced.
 import math
 import pandas as pd
 
-#' Calculate MP Requirements
-#'
-#' This function calculates ME requirements for 1 cow using 4 functions, which
-#' are required to be pre-loaded: [An_MPm_g_Trg], [Body_MPUse_g_Trg],
-#' [Gest_MPUse_g_Trg], [Mlk_MPUse_g_Trg].
-#' 
-#' For details on how each value is calculated see the individual functions.
-#'
-#' @param Dt_NDFIn Number. NDF Intake in kg.
-#' @param Dt_DMIn Number. Animal Dry Matter Intake in kg/day.
-#' @param An_BW Number. Animal Body Weight in kg.
-#' @param An_BW_mature Number. Animal Mature Liveweight in kg.
-#' @param Trg_FrmGain Number. Target gain in body Frame Weight in kg fresh weight/day.
-#' @param Trg_RsrvGain Number. Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day.
-#' @param An_GestDay Number. Day of Gestation.
-#' @param An_GestLength Number. Normal Gestation Length in days.
-#' @param An_AgeDay Number. Animal Age in days. 
-#' @param Fet_BWbrth Number. Target calf birth weight in kg.
-#' @param An_LactDay Number. Day of Lactation.
-#' @param An_Parity_rl Number. Animal Parity where 1 = Primiparous and 2 = Multiparous.
-#' @param Trg_MilkProd Number.Animal Milk Production in kg/day.
-#' @param Trg_MilkTPp Percentage. Animal Milk True Protein percentage.
-#'
-#' @return An_MPuse_g_Trg, A number with the units g/d. Referred to as An_MPuse_g_Trg in equation
-#' 
-#' @export
-#'
 def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
                              Trg_RsrvGain, An_GestDay, An_GestLength, 
                              An_AgeDay, Fet_BWbrth, An_LactDay, An_Parity_rl,
                              Trg_MilkProd, Trg_MilkTPp):
+  '''
+  Calculate metabolizable protein (MP) requirement.
+
+  This function calculates MP requirements for 1 cow using 4 functions: :py:func:`An_MPm_g_Trg`, :py:func:`Body_MPUse_g_Trg`,
+  :py:func:`Gest_MPUse_g_Trg`, and :py:func:`Mlk_MPUse_g_Trg`.
+
+  For details on how each value is calculated, see the individual functions.
+
+  Parameters:
+      Dt_NDFIn: Number. NDF Intake in kg.
+      Dt_DMIn: Number. Animal Dry Matter Intake in kg/day.
+      An_BW: Number. Animal Body Weight in kg.
+      An_BW_mature: Number. Animal Mature Liveweight in kg.
+      Trg_FrmGain: Number. Target gain in body Frame Weight in kg fresh weight/day.
+      Trg_RsrvGain: Number. Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day.
+      An_GestDay: Number. Day of Gestation.
+      An_GestLength: Number. Normal Gestation Length in days.
+      An_AgeDay: Number. Animal Age in days.
+      Fet_BWbrth: Number. Target calf birth weight in kg.
+      An_LactDay: Number. Day of Lactation.
+      An_Parity_rl: Number. Animal Parity where 1 = Primiparous and 2 = Multiparous.
+      Trg_MilkProd: Number. Animal Milk Production in kg/day.
+      Trg_MilkTPp: Percentage. Animal Milk True Protein percentage.
+
+  Returns:
+      An_MPuse_g_Trg: A number with the units g/d.
+  '''
   
   An_MPm_g_Trg = calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW)
   # An_MPm_g_Trg: MP requirement for maintenance, g/d
@@ -52,21 +51,21 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
   return(An_MPuse_g_Trg)
 
 
-#' Calculate Metabolizable Protein Requirements for Maintenance
-#'
-#' Takes the following columns from a dataframe passed by [dev_execute_MP_requirement] 
-#' and gives result to [calculate_MP_requirement]:
-#' "Dt_NDFIn", "An_BW", and "Dt_DMIn"
-#'
-#' @param Dt_NDFIn Number. NDF Intake in kg.
-#' @param Dt_DMIn Number. Animal Dry Matter Intake in kg/day.
-#' @param An_BW Number. Animal Body Weight in kg.
-#'
-#' @return An_MPm_g_Trg, A number with units g/d.
-#' 
-#' @export
-#'
-def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW): 
+def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW):
+  '''
+  Calculate metabolizable protein requirements for maintenance
+
+  Takes the following columns from a dataframe passed by :py:func:`execute_MP_requirement` 
+  and gives the result to :py:func:`calculate_MP_requirement`: "Dt_NDFIn", "An_BW", and "Dt_DMIn".
+
+  Parameters:
+      Dt_NDFIn: Number. NDF Intake in kg.
+      Dt_DMIn: Number. Animal Dry Matter Intake in kg/day.
+      An_BW: Number. Animal Body Weight in kg.
+
+  Returns:
+      An_MPm_g_Trg: A number with units g/d.
+  ''' 
   # An_NDF: NDF % of diet
   # Fe_CPend_g: Fecal CP from endogenous secretions and urea captured by microbes, g
   # Fe_CPend: Fe_CPend_g in kg
@@ -105,22 +104,24 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW):
   return(An_MPm_g_Trg)
 
 
-#' Calculate Metabolizable Protein Requirements for Growth
-#'
-#' Takes the following columns from a dataframe passed by [dev_execute_MP_requirement] 
-#' and gives result to [calculate_MP_requirement]:
-#' "An_BW", "An_BW_matureand", "Trg_FrmGain", and "Trg_RsrvGain"
-#'
-#' @param An_BW Number. Animal Body Weight in kg.
-#' @param An_BW_mature Number. Animal Mature Liveweight in kg. 
-#' @param Trg_FrmGain Number. Target gain in body Frame Weight in kg fresh weight/day.
-#' @param Trg_RsrvGain Number. Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day. 
-#'
-#' @return Body_MPuse_g_Trg, A number with units g/d.
-#' 
-#' @export
-#'
 def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain): 
+  '''
+  Calculate metabolizable protein requirements for growth.
+
+  Takes the following columns from a dataframe passed by :py:func:`execute_MP_requirement` 
+  and gives the result to :py:func:`calculate_MP_requirement`: "An_BW", "An_BW_matureand", 
+  "Trg_FrmGain", and "Trg_RsrvGain".
+
+  Parameters:
+      An_BW: Number. Animal body weight in kg.
+      An_BW_mature: Number. Animal mature liveweight in kg.
+      Trg_FrmGain: Number. Target gain in body frame weight in kg fresh weight/day.
+      Trg_RsrvGain: Number. Target gain or loss in body reserves (66% fat, 8% CP) 
+                    in kg fresh weight/day.
+
+  Returns:
+      Body_MPuse_g_Trg: A number with units g/d.
+  '''
   # CPGain_FrmGain: CP gain per unit of frame gain
   # Body_NP_CP: Conversion of CP to NP
   # NPGain_FrmGain: NP gain per unit frame gain
@@ -156,24 +157,26 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain):
   return(Body_MPuse_g_Trg)
 
 
-#' Calculate Metabolizable Protein Requirements for Pregnancy
-#'
-#' Takes the following columns from a dataframe passed by [dev_execute_MP_requirement] 
-#' and gives result to [calculate_MP_requirement]:
-#' "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", and "An_Parity_rl"
-#'
-#' @param An_GestDay Number. Day of Gestation.
-#' @param An_GestLength Number. Normal Gestation Length in days.
-#' @param An_AgeDay Number. Animal Age in days. 
-#' @param Fet_BWbrth Number. Target calf birth weight in kg.
-#' @param An_LactDay Number. Day of Lactation.
-#' @param An_Parity_rl Number. Animal Parity where 1 = Primiparous and 2 = Multiparous.
-#'
-#' @return Gest_MPuse_g_Trg, A number with units g/d.
-#' 
-#' @export
-#'
 def calculate_Gest_MPuse_g_Trg(An_GestDay, An_GestLength, An_AgeDay, Fet_BWbrth, An_LactDay, An_Parity_rl):
+  '''
+  Calculate metabolizable protein requirements for pregnancy.
+
+  Takes the following columns from a dataframe passed by :py:func:`execute_MP_requirement` 
+  and gives the result to :py:func:`calculate_MP_requirement`: "An_GestDay", "An_GestLength", 
+  "An_AgeDay", "Fet_BWbrth", "An_LactDay", and "An_Parity_rl".
+
+  Parameters:
+      An_GestDay: Number. Day of gestation.
+      An_GestLength: Number. Normal gestation length in days.
+      An_AgeDay: Number. Animal age in days.
+      Fet_BWbrth: Number. Target calf birth weight in kg.
+      An_LactDay: Number. Day of lactation.
+      An_Parity_rl: Number. Animal parity where 1 = primiparous and 2 = multiparous.
+
+  Returns:
+      Gest_MPuse_g_Trg: A number with units g/d.
+  '''
+
   # Ksyn: Constant for synthesis
   # GrUter_Ksyn: Gravid uterus synthesis rate constant
   # GrUter_KsynDecay: Rate of decay of gravid uterus synthesis approaching parturition
@@ -280,20 +283,20 @@ def calculate_Gest_MPuse_g_Trg(An_GestDay, An_GestLength, An_AgeDay, Fet_BWbrth,
   return(Gest_MPuse_g_Trg)
 
 
-#' Calculate Metabolizable Protein Requirements for Production
-#'
-#' Takes the following columns from a dataframe passed by [dev_execute_MP_requirement] 
-#' and gives result to [calculate_MP_requirement]:
-#' "Trg_MilkProd", and "Trg_MilkTPp"
-#'
-#' @param Trg_MilkProd Number.Animal Milk Production in kg/day.
-#' @param Trg_MilkTPp Percentage. Animal Milk True Protein percentage.
-#'
-#' @return Mlk_MPUse_g_Trg, A number with units g/d.
-#' 
-#' @export
-#'
 def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp): 
+  '''
+  Calculate metabolizable protein requirements for production.
+
+  Takes the following columns from a dataframe passed by :py:func:`execute_MP_requirement` 
+  and gives the result to :py:func:`calculate_MP_requirement`: "Trg_MilkProd" and "Trg_MilkTPp".
+
+  Parameters:
+      Trg_MilkProd: Number. Animal milk production in kg/day.
+      Trg_MilkTPp: Percentage. Animal milk true protein percentage.
+
+  Returns:
+      Mlk_MPUse_g_Trg: A number with units g/d.
+  '''
   # Trg_Mlk_NP_g: NP required for milk production
   # Kl_MP_NP_Trg: Conversion of NP to MP for milk production
   
@@ -304,23 +307,23 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp):
   return(Mlk_MPUse_g_Trg)
 
 
-#' Execute MP function with a dataframe 
-#'
-#' This is a helper function takes a data frame as input with 1 row of data and the following
-#' columns and is given to [calculate_MP_requirement]: 
-#' "Dt_NDFIn", "An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain", 
-#' "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", 
-#' "An_Parity_rl", "Trg_MilkTPp", and "Trg_RsrvGain"
-#'
-#' The columns required in the data frame are described in the [calculate_MP_requirement] function.
-#'
-#' @param df_in A data frame with 1 row of data and the required columns
-#'
-#' @return An_MPuse_g_Trg, A single number representing the metabolizable Protein requirements (g/d)
-#' 
-#' @export
-#'
 def execute_MP_requirement(row):
+    '''
+    Execute :py:func:`calculate_MP_requirement` on a dataframe. 
+
+    This is a helper function that takes a series as input. The series represents 1 row of data from a dataframe with the following
+    values and is given to :py:func:`calculate_MP_requirement`: "Dt_NDFIn", "An_BW", "Dt_DMIn", "Trg_MilkProd",
+    "An_BW_mature", "Trg_FrmGain", "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth",
+    "An_LactDay", "An_Parity_rl", "Trg_MilkTPp", and "Trg_RsrvGain".
+
+    The values required in the dataframe are described in :py:func:`calculate_MP_requirement`.
+
+    Parameters:
+        row (Series): A series that contains all the required values.
+
+    Returns:
+        An_MPuse_g_Trg (Number): A single number representing the metabolizable protein requirement (g/d).
+    '''
     # Check if the series contains the required column names
     required_columns = {"An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
                         "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",
