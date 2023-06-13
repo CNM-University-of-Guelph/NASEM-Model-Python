@@ -1,0 +1,10 @@
+# This file allows the user to select which feeds will be fed 
+# and set the amount to feed on a % DM basis.
+#
+# The following format is used:
+# feed_name: %_DM_basis 
+
+alfalfa meal: 30
+canola meal: 24.6
+corn silage 30% grain: 20
+corn grain high moisture: 15
