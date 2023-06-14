@@ -8,3 +8,13 @@ alfalfa meal: 30
 canola meal: 24.6
 corn silage 30% grain: 20
 corn grain high moisture: 15
+
+# Animal input values must be entered on lines starting with a *
+* An_Parity_rl: 1
+* Trg_MilkProd: 30
+* An_BW: 750
+* An_BCS: 3.5
+* An_LactDay: 100
+* Trg_MilkFatp: 4.0
+* Trg_MilkTPp: 3.0
+* Trg_MilkLacp: 4.85

@@ -1,0 +1,15 @@
+Values to Display:
+
+ME (or NEL)
+CP (or MP)
+RUP (% CP)
+NDF
+ADF
+EE
+Ash
+
+
+Values to Calculate:
+
+MCP (from TDN and RDP)
+Predicted milk
