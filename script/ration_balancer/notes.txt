@@ -12,4 +12,8 @@ Ash
 Values to Calculate:
 
 MCP (from TDN and RDP)
+- 3 equations
+
 Predicted milk
+- also have predicted fat and protein
+- MP and NEL allowable milk?

@@ -101,3 +101,20 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     Du_MiN_VTnln_g = 7.47 + 0.574 * An_RDPIn * 1000 / (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)    # Line 1147
 
     return Du_MiN_VTnln_g
+
+
+# def calculate_Mlk_Prod_comp():
+
+#     Mlk_NP_g = mPrt_Int + Abs_Arg_g*mPrt_k_Arg + Abs_His_g*mPrt_k_His + Abs_Ile_g*mPrt_k_Ile + 
+# 	Abs_Leu_g*mPrt_k_Leu + Abs_Lys_g*mPrt_k_Lys + Abs_Met_g*mPrt_k_Met + Abs_Phe_g*mPrt_k_Phe +
+# 	Abs_Thr_g*mPrt_k_Thr + Abs_Trp_g*mPrt_k_Trp + Abs_Val_g*mPrt_k_Val + Abs_neAA_g*mPrt_k_NEAA +
+#      Abs_OthAA_g*mPrt_k_OthAA + Abs_EAA2b_g*mPrt_k_EAA2 + An_DEInp*mPrt_k_DEInp + (An_DigNDF-17.06)*mPrt_k_DigNDF + 
+#      (An_DEStIn+An_DEFAIn+An_DErOMIn)*mPrt_k_DEIn_StFA + An_DENDFIn*mPrt_k_DEIn_NDF + (An_BW-612)*mPrt_k_BW
+    
+#     Mlk_NP = Mlk_NP_g / 1000                                                                # Line 2211
+
+#     Mlk_Prod_comp = 4.541 + 11.13*Mlk_NP + 2.648*Mlk_Fat + 0.1829 * An_DEIn - 0.06257*(An_LactDay_MlkPred-137.1) 
+#     + 2.766e-4*(An_LactDay_MlkPred-137.1)^2 + 1.603e-6*(An_LactDay_MlkPred-137.1)^3 - 7.397e-9*(An_LactDay_MlkPred-137.1)^4 
+#     + 1.567*(An_Parity_rl-1)    
+
+#     return Mlk_Prod_comp
