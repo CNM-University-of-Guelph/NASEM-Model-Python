@@ -4,12 +4,13 @@
 # The following format is used:
 # feed_name: %_DM_basis 
 
-alfalfa meal: 30
-canola meal: 24.6
-corn silage 30% grain: 20
-corn grain high moisture: 15
+Alfalfa meal: 30
+Canola meal: 24.6
+Corn silage, typical: 20
+Corn grain HM, coarse grind: 15
 
 # Animal input values must be entered on lines starting with a *
+
 * An_Parity_rl: 1
 * Trg_MilkProd: 30
 * An_BW: 750
