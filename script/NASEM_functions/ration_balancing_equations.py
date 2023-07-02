@@ -118,3 +118,9 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
 #     + 1.567*(An_Parity_rl-1)    
 
 #     return Mlk_Prod_comp
+
+
+
+
+
+
