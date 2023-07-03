@@ -19,3 +19,6 @@ Corn grain HM, coarse grind: 15
 * Trg_MilkFatp: 4.0
 * Trg_MilkTPp: 3.0
 * Trg_MilkLacp: 4.85
+# There are 3 NDF Digestability estimates, 0=Lg based, 1=DNDF48 for forages, 2=DNDF48 for all
+# This selection should move somewhere else eventually
+* Use_DNDF_IV: 0
