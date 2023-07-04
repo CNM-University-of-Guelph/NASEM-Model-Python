@@ -16,3 +16,6 @@ Values to Calculate:
         2. Dt_ForNDF
         3. An_RDP
 
+Need to test:
+
+1. Fd_FAIn calculation
