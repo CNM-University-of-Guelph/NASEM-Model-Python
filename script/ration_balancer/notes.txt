@@ -17,3 +17,9 @@ MCP (from TDN and RDP)
 Predicted milk
 - also have predicted fat and protein
 - MP and NEL allowable milk?
+
+
+
+
+Need to test:
+1. Fd_FAIn calculation
