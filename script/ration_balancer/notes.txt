@@ -11,9 +11,8 @@ Ash
 
 Values to Calculate:
 
-MCP (from TDN and RDP)
-- 3 equations
+    text_input_ration_balancer:
+        1. Dt_ForWet
+        2. Dt_ForNDF
+        3. An_RDP
 
-Predicted milk
-- also have predicted fat and protein
-- MP and NEL allowable milk?

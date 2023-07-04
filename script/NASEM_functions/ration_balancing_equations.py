@@ -13,47 +13,57 @@ def calculate_Dt_DMIn_Lact1(An_Parity_rl, Trg_MilkProd, An_BW, An_BCS, An_LactDa
     return Dt_DMIn_Lact1
 
 
-def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDF):
+def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDF, An_RDP):
+    # This has been tested and works
+   
     # There are 3 equations for predicting microbial N, all 3 will be included and the MCP prediction from each will be displayed
-    # Ask Dave and John which should be used or if we keep all 3
+    # Currently the default is the only one used
 
-    # This will take the inputs and call all three fucntions
+    # This will take the inputs and call the default NRC function fucntions
 
     # Calculate Rum_DigNDFIn
-    Rum_dcNDF = -31.9 + 0.721 * (Dt_NDFIn / Dt_DMIn) * 100                                  # Line 976-982
-    - 0.247 * (Dt_StIn / Dt_DMIn) * 100 
-    + 6.63 * (Dt_CPIn / Dt_DMIn) * 100 
-    - 0.211 * ((Dt_CPIn / Dt_DMIn) * 100) ** 2 
-    - 0.387 * (Dt_ADFIn / Dt_DMIn) / (Dt_NDFIn / Dt_DMIn) * 100 
-    - 0.121 * Dt_ForWet + 1.51 * Dt_DMIn
+    Rum_dcNDF = -31.9 + 0.721 * Dt_NDFIn / Dt_DMIn * 100 - \
+            0.247 * Dt_StIn / Dt_DMIn * 100 + \
+            6.63 * Dt_CPIn / Dt_DMIn * 100 - \
+            0.211 * (Dt_CPIn / Dt_DMIn * 100) ** 2 - \
+            0.387 * Dt_ADFIn / Dt_DMIn / (Dt_NDFIn / Dt_DMIn) * 100 - \
+            0.121 * Dt_ForWet + 1.51 * Dt_DMIn
+
     if Rum_dcNDF < 0.1 or Rum_dcNDF is None:                                                # Line 984
         Rum_dcNDF = 0.1
+        
     Rum_DigNDFIn = Rum_dcNDF / 100 * Dt_NDFIn
 
     # Calculate An_RDPIn
     An_RDPIn = Dt_CPIn - Dt_RUPIn                                                           # Line 1107, 1102
 
     # Calculate Rum_DigStIn
-    Rum_dcSt = 70.6 - 1.45 * Dt_DMIn + 0.424 * Dt_ForNDF                                    # Line 988-991
-    + 1.39 * (Dt_StIn / Dt_DMIn) * 100 
-    - 0.0219 * ((Dt_StIn / Dt_DMIn) * 100) ** 2 
-    - 0.154 * Dt_ForWet 
+    Rum_dcSt = 70.6 - 1.45*(Dt_DMIn) + 0.424*Dt_ForNDF + \
+            1.39*(Dt_StIn)/(Dt_DMIn)*100 - \
+            0.0219*((Dt_StIn)/(Dt_DMIn)*100)**2 - \
+            0.154*Dt_ForWet
+
     if Rum_dcSt < 0.1:                                                                      # Line 992
-        Rum_dcSt = 0.1              
+        Rum_dcSt = 0.1            
+
     elif Rum_dcSt > 100:                                                                    # Line 993
         Rum_dcSt = 100 
-    Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn                                                  # Line 998 
+
+    Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn                                                   # Line 998
 
 
     Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn)
-    Du_MiN_VTln_g = calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
-                                            Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn)
-    Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
+    # Du_MiN_VTln_g = calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
+    #                                         Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn)
+    # Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
 
-    return Du_MiN_NRC2021_g, Du_MiN_VTln_g, Du_MiN_VTnln_g
+    # return Du_MiN_NRC2021_g, Du_MiN_VTln_g, Du_MiN_VTnln_g
+    return Du_MiN_NRC2021_g
 
 
 def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn): 
+    # This has been tested and works
+
     VmMiNInt = 100.8                                                                        # Line 1117
     VmMiNRDPSlp = 81.56                                                                     # Line 1118
     KmMiNRDNDF = 0.0939                                                                     # Line 1119
@@ -73,6 +83,8 @@ def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigS
 
 def calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
                             Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn):
+    # *** NEED TO TEST ***
+    
     # MiN (g/d) Parms for eqn. 52 (linear) from Hanigan et al, RUP paper
     # Derived using RUP with no KdAdjust
     Int_MiN_VT = 18.686                                                                     # Line 1134
@@ -97,7 +109,8 @@ def calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, D
 
 
 def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
-    
+    # *** NEED TO TEST ***
+
     Du_MiN_VTnln_g = 7.47 + 0.574 * An_RDPIn * 1000 / (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)    # Line 1147
 
     return Du_MiN_VTnln_g
