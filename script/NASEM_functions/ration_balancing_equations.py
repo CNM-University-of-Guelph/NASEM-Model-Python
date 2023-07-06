@@ -116,6 +116,14 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     return Du_MiN_VTnln_g
 
 
+# def calc_Mlk_NP_g():
+    # Load the AA_values dataframe and unpack into variables
+    
+
+
+
+
+
 # def calculate_Mlk_Prod_comp(Dt_IdArgRUPIn):
 # # Need to calculate in diet:
 # # 1. Dt_IdArgRUPIn
