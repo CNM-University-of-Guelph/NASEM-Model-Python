@@ -74,9 +74,9 @@ def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigS
     else:
         RDPIn_MiNmax = Dt_DMIn * 0.12
         # RDP intake capped at 12% DM from Firkins paper
-    MiN_Vm = VmMiNInt + VmMiNRDPSlp * RDPIn_MiNmax                                            # Line 1125            
+    MiN_Vm = VmMiNInt + VmMiNRDPSlp * RDPIn_MiNmax                                          # Line 1125            
 
-    Du_MiN_NRC2021_g = MiN_Vm / (1 + KmMiNRDNDF / Rum_DigNDFIn + KmMiNRDSt / Rum_DigStIn)       # Line 1126
+    Du_MiN_NRC2021_g = MiN_Vm / (1 + KmMiNRDNDF / Rum_DigNDFIn + KmMiNRDSt / Rum_DigStIn)   # Line 1126
 
     return Du_MiN_NRC2021_g
 
@@ -116,87 +116,120 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     return Du_MiN_VTnln_g
 
 
-# def calc_Mlk_NP_g():
-    # Load the AA_values dataframe and unpack into variables
+def calc_Mlk_NP_g(df, An_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDF, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW):
+    # This has been tested and works
     
+    # Unpack the AA_values dataframe into dictionaries
+    AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    Abs_AA_g = {}
+    mPrt_k_AA = {}
 
+    for AA in AA_list:
+        Abs_AA_g[AA] = df.loc[AA, 'Abs_AA_g']
+        mPrt_k_AA[AA] = df.loc[AA, 'mPrt_k_AA']
 
+    # Calculate Mlk_NP_g
+    mPrt_Int = -97                                      # Line 2097, 2078
+    fMiTP_MiCP = 0.824                      			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
+    SI_dcMiCP = 80				                        # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
+    mPrt_k_NEAA = 0                                     # Line 2103, 2094
+    mPrt_k_OthAA = 0.0773                               # Line 2014, 2095
+    mPrt_k_DEInp = 10.79                                # Line 2099, 2080
+    mPrt_k_DigNDF = -4.595                              # Line 2100, 2081
+    mPrt_k_DEIn_StFA = 0                                # Line 2101, 2082
+    mPrt_k_DEIn_NDF = 0                                 # Line 2102, 2083
+    mPrt_k_BW = -0.4201                                 # Line 2098, 2079
 
+    Abs_EAA_g = Abs_AA_g['Arg'] + Abs_AA_g['His'] + Abs_AA_g['Ile'] + Abs_AA_g['Leu'] + Abs_AA_g['Lys'] \
+                + Abs_AA_g['Met'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
 
+    Du_MiCP_g = Du_MiN_g * 6.25                         # Line 1163
+    Du_idMiCP_g =  SI_dcMiCP / 100 * Du_MiCP_g          # Line 1180 
+    Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g              # Line 1182
+    Du_idMiTP = Du_idMiTP_g / 1000
+    An_MPIn = An_idRUPIn + Du_idMiTP                    # Line 1236
+    An_MPIn_g = An_MPIn * 1000                          # Line 1238
+    Abs_neAA_g = An_MPIn_g * 1.15 - Abs_EAA_g           # Line 1771
+    Abs_OthAA_g = Abs_neAA_g + Abs_AA_g['Arg'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
+    Abs_EAA2b_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + Abs_AA_g['Met']**2        # Line 2106, 1778
+    mPrtmx_Met2 = df.loc['Met', 'mPrtmx_AA2']
+    mPrt_Met_0_1 = df.loc['Met', 'mPrt_AA_0.1']
+    # Cannot call the variable mPrt_Met_0.1 in python, this is the only variable not consistent with R code
+    Met_mPrtmx = df.loc['Met', 'AA_mPrtmx']
+    An_DEInp = An_DEIn - An_DETPIn - An_DENPNCPIn
 
-# def calculate_Mlk_Prod_comp(Dt_IdArgRUPIn):
-# # Need to calculate in diet:
-# # 1. Dt_IdArgRUPIn
-
-
-
-#     # Mlk_NP_g =   + Abs_His_g*mPrt_k_His + Abs_Ile_g*mPrt_k_Ile + 
-# 	# Abs_Leu_g*mPrt_k_Leu + Abs_Lys_g*mPrt_k_Lys + Abs_Met_g*mPrt_k_Met + Abs_Phe_g*mPrt_k_Phe +
-# 	# Abs_Thr_g*mPrt_k_Thr + Abs_Trp_g*mPrt_k_Trp + Abs_Val_g*mPrt_k_Val + Abs_neAA_g*mPrt_k_NEAA +
-#     #  Abs_OthAA_g*mPrt_k_OthAA + Abs_EAA2b_g*mPrt_k_EAA2 + An_DEInp*mPrt_k_DEInp + (An_DigNDF-17.06)*mPrt_k_DigNDF + 
-#     #  (An_DEStIn+An_DEFAIn+An_DErOMIn)*mPrt_k_DEIn_StFA + An_DENDFIn*mPrt_k_DEIn_NDF + (An_BW-612)*mPrt_k_BW
-    
-#     K_305RHA_MlkTP = 1.0                                            # Line 2115, A scalar to adjust the slope if needed.  Assumed to be 1. MDH
-#     An_305RHA_MlkTP = 280                                           # Line 34, kg/305d The mean value from the meta data.
-#     f_mPrt_max = 1.0 + K_305RHA_MlkTP * (An_305RHA_MlkTP/280 - 1)
-
-#     mPrt_Int_src = -97                                          # Line 2078-2096, These are the NRC defaults but two other sets of values are also available in the code
-#     mPrt_k_BW_src = -0.4201
-#     mPrt_k_DEInp_src = 10.79
-#     mPrt_k_DigNDF_src = -4.595
-#     mPrt_k_DEIn_StFA_src = 0                                    #DEStIn + DErOMIn + DEFAIn
-#     mPrt_k_DEIn_NDF_src = 0                                     #DENDFIn
-#     mPrt_k_Arg_src = 0
-#     mPrt_k_His_src = 1.675	
-#     mPrt_k_Ile_src = 0.885
-#     mPrt_k_Leu_src = 0.466
-#     mPrt_k_Lys_src = 1.153	
-#     mPrt_k_Met_src = 1.839
-#     mPrt_k_Phe_src = 0
-#     mPrt_k_Thr_src = 0
-#     mPrt_k_Trp_src = 0.0
-#     mPrt_k_Val_src = 0
-#     mPrt_k_NEAA_src = 0                                         #NEAA.  Phe, Thr, Trp, and Val not considered.
-#     mPrt_k_OthAA_src = 0.0773                                   #NEAA + unused EAA.  Added for NRC eqn without Arg as slightly superior.
-#     mPrt_k_EAA2_src = -0.00215 
-
-#     mPrtmx_Arg = -mPrt_k_Arg_src**2 / (4 * mPrt_k_EAA2_src)
-    
-#     mPrtmx_Arg2 = mPrtmx_Arg * f_mPrt_max                             # Line 2149
-
-#     Arg_mPrtmx = -mPrt_k_Arg_src / (2 * mPrt_k_EAA2_src)
-
-#     # Calculate scaled linear EAA coeff and a common squared coefficient
-#     mPrt_k_Arg = -(2 * math.sqrt(mPrtmx_Arg2)**2 - mPrt_Arg_0.1 * mPrtmx_Arg2) - 2 * mPrtmx_Arg2 / (Arg_mPrtmx * 0.1)
-
-#     MiTPArgProf = 5.47
-    
-#     SI_dcMiCP = 80                              				# Digestibility coefficient for Microbial Protein (%) from NRC 2001
-#     fMiTP_MiCP = 0.824          		                        # Fraction of MiCP that is True Protein; from Lapierre or Firkins
-#     Du_MiN_g = calculate_Du_MiN_NRC2021_g()                     # This value requires another function to calculate, in the ration balancer it is probably easiest to run that function first then pass the Du_MiN_g value as an input
-    
-#     # Du_IdArgMic #
-#     Du_MiCP_g = Du_MiN_g * 6.25
-#     Du_MiTP_g = fMiTP_MiCP * Du_MiCP_g
-#     Du_ArgMic = Du_MiTP_g * MiTPArgProf / 100                     # Line 1573
-#     Du_IdArgMic = Du_ArgMic * SI_dcMiCP / 100                     # Line 1691
-
-#     Abs_Arg_g = Du_IdArgMic + Dt_IdArgRUPIn                     # Line 1757, 1714, 1703 
-    
-#     # BIG EQUATION #
-#     Mlk_NP_g = mPrt_Int_src + Abs_Arg_g * mPrt_k_Arg                # Line 2187-2191
-#     #######################################################################
+    #Scale the quadratic; can be calculated from any of the AA included in the squared term. All give the same answer
+    mPrt_k_EAA2 = (2 * math.sqrt(mPrtmx_Met2**2 - mPrt_Met_0_1 * mPrtmx_Met2) - 2 * mPrtmx_Met2 + mPrt_Met_0_1) / (Met_mPrtmx * 0.1)**2
    
-#     Mlk_NP = Mlk_NP_g / 1000                                                                # Line 2210
 
-#     Mlk_Prod_comp = 4.541 + 11.13*Mlk_NP + 2.648*Mlk_Fat + 0.1829 * An_DEIn - 0.06257*(An_LactDay_MlkPred-137.1)                # Line 2275
-#     + 2.766e-4*(An_LactDay_MlkPred-137.1)^2 + 1.603e-6*(An_LactDay_MlkPred-137.1)^3 - 7.397e-9*(An_LactDay_MlkPred-137.1)^4 
-#     + 1.567*(An_Parity_rl-1)        
+    Mlk_NP_g = mPrt_Int + Abs_AA_g['Arg'] * mPrt_k_AA['Arg'] + Abs_AA_g['His'] * mPrt_k_AA['His'] \
+                + Abs_AA_g['Ile'] * mPrt_k_AA['Ile'] + Abs_AA_g['Leu'] * mPrt_k_AA['Leu'] \
+                + Abs_AA_g['Lys'] * mPrt_k_AA['Lys'] + Abs_AA_g['Met'] * mPrt_k_AA['Met'] \
+                + Abs_AA_g['Phe'] * mPrt_k_AA['Phe'] + Abs_AA_g['Thr'] * mPrt_k_AA['Thr'] \
+                + Abs_AA_g['Trp'] * mPrt_k_AA['Trp'] + Abs_AA_g['Val'] * mPrt_k_AA['Val'] \
+                + Abs_neAA_g * mPrt_k_NEAA + Abs_OthAA_g * mPrt_k_OthAA + Abs_EAA2b_g * mPrt_k_EAA2 \
+                + An_DEInp * mPrt_k_DEInp + (An_DigNDF - 17.06) * mPrt_k_DigNDF + (An_DEStIn + An_DEFAIn + An_DErOMIn) \
+                * mPrt_k_DEIn_StFA + An_DENDFIn * mPrt_k_DEIn_NDF + (An_BW - 612) * mPrt_k_BW 
 
-#     return Mlk_Prod_comp
+    return Mlk_NP_g
+    
+
+def calc_Mlk_Fat_g(df, An_LactDay, Dt_DMIn, Dt_FAIn, Dt_DigC160In, Dt_DigC183In):
+    # This has been tested and works
+    Abs_Ile_g = df.loc['Ile', 'Abs_AA_g']
+    Abs_Met_g = df.loc['Met', 'Abs_AA_g']
+
+    # An_LactDay_MlkPred
+    if An_LactDay <= 375:
+        An_LactDay_MlkPred = An_LactDay
+    elif An_LactDay > 375:
+        An_LactDay_MlkPred = 375
+
+    Mlk_Fat_g = 453 - 1.42 * An_LactDay_MlkPred + 24.52 * (Dt_DMIn - Dt_FAIn) + 0.41 * Dt_DigC160In * 1000 + 1.80 * Dt_DigC183In * 1000 + 1.45 * Abs_Ile_g + 1.34 * Abs_Met_g
+
+    return Mlk_Fat_g
 
 
+def calc_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay, An_Parity_rl):
+    # This has been tested and works
+    Mlk_NP = Mlk_NP_g / 1000                    # Line 2210, kg NP/d
+    Mlk_Fat = Mlk_Fat_g / 1000
+
+    # An_LactDay_MlkPred
+    if An_LactDay <= 375:
+        An_LactDay_MlkPred = An_LactDay
+    elif An_LactDay > 375:
+        An_LactDay_MlkPred = 375
+
+    Mlk_Prod_comp = 4.541 + 11.13 * Mlk_NP + 2.648 * Mlk_Fat + 0.1829 * An_DEIn - 0.06257 * (An_LactDay_MlkPred - 137.1) + 2.766e-4 * (An_LactDay_MlkPred - 137.1)**2 \
+                    + 1.603e-6 * (An_LactDay_MlkPred - 137.1)**3 - 7.397e-9 * (An_LactDay_MlkPred - 137.1)**4 + 1.567 * (An_Parity_rl - 1)
+    return Mlk_Prod_comp
 
 
+def calc_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_idMiCP_g, Trg_MilkTPp):
+    # Tested and works
+    Kx_MP_NP_Trg = 0.69                                                                     # Line 2651, 2596
+    fMiTP_MiCP = 0.824                                                          			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
 
+    Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g                                                  # Line 1182
+    Du_idMiTP = Du_idMiTP_g / 1000                                                          # Line 1183
+    An_MPIn = An_idRUPIn + Du_idMiTP 
+
+
+    An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000          # Line 2706
+    Mlk_NP_MPalow_Trg_g = An_MPavail_Milk_Trg * Kx_MP_NP_Trg * 1000                         # Line 2707, g milk NP/d
+
+    Mlk_Prod_MPalow = Mlk_NP_MPalow_Trg_g / (Trg_MilkTPp / 100) / 1000                      # Line 2708, kg milk/d using Trg milk protein % to predict volume
+
+    return Mlk_Prod_MPalow
+
+
+def calc_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEmilk_Milk):
+    # Tested and works
+    Kl_ME_NE = 0.66
+
+    An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse                      # Line 2896
+    Mlk_Prod_NEalow = An_MEavail_Milk * Kl_ME_NE / Trg_NEmilk_Milk                  	# Line 2897, Energy allowable Milk Production, kg/d
+
+    return Mlk_Prod_NEalow
 
