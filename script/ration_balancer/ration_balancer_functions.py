@@ -96,7 +96,12 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
         'Fd_DigStIn_Base': 'Digestable Starch Intake',
         'Fd_DigrOMtIn': 'Digestable Residual Organic Matter Intake',
         'Fd_idRUPIn': 'Digested RUP',
-        'Fd_DigFAIn': 'Digested Fatty Acid Intake'
+        'Fd_DigFAIn': 'Digested Fatty Acid Intake',
+        'Fd_ForWet': 'Wet Forage',
+        'Fd_ForNDFIn': ' Forage NDF Intake',
+        'Fd_FAIn': 'Fatty Acid Intake',
+        'Fd_DigC160In': 'C160 FA Intake',
+        'Fd_DigC183In': 'C183 FA Intake'
     }
    
     # List any values that have the units % DM
@@ -105,21 +110,21 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
     for intake, full_name in component_dict.items():
         if intake in units_DM:
             df[intake] = df['Feedstuff'].map(feed_data[intake]) / 100                                # Get value from feed_data as a percentage
-
             df[intake + '_%_diet'] = df[intake] * df['%_DM_intake']                                  # Calculate component intake on %DM basis
-            df[intake + '_kg/d_diet'] = df[intake + '_%_diet'] * animal_input['DMI'] / 100           # Calculate component kg intake 
-               
+            df[intake + '_kg/d'] = df[intake + '_%_diet'] * animal_input['DMI'] / 100                   # Calculate component kg intake 
+
+
         elif intake == 'Fd_RUP_base':                                                                # RUP is in % CP, so an extra conversion is needed
             df[intake] = df['Feedstuff'].map(feed_data[intake]) / 100
             df['Fd_RUP_base_%_CP'] = df[intake] * df['%_DM_intake']
             df['Fd_RUP_base_%_diet'] = df['Fd_RUP_base_%_CP'] * df['Fd_CP']
-            df['Fd_RUP_base_kg/d_diet'] = df['Fd_RUP_base_%_diet'] * animal_input['DMI'] / 100
+            df['Fd_RUP_base_kg/d'] = df['Fd_RUP_base_%_diet'] * animal_input['DMI'] / 100
         
+
         elif intake == 'Fd_DigNDFIn_Base':
-            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_intake']  
+            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_intake'] #* animal_input['DMI'] / 100
             df['TT_dcFdNDF_48h'] = 12 + 0.61 * df['Feedstuff'].map(feed_data['Fd_DNDF48_NDF'])
             Use_DNDF_IV = equation_selection['Use_DNDF_IV']
-            
             if Use_DNDF_IV == 1 and df['Feedstuff'].map(feed_data['Fd_Conc']) < 100 and not np.isnan(df['TT_dcFdNDF_48h']):
                 df['TT_dcFdNDF_Base'] = df['TT_dcFdNDF_48h']
             elif Use_DNDF_IV == 2 and not np.isnan(df['TT_dcFdNDF_48h']):
@@ -128,38 +133,34 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
                 def calculate_TT_dcFdNDF_Lg(Fd_NDF, Fd_Lg):
                     TT_dcFdNDF_Lg = 0.75 * (Fd_NDF - Fd_Lg) * (1 - (Fd_Lg / np.where(Fd_NDF == 0, 1e-6, Fd_NDF)) ** 0.667) / np.where(Fd_NDF == 0, 1e-6, Fd_NDF) * 100
                     return TT_dcFdNDF_Lg
-                
                 df['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(df['Feedstuff'].map(feed_data['Fd_NDF']), df['Feedstuff'].map(feed_data['Fd_Lg']))
                 df['TT_dcFdNDF_Base'] = df['TT_dcFdNDF_Lg']
-
             df['Fd_DigNDFIn_Base'] = df['TT_dcFdNDF_Base'] / 100 * df['Fd_NDFIn']
         
+
         elif intake == 'Fd_DigStIn_Base':
             df['Fd_DigSt'] = df['Feedstuff'].map(feed_data['Fd_St']) * df['Feedstuff'].map(feed_data['Fd_dcSt']) / 100
             df['Fd_DigStIn_Base'] = df['Fd_DigSt'] / 100 * df['kg_intake']
 
+
         elif intake == 'Fd_DigrOMtIn':
             Fd_dcrOM = 96				                                                # Line 1005, this is a true digestbility.  There is a neg intercept of -3.43% of DM
-
             df['Fd_fHydr_FA'] = 1 / 1.06                                                # Line 461
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'Fd_fHydr_FA'] = 1
-
             df['Fd_NPNCP'] = df['Feedstuff'].map(feed_data['Fd_CP']) * df['Feedstuff'].map(feed_data['Fd_NPN_CP']) / 100
             df['Fd_TP'] = df['Feedstuff'].map(feed_data['Fd_CP']) - df['Fd_NPNCP']
-
             df['Fd_NPNDM'] = df['Fd_NPNCP'] / 2.81
-
             df['Fd_rOM'] = 100 - df['Feedstuff'].map(feed_data['Fd_Ash']) - df['Feedstuff'].map(feed_data['Fd_NDF']) - df['Feedstuff'].map(feed_data['Fd_St']) - (df['Feedstuff'].map(feed_data['Fd_FA']) * df['Fd_fHydr_FA']) - df['Fd_TP'] - df['Fd_NPNDM'] 
             df['Fd_DigrOMt'] = Fd_dcrOM / 100 * df['Fd_rOM']
             df['Fd_DigrOMtIn'] = df['Fd_DigrOMt'] / 100 * df['kg_intake']
         
+
         elif intake == 'Fd_idRUPIn':
             fCPAdu = 0.064
             KpFor = 4.87        #%/h
             KpConc = 5.28	    #From Bayesian fit to Digesta Flow data with Seo Kp as priors, eqn. 26 in Hanigan et al.
             IntRUP = -0.086 	#Intercept, kg/d
             refCPIn = 3.39  	#average CPIn for the DigestaFlow dataset, kg/d.  3/21/18, MDH
-            
             df['Fd_CPIn'] = df['Feedstuff'].map(feed_data['Fd_CP']) / 100 * df['kg_intake'] 
             df['Fd_CPAIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_CPARU']) / 100
             df['Fd_NPNCPIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_NPN_CP']) / 100
@@ -169,24 +170,52 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
                 df['Feedstuff'].map(feed_data['Fd_KdRUP']) + KpConc)
             df['Fd_CPCIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_CPCRU']) / 100
             df['Fd_RUPIn'] = (df['Fd_CPAIn'] - df['Fd_NPNCPIn']) * fCPAdu + df['Fd_RUPBIn'] + df['Fd_CPCIn'] + IntRUP / refCPIn * df['Fd_CPIn'] 
-
             df['Fd_idRUPIn'] = df['Feedstuff'].map(feed_data['Fd_dcRUP']) / 100 * df['Fd_RUPIn']
         
+
         elif intake == 'Fd_DigFAIn':
             TT_dcFA_Base = 73
             TT_dcFat_Base = 68 
-
             df['TT_dcFdFA'] = df['Feedstuff'].map(feed_data['Fd_dcFA'])
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'TT_dcFdFA'] = TT_dcFA_Base
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fat Supplement", 'TT_dcFdFA'] = TT_dcFat_Base
-
             df['Fd_DigFAIn'] = (df['TT_dcFdFA'] / 100) * (df['Feedstuff'].map(feed_data['Fd_FA']) / 100) * df['kg_intake']
+
+        
+        elif intake == 'Fd_ForWet':
+            df['Fd_For'] = 100 - df['Feedstuff'].map(feed_data['Fd_Conc'])
+            
+            condition = (df['Fd_For'] > 50) & (df['Feedstuff'].map(feed_data['Fd_DM']) < 71)
+            df['Fd_ForWet'] = np.where(condition, df['Fd_For'], 0)
+            df['Fd_ForWetIn'] = df['Fd_ForWet'] / 100 * df['kg_intake']
+
+
+        elif intake == 'Fd_ForNDFIn':
+            df['Fd_ForNDF'] = (1 - df['Feedstuff'].map(feed_data['Fd_Conc']) / 100) * df['Feedstuff'].map(feed_data['Fd_NDF'])
+            df['Fd_ForNDFIn'] = df['Fd_ForNDF'] / 100 * df['kg_intake']
+
+
+        elif intake == 'Fd_FAIn':
+            df['Fd_FAIn'] = df['Feedstuff'].map(feed_data['Fd_FA']) / 100 * df['kg_intake']
+
+        elif intake == 'Fd_DigC160In':
+            df['Fd_DigC160In'] = df['TT_dcFdFA'] / 100 * df['Feedstuff'].map(feed_data['Fd_C160_FA']) / 100 * df['Feedstuff'].map(feed_data['Fd_FA']) / 100 * df['kg_intake']
+            # These DigC___In calculations can be made into a loop if the rest are needed at some point 
+
+        elif intake == 'Fd_DigC183In':
+            df['Fd_DigC183In'] = df['TT_dcFdFA'] / 100 * df['Feedstuff'].map(feed_data['Fd_C183_FA']) / 100 * df['Feedstuff'].map(feed_data['Fd_FA']) / 100 * df['kg_intake']
+
 
     # Sum component intakes
     df.loc['Diet'] = df.sum()
     df.at['Diet', 'Feedstuff'] = 'Diet'
 
+    # Perform calculations on summed columns
+    df.loc['Diet', 'Dt_RDPIn'] = df.loc['Diet', 'Fd_CPIn'] - df.loc['Diet', 'Fd_RUPIn']
+
     # Rename columns using the dictionary of component names
     # df.columns = df.columns.str.replace('|'.join(component_dict.keys()), lambda x: component_dict[x.group()], regex=True)
     
     return df
+
+

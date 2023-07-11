@@ -48,7 +48,7 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
   # Mlk_MPUse_g_Trg: MP requirement for milk production, g/d
   
   An_MPuse_g_Trg = An_MPm_g_Trg + Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg # Line 2680
-  return(An_MPuse_g_Trg)
+  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg
 
 
 def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW):
