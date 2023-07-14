@@ -2,6 +2,12 @@ import math
 import pandas as pd
 import numpy as np
 
+# Importing this function was causing errors, I could not get it to import properly
+# Once __init__.py is setup this fucntion can be called from ration_balancer_functions
+def unpack_coeff(list, dict):
+    for coeff in list:
+         globals()[coeff] = dict[coeff]
+
 
 def calculate_Dt_DMIn_Lact1(An_Parity_rl, Trg_MilkProd, An_BW, An_BCS, An_LactDay, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp):
     
@@ -15,7 +21,7 @@ def calculate_Dt_DMIn_Lact1(An_Parity_rl, Trg_MilkProd, An_BW, An_BCS, An_LactDa
     return Dt_DMIn_Lact1
 
 
-def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn):
+def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn, coeff_dict):
     # This has been tested and works
    
     # There are 3 equations for predicting microbial N, all 3 will be included and the MCP prediction from each will be displayed
@@ -57,7 +63,7 @@ def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet
     Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn                                                   # Line 998
 
 
-    Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn)
+    Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict)
     # Du_MiN_VTln_g = calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
     #                                         Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn)
     # Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
@@ -66,13 +72,15 @@ def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet
     return Du_MiN_NRC2021_g
 
 
-def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn): 
+def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict): 
     # This has been tested and works
-
-    VmMiNInt = 100.8                                                                        # Line 1117
-    VmMiNRDPSlp = 81.56                                                                     # Line 1118
-    KmMiNRDNDF = 0.0939                                                                     # Line 1119
-    KmMiNRDSt = 0.0274                                                                      # Line 1120
+    
+    coeff_list = ['VmMiNInt', 'VmMiNRDPSlp', 'KmMiNRDNDF', 'KmMiNRDSt']
+    unpack_coeff(coeff_list, coeff_dict)
+    # VmMiNInt = 100.8                                                                        # Line 1117
+    # VmMiNRDPSlp = 81.56                                                                     # Line 1118
+    # KmMiNRDNDF = 0.0939                                                                     # Line 1119
+    # KmMiNRDSt = 0.0274                                                                      # Line 1120
     
     if An_RDP <= 12:                                                                        # Line 1124
         RDPIn_MiNmax = An_RDPIn
@@ -87,20 +95,22 @@ def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigS
 
 
 def calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
-                            Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn):
+                            Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn, coeff_dict):
     # *** NEED TO TEST ***
-    
+    coeff_list = ['Int_MiN_VT', 'KrdSt_MiN_VT', 'KrdNDF_MiN_VT', 'KRDP_MiN_VT', 'KrOM_MiN_VT', 'KForNDF_MiN_VT', 'KrOM2_MiN_VT', 'KrdStxrOM_MiN_VT', 'KrdNDFxForNDF_MiN_VT']
+    unpack_coeff(coeff_list, coeff_dict)
+
     # MiN (g/d) Parms for eqn. 52 (linear) from Hanigan et al, RUP paper
     # Derived using RUP with no KdAdjust
-    Int_MiN_VT = 18.686                                                                     # Line 1134
-    KrdSt_MiN_VT = 10.214                                                                   # Line 1135
-    KrdNDF_MiN_VT = 28.976                                                                  # Line 1136
-    KRDP_MiN_VT = 43.405                                                                    # Line 1137
-    KrOM_MiN_VT = -11.731                                                                   # Line 1138
-    KForNDF_MiN_VT = 8.895                                                                  # Line 1139
-    KrOM2_MiN_VT = 2.861                                                                    # Line 1140
-    KrdStxrOM_MiN_VT = 5.637                                                                # Line 1141
-    KrdNDFxForNDF_MiN_VT = -2.22                                                            # Line 1142
+    # Int_MiN_VT = 18.686                                                                     # Line 1134
+    # KrdSt_MiN_VT = 10.214                                                                   # Line 1135
+    # KrdNDF_MiN_VT = 28.976                                                                  # Line 1136
+    # KRDP_MiN_VT = 43.405                                                                    # Line 1137
+    # KrOM_MiN_VT = -11.731                                                                   # Line 1138
+    # KForNDF_MiN_VT = 8.895                                                                  # Line 1139
+    # KrOM2_MiN_VT = 2.861                                                                    # Line 1140
+    # KrdStxrOM_MiN_VT = 5.637                                                                # Line 1141
+    # KrdNDFxForNDF_MiN_VT = -2.22                                                            # Line 1142
 
     Dt_rOMIn = Dt_DMIn-Dt_AshIn-Dt_NDFIn-Dt_StIn-Dt_FAhydrIn-Dt_TPIn-Dt_NPNDMIn             # Line 647
     if Dt_rOMIn < 0:                                                                        # Line 648
@@ -121,9 +131,11 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     return Du_MiN_VTnln_g
 
 
-def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn):
+def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, coeff_dict):
     # This has been tested and works
-    
+    coeff_list = ['mPrt_Int', 'fMiTP_MiCP', 'SI_dcMiCP', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW']     
+    unpack_coeff(coeff_list, coeff_dict)
+
     An_DigNDF = An_DigNDFIn / Dt_DMIn * 100
     # Unpack the AA_values dataframe into dictionaries
     AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
@@ -135,16 +147,16 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPI
         mPrt_k_AA[AA] = df.loc[AA, 'mPrt_k_AA']
 
     # Calculate Mlk_NP_g
-    mPrt_Int = -97                                      # Line 2097, 2078
-    fMiTP_MiCP = 0.824                      			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
-    SI_dcMiCP = 80				                        # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
-    mPrt_k_NEAA = 0                                     # Line 2103, 2094
-    mPrt_k_OthAA = 0.0773                               # Line 2014, 2095
-    mPrt_k_DEInp = 10.79                                # Line 2099, 2080
-    mPrt_k_DigNDF = -4.595                              # Line 2100, 2081
-    mPrt_k_DEIn_StFA = 0                                # Line 2101, 2082
-    mPrt_k_DEIn_NDF = 0                                 # Line 2102, 2083
-    mPrt_k_BW = -0.4201                                 # Line 2098, 2079
+    # mPrt_Int = -97                                      # Line 2097, 2078
+    # fMiTP_MiCP = 0.824                      			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
+    # SI_dcMiCP = 80				                        # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
+    # mPrt_k_NEAA = 0                                     # Line 2103, 2094
+    # mPrt_k_OthAA = 0.0773                               # Line 2014, 2095
+    # mPrt_k_DEInp = 10.79                                # Line 2099, 2080
+    # mPrt_k_DigNDF = -4.595                              # Line 2100, 2081
+    # mPrt_k_DEIn_StFA = 0                                # Line 2101, 2082
+    # mPrt_k_DEIn_NDF = 0                                 # Line 2102, 2083
+    # mPrt_k_BW = -0.4201                                 # Line 2098, 2079
 
     Abs_EAA_g = Abs_AA_g['Arg'] + Abs_AA_g['His'] + Abs_AA_g['Ile'] + Abs_AA_g['Leu'] + Abs_AA_g['Lys'] \
                 + Abs_AA_g['Met'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
@@ -212,10 +224,14 @@ def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay, An_Parity_
     return Mlk_Prod_comp
 
 
-def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_idMiCP_g, Trg_MilkTPp):
+def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_idMiCP_g, Trg_MilkTPp, coeff_dict):
     # Tested and works
-    Kx_MP_NP_Trg = 0.69                                                                     # Line 2651, 2596
-    fMiTP_MiCP = 0.824                                                          			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
+    
+    coeff_list = ['Kx_MP_NP_Trg', 'fMiTP_MiCP']
+    unpack_coeff(coeff_list, coeff_dict)
+
+    # Kx_MP_NP_Trg = 0.69                                                                     # Line 2651, 2596
+    # fMiTP_MiCP = 0.824                                                          			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
 
     Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g                                                  # Line 1182
     Du_idMiTP = Du_idMiTP_g / 1000                                                          # Line 1183
@@ -230,9 +246,13 @@ def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_id
     return Mlk_Prod_MPalow
 
 
-def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp):
+def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp, coeff_dict):
     # Tested and works
-    Kl_ME_NE = 0.66
+    
+    coeff_list = ['Kl_ME_NE']
+    unpack_coeff(coeff_list, coeff_dict)
+
+    # Kl_ME_NE = 0.66
 
     Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp / 100 + 5.85 * Trg_MilkTPp / 100 + 3.95 * Trg_MilkLacp / 100
     An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse                      # Line 2896
@@ -241,7 +261,7 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_Mil
     return Mlk_Prod_NEalow
 
 
-def AA_calculations(Du_MiN_g, feed_data, diet_info):
+def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     # This function will get the intakes of AA's from the diet and then do all the calculations 
     # of values other functions will need
     # The results will be saved to a dataframe with one row for each AA and a column for each calculated value
@@ -259,10 +279,22 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info):
     ####################
     # Define Variables
     ####################
-    fMiTP_MiCP = 0.824			                                    # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
-    SI_dcMiCP = 80				                                    # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
-    K_305RHA_MlkTP = 1.0                                            # Line 2115, A scalar to adjust the slope if needed.  Assumed to be 1. MDH
-    An_305RHA_MlkTP = 280                        # The default is 280 but the value for the test data is 400. This should be made an input for the model
+    
+    coeff_list = ['fMiTP_MiCP', 'SI_dcMiCP', 'K_305RHA_MlkTP', 'RecArg', 'RecHis',
+    'RecIle', 'RecLeu', 'RecLys', 'RecMet', 'RecPhe',
+    'RecThr', 'RecTrp', 'RecVal', 'MiTPArgProf', 'MiTPHisProf',
+    'MiTPIleProf', 'MiTPLeuProf', 'MiTPLysProf', 'MiTPMetProf', 'MiTPPheProf',
+    'MiTPThrProf', 'MiTPTrpProf', 'MiTPValProf', 'mPrt_k_Arg_src', 'mPrt_k_His_src',
+    'mPrt_k_Ile_src', 'mPrt_k_Leu_src', 'mPrt_k_Lys_src', 'mPrt_k_Met_src', 'mPrt_k_Phe_src',
+    'mPrt_k_Thr_src', 'mPrt_k_Trp_src', 'mPrt_k_Val_src', 'mPrt_k_EAA2_src']
+    unpack_coeff(coeff_list, coeff_dict)
+    
+    
+    # fMiTP_MiCP = 0.824			                                    # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
+    # SI_dcMiCP = 80				                                    # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
+    # K_305RHA_MlkTP = 1.0                                            # Line 2115, A scalar to adjust the slope if needed.  Assumed to be 1. MDH
+    # An_305RHA_MlkTP = 280                                           # The default is 280 but the value for the test data is 400. This should be made an input for the model
+    An_305RHA_MlkTP = animal_input['An_305RHA_MlkTP']
     f_mPrt_max = 1 + K_305RHA_MlkTP * (An_305RHA_MlkTP / 280 - 1)       # Line 2116, 280kg RHA ~ 930 g mlk NP/d herd average
     Du_MiCP_g = Du_MiN_g * 6.25                                         # Line 1163
     Du_MiTP_g = fMiTP_MiCP * Du_MiCP_g                                  # Line 1166
@@ -271,16 +303,16 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info):
     # From Lapierre, H., et al., 2016. Pp 205-219. in Proc. Cornell Nutrition Conference for feed manufacturers. 
     # Key roles of amino acids in cow performance and metabolism ? considerations for defining amino acid requirement. 
     # Inverted relative to that reported by Lapierre so they are true recovery factors, MDH
-    RecArg = 1 / 1.061              # Line 1462-1471
-    RecHis = 1 / 1.073
-    RecIle = 1 / 1.12
-    RecLeu = 1 / 1.065
-    RecLys = 1 / 1.066
-    RecMet = 1 / 1.05
-    RecPhe = 1 / 1.061
-    RecThr = 1 / 1.067
-    RecTrp = 1 / 1.06
-    RecVal = 1 / 1.102
+    # RecArg = 1 / 1.061              # Line 1462-1471
+    # RecHis = 1 / 1.073
+    # RecIle = 1 / 1.12
+    # RecLeu = 1 / 1.065
+    # RecLys = 1 / 1.066
+    # RecMet = 1 / 1.05
+    # RecPhe = 1 / 1.061
+    # RecThr = 1 / 1.067
+    # RecTrp = 1 / 1.06
+    # RecVal = 1 / 1.102
 
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
     # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
@@ -298,44 +330,31 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info):
 
     # Microbial protein AA profile (g hydrated AA / 100 g TP) corrected for 24h hydrolysis recovery. 
     # Sok et al., 2017 JDS
-    MiTPArgProf = 5.47
-    MiTPHisProf = 2.21
-    MiTPIleProf = 6.99
-    MiTPLeuProf = 9.23
-    MiTPLysProf = 9.44
-    MiTPMetProf = 2.63
-    MiTPPheProf = 6.30
-    MiTPThrProf = 6.23
-    MiTPTrpProf = 1.37
-    MiTPValProf = 6.88
+    # MiTPArgProf = 5.47
+    # MiTPHisProf = 2.21
+    # MiTPIleProf = 6.99
+    # MiTPLeuProf = 9.23
+    # MiTPLysProf = 9.44
+    # MiTPMetProf = 2.63
+    # MiTPPheProf = 6.30
+    # MiTPThrProf = 6.23
+    # MiTPTrpProf = 1.37
+    # MiTPValProf = 6.88
 
     # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631
     # Two other sets of values are included in the R code
-    
-    # May be unused
-    mPrt_Int_src = -97.0 
-    mPrt_k_BW_src = -0.4201
-    mPrt_k_DEInp_src = 10.79
-    mPrt_k_DigNDF_src = -4.595
-    mPrt_k_DEIn_StFA_src = 0        #DEStIn + DErOMIn + DEFAIn
-    mPrt_k_DEIn_NDF_src = 0         #DENDFIn
+    # mPrt_k_Arg_src = 0
+    # mPrt_k_His_src = 1.675
+    # mPrt_k_Ile_src = 0.885
+    # mPrt_k_Leu_src = 0.466
+    # mPrt_k_Lys_src = 1.153	
+    # mPrt_k_Met_src = 1.839
+    # mPrt_k_Phe_src = 0
+    # mPrt_k_Thr_src = 0
+    # mPrt_k_Trp_src = 0
+    # mPrt_k_Val_src = 0
 
-    mPrt_k_Arg_src = 0
-    mPrt_k_His_src = 1.675
-    mPrt_k_Ile_src = 0.885
-    mPrt_k_Leu_src = 0.466
-    mPrt_k_Lys_src = 1.153	
-    mPrt_k_Met_src = 1.839
-    mPrt_k_Phe_src = 0
-    mPrt_k_Thr_src = 0
-    mPrt_k_Trp_src = 0
-    mPrt_k_Val_src = 0
-
-    # May be unused
-    mPrt_k_NEAA_src = 0         #NEAA.  Phe, Thr, Trp, and Val not considered.
-    mPrt_k_OthAA_src = 0.0773   #NEAA + unused EAA.  Added for NRC eqn without Arg as slightly superior.
-
-    mPrt_k_EAA2_src = -0.00215
+    # mPrt_k_EAA2_src = -0.00215
 
     
     for AA in AA_list:
@@ -399,10 +418,15 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info):
 
 
 def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain, An_GestDay, 
-                    An_GestLength, An_LactDay, Trg_RsrvGain, Fet_BWbrth, An_AgeDay, An_Parity_rl):
+                    An_GestLength, An_LactDay, Trg_RsrvGain, Fet_BWbrth, An_AgeDay, An_Parity_rl, coeff_dict):
 # This has been tested and works 
 # Some of the calculations for gravid uterus are repeated in ME/MP requirements. Once order of calculations set it can be removed from one
 # Included this as a function as it has many steps, many of the intermediate values should also be stored somewhere in the future 
+
+    coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_Ksyn', 'GrUter_KsynDecay',
+    'UterWt_FetBWbrth', 'Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg', 'Uter_Wt',
+    'GrUterWt_FetBWbrth', 'Uter_BWgain', 'GrUter_BWgain', 'CP_GrUtWt', 'Gest_NPother_g']
+    unpack_coeff(coeff_list, coeff_dict)
 
     #######################
     ### An_GasEOut_Lact ###
@@ -416,13 +440,13 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     Scrf_CP_g = 0.20 * An_BW**0.60                                                                      # Line 1965
     Mlk_CP_g = Mlk_NP_g / 0.95                                          # Line 2213
     CPGain_FrmGain = 0.201 - 0.081 * An_BW / An_BW_mature
-    Body_NP_CP = 0.86                                                      # Line 1964
+    # Body_NP_CP = 0.86                                                      # Line 1964
     Frm_Gain = Trg_FrmGain
-    An_GutFill_BW = 0.18                                                   # Line 2400 and 2411
+    # An_GutFill_BW = 0.18                                                   # Line 2400 and 2411
     Frm_Gain_empty = Frm_Gain * (1 - An_GutFill_BW)
     NPGain_FrmGain = CPGain_FrmGain * Body_NP_CP                           # Line 2460
     Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty                           # Line 2461
-    CPGain_RsrvGain = 0.068                                           # Line 2466
+    # CPGain_RsrvGain = 0.068                                           # Line 2466
     NPGain_RsrvGain = CPGain_RsrvGain * Body_NP_CP                    # Line 2467
     Rsrv_Gain_empty = Trg_RsrvGain                                    # Line 2435 and 2441
     Rsrv_NPgain = NPGain_RsrvGain * Rsrv_Gain_empty                    # Line 2468
@@ -431,14 +455,14 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     Body_CPgain_g = Body_CPgain * 1000                                      # Line 2477
 
     #Gest_CPuse_g#
-    GrUter_Ksyn = 2.43e-2                                         # Line 2302
-    GrUter_KsynDecay = 2.45e-5                                    # Line 2303
-    UterWt_FetBWbrth = 0.2311                                     # Line 2296
+    # GrUter_Ksyn = 2.43e-2                                         # Line 2302
+    # GrUter_KsynDecay = 2.45e-5                                    # Line 2303
+    # UterWt_FetBWbrth = 0.2311                                     # Line 2296
     Uter_Wtpart = Fet_BWbrth * UterWt_FetBWbrth                   # Line 2311
-    Uter_Ksyn = 2.42e-2                                           # Line 2306
-    Uter_KsynDecay = 3.53e-5                                      # Line 2307
-    Uter_Kdeg = 0.20                                              # Line 2308
-    Uter_Wt = 0.204                                               # Line 2312-2318
+    # Uter_Ksyn = 2.42e-2                                           # Line 2306
+    # Uter_KsynDecay = 3.53e-5                                      # Line 2307
+    # Uter_Kdeg = 0.20                                              # Line 2308
+    # Uter_Wt = 0.204                                               # Line 2312-2318
     
     if An_AgeDay < 240:
       Uter_Wt = 0
@@ -452,7 +476,7 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     if An_Parity_rl > 0 and Uter_Wt < 0.204:
       Uter_Wt = 0.204
     
-    GrUterWt_FetBWbrth = 1.816                                    # Line 2295
+    # GrUterWt_FetBWbrth = 1.816                                    # Line 2295
     GrUter_Wtpart = Fet_BWbrth * GrUterWt_FetBWbrth               # Line 2322
     GrUter_Wt = Uter_Wt                                           # Line 2323-2327   
 
@@ -462,7 +486,7 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     if GrUter_Wt < Uter_Wt:
       GrUter_Wt = Uter_Wt
     
-    Uter_BWgain = 0  #Open and nonregressing animal
+    # Uter_BWgain = 0  #Open and nonregressing animal
 
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
       Uter_BWgain = (Uter_Ksyn - Uter_KsynDecay * An_GestDay) * Uter_Wt
@@ -478,8 +502,8 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
       GrUter_BWgain = Uter_BWgain
  
-    CP_GrUtWt = 0.123                                               # Line 2298, kg CP/kg fresh Gr Uterus weight
-    Gest_NPother_g = 0                                              # Line 2353, Net protein gain in other maternal tissues during late gestation: mammary, intestine, liver, and blood. This should be replaced with a growth funncton such as Dijkstra's mammary growth equation. MDH.                                                              
+    # CP_GrUtWt = 0.123                                               # Line 2298, kg CP/kg fresh Gr Uterus weight
+    # Gest_NPother_g = 0                                              # Line 2353, Net protein gain in other maternal tissues during late gestation: mammary, intestine, liver, and blood. This should be replaced with a growth funncton such as Dijkstra's mammary growth equation. MDH.                                                              
     Gest_NCPgain_g = GrUter_BWgain * CP_GrUtWt * 1000
     Gest_NPgain_g = Gest_NCPgain_g * Body_NP_CP
     Gest_NPuse_g = Gest_NPgain_g + Gest_NPother_g                             # Line 2366
@@ -494,9 +518,12 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     return An_NE, An_MEIn
 
 
-def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, An_CPIn, An_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiN_g, An_BW, Dt_DMIn):
+def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, An_CPIn, An_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiN_g, An_BW, Dt_DMIn, coeff_dict):
 # Tested and works
 # Consider renaiming as this really calculates all of the DE intakes as well as the total
+
+    coeff_list = ['En_NDF', 'En_St', 'En_rOM', 'Fe_rOMend_DMI', 'SI_dcMiCP', 'En_CP', 'dcNPNCP', 'En_NPNCP', 'En_FA']
+    unpack_coeff(coeff_list, coeff_dict)
 
     # Replaces An_NDF as input
     An_NDF = Dt_NDFIn / Dt_DMIn * 100
@@ -507,7 +534,7 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
         TT_dcNDF_Base = 0
 
     An_DMIn_BW = Dt_DMIn / An_BW
-    En_NDF = 4.2
+    # En_NDF = 4.2
 
     if TT_dcNDF_Base == 0:
         TT_dcNDF = 0
@@ -522,7 +549,7 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     An_DENDFIn = An_DigNDFIn * En_NDF                                               # Line 1353
     
     #An_DEStIn#
-    En_St = 4.23                                                                   # Line 271
+    # En_St = 4.23                                                                   # Line 271
     TT_dcSt_Base = Dt_DigStIn_Base / Dt_StIn * 100                                 # Line 1030    
     if math.isnan(TT_dcSt_Base) is True:
         TT_dcSt_Base = 0
@@ -535,17 +562,17 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     An_DEStIn = An_DigStIn * En_St                                                  # Line 1351
 
     #An_DErOMIn#
-    En_rOM = 4.0                                                                    # Line 271
-    Fe_rOMend_DMI = 3.43                                                            # Line 1005, 3.43% of DMI
+    # En_rOM = 4.0                                                                    # Line 271
+    # Fe_rOMend_DMI = 3.43                                                            # Line 1005, 3.43% of DMI
     Fe_rOMend = Fe_rOMend_DMI / 100 * Dt_DMIn                               	    # Line 1007, From Tebbe et al., 2017.  Negative interecept represents endogenous rOM
     An_DigrOMaIn = Dt_DigrOMtIn - Fe_rOMend                                         # Line 1024, 1022
     An_DErOMIn = An_DigrOMaIn * En_rOM                                              # Line 1352
 
     #An_DETPIn#
-    SI_dcMiCP = 80			                                                    	# Line 1123, Digestibility coefficient for Microbial Protein (%) from NRC 2001 
-    En_CP = 5.65                                                                    # Line 266
-    dcNPNCP = 100	                                                                # Line 1092, urea and ammonium salt digestibility
-    En_NPNCP = 0.89                                                                 # Line 270
+    # SI_dcMiCP = 80			                                                    	# Line 1123, Digestibility coefficient for Microbial Protein (%) from NRC 2001 
+    # En_CP = 5.65                                                                    # Line 266
+    # dcNPNCP = 100	                                                                # Line 1092, urea and ammonium salt digestibility
+    # En_NPNCP = 0.89                                                                 # Line 270
     An_idRUPIn = Dt_idRUPIn                                       # Line 1099
     Fe_RUP = An_RUPIn - An_idRUPIn                                                  # Line 1198   
     Du_MiCP_g = Du_MiN_g * 6.25                                                     # Line 1164
@@ -562,12 +589,11 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     An_DETPIn = An_DECPIn - An_DENPNCPIn / En_NPNCP * En_CP                       # Line 1356, Caution! DigTPaIn not clean so subtracted DE for CP equiv of NPN to correct. Not a true DE_TP.
 
     #An_DEFAIn#
-    En_FA = 9.4                                                                                         # Line 265
+    # En_FA = 9.4                                                                                         # Line 265
     An_DigFAIn = Dt_DigFAIn                                                                             # Line 1309
     An_DEFAIn = An_DigFAIn * En_FA
 
     An_DEIn = An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn + An_DEFAIn  # Line 1367
 
     return An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g
-
 

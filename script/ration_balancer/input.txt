@@ -37,4 +37,5 @@ Corn grain HM, coarse grind: 15
 * Trg_RsrvGain: 0
 * Fet_BWbrth: 44.1
 * An_AgeDay: 820.8
+* An_305RHA_MlkTP: 280
 
