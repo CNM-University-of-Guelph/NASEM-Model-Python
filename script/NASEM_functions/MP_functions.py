@@ -2,9 +2,7 @@ import math
 import pandas as pd
 
 def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
-                             Trg_RsrvGain, An_GestDay, An_GestLength, 
-                             An_AgeDay, Fet_BWbrth, An_LactDay, An_Parity_rl,
-                             Trg_MilkProd, Trg_MilkTPp):
+                             Trg_RsrvGain, Trg_MilkProd, Trg_MilkTPp, GrUter_BWgain):
   '''
   Calculate metabolizable protein (MP) requirement.
 
@@ -40,8 +38,7 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
                                                 Trg_RsrvGain)
   # Body_MPUse_g_Trg: MP requirement for frame and reserve gain, g/d
   
-  Gest_MPUse_g_Trg = calculate_Gest_MPuse_g_Trg(An_GestDay, An_GestLength, An_AgeDay,
-                                                Fet_BWbrth, An_LactDay, An_Parity_rl)
+  Gest_MPUse_g_Trg = calculate_Gest_MPuse_g_Trg(GrUter_BWgain)
   # Gest_MPUse_g_Trg: MP requirement for gestation, g/d
   
   Mlk_MPUse_g_Trg = calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp)
@@ -157,7 +154,7 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain):
   return(Body_MPuse_g_Trg)
 
 
-def calculate_Gest_MPuse_g_Trg(An_GestDay, An_GestLength, An_AgeDay, Fet_BWbrth, An_LactDay, An_Parity_rl):
+def calculate_Gest_MPuse_g_Trg(GrUter_BWgain):
   '''
   Calculate metabolizable protein requirements for pregnancy.
 
@@ -175,97 +172,7 @@ def calculate_Gest_MPuse_g_Trg(An_GestDay, An_GestLength, An_AgeDay, Fet_BWbrth,
 
   Returns:
       Gest_MPuse_g_Trg: A number with units g/d.
-  '''
-
-  # Ksyn: Constant for synthesis
-  # GrUter_Ksyn: Gravid uterus synthesis rate constant
-  # GrUter_KsynDecay: Rate of decay of gravid uterus synthesis approaching parturition
-  
-  GrUter_Ksyn = 2.43e-2                                         # Line 2302
-  GrUter_KsynDecay = 2.45e-5                                    # Line 2303
-  
-  #########################
-  # Uter_Wt Calculation
-  #########################
-  # UterWt_FetBWbrth: kg maternal tissue/kg calf weight at parturition
-  # Uter_Wtpart: Maternal tissue weight (uterus plus caruncles) at parturition
-  # Uter_Ksyn: Uterus synthesis rate
-  # Uter_KsynDecay: Rate of decay of uterus synthesis approaching parturition
-  # Uter_Kdeg: Rate of uterine degradation
-  # Uter_Wt: Weight of maternal tissue
-  
-  UterWt_FetBWbrth = 0.2311                                     # Line 2296
-  Uter_Wtpart = Fet_BWbrth * UterWt_FetBWbrth                   # Line 2311
-  Uter_Ksyn = 2.42e-2                                           # Line 2306
-  Uter_KsynDecay = 3.53e-5                                      # Line 2307
-  Uter_Kdeg = 0.20                                              # Line 2308
-  
-# For the series of 'if' statements I'm not sure if 'elif' can be used. It looks like it changes the value of Uter_Wt
-# but then changes it back to the default of 0.204 if the resulting values do not make sense
-
-  Uter_Wt = 0.204                                               # Line 2312-2318
-  
-  if An_AgeDay < 240:
-    Uter_Wt = 0
-  
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-    Uter_Wt = Uter_Wtpart * math.exp(-(Uter_Ksyn-Uter_KsynDecay*An_GestDay)*(An_GestLength-An_GestDay))
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-    Uter_Wt = ((Uter_Wtpart-0.204)* math.exp(-Uter_Kdeg*An_LactDay))+0.204
-
-  if An_Parity_rl > 0 and Uter_Wt < 0.204:
-    Uter_Wt = 0.204
-
-  #########################
-  # GrUter_Wt Calculation
-  ######################### 
-  # GrUterWt_FetBWbrth: kg of gravid uterus/ kg of calf birth weight
-  # GrUter_Wtpart: Gravid uterus weight at parturition
-  # GrUter_Wt: Gravid uterine weight
-  
-  GrUterWt_FetBWbrth = 1.816                                    # Line 2295
-  GrUter_Wtpart = Fet_BWbrth * GrUterWt_FetBWbrth               # Line 2322
-  GrUter_Wt = Uter_Wt                                           # Line 2323-2327   
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-    GrUter_Wt = GrUter_Wtpart * math.exp(-(GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*(An_GestLength-An_GestDay))
-
-  if GrUter_Wt < Uter_Wt:
-    GrUter_Wt = Uter_Wt
-
-  ########################
-  # MP Gestation Calculation
-  #########################
-  # Uter_BWgain: Rate of fresh tissue growth for maternal reproductive tissue
-  # GrUter_BWgain: Rate of fresh tissue growth for gravid uterus
-  # CP_GrUtWt: kg CP/ kg fresh gravid uterus weight
-  # Gest_NCPgain_g: Rate of CP deposition in gravid uterus
-  # Body_NP_CP: Conversion of CP to NP
-  # Gest_NPgain_g: Rate of NP deposition in gravid uterus
-  # Gest_NPother_g: NP gain in other maternal tissues during late gestation
-  # Gest_NPuse_g: Total NP use for gestation, g
-  # Ky_MP_NP_Trg: Conversion of MP to NP for gestation
-  # Ky_NP_MP_Trg: Conversion of NP to MP for gestation
-
-  
-  
-  Uter_BWgain = 0  #Open and nonregressing animal
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-    Uter_BWgain = (Uter_Ksyn - Uter_KsynDecay * An_GestDay) * Uter_Wt
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-    Uter_BWgain = -Uter_Kdeg*Uter_Wt
-  
-  GrUter_BWgain = 0                                              # Line 2341-2345
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-    GrUter_BWgain = (GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*GrUter_Wt
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-    GrUter_BWgain = Uter_BWgain
-  
+  '''  
   CP_GrUtWt = 0.123                                                # Line 2298                                     
   Gest_NCPgain_g = GrUter_BWgain * CP_GrUtWt * 1000                # Line 2363
   Body_NP_CP = 0.86                                                # Line 1963
