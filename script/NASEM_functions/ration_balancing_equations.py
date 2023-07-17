@@ -631,3 +631,4 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
         GrUter_BWgain = Uter_BWgain
 
     return GrUter_BWgain
+
