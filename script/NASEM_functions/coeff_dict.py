@@ -144,5 +144,15 @@ coeff_dict = {
     'Ky_NP_MP_Trg': 1.0,                                # Line 2657
 
 # From calculate_Mlk_MPuse_g_Trg
-    'Kl_MP_NP_Trg': 0.69                                # Line 54, 2596, 2651, 2654
+    'Kl_MP_NP_Trg': 0.69,                                # Line 54, 2596, 2651, 2654
+
+# From get_nutrient_intakes
+    'Fd_dcrOM': 96,                                     # Line 1005, this is a true digestbility.  There is a neg intercept of -3.43% of DM
+    'fCPAdu': 0.064,
+    'KpFor': 4.87,                                      #%/h
+    'KpConc': 5.28,                                     #From Bayesian fit to Digesta Flow data with Seo Kp as priors, eqn. 26 in Hanigan et al.
+    'IntRUP': -0.086,                                   #Intercept, kg/d
+    'refCPIn': 3.39,                                    #average CPIn for the DigestaFlow dataset, kg/d.  3/21/18, MDH
+    'TT_dcFA_Base': 73,
+    'TT_dcFat_Base': 68
 }

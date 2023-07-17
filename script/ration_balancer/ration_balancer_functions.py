@@ -70,12 +70,14 @@ def fl_get_rows(feeds_to_get):
     return feed_data
 
 
-def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
+def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_dict):
+    # This function should get a better name
     # This function will perform ALL feed related calculations for the model
     # ALL of the feed related vairables needed by future calculations will come from the diet_info dataframe
     # Anything in the R code that references f$"variable" should be included here where "variable" is a column
     # Any values in the R code where Dt_"variable" = sum(f$"variable") are equivalent to the column "variable" in the 'Diet' row
-
+    coeff_list = ['Fd_dcrOM', 'fCPAdu', 'KpFor', 'KpConc', 'IntRUP', 'refCPIn', 'TT_dcFA_Base', 'TT_dcFat_Base']
+    unpack_coeff(coeff_list, coeff_dict)
     
     # Remove the 'Diet' row if it exists before recalculating, otherwise, the new sum includes the old sum when calculated
     if 'Diet' in df.index:
@@ -144,7 +146,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
 
 
         elif intake == 'Fd_DigrOMtIn':
-            Fd_dcrOM = 96				                                                # Line 1005, this is a true digestbility.  There is a neg intercept of -3.43% of DM
+            # Fd_dcrOM = 96				                                                # Line 1005, this is a true digestbility.  There is a neg intercept of -3.43% of DM
             df['Fd_fHydr_FA'] = 1 / 1.06                                                # Line 461
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'Fd_fHydr_FA'] = 1
             df['Fd_NPNCP'] = df['Feedstuff'].map(feed_data['Fd_CP']) * df['Feedstuff'].map(feed_data['Fd_NPN_CP']) / 100
@@ -156,11 +158,11 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
         
 
         elif intake == 'Fd_idRUPIn':
-            fCPAdu = 0.064
-            KpFor = 4.87        #%/h
-            KpConc = 5.28	    #From Bayesian fit to Digesta Flow data with Seo Kp as priors, eqn. 26 in Hanigan et al.
-            IntRUP = -0.086 	#Intercept, kg/d
-            refCPIn = 3.39  	#average CPIn for the DigestaFlow dataset, kg/d.  3/21/18, MDH
+            # fCPAdu = 0.064
+            # KpFor = 4.87        #%/h
+            # KpConc = 5.28	    #From Bayesian fit to Digesta Flow data with Seo Kp as priors, eqn. 26 in Hanigan et al.
+            # IntRUP = -0.086 	#Intercept, kg/d
+            # refCPIn = 3.39  	#average CPIn for the DigestaFlow dataset, kg/d.  3/21/18, MDH
             df['Fd_CPIn'] = df['Feedstuff'].map(feed_data['Fd_CP']) / 100 * df['kg_intake'] 
             df['Fd_CPAIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_CPARU']) / 100
             df['Fd_NPNCPIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_NPN_CP']) / 100
@@ -174,8 +176,8 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
         
 
         elif intake == 'Fd_DigFAIn':
-            TT_dcFA_Base = 73
-            TT_dcFat_Base = 68 
+            # TT_dcFA_Base = 73
+            # TT_dcFat_Base = 68 
             df['TT_dcFdFA'] = df['Feedstuff'].map(feed_data['Fd_dcFA'])
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'TT_dcFdFA'] = TT_dcFA_Base
             df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fat Supplement", 'TT_dcFdFA'] = TT_dcFat_Base
@@ -183,7 +185,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
 
         
         elif intake == 'Fd_ForWet':
-            df['Fd_For'] = 100 - df['Feedstuff'].map(feed_data['Fd_Conc'])
+            # df['Fd_For'] = 100 - df['Feedstuff'].map(feed_data['Fd_Conc'])
             
             condition = (df['Fd_For'] > 50) & (df['Feedstuff'].map(feed_data['Fd_DM']) < 71)
             df['Fd_ForWet'] = np.where(condition, df['Fd_For'], 0)
