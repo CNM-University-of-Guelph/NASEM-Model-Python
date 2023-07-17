@@ -1,13 +1,3 @@
-Values to Calculate:
-    text_input_ration_balancer:
-        1. Dt_ForWet
-        2. Dt_ForNDF
-        3. An_RDP
-
-Need to test:
-1. Fd_FAIn calculation
-
-
 Animal Inputs:
 
 An_Parity_rl

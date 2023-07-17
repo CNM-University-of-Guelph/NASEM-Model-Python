@@ -90,15 +90,6 @@ coeff_dict = {
     'Body_NP_CP': 0.86,                                             # Line 1964
     'An_GutFill_BW': 0.18,                                          # Line 2400 and 2411
     'CPGain_RsrvGain': 0.068,                                       # Line 2466
-    'GrUter_Ksyn': 2.43e-2,                                         # Line 2302
-    'GrUter_KsynDecay': 2.45e-5,                                    # Line 2303
-    'UterWt_FetBWbrth': 0.2311,                                     # Line 2296
-    'Uter_Ksyn': 2.42e-2,                                           # Line 2306
-    'Uter_KsynDecay': 3.53e-5,                                      # Line 2307
-    'Uter_Kdeg': 0.20,                                              # Line 2308
-    'Uter_Wt': 0.204,                                               # Line 2312-2318
-    'GrUterWt_FetBWbrth': 1.816,                                    # Line 2295
-    'Uter_BWgain': 0,                                               # Open and nonregressing animal
     'GrUter_BWgain': 0,                                             # Line 2341-2345
     'CP_GrUtWt': 0.123,                                             # Line 2298, kg CP/kg fresh Gr Uterus weight
     'Gest_NPother_g': 0,                                            # Line 2353, Net protein gain in other maternal tissues during late gestation: mammary, intestine, liver, and blood. This should be replaced with a growth funncton such as Dijkstra's mammary growth equation. MDH.
@@ -112,5 +103,46 @@ coeff_dict = {
     'En_CP': 5.65,                                                                    # Line 266
     'dcNPNCP': 100,	                                                                # Line 1092, urea and ammonium salt digestibility
     'En_NPNCP': 0.89,                                                                 # Line 270
-    'En_FA': 9.4                                                                                         # Line 265
+    'En_FA': 9.4,                                                                      # Line 265
+
+# From calculate GrUter_BWgain
+    'GrUter_Ksyn': 2.43e-2,                                         # Line 2302
+    'GrUter_KsynDecay': 2.45e-5,                                    # Line 2303
+    'UterWt_FetBWbrth': 0.2311,                                     # Line 2296
+    'Uter_Ksyn': 2.42e-2,                                           # Line 2306
+    'Uter_KsynDecay': 3.53e-5,                                      # Line 2307
+    'Uter_Kdeg': 0.20,                                              # Line 2308
+    'Uter_Wt': 0.204,                                               # Line 2312-2318
+    'GrUterWt_FetBWbrth': 1.816,                                    # Line 2295
+    'Uter_BWgain': 0,                                                # Open and nonregressing animal
+
+# From calculate_An_MEmUse
+    'An_NEmUse_Env': 0,                                               # Line 2785
+    'Km_ME_NE': 0.66,
+
+# From calculate_An_MEgain
+    'FatGain_RsrvGain': 0.622,                       # Line 2451
+    'Kr_ME_RE': 0.60,                                # Line 2834
+    'Body_NP_CP': 0.86,                              # Line 1963
+    'Kf_ME_RE': 0.4,                                 # Line 2831
+
+# From calculate_Gest_MEuse
+    'NE_GrUtWt': 0.95,                                # Line 2297
+
+# From calculate_Trg_Mlk_MEout
+    'Kl_ME_NE': 0.66,                                   # Line 2823
+
+# From calculate_An_MPm_g_Trg
+    'Km_MP_NP_Trg': 0.69,                            # Line 54, 2596, 2651 and 2652
+    'Body_NP_CP': 0.86,                              # Line 1963
+
+# From calculate_Body_MPuse_g_Trg
+    'Kg_MP_NP_Trg': 0.69,                            # Line 54, 2665
+
+# From calculate_Gest_MPuse_g_Trg
+    'Ky_MP_NP_Trg': 0.33,                               # Line 2656
+    'Ky_NP_MP_Trg': 1.0,                                # Line 2657
+
+# From calculate_Mlk_MPuse_g_Trg
+    'Kl_MP_NP_Trg': 0.69                                # Line 54, 2596, 2651, 2654
 }

@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 # Importing this function was causing errors, I could not get it to import properly
-# Once __init__.py is setup this fucntion can be called from ration_balancer_functions
+# Once __init__.py is setup this function can be called from ration_balancer_functions
 def unpack_coeff(list, dict):
     for coeff in list:
          globals()[coeff] = dict[coeff]
@@ -417,15 +417,13 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     return AA_values
 
 
-def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain, An_GestDay, 
-                    An_GestLength, An_LactDay, Trg_RsrvGain, Fet_BWbrth, An_AgeDay, An_Parity_rl, coeff_dict):
+def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
+                    Trg_RsrvGain, GrUter_BWgain, coeff_dict):
 # This has been tested and works 
 # Some of the calculations for gravid uterus are repeated in ME/MP requirements. Once order of calculations set it can be removed from one
 # Included this as a function as it has many steps, many of the intermediate values should also be stored somewhere in the future 
 
-    coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_Ksyn', 'GrUter_KsynDecay',
-    'UterWt_FetBWbrth', 'Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg', 'Uter_Wt',
-    'GrUterWt_FetBWbrth', 'Uter_BWgain', 'GrUter_BWgain', 'CP_GrUtWt', 'Gest_NPother_g']
+    coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_BWgain', 'CP_GrUtWt', 'Gest_NPother_g']
     unpack_coeff(coeff_list, coeff_dict)
 
     #######################
@@ -454,54 +452,6 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     Body_CPgain = Body_NPgain / Body_NP_CP                                  # Line 2475
     Body_CPgain_g = Body_CPgain * 1000                                      # Line 2477
 
-    #Gest_CPuse_g#
-    # GrUter_Ksyn = 2.43e-2                                         # Line 2302
-    # GrUter_KsynDecay = 2.45e-5                                    # Line 2303
-    # UterWt_FetBWbrth = 0.2311                                     # Line 2296
-    Uter_Wtpart = Fet_BWbrth * UterWt_FetBWbrth                   # Line 2311
-    # Uter_Ksyn = 2.42e-2                                           # Line 2306
-    # Uter_KsynDecay = 3.53e-5                                      # Line 2307
-    # Uter_Kdeg = 0.20                                              # Line 2308
-    # Uter_Wt = 0.204                                               # Line 2312-2318
-    
-    if An_AgeDay < 240:
-      Uter_Wt = 0
-    
-    if An_GestDay > 0 and An_GestDay <= An_GestLength:
-      Uter_Wt = Uter_Wtpart * math.exp(-(Uter_Ksyn-Uter_KsynDecay*An_GestDay)*(An_GestLength-An_GestDay))
-
-    if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-      Uter_Wt = ((Uter_Wtpart-0.204)* math.exp(-Uter_Kdeg*An_LactDay))+0.204
-
-    if An_Parity_rl > 0 and Uter_Wt < 0.204:
-      Uter_Wt = 0.204
-    
-    # GrUterWt_FetBWbrth = 1.816                                    # Line 2295
-    GrUter_Wtpart = Fet_BWbrth * GrUterWt_FetBWbrth               # Line 2322
-    GrUter_Wt = Uter_Wt                                           # Line 2323-2327   
-
-    if An_GestDay > 0 and An_GestDay <= An_GestLength:
-      GrUter_Wt = GrUter_Wtpart * math.exp(-(GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*(An_GestLength-An_GestDay))
-
-    if GrUter_Wt < Uter_Wt:
-      GrUter_Wt = Uter_Wt
-    
-    # Uter_BWgain = 0  #Open and nonregressing animal
-
-    if An_GestDay > 0 and An_GestDay <= An_GestLength:
-      Uter_BWgain = (Uter_Ksyn - Uter_KsynDecay * An_GestDay) * Uter_Wt
-
-    if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-      Uter_BWgain = -Uter_Kdeg*Uter_Wt
-    
-    GrUter_BWgain = 0                                              # Line 2341-2345
-
-    if An_GestDay > 0 and An_GestDay <= An_GestLength:
-      GrUter_BWgain = (GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*GrUter_Wt
-
-    if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-      GrUter_BWgain = Uter_BWgain
- 
     # CP_GrUtWt = 0.123                                               # Line 2298, kg CP/kg fresh Gr Uterus weight
     # Gest_NPother_g = 0                                              # Line 2353, Net protein gain in other maternal tissues during late gestation: mammary, intestine, liver, and blood. This should be replaced with a growth funncton such as Dijkstra's mammary growth equation. MDH.                                                              
     Gest_NCPgain_g = GrUter_BWgain * CP_GrUtWt * 1000
@@ -598,13 +548,17 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     return An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g
 
 
-def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An_LactDay, An_Parity_rl):
+def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An_LactDay, An_Parity_rl, coeff_dict):
+    coeff_list = ['GrUter_Ksyn', 'GrUter_KsynDecay', 'UterWt_FetBWbrth','Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg',
+                  'Uter_Wt', 'GrUterWt_FetBWbrth', 'Uter_BWgain']
+    unpack_coeff(coeff_list, coeff_dict)
+    
     # Ksyn: Constant for synthesis
     # GrUter_Ksyn: Gravid uterus synthesis rate constant
     # GrUter_KsynDecay: Rate of decay of gravid uterus synthesis approaching parturition
     
-    GrUter_Ksyn = 2.43e-2                                         # Line 2302
-    GrUter_KsynDecay = 2.45e-5                                    # Line 2303
+    # GrUter_Ksyn = 2.43e-2                                         # Line 2302
+    # GrUter_KsynDecay = 2.45e-5                                    # Line 2303
     
     #########################
     # Uter_Wt Calculation
@@ -616,12 +570,12 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     # Uter_Kdeg: Rate of uterine degradation
     # Uter_Wt: Weight of maternal tissue
     
-    UterWt_FetBWbrth = 0.2311                                     # Line 2296
+    # UterWt_FetBWbrth = 0.2311                                     # Line 2296
     Uter_Wtpart = Fet_BWbrth * UterWt_FetBWbrth                   # Line 2311
-    Uter_Ksyn = 2.42e-2                                           # Line 2306
-    Uter_KsynDecay = 3.53e-5                                      # Line 2307
-    Uter_Kdeg = 0.20                                              # Line 2308
-    Uter_Wt = 0.204                                               # Line 2312-2318
+    # Uter_Ksyn = 2.42e-2                                           # Line 2306
+    # Uter_KsynDecay = 3.53e-5                                      # Line 2307
+    # Uter_Kdeg = 0.20                                              # Line 2308
+    # Uter_Wt = 0.204                                               # Line 2312-2318
 
     if An_AgeDay < 240:
         Uter_Wt = 0 
@@ -642,7 +596,7 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     # GrUter_Wtpart: Gravid uterus weight at parturition
     # GrUter_Wt: Gravid uterine weight
     
-    GrUterWt_FetBWbrth = 1.816                                    # Line 2295
+    # GrUterWt_FetBWbrth = 1.816                                    # Line 2295
     GrUter_Wtpart = Fet_BWbrth * GrUterWt_FetBWbrth               # Line 2322
     GrUter_Wt = Uter_Wt                                           # Line 2323-2327   
     
@@ -661,7 +615,7 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     # Gest_REgain: NE for gestation
     # Ky_ME_NE: Conversion of NE to ME for gestation
     
-    Uter_BWgain = 0  #Open and nonregressing animal
+    # Uter_BWgain = 0  #Open and nonregressing animal
 
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         Uter_BWgain = (Uter_Ksyn - Uter_KsynDecay * An_GestDay) * Uter_Wt

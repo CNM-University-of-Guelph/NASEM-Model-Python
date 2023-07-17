@@ -219,13 +219,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection):
     return df
 
 
-# def unpack_coeff(list, dict):
-#     for coeff in list:
-#         # In Jupyter notebooks globals() must be used because vaariables defined in a function are local to the fucntion
-#         # In the .py files using locals() should work
-#         # locals()[coeff] = dict[coeff]
-#         globals()[coeff] = dict[coeff]
-
 def unpack_coeff(list, dict):
     for coeff in list:
          globals()[coeff] = dict[coeff]
+
