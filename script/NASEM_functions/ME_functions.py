@@ -47,13 +47,13 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
     Gest_MEuse = calculate_Gest_MEuse(GrUter_BWgain, coeff_dict)
 # Gest_MEuse: ME requirement for gestation, Mcal/d
   
-    Trg_Mlk_MEout = calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp,
+    Trg_Mlk_MEout, Trg_NEmilk_Milk = calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp,
                                             Trg_MilkLacp, coeff_dict)
 # Trg_Mlk_MEout: ME requirement for milk production, Mcal/d
   
     Trg_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout   # Line 2923
       
-    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout
+    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout, Trg_NEmilk_Milk
 
 
 def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):
@@ -258,7 +258,7 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
    Trg_Mlk_NEout = Trg_MilkProd * Trg_NEmilk_Milk                 # Line 2888
    # Kl_ME_NE = 0.66                                                # Line 2823
    Trg_Mlk_MEout = Trg_Mlk_NEout / Kl_ME_NE                       # Line 2889
-   return(Trg_Mlk_MEout)
+   return Trg_Mlk_MEout, Trg_NEmilk_Milk
 
 
 def execute_ME_requirement(row):

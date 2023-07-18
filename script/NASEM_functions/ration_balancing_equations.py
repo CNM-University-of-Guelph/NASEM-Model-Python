@@ -131,9 +131,9 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     return Du_MiN_VTnln_g
 
 
-def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, coeff_dict):
+def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, coeff_dict):
     # This has been tested and works
-    coeff_list = ['mPrt_Int', 'fMiTP_MiCP', 'SI_dcMiCP', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW']     
+    coeff_list = ['mPrt_Int', 'fMiTP_MiCP', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW']     
     unpack_coeff(coeff_list, coeff_dict)
 
     An_DigNDF = An_DigNDFIn / Dt_DMIn * 100
@@ -161,8 +161,9 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPI
     Abs_EAA_g = Abs_AA_g['Arg'] + Abs_AA_g['His'] + Abs_AA_g['Ile'] + Abs_AA_g['Leu'] + Abs_AA_g['Lys'] \
                 + Abs_AA_g['Met'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
 
-    Du_MiCP_g = Du_MiN_g * 6.25                         # Line 1163
-    Du_idMiCP_g =  SI_dcMiCP / 100 * Du_MiCP_g          # Line 1180 
+    # Du_MiCP_g = Du_MiN_g * 6.25                         # Line 1163
+    # Du_idMiCP_g =  SI_dcMiCP / 100 * Du_MiCP_g          # Line 1180 
+
     Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g              # Line 1182
     Du_idMiTP = Du_idMiTP_g / 1000
     An_MPIn = Dt_idRUPIn + Du_idMiTP                    # Line 1236
@@ -189,7 +190,7 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_MiN_g, An_DEIn, An_DETPIn, An_DENPNCPI
                 + An_DEInp * mPrt_k_DEInp + (An_DigNDF - 17.06) * mPrt_k_DigNDF + (An_DEStIn + An_DEFAIn + An_DErOMIn) \
                 * mPrt_k_DEIn_StFA + An_DENDFIn * mPrt_k_DEIn_NDF + (An_BW - 612) * mPrt_k_BW 
 
-    return Mlk_NP_g, Du_idMiCP_g
+    return Mlk_NP_g, Du_idMiCP_g, An_DigNDF, An_MPIn
     
 
 def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_DMIn):
@@ -205,38 +206,27 @@ def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_
 
     Mlk_Fat_g = 453 - 1.42 * An_LactDay_MlkPred + 24.52 * (Dt_DMIn - Dt_FAIn) + 0.41 * Dt_DigC160In * 1000 + 1.80 * Dt_DigC183In * 1000 + 1.45 * Abs_Ile_g + 1.34 * Abs_Met_g
 
-    return Mlk_Fat_g
+    return Mlk_Fat_g, An_LactDay_MlkPred
 
 
-def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay, An_Parity_rl):
+def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay_MlkPred, An_Parity_rl):
     # This has been tested and works
     Mlk_NP = Mlk_NP_g / 1000                    # Line 2210, kg NP/d
     Mlk_Fat = Mlk_Fat_g / 1000
-
-    # An_LactDay_MlkPred
-    if An_LactDay <= 375:
-        An_LactDay_MlkPred = An_LactDay
-    elif An_LactDay > 375:
-        An_LactDay_MlkPred = 375
 
     Mlk_Prod_comp = 4.541 + 11.13 * Mlk_NP + 2.648 * Mlk_Fat + 0.1829 * An_DEIn - 0.06257 * (An_LactDay_MlkPred - 137.1) + 2.766e-4 * (An_LactDay_MlkPred - 137.1)**2 \
                     + 1.603e-6 * (An_LactDay_MlkPred - 137.1)**3 - 7.397e-9 * (An_LactDay_MlkPred - 137.1)**4 + 1.567 * (An_Parity_rl - 1)
     return Mlk_Prod_comp
 
 
-def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_idMiCP_g, Trg_MilkTPp, coeff_dict):
+def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, Trg_MilkTPp, coeff_dict):
     # Tested and works
     
-    coeff_list = ['Kx_MP_NP_Trg', 'fMiTP_MiCP']
+    coeff_list = ['Kx_MP_NP_Trg']
     unpack_coeff(coeff_list, coeff_dict)
 
     # Kx_MP_NP_Trg = 0.69                                                                     # Line 2651, 2596
     # fMiTP_MiCP = 0.824                                                          			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
-
-    Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g                                                  # Line 1182
-    Du_idMiTP = Du_idMiTP_g / 1000                                                          # Line 1183
-    An_MPIn = An_idRUPIn + Du_idMiTP 
-
 
     An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000          # Line 2706
     Mlk_NP_MPalow_Trg_g = An_MPavail_Milk_Trg * Kx_MP_NP_Trg * 1000                         # Line 2707, g milk NP/d
@@ -246,7 +236,7 @@ def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_idRUPIn, Du_id
     return Mlk_Prod_MPalow
 
 
-def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp, coeff_dict):
+def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEmilk_Milk, coeff_dict):
     # Tested and works
     
     coeff_list = ['Kl_ME_NE']
@@ -254,7 +244,7 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_Mil
 
     # Kl_ME_NE = 0.66
 
-    Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp / 100 + 5.85 * Trg_MilkTPp / 100 + 3.95 * Trg_MilkLacp / 100
+    # Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp / 100 + 5.85 * Trg_MilkTPp / 100 + 3.95 * Trg_MilkLacp / 100
     An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse                      # Line 2896
     Mlk_Prod_NEalow = An_MEavail_Milk * Kl_ME_NE / Trg_NEmilk_Milk                  	# Line 2897, Energy allowable Milk Production, kg/d
 
@@ -414,10 +404,10 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
 
     # df_f and Dt_IdAARUPIn not being returned but can be if values are needed outside this function
     # Currently they are not used anywhere else
-    return AA_values
+    return AA_values, Du_MiCP_g
 
 
-def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
+def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
                     Trg_RsrvGain, GrUter_BWgain, coeff_dict):
 # This has been tested and works 
 # Included this as a function as it has many steps, many of the intermediate values should also be stored somewhere in the future 
@@ -428,7 +418,7 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     #######################
     ### An_GasEOut_Lact ###
     #######################
-    An_DigNDF = An_DigNDFIn / Dt_DMIn * 100
+    # An_DigNDF = An_DigNDFIn / Dt_DMIn * 100
     An_GasEOut_Lact = 0.294 * Dt_DMIn - 0.347 * Dt_FAIn / Dt_DMIn * 100 + 0.0409 * An_DigNDF
 
     ################
@@ -467,7 +457,7 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_
     return An_NE, An_MEIn
 
 
-def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, An_CPIn, An_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiN_g, An_BW, Dt_DMIn, coeff_dict):
+def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, An_CPIn, An_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, coeff_dict):
 # Tested and works
 # Consider renaiming as this really calculates all of the DE intakes as well as the total
 
@@ -524,7 +514,6 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     # En_NPNCP = 0.89                                                                 # Line 270
     An_idRUPIn = Dt_idRUPIn                                       # Line 1099
     Fe_RUP = An_RUPIn - An_idRUPIn                                                  # Line 1198   
-    Du_MiCP_g = Du_MiN_g * 6.25                                                     # Line 1164
     Du_MiCP = Du_MiCP_g / 1000                                                      # Line 1166
     Du_idMiCP_g = SI_dcMiCP / 100 * Du_MiCP_g
     Du_idMiCP = Du_idMiCP_g / 1000
@@ -544,7 +533,7 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
 
     An_DEIn = An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn + An_DEFAIn  # Line 1367
 
-    return An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g
+    return An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g, Du_idMiCP_g
 
 
 def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An_LactDay, An_Parity_rl, coeff_dict):
