@@ -315,3 +315,4 @@ def execute_ME_requirement(row):
                                          Trg_MilkLacp, Trg_RsrvGain)
 
     return(Trg_MEuse)
+

@@ -389,10 +389,10 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
         ########################################
         # Calculations for AA coefficients
         ########################################
-        #mPrtmx_AA      CORRECT
+        #mPrtmx_AA      
         AA_values.loc[AA, 'mPrtmx_AA'] = -(eval('mPrt_k_{}_src'.format(AA)))**2 / (4 * mPrt_k_EAA2_src)
         
-        #mPrtmx_AA2        CORRECT
+        #mPrtmx_AA2        
         AA_values.loc[AA, 'mPrtmx_AA2'] = AA_values.loc[AA, 'mPrtmx_AA'] * f_mPrt_max                   # Line 2149-2158
 
         #AA_mPrtmx
@@ -420,7 +420,6 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
 def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
                     Trg_RsrvGain, GrUter_BWgain, coeff_dict):
 # This has been tested and works 
-# Some of the calculations for gravid uterus are repeated in ME/MP requirements. Once order of calculations set it can be removed from one
 # Included this as a function as it has many steps, many of the intermediate values should also be stored somewhere in the future 
 
     coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_BWgain', 'CP_GrUtWt', 'Gest_NPother_g']
