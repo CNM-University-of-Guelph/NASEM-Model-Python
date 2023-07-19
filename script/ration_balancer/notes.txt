@@ -1,0 +1,10 @@
+Animal Inputs:
+
+An_Parity_rl
+Trg_MilkProd
+An_BW
+An_BCS
+An_LactDay
+Trg_MilkFatp
+Trg_MilkTPp
+Trg_MilkLacp
