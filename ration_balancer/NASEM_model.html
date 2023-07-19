@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Untitled</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="NASEM_model_files/libs/clipboard/clipboard.min.js"></script>
+<script src="NASEM_model_files/libs/quarto-html/quarto.js"></script>
+<script src="NASEM_model_files/libs/quarto-html/popper.min.js"></script>
+<script src="NASEM_model_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="NASEM_model_files/libs/quarto-html/anchor.min.js"></script>
+<link href="NASEM_model_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="NASEM_model_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="NASEM_model_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="NASEM_model_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="NASEM_model_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Untitled</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup all functions to run at once and return all the results to user</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">####################</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Packages</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">####################</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sys</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co">####################</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Import Functions</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">####################</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ration_balancer_functions <span class="im">import</span> read_input, fl_get_rows, get_nutrient_intakes</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Modify path temporarily to import functions from NASEM_functions directory</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>current_dir <span class="op">=</span> os.getcwd()</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>parent_dir <span class="op">=</span> os.path.dirname(current_dir)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>sys.path.append(parent_dir)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> NASEM_functions.ration_balancing_equations <span class="im">import</span> calculate_Dt_DMIn_Lact1, calculate_Du_MiCP_g, AA_calculations, calculate_An_DEIn, calculate_Mlk_NP_g, calculate_An_NE, calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow </span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> NASEM_functions.ME_functions <span class="im">import</span> calculate_ME_requirement, calculate_An_MEmUse, calculate_An_MEgain, calculate_Gest_MEuse, calculate_Trg_Mlk_MEout</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> NASEM_functions.MP_functions <span class="im">import</span> calculate_MP_requirement, calculate_An_MPm_g_Trg, calculate_Body_MPuse_g_Trg, calculate_Gest_MPuse_g_Trg, calculate_Mlk_MPuse_g_Trg</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Deleting to clean up environment</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span>(current_dir)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span>(parent_dir)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> NASEM_model():</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Read User Input</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>    <span class="co"># animal_input is a dictionary with all animal specific parameters</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># diet_info is a dataframe with the user entered feed ingredients and %DM intakes</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>    diet_info, animal_input, equation_selection <span class="op">=</span> read_input(<span class="st">'input.txt'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>    list_of_feeds <span class="op">=</span> diet_info[<span class="st">'Feedstuff'</span>].tolist()</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    feed_data <span class="op">=</span> fl_get_rows(list_of_feeds)</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Scale %_DM_intake to 100%</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    user_perc <span class="op">=</span> diet_info[<span class="st">'%_DM_user'</span>].<span class="bu">sum</span>()</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>    scaling_factor <span class="op">=</span> <span class="dv">100</span> <span class="op">/</span> user_perc</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Should be called 'Fd_DMInp' instead of %_DM_intake</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    diet_info[<span class="st">'%_DM_intake'</span>] <span class="op">=</span> diet_info[<span class="st">'%_DM_user'</span>] <span class="op">*</span> scaling_factor</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust so sum is exactly 100</span></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    adjustment <span class="op">=</span> <span class="dv">100</span> <span class="op">-</span> diet_info[<span class="st">'%_DM_intake'</span>].<span class="bu">sum</span>()</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    diet_info[<span class="st">'%_DM_intake'</span>] <span class="op">+=</span> adjustment <span class="op">/</span> <span class="bu">len</span>(diet_info)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predict DMI</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> equation_selection[<span class="st">'DMI_pred'</span>] <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>        animal_input[<span class="st">'DMI'</span>] <span class="op">=</span> calculate_Dt_DMIn_Lact1(animal_input[<span class="st">'An_Parity_rl'</span>], animal_input[<span class="st">'Trg_MilkProd'</span>], animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'An_BCS'</span>],</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>                                                      animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'Trg_MilkFatp'</span>], animal_input[<span class="st">'Trg_MilkTPp'</span>], animal_input[<span class="st">'Trg_MilkLacp'</span>])</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Should be called 'Fd_DMIn' for consistency with R code</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    diet_info[<span class="st">'kg_intake'</span>] <span class="op">=</span> diet_info[<span class="st">'%_DM_intake'</span>] <span class="op">/</span> <span class="dv">100</span> <span class="op">*</span> animal_input[<span class="st">'DMI'</span>]</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 2: Feed Based Calculations</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    diet_info <span class="op">=</span> get_nutrient_intakes(diet_info, feed_data, animal_input, equation_selection)</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 3: Microbial Protein Calculations</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    Du_MiN_NRC2021_g <span class="op">=</span> calculate_Du_MiCP_g(diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_NDFIn'</span>], animal_input[<span class="st">'DMI'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_St_kg/d'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_CP_kg/d'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_ADF_kg/d'</span>], </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>                                    diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_ForWetIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_RUPIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_ForNDFIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Dt_RDPIn'</span>])</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4: Amino Acid Calculations</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    AA_values <span class="op">=</span> AA_calculations(Du_MiN_NRC2021_g, feed_data, diet_info)</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Other Calculations</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Intake calculations that require additional steps, need results from other calculations or values that need to be calculated for other functions</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>    <span class="co"># This function could be renamed as it is doing all the DE intake calculations</span></span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>    An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g <span class="op">=</span> calculate_An_DEIn(diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_DigNDFIn_Base'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_NDFIn'</span>], </span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>                                                                                                                    diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_DigStIn_Base'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_St_kg/d'</span>], </span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>                                                                                                                    diet_info.loc[<span class="st">'Diet'</span>,<span class="st">'Fd_DigrOMtIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_CPIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_RUPIn'</span>],</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>                                                                                                                    diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_idRUPIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_NPNCPIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_DigFAIn'</span>], </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>                                                                                                                    Du_MiN_NRC2021_g, animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'DMI'</span>])</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predicted milk protein</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    Mlk_NP_g, Du_idMiCP_g <span class="op">=</span> calculate_Mlk_NP_g(AA_values, diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_idRUPIn'</span>], Du_MiN_NRC2021_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'DMI'</span>])</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Net energy/Metabolizable energy</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    An_NE, An_MEIn <span class="op">=</span> calculate_An_NE(diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_CPIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_FAIn'</span>], Mlk_NP_g, An_DEIn, An_DigNDFIn, Fe_CP, Fe_CPend_g, animal_input[<span class="st">'DMI'</span>], animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'An_BW_mature'</span>], </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>                            animal_input[<span class="st">'Trg_FrmGain'</span>], animal_input[<span class="st">'An_GestDay'</span>], animal_input[<span class="st">'An_GestLength'</span>], animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'Trg_RsrvGain'</span>], animal_input[<span class="st">'Fet_BWbrth'</span>],</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>                            animal_input[<span class="st">'An_AgeDay'</span>], animal_input[<span class="st">'An_Parity_rl'</span>])</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 6: Requirement Calculations</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Metabolizable Energy Requirements</span></span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true" tabindex="-1"></a>    Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout <span class="op">=</span> calculate_ME_requirement(animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'DMI'</span>], animal_input[<span class="st">'Trg_MilkProd'</span>], animal_input[<span class="st">'An_BW_mature'</span>], animal_input[<span class="st">'Trg_FrmGain'</span>], animal_input[<span class="st">'An_GestDay'</span>], </span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true" tabindex="-1"></a>                                                                                          animal_input[<span class="st">'An_GestLength'</span>], animal_input[<span class="st">'An_AgeDay'</span>], animal_input[<span class="st">'Fet_BWbrth'</span>], animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'An_Parity_rl'</span>],</span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true" tabindex="-1"></a>                                                                                          animal_input[<span class="st">'Trg_MilkFatp'</span>], animal_input[<span class="st">'Trg_MilkTPp'</span>], animal_input[<span class="st">'Trg_MilkLacp'</span>], animal_input[<span class="st">'Trg_RsrvGain'</span>])</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Metabolizable Protein Requirements</span></span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true" tabindex="-1"></a>    An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg <span class="op">=</span> calculate_MP_requirement(diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_NDFIn'</span>], animal_input[<span class="st">'DMI'</span>], animal_input[<span class="st">'An_BW'</span>], animal_input[<span class="st">'An_BW_mature'</span>], animal_input[<span class="st">'Trg_FrmGain'</span>],</span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true" tabindex="-1"></a>                                                                                                                 animal_input[<span class="st">'Trg_RsrvGain'</span>], animal_input[<span class="st">'An_GestDay'</span>], animal_input[<span class="st">'An_GestLength'</span>], animal_input[<span class="st">'An_AgeDay'</span>], animal_input[<span class="st">'Fet_BWbrth'</span>],</span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true" tabindex="-1"></a>                                                                                                                 animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'An_Parity_rl'</span>], animal_input[<span class="st">'Trg_MilkProd'</span>], animal_input[<span class="st">'Trg_MilkTPp'</span>])    </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 7: Performance Calculations</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predicted milk fat</span></span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>    Mlk_Fat_g <span class="op">=</span> calculate_Mlk_Fat_g(AA_values, diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_FAIn'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_DigC160In'</span>], diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_DigC183In'</span>], animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'DMI'</span>])</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Predicted milk yield</span></span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a>    Mlk_Prod_comp <span class="op">=</span> calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, animal_input[<span class="st">'An_LactDay'</span>], animal_input[<span class="st">'An_Parity_rl'</span>]) </span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true" tabindex="-1"></a>    <span class="co"># MP Allowable Milk</span></span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true" tabindex="-1"></a>    Mlk_Prod_MPalow <span class="op">=</span> calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, diet_info.loc[<span class="st">'Diet'</span>, <span class="st">'Fd_idRUPIn'</span>], Du_idMiCP_g, animal_input[<span class="st">'Trg_MilkTPp'</span>])</span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true" tabindex="-1"></a>    <span class="co"># NE Allowable Milk</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true" tabindex="-1"></a>    Mlk_Prod_NEalow <span class="op">=</span> calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, animal_input[<span class="st">'Trg_MilkFatp'</span>], animal_input[<span class="st">'Trg_MilkTPp'</span>], animal_input[<span class="st">'Trg_MilkLacp'</span>])</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 8: *Temporary* Add values of interest to list</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true" tabindex="-1"></a><span class="co">########################################</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Milk Fat %</span></span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true" tabindex="-1"></a>    milk_fat <span class="op">=</span> (Mlk_Fat_g <span class="op">/</span> <span class="dv">1000</span>) <span class="op">/</span> Mlk_Prod_comp <span class="op">*</span><span class="dv">100</span></span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Milk Protein %</span></span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true" tabindex="-1"></a>    milk_protein <span class="op">=</span> (Mlk_NP_g <span class="op">/</span> <span class="dv">1000</span>) <span class="op">/</span> Mlk_Prod_comp <span class="op">*</span><span class="dv">100</span></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true" tabindex="-1"></a>    model_results <span class="op">=</span> {</span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">'milk_fat'</span>: milk_fat,</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">'milk_protein'</span>: milk_protein,</span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mlk_Prod_comp'</span>: Mlk_Prod_comp,</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mlk_Prod_MPalow'</span>: Mlk_Prod_MPalow,</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Mlk_Prod_NEalow'</span>: Mlk_Prod_NEalow,</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Trg_MEuse'</span>: Trg_MEuse,</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true" tabindex="-1"></a>    <span class="st">'An_MPuse_g_Trg'</span>: An_MPuse_g_Trg</span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-112"><a href="#cb2-112" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-113"><a href="#cb2-113" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Return so they can be viewed in environment</span></span>
+<span id="cb2-114"><a href="#cb2-114" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> diet_info, animal_input, feed_data, equation_selection, AA_values, model_results</span>
+<span id="cb2-115"><a href="#cb2-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-116"><a href="#cb2-116" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign values here so they can be see in environment</span></span>
+<span id="cb2-117"><a href="#cb2-117" aria-hidden="true" tabindex="-1"></a>diet_info, animal_input, feed_data, equation_selection, AA_values, model_results <span class="op">=</span> NASEM_model()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>model_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="25">
+<pre><code>{'milk_fat': 3.77725932387044,
+ 'milk_protein': 2.8979341094222835,
+ 'Mlk_Prod_comp': 34.41891843122913,
+ 'Mlk_Prod_MPalow': 25.830659741533808,
+ 'Mlk_Prod_NEalow': 31.45809407417045,
+ 'Trg_MEuse': 52.19520139410898,
+ 'An_MPuse_g_Trg': 1998.2242404723052}</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display results, temporary</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> display_diet_values(df):</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    components <span class="op">=</span> [<span class="st">'Fd_CP'</span>, <span class="st">'Fd_RUP_base'</span>, <span class="st">'Fd_NDF'</span>, <span class="st">'Fd_ADF'</span>, <span class="st">'Fd_St'</span>, <span class="st">'Fd_CFat'</span>, <span class="st">'Fd_Ash'</span>]</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    rows <span class="op">=</span> []</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> component <span class="kw">in</span> components:</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>        percent_diet <span class="op">=</span> <span class="bu">round</span>(df.loc[<span class="st">'Diet'</span>, component <span class="op">+</span> <span class="st">'_%_diet'</span>]) <span class="co">#.values[0], 2)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>        kg_diet <span class="op">=</span> <span class="bu">round</span>(df.loc[<span class="st">'Diet'</span>, component <span class="op">+</span> <span class="st">'_kg/d'</span>])    <span class="co">#.values[0], 2)</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>        rows.append([component, percent_diet, kg_diet])</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    headers <span class="op">=</span> [<span class="st">'Component'</span>, <span class="st">'% DM'</span>, <span class="st">'kg/d'</span>]</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    table <span class="op">=</span> tabulate(rows, headers<span class="op">=</span>headers, tablefmt<span class="op">=</span><span class="st">'fancy_grid'</span>, stralign<span class="op">=</span><span class="st">"center"</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> table</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>model_data <span class="op">=</span> pd.DataFrame(model_results, index<span class="op">=</span>[<span class="st">'Value'</span>])</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>table1 <span class="op">=</span> display_diet_values(diet_info)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>table2 <span class="op">=</span> tabulate(model_data, headers<span class="op">=</span><span class="st">'keys'</span>, tablefmt<span class="op">=</span><span class="st">'fancy_grid'</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>table1_rows <span class="op">=</span> table1.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>table2_rows <span class="op">=</span> table2.split(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>)</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>max_rows <span class="op">=</span> <span class="bu">max</span>(<span class="bu">len</span>(table1_rows), <span class="bu">len</span>(table2_rows))</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>table1_rows <span class="op">+=</span> [<span class="st">''</span>] <span class="op">*</span> (max_rows <span class="op">-</span> <span class="bu">len</span>(table1_rows))</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>table2_rows <span class="op">+=</span> [<span class="st">''</span>] <span class="op">*</span> (max_rows <span class="op">-</span> <span class="bu">len</span>(table2_rows))</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>combined_rows <span class="op">=</span> [<span class="ss">f'</span><span class="sc">{</span>row1<span class="sc">}</span><span class="ss">    </span><span class="sc">{</span>row2<span class="sc">}</span><span class="ss">'</span> <span class="cf">for</span> row1, row2 <span class="kw">in</span> <span class="bu">zip</span>(table1_rows, table2_rows)]</span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'</span><span class="ch">\n</span><span class="st">'</span>.join(combined_rows))</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a><span class="co"># VARIABLE UNITS</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a><span class="co"># milk_fat, milk_protein: % milk</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Mlk_Prod_comp, Mlk_Prod_MPalow, Mlk_Prod_NEalow: kg/d milk (Production predicitons)</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Trg_MEuse: Mcal/d, energy requirement</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a><span class="co"># An_MPuse_g_Trg: g/d, protein requirement</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>╒═════════════╤════════╤════════╕    ╒═══════╤════════════╤════════════════╤═════════════════╤═══════════════════╤═══════════════════╤═════════════╤══════════════════╕
+│  Component  │   % DM │   kg/d │    │       │   milk_fat │   milk_protein │   Mlk_Prod_comp │   Mlk_Prod_MPalow │   Mlk_Prod_NEalow │   Trg_MEuse │   An_MPuse_g_Trg │
+╞═════════════╪════════╪════════╡    ╞═══════╪════════════╪════════════════╪═════════════════╪═══════════════════╪═══════════════════╪═════════════╪══════════════════╡
+│    Fd_CP    │     14 │      3 │    │ Value │    3.77726 │        2.89793 │         34.4189 │           25.8307 │           31.4581 │     52.1952 │          1998.22 │
+├─────────────┼────────┼────────┤    ╘═══════╧════════════╧════════════════╧═════════════════╧═══════════════════╧═══════════════════╧═════════════╧══════════════════╛
+│ Fd_RUP_base │      5 │      1 │    
+├─────────────┼────────┼────────┤    
+│   Fd_NDF    │     36 │      9 │    
+├─────────────┼────────┼────────┤    
+│   Fd_ADF    │     25 │      6 │    
+├─────────────┼────────┼────────┤    
+│    Fd_St    │     24 │      6 │    
+├─────────────┼────────┼────────┤    
+│   Fd_CFat   │      3 │      1 │    
+├─────────────┼────────┼────────┤    
+│   Fd_Ash    │      8 │      2 │    
+╘═════════════╧════════╧════════╛    </code></pre>
+</div>
+</div>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,20 @@
+Values to Calculate:
+    text_input_ration_balancer:
+        1. Dt_ForWet
+        2. Dt_ForNDF
+        3. An_RDP
+
+Need to test:
+1. Fd_FAIn calculation
+
+
+Animal Inputs:
+
+An_Parity_rl
+Trg_MilkProd
+An_BW
+An_BCS
+An_LactDay
+Trg_MilkFatp
+Trg_MilkTPp
+Trg_MilkLacp
