@@ -61,6 +61,7 @@ Once you have set all the animal parameters and created a diet save input.txt an
 ### NASEM_model.ipynb
 This is the file that takes input.txt and performs all of the calculations. To run the model simply hit "Run All" at the top of the page and then scroll to the bottom to view the results. If there is no "Run All" button the three code chunks will need to be run in order. The results will display the intakes of a few important nutrients as well as predictions for milk fat, milk protein, milk production, energy requirements and protein requirements.
 
+To adjust the ration make changes to input.txt, save, and then hit "Run All" again and then updated results will display. 
 There are also a dataframes returned by the model that provide additional information.
 - AA_values: Information on individual amino acids
 - diet_info: Nutrient intakes for each feedstuff and for diet
