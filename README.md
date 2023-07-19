@@ -44,7 +44,7 @@ to setup the virtual environment for the project.
     
 
 ## Using the Model
-To use the model only two files need to be opened. From the NASEM-Model_Python directory go to script/ration_balancer. From here open "input.txt" and "NASEM_model.ipynb".
+To use the model only two files need to be opened. From the NASEM-Model-Python directory go to script/ration_balancer. From here open "input.txt" and "NASEM_model.ipynb".
 
 ### Input.txt
 This is where you will put all of the input parameters for the model. This file is read line by line and the first character tells the model where the variables should go. 
