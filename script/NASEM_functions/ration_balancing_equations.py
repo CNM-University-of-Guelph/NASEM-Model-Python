@@ -10,24 +10,62 @@ def unpack_coeff(list, dict):
 
 
 def calculate_Dt_DMIn_Lact1(An_Parity_rl, Trg_MilkProd, An_BW, An_BCS, An_LactDay, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp):
-    
+    """
+    Animal based dry matter intake (DMI) prediction for lactating cows
+
+    This function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model
+    this prediction can be can be selected by setting DMI_pred to 0 in the 'input.txt'. In :py:func:`NASEM_model` Dt_DMIn_Lact1
+    will be returned to the animal_input dictionary with the key 'DMI'.
+
+    Parameters:
+        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
+        Trg_MilkProd (Number): Animal Milk Production in kg/day.
+        An_BW (Number): Animal Body Weight in kg.
+        An_BCS (Number): Body condition score, from 1-5
+        An_LactDay (Number): Day of Lactation.
+        Trg_MilkFatp (Percentage): Animal Milk Fat percentage.
+        Trg_MilkTPp (Percentage): Animal Milk True Protein percentage.
+        Trg_MilkLacp (Percentage): Animal Milk Lactose percentage.
+
+    Returns:
+        Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d
+    """
     Trg_NEmilk_Milk = 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
     Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd                                         # Line 386
     
     term1 = (3.7 + 5.7 * (An_Parity_rl - 1) + 0.305 * Trg_NEmilkOut + 0.022 * An_BW +       # Line 389
              (-0.689 - 1.87 * (An_Parity_rl - 1)) * An_BCS)
     term2 = 1 - (0.212 + 0.136 * (An_Parity_rl - 1)) * math.exp(-0.053 * An_LactDay)
-    Dt_DMIn_Lact1 = term1 * term2
+    Dt_DMIn_Lact1 = term1 * term2                                                           
     return Dt_DMIn_Lact1
 
 
-def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn, coeff_dict):
-    # This has been tested and works
-   
-    # There are 3 equations for predicting microbial N, all 3 will be included and the MCP prediction from each will be displayed
-    # Currently the default is the only one used
+def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn, coeff_dict):
+    """
+    Predicts microbial nitrogen (N) synthesis for use in amino acid supply equations
 
-    # This will take the inputs and call the default NRC function fucntions
+    This function takes nutrient intakes from the diet and uses them to predict microbial crude protein (CP) synthesis. There are
+    three equations for predictiong microbial N synthesis. This function calls :py:func:`calculate_Du_MiN_NRC2021_g` as this is the
+    default.
+     
+    :py:func:`calculate_Du_MiN_VTln_g` and :py:func:`calculate_Du_MiN_VTnln_g` are the other microbial N predictions. They can also be called
+    ny this function if users want to comapre these predictions before slecting which to use in future calculations.
+
+    Parameters:
+        Dt_NDFIn (Number): Neutral detergent fiber (NDF) intake in kg/d
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        Dt_StIn (Number): Starch intake in kg/d
+        Dt_CPIn (Number): Crude protein (CP) intake in kg/d
+        Dt_ADFIn (Number): Acid detergent fiber (ADF) intake in kg/d
+        Dt_ForWet (Number): Wet forage intake in kg/d
+        Dt_RUPIn (Number): Rumen undegradable protein (RUP) in kg/d
+        Dt_ForNDFIn (Number): Forage NDF intake in kg/d
+        Dt_RDPIn (Number): Rumen degradable protein in kg/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        Du_MiN_NRC2021_g: Microbial N in g/d
+    """
 
     Dt_ForNDF = Dt_ForNDFIn / Dt_DMIn * 100
     An_RDP = Dt_RDPIn / Dt_DMIn * 100
@@ -64,6 +102,9 @@ def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet
 
 
     Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict)
+    
+    # The 2 alternative predictions are currently disabled but can easily be implemented in the future
+    
     # Du_MiN_VTln_g = calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
     #                                         Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn)
     # Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
@@ -73,15 +114,24 @@ def calculate_Du_MiCP_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet
 
 
 def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict): 
-    # This has been tested and works
-    
+    """
+    Default microbial nitrogen (N) prediction
+
+    Parameters:
+        An_RDP (Number): An_RDPIn divided by DMI, no units
+        Dt_RDPIn (Number): Rumen degradable protein in kg/d
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        Rum_DigNDFIn (Number): Digestable neutral detergent fiber (NDF) intake, kg/d
+        Rum_DigStIn (Number): Digestable starch intake, kg/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        Du_MiN_NRC2021_g: Microbial N in g/d
+    """
+
     coeff_list = ['VmMiNInt', 'VmMiNRDPSlp', 'KmMiNRDNDF', 'KmMiNRDSt']
     unpack_coeff(coeff_list, coeff_dict)
-    # VmMiNInt = 100.8                                                                        # Line 1117
-    # VmMiNRDPSlp = 81.56                                                                     # Line 1118
-    # KmMiNRDNDF = 0.0939                                                                     # Line 1119
-    # KmMiNRDSt = 0.0274                                                                      # Line 1120
-    
+        
     if An_RDP <= 12:                                                                        # Line 1124
         RDPIn_MiNmax = An_RDPIn
     else:
@@ -97,20 +147,30 @@ def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigS
 def calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, Dt_TPIn, Dt_NPNDMIn, Rum_DigStIn,
                             Rum_DigNDFIn, An_RDPIn, Dt_ForNDFIn, coeff_dict):
     # *** NEED TO TEST ***
+    """
+    Microbial nitrogen (N) prediction from Hanigan, 2021
+
+    Currently unused in the model.
+
+    Parameters:
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        Dt_AshIn (Number): Ash intake in kg/d
+        Dt_NDFIn (Number): Neutral detergent fiber (NDF) intake in kg/d
+        Dt_StIn (Number): Starch intake in kg/d
+        Dt_FAhydrIn (Number): Hydrated? fatty acid intake, kg/d
+        Dt_TPIn (Number): True protein intake in kg/d
+        Dt_NPNDMIn (Number): Non-protein nitrogen relative to DMI? Check textbook
+        Rum_DigStIn (Number): Rumen degradable starch intake in kg/d
+        Rum_DigNDFIn (Number): Rumen degradable NDF intake in kg/d
+        An_RDPIn (Number): Rumen degradable protein intake in kg/d
+        Dt_ForNDFIn (Number): Forage NDF intake in kg/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns: 
+        Du_MiN_VTln_g: Microbial N in g/d
+    """
     coeff_list = ['Int_MiN_VT', 'KrdSt_MiN_VT', 'KrdNDF_MiN_VT', 'KRDP_MiN_VT', 'KrOM_MiN_VT', 'KForNDF_MiN_VT', 'KrOM2_MiN_VT', 'KrdStxrOM_MiN_VT', 'KrdNDFxForNDF_MiN_VT']
     unpack_coeff(coeff_list, coeff_dict)
-
-    # MiN (g/d) Parms for eqn. 52 (linear) from Hanigan et al, RUP paper
-    # Derived using RUP with no KdAdjust
-    # Int_MiN_VT = 18.686                                                                     # Line 1134
-    # KrdSt_MiN_VT = 10.214                                                                   # Line 1135
-    # KrdNDF_MiN_VT = 28.976                                                                  # Line 1136
-    # KRDP_MiN_VT = 43.405                                                                    # Line 1137
-    # KrOM_MiN_VT = -11.731                                                                   # Line 1138
-    # KForNDF_MiN_VT = 8.895                                                                  # Line 1139
-    # KrOM2_MiN_VT = 2.861                                                                    # Line 1140
-    # KrdStxrOM_MiN_VT = 5.637                                                                # Line 1141
-    # KrdNDFxForNDF_MiN_VT = -2.22                                                            # Line 1142
 
     Dt_rOMIn = Dt_DMIn-Dt_AshIn-Dt_NDFIn-Dt_StIn-Dt_FAhydrIn-Dt_TPIn-Dt_NPNDMIn             # Line 647
     if Dt_rOMIn < 0:                                                                        # Line 648
@@ -125,14 +185,50 @@ def calculate_Du_MiN_VTln_g(Dt_DMIn, Dt_AshIn, Dt_NDFIn, Dt_StIn, Dt_FAhydrIn, D
 
 def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     # *** NEED TO TEST ***
+    """
+    Microbial nitrogen (N) prediction from White, 2017  
 
+    Currently unused in the model.
+
+    Parameters:
+        An_RDPIn (Number): Rumen degradable protein intake in kg/d
+        Rum_DigNDFIn (Number): Rumen degradable NDF intake in kg/d
+        Rum_DigStIn (Number): Rumen degradable starch intake in kg/d
+    
+    Returns:
+        Du_MiN_VTnln_g: Microbial N ing g/d
+    
+    """
     Du_MiN_VTnln_g = 7.47 + 0.574 * An_RDPIn * 1000 / (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)    # Line 1147
 
     return Du_MiN_VTnln_g
 
 
 def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, coeff_dict):
-    # This has been tested and works
+    """
+    Predicts net protein output in milk 
+
+    Paramters:
+        df (Dataframe): A dataframe with indivual amino acid intakes and flows, AA_values in the model
+        Dt_idRUPIn (Number): Intestinally digested rumen undegradable protein intake, kg/d
+        Du_idMiCP_g (Number): Intestinally digested microbial crude protein, g/d
+        An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_DETPIn (Number): Digestible energy from true protein, Mcal/d
+        An_DENPNCPIn (Number): Digestible energy crud eprotein synthesized from non protein nitrogen (NPN), Mcal/d
+        An_DigNDFIn (Number): Digestable neutral detergent fiber (NDF) intake, Mcal/d
+        An_DEStIn (Number): Digestible energy from starch, Mcal/d
+        An_DEFAIn (Number): Digestible energy from fatty acids, Mcal/d
+        An_DErOMIn (Number): Digestible energy from residual organic matter, Mcal/d
+        An_DENDFIn (Number): Digestible energy from neutral detergent fiber (NDF), Mcal
+        An_BW (Number): Animal bodyweight, kg
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        Mlk_NP_g (Number): Net protein in milk, g/d
+        An_DigNDF (Number): Total tract digested neutral detergent fiber
+        An_MPIn (Number): Metabolizlable protein intake, kg/d
+    """
     coeff_list = ['mPrt_Int', 'fMiTP_MiCP', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW']     
     unpack_coeff(coeff_list, coeff_dict)
 
@@ -147,22 +243,8 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPN
         mPrt_k_AA[AA] = df.loc[AA, 'mPrt_k_AA']
 
     # Calculate Mlk_NP_g
-    # mPrt_Int = -97                                      # Line 2097, 2078
-    # fMiTP_MiCP = 0.824                      			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
-    # SI_dcMiCP = 80				                        # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
-    # mPrt_k_NEAA = 0                                     # Line 2103, 2094
-    # mPrt_k_OthAA = 0.0773                               # Line 2014, 2095
-    # mPrt_k_DEInp = 10.79                                # Line 2099, 2080
-    # mPrt_k_DigNDF = -4.595                              # Line 2100, 2081
-    # mPrt_k_DEIn_StFA = 0                                # Line 2101, 2082
-    # mPrt_k_DEIn_NDF = 0                                 # Line 2102, 2083
-    # mPrt_k_BW = -0.4201                                 # Line 2098, 2079
-
     Abs_EAA_g = Abs_AA_g['Arg'] + Abs_AA_g['His'] + Abs_AA_g['Ile'] + Abs_AA_g['Leu'] + Abs_AA_g['Lys'] \
                 + Abs_AA_g['Met'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
-
-    # Du_MiCP_g = Du_MiN_g * 6.25                         # Line 1163
-    # Du_idMiCP_g =  SI_dcMiCP / 100 * Du_MiCP_g          # Line 1180 
 
     Du_idMiTP_g = fMiTP_MiCP * Du_idMiCP_g              # Line 1182
     Du_idMiTP = Du_idMiTP_g / 1000
@@ -190,11 +272,25 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPN
                 + An_DEInp * mPrt_k_DEInp + (An_DigNDF - 17.06) * mPrt_k_DigNDF + (An_DEStIn + An_DEFAIn + An_DErOMIn) \
                 * mPrt_k_DEIn_StFA + An_DENDFIn * mPrt_k_DEIn_NDF + (An_BW - 612) * mPrt_k_BW 
 
-    return Mlk_NP_g, Du_idMiCP_g, An_DigNDF, An_MPIn
-    
+    return Mlk_NP_g, An_DigNDF, An_MPIn
+
 
 def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_DMIn):
-    # This has been tested and works
+    """
+    Predicts milk fat production
+
+    Parameters:
+        df (Dataframe): A dataframe with indivual amino acid intakes and flows, AA_values in the model
+        Dt_FAIn (Number): Fatty acid intake, kg/d
+        Dt_DigC160In (Number): Digestable C16:0 fatty acid intake, kg/d
+        Dt_DigC183In (Number): Digestable C18:3 fatty acid intake, kg/d 
+        An_LactDay (Number): Day of lactation
+        Dt_DMIn (Number): Dry matter intake, kg/d
+    
+    Returns:
+        Mlk_Fat_g (Number): Predicted milk fat, g
+        An_LactDay_MlkPred (Number): A variable to max the days in milk at 375 to prevent polynomial from getting out of range
+    """
     Abs_Ile_g = df.loc['Ile', 'Abs_AA_g']
     Abs_Met_g = df.loc['Met', 'Abs_AA_g']
 
@@ -210,7 +306,19 @@ def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_
 
 
 def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay_MlkPred, An_Parity_rl):
-    # This has been tested and works
+    """
+    Predict milk production based on components 
+
+    Parameters:
+        Mlk_NP_g (Number): Net protein in milk, g/d
+        Mlk_Fat_g (Number): Predicted milk fat, g
+        An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_LactDay_MlkPred (Number): A variable to max the days in milk at 375 to prevent polynomial from getting out of range
+        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
+
+    Returns: 
+        Mlk_Prod_comp (Number): Predicted milk production, kg/d
+    """
     Mlk_NP = Mlk_NP_g / 1000                    # Line 2210, kg NP/d
     Mlk_Fat = Mlk_Fat_g / 1000
 
@@ -220,13 +328,21 @@ def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay_MlkPred, An
 
 
 def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, Trg_MilkTPp, coeff_dict):
-    # Tested and works
-    
+    """
+    Metabolizalbe protein allowable milk production
+
+    Parameters:
+        An_MPuse_g_Trg (Number): Metabolizable protein requirement, g/d
+        Mlk_MPUse_g_Trg (Number): Metabolizable protein requirement for milk, g/d
+        An_MPIn (Number): Metabolizlable protein intake, kg/d 
+        Trg_MilkTPp (Percentage): Animal Milk True Protein percentage
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        Mlk_Prod_MPalow (Number): Metabolizable protein allowable milk production, kg/d
+    """
     coeff_list = ['Kx_MP_NP_Trg']
     unpack_coeff(coeff_list, coeff_dict)
-
-    # Kx_MP_NP_Trg = 0.69                                                                     # Line 2651, 2596
-    # fMiTP_MiCP = 0.824                                                          			# Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
 
     An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000          # Line 2706
     Mlk_NP_MPalow_Trg_g = An_MPavail_Milk_Trg * Kx_MP_NP_Trg * 1000                         # Line 2707, g milk NP/d
@@ -237,14 +353,24 @@ def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, Trg_Milk
 
 
 def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEmilk_Milk, coeff_dict):
-    # Tested and works
-    
+    """
+    Net energy allowable milk production
+
+    Parameters:
+        An_MEIn (Number): Metabolizable energy intake, Mcal/d
+        An_MEgain (Number): Metabolizble energy requirement for frame and reserve gain, Mcal/d
+        An_MEmUse (Number): Metabolizable energy requirement for maintenance, Mcal/d
+        Gest_MEuse (Number): Metabolizable energy requirement for gestation, Mcal/d
+        Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        Mlk_Prod_NEalow (Number): Net energy allowable milk production, kg/d
+
+    """
     coeff_list = ['Kl_ME_NE']
     unpack_coeff(coeff_list, coeff_dict)
 
-    # Kl_ME_NE = 0.66
-
-    # Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp / 100 + 5.85 * Trg_MilkTPp / 100 + 3.95 * Trg_MilkLacp / 100
     An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse                      # Line 2896
     Mlk_Prod_NEalow = An_MEavail_Milk * Kl_ME_NE / Trg_NEmilk_Milk                  	# Line 2897, Energy allowable Milk Production, kg/d
 
@@ -252,8 +378,24 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEm
 
 
 def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
-    # This function will get the intakes of AA's from the diet and then do all the calculations 
-    # of values other functions will need
+    """
+    Takes the amino acid (AA) supply from the diet and calculates total AA intake
+
+    This takes the AA supply from each feed based on % crude protein and the predicted AA supply from microbial nitrogen (N) 
+    and uses this to calculate individual AA flows through the body. 
+
+    Parameters:
+        Du_MiN_g (Number): Microbial N supply in g, Du_MiN_NRC2021_g in the model
+        feed_data (Dataframe): A dataframe with the composition of each feed ingredient
+        diet_info (Dataframe): A dataframe with nutrient supply from the diet
+        animal_input (Dictionary): All the user entered animal parameters
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+        
+    Returns:
+        AA_values (Dataframe): Contains all the AA intakes and any values calculated for individual AAs
+        Du_MiCP_g (Number): Microbial crude proetin, g
+    """
+    # This function will get the intakes of AA's from the diet and then do all the calculations of values other functions will need
     # The results will be saved to a dataframe with one row for each AA and a column for each calculated value
     AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     AA_values = pd.DataFrame(index=AA_list)
@@ -279,30 +421,10 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     'mPrt_k_Thr_src', 'mPrt_k_Trp_src', 'mPrt_k_Val_src', 'mPrt_k_EAA2_src']
     unpack_coeff(coeff_list, coeff_dict)
     
-    
-    # fMiTP_MiCP = 0.824			                                    # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
-    # SI_dcMiCP = 80				                                    # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
-    # K_305RHA_MlkTP = 1.0                                            # Line 2115, A scalar to adjust the slope if needed.  Assumed to be 1. MDH
-    # An_305RHA_MlkTP = 280                                           # The default is 280 but the value for the test data is 400. This should be made an input for the model
     An_305RHA_MlkTP = animal_input['An_305RHA_MlkTP']
     f_mPrt_max = 1 + K_305RHA_MlkTP * (An_305RHA_MlkTP / 280 - 1)       # Line 2116, 280kg RHA ~ 930 g mlk NP/d herd average
     Du_MiCP_g = Du_MiN_g * 6.25                                         # Line 1163
     Du_MiTP_g = fMiTP_MiCP * Du_MiCP_g                                  # Line 1166
-
-    # AA recovery factors for recovery of each AA at maximum release in hydrolysis time over 24 h release (g true/g at 24 h)
-    # From Lapierre, H., et al., 2016. Pp 205-219. in Proc. Cornell Nutrition Conference for feed manufacturers. 
-    # Key roles of amino acids in cow performance and metabolism ? considerations for defining amino acid requirement. 
-    # Inverted relative to that reported by Lapierre so they are true recovery factors, MDH
-    # RecArg = 1 / 1.061              # Line 1462-1471
-    # RecHis = 1 / 1.073
-    # RecIle = 1 / 1.12
-    # RecLeu = 1 / 1.065
-    # RecLys = 1 / 1.066
-    # RecMet = 1 / 1.05
-    # RecPhe = 1 / 1.061
-    # RecThr = 1 / 1.067
-    # RecTrp = 1 / 1.06
-    # RecVal = 1 / 1.102
 
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
     # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
@@ -318,35 +440,6 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     SIDigTrpRUPf = 1
     SIDigValRUPf = 1
 
-    # Microbial protein AA profile (g hydrated AA / 100 g TP) corrected for 24h hydrolysis recovery. 
-    # Sok et al., 2017 JDS
-    # MiTPArgProf = 5.47
-    # MiTPHisProf = 2.21
-    # MiTPIleProf = 6.99
-    # MiTPLeuProf = 9.23
-    # MiTPLysProf = 9.44
-    # MiTPMetProf = 2.63
-    # MiTPPheProf = 6.30
-    # MiTPThrProf = 6.23
-    # MiTPTrpProf = 1.37
-    # MiTPValProf = 6.88
-
-    # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631
-    # Two other sets of values are included in the R code
-    # mPrt_k_Arg_src = 0
-    # mPrt_k_His_src = 1.675
-    # mPrt_k_Ile_src = 0.885
-    # mPrt_k_Leu_src = 0.466
-    # mPrt_k_Lys_src = 1.153	
-    # mPrt_k_Met_src = 1.839
-    # mPrt_k_Phe_src = 0
-    # mPrt_k_Thr_src = 0
-    # mPrt_k_Trp_src = 0
-    # mPrt_k_Val_src = 0
-
-    # mPrt_k_EAA2_src = -0.00215
-
-    
     for AA in AA_list:
         ##############################
         # Calculations on Diet Data
@@ -409,8 +502,29 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
 
 def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
                     Trg_RsrvGain, GrUter_BWgain, coeff_dict):
-# This has been tested and works 
-# Included this as a function as it has many steps, many of the intermediate values should also be stored somewhere in the future 
+    """
+    Calculates net energy intake
+
+    Parameters:
+        Dt_CPIn (Number): Crude protein (CP) intake in kg/d
+        Dt_FAIn (Number): Fatty acid intake, kg/d
+        Mlk_NP_g (Number): Net protein in milk, g/d
+        An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_DigNDF (Number): Total tract digested neutral detergent fiber
+        Fe_CP (Number): Fecal crude protein, kg/d
+        Fe_CPend_g (Number): Fecal crude protein coming from endogenous secretions
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        An_BW (Number): Animal bodyweight in kg
+        An_BW_mature (Number): Animal Mature Liveweight in kg.
+        Trg_FrmGain (Number): Target gain in body Frame Weight in kg fresh weight/day
+        Trg_RsrvGain (Number): Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day
+        GrUter_BWgain (Number): Average rate of fresh tissue growth for gravid uterus, kg fresh wt/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+    
+    Returns:
+        An_NE: Net energy, Mcal/kg 
+        An_MEIn: Metabolizable energy intake, Mcal/kg
+    """
 
     coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_BWgain', 'CP_GrUtWt', 'Gest_NPother_g']
     unpack_coeff(coeff_list, coeff_dict)
@@ -457,8 +571,41 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CP
     return An_NE, An_MEIn
 
 
-def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, An_CPIn, An_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, coeff_dict):
-# Tested and works
+def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, Dt_CPIn, Dt_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, coeff_dict):
+    """
+    Digestable energy (DE) supply
+
+    Calculates DE for each feed component as well as a total DE intake
+
+    Parameters:
+        Dt_DigNDFIn_Base (Number): Digestable neutral detergent fiber (NDF) intake, kg/d
+        Dt_NDFIn (Number): Neutral detergent fiber (NDF) intake in kg/d
+        Dt_DigStIn_Base (Number): Digestable starch intake, kg/d
+        Dt_StIn (Number): Starch intake in kg/d
+        Dt_DigrOMtIn (Number): Digestable residual organic matter intake, kg/d
+        Dt_CPIn (Number): Crude protein (CP) intake in kg/d
+        Dt_RUPIn (Number): Rumen undegradable protein (RUP) in kg/d
+        Dt_idRUPIn (Number): Intestinally digested rumen undegradable protein intake, kg/d
+        Dt_NPNCPIn (Number): Crude protein from non-protein nitrogen (NPN) intake, kg/d
+        Dt_DigFAIn (Number): Digestable fatty acid intake, kg/d
+        Du_MiCP_g (Number): Microbial crude proetin, g
+        An_BW (Number): Animal bodyweight in kg
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_DENPNCPIn (Number): Digestible energy crud eprotein synthesized from non protein nitrogen (NPN), Mcal/d
+        An_DETPIn (Number): Digestible energy from true protein, Mcal/d
+        An_DigNDFIn (Number): Digestable neutral detergent fiber (NDF) intake, Mcal/d
+        An_DEStIn (Number): Digestible energy from starch, Mcal/d
+        An_DEFAIn (Number): Digestible energy from fatty acids, Mcal/d
+        An_DErOMIn (Number): Digestible energy from residual organic matter, Mcal/d
+        An_DENDFIn (Number): Digestible energy from neutral detergent fiber (NDF), Mcal
+        Fe_CP (Number): Fecal crude protein, kg/d
+        Fe_CPend_g (Number): Fecal crude protein coming from endogenous secretions
+        Du_idMiCP_g (Number): Intestinally digested microbial crude protein, g/d
+    """
 # Consider renaiming as this really calculates all of the DE intakes as well as the total
 
     coeff_list = ['En_NDF', 'En_St', 'En_rOM', 'Fe_rOMend_DMI', 'SI_dcMiCP', 'En_CP', 'dcNPNCP', 'En_NPNCP', 'En_FA']
@@ -513,7 +660,7 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     # dcNPNCP = 100	                                                                # Line 1092, urea and ammonium salt digestibility
     # En_NPNCP = 0.89                                                                 # Line 270
     An_idRUPIn = Dt_idRUPIn                                       # Line 1099
-    Fe_RUP = An_RUPIn - An_idRUPIn                                                  # Line 1198   
+    Fe_RUP = Dt_RUPIn - An_idRUPIn                                                  # Line 1198   
     Du_MiCP = Du_MiCP_g / 1000                                                      # Line 1166
     Du_idMiCP_g = SI_dcMiCP / 100 * Du_MiCP_g
     Du_idMiCP = Du_idMiCP_g / 1000
@@ -521,7 +668,7 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     Fe_CPend_g = (12 + 0.12 * An_NDF) * Dt_DMIn            # line 1187, g/d, endogen secretions plus urea capture in microbies in rumen and LI
     Fe_CPend = Fe_CPend_g / 1000                                                    # Line 1190
     Fe_CP = Fe_RUP + Fe_RumMiCP + Fe_CPend          # Line 1202, Double counting portion of RumMiCP derived from End CP. Needs to be fixed. MDH
-    An_DigCPaIn = An_CPIn - Fe_CP		            # Line 1222, apparent total tract
+    An_DigCPaIn = Dt_CPIn - Fe_CP		            # Line 1222, apparent total tract
     An_DECPIn = An_DigCPaIn * En_CP
     An_DENPNCPIn = Dt_NPNCPIn * dcNPNCP / 100 * En_NPNCP                                                          # Line 1355, 1348
     An_DETPIn = An_DECPIn - An_DENPNCPIn / En_NPNCP * En_CP                       # Line 1356, Caution! DigTPaIn not clean so subtracted DE for CP equiv of NPN to correct. Not a true DE_TP.
@@ -537,6 +684,21 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
 
 
 def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An_LactDay, An_Parity_rl, coeff_dict):
+    """
+    Rate of fresh tissue growth for the gravid uterus
+
+    Parameters:
+        Fet_BWbrth (Number): Target calf birth weight in kg
+        An_AgeDay (Number): Animal Age in days
+        An_GestDay (Number): Day of Gestation
+        An_GestLength (Number): Normal Gestation Length in days
+        An_LactDay (Number): Day of Lactation
+        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+
+    Returns:
+        GrUter_BWgain (Number): The rate of fresh tissue growth for the gravid uterus, kg fresh wt/d
+    """
     coeff_list = ['GrUter_Ksyn', 'GrUter_KsynDecay', 'UterWt_FetBWbrth','Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg',
                   'Uter_Wt', 'GrUterWt_FetBWbrth', 'Uter_BWgain']
     unpack_coeff(coeff_list, coeff_dict)
