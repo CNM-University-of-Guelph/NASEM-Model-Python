@@ -142,6 +142,17 @@ def db_add_rows(table_name, df, index=None):
 
 # 5. Add new column to an existing table
 def db_add_columns(table_name, new_column_names, df):
+    """
+    Add a new column to an existing table.
+
+    The data can be indexed or not. The new column will be added to the end of the table.
+
+    Parameters:
+        table_name (str): Name of a table in the database
+        new_column_names (list): A list with the names of the columns to add
+        df (dataframe): Dataframe with data columns that will be added
+
+    """
     conn = sqlite3.connect('../diet_database.db')
     cursor = conn.cursor()
 
@@ -173,6 +184,15 @@ def db_add_columns(table_name, new_column_names, df):
 
 # 6. Pull specific rows from a table
 def db_get_rows(table_name, rows_to_get):
+    """
+    Takes a list of rows and retrieves them from the database
+
+    The names given in rows_to_get must correspond to the index of the table
+
+    Parameters: 
+        table_name (str): Name of a table in the database
+        rows_to_get(list): A list containing the index value for the rows that you want to get
+    """
     conn = sqlite3.connect('../diet_database.db')
     cursor = conn.cursor()
 

@@ -9,6 +9,15 @@ import numpy as np
 
 
 def read_input(input):
+    """
+    Reads a .txt file and gets the input parameters
+
+    Uses the leading character on each line to read the text file. * indicates an animal parameter, $ is for selecting different equations and
+    # skips the line. No leading character is used for the diet inputs.
+
+    Parameters:
+        input (str): pathway to the text file where users input parameters
+    """
     # User will type the ration into input.txt
     # This function reads that file and creates a dataframe with all of the feeds and % DM  
     data = []
@@ -47,6 +56,12 @@ def read_input(input):
 
 
 def fl_get_rows(feeds_to_get):
+    """
+    Modified version of :py:func:`db_get_rows` that queries NASEM feed library only
+
+    Parameters:
+        feeds_to_get (list): List of feed names 
+    """
     conn = sqlite3.connect('../../diet_database.db')
     cursor = conn.cursor()
 
@@ -71,6 +86,19 @@ def fl_get_rows(feeds_to_get):
 
 
 def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_dict):
+    """
+    Takes the feeds in the diet and the % dry matter intake and calculates nutrient supplies
+
+    Parameters:
+        df (Dataframe): The dataframe all the results will be stored in, must contain feed names and % DMI
+        feed_data (Dataframe): Individual feed compositions
+        animal_input (Dict): Animal input parameters
+        equation_selection (Dict): Dictionary with values for every selectable equation
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+    
+    Returns:
+        df (Dataframe): The dataframe all the results will be stored in, must contain feed names and % DMI
+    """
     # This function should get a better name
     # This function will perform ALL feed related calculations for the model
     # ALL of the feed related vairables needed by future calculations will come from the diet_info dataframe
@@ -222,6 +250,16 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
 
 
 def unpack_coeff(list, dict):
+    """
+    Takes a list of coefficients and retrieves them from coeff_dict
+
+    Each function has a coeff_list with all the coefficients the function requires listed. This function takes
+    that list and returns all the listed items as variables within the function environment. 
+
+    Parameters:
+        list: A list of all the coefficients a function requires
+        dict: A dictionary containing the coefficients, coeff_dict for the model
+    """
     for coeff in list:
          globals()[coeff] = dict[coeff]
 
