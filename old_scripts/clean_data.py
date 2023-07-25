@@ -1,4 +1,4 @@
-# Waiting to document this. The function will probably keep changing until the format of the input data is finalized 
+# This is a function meant to clean sensor data before it is input into the model. This was used to run ME_calculations and MP_calculations.
 
 #' Clean Input Data frame
 #'

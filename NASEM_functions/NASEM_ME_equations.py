@@ -8,7 +8,7 @@ def unpack_coeff(list, dict):
 
 
 def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
-                             Trg_FrmGain,Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp,
+                             Trg_FrmGain, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp,
                              Trg_RsrvGain, GrUter_BWgain, coeff_dict):
     """
     Calculate the metabolizable energy (ME) requirement (Mcal/d).
@@ -25,19 +25,21 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
         Trg_MilkProd (Number): Animal Milk Production in kg/day.
         An_BW_mature (Number): Animal Mature Liveweight in kg.
         Trg_FrmGain (Number): Target gain in body Frame Weight in kg fresh weight/day.
-        An_GestDay (Number): Day of Gestation.
-        An_GestLength (Number): Normal Gestation Length in days.
-        An_AgeDay (Number): Animal Age in days.
-        Fet_BWbrth (Number): Target calf birth weight in kg.
-        An_LactDay (Number): Day of Lactation.
-        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
         Trg_MilkFatp (Percentage): Animal Milk Fat percentage.
         Trg_MilkTPp (Percentage): Animal Milk True Protein percentage.
         Trg_MilkLacp (Percentage): Animal Milk Lactose percentage.
         Trg_RsrvGain (Number): Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day.
+        GrUter_BWgain (Number): Average rate of fresh tissue growth for gravid uterus, kg fresh wt/d 
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
 
     Returns:
         Trg_MEuse (Number): A number with the units Mcal/d.
+        An_MEmUse (Number): Metabolizable energy requirement for maintenance, Mcal/d
+        An_MEgain (Number): Metabolizble energy requirement for frame and reserve gain, Mcal/d
+        Gest_MEuse (Number): Metabolizable energy requirement for gestation, Mcal/d
+        Trg_Mlk_MEout (Number): A number with the units Mcal/day.
+        Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
+
     """
     An_MEmUse = calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict)
 # An_MEmUse: ME requirement for maintenance, Mcal/d
@@ -75,6 +77,7 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=
     Parameters:
        An_BW (Number): Animal Body Weight in kg.
        Dt_DMIn (Number): Animal Dry Matter Intake in kg/day.
+       coeff_dict (Dict): Dictionary containing all coefficients for the model
        Dt_PastIn (Number): Animal Pasture Intake in kg/day.
        Dt_PastSupplIn (Number): Animal Supplement Intake while on pasture, could be concentrate or forage, in kg/day.
        Env_DistParlor (Number): Distance from barn or paddock to the parlor in meters.
@@ -131,6 +134,7 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
       An_BW (Number): Animal Body Weight in kg.
       An_BW_mature (Number): Animal Mature Liveweight in kg. 
       Trg_FrmGain (Number): Target gain in body Frame Weight in kg fresh weight/day.
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
       Trg_RsrvGain (Number): Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day. 
 
    Returns:
@@ -205,13 +209,9 @@ def calculate_Gest_MEuse(GrUter_BWgain, coeff_dict):
   "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", and "An_Parity_rl"
 
   Parameters:
-      An_GestDay (Number): Day of Gestation.
-      An_GestLength (Number): Normal Gestation Length in days.
-      An_AgeDay (Number): Animal Age in days.
-      Fet_BWbrth (Number): Target calf birth weight in kg.
-      An_LactDay (Number): Day of Lactation.
-      An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
-
+      GrUter_BWgain (Number): Average rate of fresh tissue growth for gravid uterus, kg fresh wt/d
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
+     
   Returns:
       Gest_MEuse (Number): A number with units Mcal/day.
   '''
@@ -243,9 +243,11 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
       Trg_MilkFatp (Percentage): Animal Milk Fat percentage.
       Trg_MilkTPp (Percentage): Animal Milk True Protein percentage.
       Trg_MilkLacp (Percentage): Animal Milk Lactose percentage.
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
 
    Returns:
       Trg_Mlk_MEout (Number): A number with the units Mcal/day.
+      Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
    '''
    coeff_list = ['Kl_ME_NE']
    unpack_coeff(coeff_list, coeff_dict)
