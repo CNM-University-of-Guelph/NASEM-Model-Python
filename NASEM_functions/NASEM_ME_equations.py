@@ -1,11 +1,15 @@
 import math
 import pandas as pd
+from .NASEM_ration_balancing_equations import unpack_coeff
+
+def unpack_coeff(list, dict):
+    for coeff in list:
+         globals()[coeff] = dict[coeff]
+
 
 def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
-                             Trg_FrmGain, An_GestDay, An_GestLength,
-                             An_AgeDay, Fet_BWbrth, An_LactDay,
-                             An_Parity_rl, Trg_MilkFatp,
-                             Trg_MilkTPp, Trg_MilkLacp, Trg_RsrvGain):
+                             Trg_FrmGain,Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp,
+                             Trg_RsrvGain, GrUter_BWgain, coeff_dict):
     """
     Calculate the metabolizable energy (ME) requirement (Mcal/d).
 
@@ -35,26 +39,25 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
     Returns:
         Trg_MEuse (Number): A number with the units Mcal/d.
     """
-    An_MEmUse = calculate_An_MEmUse(An_BW, Dt_DMIn)
+    An_MEmUse = calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict)
 # An_MEmUse: ME requirement for maintenance, Mcal/d
   
-    An_MEgain = calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain)
+    An_MEgain = calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_dict, Trg_RsrvGain)
 # An_MEgain: ME requirement for frame and reserve gain, Mcal/d
   
-    Gest_MEuse = calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
-                                      Fet_BWbrth, An_LactDay, An_Parity_rl)
+    Gest_MEuse = calculate_Gest_MEuse(GrUter_BWgain, coeff_dict)
 # Gest_MEuse: ME requirement for gestation, Mcal/d
   
-    Trg_Mlk_MEout = calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp,
-                                            Trg_MilkLacp)
+    Trg_Mlk_MEout, Trg_NEmilk_Milk = calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp,
+                                            Trg_MilkLacp, coeff_dict)
 # Trg_Mlk_MEout: ME requirement for milk production, Mcal/d
   
     Trg_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout   # Line 2923
       
-    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout
+    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout, Trg_NEmilk_Milk
 
 
-def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):
+def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):
     '''
     Calculate metabolizable energy requirements for maintenance
 
@@ -80,7 +83,10 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistP
 
     Returns:
        An_MEmUse (Number): A number with the units Mcal/day.
-    '''       
+    '''     
+    coeff_list = ['An_NEmUse_Env', 'Km_ME_NE']
+    unpack_coeff(coeff_list, coeff_dict)
+
     # An_NEmUse_NS: NE required for maintenance in unstressed cow, mcal/d
     # An_NEmUse_Env: NE cost of environmental stress, the model only considers this for calves
     # An_MBW: Metabolic body weight
@@ -92,7 +98,7 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistP
     # Km_ME_NE: Conversion of NE to ME
 
     An_NEmUse_NS = 0.10 * An_BW ** 0.75                             # Line 2781
-    An_NEmUse_Env = 0                                               # Line 2785
+   #  An_NEmUse_Env = 0                                               # Line 2785
     An_MBW = An_BW ** 0.75                                          # Line 223
 
     if Dt_PastIn / Dt_DMIn < 0.005:                                 # Line 2793
@@ -105,13 +111,13 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistP
     An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2797
 
     An_NEmUse = An_NEmUse_NS + An_NEmUse_Env + An_NEmUse_Act        # Line 2801
-    Km_ME_NE = 0.66                                                 # Line 2817
+   #  Km_ME_NE = 0.66                                                 # Line 2817
 
     An_MEmUse = An_NEmUse / Km_ME_NE                                # Line 2844
     return An_MEmUse
 
 
-def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain,
+def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_dict, 
                         Trg_RsrvGain=0):
    '''
    Calculate metabolizable energy requirements for growth.
@@ -130,8 +136,9 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain,
    Returns:
       An_MEgain (Number): A number with the units Mcal/d.
    '''
-   
-  
+   coeff_list = ['FatGain_RsrvGain', 'Kr_ME_RE', 'An_GutFill_BW', 'Body_NP_CP', 'Kf_ME_RE']
+   unpack_coeff(coeff_list, coeff_dict)
+
    # FatGain_RsrvGain: Conversion factor from reserve gain to fat gain
    # Rsrv_Gain_empty: Body reserve gain assuming no gut fill association
    # Rsrv_Fatgain: Body reserve fat gain
@@ -142,13 +149,13 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain,
    # cows gaining reserve (92), and lactating cows losing reserve (92)
    # Rsrv_MEgain: ME of body reserve gain, mcal/d
       
-   FatGain_RsrvGain = 0.622                                       # Line 2451
+   # FatGain_RsrvGain = 0.622                                       # Line 2451
    Rsrv_Gain_empty = Trg_RsrvGain                                 # Line 2441 and 2435
    Rsrv_Fatgain = FatGain_RsrvGain*Rsrv_Gain_empty                # Line 2453
    CPGain_FrmGain = 0.201-0.081*An_BW/An_BW_mature                # Line 2458
    Rsrv_CPgain = CPGain_FrmGain * Rsrv_Gain_empty                 # Line 2470
    Rsrv_NEgain = 9.4*Rsrv_Fatgain + 5.55*Rsrv_CPgain              # Line 2866
-   Kr_ME_RE = 0.60                                                # Line 2834
+   # Kr_ME_RE = 0.60                                                # Line 2834
 
    if Trg_MilkProd > 0 and Trg_RsrvGain > 0:                      # Line 2835
       Kr_ME_RE = 0.75          
@@ -174,23 +181,22 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain,
       
    FatGain_FrmGain = 0.067+0.375*An_BW/An_BW_mature               # Line 2448
    Frm_Gain = Trg_FrmGain                                         # Line 2434
-   An_GutFill_BW = 0.18                                           # Line 2410, check the heifer value
+   # An_GutFill_BW = 0.18                                           # Line 2410, check the heifer value
    Frm_Gain_empty = Frm_Gain*(1-An_GutFill_BW)                    # Line 2439
    Frm_Fatgain = FatGain_FrmGain*Frm_Gain_empty                   # Line 2452
-   Body_NP_CP = 0.86                                              # Line 1963
+   # Body_NP_CP = 0.86                                              # Line 1963
    NPGain_FrmGain = CPGain_FrmGain * Body_NP_CP                   # Line 2459
    Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty                   # Line 2460
    Frm_CPgain = Frm_NPgain /  Body_NP_CP                          # Line 2463
    Frm_NEgain = 9.4*Frm_Fatgain + 5.55*Frm_CPgain                 # Line 2867
-   Kf_ME_RE = 0.4                                                 # Line 2831
+   # Kf_ME_RE = 0.4                                                 # Line 2831
    Frm_MEgain = Frm_NEgain / Kf_ME_RE                             # Line 2872
       
    An_MEgain = Rsrv_MEgain + Frm_MEgain                           # Line 2873
    return(An_MEgain)
 
 
-def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
-                         Fet_BWbrth, An_LactDay, An_Parity_rl):
+def calculate_Gest_MEuse(GrUter_BWgain, coeff_dict):
   '''
   Calculate metabolizable energy requirements for gestation.
 
@@ -209,85 +215,10 @@ def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
   Returns:
       Gest_MEuse (Number): A number with units Mcal/day.
   '''
-  
-  # Ksyn: Constant for synthesis
-  # GrUter_Ksyn: Gravid uterus synthesis rate constant
-  # GrUter_KsynDecay: Rate of decay of gravid uterus synthesis approaching parturition
-  
-  GrUter_Ksyn = 2.43e-2                                         # Line 2302
-  GrUter_KsynDecay = 2.45e-5                                    # Line 2303
-  
-  #########################
-  # Uter_Wt Calculation
-  #########################
-  # UterWt_FetBWbrth: kg maternal tissue/kg calf weight at parturition
-  # Uter_Wtpart: Maternal tissue weight (uterus plus caruncles) at parturition
-  # Uter_Ksyn: Uterus synthesis rate
-  # Uter_KsynDecay: Rate of decay of uterus synthesis approaching parturition
-  # Uter_Kdeg: Rate of uterine degradation
-  # Uter_Wt: Weight of maternal tissue
-  
-  UterWt_FetBWbrth = 0.2311                                     # Line 2296
-  Uter_Wtpart = Fet_BWbrth * UterWt_FetBWbrth                   # Line 2311
-  Uter_Ksyn = 2.42e-2                                           # Line 2306
-  Uter_KsynDecay = 3.53e-5                                      # Line 2307
-  Uter_Kdeg = 0.20                                              # Line 2308
-  
-  Uter_Wt = 0.204                                               # Line 2312-2318
+  coeff_list = ['NE_GrUtWt']
+  unpack_coeff(coeff_list, coeff_dict) 
 
-  if An_AgeDay < 240:
-     Uter_Wt = 0 
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-    Uter_Wt = Uter_Wtpart * math.exp(-(Uter_Ksyn - Uter_KsynDecay * An_GestDay) * (An_GestLength - An_GestDay))  
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-     Uter_Wt = (Uter_Wtpart-0.204) * math.exp(-Uter_Kdeg*An_LactDay)+0.204
-
-  if An_Parity_rl > 0 and Uter_Wt < 0.204:
-     Uter_Wt = 0.204
-  
-  #########################
-  # GrUter_Wt Calculation
-  ######################### 
-  # GrUterWt_FetBWbrth: kg of gravid uterus/ kg of calf birth weight
-  # GrUter_Wtpart: Gravid uterus weight at parturition
-  # GrUter_Wt: Gravid uterine weight
-  
-  GrUterWt_FetBWbrth = 1.816                                    # Line 2295
-  GrUter_Wtpart = Fet_BWbrth * GrUterWt_FetBWbrth               # Line 2322
-  GrUter_Wt = Uter_Wt                                           # Line 2323-2327   
- 
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-     GrUter_Wt = GrUter_Wtpart * math.exp(-(GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*(An_GestLength-An_GestDay))
-  
-  if GrUter_Wt < Uter_Wt:
-     GrUter_Wt = Uter_Wt
-   
-  #########################
-  # ME Gestation Calculation
-  #########################
-  # Uter_BWgain: Rate of fresh tissue growth for maternal reproductive tissue
-  # GrUter_BWgain: Rate of fresh tissue growth for gravid uterus
-  # NE_GrUtWt: mcal NE/kg of fresh gravid uterus weight at birth
-  # Gest_REgain: NE for gestation
-  # Ky_ME_NE: Conversion of NE to ME for gestation
-  
-  Uter_BWgain = 0  #Open and nonregressing animal
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-     Uter_BWgain = (Uter_Ksyn - Uter_KsynDecay * An_GestDay) * Uter_Wt
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:                 #uterine involution after calving
-     Uter_BWgain = -Uter_Kdeg*Uter_Wt
-  GrUter_BWgain = 0                                              # Line 2341-2345
-
-  if An_GestDay > 0 and An_GestDay <= An_GestLength:
-     GrUter_BWgain = (GrUter_Ksyn-GrUter_KsynDecay*An_GestDay)*GrUter_Wt
-
-  if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
-     GrUter_BWgain = Uter_BWgain
-  NE_GrUtWt = 0.95                                               # Line 2297
+#   NE_GrUtWt = 0.95                                               # Line 2297
   Gest_REgain = GrUter_BWgain * NE_GrUtWt                        # Line 2360
               
   if Gest_REgain >= 0:                                           # Line 2839
@@ -299,7 +230,7 @@ def calculate_Gest_MEuse(An_GestDay, An_GestLength, An_AgeDay,
   return(Gest_MEuse)
 
 
-def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp):
+def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp, coeff_dict):
    '''
    Calculate metabolizable energy requirements for milk production.
 
@@ -316,6 +247,9 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
    Returns:
       Trg_Mlk_MEout (Number): A number with the units Mcal/day.
    '''
+   coeff_list = ['Kl_ME_NE']
+   unpack_coeff(coeff_list, coeff_dict)
+
    # Trg_NEmilk_Milk: Target energy output per kg milk
    # Trg_Mlk_NEout: NE for milk production
    # Kl_ME_NE: Conversion of NE to ME for lactation
@@ -323,9 +257,9 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
   
    Trg_NEmilk_Milk = 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100 # Line 2886
    Trg_Mlk_NEout = Trg_MilkProd * Trg_NEmilk_Milk                 # Line 2888
-   Kl_ME_NE = 0.66                                                # Line 2823
+   # Kl_ME_NE = 0.66                                                # Line 2823
    Trg_Mlk_MEout = Trg_Mlk_NEout / Kl_ME_NE                       # Line 2889
-   return(Trg_Mlk_MEout)
+   return Trg_Mlk_MEout, Trg_NEmilk_Milk
 
 
 def execute_ME_requirement(row):
@@ -382,3 +316,4 @@ def execute_ME_requirement(row):
                                          Trg_MilkLacp, Trg_RsrvGain)
 
     return(Trg_MEuse)
+

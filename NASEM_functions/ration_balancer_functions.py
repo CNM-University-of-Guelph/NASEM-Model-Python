@@ -55,14 +55,15 @@ def read_input(input):
     return diet_info, animal_input, equation_selection
 
 
-def fl_get_rows(feeds_to_get):
+def fl_get_rows(feeds_to_get, path_to_db):
+    conn = sqlite3.connect(path_to_db)
+
     """
     Modified version of :py:func:`db_get_rows` that queries NASEM feed library only
 
     Parameters:
         feeds_to_get (list): List of feed names 
     """
-    conn = sqlite3.connect('../../diet_database.db')
     cursor = conn.cursor()
 
     index_str = ', '.join([f"'{idx}'" for idx in feeds_to_get])
@@ -83,6 +84,32 @@ def fl_get_rows(feeds_to_get):
     conn.close()
 
     return feed_data
+
+def fl_get_feeds_from_db(path_to_db):
+    """A function to get unique feed names from NASEM_feed_library. Normally used in Shiny for UI.
+
+    Args:
+        path_to_db (str): A file path as a string 
+
+    Returns:
+        A list of unique feed names in the column Fd_name in NASEM_feed_library that is stored in a sqlite3 db.
+    """
+    conn = sqlite3.connect(path_to_db)
+    cursor = conn.cursor()
+   
+    # SQL query to select unique entries from the Fd_Name column
+    query = "SELECT DISTINCT Fd_Name FROM NASEM_feed_library"
+
+    # Execute the query
+    cursor.execute(query)
+
+    # Fetch all the unique Fd_Name values as a list
+    unique_fd_names = [row[0] for row in cursor.fetchall()]
+
+    # Close the cursor and the connection
+    cursor.close()
+    conn.close()
+    return unique_fd_names
 
 
 def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_dict):

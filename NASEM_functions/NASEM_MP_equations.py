@@ -1,5 +1,6 @@
 import math
 import pandas as pd
+from .NASEM_ration_balancing_equations import unpack_coeff
 
 def unpack_coeff(list, dict):
     for coeff in list:
