@@ -23,17 +23,17 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
       An_BW_mature: Number. Animal Mature Liveweight in kg.
       Trg_FrmGain: Number. Target gain in body Frame Weight in kg fresh weight/day.
       Trg_RsrvGain: Number. Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day.
-      An_GestDay: Number. Day of Gestation.
-      An_GestLength: Number. Normal Gestation Length in days.
-      An_AgeDay: Number. Animal Age in days.
-      Fet_BWbrth: Number. Target calf birth weight in kg.
-      An_LactDay: Number. Day of Lactation.
-      An_Parity_rl: Number. Animal Parity where 1 = Primiparous and 2 = Multiparous.
       Trg_MilkProd: Number. Animal Milk Production in kg/day.
       Trg_MilkTPp: Percentage. Animal Milk True Protein percentage.
-
+      GrUter_BWgain (Number): Average rate of fresh tissue growth for gravid uterus, kg fresh wt/d
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
+      
   Returns:
-      An_MPuse_g_Trg: A number with the units g/d.
+      An_MPuse_g_Trg: Metabolizable protein requirement (g/d)
+      An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
+      Body_MPuse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
+      Gest_MPuse_g_Trg: Metabolizable protein requirement for gestation (g/d)
+      Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
   
   An_MPm_g_Trg = calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict)
@@ -64,9 +64,10 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
       Dt_NDFIn: Number. NDF Intake in kg.
       Dt_DMIn: Number. Animal Dry Matter Intake in kg/day.
       An_BW: Number. Animal Body Weight in kg.
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
 
   Returns:
-      An_MPm_g_Trg: A number with units g/d.
+      An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
   '''
   coeff_list = ['Km_MP_NP_Trg', 'Body_NP_CP']
   unpack_coeff(coeff_list, coeff_dict)
@@ -122,9 +123,10 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, c
       Trg_FrmGain: Number. Target gain in body frame weight in kg fresh weight/day.
       Trg_RsrvGain: Number. Target gain or loss in body reserves (66% fat, 8% CP) 
                     in kg fresh weight/day.
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
 
   Returns:
-      Body_MPuse_g_Trg: A number with units g/d.
+      Body_MPuse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
   '''
   coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'Kg_MP_NP_Trg']
   unpack_coeff(coeff_list, coeff_dict)
@@ -173,15 +175,11 @@ def calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict):
   "An_AgeDay", "Fet_BWbrth", "An_LactDay", and "An_Parity_rl".
 
   Parameters:
-      An_GestDay: Number. Day of gestation.
-      An_GestLength: Number. Normal gestation length in days.
-      An_AgeDay: Number. Animal age in days.
-      Fet_BWbrth: Number. Target calf birth weight in kg.
-      An_LactDay: Number. Day of lactation.
-      An_Parity_rl: Number. Animal parity where 1 = primiparous and 2 = multiparous.
+      GrUter_BWgain (Number): Average rate of fresh tissue growth for gravid uterus, kg fresh wt/d
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
 
   Returns:
-      Gest_MPuse_g_Trg: A number with units g/d.
+      Gest_MPuse_g_Trg: Metabolizable protein requirement for gestation (g/d)
   '''  
   coeff_list = ['CP_GrUtWt', 'Body_NP_CP', 'Gest_NPother_g', 'Ky_MP_NP_Trg', 'Ky_NP_MP_Trg']
   unpack_coeff(coeff_list, coeff_dict)
@@ -213,9 +211,10 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict):
   Parameters:
       Trg_MilkProd: Number. Animal milk production in kg/day.
       Trg_MilkTPp: Percentage. Animal milk true protein percentage.
+      coeff_dict (Dict): Dictionary containing all coefficients for the model
 
   Returns:
-      Mlk_MPUse_g_Trg: A number with units g/d.
+      Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
   coeff_list = ['Kl_MP_NP_Trg']
   unpack_coeff(coeff_list, coeff_dict)

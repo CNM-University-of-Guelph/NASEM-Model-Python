@@ -361,7 +361,7 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEm
         An_MEgain (Number): Metabolizble energy requirement for frame and reserve gain, Mcal/d
         An_MEmUse (Number): Metabolizable energy requirement for maintenance, Mcal/d
         Gest_MEuse (Number): Metabolizable energy requirement for gestation, Mcal/d
-        Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
+        Trg_NEmilk_Milk (Number): Net energy concentration of milk, Mcal/kg
         coeff_dict (Dict): Dictionary containing all coefficients for the model
 
     Returns:
