@@ -1,6 +1,6 @@
-# The NASEM 8 Model in Python
+# The NASEM 2021 Nutrient Requirements of Dairy Cattle Model in Python
 
-This is a version of the NASEM 8 model that has been written in Python. Currently, it is only set up to balance rations for lactating cows. 
+This is a python version of the Nutrient Requirments of Dairy Cattle 8th revisied edition (NASEM 2021)[https://nap.nationalacademies.org/catalog/25806/nutrient-requirements-of-dairy-cattle-eighth-revised-edition] model. Currently, it is only set up to balance rations for lactating Holstein cows and doesn't include any mineral or vitamin equations. The equations have been copied from the R functions released with the official NASEM software: https://nap.nationalacademies.org/resource/25806/Installation_Instructions_NASEM_Dairy8.pdf 
 
 ## Table of Contents
 - [Installation](#installation)
@@ -9,38 +9,29 @@ This is a version of the NASEM 8 model that has been written in Python. Currentl
 
 ## Installation 
 
-This project can be installed through a terminal or command prompt window. I recommend using [Anaconda Prompt](https://docs.conda.io/en/latest/miniconda.html) as this will later be used
-to setup the virtual environment for the project. 
+This package can be installed through a terminal using: 
+```
+pip install git+https://github.com/CNM-University-of-Guelph/NASEM-Model-Python
+```
 
-1. Open Anaconda Prompt
-2. Navigate to Install Directory
+The environment that this is installed into will require `python >= 3.9`. It will also install `pandas` and `numpy` automatically. 
+ 
+The suggested way to install this is inside a virtual environment. For example, by using  https://docs.conda.io/en/latest/miniconda.html.
 
-   Use the 'cd' command to navigate to the directory you want to clone the project to. For example, it can be cloned to the "Documents" folder.
-   ```
-   cd Documents
-   ```
-3. Clone the Repository
+1. Open a terminal window e.g. Anaconda Prompt
+2. Create new conda environment with python installed
 
-    Run the follwoing code to clone the repository to your current directory
     ```
-    git clone https://github.com/CNM-University-of-Guelph/NASEM-Model-Python.git
-    ```
+    conda create --name myenvironment python>=3.9
 
-4. Set Up the Virtual Environment (Recommended)    
-
-    This project includes a file, "environment.yml", that can be used to set up a virtual environment for this project. While any Python environment with the required packages can be used
-    the "environment.yml" file will install all the required packages for you. Run the following code to set up the virtual environment, NASEM_py_env. 
-
-    Navigate to the project directory
-    ```
-    cd NASEM-Model-Python
-    ```
-    Create the virtual environment
-    ```
-    conda env create -f environment.yml
+    conda activate myenvironment
     ```
 
-    Now select "NASEM_py_env" as the interpreter within your code editor.
+3. Install this package from github
+    ```
+    pip install git+https://github.com/CNM-University-of-Guelph/NASEM-Model-Python
+    ```
+
     
 
 ## Using the Model

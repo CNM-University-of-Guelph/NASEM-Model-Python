@@ -14,6 +14,8 @@
 
 import nasem_dairy as nd
 
+import pandas as pd
+
 # # Reload the module
 # import importlib
 # nd = importlib.reload(nd)
@@ -23,16 +25,16 @@ import nasem_dairy as nd
 
 # animal_input is a dictionary with all animal specific parameters
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
-diet_info, animal_input, equation_selection = nd.read_input('src/nasem_dairy/data/input.txt')
+diet_info, animal_input, equation_selection = nd.read_input('../src/nasem_dairy/data/input.txt')
 
 
 # Execute function
 
 # Assign values here so they can be see in environment
 # coeff_dict is imported from ration_balancer, see coeff_dict.py
-NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, 'src/nasem_dairy/data/diet_database.db', nd.coeff_dict)
+NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, '../src/nasem_dairy/data/diet_database.db', nd.coeff_dict)
 
-import pandas as pd
+
 # Display results, temporary
 def display_diet_values(df):
     components = ['Fd_CP', 'Fd_RUP_base', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash']
