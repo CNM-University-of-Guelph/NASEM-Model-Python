@@ -1,11 +1,27 @@
-# This file contains all of the functions used to excecute the NASEM model in python
+# This file contains all of the functions used to execute the NASEM model in python
 
-####################
-# Import Packages
-####################
+
 import pandas as pd
 import sqlite3
 import numpy as np
+
+
+def check_coeffs_in_coeff_dict(input_coeff_dict, required_coeffs):
+    # Convert the list to a set for faster lookup
+    req_coef = set(required_coeffs)
+    dict_in = set(input_coeff_dict)
+
+    # Return coeffs that are not in dict_in
+    missing_coeffs = [value for value in req_coef if value not in dict_in]
+
+    # Check if all values are present in the dictionary
+    result = not bool(missing_coeffs)
+
+    # Raise an AssertionError with a custom message containing missing values if the condition is False
+    assert result, f"Missing values in coeff_dict: {missing_coeffs}"
+
+    return
+
 
 
 def read_input(input):
@@ -55,14 +71,15 @@ def read_input(input):
     return diet_info, animal_input, equation_selection
 
 
-def fl_get_rows(feeds_to_get):
+def fl_get_rows(feeds_to_get, path_to_db):
+    conn = sqlite3.connect(path_to_db)
+
     """
     Modified version of :py:func:`db_get_rows` that queries NASEM feed library only
 
     Parameters:
         feeds_to_get (list): List of feed names 
     """
-    conn = sqlite3.connect('../../diet_database.db')
     cursor = conn.cursor()
 
     index_str = ', '.join([f"'{idx}'" for idx in feeds_to_get])
@@ -84,6 +101,32 @@ def fl_get_rows(feeds_to_get):
 
     return feed_data
 
+def fl_get_feeds_from_db(path_to_db):
+    """A function to get unique feed names from NASEM_feed_library. Normally used in Shiny for UI.
+
+    Args:
+        path_to_db (str): A file path as a string 
+
+    Returns:
+        A list of unique feed names in the column Fd_name in NASEM_feed_library that is stored in a sqlite3 db.
+    """
+    conn = sqlite3.connect(path_to_db)
+    cursor = conn.cursor()
+   
+    # SQL query to select unique entries from the Fd_Name column
+    query = "SELECT DISTINCT Fd_Name FROM NASEM_feed_library"
+
+    # Execute the query
+    cursor.execute(query)
+
+    # Fetch all the unique Fd_Name values as a list
+    unique_fd_names = [row[0] for row in cursor.fetchall()]
+
+    # Close the cursor and the connection
+    cursor.close()
+    conn.close()
+    return unique_fd_names
+
 
 def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_dict):
     """
@@ -104,8 +147,9 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
     # ALL of the feed related vairables needed by future calculations will come from the diet_info dataframe
     # Anything in the R code that references f$"variable" should be included here where "variable" is a column
     # Any values in the R code where Dt_"variable" = sum(f$"variable") are equivalent to the column "variable" in the 'Diet' row
-    coeff_list = ['Fd_dcrOM', 'fCPAdu', 'KpFor', 'KpConc', 'IntRUP', 'refCPIn', 'TT_dcFA_Base', 'TT_dcFat_Base']
-    unpack_coeff(coeff_list, coeff_dict)
+    req_coeffs = ['Fd_dcrOM', 'fCPAdu', 'KpFor', 'KpConc', 'IntRUP', 
+                  'refCPIn', 'TT_dcFA_Base', 'TT_dcFat_Base']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     
     # Remove the 'Diet' row if it exists before recalculating, otherwise, the new sum includes the old sum when calculated
     if 'Diet' in df.index:
@@ -181,7 +225,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
             df['Fd_TP'] = df['Feedstuff'].map(feed_data['Fd_CP']) - df['Fd_NPNCP']
             df['Fd_NPNDM'] = df['Fd_NPNCP'] / 2.81
             df['Fd_rOM'] = 100 - df['Feedstuff'].map(feed_data['Fd_Ash']) - df['Feedstuff'].map(feed_data['Fd_NDF']) - df['Feedstuff'].map(feed_data['Fd_St']) - (df['Feedstuff'].map(feed_data['Fd_FA']) * df['Fd_fHydr_FA']) - df['Fd_TP'] - df['Fd_NPNDM'] 
-            df['Fd_DigrOMt'] = Fd_dcrOM / 100 * df['Fd_rOM']
+            df['Fd_DigrOMt'] = coeff_dict['Fd_dcrOM'] / 100 * df['Fd_rOM']
             df['Fd_DigrOMtIn'] = df['Fd_DigrOMt'] / 100 * df['kg_intake']
         
 
@@ -196,10 +240,16 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
             df['Fd_NPNCPIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_NPN_CP']) / 100
             df['Fd_CPBIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_CPBRU']) / 100
             df['Fd_For'] = 100 - df['Feedstuff'].map(feed_data['Fd_Conc'])
-            df['Fd_RUPBIn'] = df['Fd_CPBIn'] * df['Fd_For'] / 100 * KpFor / (df['Feedstuff'].map(feed_data['Fd_KdRUP']) + KpFor) + df['Fd_CPBIn'] * df['Feedstuff'].map(feed_data['Fd_Conc']) / 100 * KpConc / (
-                df['Feedstuff'].map(feed_data['Fd_KdRUP']) + KpConc)
+            
+            df['Fd_RUPBIn'] = (
+                df['Fd_CPBIn'] * df['Fd_For'] / 100 * coeff_dict['KpFor'] / 
+                (df['Feedstuff'].map(feed_data['Fd_KdRUP']) + coeff_dict['KpFor']) + 
+                df['Fd_CPBIn'] * df['Feedstuff'].map(feed_data['Fd_Conc']) / 
+                100 * coeff_dict['KpConc'] / (df['Feedstuff'].map(feed_data['Fd_KdRUP']) + coeff_dict['KpConc'])
+                )
+            
             df['Fd_CPCIn'] = df['Fd_CPIn'] * df['Feedstuff'].map(feed_data['Fd_CPCRU']) / 100
-            df['Fd_RUPIn'] = (df['Fd_CPAIn'] - df['Fd_NPNCPIn']) * fCPAdu + df['Fd_RUPBIn'] + df['Fd_CPCIn'] + IntRUP / refCPIn * df['Fd_CPIn'] 
+            df['Fd_RUPIn'] = (df['Fd_CPAIn'] - df['Fd_NPNCPIn']) * coeff_dict['fCPAdu'] + df['Fd_RUPBIn'] + df['Fd_CPCIn'] + coeff_dict['IntRUP'] / coeff_dict['refCPIn'] * df['Fd_CPIn'] 
             df['Fd_idRUPIn'] = df['Feedstuff'].map(feed_data['Fd_dcRUP']) / 100 * df['Fd_RUPIn']
         
 
@@ -207,8 +257,8 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
             # TT_dcFA_Base = 73
             # TT_dcFat_Base = 68 
             df['TT_dcFdFA'] = df['Feedstuff'].map(feed_data['Fd_dcFA'])
-            df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'TT_dcFdFA'] = TT_dcFA_Base
-            df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fat Supplement", 'TT_dcFdFA'] = TT_dcFat_Base
+            df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fatty Acid Supplement", 'TT_dcFdFA'] = coeff_dict['TT_dcFA_Base']
+            df.loc[df['Feedstuff'].map(feed_data['Fd_Category']) == "Fat Supplement", 'TT_dcFdFA'] = coeff_dict['TT_dcFat_Base']
             df['Fd_DigFAIn'] = (df['TT_dcFdFA'] / 100) * (df['Feedstuff'].map(feed_data['Fd_FA']) / 100) * df['kg_intake']
 
         
@@ -249,17 +299,5 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
     return df
 
 
-def unpack_coeff(list, dict):
-    """
-    Takes a list of coefficients and retrieves them from coeff_dict
 
-    Each function has a coeff_list with all the coefficients the function requires listed. This function takes
-    that list and returns all the listed items as variables within the function environment. 
-
-    Parameters:
-        list: A list of all the coefficients a function requires
-        dict: A dictionary containing the coefficients, coeff_dict for the model
-    """
-    for coeff in list:
-         globals()[coeff] = dict[coeff]
 

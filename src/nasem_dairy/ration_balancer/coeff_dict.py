@@ -1,5 +1,6 @@
 # This dictionary contains the coefficients used by the model
-# The dictionary will be imported into ration_balancing_equations.py and unpacked by the unpack_coeff() function
+# The dictionary will be parsed to various functions which will check for that the required coeffs are present
+# before proceeding with the rest of the function. 
 
 coeff_dict = {
 # From calculate_Du_MiN_NRC2021_g

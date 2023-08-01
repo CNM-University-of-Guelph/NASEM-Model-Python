@@ -1,9 +1,6 @@
 import math
 import pandas as pd
-
-def unpack_coeff(list, dict):
-    for coeff in list:
-         globals()[coeff] = dict[coeff]
+from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
 def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
@@ -69,8 +66,9 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
   Returns:
       An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
   '''
-  coeff_list = ['Km_MP_NP_Trg', 'Body_NP_CP']
-  unpack_coeff(coeff_list, coeff_dict)
+  req_coeffs = ['Km_MP_NP_Trg', 'Body_NP_CP']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+
   # An_NDF: NDF % of diet
   # Fe_CPend_g: Fecal CP from endogenous secretions and urea captured by microbes, g
   # Fe_CPend: Fe_CPend_g in kg
@@ -93,13 +91,13 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
   Fe_NPend = Fe_CPend * 0.73	                                     # Line 1191
   Fe_NPend_g = Fe_NPend * 1000                                     # Line 1192
 #   Km_MP_NP_Trg = 0.69                                              # Lines 54, 2596, 2651 and 2652
-  Fe_MPendUse_g_Trg = Fe_NPend_g / Km_MP_NP_Trg                    # Line 2668
+  Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg']                    # Line 2668
   
   #Scrf_MPUse_g_Trg
   Scrf_CP_g = 0.20 * An_BW**0.60                                   # Line 1964
 #   Body_NP_CP = 0.86                                                # Line 1963
-  Scrf_NP_g = Scrf_CP_g * Body_NP_CP                               # Line 1966
-  Scrf_MPUse_g_Trg = Scrf_NP_g / Km_MP_NP_Trg                      # Line 2670
+  Scrf_NP_g = Scrf_CP_g * coeff_dict['Body_NP_CP']                               # Line 1966
+  Scrf_MPUse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']                       # Line 2670
   
   Ur_Nend_g = 0.053 * An_BW                                        # Line 2029
   Ur_NPend_g = Ur_Nend_g * 6.25                                    # Line 2030
@@ -128,8 +126,8 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, c
   Returns:
       Body_MPuse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
   '''
-  coeff_list = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'Kg_MP_NP_Trg']
-  unpack_coeff(coeff_list, coeff_dict)
+  req_coeffs = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'Kg_MP_NP_Trg']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
   # CPGain_FrmGain: CP gain per unit of frame gain
   # Body_NP_CP: Conversion of CP to NP
@@ -146,23 +144,23 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, c
   # Body_NPgain_g: Body_NPgain in g
   # Kg_MP_NP_Trg: Conversion of NP to MP for growth
   
-  CPGain_FrmGain = 0.201-0.081*An_BW/An_BW_mature                  # Line 2458
+  CPGain_FrmGain = 0.201 - 0.081 * An_BW / An_BW_mature                  # Line 2458
 #   Body_NP_CP = 0.86                                                # Line 1963
-  NPGain_FrmGain = CPGain_FrmGain * Body_NP_CP                     # Line 2459
+  NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']                     # Line 2459
   Frm_Gain = Trg_FrmGain                                           # Line 2434
 #   An_GutFill_BW = 0.18                                             # Line 2400 and 2411
-  Frm_Gain_empty = Frm_Gain*(1-An_GutFill_BW)                      # Line 2439
+  Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])                      # Line 2439
   Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty                     # Line 2460
   
 #   CPGain_RsrvGain = 0.068                                          # Line 2466
-  NPGain_RsrvGain = CPGain_RsrvGain * Body_NP_CP                   # Line 2467
+  NPGain_RsrvGain = coeff_dict['CPGain_RsrvGain'] * coeff_dict['Body_NP_CP']                   # Line 2467
   Rsrv_Gain_empty = Trg_RsrvGain                                   # Line 2435 and 2441
   Rsrv_NPgain = NPGain_RsrvGain * Rsrv_Gain_empty                  # Line 2468
   
   Body_NPgain = Frm_NPgain + Rsrv_NPgain                           # Line 2473
   Body_NPgain_g = Body_NPgain * 1000                               # Line 2475
 #   Kg_MP_NP_Trg = 0.69                                              # Line 54, 2665
-  Body_MPuse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg                  # Line 2675
+  Body_MPuse_g_Trg = Body_NPgain_g / coeff_dict['Kg_MP_NP_Trg']                  # Line 2675
   return(Body_MPuse_g_Trg)
 
 
@@ -181,22 +179,22 @@ def calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict):
   Returns:
       Gest_MPuse_g_Trg: Metabolizable protein requirement for gestation (g/d)
   '''  
-  coeff_list = ['CP_GrUtWt', 'Body_NP_CP', 'Gest_NPother_g', 'Ky_MP_NP_Trg', 'Ky_NP_MP_Trg']
-  unpack_coeff(coeff_list, coeff_dict)
+  req_coeffs = ['CP_GrUtWt', 'Body_NP_CP', 'Gest_NPother_g', 'Ky_MP_NP_Trg', 'Ky_NP_MP_Trg']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
 #   CP_GrUtWt = 0.123                                                # Line 2298                                     
-  Gest_NCPgain_g = GrUter_BWgain * CP_GrUtWt * 1000                # Line 2363
+  Gest_NCPgain_g = GrUter_BWgain * coeff_dict['CP_GrUtWt'] * 1000                # Line 2363
 #   Body_NP_CP = 0.86                                                # Line 1963
-  Gest_NPgain_g = Gest_NCPgain_g * Body_NP_CP                      # Line 2364
+  Gest_NPgain_g = Gest_NCPgain_g * coeff_dict['Body_NP_CP']                      # Line 2364
 #   Gest_NPother_g = 0                                               # Line 2353
-  Gest_NPuse_g = Gest_NPgain_g + Gest_NPother_g                    # Line 2365
+  Gest_NPuse_g = Gest_NPgain_g + coeff_dict['Gest_NPother_g']                    # Line 2365
 #   Ky_MP_NP_Trg = 0.33                                              # Line 2656
 #   Ky_NP_MP_Trg = 1.0                                               # Line 2657
   
   if Gest_NPuse_g >= 0:                                            # Line 2676
-    Gest_MPuse_g_Trg = Gest_NPuse_g/Ky_MP_NP_Trg
+    Gest_MPuse_g_Trg = Gest_NPuse_g / coeff_dict['Ky_MP_NP_Trg']
   else:
-    Gest_MPuse_g_Trg = Gest_NPuse_g*Ky_NP_MP_Trg
+    Gest_MPuse_g_Trg = Gest_NPuse_g * coeff_dict['Ky_NP_MP_Trg']
 
   return(Gest_MPuse_g_Trg)
 
@@ -216,15 +214,15 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict):
   Returns:
       Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
-  coeff_list = ['Kl_MP_NP_Trg']
-  unpack_coeff(coeff_list, coeff_dict)
+  req_coeffs = ['Kl_MP_NP_Trg']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
   # Trg_Mlk_NP_g: NP required for milk production
   # Kl_MP_NP_Trg: Conversion of NP to MP for milk production
   
   Trg_Mlk_NP_g = Trg_MilkProd*1000 * Trg_MilkTPp/100               # Line 2205
 #   Kl_MP_NP_Trg = 0.69                                              # Line 54, 2596, 2651, 2654
   
-  Mlk_MPUse_g_Trg = Trg_Mlk_NP_g/ Kl_MP_NP_Trg                     # Line 2677
+  Mlk_MPUse_g_Trg = Trg_Mlk_NP_g/ coeff_dict['Kl_MP_NP_Trg']                     # Line 2677
   return(Mlk_MPUse_g_Trg)
 
 

@@ -1,9 +1,5 @@
-import math
-import pandas as pd
 
-def unpack_coeff(list, dict):
-    for coeff in list:
-         globals()[coeff] = dict[coeff]
+from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
 def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
@@ -86,8 +82,9 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=
     Returns:
        An_MEmUse (Number): A number with the units Mcal/day.
     '''     
-    coeff_list = ['An_NEmUse_Env', 'Km_ME_NE']
-    unpack_coeff(coeff_list, coeff_dict)
+    req_coeffs = ['An_NEmUse_Env', 'Km_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+
 
     # An_NEmUse_NS: NE required for maintenance in unstressed cow, mcal/d
     # An_NEmUse_Env: NE cost of environmental stress, the model only considers this for calves
@@ -112,10 +109,10 @@ def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=
     An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW              # Line 2796
     An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2797
 
-    An_NEmUse = An_NEmUse_NS + An_NEmUse_Env + An_NEmUse_Act        # Line 2801
+    An_NEmUse = An_NEmUse_NS + coeff_dict['An_NEmUse_Env'] + An_NEmUse_Act        # Line 2801
    #  Km_ME_NE = 0.66                                                 # Line 2817
 
-    An_MEmUse = An_NEmUse / Km_ME_NE                                # Line 2844
+    An_MEmUse = An_NEmUse / coeff_dict['Km_ME_NE']                                # Line 2844
     return An_MEmUse
 
 
@@ -139,8 +136,8 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
    Returns:
       An_MEgain (Number): A number with the units Mcal/d.
    '''
-   coeff_list = ['FatGain_RsrvGain', 'Kr_ME_RE', 'An_GutFill_BW', 'Body_NP_CP', 'Kf_ME_RE']
-   unpack_coeff(coeff_list, coeff_dict)
+   req_coeffs = ['FatGain_RsrvGain', 'Kr_ME_RE', 'An_GutFill_BW', 'Body_NP_CP', 'Kf_ME_RE']
+   check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
    # FatGain_RsrvGain: Conversion factor from reserve gain to fat gain
    # Rsrv_Gain_empty: Body reserve gain assuming no gut fill association
@@ -154,12 +151,14 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
       
    # FatGain_RsrvGain = 0.622                                       # Line 2451
    Rsrv_Gain_empty = Trg_RsrvGain                                 # Line 2441 and 2435
-   Rsrv_Fatgain = FatGain_RsrvGain*Rsrv_Gain_empty                # Line 2453
+   Rsrv_Fatgain = coeff_dict['FatGain_RsrvGain']*Rsrv_Gain_empty                # Line 2453
    CPGain_FrmGain = 0.201-0.081*An_BW/An_BW_mature                # Line 2458
    Rsrv_CPgain = CPGain_FrmGain * Rsrv_Gain_empty                 # Line 2470
    Rsrv_NEgain = 9.4*Rsrv_Fatgain + 5.55*Rsrv_CPgain              # Line 2866
    # Kr_ME_RE = 0.60                                                # Line 2834
 
+   Kr_ME_RE = coeff_dict['Kr_ME_RE']
+   
    if Trg_MilkProd > 0 and Trg_RsrvGain > 0:                      # Line 2835
       Kr_ME_RE = 0.75          
 
@@ -185,15 +184,15 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
    FatGain_FrmGain = 0.067+0.375*An_BW/An_BW_mature               # Line 2448
    Frm_Gain = Trg_FrmGain                                         # Line 2434
    # An_GutFill_BW = 0.18                                           # Line 2410, check the heifer value
-   Frm_Gain_empty = Frm_Gain*(1-An_GutFill_BW)                    # Line 2439
+   Frm_Gain_empty = Frm_Gain*(1- coeff_dict['An_GutFill_BW'])                    # Line 2439
    Frm_Fatgain = FatGain_FrmGain*Frm_Gain_empty                   # Line 2452
    # Body_NP_CP = 0.86                                              # Line 1963
-   NPGain_FrmGain = CPGain_FrmGain * Body_NP_CP                   # Line 2459
+   NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']                   # Line 2459
    Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty                   # Line 2460
-   Frm_CPgain = Frm_NPgain /  Body_NP_CP                          # Line 2463
+   Frm_CPgain = Frm_NPgain /  coeff_dict['Body_NP_CP']                         # Line 2463
    Frm_NEgain = 9.4*Frm_Fatgain + 5.55*Frm_CPgain                 # Line 2867
    # Kf_ME_RE = 0.4                                                 # Line 2831
-   Frm_MEgain = Frm_NEgain / Kf_ME_RE                             # Line 2872
+   Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE']                             # Line 2872
       
    An_MEgain = Rsrv_MEgain + Frm_MEgain                           # Line 2873
    return(An_MEgain)
@@ -214,11 +213,11 @@ def calculate_Gest_MEuse(GrUter_BWgain, coeff_dict):
   Returns:
       Gest_MEuse (Number): A number with units Mcal/day.
   '''
-  coeff_list = ['NE_GrUtWt']
-  unpack_coeff(coeff_list, coeff_dict) 
+  req_coeffs = ['NE_GrUtWt']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
 #   NE_GrUtWt = 0.95                                               # Line 2297
-  Gest_REgain = GrUter_BWgain * NE_GrUtWt                        # Line 2360
+  Gest_REgain = GrUter_BWgain * coeff_dict['NE_GrUtWt']                        # Line 2360
               
   if Gest_REgain >= 0:                                           # Line 2839
      Ky_ME_NE = 0.14
@@ -248,8 +247,8 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
       Trg_Mlk_MEout (Number): A number with the units Mcal/day.
       Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
    '''
-   coeff_list = ['Kl_ME_NE']
-   unpack_coeff(coeff_list, coeff_dict)
+   req_coeffs = ['Kl_ME_NE']
+   check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
    # Trg_NEmilk_Milk: Target energy output per kg milk
    # Trg_Mlk_NEout: NE for milk production
@@ -259,7 +258,7 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
    Trg_NEmilk_Milk = 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100 # Line 2886
    Trg_Mlk_NEout = Trg_MilkProd * Trg_NEmilk_Milk                 # Line 2888
    # Kl_ME_NE = 0.66                                                # Line 2823
-   Trg_Mlk_MEout = Trg_Mlk_NEout / Kl_ME_NE                       # Line 2889
+   Trg_Mlk_MEout = Trg_Mlk_NEout / coeff_dict['Kl_ME_NE']                       # Line 2889
    return Trg_Mlk_MEout, Trg_NEmilk_Milk
 
 

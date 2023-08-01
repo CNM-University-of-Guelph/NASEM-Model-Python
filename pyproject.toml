@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "nasem_dairy"
+version = "0.1.0"
+description = "Implementation of (part of) NASEM 2021 dairy model in python "
+authors = ["Braeden Fieguth & David Innes"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^2.0.3"
+numpy = "^1.25.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
