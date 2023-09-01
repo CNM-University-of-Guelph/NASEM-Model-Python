@@ -201,7 +201,10 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     # Uter_Ksyn = 2.42e-2                                           # Line 2306
     # Uter_KsynDecay = 3.53e-5                                      # Line 2307
     # Uter_Kdeg = 0.20                                              # Line 2308
-    # Uter_Wt = 0.204                                               # Line 2312-2318
+    
+    # DI - uncommenting this first assignment of Uter_Wt to avoid error where
+    # last if statement is checking Uter_Wt which may not have been defined yet in some cases and can fail
+    Uter_Wt = 0.204                                               # Line 2312-2318
 
     if An_AgeDay < 240:
         Uter_Wt = 0 

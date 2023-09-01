@@ -46,11 +46,11 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPN
 
     Du_idMiTP_g = coeff_dict['fMiTP_MiCP'] * Du_idMiCP_g              # Line 1182
     Du_idMiTP = Du_idMiTP_g / 1000
-    An_MPIn = Dt_idRUPIn + Du_idMiTP                    # Line 1236
-    An_MPIn_g = An_MPIn * 1000                          # Line 1238
-    Abs_neAA_g = An_MPIn_g * 1.15 - Abs_EAA_g           # Line 1771
-    Abs_OthAA_g = Abs_neAA_g + Abs_AA_g['Arg'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
-    Abs_EAA2b_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + Abs_AA_g['Met']**2        # Line 2106, 1778
+    An_MPIn = Dt_idRUPIn + Du_idMiTP                    # Line 1236 (Equation 20-136 p. 432 - without infused TP)
+    An_MPIn_g = An_MPIn * 1000                          # Line 1238 
+    Abs_neAA_g = An_MPIn_g * 1.15 - Abs_EAA_g           # Line 1771 (Equation 20-150 p. 433)
+    Abs_OthAA_g = Abs_neAA_g + Abs_AA_g['Arg'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val'] #Equation 20-186a, p. 436
+    Abs_EAA2b_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + Abs_AA_g['Met']**2        # Line 2106, 1778; (Equation 20-186b p. 436)
     mPrtmx_Met2 = df.loc['Met', 'mPrtmx_AA2']
     mPrt_Met_0_1 = df.loc['Met', 'mPrt_AA_0.1']
     # Cannot call the variable mPrt_Met_0.1 in python, this is the only variable not consistent with R code
@@ -98,6 +98,7 @@ def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_
     elif An_LactDay > 375:
         An_LactDay_MlkPred = 375
 
+    # (Equation 20-215, p. 440)
     Mlk_Fat_g = 453 - 1.42 * An_LactDay_MlkPred + 24.52 * (Dt_DMIn - Dt_FAIn) + 0.41 * Dt_DigC160In * 1000 + 1.80 * Dt_DigC183In * 1000 + 1.45 * Abs_Ile_g + 1.34 * Abs_Met_g
 
     return Mlk_Fat_g, An_LactDay_MlkPred
