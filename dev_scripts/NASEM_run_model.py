@@ -64,10 +64,13 @@ def display_diet_values(df):
 
 
 
-model_data = pd.DataFrame(NASEM_out["model_results"], index=['Value']).T
+model_data_short = pd.DataFrame.from_dict(NASEM_out['model_results_short'],orient='index', columns=['Value']).reset_index()
+
+all_calculated_values = pd.DataFrame.from_dict(NASEM_out['model_results_full'],orient='index', columns=['Value']).reset_index()
 
 
 diet_data  = display_diet_values(NASEM_out["diet_info"])
 
-print(model_data)
+print(model_data_short)
+print(all_calculated_values)
 print(diet_data)

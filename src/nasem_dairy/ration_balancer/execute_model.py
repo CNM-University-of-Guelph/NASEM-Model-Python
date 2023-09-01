@@ -203,7 +203,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
     milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
 
 
-    model_results = {
+    model_results_short = {
     'milk_fat': milk_fat,
     'milk_protein': milk_protein,
     'Mlk_Prod_comp': Mlk_Prod_comp,
@@ -213,13 +213,18 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
     'An_MPuse_g_Trg': An_MPuse_g_Trg
     }
 
+    # filter locals() to return only floats and ints
+    model_results_numeric = {var_name: var_value for var_name, var_value in locals().items() if isinstance(var_value, (int, float))}
+    
+
     output = {
     'diet_info': diet_info,
     'animal_input': animal_input,
     'feed_data': feed_data,
     'equation_selection': equation_selection,
     'AA_values': AA_values,
-    'model_results': model_results
+    'model_results_short': model_results_short,
+    'model_results_full': model_results_numeric
 }
     # Return so they can be viewed in environment
     return output
