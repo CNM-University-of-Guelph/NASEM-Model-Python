@@ -38,6 +38,10 @@ import pandas as pd
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
 diet_info, animal_input, equation_selection = nd.read_input('../src/nasem_dairy/data/input.txt')
 
+# import description strings for variable names in model
+var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').query('Description != "Duplicate"')
+
+
 
 # Execute function
 
@@ -66,8 +70,10 @@ def display_diet_values(df):
 
 model_data_short = pd.DataFrame.from_dict(NASEM_out['model_results_short'],orient='index', columns=['Value']).reset_index()
 
-all_calculated_values = pd.DataFrame.from_dict(NASEM_out['model_results_full'],orient='index', columns=['Value']).reset_index()
-
+all_calculated_values = pd.DataFrame.from_dict(
+    NASEM_out['model_results_full'],orient='index', columns=['Value']
+    ).reset_index(names="Model Variable"
+                  ).merge(var_desc, how = 'left')
 
 diet_data  = display_diet_values(NASEM_out["diet_info"])
 

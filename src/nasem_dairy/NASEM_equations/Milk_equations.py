@@ -126,13 +126,13 @@ def calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay_MlkPred, An
     return Mlk_Prod_comp
 
 
-def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, Trg_MilkTPp, coeff_dict):
+def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPIn, Trg_MilkTPp, coeff_dict):
     """
     Metabolizalbe protein allowable milk production
 
     Parameters:
         An_MPuse_g_Trg (Number): Metabolizable protein requirement, g/d
-        Mlk_MPUse_g_Trg (Number): Metabolizable protein requirement for milk, g/d
+        Mlk_MPuse_g_Trg (Number): Metabolizable protein requirement for milk, g/d
         An_MPIn (Number): Metabolizlable protein intake, kg/d 
         Trg_MilkTPp (Percentage): Animal Milk True Protein percentage
         coeff_dict (Dict): Dictionary containing all coefficients for the model
@@ -143,7 +143,7 @@ def calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, Trg_Milk
     req_coeffs = ['Kx_MP_NP_Trg']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
-    An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000          # Line 2706
+    An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPuse_g_Trg / 1000          # Line 2706
     Mlk_NP_MPalow_Trg_g = An_MPavail_Milk_Trg * coeff_dict['Kx_MP_NP_Trg'] * 1000                         # Line 2707, g milk NP/d
 
     Mlk_Prod_MPalow = Mlk_NP_MPalow_Trg_g / (Trg_MilkTPp / 100) / 1000                      # Line 2708, kg milk/d using Trg milk protein % to predict volume

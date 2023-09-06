@@ -162,7 +162,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
                                                                                                            GrUter_BWgain, 
                                                                                                            coeff_dict)
     # Metabolizable Protein Requirements
-    An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg = calculate_MP_requirement(diet_info.loc['Diet', 'Fd_NDFIn'], 
+    An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg = calculate_MP_requirement(diet_info.loc['Diet', 'Fd_NDFIn'], 
                                                                                                                  animal_input['DMI'], 
                                                                                                                  animal_input['An_BW'], 
                                                                                                                  animal_input['An_BW_mature'], 
@@ -189,7 +189,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
     Mlk_Prod_comp = calculate_Mlk_Prod_comp(Mlk_NP_g, Mlk_Fat_g, An_DEIn, An_LactDay_MlkPred, animal_input['An_Parity_rl']) 
   
     # MP Allowable Milk
-    Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPUse_g_Trg, An_MPIn, animal_input['Trg_MilkTPp'], coeff_dict)
+    Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(An_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPIn, animal_input['Trg_MilkTPp'], coeff_dict)
 
     # NE Allowable Milk
     Mlk_Prod_NEalow = calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEmilk_Milk, coeff_dict)
