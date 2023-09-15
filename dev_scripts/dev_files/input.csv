@@ -22,4 +22,4 @@ animal_input,Trg_RsrvGain,0,float
 animal_input,Fet_BWbrth,44.1,float
 animal_input,An_AgeDay,1620,int
 animal_input,An_305RHA_MlkTP,280,float
-animal_input,An_StatePhys,Lactating Cow,str
+animal_input,An_StatePhys,Heifer,str
