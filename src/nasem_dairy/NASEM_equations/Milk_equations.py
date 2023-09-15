@@ -1,7 +1,7 @@
 import math
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
-def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, coeff_dict):
+def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, An_StatePhys, coeff_dict):
     """
     Predicts net protein output in milk 
 
@@ -70,7 +70,10 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPN
                 + An_DEInp * coeff_dict['mPrt_k_DEInp'] + (An_DigNDF - 17.06) * coeff_dict['mPrt_k_DigNDF'] + (An_DEStIn + An_DEFAIn + An_DErOMIn) \
                 * coeff_dict['mPrt_k_DEIn_StFA'] + An_DENDFIn * coeff_dict['mPrt_k_DEIn_NDF'] + (An_BW - 612) * coeff_dict['mPrt_k_BW'] 
 
-    return Mlk_NP_g, An_DigNDF, An_MPIn
+    if An_StatePhys != "Lactating Cow":                 # Line 2204
+        Mlk_NP_g = 0
+
+    return Mlk_NP_g, An_DigNDF, An_MPIn, An_DEInp
 
 
 def calculate_Mlk_Fat_g(df, Dt_FAIn, Dt_DigC160In, Dt_DigC183In, An_LactDay, Dt_DMIn):
