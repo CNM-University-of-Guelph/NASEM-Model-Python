@@ -157,5 +157,9 @@ coeff_dict = {
     'TT_dcFA_Base': 73,
     'TT_dcFat_Base': 68,
 # For Heifer check in calculate_MP_requiement
-    'En_CP': 5.65
+    'En_CP': 5.65,
+
+# From heifer_growth
+    'Ka_LateGest_DMIn': 1.47,
+    'Kc_LateGest_DMIn': -0.035
 }
