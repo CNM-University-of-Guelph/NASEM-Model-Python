@@ -1,0 +1,234 @@
+﻿Model Variable,Description
+Trg_NEmilk_Milk,"Net energy concentration of milk, Mcal/kg"
+Trg_NEmilkOut,"Net energy content of milk, Mcal"
+Dt_DMIn_Lact1,Animal based DMI prediction
+Fd_CP,% CP of a feedstuff
+Fd_CP_%_diet,"Dt_CP_%_diet, % CP diet"
+Fd_CP_kg/d,"Dt_CP_kg/d, kg/d CP intake "
+Fd_NDF,% NDF of a feedstuff
+Fd_NDF_%_diet,"Dt_NDF_%_diet, % NDF diet"
+Fd_NDF_kg/d,"Dt_NDF_kg/d, kg/d NDF intake "
+Fd_ADF,% ADF of a feedstuff
+Fd_ADF_%_diet,"Dt_ADF_%_diet, % ADF diet"
+Fd_ADF_kg/d,"Dt_ADF_kg/d, kg/d ADF intake "
+Fd_St,% St of a feedstuff
+Fd_St_%_diet,"Dt_St_%_diet, % St diet"
+Fd_St_kg/d,"Dt_St_kg/d, kg/d St intake "
+Fd_CFat,% CFat of a feedstuff
+Fd_CFat_%_diet,"Dt_CFat_%_diet, % CFat diet"
+Fd_CFat_kg/d,"Dt_CFat_kg/d, kg/d CFat intake "
+Fd_Ash,% Ash of a feedstuff
+Fd_Ash_%_diet,"Dt_Ash_%_diet, % Ash diet"
+Fd_Ash_kg/d,"Dt_Ash_kg/d, kg/d Ash intake "
+Fd_RUP_base,% RUP of a feedstuff
+Fd_RUP_base_%_CP,"Dt_RUP_base_%_CP, %CP RUP diet"
+Fd_RUP_base_%_diet,"Fd_RUP_base_%_diet,  % RUP diet"
+Fd_RUP_base_kg/d,"Fd_RUP_base_kg/d, kg/d RUP intake"
+Fd_NDFIn,Duplicate of sum(Fd_NDF_kg/d)
+TT_dcFdNDF_48h,48 hour total tract NDF digestability
+TT_dcFdNDF_Base,Stores the NDF digestability estimate selected by Use_DNDF_IV
+TT_dcFdNDF_Lg,Lignin based NDF total tract digestibility 
+Fd_DigNDFIn_Base,"Digestible NDF intake, kg/d"
+Fd_DigSt,Digestible starch content of feed
+Fd_DigStIn_Base,"Digerstible starch intake, kg/d"
+Fd_fHydr_FA,Hydrated fatty acid content of feed?
+Fd_NPNCP,"NPN in CP equivalent in the feed DM, kg/d"
+Fd_TP,True protein content of feed
+Fd_NPNDM,Estimate of NPN mass based on urea N content 
+Fd_rOM,Feed residal organic matter content
+Fd_DigrOMt,"Truly digested rOM in each feed, % DM"
+Fd_DigrOMtIn,"Truly digested rOM intake, kg/d"
+Fd_CPIn,Duplicate of sum(Fd_CP_kg/d)
+Fd_CPAIn,"A fraction of CP intake, kg/d"
+Fd_NPNCPIn,"Intake of CP that is from NPN, kg/d"
+Fd_CPBIn,"B fraction of CP intake, kg/d"
+Fd_For,% of feed that is forage
+Fd_RUPBIn,"B fraction of RUP intake, kg/d"
+Fd_CPCIn,"C fraction of CP intake, kg/d"
+Fd_RUPIn,"RUP intake, kg/d"
+Fd_idRUPIn,"Intestinally digested RUP intake, kg/d"
+TT_dcFdFA,"Total tract digestability coefficient for fatty acids, % FA"
+Fd_DigFAIn,"Digestible fatty acid intake, kg/d"
+Fd_ForWet,"Wet forage content, % DM"
+Fd_ForWetIn,"Wet forage intake, kg/d"
+Fd_ForNDF,"NDF content of forage, %DM"
+Fd_ForNDFIn,"Forage NDF intake, kg/d"
+Fd_FAIn,"Fatty acid intke, kg/d"
+Fd_DigC160In,"Digestible C16:0 intake, kg/d"
+Fd_DigC183In,"Digestible C18:3 intake, kg/d"
+Dt_RDPIn,"RDP intake, kg/d"
+Dt_ForNDF,Duplicate of sum(Fd_ForNDF)
+An_RDP,RDP % diet? (RDPIn / DMI)
+Rum_dcNDF,"Rumen digestability coeficient of NDF, %NDF"
+Rum_DigNDFIn,"Rumen degraded NDF intake, kg/d"
+An_RDPIn,Duplicate of Dt_RDPIn
+Rum_dcSt,"Rumen digestability coefficient of starch, % starch"
+Rum_DigStIn,"Rumen degraded starch intake, kg/d"
+RDPIn_MiNmax,Variable to cap RDP intake at 12% of DM
+MiN_Vm,"Vmax, g microbial N/d"
+Du_MiN_NRC2021_g,Microbial N in g/d
+Dt_rOMIn,"Residual organic matter intake, kg/d"
+Du_MiN_VTln_g,Microbial N in g/d
+Du_MiN_VTnln_g,Microbial N in g/d
+f_mPrt_max,Genetic potential scalar for milk protein production
+Du_MiCP_g,"Microbial crude proetin, g"
+Du_MiTP_g,"Microbial true protein, g"
+SIDigAARUPf,SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
+Fd_AAt_CP,True feed AA (g hydrated AAt/100 g CP) corrected for reported 24 h recovered AA
+Fd_AARUPIn,"Estimated RUP AAt outflow from each Feed, g hydrated AAt/d"
+Fd_IdAARUPIn,"Intestinally Digested RUP Animo Acid flow from each feed, g hydrated AAt/d"
+Dt_IdAARUPIn,"Intestinally digested RUP AA flow from each diet, g hydrated AA/d"
+Du_AAMic,"Microbial AA Flow, g hydrated true AA (AAt/d)"
+Du_IdAAMic,"Digested MicAA Flows, g hydrated true AA (IdAAt/d)"
+Abs_AA_g,Net Absorbed hydrated AA (g/d) from diet and microbes
+mPrtmx_AA,Maximum milk protein responses from each AA
+mPrtmx_AA2,Unsure what to call this?
+AA_mPrtmx,AA input at maximum milk protein response for each AA
+mPrt_AA_0.1,Milk protein from each AA at 10% of max response
+mPrt_k_AA,Calculate new scaled linear EAA coeff and a common squared coefficient
+Uter_Wtpart,"Estimate of maternal tissue weight at any time, kg"
+Uter_Wt,"Uterine weight, kg"
+GrUter_Wtpart,"Estimate Gravid Uterine weight at any time, kg"
+GrUter_Wt,"Gravid uterine weight, kg"
+Uter_BWgain,"Estimate rate of fresh tissue growth for the Maternal Repro Tissue,  kg fresh wt/d"
+GrUter_BWgain,"Estimate rate of fresh tissue growth for gravid uterus, kg fresh wt/d"
+An_NDF,"NDF intake, kg/d"
+TT_dcNDF_Base,Base total tract digestibility for NDF
+An_DMIn_BW,DMI / bodyweight
+TT_dcNDF,Total tract NDF digestibility based on diet
+Dt_DigNDFIn,"Digestible NDF intake, kg/d"
+An_DigNDFIn,Potential duplicate of Dt_DigNDFIn
+An_DENDFIn,"Digestible energy intake, Mcal/d"
+TT_dcSt_Base,Base total tract digestibility of starch
+TT_dcSt,Total tract digestibility of starch based on diet
+An_DigStIn,"Digestible starch intake, kg/d"
+An_DEStIn,"Digestible energy from starch, Mcal/d"
+Fe_rOMend,Fecal rOM from endogenous secretions
+An_DigrOMaIn,"Digestible rOM intake, kg/d"
+An_DErOMIn,"Digestible energy from rOM, Mcal/d"
+An_idRUPIn,"Intestinally digestible RUP intake, kg/d"
+Fe_RUP,RUP in feces
+Du_MiCP,"Microbial CP, kg"
+Du_idMiCP_g,"Intestinally digested microbial protein, g/d"
+Du_idMiCP,"Intestinally digested microbial protein, kg/d"
+Fe_RumMiCP,"Microbial protein in feces, kg/d"
+Fe_CPend_g,"Endogenous CP in feces, g/d"
+Fe_CPend,"Endogenous CP in feces, kg/d"
+Fe_CP,"CP in feces, kg/d"
+An_DigCPaIn,"Apparent total tract digestible CP intake, kg/d"
+An_DECPIn,"Digestible energy from CP, Mcal/d"
+An_DENPNCPIn,"Digestable energy from CP from NPN, Mcal/d"
+An_DETPIn,"Digesible energy from true protein, Mcal/d"
+An_DigFAIn,"Digestable fatty acid intake, kg/d"
+An_DEFAIn,"Digestible energy from fatty acids, Mcal/d"
+An_DEIn,"Digestible energy intake, Mcal/d"
+An_DigNDF,Digested NDF
+Abs_EAA_g,"Sum of all EAA intakes, g/d"
+Du_idMiTP_g,"Intestinally digested microbial true protein, g/d"
+Du_idMiTP,"Intestinally digested microbial true protein, kg/d"
+An_MPIn,"Metabolizable protein intake, kg/d"
+An_MPIn_g,"Metabolizable protein intake, g/d"
+Abs_neAA_g,"Absorbed NEAA, g/d"
+Abs_OthAA_g,"Intake of neAA, Arg, Phe, Thr, Trp and Val, for NRC 2021 equation"
+Abs_EAA2b_g,Sum of squared EAA
+An_DEInp,"Non protein digestible energy intake , Mcal/d"
+mPrt_k_EAA2,Quadratic for milk protein predictions
+Mlk_NP_g,Predicted g protein in milk
+An_GasEOut_Lact,"Gaseous energy loss for lactating cow, Mcal/d"
+Scrf_CP_g,"Scurf CP, g"
+Mlk_CP_g,"Milk CP, g"
+CPGain_FrmGain,CP gain / bodyweight gain
+Frm_Gain,"Target frame gain, kg/d"
+Frm_Gain_empty,Frame gain without gut fill
+NPGain_FrmGain,NP gain / bodyweight gain
+Frm_NPgain,NP gain for frame
+NPGain_RsrvGain,NP gain / bodyreserve gain
+Rsrv_Gain_empty,Body reserve gain assuming no gut fill
+Rsrv_NPgain,NP gain for reserves
+Body_NPgain,NP gain from reserves and frame
+Body_CPgain,"CP gain from reserves and frame, kg"
+Body_CPgain_g,"CP gain from reserves and frame, g"
+Gest_NCPgain_g,"Rate of CP deposition in gravid uterus, g/d"
+Gest_NPgain_g,"Rate of NP deposition in gravid uterus, g/d"
+Gest_NPuse_g,"Rate of NP deposition in gravid uterus plus other uses, g/d"
+Gest_CPuse_g,"Rate of CP deposition in gravid uterus plus other uses, g/d"
+Ur_Nout_g,"N loss in urine, g/d"
+Ur_DEout,"Digestible energy loss in urine, Mcal/d"
+An_MEIn,"Metabolizable energy intake, Mcal/d"
+An_NE_In,"Net energy intake, Mcal/d"
+An_NE,Net erngy intake/ DMI
+Trg_MEuse,ME requirement Mcal/d
+An_NEmUse_NS,"Unstressed maintenance costs, Mcal/d"
+An_MBW,"Metabolic body weight, kg"
+An_NEm_Act_Graze,"Net energy costs for grazing, Mcal/d"
+An_NEm_Act_Parlor,"Net energy costs for walking to parlor, Mcal/d"
+An_NEm_Act_Topo,"Net energy cost due to topography, Mcal/d"
+An_NEmUse_Act,"Net energy cost of all locomotion, Mcal/d"
+An_NEmUse,"Total maintenance cost (NEm), Mcal/d"
+An_MEmUse,"Total maintenance cost in metabolizable energy, Mcal/d"
+Rsrv_Gain_empty,Duplicate
+Rsrv_Fatgain,Body reserve fat gain
+CPGain_FrmGain,CP gain / kg frame gain
+Rsrv_CPgain,"CP for reserve gain, "
+Rsrv_NEgain,Net energy use for reserve gain
+Kr_ME_RE,ME to RE for reserve gain
+Rsrv_MEgain,"Metabolizable energy use for frame gain, Mcal/d"
+FatGain_FrmGain,Fat gain / frame gain
+Frm_Gain,Duplicate
+Frm_Gain_empty,Duplicate
+Frm_Fatgain,Body frame fat gain
+NPGain_FrmGain,Duplicate
+Frm_NPgain,"Net protein for body frame gain, kg/d"
+Frm_CPgain,"CP for body frame gain, kg/d"
+Frm_NEgain,"Net energy for body frame gain, Mcal/d"
+Frm_MEgain,"Metabolizable energy for frame gain, Mcal/d"
+An_MEgain,"Metabolizalbe energy for frame and reserve gain, Mcal/d"
+Gest_REgain,RE for gestation
+Ky_ME_NE,ME to NE conversion for gestation
+Gest_MEuse,Metabolizble energy requirement for gestation
+Trg_NEmilk_Milk,"Net energy concentration of milk, Mcal/kg"
+Trg_Mlk_NEout,"Net energy in milk, Mcal/d"
+Trg_Mlk_MEout,"Metabolizable energy in milk, Mcal/d"
+An_MPuse_g_Trg,"Metabolizalble protein requirement, g/d"
+An_NDF,Duplicate
+Fe_CPend_g,Duplicate
+Fe_CPend,Duplicate
+Fe_NPend,"NP in feces from endogenous secretions, kg/d"
+Fe_NPend_g,"NP in feces from endogenous secretions, g/d"
+Fe_MPendUse_g_Trg,"Target metabolizable protein in feces from endogenous secretions, g/d"
+Scrf_CP_g,Duplicate
+Scrf_NP_g,"Scurf NP, g"
+Scrf_MPuse_g_Trg,Target metabolizable protein in scurf
+Ur_Nend_g,"Endogenous N in urine, g/d"
+Ur_NPend_g,"Endogenous net protein in urine, g/d"
+Ur_MPendUse_g,"Endogenous metabolizalbe protein in urine, g/d"
+An_MPm_g_Trg,Metabolizable protein required for maintenance
+CPGain_FrmGain,Duplicate
+NPGain_FrmGain,Duplicate
+Frm_Gain,Duplicate
+Frm_Gain_empty,Duplicate
+Frm_NPgain,Duplicate
+NPGain_RsrvGain,Duplicate
+Rsrv_Gain_empty,Duplicate
+Rsrv_NPgain,Duplicate
+Body_NPgain,Duplicate
+Body_NPgain_g,"Net protein required for gain, g/d"
+Body_MPuse_g_Trg,Metabolizable protein requirement for gain
+Gest_NCPgain_g,Duplicate
+Gest_NPgain_g,Duplicate
+Gest_NPuse_g,Duplicate
+Gest_MPuse_g_Trg,"Metabolizable protein requirement for gestation, g/d"
+Trg_Mlk_NP_g,"Net protein in milk, g/d"
+Mlk_MPuse_g_Trg,"Metabolizable protein requirement for milk production, g/d"
+An_LactDay_MlkPred,Variable to cap DIM at 375 for milk yield predictions
+Mlk_Fat_g,"Predicted milk fat, g/d"
+Mlk_NP,"Net protein content of milk, kg/d"
+Mlk_Fat,"Predicted milk fat, kg/d"
+Mlk_Prod_comp,"Predicted milk productiom, kg/d"
+An_MPavail_Milk_Trg,Metabolizable protein available milk production
+Mlk_NP_MPalow_Trg_g,"Net protein in milk based on available metabolizable protein, g/d"
+Mlk_Prod_MPalow,"Metabolizable protein allowable milk production, kg/d"
+An_MEavail_Milk,"Metabolizable energy available for milk production, Mcal/d"
+Mlk_Prod_NEalow,"Net energy allowable milk production, Mcal/d"
+milk_fat,"Predicted milk fat content, %"
+milk_protein,"Predicted milk protein content, %"

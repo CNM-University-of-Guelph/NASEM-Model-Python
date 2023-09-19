@@ -8,8 +8,8 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
   '''
   Calculate metabolizable protein (MP) requirement.
 
-  This function calculates MP requirements for 1 cow using 4 functions: :py:func:`An_MPm_g_Trg`, :py:func:`Body_MPUse_g_Trg`,
-  :py:func:`Gest_MPUse_g_Trg`, and :py:func:`Mlk_MPUse_g_Trg`.
+  This function calculates MP requirements for 1 cow using 4 functions: :py:func:`An_MPm_g_Trg`, :py:func:`Body_MPuse_g_Trg`,
+  :py:func:`Gest_MPuse_g_Trg`, and :py:func:`Mlk_MPuse_g_Trg`.
 
   For details on how each value is calculated, see the individual functions.
 
@@ -30,24 +30,24 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
       An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
       Body_MPuse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
       Gest_MPuse_g_Trg: Metabolizable protein requirement for gestation (g/d)
-      Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
+      Mlk_MPuse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
   
   An_MPm_g_Trg = calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict)
   # An_MPm_g_Trg: MP requirement for maintenance, g/d
   
-  Body_MPUse_g_Trg = calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain,
+  Body_MPuse_g_Trg = calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain,
                                                 Trg_RsrvGain, coeff_dict)
-  # Body_MPUse_g_Trg: MP requirement for frame and reserve gain, g/d
+  # Body_MPuse_g_Trg: MP requirement for frame and reserve gain, g/d
   
-  Gest_MPUse_g_Trg = calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict)
-  # Gest_MPUse_g_Trg: MP requirement for gestation, g/d
+  Gest_MPuse_g_Trg = calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict)
+  # Gest_MPuse_g_Trg: MP requirement for gestation, g/d
   
-  Mlk_MPUse_g_Trg = calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict)
-  # Mlk_MPUse_g_Trg: MP requirement for milk production, g/d
+  Mlk_MPuse_g_Trg = calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict)
+  # Mlk_MPuse_g_Trg: MP requirement for milk production, g/d
   
-  An_MPuse_g_Trg = An_MPm_g_Trg + Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg # Line 2680
-  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg
+  An_MPuse_g_Trg = An_MPm_g_Trg + Body_MPuse_g_Trg + Gest_MPuse_g_Trg + Mlk_MPuse_g_Trg # Line 2680
+  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg
 
 
 def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
@@ -79,7 +79,7 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
   # Scrf_CP_g: Scurf CP, g
   # Body_NP_CP: Conversion of CP to NP
   # Scrf_NP_g: Scurf NP, g
-  # Scrf_MPUse_g_Trg: Scurf MP, g
+  # Scrf_MPuse_g_Trg: Scurf MP, g
   # Ur_Nend_g: Urinary endogenous N, g
   # Ur_NPend_g: Urinary endogenous NP, g
   # Ur_MPendUse_g: Urinary endogenous MP, g
@@ -93,17 +93,17 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
 #   Km_MP_NP_Trg = 0.69                                              # Lines 54, 2596, 2651 and 2652
   Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg']                    # Line 2668
   
-  #Scrf_MPUse_g_Trg
+  #Scrf_MPuse_g_Trg
   Scrf_CP_g = 0.20 * An_BW**0.60                                   # Line 1964
 #   Body_NP_CP = 0.86                                                # Line 1963
   Scrf_NP_g = Scrf_CP_g * coeff_dict['Body_NP_CP']                               # Line 1966
-  Scrf_MPUse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']                       # Line 2670
+  Scrf_MPuse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']                       # Line 2670
   
   Ur_Nend_g = 0.053 * An_BW                                        # Line 2029
   Ur_NPend_g = Ur_Nend_g * 6.25                                    # Line 2030
   Ur_MPendUse_g = Ur_NPend_g                                       # Line 2672
   
-  An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPUse_g_Trg + Ur_MPendUse_g # Line 2679
+  An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPuse_g_Trg + Ur_MPendUse_g # Line 2679
   return(An_MPm_g_Trg)
 
 
@@ -212,7 +212,7 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict):
       coeff_dict (Dict): Dictionary containing all coefficients for the model
 
   Returns:
-      Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
+      Mlk_MPuse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
   req_coeffs = ['Kl_MP_NP_Trg']
   check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
@@ -222,8 +222,8 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict):
   Trg_Mlk_NP_g = Trg_MilkProd*1000 * Trg_MilkTPp/100               # Line 2205
 #   Kl_MP_NP_Trg = 0.69                                              # Line 54, 2596, 2651, 2654
   
-  Mlk_MPUse_g_Trg = Trg_Mlk_NP_g/ coeff_dict['Kl_MP_NP_Trg']                     # Line 2677
-  return(Mlk_MPUse_g_Trg)
+  Mlk_MPuse_g_Trg = Trg_Mlk_NP_g/ coeff_dict['Kl_MP_NP_Trg']                     # Line 2677
+  return Mlk_MPuse_g_Trg
 
 
 def execute_MP_requirement(row):

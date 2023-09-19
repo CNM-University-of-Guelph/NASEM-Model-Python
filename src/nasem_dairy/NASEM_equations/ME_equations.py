@@ -30,7 +30,7 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
     Returns:
         Trg_MEuse (Number): A number with the units Mcal/d.
         An_MEmUse (Number): Metabolizable energy requirement for maintenance, Mcal/d
-        An_MEgain (Number): Metabolizble energy requirement for frame and reserve gain, Mcal/d
+        An_MEgain (Number): Metabolizable energy requirement for frame and reserve gain, Mcal/d
         Gest_MEuse (Number): Metabolizable energy requirement for gestation, Mcal/d
         Trg_Mlk_MEout (Number): A number with the units Mcal/day.
         Trg_NEmilk_Milk (Number): Net energy content of milk, Mcal
