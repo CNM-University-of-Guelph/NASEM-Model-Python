@@ -157,5 +157,8 @@ coeff_dict = {
     'TT_dcFA_Base': 73,
     'TT_dcFat_Base': 68,
 # For Heifer check in calculate_MP_requiement
-    'En_CP': 5.65
+    'En_CP': 5.65,
+# For Heifer and dry cow DMI claculations
+    'Ka_LateGest_DMIn': 1.46, # % of BW,
+    'Kc_LateGest_DMIn': -0.035
 }

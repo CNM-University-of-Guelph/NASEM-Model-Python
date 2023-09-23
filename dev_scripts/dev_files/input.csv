@@ -1,13 +1,13 @@
 ﻿Location,Variable,Value,Expected Value
 equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
-equation_selection,DMI_pred,1,int (0 or 1)
-diet_info,Alfalfa meal,30,float
-diet_info,Canola meal,24.6,float
-diet_info,"Corn silage, typical",20,float
-diet_info,"Corn grain HM, coarse grind",15,float
+equation_selection,DMIn_eqn,8,int (0-17)
+diet_info,Alfalfa meal,8.2101564407,float
+diet_info,Canola meal,6.7323288918,float
+diet_info,"Corn silage, typical",5.4734377861,float
+diet_info,"Corn grain HM, coarse grind",4.1050782204,float
 animal_input,An_Parity_rl,2,int
 animal_input,Trg_MilkProd,35,float
-animal_input,An_BW,70,float
+animal_input,An_BW,624.795,float
 animal_input,An_BCS,3,float
 animal_input,An_LactDay,150,int
 animal_input,Trg_MilkFatp,3.8,float
