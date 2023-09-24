@@ -259,5 +259,5 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
         GrUter_BWgain = Uter_BWgain
 
-    return GrUter_BWgain
+    return GrUter_BWgain, GrUter_Wt
 
