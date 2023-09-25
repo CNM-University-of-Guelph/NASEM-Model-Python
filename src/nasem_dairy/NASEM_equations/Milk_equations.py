@@ -72,7 +72,7 @@ def calculate_Mlk_NP_g(df, Dt_idRUPIn, Du_idMiCP_g, An_DEIn, An_DETPIn, An_DENPN
 
     if An_StatePhys != "Lactating Cow":                 # Line 2204
         Mlk_NP_g = 0
-
+    
     return Mlk_NP_g, An_DigNDF, An_MPIn, An_DEInp
 
 

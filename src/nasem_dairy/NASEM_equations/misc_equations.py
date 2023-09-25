@@ -63,8 +63,13 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     ####################
     feed_columns = ['Fd_Arg_CP', 'Fd_His_CP', 'Fd_Ile_CP', 'Fd_Leu_CP', 'Fd_Lys_CP', 'Fd_Met_CP', 'Fd_Phe_CP', 'Fd_Thr_CP', 'Fd_Trp_CP', 'Fd_Val_CP', 'Fd_dcRUP']
     df_f = pd.DataFrame(feed_data[feed_columns])
-    df_f['Fd_RUPIn'] = pd.Series(diet_info['Fd_RUPIn'])
-   
+
+    df_f['Fd_RUPIn'] = None
+    dict_Fd_RUPIn = diet_info.set_index('Feedstuff')['Fd_RUPIn'].to_dict()
+    for feedstuff_name in df_f.index:
+        RUPin_value = dict_Fd_RUPIn.get(feedstuff_name)
+        df_f.loc[feedstuff_name, 'Fd_RUPIn'] = RUPin_value
+        
     ####################
     # Define Variables
     ####################
@@ -152,7 +157,7 @@ def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
                                                 - AA_values.loc[AA, 'mPrt_AA_0.1'] * AA_values.loc[AA, 'mPrtmx_AA2']) \
                                                 - 2 * AA_values.loc[AA, 'mPrtmx_AA2']) \
                                                 / (AA_values.loc[AA, 'AA_mPrtmx'] * 0.1)
-
+    
     # df_f and Dt_IdAARUPIn not being returned but can be if values are needed outside this function
     # Currently they are not used anywhere else
     return AA_values, Du_MiCP_g
@@ -259,5 +264,5 @@ def calculate_GrUter_BWgain(Fet_BWbrth, An_AgeDay, An_GestDay, An_GestLength, An
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
         GrUter_BWgain = Uter_BWgain
 
-    return GrUter_BWgain
+    return GrUter_BWgain, GrUter_Wt
 
