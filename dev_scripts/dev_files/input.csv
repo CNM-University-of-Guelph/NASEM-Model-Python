@@ -23,4 +23,4 @@ animal_input,Fet_BWbrth,44.1,float
 animal_input,An_AgeDay,820.8,int
 animal_input,An_305RHA_MlkTP,280,float
 animal_input,An_StatePhys,Lactating Cow,str
-animal_input,An_Breed,Holstein,str(only Holstein and Jersey are used)
+animal_input,An_Breed,Holstein,str (Holstein or Jersey)
