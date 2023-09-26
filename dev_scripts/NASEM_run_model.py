@@ -38,6 +38,9 @@ import pandas as pd
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
 diet_info, animal_input, equation_selection = nd.read_input('../src/nasem_dairy/data/input.txt')
 
+# Load feed library
+feed_library = pd.read_csv("./test_files/NASEM_feed_library_useredited.csv")
+
 # import description strings for variable names in model
 var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').query('Description != "Duplicate"')
 
@@ -47,7 +50,7 @@ var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').quer
 
 # Assign values here so they can be see in environment
 # coeff_dict is imported from ration_balancer, see coeff_dict.py
-NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, '../src/nasem_dairy/data/diet_database.db', nd.coeff_dict)
+NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, feed_library, nd.coeff_dict)
 
 
 # Display results, temporary

@@ -71,6 +71,26 @@ def read_input(input):
     return diet_info, animal_input, equation_selection
 
 
+def fl_get_feed_rows(feeds_to_get: list, 
+                     feed_lib_df: pd.DataFrame) -> pd.DataFrame:
+    '''
+    A function that takes a list of feed names to filter the nasem feed library (as a pandas dataframe).
+    This was originally implemented using a database but this is an alternative that uses only a df and produces the same output.
+    '''
+
+    # Filter df using list from user
+    selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
+
+    # set names as index for downstream
+    selected_feed_data = selected_feed_data.set_index('Fd_Name')
+
+    # Clean names:
+    selected_feed_data.index = selected_feed_data.index.str.strip()
+
+    return selected_feed_data
+
+
+
 def fl_get_rows(feeds_to_get, path_to_db):
     conn = sqlite3.connect(path_to_db)
 

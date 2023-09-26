@@ -1,7 +1,7 @@
 # NASEM model - EXECUTE
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_rows, get_nutrient_intakes
+from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
 from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
@@ -11,7 +11,7 @@ from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
 
 
 
-def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_dict):
+def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
     This will take all inputs and execute functions in order to return model outputs
 
@@ -20,6 +20,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
         animal_input (_type_): _description_
         equation_selection (_type_): _description_
         path_to_db (str): A string of filepath (including file name) of sqlite3 database with feed library
+        feed_library_df (pd.DataFrame): A df which contains the NASEM 2021 feed library
         coeff_dict (dict): A dictionary of coefficients needed by model, in coeff_dict.py
     
     Returns:
@@ -33,7 +34,8 @@ def NASEM_model(diet_info, animal_input, equation_selection, path_to_db, coeff_d
     
     # list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data
     list_of_feeds = diet_info['Feedstuff'].tolist()
-    feed_data = fl_get_rows(list_of_feeds, path_to_db)
+    # feed_data = fl_get_rows(list_of_feeds, path_to_db)
+    feed_data = fl_get_feed_rows(list_of_feeds, feed_library_df)
 
     # Scale %_DM_intake to 100%
     user_perc = diet_info['%_DM_user'].sum()
