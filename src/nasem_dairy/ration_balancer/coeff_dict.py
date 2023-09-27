@@ -161,5 +161,12 @@ coeff_dict = {
 
 # From heifer_growth
     'Ka_LateGest_DMIn': 1.47,
-    'Kc_LateGest_DMIn': -0.035
+    'Kc_LateGest_DMIn': -0.035,
+
+# For GE calculation
+    'En_CP': 5.65,
+    'En_FA': 9.4,
+    'En_St': 4.23,
+    'En_NDF': 4.2,
+    'En_rOM': 4.0
 }

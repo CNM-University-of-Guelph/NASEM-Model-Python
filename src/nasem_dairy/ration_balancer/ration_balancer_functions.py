@@ -148,12 +148,17 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
     # Anything in the R code that references f$"variable" should be included here where "variable" is a column
     # Any values in the R code where Dt_"variable" = sum(f$"variable") are equivalent to the column "variable" in the 'Diet' row
     req_coeffs = ['Fd_dcrOM', 'fCPAdu', 'KpFor', 'KpConc', 'IntRUP', 
-                  'refCPIn', 'TT_dcFA_Base', 'TT_dcFat_Base']
+                  'refCPIn', 'TT_dcFA_Base', 'TT_dcFat_Base', 'En_CP',
+                  'En_FA', 'En_St', 'En_NDF', 'En_rOM']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     
     # Remove the 'Diet' row if it exists before recalculating, otherwise, the new sum includes the old sum when calculated
     if 'Diet' in df.index:
         df = df.drop(index='Diet')
+
+    # Adjust kg_user so that the sum is equal to animal_input['DMI'], which may have been adjusted by the DMI predictions the user selected
+    df['kg_user'] = df['Fd_DMInp'] * animal_input['DMI']
+
 
     # Define the dictionary of component names, this is the list of all the values you need to calculate
     # Some values will be calculated as an intermediate step for other values and therefore do no need to be listed
@@ -166,6 +171,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
         'Fd_St': 'Starch',
         'Fd_CFat': 'Crude Fat',
         'Fd_Ash': 'Ash',
+        'Fd_FA': 'Fatty Acids',
         'Fd_DigNDFIn_Base': 'Digestable NDF Intake',
         'Fd_DigStIn_Base': 'Digestable Starch Intake',
         'Fd_DigrOMtIn': 'Digestable Residual Organic Matter Intake',
@@ -175,11 +181,13 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
         'Fd_ForNDFIn': ' Forage NDF Intake',
         'Fd_FAIn': 'Fatty Acid Intake',
         'Fd_DigC160In': 'C160 FA Intake',
-        'Fd_DigC183In': 'C183 FA Intake'
+        'Fd_DigC183In': 'C183 FA Intake',
+        'Fd_TPIn': 'True Protein Intake',
+        'Fd_GEIn': 'Gross Energy Intake'
     }
    
     # List any values that have the units % DM
-    units_DM = ['Fd_CP', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash'] 
+    units_DM = ['Fd_CP', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash', 'Fd_FA'] 
 
     for intake, full_name in component_dict.items():
         if intake in units_DM:
@@ -296,6 +304,12 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
             df['Fd_DigC183In'] = df['TT_dcFdFA'] / 100 * df['Feedstuff'].map(feed_data['Fd_C183_FA']) / 100 * df['Feedstuff'].map(feed_data['Fd_FA']) / 100 * df['kg_user']
             df['Fd_DigC183In'] = df['TT_dcFdFA'] / 100 * df['Feedstuff'].map(feed_data['Fd_C183_FA']) / 100 * df['Feedstuff'].map(feed_data['Fd_FA']) / 100 * df['kg_user']
 
+        elif intake == 'Fd_TPIn':
+            df['Fd_TPIn'] = df['Fd_TP'] / 100 * df['kg_user']
+
+        elif intake == 'Fd_GEIn':
+            df['Fd_GE'] = (df['Fd_CP'] * coeff_dict['En_CP']) + (df['Fd_FA'] * coeff_dict['En_FA']) + (df['Fd_St'] * coeff_dict['En_St']) + (df['Fd_NDF'] * coeff_dict['En_NDF']) + ((1 - df['Fd_CP'] - df['Fd_FA'] - df['Fd_St'] - df['Fd_NDF'] - df['Fd_Ash']) * coeff_dict['En_rOM'])
+            df['Fd_GEIn'] = df['Fd_GE'] * df['kg_user']
 
     # Sum component intakes
     df.loc['Diet'] = df.sum()
@@ -310,5 +324,49 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
     return df
 
 
+def read_csv_input(path_to_file):
+    
+    animal_input = {}
+    equation_selection = {}
+    diet_info_data = {'Feedstuff': [], 'kg_user': []}
 
+    input_data = pd.read_csv(path_to_file)
+
+    for index, row in input_data.iterrows():
+        location = row['Location']
+        variable = row['Variable']
+        value = row['Value']
+        
+        if location == 'equation_selection':
+            equation_selection[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
+        elif location == 'animal_input':
+            animal_input[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
+        elif location == 'diet_info':
+            diet_info_data['Feedstuff'].append(variable)
+            diet_info_data['kg_user'].append(value)
+      
+    diet_info = pd.DataFrame(diet_info_data)
+    diet_info['kg_user'] = pd.to_numeric(diet_info['kg_user'], downcast="float")
+
+    return diet_info, animal_input, equation_selection
+
+
+def NDF_precalculation(diet_info, feed_data):
+    # Create df to perform calculations with
+    df_NDF = pd.DataFrame()
+    # Copy feed names from diet_info
+    df_NDF['Feedstuff'] = diet_info['Feedstuff'].copy()
+    df_NDF['kg_user'] = diet_info['kg_user'].copy()
+    # Drop the diet row from this df if it exists, this will prevent errors if a user called this function after running get_nutrient_intakes
+    df_NDF = df_NDF[df_NDF['Feedstuff'] != 'Diet']
+    # Get a % intake based on user entered kg/d
+    df_NDF['user_%_intake'] = df_NDF['kg_user'] / df_NDF['kg_user'].sum()
+    # Get NDF% of each feed as a decimal
+    df_NDF['Fd_NDF'] = df_NDF['Feedstuff'].map(feed_data['Fd_NDF']) / 100
+    # Calculate % NDF of diet
+    Dt_NDF = (df_NDF['Fd_NDF'] * df_NDF['user_%_intake']).sum()
+    # Cleanup
+    del(df_NDF)
+   
+    return Dt_NDF
 
