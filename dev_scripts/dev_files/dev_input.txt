@@ -1,0 +1,44 @@
+##### This file allows the user to select which feeds will be fed and set the amount to feed on a % DM basis #####
+
+
+### The '$' is for toggles to select from multiple calculation options ###
+$ Use_DNDF_IV: 0
+# There are 3 NDF Digestability estimates, 0=Lg based, 1=DNDF48 for forages, 2=DNDF48 for all
+# This selection should move somewhere else eventually
+
+$ DMI_pred: 1
+# 0 = use DMI prediction, 1 = user entered DMI
+
+
+
+### Set the Diet ###
+# The following format is used:
+# feed_name: %_DM_basis 
+
+Alfalfa meal: 16.3
+Canola meal: 10.2
+Corn silage, typical: 40
+Barley grain, dry, ground: 16.32
+Pasture, grass: 15
+
+
+
+### Animal Input (line must start with *) ###
+* An_Parity_rl: 2
+* Trg_MilkProd: 35
+* An_BW: 700
+* An_BCS: 3
+* An_LactDay: 150
+* Trg_MilkFatp: 3.8
+* Trg_MilkTPp: 3.10
+* Trg_MilkLacp: 4.85
+* DMI: 24.521
+* An_BW_mature: 700
+* Trg_FrmGain: 0.19
+* An_GestDay: 46
+* An_GestLength: 280
+* Trg_RsrvGain: 0
+* Fet_BWbrth: 44.1
+* An_AgeDay: 1620
+* An_305RHA_MlkTP: 280
+# An_StatePhys: Lactating Cow

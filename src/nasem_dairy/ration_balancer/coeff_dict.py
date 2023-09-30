@@ -155,5 +155,18 @@ coeff_dict = {
     'IntRUP': -0.086,                                   #Intercept, kg/d
     'refCPIn': 3.39,                                    #average CPIn for the DigestaFlow dataset, kg/d.  3/21/18, MDH
     'TT_dcFA_Base': 73,
-    'TT_dcFat_Base': 68
+    'TT_dcFat_Base': 68,
+# For Heifer check in calculate_MP_requiement
+    'En_CP': 5.65,
+
+# From heifer_growth
+    'Ka_LateGest_DMIn': 1.47,
+    'Kc_LateGest_DMIn': -0.035,
+
+# For GE calculation
+    'En_CP': 5.65,
+    'En_FA': 9.4,
+    'En_St': 4.23,
+    'En_NDF': 4.2,
+    'En_rOM': 4.0
 }
