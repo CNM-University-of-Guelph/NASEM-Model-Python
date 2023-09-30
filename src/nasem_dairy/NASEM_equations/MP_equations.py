@@ -3,8 +3,8 @@ import pandas as pd
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
-def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
-                             Trg_RsrvGain, Trg_MilkProd, Trg_MilkTPp, GrUter_BWgain, coeff_dict):
+def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Frm_NPgain, Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
+                             Trg_RsrvGain, Trg_MilkProd, Trg_MilkTPp, GrUter_BWgain, An_StatePhys, coeff_dict):
   '''
   Calculate metabolizable protein (MP) requirement.
 
@@ -32,12 +32,14 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
       Gest_MPuse_g_Trg: Metabolizable protein requirement for gestation (g/d)
       Mlk_MPuse_g_Trg: Metabolizable protein requirement for milk production (g/d)
   '''
-  
-  An_MPm_g_Trg = calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict)
+  req_coeffs = ['En_CP']
+  check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+
+  An_MPm_g_Trg = calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, An_StatePhys, coeff_dict)
   # An_MPm_g_Trg: MP requirement for maintenance, g/d
   
-  Body_MPuse_g_Trg = calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain,
-                                                Trg_RsrvGain, coeff_dict)
+  Body_MPuse_g_Trg, Body_NPgain, Rsrv_NPgain, Body_NPgain_g = calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain,
+                                                Trg_RsrvGain, An_StatePhys, coeff_dict)
   # Body_MPuse_g_Trg: MP requirement for frame and reserve gain, g/d
   
   Gest_MPuse_g_Trg = calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict)
@@ -47,10 +49,38 @@ def calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain
   # Mlk_MPuse_g_Trg: MP requirement for milk production, g/d
   
   An_MPuse_g_Trg = An_MPm_g_Trg + Body_MPuse_g_Trg + Gest_MPuse_g_Trg + Mlk_MPuse_g_Trg # Line 2680
+
+  # Recalculate Body_MPuse_g_Trg for Heifers
+  An_MEIn_approx = An_DEInp + An_DENPNCPIn + (An_DigTPaIn - Body_NPgain) * 4.0 + Body_NPgain * coeff_dict['En_CP'] - An_GasEOut
+
+  if An_StatePhys == "Heifer" and An_MPuse_g_Trg < ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx):
+    Min_MPuse_g = ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
+  else:
+    Min_MPuse_g = An_MPuse_g_Trg
+  
+  Diff_MPuse_g = Min_MPuse_g - An_MPuse_g_Trg
+
+  #Adjust MPuse based on Min_MPuse
+  if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
+    Frm_MPUse_g_Trg = Frm_MPUse_g_Trg + Diff_MPuse_g
+  
+    #Recalculate Kg_MP_NP
+    Frm_NPgain_g = Frm_NPgain * 1000
+    Kg_MP_NP_Trg = Frm_NPgain_g / Frm_MPUse_g_Trg
+
+    #Recalculate Rsrv and Body_MPUse
+    Rsrv_NPgain_g = Rsrv_NPgain * 1000
+    Rsrv_MPUse_g_Trg = Rsrv_NPgain_g / Kg_MP_NP_Trg
+    Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg
+
+    # Recalculate MP requirement 
+    An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg
+    print("An_MPuse_g_Trg has been recalculated")
+
   return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg
 
 
-def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
+def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, An_StatePhys, coeff_dict):
   '''
   Calculate metabolizable protein requirements for maintenance
 
@@ -93,11 +123,17 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
 #   Km_MP_NP_Trg = 0.69                                              # Lines 54, 2596, 2651 and 2652
   Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg']                    # Line 2668
   
+  if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
+    Fe_MPendUse_g_Trg = Fe_CPend_g / coeff_dict['Km_MP_NP_Trg']
+
   #Scrf_MPuse_g_Trg
   Scrf_CP_g = 0.20 * An_BW**0.60                                   # Line 1964
 #   Body_NP_CP = 0.86                                                # Line 1963
   Scrf_NP_g = Scrf_CP_g * coeff_dict['Body_NP_CP']                               # Line 1966
   Scrf_MPuse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']                       # Line 2670
+
+  if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
+    Scrf_MPuse_g_Trg = Scrf_CP_g / coeff_dict['Km_MP_NP_Trg'] 
   
   Ur_Nend_g = 0.053 * An_BW                                        # Line 2029
   Ur_NPend_g = Ur_Nend_g * 6.25                                    # Line 2030
@@ -107,7 +143,7 @@ def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, coeff_dict):
   return(An_MPm_g_Trg)
 
 
-def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, coeff_dict): 
+def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, An_StatePhys, coeff_dict): 
   '''
   Calculate metabolizable protein requirements for growth.
 
@@ -160,8 +196,8 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, c
   Body_NPgain = Frm_NPgain + Rsrv_NPgain                           # Line 2473
   Body_NPgain_g = Body_NPgain * 1000                               # Line 2475
 #   Kg_MP_NP_Trg = 0.69                                              # Line 54, 2665
-  Body_MPuse_g_Trg = Body_NPgain_g / coeff_dict['Kg_MP_NP_Trg']                  # Line 2675
-  return(Body_MPuse_g_Trg)
+  Body_MPuse_g_Trg = Body_NPgain_g / coeff_dict['Kg_MP_NP_Trg']                  # Line 2675   
+  return(Body_MPuse_g_Trg, Body_NPgain, Rsrv_NPgain, Body_NPgain_g)
 
 
 def calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict):
