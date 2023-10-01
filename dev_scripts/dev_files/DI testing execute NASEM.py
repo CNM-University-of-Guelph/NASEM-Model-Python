@@ -47,7 +47,7 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
     # Predict DMI for dry cows
     Dt_NDF = diet_info.loc['Diet', 'Fd_NDF_%_diet'] * 100
     if equation_selection['DMIn_eqn'] == [10,11]:
-        animal_input['DMI'] = dry_cow_equations(equation_selection['DMIn_eqn'], animal_input['An_BW'], animal_input['An_PrePartWk'], animal_input['An_GestDay'], animal_input['An_GestLength'], Dt_NDF, coeff_dict)
+        animal_input['DMI'] = nd.dry_cow_equations(equation_selection['DMIn_eqn'], animal_input['An_BW'], animal_input['An_PrePartWk'], animal_input['An_GestDay'], animal_input['An_GestLength'], Dt_NDF, coeff_dict)
 
 ########################################
 # Step 3: Micronutrient Calculations
@@ -72,7 +72,14 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
 ########################################
 # Intake calculations that require additional steps, need results from other calculations or values that need to be calculated for other functions
 
-    GrUter_BWgain, GrUter_Wt = nd.calculate_GrUter_BWgain(animal_input['Fet_BWbrth'], animal_input['An_AgeDay'], animal_input['An_GestDay'], animal_input['An_GestLength'], animal_input['An_LactDay'], animal_input['An_Parity_rl'], coeff_dict)
+    GrUter_BWgain, GrUter_Wt = nd.calculate_GrUter_BWgain(
+        animal_input['Fet_BWbrth'], 
+        animal_input['An_AgeDay'], 
+        animal_input['An_GestDay'], 
+        animal_input['An_GestLength'], 
+        animal_input['An_LactDay'], 
+        animal_input['An_Parity_rl'], 
+        coeff_dict)
 
     # This function could be renamed as it is doing all the DE intake calculations
     An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g, Du_idMiCP_g = nd.calculate_An_DEIn(diet_info.loc['Diet', 'Fd_DigNDFIn_Base'], diet_info.loc['Diet', 'Fd_NDFIn'], 
@@ -86,7 +93,7 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
 
     # Net energy/Metabolizable energy
     An_NE, An_MEIn, Frm_NPgain = nd.calculate_An_NE(diet_info.loc['Diet', 'Fd_CPIn'], diet_info.loc['Diet', 'Fd_FAIn'], Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CPend_g, animal_input['DMI'], animal_input['An_BW'], animal_input['An_BW_mature'], 
-                                     animal_input['Trg_FrmGain'], animal_input['Trg_RsrvGain'], GrUter_BWgain, nd.coeff_dict)
+                                     animal_input['Trg_FrmGain'], animal_input['Trg_RsrvGain'], GrUter_BWgain, coeff_dict)
 
 ########################################
 # Step 6: Requirement Calculations
