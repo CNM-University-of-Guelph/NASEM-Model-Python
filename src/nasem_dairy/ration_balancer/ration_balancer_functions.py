@@ -122,14 +122,14 @@ def fl_get_rows(feeds_to_get, path_to_db):
     return feed_data
 
 
-def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_dict):
+def get_nutrient_intakes(df, feed_data, DMI, equation_selection, coeff_dict):
     """
     Takes the feeds in the diet and the % dry matter intake and calculates nutrient supplies
 
     Parameters:
         df (Dataframe): The dataframe all the results will be stored in, must contain feed names and % DMI
         feed_data (Dataframe): Individual feed compositions
-        animal_input (Dict): Animal input parameters
+        DMI (number): Dry Matter Intake - normally from the animal_input dictionary
         equation_selection (Dict): Dictionary with values for every selectable equation
         coeff_dict (Dict): Dictionary containing all coefficients for the model
     
@@ -151,7 +151,7 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
         df = df.drop(index='Diet')
 
     # Adjust kg_user so that the sum is equal to animal_input['DMI'], which may have been adjusted by the DMI predictions the user selected
-    df['kg_user'] = df['Fd_DMInp'] * animal_input['DMI']
+    df['kg_user'] = df['Fd_DMInp'] * DMI
 
 
     # Define the dictionary of component names, this is the list of all the values you need to calculate
@@ -199,8 +199,8 @@ def get_nutrient_intakes(df, feed_data, animal_input, equation_selection, coeff_
         
 
         elif intake == 'Fd_DigNDFIn_Base':
-            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_user'] #* animal_input['DMI'] / 100
-            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_user'] #* animal_input['DMI'] / 100
+            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_user'] 
+            df['Fd_NDFIn'] = (df['Feedstuff'].map(feed_data['Fd_NDF']) / 100) * df['kg_user'] 
             df['TT_dcFdNDF_48h'] = 12 + 0.61 * df['Feedstuff'].map(feed_data['Fd_DNDF48_NDF'])
             Use_DNDF_IV = equation_selection['Use_DNDF_IV']
             if Use_DNDF_IV == 1 and df['Feedstuff'].map(feed_data['Fd_Conc']) < 100 and not np.isnan(df['TT_dcFdNDF_48h']):

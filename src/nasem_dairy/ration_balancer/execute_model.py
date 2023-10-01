@@ -81,7 +81,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     diet_info = get_nutrient_intakes(
         diet_info, 
         feed_data, 
-        animal_input, 
+        animal_input['DMI'], # What if we want predicted equations?
         equation_selection, 
         coeff_dict)
 
