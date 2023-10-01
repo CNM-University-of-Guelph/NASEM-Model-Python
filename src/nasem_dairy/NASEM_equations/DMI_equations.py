@@ -1,6 +1,13 @@
+from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
+import math
+
 def dry_cow_equations(DMIn_eqn, An_BW, An_PrePartWk, An_GestDay, An_GestLength, Dt_NDF, coeff_dict):
+    '''
+    ADD DOCSTRING
+    '''
+    
     req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']
-    nd.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
     Dt_NDF_drylim = Dt_NDF
     #constrain Dt_NDF to the range of 30 to 55% of DM
@@ -46,27 +53,39 @@ def dry_cow_equations(DMIn_eqn, An_BW, An_PrePartWk, An_GestDay, An_GestLength, 
     return return_DMI
 
 
-def heifer_growth(DMIn_eqn, Dt_NDF, An_BW, An_BW_mature, An_PrePartWk, coeff_dict):
-# Lines 317-379
-    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']     
-    nd.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
-#NRC 2020 Heifer Eqns. from the Transition Ch.
+
+
+def heifer_growth(DMIn_eqn, Dt_NDF, An_BW, An_BW_mature, An_PrePartWk, coeff_dict):
+    '''
+    ADD DOCSTRING
+    '''
+    # Lines 317-379
+    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']     
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+
+    #NRC 2020 Heifer Eqns. from the Transition Ch.
     Dt_NDFdev_DMI = Dt_NDF - (23.11 + 0.07968 * An_BW - 0.00006252 * An_BW**2)      # Line 316
-#Animal factors only, eqn. 2-3 NRC
+    
+    #Animal factors only, eqn. 2-3 NRC
     Dt_DMIn_Heif_NRCa = 0.022 * An_BW_mature * (1 - math.exp(-1.54 * An_BW / An_BW_mature))
-#Holstein, animal factors only
+    
+    #Holstein, animal factors only
     Dt_DMIn_Heif_H1 = 15.36 * (1 - math.exp(-0.0022 * An_BW))
-#Holstein x Jersey, animal factors only
+    
+    #Holstein x Jersey, animal factors only
     Dt_DMIn_Heif_HJ1 = 12.91 * (1 - math.exp(-0.00295 * An_BW))
-#Anim & diet factors, eqn 2-4 NRC
+    
+    #Anim & diet factors, eqn 2-4 NRC
     Dt_DMIn_Heif_NRCad = (0.0226 * An_BW_mature * (1 - math.exp(-1.47 * An_BW / An_BW_mature))) - (0.082 * (Dt_NDF - (23.1 + 56 * An_BW / An_BW_mature) - 30.6 *(An_BW / An_BW_mature)**2))
-#Holstein, animal factors and NDF
+    
+    #Holstein, animal factors and NDF
     Dt_DMIn_Heif_H2 = 15.79 * (1 - math.exp(-0.0021 * An_BW)) - (0.082 * Dt_NDFdev_DMI)
-#Holstein x Jersey, animal factors and NDF
+    
+    #Holstein x Jersey, animal factors and NDF
     Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)
 
-#Late Gestation eqn. from Hayirli et al., 2003) for dry cows and heifers
+    #Late Gestation eqn. from Hayirli et al., 2003) for dry cows and heifers
     if An_PrePartWk < -3:       #constrain to the interval 0 to -3.
         An_PrePartWklim = -3
     else:
@@ -75,7 +94,7 @@ def heifer_growth(DMIn_eqn, Dt_NDF, An_BW, An_BW_mature, An_PrePartWk, coeff_dic
     if An_PrePartWk > 0:
         An_PrePartWklim = 0
 
-#the estimated length of time in the close-up pen
+    #the estimated length of time in the close-up pen
     An_PrePartWkDurat = An_PrePartWklim * 2  
 
     Dt_NDF_drylim = Dt_NDF
@@ -87,22 +106,23 @@ def heifer_growth(DMIn_eqn, Dt_NDF, An_BW, An_BW_mature, An_PrePartWk, coeff_dic
 
     Kb_LateGest_DMIn = -(0.365 - 0.0028 * Dt_NDF_drylim)
 
-#These 2 values are called by other functions, must be calculated everytime
-#Late gestation individual animal prediction, % of BW.  Use to assess for a specific day for a given animal
+    #These 2 values are called by other functions, must be calculated everytime
+    #Late gestation individual animal prediction, % of BW.  Use to assess for a specific day for a given animal
     Dt_DMIn_BW_LateGest_i = coeff_dict['Ka_LateGest_DMIn'] + Kb_LateGest_DMIn * An_PrePartWklim + coeff_dict['Kc_LateGest_DMIn'] * An_PrePartWklim**2
-#Late gestation Group/Pen mean DMI/BW for an interval of 0 to PrePart_WkDurat.  Assumes pen steady state and PrePart_wk = pen mean
+    
+    #Late gestation Group/Pen mean DMI/BW for an interval of 0 to PrePart_WkDurat.  Assumes pen steady state and PrePart_wk = pen mean
     Dt_DMIn_BW_LateGest_p = (coeff_dict['Ka_LateGest_DMIn'] * An_PrePartWkDurat + Kb_LateGest_DMIn / 2 * An_PrePartWkDurat**2 + coeff_dict['Kc_LateGest_DMIn'] / 3 * An_PrePartWkDurat**3) / An_PrePartWkDurat
 
-#Individual intake for the specified day prepart or the pen mean intake for the interval, 0 to PrePart_WkDurat
+    #Individual intake for the specified day prepart or the pen mean intake for the interval, 0 to PrePart_WkDurat
     Dt_DMIn_Heif_LateGestInd = 0.88 * An_BW * Dt_DMIn_BW_LateGest_i / 100 #Individual animal
     Dt_DMIn_Heif_LateGestPen = 0.88 * An_BW * Dt_DMIn_BW_LateGest_p / 100 #Pen mean
 
-#Switch to the group transition eqn. when less than An_PrePartWkDurat and predicted transition DMI is less than far off DMI
-#These equations generally are discontinuous at -3 weeks, as Dt_DMIn_xxx is greater than Dt_DMIn_xxx_LateGest at -3.  
-#Should calculate the decline using the far off DMIn as a reference point, or calculate the discontinuity at the
-#point of transition and adjust the close-up DMIn by addition of the gap.
+    #Switch to the group transition eqn. when less than An_PrePartWkDurat and predicted transition DMI is less than far off DMI
+    #These equations generally are discontinuous at -3 weeks, as Dt_DMIn_xxx is greater than Dt_DMIn_xxx_LateGest at -3.  
+    #Should calculate the decline using the far off DMIn as a reference point, or calculate the discontinuity at the
+    #point of transition and adjust the close-up DMIn by addition of the gap.
 
-#NRC 2020 pen intakes
+    #NRC 2020 pen intakes
     if An_PrePartWk > An_PrePartWkDurat:
         Dt_DMIn_Heif_NRCap = min(Dt_DMIn_Heif_NRCa, Dt_DMIn_Heif_LateGestPen)
         Dt_DMIn_Heif_NRCadp = min(Dt_DMIn_Heif_NRCad, Dt_DMIn_Heif_LateGestPen)
@@ -118,7 +138,7 @@ def heifer_growth(DMIn_eqn, Dt_NDF, An_BW, An_BW_mature, An_PrePartWk, coeff_dic
         Dt_DMIn_Heif_H2p = Dt_DMIn_Heif_H2
         Dt_DMIn_Heif_HJ2p = Dt_DMIn_Heif_HJ2
 
-#NRC 2020 individual animal intakes
+    #NRC 2020 individual animal intakes
     if An_PrePartWk > An_PrePartWkDurat:
         Dt_DMIn_Heif_NRCai = min(Dt_DMIn_Heif_NRCa, Dt_DMIn_Heif_LateGestInd)
         Dt_DMIn_Heif_NRCadi =  min(Dt_DMIn_Heif_NRCad, Dt_DMIn_Heif_LateGestInd)
