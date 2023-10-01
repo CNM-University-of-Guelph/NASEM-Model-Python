@@ -2,6 +2,9 @@ import pandas as pd
 import math
 
 def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
+    '''
+    ADD DOCSTRING
+    '''
     # Currently calf calculations have not been incorporated into the model, Calf liquid feed DMI (Dt_DMIn_ClfLiq) is therefore set to 0
     # Once calf calculations are added a real value can be passed here
 
@@ -81,7 +84,7 @@ def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
         mineral_values.loc[macro, 'Dt_mineralIn'] = df_minerals['Fd_{}In'.format(macro)].sum()  # Lines 762-771
         # Macro minerals, % of DM
         mineral_values.loc[macro, 'Dt_macro'] = mineral_values.loc[macro, 'Dt_mineralIn'] / Dt_DMIn / 1000 * 100  
-    
+
     for macro in abs_macro_minerals:
         if macro == 'P':
             df_minerals['Fd_absPIn'] = df_minerals['Fd_PIn'] * df_minerals['Fd_acPtot'] # Line 1852
@@ -95,8 +98,8 @@ def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
             if An_StatePhys == 'Calf':
                 Dt_acMg = 1
             else:
-                # Dt_acMg = (44.1 - 5.42 * math.log(mineral_values.loc['K', 'Dt_macro'] * 10) - 0.08 * df_minerals['Fd_MgIn_min'].sum() / df_minerals['Fd_MgIn'].sum() * 100) / 100
-                Dt_acMg = (44.1 - 5.42 * math.log(float(mineral_values.loc['K', 'Dt_macro']) * 10) - 0.08 * df_minerals['Fd_MgIn_min'].sum() / df_minerals['Fd_MgIn'].sum() * 100) / 100
+                # Awkward to use .iloc[0] after a .loc[] but prevents warning from math.log()
+                Dt_acMg = (44.1 - 5.42 * math.log(mineral_values.loc['K', 'Dt_macro'].iloc[0] * 10.0) - 0.08 * df_minerals['Fd_MgIn_min'].sum() / df_minerals['Fd_MgIn'].sum() * 100) / 100
             mineral_values.loc[macro, 'Abs_mineralIn'] = Dt_acMg * df_minerals['Fd_MgIn_min'].sum()
         else:
             mineral_values.loc[macro, 'Abs_mineralIn'] = df_minerals['Fd_abs{}In'.format(macro)].sum()
@@ -124,6 +127,9 @@ def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
 
 
 def vitamin_supply(feed_data, diet_info):
+    '''
+    ADD DOCSTRING
+    '''
     vitamins = ['VitA', 'VitD', 'VitE', 'Choline', 'Biotin', 'Niacin', 'B_Carotene']
     vitamin_values = pd.DataFrame(index=vitamins)
 
@@ -153,7 +159,10 @@ def vitamin_supply(feed_data, diet_info):
 
 def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_mature, An_BW, Trg_FrmGain, Trg_RsrvGain, An_GestDay, GrUter_Wt, Mlk_NP_g, Trg_MilkProd, Trg_MilkTPp, Abs_CaIn, MlkNP_Milk, Abs_PIn, Dt_PIn, Abs_MgIn, Abs_NaIn,
                          Abs_ClIn, Abs_KIn, Dt_SIn, Abs_CoIn, Abs_CuIn, Dt_IIn, Abs_FeIn, Abs_MnIn, Dt_SeIn, Abs_ZnIn, Dt_K, Dt_Na, Dt_Cl, Dt_S):
-    
+    '''
+    ADD DOCSTRING
+    '''
+
     # Calculations that should be moved in the future
     Frm_Gain = Trg_FrmGain
     Rsrv_Gain = Trg_RsrvGain
