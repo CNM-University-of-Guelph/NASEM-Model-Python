@@ -234,7 +234,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
     # Metabolizable Energy Requirements
     (Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, 
-     Trg_Mlk_MEout, Trg_NEmilk_Milk) = calculate_ME_requirement(
+     Trg_Mlk_MEout, Trg_NEmilk_Milk, Frm_NEgain, Rsrv_NEgain) = calculate_ME_requirement(
         animal_input['An_BW'], 
         animal_input['DMI'], 
         animal_input['Trg_MilkProd'], 
