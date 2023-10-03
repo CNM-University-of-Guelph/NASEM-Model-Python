@@ -76,8 +76,11 @@ def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Fr
     # Recalculate MP requirement 
     An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg
     print("An_MPuse_g_Trg has been recalculated")
-
-  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg
+  
+  # calculate on a kg basis to allow easier comparison the MP intake
+  An_MPuse_kg_Trg = An_MPuse_g_Trg / 1000
+  
+  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPuse_kg_Trg
 
 
 def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, An_StatePhys, coeff_dict):
@@ -261,56 +264,3 @@ def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict):
   Mlk_MPuse_g_Trg = Trg_Mlk_NP_g/ coeff_dict['Kl_MP_NP_Trg']                     # Line 2677
   return Mlk_MPuse_g_Trg
 
-
-def execute_MP_requirement(row):
-    '''
-    Execute :py:func:`calculate_MP_requirement` on a dataframe. 
-
-    This is a helper function that takes a series as input. The series represents 1 row of data from a dataframe with the following
-    values and is given to :py:func:`calculate_MP_requirement`: "Dt_NDFIn", "An_BW", "Dt_DMIn", "Trg_MilkProd",
-    "An_BW_mature", "Trg_FrmGain", "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth",
-    "An_LactDay", "An_Parity_rl", "Trg_MilkTPp", and "Trg_RsrvGain".
-
-    The values required in the dataframe are described in :py:func:`calculate_MP_requirement`.
-
-    Parameters:
-        row (Series): A series that contains all the required values.
-
-    Returns:
-        An_MPuse_g_Trg (Number): A single number representing the metabolizable protein requirement (g/d).
-    '''
-    # Check if the series contains the required column names
-    required_columns = {"An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
-                        "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",
-                        "An_Parity_rl", "Trg_MilkTPp", "Trg_RsrvGain", "Dt_NDFIn"}
-
-    if not required_columns.issubset(row.index):
-        missing_columns = list(required_columns - set(row.index))
-        raise ValueError(f"Required columns are missing: {missing_columns}")
-
-    ##########################################################################
-    # Calculate Metabolizable Protein
-    ##########################################################################
-    Dt_NDFIn = row['Dt_NDFIn']
-    Dt_DMIn = row['Dt_DMIn']
-    An_BW = row['An_BW']
-    An_BW_mature = row['An_BW_mature']
-    Trg_FrmGain = row['Trg_FrmGain']
-    Trg_RsrvGain = row['Trg_RsrvGain']
-    An_GestDay = row['An_GestDay']
-    An_GestLength = row['An_GestLength']
-    An_AgeDay = row['An_AgeDay']
-    Fet_BWbrth = row['Fet_BWbrth']
-    An_LactDay = row['An_LactDay']
-    An_Parity_rl = row['An_Parity_rl']
-    Trg_MilkProd = row['Trg_MilkProd']
-    Trg_MilkTPp = row['Trg_MilkTPp']
-
-    # Call the function with the extracted values
-    An_MPuse_g_Trg = calculate_MP_requirement(Dt_NDFIn, Dt_DMIn, An_BW, An_BW_mature,
-                                              Trg_FrmGain, Trg_RsrvGain, An_GestDay,
-                                              An_GestLength, An_AgeDay, Fet_BWbrth,
-                                              An_LactDay, An_Parity_rl, Trg_MilkProd,
-                                              Trg_MilkTPp)
-
-    return An_MPuse_g_Trg

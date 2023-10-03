@@ -23,8 +23,9 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CP
         coeff_dict (Dict): Dictionary containing all coefficients for the model
     
     Returns:
-        An_NE: Net energy, Mcal/kg 
-        An_MEIn: Metabolizable energy intake, Mcal/kg
+        An_NE: Net energy, Mcal/kg DM
+        An_NE_In: Net energy intake, Mcal/d
+        An_MEIn: Metabolizable energy intake, Mcal/d
     """
 
     req_coeffs = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_BWgain', 
@@ -71,7 +72,7 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CP
     An_NE_In = An_MEIn * 0.66                                  # Line 2762
     An_NE = An_NE_In / Dt_DMIn                                 # Line 2763
 
-    return An_NE, An_MEIn, Frm_NPgain
+    return An_NE, An_NE_In, An_MEIn, Frm_NPgain
 
 
 def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, Dt_CPIn, Dt_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, coeff_dict):

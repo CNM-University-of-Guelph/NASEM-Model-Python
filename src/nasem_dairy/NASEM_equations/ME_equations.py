@@ -39,7 +39,7 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
     An_MEmUse = calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict)
 # An_MEmUse: ME requirement for maintenance, Mcal/d
   
-    An_MEgain = calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_dict, Trg_RsrvGain)
+    An_MEgain, Frm_NEgain, Rsrv_NEgain = calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_dict, Trg_RsrvGain)
 # An_MEgain: ME requirement for frame and reserve gain, Mcal/d
   
     Gest_MEuse = calculate_Gest_MEuse(GrUter_BWgain, coeff_dict)
@@ -51,13 +51,14 @@ def calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
   
     Trg_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout   # Line 2923
       
-    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout, Trg_NEmilk_Milk
+    return Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout, Trg_NEmilk_Milk, Frm_NEgain, Rsrv_NEgain
 
 
 def calculate_An_MEmUse(An_BW, Dt_DMIn, coeff_dict, Dt_PastIn=0, Dt_PastSupplIn=0, Env_DistParlor=0, Env_TripsParlor=0, Env_Topo=0):
     '''
     Calculate metabolizable energy requirements for maintenance
 
+    # TODO: update docs - execute_ME_requirement no longer used
     Takes the following columns from a dataframe passed by :py:func:`execute_ME_requirement`
     and gives result to :py:func:`calculate_ME_requirement`:
     "An_BW", "Dt_DMIn", "Dt_PastIn", "Dt_PastSupplIn", "Env_DistParlor", "Env_TripsParlor",
@@ -120,7 +121,8 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
                         Trg_RsrvGain=0):
    '''
    Calculate metabolizable energy requirements for growth.
-
+   
+   # TODO: update docs - execute_ME_requirement no longer used
    Takes the following columns from a dataframe passed by :py:func:`execute_ME_requirement` 
    and gives result to :py:func:`calculate_ME_requirement`:
    "Trg_MilkProd", "An_BW", "An_BW_mature", "Trg_FrmGain", and "Trg_RsrvGain"
@@ -195,13 +197,15 @@ def calculate_An_MEgain(Trg_MilkProd, An_BW, An_BW_mature, Trg_FrmGain, coeff_di
    Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE']                             # Line 2872
       
    An_MEgain = Rsrv_MEgain + Frm_MEgain                           # Line 2873
-   return(An_MEgain)
+   return(An_MEgain, Frm_NEgain, Rsrv_NEgain)
 
 
 def calculate_Gest_MEuse(GrUter_BWgain, coeff_dict):
   '''
   Calculate metabolizable energy requirements for gestation.
 
+  # TODO: update docs - execute_ME_requirement no longer used
+   
   Takes the following columns from a dataframe passed by :py:func:`execute_ME_requirement` 
   and gives result to :py:func:`calculate_ME_requirement`:
   "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", and "An_Parity_rl"
@@ -232,6 +236,8 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
    '''
    Calculate metabolizable energy requirements for milk production.
 
+   # TODO: update docs - execute_ME_requirement no longer used
+   
    Takes the following columns from a dataframe passed by :py:func:`execute_ME_requirement` 
    and gives result to :py:func:`calculate_ME_requirement`:
    "Trg_MilkProd", "Trg_MilkFatp", "Trg_MilkTPp", and "Trg_MilkLacp".
@@ -261,59 +267,4 @@ def calculate_Trg_Mlk_MEout(Trg_MilkProd, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLac
    Trg_Mlk_MEout = Trg_Mlk_NEout / coeff_dict['Kl_ME_NE']                       # Line 2889
    return Trg_Mlk_MEout, Trg_NEmilk_Milk
 
-
-def execute_ME_requirement(row):
-    '''
-    Execute :py:func:`calculate_ME_requirement` on a dataframe. 
-
-    This is a helper function that takes a series as the input. The series represents 1 row of data from a dataframe with the following
-    values and is given to :py:func:`calculate_ME_requirement`: 
-    "An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain", 
-    "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay", 
-    "An_Parity_rl", "Trg_MilkFatp", "Trg_MilkTPp", "Trg_MilkLacp", and "Trg_RsrvGain".
-
-    The values required in the series are described in :py:func:`calculate_ME_requirement`.
-
-    Parameters:
-       row (Series): A series that contains all the required values.
-
-    Returns:
-       Trg_MEuse (Number): The metabolizable energy requirement (Mcal/d).
-    '''
-    # Check if series contains all the required column names
-    required_columns = ["An_BW", "Dt_DMIn", "Trg_MilkProd", "An_BW_mature", "Trg_FrmGain",
-                        "An_GestDay", "An_GestLength", "An_AgeDay", "Fet_BWbrth", "An_LactDay",
-                        "An_Parity_rl", "Trg_MilkFatp", "Trg_MilkTPp", "Trg_MilkLacp", "Trg_RsrvGain"]
-
-    if not set(required_columns).issubset(row.index):
-        missing_columns = list(set(required_columns) - set(row.index))
-        raise ValueError(f"Required columns are missing: {missing_columns}")
-
-    ##########################################################################
-    # Calculate Metabolizable Energy
-    ##########################################################################
-    An_BW = row['An_BW']
-    Dt_DMIn = row['Dt_DMIn']
-    Trg_MilkProd = row['Trg_MilkProd']
-    An_BW_mature = row['An_BW_mature']
-    Trg_FrmGain = row['Trg_FrmGain']
-    An_GestDay = row['An_GestDay']
-    An_GestLength = row['An_GestLength']
-    An_AgeDay = row['An_AgeDay']
-    Fet_BWbrth = row['Fet_BWbrth']
-    An_LactDay = row['An_LactDay']
-    An_Parity_rl = row['An_Parity_rl']
-    Trg_MilkFatp = row['Trg_MilkFatp']
-    Trg_MilkTPp = row['Trg_MilkTPp']
-    Trg_MilkLacp = row['Trg_MilkLacp']
-    Trg_RsrvGain = row['Trg_RsrvGain']
-
-    # Call the function with the extracted values
-    Trg_MEuse = calculate_ME_requirement(An_BW, Dt_DMIn, Trg_MilkProd, An_BW_mature,
-                                         Trg_FrmGain, An_GestDay, An_GestLength,
-                                         An_AgeDay, Fet_BWbrth, An_LactDay,
-                                         An_Parity_rl, Trg_MilkFatp, Trg_MilkTPp,
-                                         Trg_MilkLacp, Trg_RsrvGain)
-
-    return(Trg_MEuse)
 

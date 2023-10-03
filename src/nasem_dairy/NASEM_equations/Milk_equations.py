@@ -168,6 +168,7 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEm
 
     Returns:
         Mlk_Prod_NEalow (Number): Net energy allowable milk production, kg/d
+        An_MEavail_Milk (Number): Metabolisable energy avaiable milk production, Mcal/d
 
     """
     req_coeffs = ['Kl_ME_NE']
@@ -176,4 +177,4 @@ def calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEm
     An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse                      # Line 2896
     Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk                  	# Line 2897, Energy allowable Milk Production, kg/d
 
-    return Mlk_Prod_NEalow
+    return Mlk_Prod_NEalow, An_MEavail_Milk

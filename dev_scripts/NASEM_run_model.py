@@ -36,10 +36,10 @@ import pandas as pd
 
 # animal_input is a dictionary with all animal specific parameters
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
-diet_info, animal_input, equation_selection = nd.read_input('../src/nasem_dairy/data/input.txt')
+diet_info, animal_input, equation_selection = nd.read_csv_input("../src/nasem_dairy/data/input.csv")
 
 # Load feed library
-feed_library = pd.read_csv("./test_files/NASEM_feed_library_useredited.csv")
+feed_library = pd.read_csv("../src/nasem_dairy/data/NASEM_feed_library.csv")
 
 # import description strings for variable names in model
 var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').query('Description != "Duplicate"')
@@ -55,12 +55,12 @@ NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, feed_lib
 
 # Display results, temporary
 def display_diet_values(df):
-    components = ['Fd_CP', 'Fd_RUP_base', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash']
+    components = ['Fd_CP', 'Fd_RDP_base','Fd_RUP_base', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash']
     rows = []
 
     for component in components:
-        percent_diet = round(df.loc['Diet', component + '_%_diet']) #.values[0], 2)
-        kg_diet = round(df.loc['Diet', component + '_kg/d'])    #.values[0], 2)
+        percent_diet = round(df.loc['Diet', component + '_%_diet'],3) #.values[0], 2)
+        kg_diet = round(df.loc['Diet', component + '_kg/d'],3)    #.values[0], 2)
         rows.append([component, percent_diet, kg_diet])
 
     headers = ['Component', '% DM', 'kg/d']
@@ -83,3 +83,48 @@ diet_data  = display_diet_values(NASEM_out["diet_info"])
 print(model_data_short)
 print(all_calculated_values)
 print(diet_data)
+
+
+NASEM_out['mineral_requirements_df']
+NASEM_out['mineral_intakes']
+NASEM_out['vitamin_intakes']
+
+
+
+component_dict = {
+        'Fd_CP': 'Crude Protein',
+        'Fd_RUP_base': 'Rumen Undegradable Protein',
+        'Fd_RDP_base': 'Rumen Degradable Protein',
+        'Fd_NDF': 'Neutral Detergent Fiber',
+        'Fd_ADF': 'Acid Detergent Fiber',
+        'Fd_St': 'Starch',
+        'Fd_CFat': 'Crude Fat',
+        'Fd_Ash': 'Ash',
+        'Fd_FA': 'Fatty Acids',
+        'Fd_DigNDFIn_Base': 'Digestable NDF Intake',
+        'Fd_DigStIn_Base': 'Digestable Starch Intake',
+        'Fd_DigrOMtIn': 'Digestable Residual Organic Matter Intake',
+        'Fd_idRUPIn': 'Digested RUP',
+        'Fd_DigFAIn': 'Digested Fatty Acid Intake',
+        'Fd_ForWet': 'Wet Forage',
+        'Fd_ForNDFIn': ' Forage NDF Intake',
+        'Fd_FAIn': 'Fatty Acid Intake',
+        'Fd_DigC160In': 'C160 FA Intake',
+        'Fd_DigC183In': 'C183 FA Intake',
+        'Fd_TPIn': 'True Protein Intake',
+        'Fd_GEIn': 'Gross Energy Intake'
+    }
+
+
+# import numpy as np
+diet_long = (
+    NASEM_out["diet_info"].loc['Diet',:]
+    .to_frame()
+    .iloc[1:,:]
+    .reset_index(names='component')
+    .assign(
+        component_long = lambda df: df['component'].map(component_dict)
+        )
+        )
+
+print(diet_long)
