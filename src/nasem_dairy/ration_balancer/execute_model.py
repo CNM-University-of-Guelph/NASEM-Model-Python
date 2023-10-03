@@ -249,7 +249,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     
     # Metabolizable Protein Requirements
     (An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, 
-     Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg) = calculate_MP_requirement(
+     Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg, An_MPuse_kg_Trg) = calculate_MP_requirement(
          An_DEInp, 
          An_DENPNCPIn,
          An_DigTPaIn,
@@ -361,13 +361,18 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
 
     model_results_short = {
+    'Mlk_Prod_comp': Mlk_Prod_comp,
     'milk_fat': milk_fat,
     'milk_protein': milk_protein,
-    'Mlk_Prod_comp': Mlk_Prod_comp,
+    
     'Mlk_Prod_MPalow': Mlk_Prod_MPalow,
     'Mlk_Prod_NEalow': Mlk_Prod_NEalow,
+    
+    'An_MEIn': An_MEIn,
     'Trg_MEuse': Trg_MEuse,
-    'An_MPuse_g_Trg': An_MPuse_g_Trg
+    
+    'An_MPIn': An_MPIn,
+    'An_MPuse_kg_Trg': An_MPuse_kg_Trg
     }
 
     # filter locals() to return only floats and ints

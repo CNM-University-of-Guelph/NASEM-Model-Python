@@ -76,8 +76,11 @@ def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Fr
     # Recalculate MP requirement 
     An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg
     print("An_MPuse_g_Trg has been recalculated")
-
-  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg
+  
+  # calculate on a kg basis to allow easier comparison the MP intake
+  An_MPuse_kg_Trg = An_MPuse_g_Trg / 1000
+  
+  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPuse_kg_Trg
 
 
 def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, An_StatePhys, coeff_dict):
