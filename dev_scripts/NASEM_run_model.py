@@ -84,10 +84,19 @@ print(model_data_short)
 print(all_calculated_values)
 print(diet_data)
 
+NASEM_out['diet_info'].info()
+
 
 NASEM_out['mineral_requirements_df']
-NASEM_out['mineral_intakes']
 NASEM_out['vitamin_intakes']
+
+df_minerals = NASEM_out['mineral_intakes']
+
+# format minerals to show properly
+df_minerals.assign(
+    Diet_percent = lambda df: df['Dt_micro'].fillna(df['Dt_macro'])
+).drop(columns=['Dt_macro', 'Dt_micro','Abs_mineralIn'])
+
 
 
 
