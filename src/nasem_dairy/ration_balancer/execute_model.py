@@ -212,7 +212,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         coeff_dict)
 
     # Net energy/Metabolizable energy
-    An_NE, An_MEIn, Frm_NPgain = calculate_An_NE(
+    An_NE, An_NE_In, An_MEIn, Frm_NPgain = calculate_An_NE(
         diet_info.loc['Diet', 'Fd_CPIn'], 
         diet_info.loc['Diet', 'Fd_FAIn'], 
         Mlk_NP_g, 
@@ -297,7 +297,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         coeff_dict)
 
     # NE Allowable Milk
-    Mlk_Prod_NEalow = calculate_Mlk_Prod_NEalow(
+    Mlk_Prod_NEalow, An_MEavail_Milk = calculate_Mlk_Prod_NEalow(
         An_MEIn,
         An_MEgain,
         An_MEmUse,
