@@ -1,7 +1,7 @@
 # NASEM model - EXECUTE
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
+from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes, NDF_precalculation
 from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
@@ -27,10 +27,6 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     Returns:
         A list of model outputs
     """
-    # This will be calculated by a function I need to write, placeholder for now
-    An_DigTPaIn = 1
-    An_GasEOut = 1
-
     ########################################
     # Step 1: Read User Input
     ########################################
@@ -50,46 +46,17 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     animal_input['An_PrePartDay'] = animal_input['An_GestDay'] - animal_input['An_GestLength']
     animal_input['An_PrePartWk'] = animal_input['An_PrePartDay'] / 7
 
-    # # Scale %_DM_intake to 100%
-    # user_perc = diet_info['%_DM_user'].sum()
-    # scaling_factor = 100 / user_perc
 
-    # # Should be called 'Fd_DMInp' instead of %_DM_intake
-    # diet_info['%_DM_intake'] = diet_info['%_DM_user'] * scaling_factor
-    # # Adjust so sum is exactly 100
-    # adjustment = 100 - diet_info['%_DM_intake'].sum()
-    # diet_info['%_DM_intake'] += adjustment / len(diet_info)
-
-    # # Predict DMI
-    # if equation_selection['DMI_pred'] == 0:
-    #     animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
-    #         animal_input['An_Parity_rl'], 
-    #         animal_input['Trg_MilkProd'], 
-    #         animal_input['An_BW'], 
-    #         animal_input['An_BCS'],
-    #         animal_input['An_LactDay'], 
-    #         animal_input['Trg_MilkFatp'], 
-    #         animal_input['Trg_MilkTPp'], 
-    #         animal_input['Trg_MilkLacp'])
-    
-    # # Should be called 'Fd_DMIn' for consistency with R code
-    # diet_info['kg_intake'] = diet_info['%_DM_intake'] / 100 * animal_input['DMI']
-
-    ########################################
-    # Step 2: Feed Based Calculations
-    ########################################
-    diet_info = get_nutrient_intakes(
-        diet_info, 
-        feed_data, 
-        animal_input['DMI'], # What if we want predicted equations?
-        equation_selection, 
-        coeff_dict)
 
     
     ########################################
     # Step 3: DMI Equations
     ########################################
     # TODO: where is 0, 1 and 9 ?
+
+    # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
+    Dt_NDF = NDF_precalculation(diet_info, feed_data)
+    
     # Predict DMI for lactating cow
     if equation_selection['DMIn_eqn'] == 8: 
         animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
@@ -112,8 +79,6 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             animal_input['An_PrePartWk'], 
             coeff_dict)
 
-    # Predict DMI for dry cows
-    Dt_NDF = diet_info.loc['Diet', 'Fd_NDF_%_diet'] * 100
     
     if equation_selection['DMIn_eqn'] == [10,11]:
         animal_input['DMI'] = dry_cow_equations(
@@ -124,6 +89,17 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             animal_input['An_GestLength'], 
             Dt_NDF, 
             coeff_dict)
+
+    ########################################
+    # Step 3: Feed Based Calculations
+    ########################################
+    diet_info = get_nutrient_intakes(
+        diet_info, 
+        feed_data, 
+        animal_input['DMI'], # What if we want predicted equations?
+        equation_selection, 
+        coeff_dict)
+    
 
     ########################################
     # Step 4: Micronutrient Calculations
@@ -246,6 +222,17 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['Trg_RsrvGain'], 
         GrUter_BWgain, 
         coeff_dict)
+    
+    # Calculate some values for the heifer adjustment to MP requirement, 
+    # this will be changed in the future and is placed here to avoid cluttering the calculate_MP_requirement function  
+    An_DigTPaIn = temp_calc_An_DigTPaIn(Fe_CP, diet_info)
+
+    An_GasEOut = temp_calc_An_GasEOut(
+        An_DigNDF, 
+        animal_input['An_StatePhys'], 
+        diet_info, 
+        animal_input['DMI'])
+
     
     # Metabolizable Protein Requirements
     (An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, 
