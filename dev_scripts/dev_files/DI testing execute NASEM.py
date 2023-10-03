@@ -7,10 +7,6 @@ import pandas as pd
 diet_info1, animal_input1, equation_selection1 = nd.read_csv_input("./input.csv")
 
 def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff_dict):
-    # This will be calculated by a function I need to write, placeholder for now
-    An_DigTPaIn = 1
-    An_GasEOut = 1
-
 ########################################
 # Step 1: Read User Input
 ########################################
@@ -28,47 +24,50 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
     animal_input['An_PrePartWk'] = animal_input['An_PrePartDay'] / 7
 
 ########################################
-# Step 2: Feed Based Calculations
+# Step 2: DMI Equations
 ########################################
-    diet_info = nd.get_nutrient_intakes(diet_info, feed_data, animal_input, equation_selection, coeff_dict)
+    # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
+    Dt_NDF = nd.NDF_precalculation(diet_info, feed_data)
 
-########################################
-# Step 1.5: DMI Equations
-########################################
-    # Predict DMI for lactating cow
     if equation_selection['DMIn_eqn'] == 8: 
         animal_input['DMI'] = nd.calculate_Dt_DMIn_Lact1(animal_input['An_Parity_rl'], animal_input['Trg_MilkProd'], animal_input['An_BW'], animal_input['An_BCS'],
                                                          animal_input['An_LactDay'], animal_input['Trg_MilkFatp'], animal_input['Trg_MilkTPp'], animal_input['Trg_MilkLacp'])
     
     # Predict DMI for heifers
     if equation_selection['DMIn_eqn'] == [2,3,4,5,6,7,12,13,14,15,16,17]:
-        animal_input['DMI'] = nd.heifer_growth(equation_selection['DMIn_eqn'], diet_info.loc['Diet', 'Fd_NDF'], animal_input['An_BW'], animal_input['An_BW_mature'], animal_input['An_PrePartWk'], coeff_dict)
+        animal_input['DMI'] = nd.heifer_growth(equation_selection['DMIn_eqn'], diet_info.loc['Diet', 'Fd_NDF'], animal_input['An_BW'], animal_input['An_BW_mature'], animal_input['An_PrePartWk'], nd.coeff_dict)
 
     # Predict DMI for dry cows
-    Dt_NDF = diet_info.loc['Diet', 'Fd_NDF_%_diet'] * 100
     if equation_selection['DMIn_eqn'] == [10,11]:
-        animal_input['DMI'] = nd.dry_cow_equations(equation_selection['DMIn_eqn'], animal_input['An_BW'], animal_input['An_PrePartWk'], animal_input['An_GestDay'], animal_input['An_GestLength'], Dt_NDF, coeff_dict)
+        animal_input['DMI'] = nd.dry_cow_equations(equation_selection['DMIn_eqn'], animal_input['An_BW'], animal_input['An_PrePartWk'], animal_input['An_GestDay'], animal_input['An_GestLength'], Dt_NDF, nd.coeff_dict)
+
+    del(Dt_NDF)
 
 ########################################
-# Step 3: Micronutrient Calculations
+# Step 2: Feed Based Calculations
+########################################
+    diet_info = nd.get_nutrient_intakes(diet_info, feed_data, animal_input, equation_selection, coeff_dict)
+
+########################################
+# Step 4: Micronutrient Calculations
 ########################################
     df_minerals, mineral_values = nd.mineral_intakes(animal_input['An_StatePhys'], feed_data, diet_info)
 
     df_vitamins = nd.vitamin_supply(feed_data, diet_info)
     
 ########################################
-# Step 3: Microbial Protein Calculations
+# Step 5: Microbial Protein Calculations
 ########################################
     Du_MiN_NRC2021_g = nd.calculate_Du_MiN_g(diet_info.loc['Diet', 'Fd_NDFIn'], animal_input['DMI'], diet_info.loc['Diet', 'Fd_St_kg/d'], diet_info.loc['Diet', 'Fd_CP_kg/d'], diet_info.loc['Diet', 'Fd_ADF_kg/d'], 
                                     diet_info.loc['Diet', 'Fd_ForWetIn'], diet_info.loc['Diet', 'Fd_RUPIn'], diet_info.loc['Diet', 'Fd_ForNDFIn'], diet_info.loc['Diet', 'Dt_RDPIn'], coeff_dict)    
     
 ########################################
-# Step 4: Amino Acid Calculations
+# Step 6: Amino Acid Calculations
 ########################################
     AA_values, Du_MiCP_g = nd.AA_calculations(Du_MiN_NRC2021_g, feed_data, diet_info, animal_input, coeff_dict)
 
 ########################################
-# Step 5: Other Calculations
+# Step 7: Other Calculations
 ########################################
 # Intake calculations that require additional steps, need results from other calculations or values that need to be calculated for other functions
 
@@ -96,17 +95,23 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
                                      animal_input['Trg_FrmGain'], animal_input['Trg_RsrvGain'], GrUter_BWgain, coeff_dict)
 
 ########################################
-# Step 6: Requirement Calculations
+# Step 8: Requirement Calculations
 ########################################
     # Metabolizable Energy Requirements
     Trg_MEuse, An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout, Trg_NEmilk_Milk = nd.calculate_ME_requirement(animal_input['An_BW'], animal_input['DMI'], animal_input['Trg_MilkProd'], animal_input['An_BW_mature'], animal_input['Trg_FrmGain'],
                                                                                           animal_input['Trg_MilkFatp'], animal_input['Trg_MilkTPp'], animal_input['Trg_MilkLacp'], animal_input['Trg_RsrvGain'], GrUter_BWgain, coeff_dict)
+    
+    # Calculate some values for the heifer adjustment to MP requirement, this will be changed in the future and is placed here to avoid cluttering the calculate_MP_requirement function  
+    An_DigTPaIn = nd.temp_calc_An_DigTPaIn(Fe_CP, diet_info)
+    An_GasEOut = nd.temp_calc_An_GasEOut(An_DigNDF, animal_input['An_StatePhys'], diet_info, animal_input['DMI'])
+
+    
     # Metabolizable Protein Requirements
     An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg = nd.calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Frm_NPgain, diet_info.loc['Diet', 'Fd_NDFIn'], animal_input['DMI'], animal_input['An_BW'], animal_input['An_BW_mature'], animal_input['Trg_FrmGain'],
                                                                                                                  animal_input['Trg_RsrvGain'], animal_input['Trg_MilkProd'], animal_input['Trg_MilkTPp'], GrUter_BWgain, animal_input['An_StatePhys'], coeff_dict)    
 
 ########################################
-# Step 7: Performance Calculations
+# Step 9: Performance Calculations
 ########################################
     # Predicted milk fat
     Mlk_Fat_g, An_LactDay_MlkPred = nd.calculate_Mlk_Fat_g(AA_values, diet_info.loc['Diet', 'Fd_FAIn'], diet_info.loc['Diet', 'Fd_DigC160In'], diet_info.loc['Diet', 'Fd_DigC183In'], animal_input['An_LactDay'], animal_input['DMI'])
@@ -121,7 +126,7 @@ def run_dev_model(diet_info, animal_input, equation_selection, path_to_db, coeff
     Mlk_Prod_NEalow = nd.calculate_Mlk_Prod_NEalow(An_MEIn, An_MEgain, An_MEmUse, Gest_MEuse, Trg_NEmilk_Milk, coeff_dict)
 
 ########################################
-# Step 7: Calculations Requiring Milk Production Values
+# Step 10: Calculations Requiring Milk Production Values
 ########################################
     MlkNP_Milk = nd.temp_MlkNP_Milk(animal_input['An_StatePhys'], Mlk_NP_g, Mlk_Prod_comp, animal_input['Trg_MilkProd'])
     
