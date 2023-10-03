@@ -128,7 +128,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 4: Micronutrient Calculations
     ########################################
-    df_minerals, mineral_values = mineral_intakes(
+    df_mineral_intakes, mineral_values = mineral_intakes(
         animal_input['An_StatePhys'], 
         feed_data, 
         diet_info)
@@ -387,7 +387,9 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     'AA_values': AA_values,
     'model_results_short': model_results_short,
     'model_results_full': model_results_numeric,
-    'mineral_requirements_df': mineral_requirements_df
+    'mineral_requirements_df': mineral_requirements_df,
+    'mineral_intakes': mineral_values,
+    'vitamin_intakes': df_vitamins
     }
 
     # Return so they can be viewed in environment

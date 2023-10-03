@@ -113,7 +113,7 @@ def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
         df_minerals['Fd_{}In'.format(micro)] = df_minerals['Fd_DMIn'] * df_minerals['Fd_{}'.format(micro)] # Lines 741-749
     #Total Dietary Micro Mineral Intakes, mg/d
         mineral_values.loc[micro, 'Dt_mineralIn'] = df_minerals['Fd_{}In'.format(micro)].sum()  # Lines 774-782
-    #Total Dietary Micro Mineral Intakes, mg/kg
+    #Total Dietary Micro Mineral Intakes, % intake
         mineral_values.loc[micro, 'Dt_micro'] = mineral_values.loc[micro, 'Dt_mineralIn'] / Dt_DMIn     # Lines 807-815
 
     for micro in abs_micro_minerals:

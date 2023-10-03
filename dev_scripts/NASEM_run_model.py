@@ -85,6 +85,9 @@ print(all_calculated_values)
 print(diet_data)
 
 
+NASEM_out['mineral_requirements_df']
+NASEM_out['mineral_intakes']
+NASEM_out['vitamin_intakes']
 
 
 
@@ -123,3 +126,5 @@ diet_long = (
         component_long = lambda df: df['component'].map(component_dict)
         )
         )
+
+print(diet_long)
