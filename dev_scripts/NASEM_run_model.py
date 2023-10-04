@@ -52,7 +52,7 @@ var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').quer
 # coeff_dict is imported from ration_balancer, see coeff_dict.py
 NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, feed_library, nd.coeff_dict)
 
-
+NASEM_out['animal_input']
 # Display results, temporary
 def display_diet_values(df):
     components = ['Fd_CP', 'Fd_RDP_base','Fd_RUP_base', 'Fd_NDF', 'Fd_ADF', 'Fd_St', 'Fd_CFat', 'Fd_Ash']
