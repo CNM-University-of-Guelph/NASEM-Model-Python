@@ -30,8 +30,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 1: Read User Input
     ########################################
-   
+    
+    # prevent mutable changes outside of expected scope (especially for Shiny):
     diet_info = diet_info.copy()
+    animal_input = animal_input.copy()
     
     # list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data
     list_of_feeds = diet_info['Feedstuff'].tolist()
@@ -46,9 +48,20 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     animal_input['An_PrePartDay'] = animal_input['An_GestDay'] - animal_input['An_GestLength']
     animal_input['An_PrePartWk'] = animal_input['An_PrePartDay'] / 7
 
+    # Check equation_selection to make sure they are integers.
+    # This is especially important for Shiny, which may return strings
+    # It's important they are correct for if statements below.
+    equation_selection_in = equation_selection.copy()
+    equation_selection = {}
 
+    for key, value in equation_selection_in.items():
+        try:
+            num_value = int(value)
+            equation_selection[key] = num_value
+        except ValueError:
+            print(f"Unable to convert '{value}' to an integer for key '{key}'")
 
-    
+       
     ########################################
     # Step 3: DMI Equations
     ########################################
@@ -57,8 +70,13 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
     Dt_NDF = NDF_precalculation(diet_info, feed_data)
     
+    if equation_selection['DMIn_eqn'] == 0:
+        # print('Using user input DMI')
+        pass
+
     # Predict DMI for lactating cow
-    if equation_selection['DMIn_eqn'] == 8: 
+    elif equation_selection['DMIn_eqn'] == 8: 
+        # print("using DMIn_eqn: 8")
         animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
             animal_input['An_Parity_rl'], 
             animal_input['Trg_MilkProd'], 
@@ -68,19 +86,20 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             animal_input['Trg_MilkFatp'], 
             animal_input['Trg_MilkTPp'], 
             animal_input['Trg_MilkLacp'])
-    
-    # Predict DMI for heifers
-    if equation_selection['DMIn_eqn'] == [2,3,4,5,6,7,12,13,14,15,16,17]:
+
+    # Predict DMI for heifers    
+    elif equation_selection['DMIn_eqn'] in [2,3,4,5,6,7,12,13,14,15,16,17]:
         animal_input['DMI'] = heifer_growth(
             equation_selection['DMIn_eqn'], 
-            diet_info.loc['Diet', 'Fd_NDF'], 
+            # diet_info.loc['Diet', 'Fd_NDF'],
+            Dt_NDF, 
             animal_input['An_BW'], 
             animal_input['An_BW_mature'], 
             animal_input['An_PrePartWk'], 
             coeff_dict)
 
     
-    if equation_selection['DMIn_eqn'] == [10,11]:
+    elif equation_selection['DMIn_eqn'] in [10,11]:
         animal_input['DMI'] = dry_cow_equations(
             equation_selection['DMIn_eqn'], 
             animal_input['An_BW'], 
@@ -89,6 +108,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             animal_input['An_GestLength'], 
             Dt_NDF, 
             coeff_dict)
+        
+    else:
+        # It needs to catch all possible solutions, otherwise it's possible that it stays unchanged without warning
+        print("DMIn_eqn uncaught - DMI not changed. equation_selection[DMIn_eqn]: "+ str(equation_selection['DMIn_eqn']) )
 
     ########################################
     # Step 3: Feed Based Calculations
