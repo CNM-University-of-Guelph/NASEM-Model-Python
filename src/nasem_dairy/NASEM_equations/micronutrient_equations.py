@@ -80,7 +80,7 @@ def mineral_intakes(An_StatePhys, feed_data, diet_info, Dt_DMIn_ClfLiq=0):
     df_minerals['Fd_PorgIn'] = df_minerals['Fd_PIn'] * df_minerals['Fd_Porg_P'] / 100  #Depracated by Bill.  Reduced to inorganic and organic.     
 
     for macro in macro_minerals:
-        # Total diet macromineral intakes
+        # Total diet macromineral intakes, g/d
         mineral_values.loc[macro, 'Dt_mineralIn'] = df_minerals['Fd_{}In'.format(macro)].sum()  # Lines 762-771
         # Macro minerals, % of DM
         mineral_values.loc[macro, 'Dt_macro'] = mineral_values.loc[macro, 'Dt_mineralIn'] / Dt_DMIn / 1000 * 100  

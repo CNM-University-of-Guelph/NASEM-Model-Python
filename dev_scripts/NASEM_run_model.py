@@ -38,6 +38,8 @@ import pandas as pd
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
 diet_info, animal_input, equation_selection = nd.read_csv_input("../src/nasem_dairy/data/input.csv")
 
+diet_info, animal_input, equation_selection = nd.read_csv_input("./input_2.csv")
+
 # Load feed library
 feed_library = pd.read_csv("../src/nasem_dairy/data/NASEM_feed_library.csv")
 

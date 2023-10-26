@@ -5,7 +5,7 @@ from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_ro
 from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
-from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow
+from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
 from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_growth
@@ -280,15 +280,18 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 9: Performance Calculations
     ########################################
+    # Correct An_lactDay
+    An_LactDay_MlkPred = check_animal_lactation_day(animal_input['An_LactDay'])
 
     # Predicted milk fat
-    Mlk_Fat_g, An_LactDay_MlkPred = calculate_Mlk_Fat_g(
+    Mlk_Fat_g = calculate_Mlk_Fat_g(
         AA_values, 
         diet_info.loc['Diet', 'Fd_FAIn'], 
         diet_info.loc['Diet', 'Fd_DigC160In'], 
         diet_info.loc['Diet', 'Fd_DigC183In'], 
-        animal_input['An_LactDay'], 
-        animal_input['DMI'])
+        An_LactDay_MlkPred, 
+        animal_input['DMI'],
+        animal_input['An_StatePhys'])
 
     # Predicted milk yield
     Mlk_Prod_comp = calculate_Mlk_Prod_comp(
