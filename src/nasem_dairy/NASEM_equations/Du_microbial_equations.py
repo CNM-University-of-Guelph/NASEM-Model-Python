@@ -1,6 +1,6 @@
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
-def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn, coeff_dict):
+def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWetIn, Dt_RUPIn, Dt_ForNDFIn, Dt_RDPIn, coeff_dict):
     """
     Predicts microbial nitrogen (N) synthesis for use in amino acid supply equations
 
@@ -28,6 +28,7 @@ def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet,
     """
 
     Dt_ForNDF = Dt_ForNDFIn / Dt_DMIn * 100
+    Dt_ForWet = Dt_ForWetIn / Dt_DMIn * 100
     An_RDP = Dt_RDPIn / Dt_DMIn * 100
 
     # Calculate Rum_DigNDFIn
@@ -60,7 +61,6 @@ def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet,
 
     Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn                                                   # Line 998
 
-
     Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict)
     
     # The 2 alternative predictions are currently disabled but can easily be implemented in the future
@@ -70,7 +70,7 @@ def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWet,
     # Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
 
     # return Du_MiN_NRC2021_g, Du_MiN_VTln_g, Du_MiN_VTnln_g
-    return Du_MiN_NRC2021_g
+    return Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn
 
 
 def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict): 
@@ -100,6 +100,13 @@ def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigS
     MiN_Vm = coeff_dict['VmMiNInt'] + coeff_dict['VmMiNRDPSlp'] * RDPIn_MiNmax                                          # Line 1125            
 
     Du_MiN_NRC2021_g = MiN_Vm / (1 + coeff_dict['KmMiNRDNDF'] / Rum_DigNDFIn + coeff_dict['KmMiNRDSt'] / Rum_DigStIn)   # Line 1126
+
+    An_RDPIN_g = An_RDPIn * 1000
+
+    if Du_MiN_NRC2021_g > 1 * An_RDPIN_g/6.25:
+        Du_MiN_NRC2021_g = 1 * An_RDPIN_g/6.25
+    else:
+        Du_MiN_NRC2021_g = Du_MiN_NRC2021_g
 
     return Du_MiN_NRC2021_g
 
