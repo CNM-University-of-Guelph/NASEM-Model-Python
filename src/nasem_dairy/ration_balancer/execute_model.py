@@ -5,7 +5,7 @@ from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_ro
 from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
-from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow
+from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
 from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_growth
@@ -62,6 +62,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             print(f"Unable to convert '{value}' to an integer for key '{key}'")
 
        
+    # if animal_input['An_StatePhys'] != 'Lactating Cow':
+    #     animal_input['Trg_MilkProd'] = None
+
+
     ########################################
     # Step 3: DMI Equations
     ########################################
@@ -209,6 +213,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['DMI'], 
         animal_input['An_StatePhys'],
         coeff_dict)
+    
 
     # Net energy/Metabolizable energy
     An_NE, An_NE_In, An_MEIn, Frm_NPgain = calculate_An_NE(
@@ -280,15 +285,20 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 9: Performance Calculations
     ########################################
+    # if animal_input['An_StatePhys'] == 'Lactating Cow':
+        # Correct An_lactDay
+        
+    An_LactDay_MlkPred = check_animal_lactation_day(animal_input['An_LactDay'])
 
     # Predicted milk fat
-    Mlk_Fat_g, An_LactDay_MlkPred = calculate_Mlk_Fat_g(
+    Mlk_Fat_g = calculate_Mlk_Fat_g(
         AA_values, 
         diet_info.loc['Diet', 'Fd_FAIn'], 
         diet_info.loc['Diet', 'Fd_DigC160In'], 
         diet_info.loc['Diet', 'Fd_DigC183In'], 
-        animal_input['An_LactDay'], 
-        animal_input['DMI'])
+        An_LactDay_MlkPred, 
+        animal_input['DMI'],
+        animal_input['An_StatePhys'])
 
     # Predicted milk yield
     Mlk_Prod_comp = calculate_Mlk_Prod_comp(
@@ -297,7 +307,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         An_DEIn,
         An_LactDay_MlkPred,
         animal_input['An_Parity_rl']) 
-  
+
     # MP Allowable Milk
     Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(
         An_MPuse_g_Trg,
@@ -323,6 +333,27 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         Mlk_NP_g, 
         Mlk_Prod_comp, 
         animal_input['Trg_MilkProd'])
+    
+
+            
+    # Milk Fat %
+    milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp *100
+    # Milk Protein %
+    milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
+
+        
+    # else:
+    #     (An_LactDay_MlkPred,
+    #      Mlk_Fat_g,
+    #      Mlk_Prod_comp,
+    #      Mlk_Prod_MPalow,
+    #      Mlk_Prod_NEalow,
+    #      An_MEavail_Milk,
+    #      MlkNP_Milk,
+    #      milk_fat,
+    #      milk_protein
+    #      ) = None, None, None, None, None, None, None, None, None
+
     
     # Mineral Requirements
     mineral_requirements_df, An_DCADmeq = mineral_requirements(
@@ -364,10 +395,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 11: Return values of interest
     ########################################
-    # Milk Fat %
-    milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp *100
-    # Milk Protein %
-    milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
+
 
 
     model_results_short = {

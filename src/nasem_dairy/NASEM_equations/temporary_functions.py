@@ -3,11 +3,14 @@ def temp_MlkNP_Milk(An_StatePhys, Mlk_NP_g, Mlk_Prod_comp, Trg_MilkProd):
     if An_StatePhys == "Lactating Cow":
         Mlk_Prod = Mlk_Prod_comp
     else:
-        Mlk_Prod = Trg_MilkProd
+        Mlk_Prod = Trg_MilkProd #This means that for a dry cow it uses the Target Milk Production, but it can't be 0 because it throws error
+        # therefore it seems that they needed the extra flag below to force to 0 ?
 
-    MlkNP_Milk = Mlk_NP_g / 1000 / Mlk_Prod	#Milk true protein, g/g
+    
     if An_StatePhys != "Lactating Cow":
         MlkNP_Milk = 0
+    else:
+        MlkNP_Milk = (Mlk_NP_g / 1000) / Mlk_Prod	#Milk true protein, g/g
 
     return MlkNP_Milk
 

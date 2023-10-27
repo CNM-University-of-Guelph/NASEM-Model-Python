@@ -172,7 +172,7 @@ def get_nutrient_intakes(df, feed_data, DMI, equation_selection, coeff_dict):
         'Fd_idRUPIn': 'Digested RUP',
         'Fd_DigFAIn': 'Digested Fatty Acid Intake',
         'Fd_ForWet': 'Wet Forage',
-        'Fd_ForNDFIn': ' Forage NDF Intake',
+        'Fd_ForNDFIn': 'Forage NDF Intake',
         'Fd_FAIn': 'Fatty Acid Intake',
         'Fd_DigC160In': 'C160 FA Intake',
         'Fd_DigC183In': 'C183 FA Intake',
