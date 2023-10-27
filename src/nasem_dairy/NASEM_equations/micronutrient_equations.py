@@ -158,7 +158,7 @@ def vitamin_supply(feed_data, diet_info):
 
 
 def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_mature, An_BW, Trg_FrmGain, Trg_RsrvGain, An_GestDay, GrUter_Wt, Mlk_NP_g, Trg_MilkProd, Trg_MilkTPp, Abs_CaIn, MlkNP_Milk, Abs_PIn, Dt_PIn, Abs_MgIn, Abs_NaIn,
-                         Abs_ClIn, Abs_KIn, Dt_SIn, Abs_CoIn, Abs_CuIn, Dt_IIn, Abs_FeIn, Abs_MnIn, Dt_SeIn, Abs_ZnIn, Dt_K, Dt_Na, Dt_Cl, Dt_S):
+                         Abs_ClIn, Abs_KIn, Dt_SIn, Abs_CoIn, Abs_CuIn, Dt_IIn, Abs_FeIn, Abs_MnIn, Dt_SeIn, Abs_ZnIn, Dt_K, Dt_Na, Dt_Cl, Dt_S, Dt_DMIn_ClfLiq = 0):
     '''
     ADD DOCSTRING
     '''
@@ -193,12 +193,16 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     Fe_Ca_m = 0.9 * An_DMIn     #Maintenance
     An_Ca_g = (9.83 * An_BW_mature**0.22 * An_BW**-.22) * Body_Gain     #Growth
     An_Ca_y = (0.0245 * math.exp((0.05581 - 0.00007 * An_GestDay) * An_GestDay)- 0.0245 * math.exp((0.05581 - 0.00007 * (An_GestDay - 1)) * (An_GestDay - 1))) * An_BW / 715    #Gestation 
-    if math.isnan(Mlk_NP_g) is True:    #Lactation
+    
+    if Mlk_NP_g is None or math.isnan(Mlk_NP_g):    #Lactation
         An_Ca_l = Ca_Mlk * Trg_MilkProd
     else: 
         An_Ca_l = (0.295 + 0.239 * Trg_MilkTPp) * Trg_MilkProd
-    if math.isnan(An_Ca_l) is True:
-        An_Ca_l = 0
+    
+    # this doesn't do anything - An_Ca_l can't ever be nan? :
+    # if math.isnan(An_Ca_l):
+    #     An_Ca_l = 0
+
     An_Ca_Clf = (0.0127 * An_BW_empty + (14.4 * (An_BW_empty**-0.139) * Body_Gain_empty)) / 0.73
     if An_StatePhys == 'Calf' and Dt_DMIn_ClfLiq > 0:
         An_Ca_req = An_Ca_Clf
@@ -219,11 +223,15 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     An_P_m = Ur_P_m + Fe_P_m
     An_P_g = (1.2 + (4.635 * An_BW_mature**.22 * An_BW**-0.22)) * Body_Gain
     An_P_y = (0.02743 * math.exp((0.05527 - 0.000075 * An_GestDay) * An_GestDay) - 0.02743 * math.exp((0.05527 - 0.000075 * (An_GestDay - 1)) * (An_GestDay - 1))) * An_BW / 715
-    if math.isnan(Trg_MilkProd) is True:
+    
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_P_l = 0      #If MTP not known then 0.9*Milk
     else:
         An_P_l = (0.48 + 0.13 * MlkNP_Milk * 100) * Trg_MilkProd
+
+
     An_P_Clf = (0.0118 * An_BW_empty + (5.85 * (An_BW_empty**-0.027) * Body_Gain_empty)) / 0.65
+   
     if An_StatePhys == 'Calf' and Dt_DMIn_ClfLiq > 0:
         An_P_req = An_P_Clf
     else:
@@ -246,7 +254,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Mg_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_Mg_l = 0
     else:
         An_Mg_l = 0.11 * Trg_MilkProd
@@ -270,7 +278,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Na_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_Na_l = 0
     else:
         An_Na_l = 0.4 * Trg_MilkProd
@@ -294,7 +302,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
        An_Cl_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_Cl_l = 0
     else:
         An_Cl_l = 1.0 * Trg_MilkProd
@@ -325,7 +333,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_K_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_K_l = 0
     else:
         An_K_l = 1.5 * Trg_MilkProd
@@ -363,7 +371,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Cu_y = 0.0003 * An_BW
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
         An_Cu_l = 0
     else:
         An_Cu_l = 0.04 * Trg_MilkProd
@@ -396,7 +404,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Fe_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
        An_Fe_l = 0
     else:
         An_Fe_l = 1.0 * Trg_MilkProd
@@ -421,7 +429,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Mn_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
        An_Mn_l = 0
     else:
         An_Mn_l = 0.03 * Trg_MilkProd
@@ -452,7 +460,7 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     else:
         An_Zn_y = 0
 
-    if math.isnan(Trg_MilkProd) is True:
+    if Trg_MilkProd is None or math.isnan(Trg_MilkProd):
        An_Zn_l = 0
     else:
         An_Zn_l = 4.0 * Trg_MilkProd

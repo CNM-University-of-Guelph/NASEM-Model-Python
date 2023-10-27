@@ -62,6 +62,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
             print(f"Unable to convert '{value}' to an integer for key '{key}'")
 
        
+    # if animal_input['An_StatePhys'] != 'Lactating Cow':
+    #     animal_input['Trg_MilkProd'] = None
+
+
     ########################################
     # Step 3: DMI Equations
     ########################################
@@ -209,6 +213,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['DMI'], 
         animal_input['An_StatePhys'],
         coeff_dict)
+    
 
     # Net energy/Metabolizable energy
     An_NE, An_NE_In, An_MEIn, Frm_NPgain = calculate_An_NE(
@@ -280,7 +285,9 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 9: Performance Calculations
     ########################################
-    # Correct An_lactDay
+    # if animal_input['An_StatePhys'] == 'Lactating Cow':
+        # Correct An_lactDay
+        
     An_LactDay_MlkPred = check_animal_lactation_day(animal_input['An_LactDay'])
 
     # Predicted milk fat
@@ -300,7 +307,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         An_DEIn,
         An_LactDay_MlkPred,
         animal_input['An_Parity_rl']) 
-  
+
     # MP Allowable Milk
     Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(
         An_MPuse_g_Trg,
@@ -326,6 +333,27 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         Mlk_NP_g, 
         Mlk_Prod_comp, 
         animal_input['Trg_MilkProd'])
+    
+
+            
+    # Milk Fat %
+    milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp *100
+    # Milk Protein %
+    milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
+
+        
+    # else:
+    #     (An_LactDay_MlkPred,
+    #      Mlk_Fat_g,
+    #      Mlk_Prod_comp,
+    #      Mlk_Prod_MPalow,
+    #      Mlk_Prod_NEalow,
+    #      An_MEavail_Milk,
+    #      MlkNP_Milk,
+    #      milk_fat,
+    #      milk_protein
+    #      ) = None, None, None, None, None, None, None, None, None
+
     
     # Mineral Requirements
     mineral_requirements_df, An_DCADmeq = mineral_requirements(
@@ -367,10 +395,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 11: Return values of interest
     ########################################
-    # Milk Fat %
-    milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp *100
-    # Milk Protein %
-    milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
+
 
 
     model_results_short = {
