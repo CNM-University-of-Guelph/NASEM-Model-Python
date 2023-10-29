@@ -478,9 +478,13 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
     ############
     An_DCADmeq = (Dt_K.values[0] / 0.039 + Dt_Na.values[0] / 0.023 - Dt_Cl.values[0] / 0.0355 - Dt_S.values[0] / 0.016) * 10
 
-    variable_names = ['An_Ca_req', 'An_P_req', 'An_Mg_req', 'An_Na_req', 'An_Cl_req', 'An_K_req', 'An_S_req', 'An_Co_req', 'An_Cu_req', 'An_I_req', 'An_Fe_req', 'An_Mn_req', 'An_Se_req', 'An_Zn_req']
-    variable_values = [An_Ca_req, An_P_req, An_Mg_req, An_Na_req, An_Cl_req, An_K_req, An_S_req, An_Co_req, An_Cu_req, An_I_req, An_Fe_req, An_Mn_req, An_Se_req, An_Zn_req]
-    mineral_requirements = {variable: number for variable, number in zip(variable_names, variable_values)}
+    requirement_names = ['An_Ca_req', 'An_P_req', 'An_Mg_req', 'An_Na_req', 'An_Cl_req', 'An_K_req', 'An_S_req', 'An_Co_req', 'An_Cu_req', 'An_I_req', 'An_Fe_req', 'An_Mn_req', 'An_Se_req', 'An_Zn_req']
+    requirement_values = [An_Ca_req, An_P_req, An_Mg_req, An_Na_req, An_Cl_req, An_K_req, An_S_req, An_Co_req, An_Cu_req, An_I_req, An_Fe_req, An_Mn_req, An_Se_req, An_Zn_req]
+    mineral_requirements = {variable: number for variable, number in zip(requirement_names, requirement_values)}
 
-    return mineral_requirements, An_DCADmeq
+    balance_names = ['An_Ca_bal', 'An_P_bal', 'An_Mg_bal', 'An_Na_bal', 'An_Cl_bal', 'An_K_bal', 'An_S_bal', 'An_Co_bal', 'An_Cu_bal', 'An_Fe_bal', 'An_Mn_bal', 'An_Se_bal', 'An_Zn_bal']
+    balance_values = [An_Ca_bal, An_P_bal, An_Mg_bal, An_Na_bal, An_Cl_bal, An_K_bal, An_S_bal, An_Co_bal, An_Cu_bal, An_Fe_bal, An_Mn_bal, An_Se_bal, An_Zn_bal]
+    mineral_balance = {variable: number for variable, number in zip(balance_names, balance_values)}
+
+    return mineral_requirements, mineral_balance, An_DCADmeq
 

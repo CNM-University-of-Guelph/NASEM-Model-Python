@@ -1,6 +1,8 @@
 ﻿Location,Variable,Value,Expected Value
 equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
 equation_selection,DMIn_eqn,0,int (0-17)
+equation_selection,mProd_eqn,0,int
+equation_selection,Monensin_eqn,1,int
 diet_info,Canola meal,2.4,float
 diet_info,"Corn grain HM, coarse grind",0.46,float
 diet_info,"Corn silage, typical",4.6,float

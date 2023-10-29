@@ -5,12 +5,12 @@ from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_ro
 from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
-from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
+from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day, calculate_An_MPIn_g
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
 from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_growth
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_intakes, vitamin_supply, mineral_requirements
-from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_GasEOut, temp_calc_An_DigTPaIn
+from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_GasEOut, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
@@ -67,7 +67,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
 
     ########################################
-    # Step 3: DMI Equations
+    # Step 2: DMI Equations
     ########################################
     # TODO: where is 0, 1 and 9 ?
 
@@ -196,11 +196,13 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['DMI'], 
         coeff_dict)
 
+    # Metabolizable Protein Intake
+    An_MPIn, An_MPIn_g = calculate_An_MPIn_g(diet_info.loc['Diet', 'Fd_idRUPIn'], Du_idMiCP_g, coeff_dict)
+
     # Predicted milk protein
-    Mlk_NP_g, An_DigNDF, An_MPIn, An_DEInp = calculate_Mlk_NP_g(
+    Mlk_NP_g, An_DigNDF, An_DEInp = calculate_Mlk_NP_g(
         AA_values, 
-        diet_info.loc['Diet', 'Fd_idRUPIn'], 
-        Du_idMiCP_g, 
+        An_MPIn_g, 
         An_DEIn, 
         An_DETPIn, 
         An_DENPNCPIn, 
@@ -213,7 +215,13 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['DMI'], 
         animal_input['An_StatePhys'],
         coeff_dict)
-    
+
+    # Gaseous energy loss
+    An_GasEOut = temp_calc_An_GasEOut(An_DigNDF, 
+                                      animal_input['An_StatePhys'], 
+                                      diet_info, 
+                                      animal_input['DMI'], 
+                                      equation_selection['Monensin_eqn'])
 
     # Net energy/Metabolizable energy
     An_NE, An_NE_In, An_MEIn, Frm_NPgain = calculate_An_NE(
@@ -254,14 +262,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     # Calculate some values for the heifer adjustment to MP requirement, 
     # this will be changed in the future and is placed here to avoid cluttering the calculate_MP_requirement function  
     An_DigTPaIn = temp_calc_An_DigTPaIn(Fe_CP, diet_info)
-
-    An_GasEOut = temp_calc_An_GasEOut(
-        An_DigNDF, 
-        animal_input['An_StatePhys'], 
-        diet_info, 
-        animal_input['DMI'])
-
-    
+   
     # Metabolizable Protein Requirements
     (An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPUse_g_Trg, 
      Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg, An_MPuse_kg_Trg) = calculate_MP_requirement(
@@ -287,73 +288,62 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # if animal_input['An_StatePhys'] == 'Lactating Cow':
         # Correct An_lactDay
-        
-    An_LactDay_MlkPred = check_animal_lactation_day(animal_input['An_LactDay'])
+    if animal_input['An_StatePhys'] == 'Lactating Cow':    
+        An_LactDay_MlkPred = check_animal_lactation_day(animal_input['An_LactDay'])
 
-    # Predicted milk fat
-    Mlk_Fat_g = calculate_Mlk_Fat_g(
-        AA_values, 
-        diet_info.loc['Diet', 'Fd_FAIn'], 
-        diet_info.loc['Diet', 'Fd_DigC160In'], 
-        diet_info.loc['Diet', 'Fd_DigC183In'], 
-        An_LactDay_MlkPred, 
-        animal_input['DMI'],
-        animal_input['An_StatePhys'])
+        # Predicted milk fat
+        Mlk_Fat_g = calculate_Mlk_Fat_g(
+            AA_values, 
+            diet_info.loc['Diet', 'Fd_FAIn'], 
+            diet_info.loc['Diet', 'Fd_DigC160In'], 
+            diet_info.loc['Diet', 'Fd_DigC183In'], 
+            An_LactDay_MlkPred, 
+            animal_input['DMI'],
+            animal_input['An_StatePhys'])
 
-    # Predicted milk yield
-    Mlk_Prod_comp = calculate_Mlk_Prod_comp(
-        Mlk_NP_g, 
-        Mlk_Fat_g,
-        An_DEIn,
-        An_LactDay_MlkPred,
-        animal_input['An_Parity_rl']) 
+        # Predicted milk yield
+        Mlk_Prod_comp = calculate_Mlk_Prod_comp(
+            Mlk_NP_g, 
+            Mlk_Fat_g,
+            An_DEIn,
+            An_LactDay_MlkPred,
+            animal_input['An_Parity_rl']) 
 
-    # MP Allowable Milk
-    Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(
-        An_MPuse_g_Trg,
-        Mlk_MPUse_g_Trg,
-        An_MPIn,
-        animal_input['Trg_MilkTPp'],
-        coeff_dict)
+        # MP Allowable Milk
+        Mlk_Prod_MPalow = calculate_Mlk_Prod_MPalow(
+            An_MPuse_g_Trg,
+            Mlk_MPUse_g_Trg,
+            An_MPIn,
+            animal_input['Trg_MilkTPp'],
+            coeff_dict)
 
-    # NE Allowable Milk
-    Mlk_Prod_NEalow, An_MEavail_Milk = calculate_Mlk_Prod_NEalow(
-        An_MEIn,
-        An_MEgain,
-        An_MEmUse,
-        Gest_MEuse,
-        Trg_NEmilk_Milk,
-        coeff_dict)
+        # NE Allowable Milk
+        Mlk_Prod_NEalow, An_MEavail_Milk = calculate_Mlk_Prod_NEalow(
+            An_MEIn,
+            An_MEgain,
+            An_MEmUse,
+            Gest_MEuse,
+            Trg_NEmilk_Milk,
+            coeff_dict)
+    else:
+        An_LactDay_MlkPred = 0  # Default to 0 for non lactating animals
+        Mlk_Fat_g = 0
+        Mlk_Prod_comp = 0
+        Mlk_Prod_MPalow = 0
+        Mlk_Prod_NEalow = 0
     
     ########################################
     # Step 10: Calculations Requiring Milk Production Values
     ########################################
-    MlkNP_Milk = temp_MlkNP_Milk(
-        animal_input['An_StatePhys'], 
-        Mlk_NP_g, 
-        Mlk_Prod_comp, 
-        animal_input['Trg_MilkProd'])
     
-
-            
-    # Milk Fat %
-    milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp *100
-    # Milk Protein %
-    milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp *100 
-
-        
-    # else:
-    #     (An_LactDay_MlkPred,
-    #      Mlk_Fat_g,
-    #      Mlk_Prod_comp,
-    #      Mlk_Prod_MPalow,
-    #      Mlk_Prod_NEalow,
-    #      An_MEavail_Milk,
-    #      MlkNP_Milk,
-    #      milk_fat,
-    #      milk_protein
-    #      ) = None, None, None, None, None, None, None, None, None
-
+    if animal_input['An_StatePhys'] == 'Lactating Cow':
+        MlkNP_Milk = temp_MlkNP_Milk(
+            animal_input['An_StatePhys'], 
+            Mlk_NP_g, 
+            Mlk_Prod_comp, 
+            animal_input['Trg_MilkProd'])
+    else:
+        MlkNP_Milk = 0
     
     # Mineral Requirements
     mineral_requirements_df, An_DCADmeq = mineral_requirements(
@@ -391,12 +381,43 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         mineral_values.loc['Cl', 'Dt_macro'],
         mineral_values.loc['S', 'Dt_macro'])
 
+    Mlk_Prod = calculate_Mlk_Prod(animal_input['An_StatePhys'], 
+                                  equation_selection['mProd_eqn'], 
+                                  Mlk_Prod_comp, 
+                                  Mlk_Prod_NEalow, 
+                                  Mlk_Prod_MPalow, 
+                                  animal_input['Trg_MilkProd']
+                                  )
+
+    MlkNE_Milk = calculate_MlkNE_Milk(Mlk_Prod, 
+                                      Mlk_Fat_g, 
+                                      MlkNP_Milk, 
+                                      animal_input['Trg_MilkLacp']
+                                      )
+    
+    Mlk_MEout = calculate_Mlk_MEout(Mlk_Prod,
+                                    MlkNE_Milk, 
+                                    coeff_dict
+                                    )
 
     ########################################
     # Step 11: Return values of interest
     ########################################
+    if animal_input['An_StatePhys'] == 'Lactating Cow':
+        # Milk Fat %
+        milk_fat = (Mlk_Fat_g / 1000) / Mlk_Prod_comp * 100
+        # Milk Protein %
+        milk_protein = (Mlk_NP_g / 1000) / Mlk_Prod_comp * 100
+    else:
+        milk_fat = None
+        milk_protein = None
 
+    # Metabolizable Protein Balance
+    An_MPBal_g_Trg = An_MPIn_g - An_MPuse_g_Trg
 
+    # Energy Balance
+    An_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Mlk_MEout
+    An_MEbal = An_MEIn - An_MEuse
 
     model_results_short = {
     'Mlk_Prod_comp': Mlk_Prod_comp,
@@ -410,7 +431,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     'Trg_MEuse': Trg_MEuse,
     
     'An_MPIn': An_MPIn,
-    'An_MPuse_kg_Trg': An_MPuse_kg_Trg
+    'An_MPuse_kg_Trg': An_MPuse_kg_Trg,
+# Protein and Energy balance
+    'An_MPBal_g_Trg': An_MPBal_g_Trg,
+    'An_MEbal': An_MEbal    
     }
 
     # filter locals() to return only floats and ints
