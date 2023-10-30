@@ -141,7 +141,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 5: Microbial Protein Calculations
     ########################################
-    Du_MiN_NRC2021_g = calculate_Du_MiN_g(
+    Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn = calculate_Du_MiN_g(
         diet_info.loc['Diet', 'Fd_NDFIn'], 
         animal_input['DMI'], 
         diet_info.loc['Diet', 'Fd_St_kg/d'], 
@@ -193,7 +193,8 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         diet_info.loc['Diet', 'Fd_DigFAIn'], 
         Du_MiCP_g, 
         animal_input['An_BW'], 
-        animal_input['DMI'], 
+        animal_input['DMI'],
+        equation_selection['Monensin_eqn'], 
         coeff_dict)
 
     # Metabolizable Protein Intake
@@ -238,6 +239,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         animal_input['Trg_FrmGain'],
         animal_input['Trg_RsrvGain'],
         GrUter_BWgain,
+        An_GasEOut,
         coeff_dict)
  
     ########################################
@@ -346,7 +348,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         MlkNP_Milk = 0
     
     # Mineral Requirements
-    mineral_requirements_df, An_DCADmeq = mineral_requirements(
+    mineral_requirements_df, mineral_balance, An_DCADmeq = mineral_requirements(
         animal_input['An_StatePhys'], 
         animal_input['An_Parity_rl'], 
         animal_input['An_Breed'],
