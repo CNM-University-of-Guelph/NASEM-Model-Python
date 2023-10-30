@@ -2,7 +2,7 @@ import math
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CPend_g, Dt_DMIn, An_BW, An_BW_mature, Trg_FrmGain,
-                    Trg_RsrvGain, GrUter_BWgain, coeff_dict):
+                    Trg_RsrvGain, GrUter_BWgain, An_GasEOut, coeff_dict):
     """
     Calculates net energy intake
 
@@ -31,13 +31,6 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CP
     req_coeffs = ['Body_NP_CP', 'An_GutFill_BW', 'CPGain_RsrvGain', 'GrUter_BWgain', 
                   'CP_GrUtWt', 'Gest_NPother_g']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-
-
-    #######################
-    ### An_GasEOut_Lact ###
-    #######################
-    # An_DigNDF = An_DigNDFIn / Dt_DMIn * 100
-    An_GasEOut_Lact = 0.294 * Dt_DMIn - 0.347 * Dt_FAIn / Dt_DMIn * 100 + 0.0409 * An_DigNDF
 
     ################
     ### Ur_DEout ###
@@ -68,14 +61,14 @@ def calculate_An_NE(Dt_CPIn, Dt_FAIn, Mlk_NP_g, An_DEIn, An_DigNDF, Fe_CP, Fe_CP
     Ur_Nout_g = (Dt_CPIn * 1000 - Fe_CP * 1000 - Scrf_CP_g - Fe_CPend_g - Mlk_CP_g - Body_CPgain_g - Gest_CPuse_g) / 6.25     # Line 2742
     Ur_DEout = 0.0143 * Ur_Nout_g                               # Line 2748
 
-    An_MEIn = An_DEIn - An_GasEOut_Lact - Ur_DEout
+    An_MEIn = An_DEIn - An_GasEOut - Ur_DEout
     An_NE_In = An_MEIn * 0.66                                  # Line 2762
     An_NE = An_NE_In / Dt_DMIn                                 # Line 2763
 
     return An_NE, An_NE_In, An_MEIn, Frm_NPgain
 
 
-def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, Dt_CPIn, Dt_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, coeff_dict):
+def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_DigrOMtIn, Dt_CPIn, Dt_RUPIn, Dt_idRUPIn, Dt_NPNCPIn, Dt_DigFAIn, Du_MiCP_g, An_BW, Dt_DMIn, Monensin_eqn, coeff_dict):
     """
     Digestable energy (DE) supply
 
@@ -186,5 +179,10 @@ def calculate_An_DEIn(Dt_DigNDFIn_Base, Dt_NDFIn, Dt_DigStIn_Base, Dt_StIn, Dt_D
     An_DEFAIn = An_DigFAIn * coeff_dict['En_FA']
 
     An_DEIn = An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn + An_DEFAIn  # Line 1367
+    if Monensin_eqn == 1:
+        An_DEIn = An_DEIn*1.02
+    else:
+        An_DEIn = An_DEIn
+
 
     return An_DEIn, An_DENPNCPIn, An_DETPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, Fe_CP, Fe_CPend_g, Du_idMiCP_g

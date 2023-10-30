@@ -41,7 +41,7 @@ def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Fr
   Body_MPuse_g_Trg, Body_NPgain, Rsrv_NPgain, Body_NPgain_g = calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain,
                                                 Trg_RsrvGain, An_StatePhys, coeff_dict)
   # Body_MPuse_g_Trg: MP requirement for frame and reserve gain, g/d
-  
+ 
   Gest_MPuse_g_Trg = calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict)
   # Gest_MPuse_g_Trg: MP requirement for gestation, g/d
   
@@ -80,7 +80,7 @@ def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Fr
   # calculate on a kg basis to allow easier comparison the MP intake
   An_MPuse_kg_Trg = An_MPuse_g_Trg / 1000
   
-  return An_MPuse_g_Trg, An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPuse_kg_Trg
+  return An_MPuse_g_Trg , An_MPm_g_Trg, Body_MPuse_g_Trg, Gest_MPuse_g_Trg, Mlk_MPuse_g_Trg, An_MPuse_kg_Trg
 
 
 def calculate_An_MPm_g_Trg(Dt_NDFIn, Dt_DMIn, An_BW, An_StatePhys, coeff_dict):
@@ -182,7 +182,6 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, A
   # Body_NPgain: NP from frame and reserve gain, kg
   # Body_NPgain_g: Body_NPgain in g
   # Kg_MP_NP_Trg: Conversion of NP to MP for growth
-  
   CPGain_FrmGain = 0.201 - 0.081 * An_BW / An_BW_mature                  # Line 2458
 #   Body_NP_CP = 0.86                                                # Line 1963
   NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']                     # Line 2459
@@ -200,7 +199,8 @@ def calculate_Body_MPuse_g_Trg(An_BW, An_BW_mature, Trg_FrmGain, Trg_RsrvGain, A
   Body_NPgain_g = Body_NPgain * 1000                               # Line 2475
 #   Kg_MP_NP_Trg = 0.69                                              # Line 54, 2665
   Body_MPuse_g_Trg = Body_NPgain_g / coeff_dict['Kg_MP_NP_Trg']                  # Line 2675   
-  return(Body_MPuse_g_Trg, Body_NPgain, Rsrv_NPgain, Body_NPgain_g)
+  
+  return Body_MPuse_g_Trg, Body_NPgain, Rsrv_NPgain, Body_NPgain_g
 
 
 def calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict):
@@ -235,7 +235,7 @@ def calculate_Gest_MPuse_g_Trg(GrUter_BWgain, coeff_dict):
   else:
     Gest_MPuse_g_Trg = Gest_NPuse_g * coeff_dict['Ky_NP_MP_Trg']
 
-  return(Gest_MPuse_g_Trg)
+  return Gest_MPuse_g_Trg
 
 
 def calculate_Mlk_MPuse_g_Trg(Trg_MilkProd, Trg_MilkTPp, coeff_dict): 
