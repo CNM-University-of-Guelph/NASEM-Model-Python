@@ -141,7 +141,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 5: Microbial Protein Calculations
     ########################################
-    Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn = calculate_Du_MiN_g(
+    Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn, An_RDPIn_g = calculate_Du_MiN_g(
         diet_info.loc['Diet', 'Fd_NDFIn'], 
         animal_input['DMI'], 
         diet_info.loc['Diet', 'Fd_St_kg/d'], 
@@ -162,6 +162,9 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         diet_info, 
         animal_input, 
         coeff_dict)
+    
+    # RDP - MiCP Balance (or Rumen_RDPbal equation 20-78; line 1168)
+    An_RDPbal_g = An_RDPIn_g - Du_MiCP_g
 
     ########################################
     # Step 7: Other Calculations
@@ -348,7 +351,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         MlkNP_Milk = 0
     
     # Mineral Requirements
-    mineral_requirements_df, mineral_balance, An_DCADmeq = mineral_requirements(
+    mineral_requirements_dict, mineral_balance_dict, An_DCADmeq = mineral_requirements(
         animal_input['An_StatePhys'], 
         animal_input['An_Parity_rl'], 
         animal_input['An_Breed'],
@@ -383,18 +386,19 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         mineral_values.loc['Cl', 'Dt_macro'],
         mineral_values.loc['S', 'Dt_macro'])
 
-    Mlk_Prod = calculate_Mlk_Prod(animal_input['An_StatePhys'], 
-                                  equation_selection['mProd_eqn'], 
-                                  Mlk_Prod_comp, 
-                                  Mlk_Prod_NEalow, 
-                                  Mlk_Prod_MPalow, 
-                                  animal_input['Trg_MilkProd']
-                                  )
+    Mlk_Prod = calculate_Mlk_Prod(
+        animal_input['An_StatePhys'], 
+        equation_selection['mProd_eqn'], 
+        Mlk_Prod_comp, 
+        Mlk_Prod_NEalow, 
+        Mlk_Prod_MPalow, 
+        animal_input['Trg_MilkProd']
+        )
 
-    MlkNE_Milk = calculate_MlkNE_Milk(Mlk_Prod, 
-                                      Mlk_Fat_g, 
-                                      MlkNP_Milk, 
-                                      animal_input['Trg_MilkLacp']
+    MlkNE_Milk = calculate_MlkNE_Milk(Mlk_Prod, #either target or predicted depending on mProd_eqn
+                                      Mlk_Fat_g, #predicted
+                                      MlkNP_Milk, # predicted
+                                      animal_input['Trg_MilkLacp'] # Always uses the target (user input) as no prediction possible
                                       )
     
     Mlk_MEout = calculate_Mlk_MEout(Mlk_Prod,
@@ -418,8 +422,11 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     An_MPBal_g_Trg = An_MPIn_g - An_MPuse_g_Trg
 
     # Energy Balance
-    An_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Mlk_MEout
-    An_MEbal = An_MEIn - An_MEuse
+    # An_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Mlk_MEout #ME use with predicted milk NP
+    # An_MEbal = An_MEIn - An_MEuse
+
+    # Use Target ME calculation instead of predicted, to match that MP balance is based on target not predicted
+    An_MEbal = An_MEIn - Trg_MEuse
 
     model_results_short = {
     'Mlk_Prod_comp': Mlk_Prod_comp,
@@ -431,12 +438,16 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     
     'An_MEIn': An_MEIn,
     'Trg_MEuse': Trg_MEuse, #This is Target req - i.e. from user input fat, protein, lactose
-    'An_MEuse': An_MEuse,
-    'An_MPIn': An_MPIn,
-    'An_MPuse_kg_Trg': An_MPuse_kg_Trg,
-# Protein and Energy balance
+    # 'An_MEuse': An_MEuse,
+
+    'An_MPIn_g': An_MPIn_g,
+    'An_MPuse_g_Trg': An_MPuse_g_Trg,
+    # Protein and Energy balance
     'An_MPBal_g_Trg': An_MPBal_g_Trg,
-    'An_MEbal': An_MEbal    
+    'An_MEbal': An_MEbal,
+    
+    # Rumen MCP balance
+    'An_RDPbal_g': An_RDPbal_g    
     }
 
     # filter locals() to return only floats and ints
@@ -451,8 +462,9 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     'AA_values': AA_values,
     'model_results_short': model_results_short,
     'model_results_full': model_results_numeric,
-    'mineral_requirements_df': mineral_requirements_df,
+    'mineral_requirements_dict': mineral_requirements_dict,
     'mineral_intakes': mineral_values,
+    'mineral_balance_dict': mineral_balance_dict,
     'vitamin_intakes': df_vitamins
     }
 

@@ -61,6 +61,9 @@ def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWetI
 
     Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn                                                   # Line 998
 
+    # Repeated in calculate_Du_MiN_NRC2021_g but temporarily need it to calculate rumen RDP balance
+    An_RDPIn_g = An_RDPIn * 1000
+    
     Du_MiN_NRC2021_g = calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict)
     
     # The 2 alternative predictions are currently disabled but can easily be implemented in the future
@@ -70,7 +73,7 @@ def calculate_Du_MiN_g(Dt_NDFIn, Dt_DMIn, Dt_StIn, Dt_CPIn, Dt_ADFIn, Dt_ForWetI
     # Du_MiN_VTnln_g = calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn)
 
     # return Du_MiN_NRC2021_g, Du_MiN_VTln_g, Du_MiN_VTnln_g
-    return Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn
+    return Du_MiN_NRC2021_g, Rum_DigNDFIn, Rum_DigStIn, An_RDPIn_g
 
 
 def calculate_Du_MiN_NRC2021_g(An_RDP, An_RDPIn, Dt_DMIn, Rum_DigNDFIn, Rum_DigStIn, coeff_dict): 

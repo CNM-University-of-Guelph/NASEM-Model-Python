@@ -484,7 +484,8 @@ def mineral_requirements(An_StatePhys, An_Parity_rl, An_Breed, An_DMIn, An_BW_ma
 
     balance_names = ['An_Ca_bal', 'An_P_bal', 'An_Mg_bal', 'An_Na_bal', 'An_Cl_bal', 'An_K_bal', 'An_S_bal', 'An_Co_bal', 'An_Cu_bal', 'An_Fe_bal', 'An_Mn_bal', 'An_Se_bal', 'An_Zn_bal']
     balance_values = [An_Ca_bal, An_P_bal, An_Mg_bal, An_Na_bal, An_Cl_bal, An_K_bal, An_S_bal, An_Co_bal, An_Cu_bal, An_Fe_bal, An_Mn_bal, An_Se_bal, An_Zn_bal]
-    mineral_balance = {variable: number for variable, number in zip(balance_names, balance_values)}
+    mineral_balance = {variable: number.values[0] for variable, number in zip(balance_names, balance_values)}
+    # .values[0] is used here to extract just the number without the labels that are inherited from the Series inputs
 
     return mineral_requirements, mineral_balance, An_DCADmeq
 
