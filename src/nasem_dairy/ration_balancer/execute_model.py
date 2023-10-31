@@ -440,9 +440,9 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     'Trg_MEuse': Trg_MEuse, #This is Target req - i.e. from user input fat, protein, lactose
     # 'An_MEuse': An_MEuse,
 
-    'An_MPIn': An_MPIn,
-    'An_MPuse_kg_Trg': An_MPuse_kg_Trg,
-# Protein and Energy balance
+    'An_MPIn_g': An_MPIn_g,
+    'An_MPuse_g_Trg': An_MPuse_g_Trg,
+    # Protein and Energy balance
     'An_MPBal_g_Trg': An_MPBal_g_Trg,
     'An_MEbal': An_MEbal,
     
