@@ -74,7 +74,7 @@ def calculate_MP_requirement(An_DEInp, An_DENPNCPIn, An_DigTPaIn, An_GasEOut, Fr
     Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg
 
     # Recalculate MP requirement 
-    An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg
+    An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPuse_g_Trg + Mlk_MPuse_g_Trg
     print("An_MPuse_g_Trg has been recalculated")
   
   # calculate on a kg basis to allow easier comparison the MP intake
