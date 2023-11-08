@@ -36,7 +36,10 @@ import pandas as pd
 
 # animal_input is a dictionary with all animal specific parameters
 # diet_info is a dataframe with the user entered feed ingredients and %DM intakes
-diet_info, animal_input, equation_selection = nd.read_csv_input("../src/nasem_dairy/data/input.csv")
+# diet_info, animal_input, equation_selection = nd.read_csv_input("../src/nasem_dairy/data/input.csv")
+
+diet_info, animal_input, equation_selection = nd.read_csv_input("./input_2.csv")
+# diet_info, animal_input, equation_selection = nd.read_csv_input('./dev_files/input_drycow.csv')
 
 # Load feed library
 feed_library = pd.read_csv("../src/nasem_dairy/data/NASEM_feed_library.csv")
@@ -46,11 +49,35 @@ var_desc = pd.read_csv('../src/nasem_dairy/data/variable_descriptions.csv').quer
 
 
 
+
 # Execute function
 
 # Assign values here so they can be see in environment
 # coeff_dict is imported from ration_balancer, see coeff_dict.py
 NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, feed_library, nd.coeff_dict)
+
+# View results:
+pd.DataFrame.from_dict(NASEM_out['model_results_short'],orient='index', columns=['Value']).reset_index()
+
+
+# Testing animal_inputs for dry cow flag
+animal_input['An_StatePhys'] = 'Dry Cow'
+animal_input['Trg_MilkProd'] = 0 # fails with an error
+animal_input['Trg_MilkProd'] = 35
+
+animal_input['Trg_MilkFatp'] = 4.1
+animal_input['Trg_MilkTPp'] = 3.8
+animal_input['Trg_MilkLacp'] = 4.5
+# if setting all to 0 it throws an error at the same error as when Trg_MilkProd is 0, except it still runs
+animal_input['Trg_MilkLacp'] = 0
+animal_input['Trg_MilkTPp'] = 0
+animal_input['Trg_MilkFatp'] = 0
+
+NASEM_out = nd.NASEM_model(diet_info, animal_input, equation_selection, feed_library, nd.coeff_dict)
+
+# View results:
+pd.DataFrame.from_dict(NASEM_out['model_results_short'],orient='index', columns=['Value']).reset_index()
+
 
 NASEM_out['animal_input']
 # Display results, temporary
@@ -88,6 +115,7 @@ NASEM_out['diet_info'].info()
 
 
 NASEM_out['mineral_requirements_df']
+
 NASEM_out['vitamin_intakes']
 
 df_minerals = NASEM_out['mineral_intakes']
@@ -137,3 +165,7 @@ diet_long = (
         )
 
 print(diet_long)
+
+
+# Amino Acids
+NASEM_out['AA_values']

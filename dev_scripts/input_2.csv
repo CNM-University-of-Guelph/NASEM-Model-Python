@@ -1,0 +1,33 @@
+﻿Location,Variable,Value,Expected Value
+equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
+equation_selection,DMIn_eqn,0,int (0-17)
+equation_selection,mProd_eqn,0,int
+equation_selection,Monensin_eqn,1,int
+diet_info,"Corn grain HM, fine grind",2,float
+diet_info,"Corn silage, typical",8,float
+diet_info,"Soybean meal, extruded",4.5,float
+diet_info,"Legume hay, mid-maturity",7,float
+diet_info,"VitTM Premix, generic",0.2,float
+diet_info,"DDGS, high protein",1,float
+diet_info,Calcium phosphate (di),0.1,float
+diet_info,Calcium carbonate,0.35,float
+diet_info,"Fat, canola oil",0.5,float
+animal_input,An_Parity_rl,1.75,int
+animal_input,Trg_MilkProd,35,float
+animal_input,An_BW,780,float
+animal_input,An_BCS,3,float
+animal_input,An_LactDay,165,int
+animal_input,Trg_MilkFatp,3.5,float
+animal_input,Trg_MilkTPp,3.1,float
+animal_input,Trg_MilkLacp,4.85,float
+animal_input,DMI,23.65,float
+animal_input,An_BW_mature,700,float
+animal_input,Trg_FrmGain,0.1,float
+animal_input,An_GestDay,50,int
+animal_input,An_GestLength,280,int
+animal_input,Trg_RsrvGain,0,float
+animal_input,Fet_BWbrth,44.1,float
+animal_input,An_AgeDay,1732.8,int
+animal_input,An_305RHA_MlkTP,280,float
+animal_input,An_StatePhys,Lactating Cow,str
+animal_input,An_Breed,Holstein,str (Holstein or Jersey)
