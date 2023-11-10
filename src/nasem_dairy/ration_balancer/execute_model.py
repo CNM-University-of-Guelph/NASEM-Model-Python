@@ -2,7 +2,7 @@
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
 from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes, NDF_precalculation
-from nasem_dairy.NASEM_equations.misc_equations import calculate_Dt_DMIn_Lact1, AA_calculations, calculate_GrUter_BWgain
+from nasem_dairy.NASEM_equations.misc_equations import AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day, calculate_An_MPIn_g
@@ -12,6 +12,9 @@ from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_intakes, vitamin_supply, mineral_requirements
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_GasEOut, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
+# Import statements for updated functions 
+from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Dt_DMIn_Lact1
+from nasem_dairy.NASEM_equations.dev_milk_equations import calculate_Trg_NEmilk_Milk
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
@@ -69,6 +72,11 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     ########################################
     # Step 2: DMI Equations
     ########################################
+    # Calculate Target milk net energy
+    Trg_NEmilk_Milk = calculate_Trg_NEmilk_Milk(animal_input['Trg_MilkTPp'],
+                                                animal_input['Trg_MilkFatp'],
+                                                animal_input['Trg_MilkLacp'])
+
     # TODO: where is 0, 1 and 9 ?
 
     # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
@@ -80,16 +88,23 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
     # Predict DMI for lactating cow
     elif equation_selection['DMIn_eqn'] == 8: 
+        animal_input['DMI'] = calculate_Dt_DMIn_Lact1(animal_input['Trg_MilkProd'],
+                                                      animal_input['An_BW'],
+                                                      animal_input['An_BCS'],
+                                                      animal_input['An_LactDay'],
+                                                      animal_input['An_Parity_rl'],
+                                                      Trg_NEmilk_Milk)
+
         # print("using DMIn_eqn: 8")
-        animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
-            animal_input['An_Parity_rl'], 
-            animal_input['Trg_MilkProd'], 
-            animal_input['An_BW'], 
-            animal_input['An_BCS'],
-            animal_input['An_LactDay'], 
-            animal_input['Trg_MilkFatp'], 
-            animal_input['Trg_MilkTPp'], 
-            animal_input['Trg_MilkLacp'])
+        # animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
+        #     animal_input['An_Parity_rl'], 
+        #     animal_input['Trg_MilkProd'], 
+        #     animal_input['An_BW'], 
+        #     animal_input['An_BCS'],
+        #     animal_input['An_LactDay'], 
+        #     animal_input['Trg_MilkFatp'], 
+        #     animal_input['Trg_MilkTPp'], 
+        #     animal_input['Trg_MilkLacp'])
 
     # Predict DMI for heifers    
     elif equation_selection['DMIn_eqn'] in [2,3,4,5,6,7,12,13,14,15,16,17]:
