@@ -13,7 +13,7 @@ from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_intakes,
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_GasEOut, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 # Import statements for updated functions 
-from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Dt_DMIn_Lact1
+from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Kb_LateGest_DMIn, calculate_An_PrePartWklim, calculate_Dt_DMIn_Heif_LateGestInd, calculate_Dt_DMIn_Heif_LateGestPen, calculate_Dt_NDFdev_DMI, calculate_Dt_DMIn_Heif_NRCa, calculate_Dt_DMIn_Heif_NRCad, calculate_Dt_DMIn_Heif_H1, calculate_Dt_DMIn_Heif_H2, calculate_Dt_DMIn_Heif_HJ1, calculate_Dt_DMIn_Heif_HJ2, calculate_Dt_DMIn_Lact1
 from nasem_dairy.NASEM_equations.dev_milk_equations import calculate_Trg_NEmilk_Milk
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
@@ -95,27 +95,145 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
                                                       animal_input['An_Parity_rl'],
                                                       Trg_NEmilk_Milk)
 
-        # print("using DMIn_eqn: 8")
-        # animal_input['DMI'] = calculate_Dt_DMIn_Lact1(
-        #     animal_input['An_Parity_rl'], 
-        #     animal_input['Trg_MilkProd'], 
-        #     animal_input['An_BW'], 
-        #     animal_input['An_BCS'],
-        #     animal_input['An_LactDay'], 
-        #     animal_input['Trg_MilkFatp'], 
-        #     animal_input['Trg_MilkTPp'], 
-        #     animal_input['Trg_MilkLacp'])
-
     # Predict DMI for heifers    
-    elif equation_selection['DMIn_eqn'] in [2,3,4,5,6,7,12,13,14,15,16,17]:
-        animal_input['DMI'] = heifer_growth(
-            equation_selection['DMIn_eqn'], 
-            # diet_info.loc['Diet', 'Fd_NDF'],
-            Dt_NDF, 
-            animal_input['An_BW'], 
-            animal_input['An_BW_mature'], 
-            animal_input['An_PrePartWk'], 
-            coeff_dict)
+    Kb_LateGest_DMIn = calculate_Kb_LateGest_DMIn(Dt_NDF)
+    An_PrePartWklim = calculate_An_PrePartWklim(animal_input['An_PrePartWk'])
+    An_PrePartWkDurat = An_PrePartWklim * 2 
+
+    # Individual Heifer DMI Predictions
+    if equation_selection['DMIn_eqn'] in [2,3,4,5,6,7]:
+        # All the individual DMI predictions require this value
+        Dt_DMIn_Heif_LateGestInd = calculate_Dt_DMIn_Heif_LateGestInd(animal_input['An_BW'], 
+                                                                      Kb_LateGest_DMIn, 
+                                                                      An_PrePartWklim, 
+                                                                      coeff_dict)
+
+        if equation_selection['DMIn_eqn'] == 2:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
+                                                      animal_input['An_BW_mature']
+                                                      ),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
+                                                  animal_input['An_BW_mature'])
+                
+        if equation_selection['DMIn_eqn'] == 3:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                                                       animal_input['An_BW_mature'],
+                                                       Dt_NDF
+                                                       ),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                                                   animal_input['An_BW_mature'],
+                                                   Dt_NDF)
+        
+        if equation_selection['DMIn_eqn'] == 4:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
+
+        if equation_selection['DMIn_eqn'] == 5:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
+                                                    Dt_NDF)
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                                                    Dt_NDFdev_DMI),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                                                Dt_NDFdev_DMI)
+            
+        if equation_selection['DMIn_eqn'] == 6:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
+
+        if equation_selection['DMIn_eqn'] == 7:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
+                                                    Dt_NDF)
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                                                     Dt_NDFdev_DMI),
+                          Dt_DMIn_Heif_LateGestInd)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                                                 Dt_NDFdev_DMI)
+
+    # Group Heifer DMI Predictions
+    if equation_selection['DMIn_eqn'] in [12,13,14,15,16,17]:
+        # All group DMI predicitons require this value
+        Dt_DMIn_Heif_LateGestPen = calculate_Dt_DMIn_Heif_LateGestPen(animal_input['An_BW'], 
+                                                                      An_PrePartWkDurat, 
+                                                                      Kb_LateGest_DMIn, 
+                                                                      coeff_dict)
+
+        if equation_selection['DMIn_eqn'] == 12:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
+                                                       animal_input['An_BW_mature']
+                                                       ), 
+                            Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
+                                                  animal_input['An_BW_mature'])
+        
+        if equation_selection['DMIn_eqn'] == 13:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                                                       animal_input['An_BW_mature'],
+                                                       Dt_NDF
+                                                       ), 
+                            Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                                                   animal_input['An_BW_mature'],
+                                                   Dt_NDF)
+
+        if equation_selection['DMIn_eqn'] == 14:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
+                          Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
+
+        if equation_selection['DMIn_eqn'] == 15:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
+                                                    Dt_NDF)
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                                                    Dt_NDFdev_DMI),
+                          Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                                                Dt_NDFdev_DMI)
+
+        if equation_selection['DMIn_eqn'] == 16:
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
+                          Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
+
+        if equation_selection['DMIn_eqn'] == 17:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
+                                                    Dt_NDF)
+            if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
+                DMI = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                                                     Dt_NDFdev_DMI),
+                          Dt_DMIn_Heif_LateGestPen)
+            else:
+                DMI = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                                                 Dt_NDFdev_DMI)
+
+##### END OF UPDATED CODE #####
+
 
     
     elif equation_selection['DMIn_eqn'] in [10,11]:
