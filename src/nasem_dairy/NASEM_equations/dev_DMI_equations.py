@@ -30,28 +30,33 @@ def calculate_An_PrePartWklim(An_PrePartWk):
     return An_PrePartWklim
 
 
-# Need when DMIn_eqn == 2,3,4,5,6,7
-def calculate_Dt_DMIn_Heif_LateGestInd(An_BW, Kb_LateGest_DMIn, An_PrePartWklim, coeff_dict):
+# Need when DMIn_eqn == 2,3,4,5,6,7,10
+def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim, Kb_LateGest_DMIn, coeff_dict):
     req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']     
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-
     #Late gestation individual animal prediction, % of BW.  Use to assess for a specific day for a given animal
     Dt_DMIn_BW_LateGest_i = coeff_dict['Ka_LateGest_DMIn'] + Kb_LateGest_DMIn * An_PrePartWklim + coeff_dict['Kc_LateGest_DMIn'] * An_PrePartWklim**2
+    return Dt_DMIn_BW_LateGest_i
 
+
+# Need when DMIn_eqn == 10,12,13,14,15,16,17
+def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict):
+    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']     
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    #Late gestation Group/Pen mean DMI/BW for an interval of 0 to PrePart_WkDurat.  Assumes pen steady state and PrePart_wk = pen mean
+    Dt_DMIn_BW_LateGest_p = (coeff_dict['Ka_LateGest_DMIn'] * An_PrePartWkDurat + Kb_LateGest_DMIn / 2 * An_PrePartWkDurat**2 + coeff_dict['Kc_LateGest_DMIn'] / 3 * An_PrePartWkDurat**3) / An_PrePartWkDurat
+    return Dt_DMIn_BW_LateGest_p
+
+
+# Need when DMIn_eqn == 2,3,4,5,6,7
+def calculate_Dt_DMIn_Heif_LateGestInd(An_BW, Dt_DMIn_BW_LateGest_i):
     #Individual intake for the specified day prepart or the pen mean intake for the interval, 0 to PrePart_WkDurat
     Dt_DMIn_Heif_LateGestInd = 0.88 * An_BW * Dt_DMIn_BW_LateGest_i / 100 #Individual animal
-    
     return Dt_DMIn_Heif_LateGestInd
  
 
 # Need when DMIn_eqn == 12,13,14,15,16,17
-def calculate_Dt_DMIn_Heif_LateGestPen(An_BW, An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict):
-    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']     
-    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-
-    #Late gestation Group/Pen mean DMI/BW for an interval of 0 to PrePart_WkDurat.  Assumes pen steady state and PrePart_wk = pen mean
-    Dt_DMIn_BW_LateGest_p = (coeff_dict['Ka_LateGest_DMIn'] * An_PrePartWkDurat + Kb_LateGest_DMIn / 2 * An_PrePartWkDurat**2 + coeff_dict['Kc_LateGest_DMIn'] / 3 * An_PrePartWkDurat**3) / An_PrePartWkDurat
-
+def calculate_Dt_DMIn_Heif_LateGestPen(An_BW, Dt_DMIn_BW_LateGest_p):
     Dt_DMIn_Heif_LateGestPen = 0.88 * An_BW * Dt_DMIn_BW_LateGest_p / 100 #Pen mean
     return Dt_DMIn_Heif_LateGestPen
 
@@ -142,3 +147,28 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd,
     )  # Line 389                                                
     return Dt_DMIn_Lact1
     
+
+# DMIn_eqn == 10
+def calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i):
+    Dt_DMIn_DryCow1_FarOff = An_BW * Dt_DMIn_BW_LateGest_i / 100
+    return Dt_DMIn_DryCow1_FarOff
+
+
+# DMIn_eqn == 10
+def calculate_Dt_DMIn_DryCow1_Close(An_BW, Dt_DMIn_BW_LateGest_p):
+    Dt_DMIn_DryCow1_Close = An_BW * Dt_DMIn_BW_LateGest_p / 100
+    return Dt_DMIn_DryCow1_Close
+
+
+# DMIn_eqn == 11
+def calculate_Dt_DMIn_DryCow2(An_BW, An_GestDay, An_GestLength):
+    # from Hayirli et al., 2003 JDS
+    if (An_GestDay - An_GestLength) < -21:
+        Dt_DMIn_DryCow_AdjGest = 0
+    else:
+        Dt_DMIn_DryCow_AdjGest = An_BW * (-0.756 * math.exp(0.154 * (An_GestDay - An_GestLength))) / 100
+    
+    Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest
+    return Dt_DMIn_DryCow2
+
+

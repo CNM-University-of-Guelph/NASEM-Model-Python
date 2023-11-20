@@ -16,5 +16,23 @@ from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_intakes, vitamin_supply, mineral_requirements
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, temp_calc_An_GasEOut, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
-from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Kb_LateGest_DMIn, calculate_An_PrePartWklim, calculate_Dt_DMIn_Heif_LateGestInd, calculate_Dt_DMIn_Heif_LateGestPen, calculate_Dt_NDFdev_DMI, calculate_Dt_DMIn_Heif_NRCa, calculate_Dt_DMIn_Heif_NRCad, calculate_Dt_DMIn_Heif_H1, calculate_Dt_DMIn_Heif_H2, calculate_Dt_DMIn_Heif_HJ1, calculate_Dt_DMIn_Heif_HJ2, calculate_Dt_DMIn_Lact1
+from nasem_dairy.NASEM_equations.dev_DMI_equations import (
+    calculate_Kb_LateGest_DMIn,
+    calculate_An_PrePartWklim,
+    calculate_Dt_DMIn_Heif_LateGestInd,
+    calculate_Dt_DMIn_Heif_LateGestPen,
+    calculate_Dt_NDFdev_DMI,
+    calculate_Dt_DMIn_Heif_NRCa,
+    calculate_Dt_DMIn_Heif_NRCad,
+    calculate_Dt_DMIn_Heif_H1,
+    calculate_Dt_DMIn_Heif_H2,
+    calculate_Dt_DMIn_Heif_HJ1,
+    calculate_Dt_DMIn_Heif_HJ2,
+    calculate_Dt_DMIn_Lact1,
+    calculate_Dt_DMIn_BW_LateGest_i,
+    calculate_Dt_DMIn_BW_LateGest_p,
+    calculate_Dt_DMIn_DryCow1_FarOff,
+    calculate_Dt_DMIn_DryCow1_Close,
+    calculate_Dt_DMIn_DryCow2
+)
 from nasem_dairy.NASEM_equations.dev_milk_equations import calculate_Trg_NEmilk_Milk
