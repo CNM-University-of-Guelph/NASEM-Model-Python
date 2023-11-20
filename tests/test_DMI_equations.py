@@ -1,6 +1,26 @@
 import pytest
 from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Kb_LateGest_DMIn, calculate_An_PrePartWklim, calculate_Dt_DMIn_Heif_LateGestInd, calculate_Dt_DMIn_Heif_LateGestPen, calculate_Dt_NDFdev_DMI, calculate_Dt_DMIn_Heif_NRCa, calculate_Dt_DMIn_Heif_NRCad, calculate_Dt_DMIn_Heif_H1, calculate_Dt_DMIn_Heif_H2, calculate_Dt_DMIn_Heif_HJ1, calculate_Dt_DMIn_Heif_HJ2, calculate_Dt_DMIn_Lact1
+# from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Kb_LateGest_DMIn, calculate_An_PrePartWklim, calculate_Dt_DMIn_Heif_LateGestInd, calculate_Dt_DMIn_Heif_LateGestPen, calculate_Dt_NDFdev_DMI, calculate_Dt_DMIn_Heif_NRCa, calculate_Dt_DMIn_Heif_NRCad, calculate_Dt_DMIn_Heif_H1, calculate_Dt_DMIn_Heif_H2, calculate_Dt_DMIn_Heif_HJ1, calculate_Dt_DMIn_Heif_HJ2, calculate_Dt_DMIn_Lact1
+from nasem_dairy.NASEM_equations.dev_DMI_equations import (
+    calculate_Kb_LateGest_DMIn,
+    calculate_An_PrePartWklim,
+    calculate_Dt_DMIn_Heif_LateGestInd,
+    calculate_Dt_DMIn_Heif_LateGestPen,
+    calculate_Dt_NDFdev_DMI,
+    calculate_Dt_DMIn_Heif_NRCa,
+    calculate_Dt_DMIn_Heif_NRCad,
+    calculate_Dt_DMIn_Heif_H1,
+    calculate_Dt_DMIn_Heif_H2,
+    calculate_Dt_DMIn_Heif_HJ1,
+    calculate_Dt_DMIn_Heif_HJ2,
+    calculate_Dt_DMIn_Lact1,
+    calculate_Dt_DMIn_BW_LateGest_i,
+    calculate_Dt_DMIn_BW_LateGest_p,
+    calculate_Dt_DMIn_DryCow1_FarOff,
+    calculate_Dt_DMIn_DryCow1_Close,
+    calculate_Dt_DMIn_DryCow2
+)
+
 
 ### Kb_LateGest_DMIn ###
 def test_Kb_LateGest_DMIn_below_range():
@@ -47,14 +67,14 @@ def test_An_PrePartWklim_above_range():
 
 
 def test_Dt_DMIn_Heif_LateGestInd():
-    result = calculate_Dt_DMIn_Heif_LateGestInd(910, -0.24, -1, coeff_dict)
-    assert result == pytest.approx(13.4134), "Dt_DMIn_Heif_LateGestInd does not equal 13.4134"
+    result = calculate_Dt_DMIn_Heif_LateGestInd(910, 1.8)
+    assert result == pytest.approx(14.4144), "Dt_DMIn_Heif_LateGestInd does not equal 13.4134"
 
 
 def test_Dt_DMIn_Heif_LateGestPen():
-    result = calculate_Dt_DMIn_Heif_LateGestPen(645, -4, -0.211, coeff_dict)
-    assert result == pytest.approx(9.67947199),"Dt_DMIn_Heif_LateGestPen does not equal 9.67947199"
-
+    result = calculate_Dt_DMIn_Heif_LateGestPen(645, 1.25)
+    assert result == pytest.approx(7.095),"Dt_DMIn_Heif_LateGestPen does not equal 9.67947199"
+    
 
 def test_Dt_NDFdev_DMI():
     result = calculate_Dt_NDFdev_DMI(775, 44)
@@ -95,3 +115,28 @@ def test_Dt_DMIn_Lact1():
     result = calculate_Dt_DMIn_Lact1(30, 700, 3, 160, 1, 0.75)
     assert result == pytest.approx(23.894448), "Dt_DMIn_Lact1 does not equal 23.894448"
     
+
+def test_Dt_DMIn_BW_LateGest_i():
+    result = calculate_Dt_DMIn_BW_LateGest_i(-3, -0.5, coeff_dict)
+    assert result == pytest.approx(2.655),"Dt_DMIn_BW_LateGest_i should equal 2.655"
+
+
+def test_Dt_DMIn_BW_LateGest_p():
+    result = calculate_Dt_DMIn_BW_LateGest_p(-2, -0.3, coeff_dict)
+    assert result == pytest.approx(1.7233333333333334),"Dt_DMIn_BW_LateGest_p should equal 1.72333"
+
+
+def test_Dt_DMIn_DryCow1_FarOff():
+    result = calculate_Dt_DMIn_DryCow1_FarOff(820, 1.9)
+    assert result == pytest.approx(15.58),"Dt_DMIn_DryCow1_FarOff should equal 15.58"
+
+
+def test_Dt_DMIn_DryCow1_Close():
+    result = calculate_Dt_DMIn_DryCow1_Close(755, 1.7)
+    assert result == pytest.approx(12.835),"Dt_DMIn_DryCow1_Close should equal 12.835"
+
+
+def test_Dt_DMIn_DryCow2():
+    result = calculate_Dt_DMIn_DryCow2(675, 105, 280)
+    assert result == pytest.approx(13.35825),"Dt_DMIn_DryCow2 should equal 13.35825"
+
