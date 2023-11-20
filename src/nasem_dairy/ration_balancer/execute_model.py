@@ -126,60 +126,60 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
         if equation_selection['DMIn_eqn'] == 2:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
                                                       animal_input['An_BW_mature']
                                                       ),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
                                                   animal_input['An_BW_mature'])
                 
         if equation_selection['DMIn_eqn'] == 3:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
                                                        animal_input['An_BW_mature'],
                                                        Dt_NDF
                                                        ),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
                                                    animal_input['An_BW_mature'],
                                                    Dt_NDF)
         
         if equation_selection['DMIn_eqn'] == 4:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
 
         if equation_selection['DMIn_eqn'] == 5:
             Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
                                                     Dt_NDF)
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
                                                     Dt_NDFdev_DMI),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
                                                 Dt_NDFdev_DMI)
             
         if equation_selection['DMIn_eqn'] == 6:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
 
         if equation_selection['DMIn_eqn'] == 7:
             Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
                                                     Dt_NDF)
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
                                                      Dt_NDFdev_DMI),
                           Dt_DMIn_Heif_LateGestInd)
             else:
-                DMI = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
                                                  Dt_NDFdev_DMI)
 
     # Group Heifer DMI Predictions
@@ -191,60 +191,60 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
 
         if equation_selection['DMIn_eqn'] == 12:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'],
                                                        animal_input['An_BW_mature']
                                                        ), 
                             Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_NRCa(animal_input['An_BW'], 
                                                   animal_input['An_BW_mature'])
         
         if equation_selection['DMIn_eqn'] == 13:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
                                                        animal_input['An_BW_mature'],
                                                        Dt_NDF
                                                        ), 
                             Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_NRCad(animal_input['An_BW'],
                                                    animal_input['An_BW_mature'],
                                                    Dt_NDF)
 
         if equation_selection['DMIn_eqn'] == 14:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
-                          Dt_DMIn_Heif_LateGestPen)
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_H1(animal_input['An_BW']),
+                                          Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_H1(animal_input['An_BW'])
 
         if equation_selection['DMIn_eqn'] == 15:
             Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
                                                     Dt_NDF)
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
                                                     Dt_NDFdev_DMI),
                           Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_H2(animal_input['An_BW'], 
                                                 Dt_NDFdev_DMI)
 
         if equation_selection['DMIn_eqn'] == 16:
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW']),
                           Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_HJ1(animal_input['An_BW'])
 
         if equation_selection['DMIn_eqn'] == 17:
             Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(animal_input['An_BW'], 
                                                     Dt_NDF)
             if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-                DMI = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                animal_input['DMI'] = min(calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
                                                      Dt_NDFdev_DMI),
                           Dt_DMIn_Heif_LateGestPen)
             else:
-                DMI = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
+                animal_input['DMI'] = calculate_Dt_DMIn_Heif_HJ2(animal_input['An_BW'],
                                                  Dt_NDFdev_DMI)
 
 
@@ -253,17 +253,19 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
         Dt_DMIn_BW_LateGest_p = calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict)
 
         if animal_input['An_PrePartWk'] > An_PrePartWkDurat:
-            DMI = min(calculate_Dt_DMIn_DryCow1_FarOff(animal_input['An_BW'], 
+            animal_input['DMI'] = min(calculate_Dt_DMIn_DryCow1_FarOff(animal_input['An_BW'], 
                                                        Dt_DMIn_BW_LateGest_i), 
                       calculate_Dt_DMIn_DryCow1_Close(animal_input['An_BW'], 
                                                       Dt_DMIn_BW_LateGest_p)
                       )
         else:
-            DMI = calculate_Dt_DMIn_DryCow1_FarOff(animal_input['An_BW'], 
+            animal_input['DMI'] = calculate_Dt_DMIn_DryCow1_FarOff(animal_input['An_BW'], 
                                                    Dt_DMIn_BW_LateGest_i)
     
+
     elif equation_selection['DMIn_eqn'] == 11:
-        DMI = calculate_Dt_DMIn_DryCow2(animal_input['An_BW'], animal_input['An_GestDay'], animal_input['An_GestLength'])
+        animal_input['DMI'] = calculate_Dt_DMIn_DryCow2(animal_input['An_BW'], animal_input['An_GestDay'], animal_input['An_GestLength'])
+
 
     else:
         # It needs to catch all possible solutions, otherwise it's possible that it stays unchanged without warning
