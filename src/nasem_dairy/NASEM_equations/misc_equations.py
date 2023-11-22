@@ -3,37 +3,6 @@ import pandas as pd
 import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
-def calculate_Dt_DMIn_Lact1(An_Parity_rl, Trg_MilkProd, An_BW, An_BCS, An_LactDay, Trg_MilkFatp, Trg_MilkTPp, Trg_MilkLacp):
-    """
-    Animal based dry matter intake (DMI) prediction for lactating cows
-
-    This function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model
-    this prediction can be can be selected by setting DMI_pred to 0 in the 'input.txt'. In :py:func:`NASEM_model` Dt_DMIn_Lact1
-    will be returned to the animal_input dictionary with the key 'DMI'.
-
-    Parameters:
-        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
-        Trg_MilkProd (Number): Animal Milk Production in kg/day.
-        An_BW (Number): Animal Body Weight in kg.
-        An_BCS (Number): Body condition score, from 1-5
-        An_LactDay (Number): Day of Lactation.
-        Trg_MilkFatp (Percentage): Animal Milk Fat percentage.
-        Trg_MilkTPp (Percentage): Animal Milk True Protein percentage.
-        Trg_MilkLacp (Percentage): Animal Milk Lactose percentage.
-
-    Returns:
-        Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d
-    """
-    Trg_NEmilk_Milk = 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
-    Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd                                         # Line 386
-    
-    term1 = (3.7 + 5.7 * (An_Parity_rl - 1) + 0.305 * Trg_NEmilkOut + 0.022 * An_BW +       # Line 389
-             (-0.689 - 1.87 * (An_Parity_rl - 1)) * An_BCS)
-    term2 = 1 - (0.212 + 0.136 * (An_Parity_rl - 1)) * math.exp(-0.053 * An_LactDay)
-    Dt_DMIn_Lact1 = term1 * term2                                                           
-    return Dt_DMIn_Lact1
-
-
 def AA_calculations(Du_MiN_g, feed_data, diet_info, animal_input, coeff_dict):
     """
     Takes the amino acid (AA) supply from the diet and calculates total AA intake

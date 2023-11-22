@@ -114,7 +114,7 @@ print(diet_data)
 NASEM_out['diet_info'].info()
 
 
-NASEM_out['mineral_requirements_df']
+NASEM_out['mineral_requirements_dict']
 
 NASEM_out['vitamin_intakes']
 

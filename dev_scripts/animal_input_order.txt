@@ -1,0 +1,21 @@
+Order for adding animal inputs:
+
+DMI
+Trg_MilkProd
+Trg_MilkTPp
+Trg_MilkFatp
+Trg_MilkLacp
+An_305RHA_MlkTP
+An_BW
+An_BW_mature
+Trg_FrmGain
+Trg_RsrvGain
+An_BCS
+An_AgeDay
+An_LactDay
+An_GestDay
+An_GestLength
+Fet_BWbrth
+An_Parity_rl
+An_StatePhys
+An_Breed
