@@ -1,7 +1,7 @@
 # NASEM model - EXECUTE
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes, NDF_precalculation
+from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
 from nasem_dairy.NASEM_equations.misc_equations import AA_calculations, calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
@@ -33,6 +33,111 @@ from nasem_dairy.NASEM_equations.dev_DMI_equations import (
     calculate_Dt_DMIn_DryCow2
 )
 from nasem_dairy.NASEM_equations.dev_milk_equations import calculate_Trg_NEmilk_Milk
+from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
+    calculate_TT_dcFdNDF_Lg,
+    calculate_Fd_DNDF48,
+    calculate_TT_dcFdNDF_48h,
+    calculate_TT_dcFdNDF_Base,
+    calculate_Fd_GE,
+    calculate_Fd_DMIn,
+    calculate_Fd_AFIn,
+    calculate_Fd_For,
+    calculate_Fd_ForWet,
+    calculate_Fd_ForDry,
+    calculate_Fd_Past,
+    calculate_Fd_LiqClf,
+    calculate_Fd_ForNDF,
+    calculate_Fd_NDFnf,
+    calculate_Fd_NPNCP,
+    calculate_Fd_NPN,
+    calculate_Fd_NPNDM,
+    calculate_Fd_TP,
+    calculate_Fd_fHydr_FA,
+    calculate_Fd_FAhydr,
+    calculate_Fd_NFC,
+    calculate_Fd_rOM,
+    calculate_Fd_DigNDFIn_Base,
+    calculate_Fd_NPNCPIn,
+    calculate_Fd_NPNIn,
+    calculate_Fd_NPNDMIn,
+    calculate_Fd_CPAIn,
+    calculate_Fd_CPBIn,
+    calculate_Fd_CPBIn_For,
+    calculate_Fd_CPBIn_Conc,
+    calculate_Fd_CPCIn,
+    calculate_Fd_CPIn_ClfLiq,
+    calculate_Fd_CPIn_ClfDry,
+    calculate_Fd_rdcRUPB,
+    calculate_Fd_RUPBIn,
+    calculate_Fd_RUPIn,
+    calculate_Fd_RUP_CP,
+    calculate_Fd_RUP,
+    calculate_Fd_RDP,
+    calculate_Fd_OMIn,
+    calculate_Fd_DE_base_1,
+    calculate_Fd_DE_base_2,
+    calculate_Fd_DE_base,
+    calculate_Fd_DEIn_base,
+    calculate_Fd_DEIn_base_ClfLiq,
+    calculate_Fd_DEIn_base_ClfDry,
+    calculate_Fd_DMIn_ClfLiq,
+    calculate_Fd_DE_ClfLiq,
+    calculate_Fd_ME_ClfLiq,
+    calculate_Fd_DMIn_ClfFor,
+    calculate_Fd_PinorgIn,
+    calculate_Fd_PorgIn,
+    calculate_Fd_MgIn_min,
+    calculate_Fd_acCa,
+    calculate_Fd_acPtot,
+    calculate_Fd_acMg,
+    calculate_Fd_acNa,
+    calculate_Fd_acK,
+    calculate_Fd_acCl,
+    calculate_Fd_absCaIn,
+    calculate_Fd_absPIn,
+    calculate_Fd_absMgIn_base,
+    calculate_Fd_absNaIn,
+    calculate_Fd_absKIn,
+    calculate_Fd_absClIn,
+    calculate_Fd_acCo,
+    calculate_Fd_acCu,
+    calculate_Fd_acFe,
+    calculate_Fd_acMn,
+    calculate_Fd_acZn,
+    calculate_Dt_ForDNDF48,
+    calculate_Dt_ForDNDF48_ForNDF,
+    calculate_Dt_ADF_NDF,
+    calculate_Dt_DE_ClfLiq,
+    calculate_Dt_ME_ClfLiq,
+    calculate_Dt_NDFnfIn,
+    calculate_Dt_Lg_NDF,
+    calculate_Dt_ForNDFIn,
+    calculate_Dt_PastSupplIn,
+    calculate_Dt_NIn,
+    calculate_Dt_RUPIn,
+    calculate_Dt_RUP_CP,
+    calculate_Dt_fCPBdu,
+    calculate_Dt_UFAIn,
+    calculate_Dt_MUFAIn,
+    calculate_Dt_PUFAIn,
+    calculate_Dt_SatFAIn,
+    calculate_Dt_OMIn,
+    calculate_Dt_rOMIn,
+    calculate_Dt_DM,
+    calculate_Dt_NDFIn_BW,
+    calculate_Dt_ForNDF_NDF,
+    calculate_Dt_ForNDFIn_BW,
+    calculate_Dt_DMInSum,
+    calculate_Dt_DEIn_ClfLiq,
+    calculate_Dt_MEIn_ClfLiq,
+    calculate_Dt_CPA_CP,
+    calculate_Dt_CPB_CP,
+    calculate_Dt_CPC_CP,
+    calculate_diet_info,
+    calculate_diet_data
+)
+
+
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
@@ -98,7 +203,10 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     # TODO: where is 0, 1 and 9 ?
 
     # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
-    Dt_NDF = NDF_precalculation(diet_info, feed_data)
+
+    # Dt_NDF = NDF_precalculation(diet_info, feed_data)   
+    # Need to update this    
+
     # Predict DMI for heifers    
     Kb_LateGest_DMIn = calculate_Kb_LateGest_DMIn(Dt_NDF)
     An_PrePartWklim = calculate_An_PrePartWklim(animal_input['An_PrePartWk'])
