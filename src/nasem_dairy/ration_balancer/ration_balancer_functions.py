@@ -121,7 +121,7 @@ def fl_get_rows(feeds_to_get, path_to_db):
 
     return feed_data
 
-
+# get_nutrient_intakes is deprecarted, see dev_nutrient_intakes for the new fucntions
 def get_nutrient_intakes(df, feed_data, DMI, equation_selection, coeff_dict):
     """
     Takes the feeds in the diet and the % dry matter intake and calculates nutrient supplies
@@ -350,24 +350,3 @@ def read_csv_input(path_to_file):
     diet_info['kg_user'] = pd.to_numeric(diet_info['kg_user'], downcast="float")
 
     return diet_info, animal_input, equation_selection
-
-
-def NDF_precalculation(diet_info, feed_data):
-    # Create df to perform calculations with
-    df_NDF = pd.DataFrame()
-    # Copy feed names from diet_info
-    df_NDF['Feedstuff'] = diet_info['Feedstuff'].copy()
-    df_NDF['kg_user'] = diet_info['kg_user'].copy()
-    # Drop the diet row from this df if it exists, this will prevent errors if a user called this function after running get_nutrient_intakes
-    df_NDF = df_NDF[df_NDF['Feedstuff'] != 'Diet']
-    # Get a % intake based on user entered kg/d
-    df_NDF['user_%_intake'] = df_NDF['kg_user'] / df_NDF['kg_user'].sum()
-    # Get NDF% of each feed as a decimal
-    df_NDF['Fd_NDF'] = df_NDF['Feedstuff'].map(feed_data['Fd_NDF']) / 100
-    # Calculate % NDF of diet
-    Dt_NDF = (df_NDF['Fd_NDF'] * df_NDF['user_%_intake']).sum()
-    # Cleanup
-    del(df_NDF)
-   
-    return Dt_NDF
-
