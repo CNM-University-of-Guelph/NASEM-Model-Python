@@ -856,7 +856,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
 
     return complete_diet_info
 
-def calculate_diet_data(df, DMI, An_BW):
+def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     diet_data = {}
 
     # Diet Intakes

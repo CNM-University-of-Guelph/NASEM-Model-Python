@@ -164,9 +164,16 @@ coeff_dict = {
     'Kc_LateGest_DMIn': -0.035,
 
 # For GE calculation
-    'En_CP': 5.65,
-    'En_FA': 9.4,
-    'En_St': 4.23,
+    'En_FA': 9.4,       #Combustion energies for each nutrient, MCal/kg of nutrient
+    'En_CP': 5.65,		#excludes NPN
+    'En_NFC': 4.2, 
     'En_NDF': 4.2,
-    'En_rOM': 4.0
+    'En_NDFnf': 4.14,
+    'En_NPNCP': 0.89,   #per kg of CP equivalent based on urea at 2.5 kcal/g
+    'En_rOM': 4.0,
+    'En_St': 4.23,
+    'En_WSC': 3.9,
+    'En_Acet': 3.48,
+    'En_Prop': 4.96,
+    'En_Butr': 5.95
 }
