@@ -854,6 +854,37 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     for column_name in micro_absorption:
         complete_diet_info[f"Fd_abs{column_name}In"] = complete_diet_info[f"Fd_{column_name}In"] * complete_diet_info[f"Fd_ac{column_name}"]
 
+    # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
+    # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
+    # All set to 1 due to lack of clear evidence for deviations.
+    SIDigArgRUPf = 1
+    SIDigHisRUPf = 1
+    SIDigIleRUPf = 1
+    SIDigLeuRUPf = 1
+    SIDigLysRUPf = 1
+    SIDigMetRUPf = 1
+    SIDigPheRUPf = 1
+    SIDigThrRUPf = 1
+    SIDigTrpRUPf = 1
+    SIDigValRUPf = 1
+
+    req_coeffs = ['RecArg', 'RecHis', 'RecIle', 'RecLeu',
+                  'RecLys', 'RecMet', 'RecPhe', 'RecThr', 
+                  'RecTrp', 'RecVal']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+
+    AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    for AA in AA_list:
+        # Fd_AAt_CP         
+        complete_diet_info[f"Fd_{AA}t_CP"] = complete_diet_info[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
+
+        # Fd_AARUPIn         
+        complete_diet_info[f"Fd_{AA}RUPIn"] = complete_diet_info[f"Fd_{AA}t_CP"] / 100 * complete_diet_info['Fd_RUPIn'] * 1000
+
+        # Fd_IdAARUPIn      
+        # Note: eval() is used to access SIDig__ values defined above
+        complete_diet_info[f"Fd_Id{AA}RUPIn"] = complete_diet_info['Fd_dcRUP'] / 100 * complete_diet_info[f"Fd_{AA}RUPIn"] * eval(f"SIDig{AA}RUPf")
+    
     return complete_diet_info
 
 def calculate_diet_data(df, DMI, An_BW, coeff_dict):
@@ -869,7 +900,6 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     # Lines 255, 256
     for col_name in column_names_DMInp:
         diet_data[f'Dt_{col_name}'] = (df['Fd_DMInp'] * df[f'Fd_{col_name}']).sum()
-
 
     column_names_sum = [
                     'DMIn_ClfLiq',
@@ -919,7 +949,6 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     # Lines 286, 297, 580, 587, 589, 590, 593-596, 598-614, 615, 626-638, 644, 649-652
     for col_name in column_names_sum:
         diet_data[f'Dt_{col_name}'] = (df[f'Fd_{col_name}']).sum()
-
 
     diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(df['Fd_DMIn'])
     diet_data['Dt_DEIn_ClfLiq'] = calculate_Dt_DEIn_ClfLiq(df['Fd_DE_ClfLiq'],
@@ -1027,7 +1056,6 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     for col_name in column_names_DMI:
         diet_data[f'Dt_{col_name}'] = diet_data[f'Dt_{col_name}In'] / DMI * 100
 
-
     column_names_FA = [
                     'C120',
                     'C140',
@@ -1048,7 +1076,6 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     for col_name in column_names_FA:
         diet_data[f'Dt_{col_name}_FA'] = diet_data[f'Dt_{col_name}In'] / diet_data['Dt_FAIn'] * 100
 
-
     diet_data['Dt_ForNDF_NDF'] = calculate_Dt_ForNDF_NDF(diet_data['Dt_ForNDF'],
                                                          diet_data['Dt_NDF'])
     diet_data['Dt_ForNDFIn_BW'] = calculate_Dt_ForNDFIn_BW(An_BW,
@@ -1060,7 +1087,6 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     diet_data['Dt_CPC_CP'] = calculate_Dt_CPC_CP(diet_data['Dt_CPCIn'],
                                                  diet_data['Dt_CPIn'])
 
-##### Start Minerals here #####
     column_names_micronutrients = ['CaIn',
                                    'PIn',
                                    'PinorgIn',
@@ -1124,5 +1150,10 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     for column_name in column_names_micro_vitamin:
         # Line 807 - 825
         diet_data[f'{column_name}'] = diet_data[f'{column_name}In'] / DMI
+
+    AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    for AA in AA_list:
+        # Dt_IdAARUPIn      
+        diet_data['Dt_Id{}_RUPIn'.format(AA)] = df['Fd_Id{}RUPIn'.format(AA)].sum()
 
     return diet_data
