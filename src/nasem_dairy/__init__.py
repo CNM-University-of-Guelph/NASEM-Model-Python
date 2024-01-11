@@ -140,3 +140,13 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_diet_info
 )
 
+from nasem_dairy.NASEM_equations.dev_protein_equations import calculate_f_mPrt_max, calculate_Du_MiCP_g, calculate_Du_MiTP_g
+from nasem_dairy.NASEM_equations.dev_amino_acid_equations import (
+    calculate_Du_AAMic,
+    calculate_Du_IdAAMic,
+    calculate_Abs_AA_g,
+    calculate_mPrtmx_AA,
+    calculate_mPrtmx_AA2,
+    calculate_AA_mPrtmx,
+    calculate_mPrt_AA_01,
+    calculate_mPrt_k_AA)
