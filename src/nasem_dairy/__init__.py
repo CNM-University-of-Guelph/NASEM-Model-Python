@@ -6,7 +6,6 @@ __version__ = version("nasem_dairy")
 from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_rows, get_nutrient_intakes, fl_get_feed_rows, read_input, check_coeffs_in_coeff_dict, read_csv_input
 from nasem_dairy.ration_balancer.execute_model import NASEM_model
 from nasem_dairy.NASEM_equations.misc_equations import AA_calculations, calculate_GrUter_BWgain
-from nasem_dairy.NASEM_equations.Du_microbial_equations import calculate_Du_MiN_g, calculate_Du_MiN_NRC2021_g, calculate_Du_MiN_VTln_g, calculate_Du_MiN_VTnln_g
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day, calculate_An_MPIn_g
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement, calculate_An_MEgain, calculate_An_MEmUse, calculate_Gest_MEuse, calculate_Trg_Mlk_MEout
@@ -138,6 +137,21 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_Dt_CPC_CP,
     calculate_diet_data,
     calculate_diet_info
+)
+
+from nasem_dairy.NASEM_equations.dev_rumen_equations import (
+    calculate_Rum_dcNDF,
+    calculate_Rum_dcSt,
+    calculate_Rum_DigNDFIn,
+    calculate_Rum_DigStIn
+)
+
+from nasem_dairy.NASEM_equations.dev_microbial_protein_equations import (
+    calculate_RDPIn_MiNmax,
+    calculate_MiN_Vm,
+    calculate_Du_MiN_NRC2021_g,
+    calculate_Du_MiN_VTln_g,
+    calculate_Du_MiN_VTnln_g
 )
 
 from nasem_dairy.NASEM_equations.dev_protein_equations import calculate_f_mPrt_max, calculate_Du_MiCP_g, calculate_Du_MiTP_g

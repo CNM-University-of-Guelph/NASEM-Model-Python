@@ -578,6 +578,10 @@ def calculate_Dt_CPC_CP(Dt_CPCIn, Dt_CPIn):
     Dt_CPC_CP = Dt_CPCIn / Dt_CPIn * 100    # Line 686
     return Dt_CPC_CP
 
+def calculate_Dt_RDPIn(Dt_CPIn, Dt_RUPIn):
+    Dt_RDPIn = Dt_CPIn - Dt_RUPIn   # Line 1101
+    return Dt_RDPIn
+
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
@@ -1155,5 +1159,8 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
     for AA in AA_list:
         # Dt_IdAARUPIn      
         diet_data['Dt_Id{}_RUPIn'.format(AA)] = df['Fd_Id{}RUPIn'.format(AA)].sum()
+    
+    diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(diet_data['Dt_CPIn'],
+                                               diet_data['Dt_RUPIn'])
 
     return diet_data
