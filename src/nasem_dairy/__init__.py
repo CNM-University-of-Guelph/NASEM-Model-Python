@@ -186,3 +186,10 @@ from nasem_dairy.NASEM_equations.dev_infusion_equations import (
     calculate_Inf_DEButrIn,
     calculate_infusion_data
 )
+
+from nasem_dairy.NASEM_equations.dev_animal_equations import (
+    calculate_An_RDPIn,
+    calculate_An_RDP,
+    calculate_An_RDPIn_g,
+    calculate_An_data
+)

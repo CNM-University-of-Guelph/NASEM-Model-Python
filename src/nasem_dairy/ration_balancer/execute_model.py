@@ -158,6 +158,13 @@ from nasem_dairy.NASEM_equations.dev_infusion_equations import (
     calculate_infusion_data
 )
 
+from nasem_dairy.NASEM_equations.dev_animal_equations import (
+    calculate_An_RDPIn,
+    calculate_An_RDP,
+    calculate_An_RDPIn_g,
+    calculate_An_data
+)
+
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
     This will take all inputs and execute functions in order to return model outputs
