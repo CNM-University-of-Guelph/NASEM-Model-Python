@@ -136,7 +136,27 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_diet_data
 )
 
-
+from nasem_dairy.NASEM_equations.dev_infusion_equations import (
+    calculate_Inf_TPIn,
+    calculate_Inf_OMIn,
+    calculate_Inf_Rum,
+    calculate_Inf_SI,
+    calculate_Inf_Art,
+    calculate_InfRum_TPIn,
+    calculate_InfSI_TPIn,
+    calculate_InfRum_RUPIn,
+    calculate_InfRum_RUP_CP,
+    calculate_InfRum_idRUPIn,
+    calculate_InfSI_idTPIn,
+    calculate_InfSI_idCPIn,
+    calculate_Inf_idCPIn,
+    calculate_InfRum_RDPIn,
+    calculate_Inf_DigFAIn,
+    calculate_Inf_DEAcetIn,
+    calculate_Inf_DEPropIn,
+    calculate_Inf_DEButrIn,
+    calculate_infusion_data
+)
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
