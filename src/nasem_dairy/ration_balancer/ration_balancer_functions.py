@@ -1,10 +1,7 @@
 # This file contains all of the functions used to execute the NASEM model in python
-
-
 import pandas as pd
 import sqlite3
 import numpy as np
-
 
 def check_coeffs_in_coeff_dict(input_coeff_dict, required_coeffs):
     # Convert the list to a set for faster lookup
@@ -21,8 +18,6 @@ def check_coeffs_in_coeff_dict(input_coeff_dict, required_coeffs):
     assert result, f"Missing values in coeff_dict: {missing_coeffs}"
 
     return
-
-
 
 def read_input(input):
     """
@@ -70,7 +65,6 @@ def read_input(input):
 
     return diet_info, animal_input, equation_selection
 
-
 def fl_get_feed_rows(feeds_to_get: list, 
                      feed_lib_df: pd.DataFrame) -> pd.DataFrame:
     '''
@@ -88,8 +82,6 @@ def fl_get_feed_rows(feeds_to_get: list,
     selected_feed_data.index = selected_feed_data.index.str.strip()
 
     return selected_feed_data
-
-
 
 def fl_get_rows(feeds_to_get, path_to_db):
     conn = sqlite3.connect(path_to_db)
@@ -324,7 +316,6 @@ def get_nutrient_intakes(df, feed_data, DMI, equation_selection, coeff_dict):
     
     return df
 
-
 def read_csv_input(path_to_file):
     
     animal_input = {}
@@ -350,3 +341,14 @@ def read_csv_input(path_to_file):
     diet_info['kg_user'] = pd.to_numeric(diet_info['kg_user'], downcast="float")
 
     return diet_info, animal_input, equation_selection
+
+def read_infusion_input(path_to_file):
+    infusions = {}
+    input_data = pd.read_csv(path_to_file)
+    # Read in user data
+    for index, row in input_data.iterrows():
+    # Iterate over CSV, convert to a dictionary 
+        variable = row['Variable']
+        value = row['Value']
+        infusions[variable] = value 
+    return infusions
