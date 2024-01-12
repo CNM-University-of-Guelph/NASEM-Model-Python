@@ -345,10 +345,17 @@ def read_csv_input(path_to_file):
 def read_infusion_input(path_to_file):
     infusions = {}
     input_data = pd.read_csv(path_to_file)
+    input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
     # Read in user data
     for index, row in input_data.iterrows():
     # Iterate over CSV, convert to a dictionary 
         variable = row['Variable']
         value = row['Value']
+        # Convert values to float if possible, otherwise leave as a string
+        try:
+            value = float(value)
+        except ValueError:
+            pass
+
         infusions[variable] = value 
     return infusions
