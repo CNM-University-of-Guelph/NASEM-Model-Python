@@ -2,13 +2,12 @@
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
 from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
-from nasem_dairy.NASEM_equations.misc_equations import AA_calculations, calculate_GrUter_BWgain
+from nasem_dairy.NASEM_equations.misc_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day, calculate_An_MPIn_g
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
-from nasem_dairy.NASEM_equations.DMI_equations import dry_cow_equations, heifer_growth
-from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_intakes, vitamin_supply, mineral_requirements
+from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_GasEOut, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 # Import statements for updated functions 
