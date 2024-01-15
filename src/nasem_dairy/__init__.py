@@ -192,3 +192,12 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_RDPIn_g,
     calculate_An_data
 )
+
+from nasem_dairy.NASEM_equations.dev_gestation_equations import (
+    calculate_Uter_Wtpart,
+    calculate_Uter_Wt,
+    calculate_GrUter_Wtpart,
+    calculate_GrUter_Wt,
+    calculate_Uter_BWgain,
+    calculate_GrUter_BWgain
+)

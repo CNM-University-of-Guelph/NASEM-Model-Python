@@ -164,6 +164,15 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_data
 )
 
+from nasem_dairy.NASEM_equations.dev_gestation_equations import (
+    calculate_Uter_Wtpart,
+    calculate_Uter_Wt,
+    calculate_GrUter_Wtpart,
+    calculate_GrUter_Wt,
+    calculate_Uter_BWgain,
+    calculate_GrUter_BWgain
+)
+
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
     """Execute NASEM functions. 
     This will take all inputs and execute functions in order to return model outputs
