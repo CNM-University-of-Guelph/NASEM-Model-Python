@@ -1,5 +1,6 @@
 # dev_nutrient_intakes
 # All functions for calculating nutrient intakes based on ration formulation
+# NOTE Any new functions need to be added to the appropriate wrapper 
 import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
@@ -495,12 +496,12 @@ def calculate_Dt_RUPIn(Dt_CPAIn, Dt_NPNIn, Dt_RUPBIn, Dt_CPCIn, coeff_dict, Fd_R
     req_coeffs = ['fCPAdu', 'IntRUP']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     # The feed summation is not as accurate as the equation below
-    # Dt_RUPIn = Fd_RUPIn.sum()   # Line 616
-    # Dt_RUPIn = np.where(Dt_RUPIn < 0, 0, Dt_RUPIn)  # Line 617
+    Dt_RUPIn = Fd_RUPIn.sum()   # Line 616
+    Dt_RUPIn = np.where(Dt_RUPIn < 0, 0, Dt_RUPIn)  # Line 617
     
     #The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
     #if concerned about intercept, switch to using this eqn for RUP
-    Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
+    # Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
     return Dt_RUPIn
 
 def calculate_Dt_RUP_CP(Dt_CPIn, Dt_RUPIn):
@@ -980,7 +981,8 @@ def calculate_diet_data(df, DMI, An_BW, coeff_dict):
                                                diet_data['Dt_NPNIn'],
                                                diet_data['Dt_RUPBIn'],
                                                diet_data['Dt_CPCIn'],
-                                               coeff_dict)
+                                               coeff_dict,
+                                               Fd_RUPIn=df['Fd_RUPIn'])
     diet_data['Dt_RUP_CP'] = calculate_Dt_RUP_CP(diet_data['Dt_CPIn'],
                                                  diet_data['Dt_RUPIn'])
     diet_data['Dt_fCPBdu'] = calculate_Dt_fCPBdu(diet_data['Dt_RUPBIn'],
