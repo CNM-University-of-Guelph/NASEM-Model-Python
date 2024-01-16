@@ -248,4 +248,6 @@ def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
         infusion_data[f"Inf_{AA}RUPIn"] = infusion_data['Inf_Rum'] * infusion_input[f"Inf_{AA}_g"] * infusion_data['InfRum_RUP_CP'] / 100   # Line 1561-1570
         infusion_data[f"Inf_Id{AA}In"] = (infusion_input[f"Inf_{AA}_g"] * infusion_data['Inf_SI'] + infusion_data[f"Inf_{AA}RUPIn"]) * infusion_input['Inf_dcRUP'] / 100    # Line 1678-1687
 
+    infusion_data['Inf_ttdcSt'] = infusion_input['Inf_ttdcSt']
+
     return infusion_data
