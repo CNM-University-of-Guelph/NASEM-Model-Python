@@ -175,5 +175,9 @@ coeff_dict = {
     'En_WSC': 3.9,
     'En_Acet': 3.48,
     'En_Prop': 4.96,
-    'En_Butr': 5.95
+    'En_Butr': 5.95,
+
+    'Dt_dcCP_ClfLiq': 0.95,
+    'TT_dcFA_ClfDryFd': 81,     #Line 1249, Used for all calf dry feed
+    'TT_dcFA_ClfLiqFd': 81      # Line 1250, Used for missing values in calf liquid feeds
 }

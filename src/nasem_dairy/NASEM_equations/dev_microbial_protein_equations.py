@@ -1,5 +1,4 @@
 # dev_microbial_protein_equations
-
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 def calculate_RDPIn_MiNmax(Dt_DMIn, An_RDP, An_RDPIn):
@@ -47,3 +46,17 @@ def calculate_Du_MiN_VTln_g(Dt_rOMIn, Dt_ForNDFIn, An_RDPIn, Rum_DigStIn, Rum_Di
 def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
     Du_MiN_VTnln_g = 7.47 + 0.574 * An_RDPIn * 1000 / (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)    # Line 1147
     return Du_MiN_VTnln_g
+
+def calculate_Du_MiCP(Du_MiCP_g):
+    Du_MiCP = Du_MiCP_g / 1000                      # Line 1166
+    return Du_MiCP
+
+def calculate_Du_idMiCP_g(Du_MiCP_g, coeff_dict):
+    req_coeff = ['SI_dcMiCP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Du_idMiCP_g = coeff_dict['SI_dcMiCP'] / 100 * Du_MiCP_g     # Line 1180
+    return Du_idMiCP_g
+
+def calculate_Du_idMiCP(Du_idMiCP_g):
+    Du_idMiCP = Du_idMiCP_g / 1000
+    return Du_idMiCP

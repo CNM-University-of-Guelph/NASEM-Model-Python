@@ -101,6 +101,12 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_Fd_acFe,
     calculate_Fd_acMn,
     calculate_Fd_acZn,
+    calculate_Fd_DigSt,
+    calculate_Fd_DigStIn_Base,
+    calculate_Fd_DigrOMt,
+    calculate_Fd_idRUPIn,
+    calculate_TT_dcFdFA,
+    calculate_Fd_DigFAIn,
     calculate_Dt_ForDNDF48,
     calculate_Dt_ForDNDF48_ForNDF,
     calculate_Dt_ADF_NDF,
@@ -130,8 +136,56 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_Dt_CPA_CP,
     calculate_Dt_CPB_CP,
     calculate_Dt_CPC_CP,
+    calculate_Dt_DigNDFIn,
+    calculate_Dt_DigStIn,
+    calculate_Dt_DigrOMaIn,
+    calculate_Dt_dcCP_ClfDry,
+    calculate_Dt_DENDFIn,
+    calculate_Dt_DEStIn,
+    calculate_Dt_DErOMIn,
+    calculate_Dt_DigCPaIn,
+    calculate_Dt_DECPIn,
+    calculate_Dt_DENPNCPIn,
+    calculate_Dt_DETPIn,
+    calculate_Dt_DEFAIn,
+    calculate_Dt_DEIn,
+    calculate_TT_dcNDF_Base,
+    calculate_TT_dcNDF,
+    calculate_TT_dcSt_Base,
+    calculate_TT_dcSt,
     calculate_diet_info,
-    calculate_diet_data
+    calculate_diet_data_initial,
+    calculate_diet_data_complete
+)
+
+from nasem_dairy.NASEM_equations.dev_rumen_equations import (
+    calculate_Rum_dcNDF,
+    calculate_Rum_dcSt,
+    calculate_Rum_DigNDFIn,
+    calculate_Rum_DigStIn
+)
+
+from nasem_dairy.NASEM_equations.dev_microbial_protein_equations import (
+    calculate_RDPIn_MiNmax,
+    calculate_MiN_Vm,
+    calculate_Du_MiN_NRC2021_g,
+    calculate_Du_MiN_VTln_g,
+    calculate_Du_MiN_VTnln_g,
+    calculate_Du_MiCP,
+    calculate_Du_idMiCP_g,
+    calculate_Du_idMiCP
+)
+
+from nasem_dairy.NASEM_equations.dev_protein_equations import calculate_f_mPrt_max, calculate_Du_MiCP_g, calculate_Du_MiTP_g
+from nasem_dairy.NASEM_equations.dev_amino_acid_equations import (
+    calculate_Du_AAMic,
+    calculate_Du_IdAAMic,
+    calculate_Abs_AA_g,
+    calculate_mPrtmx_AA,
+    calculate_mPrtmx_AA2,
+    calculate_AA_mPrtmx,
+    calculate_mPrt_AA_01,
+    calculate_mPrt_k_AA
 )
 
 from nasem_dairy.NASEM_equations.dev_infusion_equations import (
@@ -157,10 +211,32 @@ from nasem_dairy.NASEM_equations.dev_infusion_equations import (
 )
 
 from nasem_dairy.NASEM_equations.dev_animal_equations import (
+    calculate_An_DMIn_BW,
     calculate_An_RDPIn,
     calculate_An_RDP,
     calculate_An_RDPIn_g,
-    calculate_An_data
+    calculate_An_DMIn_BW,
+    calculate_An_NDFIn,
+    calculate_An_NDF,
+    calculate_An_DigNDFIn,
+    calculate_An_DENDFIn,
+    calculate_An_DigStIn,
+    calculate_An_DEStIn,
+    calculate_An_DigrOMaIn,
+    calculate_An_DErOMIn,
+    calculate_An_idRUPIn,
+    calculate_An_RUPIn,
+    calculate_An_DMIn,
+    calculate_An_CPIn,
+    calculate_An_DigCPaIn,
+    calculate_An_DECPIn,
+    calculate_An_DENPNCPIn,
+    calculate_An_DETPIn,
+    calculate_An_DigFAIn,
+    calculate_An_DEFAIn,
+    calculate_An_DEIn,
+    calculate_An_data_initial,
+    calculate_An_data_complete
 )
 
 from nasem_dairy.NASEM_equations.dev_gestation_equations import (
@@ -170,6 +246,19 @@ from nasem_dairy.NASEM_equations.dev_gestation_equations import (
     calculate_GrUter_Wt,
     calculate_Uter_BWgain,
     calculate_GrUter_BWgain
+)
+
+from nasem_dairy.NASEM_equations.dev_fecal_equations import (
+    calculate_Fe_rOMend,
+    calculate_Fe_RUP,
+    calculate_Fe_RumMiCP,
+    calculate_Fe_CPend_g,
+    calculate_Fe_CPend,
+    calculate_Fe_CP
+)
+
+from nasem_dairy.NASEM_equations.dev_calf_equations import (
+    calculate_K_FeCPend_ClfLiq
 )
 
 def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, coeff_dict):
