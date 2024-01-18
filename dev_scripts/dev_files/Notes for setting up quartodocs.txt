@@ -1,0 +1,19 @@
+Notes for setting up quartodocs:
+
+1) install quarto and make a new website 'project' inside the docs/ folder of package:
+https://quarto.org/docs/websites/
+- This will re-open a new 'project' window in VSCode, but can close and go back to package. It just sets up the minimum required files for a quarto website inside the docs/ folder
+
+2) install quartodoc package: https://machow.github.io/quartodoc/get-started/overview.html
+
+3) copy extra code to to the quarto.yml file to tell it how to make the docs
+
+4) navigate terminal to the docs folder 
+cd docs
+
+5) run quartodocs build
+This creates the markdown docs in a 'reference' folder inside docs/
+If developing, use --watch so that quarto preview updates automatically too
+quartodoc build --watch
+
+6) run quarto preview / render as normal

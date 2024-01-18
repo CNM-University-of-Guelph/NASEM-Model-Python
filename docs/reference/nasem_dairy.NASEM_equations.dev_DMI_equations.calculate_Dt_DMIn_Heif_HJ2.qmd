@@ -1,0 +1,34 @@
+# calculate_Dt_DMIn_Heif_HJ2 { #nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2 }
+
+`NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)`
+
+Calculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers
+considering animal factors and neutral detergent fiber (NDF) development.
+
+This function implements a prediction model for DMI based on the equation:
+    Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)
+
+## Parameters
+
+| Name            | Type   | Description                                                                 | Default    |
+|-----------------|--------|-----------------------------------------------------------------------------|------------|
+| `An_BW`         | float  | The body weight of the heifer in kilograms.                                 | _required_ |
+| `Dt_NDFdev_DMI` | float  | The neutral detergent fiber (NDF) development related to dry matter intake. | _required_ |
+
+## Returns
+
+| Type   | Description                                                                    |
+|--------|--------------------------------------------------------------------------------|
+| float  | The predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers. |
+
+## Notes
+
+- This prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.
+- The provided equation is derived from empirical data and may not be applicable to other cattle breeds.
+
+## Examples
+
+```python
+>>> calculate_Dt_DMIn_Heif_HJ2(450, 15)
+18.32
+```

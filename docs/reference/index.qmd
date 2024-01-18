@@ -1,0 +1,13 @@
+# Function reference {.doc .doc-index}
+
+## NASEM_equations
+
+Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.
+
+### DMI equations
+
+ALL DMI equations
+
+| | |
+| --- | --- |
+| [calculate_Dt_DMIn_Heif_HJ2](calculate_Dt_DMIn_Heif_HJ2.qmd#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2) | Calculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers |

@@ -1,0 +1,191 @@
+[
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Function reference",
+    "section": "",
+    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers"
+  },
+  {
+    "objectID": "reference/index.html#some-functions",
+    "href": "reference/index.html#some-functions",
+    "title": "Function reference",
+    "section": "",
+    "text": "Functions to inspect docstrings.\n\n\n\ndev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ndev_DMI_equations"
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "docs",
+    "section": "",
+    "text": "This is a Quarto website.\nTo learn more about Quarto websites visit https://quarto.org/docs/websites.\n\nTesting"
+  },
+  {
+    "objectID": "reference/NASEM_equations.dev_DMI_equations.html",
+    "href": "reference/NASEM_equations.dev_DMI_equations.html",
+    "title": "NASEM_equations.dev_DMI_equations",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Lact1\nAnimal based dry matter intake (DMI) prediction for lactating cows\n\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/NASEM_equations.dev_DMI_equations.html#functions",
+    "href": "reference/NASEM_equations.dev_DMI_equations.html#functions",
+    "title": "NASEM_equations.dev_DMI_equations",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Lact1\nAnimal based dry matter intake (DMI) prediction for lactating cows\n\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/NASEM_equations.html",
+    "href": "reference/NASEM_equations.html",
+    "title": "NASEM_equations",
+    "section": "",
+    "text": "NASEM_equations\nNASEM_equations"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa.html",
+    "href": "reference/dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa.html",
+    "title": "dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa",
+    "section": "",
+    "text": "dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.html",
+    "href": "reference/dev_DMI_equations.html",
+    "title": "dev_DMI_equations",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Lact1\nAnimal based dry matter intake (DMI) prediction for lactating cows\n\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers considering animal factors and neutral detergent fiber (NDF) development.\nThis function implements a prediction model for DMI based on the equation: Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kilograms.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) development related to dry matter intake.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers.\n\n\n\n\n\n\n\nThis prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.\nThe provided equation is derived from empirical data and may not be applicable to other cattle breeds.\n\n\n\n\n&gt;&gt;&gt; calculate_Dt_DMIn_Heif_HJ2(450, 15)\n18.32\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.html#functions",
+    "href": "reference/dev_DMI_equations.html#functions",
+    "title": "dev_DMI_equations",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Lact1\nAnimal based dry matter intake (DMI) prediction for lactating cows\n\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers considering animal factors and neutral detergent fiber (NDF) development.\nThis function implements a prediction model for DMI based on the equation: Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kilograms.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) development related to dry matter intake.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers.\n\n\n\n\n\n\n\nThis prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.\nThe provided equation is derived from empirical data and may not be applicable to other cattle breeds.\n\n\n\n\n&gt;&gt;&gt; calculate_Dt_DMIn_Heif_HJ2(450, 15)\n18.32\n\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\n\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/index.html#nasem_equations",
+    "href": "reference/index.html#nasem_equations",
+    "title": "Function reference",
+    "section": "",
+    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ2.html",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers considering animal factors and neutral detergent fiber (NDF)."
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html#parameters",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ2.html#parameters",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kg.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) as a percentage\nrequired"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html#returns",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ2.html#returns",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "Returns",
+    "text": "Returns\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) in kg"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html#notes",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ2.html#notes",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "Notes",
+    "text": "Notes\n\nSee equation number ___ in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021)\nSee line number 317 in the original R code published with the book’s software\nThis function is equated when equation_selection for DMIn_eqn is equal to 7 and 17"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html#examples",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ2.html#examples",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "Examples",
+    "text": "Examples\n\nimport nasem_dairy as nd\nnd.calculate_Dt_DMIn_Heif_HJ2(\n    An_BW = 700,\n    Dt_NDFdev_DMI = 14\n    )\n\n10.295552016885722"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_NRCa.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_NRCa.html",
+    "title": "calculate_Dt_DMIn_Heif_NRCa",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_NRCa\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa"
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers considering animal factors and neutral detergent fiber (NDF) development.\nThis function implements a prediction model for DMI based on the equation: Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kilograms.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) development related to dry matter intake.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers.\n\n\n\n\n\n\n\nThis prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.\nThe provided equation is derived from empirical data and may not be applicable to other cattle breeds.\n\n\n\n\n&gt;&gt;&gt; calculate_Dt_DMIn_Heif_HJ2(450, 15)\n18.32"
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#parameters",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#parameters",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kilograms.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) development related to dry matter intake.\nrequired"
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#returns",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#returns",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "Type\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers."
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#notes",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#notes",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "This prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.\nThe provided equation is derived from empirical data and may not be applicable to other cattle breeds."
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#examples",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2.html#examples",
+    "title": "calculate_Dt_DMIn_Heif_HJ2",
+    "section": "",
+    "text": "&gt;&gt;&gt; calculate_Dt_DMIn_Heif_HJ2(450, 15)\n18.32"
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa.html",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa.html",
+    "title": "calculate_Dt_DMIn_Heif_NRCa",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_NRCa\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa"
+  },
+  {
+    "objectID": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1.html",
+    "href": "reference/nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1.html",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Lact1\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2",
+    "href": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2",
+    "title": "dev_DMI_equations",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers considering animal factors and neutral detergent fiber (NDF) development.\nThis function implements a prediction model for DMI based on the equation: Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\nfloat\nThe body weight of the heifer in kilograms.\nrequired\n\n\nDt_NDFdev_DMI\nfloat\nThe neutral detergent fiber (NDF) development related to dry matter intake.\nrequired\n\n\n\n\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers.\n\n\n\n\n\n\n\nThis prediction is based on the specific characteristics of Holstein x Jersey crossbred heifers.\nThe provided equation is derived from empirical data and may not be applicable to other cattle breeds.\n\n\n\n\n&gt;&gt;&gt; calculate_Dt_DMIn_Heif_HJ2(450, 15)\n18.32"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa",
+    "href": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa",
+    "title": "dev_DMI_equations",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)\nTest docs for calcualte_Dt_DMIn_Heif_NRCa"
+  },
+  {
+    "objectID": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1",
+    "href": "reference/dev_DMI_equations.html#nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1",
+    "title": "dev_DMI_equations",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  }
+]

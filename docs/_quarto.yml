@@ -1,0 +1,48 @@
+project:
+  type: website
+
+# tell quarto to read the generated sidebar
+metadata-files:
+  - _sidebar.yml
+
+website:
+  title: "docs"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+      - text: "Reference"
+        file: reference/index.qmd
+
+
+quartodoc:
+  # the name used to import the package you want to create reference docs for
+  package: nasem_dairy
+
+  # write sidebar data to this file
+  sidebar: _sidebar.yml
+
+  sections:
+    - title: NASEM_equations
+      desc: Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.
+
+    - subtitle: DMI equations
+      desc: ALL DMI equations
+      package: nasem_dairy.NASEM_equations.dev_DMI_equations
+      contents:
+        - calculate_Dt_DMIn_Heif_HJ2
+        # the functions being documented in the package.
+        # you can refer to anything: class methods, modules, etc..
+        # - name: dev_DMI_equations
+        #   children: embedded
+
+
+format:
+  html:
+    theme: sandstone
+    css: styles.css
+    toc: true
+
+
+

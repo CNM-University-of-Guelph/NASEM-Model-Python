@@ -1,0 +1,11 @@
+website:
+  sidebar:
+  - contents:
+    - reference/index.qmd
+    - contents:
+      - contents:
+        - reference/calculate_Dt_DMIn_Heif_HJ2.qmd
+        section: DMI equations
+      section: NASEM_equations
+    id: reference
+  - id: dummy-sidebar

@@ -70,6 +70,9 @@ def calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF):
 
 # DMIn_eqn == 2, 12
 def calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature):
+    '''
+    Test docs for calcualte_Dt_DMIn_Heif_NRCa
+    '''
     #Animal factors only, eqn. 2-3 NRC
     Dt_DMIn_Heif_NRCa = 0.022 * An_BW_mature * (1 - math.exp(-1.54 * An_BW / An_BW_mature))
     return Dt_DMIn_Heif_NRCa
@@ -98,6 +101,19 @@ def calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI):
 
 # DMIn_eqn == 6, 16
 def calculate_Dt_DMIn_Heif_HJ1(An_BW):
+    """
+    _summary_
+
+    Parameters
+    ----------
+    An_BW : _type_
+        _description_
+
+    Returns
+    -------
+    _type_
+        _description_
+    """
     #Holstein x Jersey, animal factors only
     Dt_DMIn_Heif_HJ1 = 12.91 * (1 - math.exp(-0.00295 * An_BW))
     return Dt_DMIn_Heif_HJ1
@@ -105,6 +121,41 @@ def calculate_Dt_DMIn_Heif_HJ1(An_BW):
 
 # DMIn_eqn == 7, 17
 def calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI):
+    """
+    Calculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers
+    considering animal factors and neutral detergent fiber (NDF).
+
+    Parameters
+    ----------
+    An_BW : float
+        The body weight of the heifer in kg.
+    Dt_NDFdev_DMI : float
+        The neutral detergent fiber (NDF) as a percentage
+
+    Returns
+    -------
+    float
+        The predicted dry matter intake (DMI) in kg
+
+    Notes
+    -----
+    - See equation number ___ in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021)
+    - See line number 317 in the original R code published with the book's software
+    - This function is equated when equation_selection for DMIn_eqn is equal to 7 and 17
+
+
+    Examples
+    -------
+
+    ```{python}
+    import nasem_dairy as nd
+    nd.calculate_Dt_DMIn_Heif_HJ2(
+        An_BW = 700,
+        Dt_NDFdev_DMI = 14
+        )
+    ```
+   
+    """
     #Holstein x Jersey, animal factors and NDF
     Dt_DMIn_Heif_HJ2 = 13.48 * (1 - math.exp(-0.0027 * An_BW)) - (0.082 * Dt_NDFdev_DMI)
     return Dt_DMIn_Heif_HJ2
@@ -118,7 +169,7 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd,
                             An_Parity_rl, 
                             Trg_NEmilk_Milk):
     """
-    Animal based dry matter intake (DMI) prediction for lactating cows
+    Animal based dry matter intake (DMI) prediction for lactating cows 
 
     This function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model
     this prediction can be can be selected by setting DMI_pred to 0 in the 'input.txt'. In :py:func:`NASEM_model` Dt_DMIn_Lact1
@@ -147,6 +198,78 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd,
     )  # Line 389                                                
     return Dt_DMIn_Lact1
     
+# DMIn_eqn == 8
+def calculate_Dt_DMIn_Lact1(Trg_MilkProd, 
+                            An_BW, 
+                            An_BCS, 
+                            An_LactDay, 
+                            An_Parity_rl, 
+                            Trg_NEmilk_Milk):
+    """
+    Calculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.
+
+    Parameters
+    ----------
+    Trg_MilkProd : float
+        Target milk production in kg per day.
+    An_BW : float
+        The body weight of the lactating cow in kg.
+    An_BCS : float
+        The body condition score (BCS) of the lactating cow.
+    An_LactDay : int
+        The lactation day of the cow.
+    An_Parity_rl : int
+        The parity of the cow (number of times calved).
+    Trg_NEmilk_Milk : float
+        Net energy of milk production in Mcal per kg of milk.
+
+    Returns
+    -------
+    float
+        The predicted dry matter intake (DMI) in kg.
+
+    Notes
+    -----
+    - See equation number 2-1 in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021).
+    - See lines 387-92 in the original R code published with the book's software.
+    - Trg_NEmilkOut is calculated as Trg_NEmilk_Milk * Trg_MilkProd (see line 386).
+    - This function is associated with DMIn_eqn equal to 8.
+
+    Examples
+    --------
+    Calculate the dry matter intake for a lactating dairy cow:
+
+    ```python
+    import nasem_dairy as nd
+    nd.calculate_Dt_DMIn_Lact1(
+        Trg_MilkProd=30,
+        An_BW=600,
+        An_BCS=3.5,
+        An_LactDay=120,
+        An_Parity_rl=2,
+        Trg_NEmilk_Milk=0.65
+    )
+    ```
+
+    Returns
+    -------
+    float
+        The predicted dry matter intake (DMI) for the given parameters.
+    """
+    Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd  # Line 387
+    # Trg_NEmilkOut is only used for this DMI calculation
+    Dt_DMIn_Lact1 = (
+    3.7 +
+    5.7 * (An_Parity_rl - 1) +
+    0.305 * Trg_NEmilkOut +
+    0.022 * An_BW +
+    (-0.689 - 1.87 * (An_Parity_rl - 1)) * An_BCS
+    ) * (
+    1 - (0.212 + 0.136 * (An_Parity_rl - 1)) * math.exp(-0.053 * An_LactDay)
+    )  # Line 390    
+
+    return Dt_DMIn_Lact1
+
 
 # DMIn_eqn == 10
 def calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i):
