@@ -4,7 +4,7 @@
     "href": "reference/index.html",
     "title": "Function reference",
     "section": "",
-    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers"
+    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Kb_LateGest_DMIn\nCalculate the ______________ for predicting dry matter intake (DMI) in late gestation for heifers.\n\n\ncalculate_An_PrePartWklim\n\n\n\ncalculate_Dt_DMIn_Heif_LateGestInd\n\n\n\ncalculate_Dt_DMIn_Heif_LateGestPen\n\n\n\ncalculate_Dt_NDFdev_DMI\n\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Heif_NRCad\n\n\n\ncalculate_Dt_DMIn_Heif_H1\n\n\n\ncalculate_Dt_DMIn_Heif_H2\n\n\n\ncalculate_Dt_DMIn_Heif_HJ1\nsummary\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers\n\n\ncalculate_Dt_DMIn_Lact1\nCalculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.\n\n\ncalculate_Dt_DMIn_BW_LateGest_i\n\n\n\ncalculate_Dt_DMIn_BW_LateGest_p\n\n\n\ncalculate_Dt_DMIn_DryCow1_FarOff\n\n\n\ncalculate_Dt_DMIn_DryCow1_Close\n\n\n\ncalculate_Dt_DMIn_DryCow2"
   },
   {
     "objectID": "reference/index.html#some-functions",
@@ -74,7 +74,7 @@
     "href": "reference/index.html#nasem_equations",
     "title": "Function reference",
     "section": "",
-    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers"
+    "text": "Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.\n\n\nALL DMI equations\n\n\n\ncalculate_Kb_LateGest_DMIn\nCalculate the ______________ for predicting dry matter intake (DMI) in late gestation for heifers.\n\n\ncalculate_An_PrePartWklim\n\n\n\ncalculate_Dt_DMIn_Heif_LateGestInd\n\n\n\ncalculate_Dt_DMIn_Heif_LateGestPen\n\n\n\ncalculate_Dt_NDFdev_DMI\n\n\n\ncalculate_Dt_DMIn_Heif_NRCa\nTest docs for calcualte_Dt_DMIn_Heif_NRCa\n\n\ncalculate_Dt_DMIn_Heif_NRCad\n\n\n\ncalculate_Dt_DMIn_Heif_H1\n\n\n\ncalculate_Dt_DMIn_Heif_H2\n\n\n\ncalculate_Dt_DMIn_Heif_HJ1\nsummary\n\n\ncalculate_Dt_DMIn_Heif_HJ2\nCalculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers\n\n\ncalculate_Dt_DMIn_Lact1\nCalculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.\n\n\ncalculate_Dt_DMIn_BW_LateGest_i\n\n\n\ncalculate_Dt_DMIn_BW_LateGest_p\n\n\n\ncalculate_Dt_DMIn_DryCow1_FarOff\n\n\n\ncalculate_Dt_DMIn_DryCow1_Close\n\n\n\ncalculate_Dt_DMIn_DryCow2"
   },
   {
     "objectID": "reference/calculate_Dt_DMIn_Heif_HJ2.html",
@@ -187,5 +187,187 @@
     "title": "dev_DMI_equations",
     "section": "",
     "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nAnimal based dry matter intake (DMI) prediction for lactating cows\nThis function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model this prediction can be can be selected by setting DMI_pred to 0 in the ‘input.txt’. In :py:func:NASEM_model Dt_DMIn_Lact1 will be returned to the animal_input dictionary with the key ‘DMI’.\nParameters: An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous. Trg_MilkProd (Number): Animal Milk Production in kg/day. An_BW (Number): Animal Body Weight in kg. An_BCS (Number): Body condition score, from 1-5 An_LactDay (Number): Day of Lactation.\nReturns: Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d"
+  },
+  {
+    "objectID": "reference/calculate_Kb_LateGest_DMIn.html",
+    "href": "reference/calculate_Kb_LateGest_DMIn.html",
+    "title": "calculate_Kb_LateGest_DMIn",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Kb_LateGest_DMIn(Dt_NDF)\nCalculate the ______________ for predicting dry matter intake (DMI) in late gestation for heifers."
+  },
+  {
+    "objectID": "reference/calculate_An_PrePartWklim.html",
+    "href": "reference/calculate_An_PrePartWklim.html",
+    "title": "calculate_An_PrePartWklim",
+    "section": "",
+    "text": "calculate_An_PrePartWklim\nNASEM_equations.dev_DMI_equations.calculate_An_PrePartWklim(An_PrePartWk)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_LateGestInd.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_LateGestInd.html",
+    "title": "calculate_Dt_DMIn_Heif_LateGestInd",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_LateGestInd\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_LateGestInd(An_BW, Dt_DMIn_BW_LateGest_i)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_LateGestPen.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_LateGestPen.html",
+    "title": "calculate_Dt_DMIn_Heif_LateGestPen",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_LateGestPen\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_LateGestPen(An_BW, Dt_DMIn_BW_LateGest_p)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_NDFdev_DMI.html",
+    "href": "reference/calculate_Dt_NDFdev_DMI.html",
+    "title": "calculate_Dt_NDFdev_DMI",
+    "section": "",
+    "text": "calculate_Dt_NDFdev_DMI\nNASEM_equations.dev_DMI_equations.calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_NRCad.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_NRCad.html",
+    "title": "calculate_Dt_DMIn_Heif_NRCad",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_NRCad\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCad(An_BW, An_BW_mature, Dt_NDF)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_H1.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_H1.html",
+    "title": "calculate_Dt_DMIn_Heif_H1",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_H1\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_H1(An_BW)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_H2.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_H2.html",
+    "title": "calculate_Dt_DMIn_Heif_H2",
+    "section": "",
+    "text": "calculate_Dt_DMIn_Heif_H2\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ1.html",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ1.html",
+    "title": "calculate_Dt_DMIn_Heif_HJ1",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_HJ1(An_BW)\nsummary\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nAn_BW\ntype\ndescription\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\ntype\ndescription"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ1.html#parameters",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ1.html#parameters",
+    "title": "calculate_Dt_DMIn_Heif_HJ1",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nAn_BW\ntype\ndescription\nrequired"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Heif_HJ1.html#returns",
+    "href": "reference/calculate_Dt_DMIn_Heif_HJ1.html#returns",
+    "title": "calculate_Dt_DMIn_Heif_HJ1",
+    "section": "",
+    "text": "Type\nDescription\n\n\n\n\ntype\ndescription"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)\nCalculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nTrg_MilkProd\nfloat\nTarget milk production in kg per day.\nrequired\n\n\nAn_BW\nfloat\nThe body weight of the lactating cow in kg.\nrequired\n\n\nAn_BCS\nfloat\nThe body condition score (BCS) of the lactating cow.\nrequired\n\n\nAn_LactDay\nint\nThe lactation day of the cow.\nrequired\n\n\nAn_Parity_rl\nint\nThe parity of the cow (number of times calved).\nrequired\n\n\nTrg_NEmilk_Milk\nfloat\nNet energy of milk production in Mcal per kg of milk.\nrequired\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) in kg.\n\n\n\n\n\n\n\nSee equation number 2-1 in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021).\nSee lines 387-92 in the original R code published with the book’s software.\nTrg_NEmilkOut is calculated as Trg_NEmilk_Milk * Trg_MilkProd (see line 386).\nThis function is associated with DMIn_eqn equal to 8.\n\n\n\n\nCalculate the dry matter intake for a lactating dairy cow:\nimport nasem_dairy as nd\nnd.calculate_Dt_DMIn_Lact1(\n    Trg_MilkProd=30,\n    An_BW=600,\n    An_BCS=3.5,\n    An_LactDay=120,\n    An_Parity_rl=2,\n    Trg_NEmilk_Milk=0.65\n)\n\n\n\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for the given parameters."
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html#parameters",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html#parameters",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "Name\nType\nDescription\nDefault\n\n\n\n\nTrg_MilkProd\nfloat\nTarget milk production in kg per day.\nrequired\n\n\nAn_BW\nfloat\nThe body weight of the lactating cow in kg.\nrequired\n\n\nAn_BCS\nfloat\nThe body condition score (BCS) of the lactating cow.\nrequired\n\n\nAn_LactDay\nint\nThe lactation day of the cow.\nrequired\n\n\nAn_Parity_rl\nint\nThe parity of the cow (number of times calved).\nrequired\n\n\nTrg_NEmilk_Milk\nfloat\nNet energy of milk production in Mcal per kg of milk.\nrequired"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html#returns",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html#returns",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "Type\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) in kg."
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html#notes",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html#notes",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "See equation number 2-1 in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021).\nSee lines 387-92 in the original R code published with the book’s software.\nTrg_NEmilkOut is calculated as Trg_NEmilk_Milk * Trg_MilkProd (see line 386).\nThis function is associated with DMIn_eqn equal to 8."
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html#examples",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html#examples",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "Calculate the dry matter intake for a lactating dairy cow:\nimport nasem_dairy as nd\nnd.calculate_Dt_DMIn_Lact1(\n    Trg_MilkProd=30,\n    An_BW=600,\n    An_BCS=3.5,\n    An_LactDay=120,\n    An_Parity_rl=2,\n    Trg_NEmilk_Milk=0.65\n)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_Lact1.html#returns-1",
+    "href": "reference/calculate_Dt_DMIn_Lact1.html#returns-1",
+    "title": "calculate_Dt_DMIn_Lact1",
+    "section": "",
+    "text": "Type\nDescription\n\n\n\n\nfloat\nThe predicted dry matter intake (DMI) for the given parameters."
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_BW_LateGest_i.html",
+    "href": "reference/calculate_Dt_DMIn_BW_LateGest_i.html",
+    "title": "calculate_Dt_DMIn_BW_LateGest_i",
+    "section": "",
+    "text": "calculate_Dt_DMIn_BW_LateGest_i\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim, Kb_LateGest_DMIn, coeff_dict)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_BW_LateGest_p.html",
+    "href": "reference/calculate_Dt_DMIn_BW_LateGest_p.html",
+    "title": "calculate_Dt_DMIn_BW_LateGest_p",
+    "section": "",
+    "text": "calculate_Dt_DMIn_BW_LateGest_p\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_DryCow1_FarOff.html",
+    "href": "reference/calculate_Dt_DMIn_DryCow1_FarOff.html",
+    "title": "calculate_Dt_DMIn_DryCow1_FarOff",
+    "section": "",
+    "text": "calculate_Dt_DMIn_DryCow1_FarOff\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_DryCow1_Close.html",
+    "href": "reference/calculate_Dt_DMIn_DryCow1_Close.html",
+    "title": "calculate_Dt_DMIn_DryCow1_Close",
+    "section": "",
+    "text": "calculate_Dt_DMIn_DryCow1_Close\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_DryCow1_Close(An_BW, Dt_DMIn_BW_LateGest_p)"
+  },
+  {
+    "objectID": "reference/calculate_Dt_DMIn_DryCow2.html",
+    "href": "reference/calculate_Dt_DMIn_DryCow2.html",
+    "title": "calculate_Dt_DMIn_DryCow2",
+    "section": "",
+    "text": "calculate_Dt_DMIn_DryCow2\nNASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_DryCow2(An_BW, An_GestDay, An_GestLength)"
+  },
+  {
+    "objectID": "reference/calculate_Kb_LateGest_DMIn.html#parameters",
+    "href": "reference/calculate_Kb_LateGest_DMIn.html#parameters",
+    "title": "calculate_Kb_LateGest_DMIn",
+    "section": "Parameters",
+    "text": "Parameters\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nDt_NDF\nfloat\nThe neutral detergent fiber (NDF) as a percentage.\nrequired"
+  },
+  {
+    "objectID": "reference/calculate_Kb_LateGest_DMIn.html#returns",
+    "href": "reference/calculate_Kb_LateGest_DMIn.html#returns",
+    "title": "calculate_Kb_LateGest_DMIn",
+    "section": "Returns",
+    "text": "Returns\n\n\n\n\n\n\n\nType\nDescription\n\n\n\n\nfloat\nThe precalculation factor (Kb_LateGest_DMIn) for heifer DMI predictions."
+  },
+  {
+    "objectID": "reference/calculate_Kb_LateGest_DMIn.html#notes",
+    "href": "reference/calculate_Kb_LateGest_DMIn.html#notes",
+    "title": "calculate_Kb_LateGest_DMIn",
+    "section": "Notes",
+    "text": "Notes\n\nThis function is used as a _____ for predicting heifer dry matter intake (DMI).\nThe input Dt_NDF is constrained to the range of 30 to 55% of dry matter (DM).\nKb_LateGest_DMIn is calculated as -(0.365 - 0.0028 * Dt_NDF_drylim), where Dt_NDF_drylim is the constrained value."
+  },
+  {
+    "objectID": "reference/calculate_Kb_LateGest_DMIn.html#examples",
+    "href": "reference/calculate_Kb_LateGest_DMIn.html#examples",
+    "title": "calculate_Kb_LateGest_DMIn",
+    "section": "Examples",
+    "text": "Examples\nCalculate the precalculation factor for heifer DMI predictions in late gestation:\n\nimport nasem_dairy as nd\nnd.calculate_Kb_LateGest_DMIn(Dt_NDF=40)\n\n-0.253"
   }
 ]
