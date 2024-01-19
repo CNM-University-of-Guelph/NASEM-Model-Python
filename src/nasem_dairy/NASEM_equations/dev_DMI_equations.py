@@ -7,6 +7,47 @@ import math
 
 # Precalculation for heifer DMI predicitons
 def calculate_Kb_LateGest_DMIn(Dt_NDF):
+    """
+    Calculate the ______________ for predicting dry matter intake (DMI) in late gestation for heifers.
+
+    Parameters
+    ----------
+    Dt_NDF : float
+        The neutral detergent fiber (NDF) as a percentage.
+
+    Returns
+    -------
+    float
+        The precalculation factor (Kb_LateGest_DMIn) for heifer DMI predictions.
+
+    Notes
+    -----
+    - This function is used as a _____ for predicting heifer dry matter intake (DMI).
+    - The input Dt_NDF is constrained to the range of 30 to 55% of dry matter (DM).
+    - Kb_LateGest_DMIn is calculated as -(0.365 - 0.0028 * Dt_NDF_drylim), where Dt_NDF_drylim is the constrained value.
+
+    Examples
+    --------
+    Calculate the precalculation factor for heifer DMI predictions in late gestation:
+
+    ```{python}
+    import nasem_dairy as nd
+    nd.calculate_Kb_LateGest_DMIn(Dt_NDF=40)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ```
+    """
     Dt_NDF_drylim = Dt_NDF  # Dt_NDF_drylim only used in this calculation
     if Dt_NDF < 30:         #constrain Dt_NDF to the range of 30 to 55% of DM
         Dt_NDF_drylim = 30
@@ -27,7 +68,7 @@ def calculate_An_PrePartWklim(An_PrePartWk):
     else:
         An_PrePartWklim = An_PrePartWk
 
-    return An_PrePartWklim
+    return An_PrePartWklim 
 
 
 # Need when DMIn_eqn == 2,3,4,5,6,7,10

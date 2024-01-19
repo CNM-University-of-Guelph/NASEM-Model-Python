@@ -4,7 +4,23 @@ website:
     - reference/index.qmd
     - contents:
       - contents:
+        - reference/calculate_Kb_LateGest_DMIn.qmd
+        - reference/calculate_An_PrePartWklim.qmd
+        - reference/calculate_Dt_DMIn_Heif_LateGestInd.qmd
+        - reference/calculate_Dt_DMIn_Heif_LateGestPen.qmd
+        - reference/calculate_Dt_NDFdev_DMI.qmd
+        - reference/calculate_Dt_DMIn_Heif_NRCa.qmd
+        - reference/calculate_Dt_DMIn_Heif_NRCad.qmd
+        - reference/calculate_Dt_DMIn_Heif_H1.qmd
+        - reference/calculate_Dt_DMIn_Heif_H2.qmd
+        - reference/calculate_Dt_DMIn_Heif_HJ1.qmd
         - reference/calculate_Dt_DMIn_Heif_HJ2.qmd
+        - reference/calculate_Dt_DMIn_Lact1.qmd
+        - reference/calculate_Dt_DMIn_BW_LateGest_i.qmd
+        - reference/calculate_Dt_DMIn_BW_LateGest_p.qmd
+        - reference/calculate_Dt_DMIn_DryCow1_FarOff.qmd
+        - reference/calculate_Dt_DMIn_DryCow1_Close.qmd
+        - reference/calculate_Dt_DMIn_DryCow2.qmd
         section: DMI equations
       section: NASEM_equations
     id: reference

@@ -2,18 +2,50 @@
 
 `NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilk_Milk)`
 
-Animal based dry matter intake (DMI) prediction for lactating cows 
+Calculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.
 
-This function predicts the DMI using animal factors only. This is equation 2-1 in the NASEM 8 textbook. In the model
-this prediction can be can be selected by setting DMI_pred to 0 in the 'input.txt'. In :py:func:`NASEM_model` Dt_DMIn_Lact1
-will be returned to the animal_input dictionary with the key 'DMI'.
+## Parameters
 
-Parameters:
-    An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
-    Trg_MilkProd (Number): Animal Milk Production in kg/day.
-    An_BW (Number): Animal Body Weight in kg.
-    An_BCS (Number): Body condition score, from 1-5
-    An_LactDay (Number): Day of Lactation.
+| Name              | Type   | Description                                           | Default    |
+|-------------------|--------|-------------------------------------------------------|------------|
+| `Trg_MilkProd`    | float  | Target milk production in kg per day.                 | _required_ |
+| `An_BW`           | float  | The body weight of the lactating cow in kg.           | _required_ |
+| `An_BCS`          | float  | The body condition score (BCS) of the lactating cow.  | _required_ |
+| `An_LactDay`      | int    | The lactation day of the cow.                         | _required_ |
+| `An_Parity_rl`    | int    | The parity of the cow (number of times calved).       | _required_ |
+| `Trg_NEmilk_Milk` | float  | Net energy of milk production in Mcal per kg of milk. | _required_ |
 
-Returns:
-    Dt_DMIn_Lact1 (Number): Dry matter intake, kg/d
+## Returns
+
+| Type   | Description                                  |
+|--------|----------------------------------------------|
+| float  | The predicted dry matter intake (DMI) in kg. |
+
+## Notes
+
+- See equation number 2-1 in the Nutrient Requirements of Dairy Cattle book (NASEM, 2021).
+- See lines 387-92 in the original R code published with the book's software.
+- Trg_NEmilkOut is calculated as Trg_NEmilk_Milk * Trg_MilkProd (see line 386).
+- This function is associated with DMIn_eqn equal to 8.
+
+## Examples
+
+Calculate the dry matter intake for a lactating dairy cow:
+
+```python
+import nasem_dairy as nd
+nd.calculate_Dt_DMIn_Lact1(
+    Trg_MilkProd=30,
+    An_BW=600,
+    An_BCS=3.5,
+    An_LactDay=120,
+    An_Parity_rl=2,
+    Trg_NEmilk_Milk=0.65
+)
+```
+
+## Returns
+
+| Type   | Description                                                     |
+|--------|-----------------------------------------------------------------|
+| float  | The predicted dry matter intake (DMI) for the given parameters. |
