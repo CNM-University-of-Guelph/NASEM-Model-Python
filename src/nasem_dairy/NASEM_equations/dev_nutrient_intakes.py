@@ -994,7 +994,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                         ]
 
     complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df: df[col] / 100 * df['Fd_DMIn'] for col in column_names_XIn}
+        **{f"{col}In": lambda df, col=col: df[col] / 100 * df['Fd_DMIn'] for col in column_names_XIn}
     )
 
     # Calculate nutrient intakes for each feed
