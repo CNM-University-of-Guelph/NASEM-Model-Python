@@ -75,3 +75,15 @@ def calculate_Du_idMiCP_g(Du_MiCP_g, coeff_dict):
 def calculate_Du_idMiCP(Du_idMiCP_g):
     Du_idMiCP = Du_idMiCP_g / 1000
     return Du_idMiCP
+
+
+def calculate_Du_idMiTP_g(Du_idMiCP_g, coeff_dict):
+    req_coeff = ['fMiTP_MiCP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Du_idMiTP_g = coeff_dict['fMiTP_MiCP'] * Du_idMiCP_g  # Line 1182
+    return Du_idMiTP_g
+
+
+def calculate_Du_idMiTP(Du_idMiTP_g):
+    Du_idMiTP = Du_idMiTP_g / 1000
+    return Du_idMiTP
