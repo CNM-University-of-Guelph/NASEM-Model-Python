@@ -1,0 +1,5 @@
+# calculate_Dt_DMIn_Heif_NRCa { #nasem_dairy.NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa }
+
+`NASEM_equations.dev_DMI_equations.calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)`
+
+Test docs for calcualte_Dt_DMIn_Heif_NRCa
