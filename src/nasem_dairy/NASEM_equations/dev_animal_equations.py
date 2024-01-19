@@ -3,10 +3,12 @@ import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 ####################
-# Functions for Animal Level Intakes
+# Functions for Animal Level Intakes in Wrappers
 ####################
 
 # An_DMIn_BW is calculated seperately after DMI selection to use in calculate_diet_data
+
+
 def calculate_An_DMIn_BW(An_BW, Dt_DMIn):
     An_DMIn_BW = Dt_DMIn / An_BW        # Line 935
     return An_DMIn_BW
@@ -234,3 +236,18 @@ def calculate_An_data_complete(An_data_initial, diet_data, An_StatePhys, Fe_CP, 
                                                     diet_data['Dt_DEIn'],
                                                     equation_selection['Monensin_eqn'])
     return complete_An_data
+
+####################
+# Animal Functions not in Wrapper
+####################
+
+
+def calculate_An_MPIn(Dt_idRUPIn, Du_idMiTP):
+    # Line 1236 (Equation 20-136 p. 432 - without infused TP)
+    An_MPIn = Dt_idRUPIn + Du_idMiTP
+    return An_MPIn
+
+
+def calculate_An_MPIn_g(An_MPIn):
+    An_MPIn_g = An_MPIn * 1000                      # Line 1238
+    return An_MPIn_g

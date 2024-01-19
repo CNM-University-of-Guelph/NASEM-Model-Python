@@ -4,7 +4,7 @@
 from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
-from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day, calculate_An_MPIn_g
+from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_NP_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
 from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
@@ -174,7 +174,9 @@ from nasem_dairy.NASEM_equations.dev_microbial_protein_equations import (
     calculate_Du_MiN_VTnln_g,
     calculate_Du_MiCP,
     calculate_Du_idMiCP_g,
-    calculate_Du_idMiCP
+    calculate_Du_idMiCP,
+    calculate_Du_idMiTP_g,
+    calculate_Du_idMiTP
 )
 
 from nasem_dairy.NASEM_equations.dev_protein_equations import calculate_f_mPrt_max, calculate_Du_MiCP_g, calculate_Du_MiTP_g
@@ -237,7 +239,9 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_DEFAIn,
     calculate_An_DEIn,
     calculate_An_data_initial,
-    calculate_An_data_complete
+    calculate_An_data_complete,
+    calculate_An_MPIn,
+    calculate_An_MPIn_g
 )
 
 from nasem_dairy.NASEM_equations.dev_gestation_equations import (

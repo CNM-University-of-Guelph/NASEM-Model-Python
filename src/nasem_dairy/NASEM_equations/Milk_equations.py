@@ -1,17 +1,6 @@
 import math
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
-def calculate_An_MPIn_g(Dt_idRUPIn, Du_idMiCP_g, coeff_dict):
-    # Seperated MP intake calculation from Mlk_NP_g calculation
-
-    Du_idMiTP_g = coeff_dict['fMiTP_MiCP'] * Du_idMiCP_g    # Line 1182
-    Du_idMiTP = Du_idMiTP_g / 1000
-    An_MPIn = Dt_idRUPIn + Du_idMiTP                # Line 1236 (Equation 20-136 p. 432 - without infused TP)
-    An_MPIn_g = An_MPIn * 1000                      # Line 1238 
-
-    return An_MPIn, An_MPIn_g
-
-
 
 def calculate_Mlk_NP_g(df, An_MPIn_g, An_DEIn, An_DETPIn, An_DENPNCPIn, An_DigNDFIn, An_DEStIn, An_DEFAIn, An_DErOMIn, An_DENDFIn, An_BW, Dt_DMIn, An_StatePhys, coeff_dict):
     """
