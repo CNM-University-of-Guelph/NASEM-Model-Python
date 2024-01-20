@@ -117,6 +117,9 @@ def calculate_Inf_DEButrIn(Inf_ButrIn, coeff_dict):
 
 
 def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
+    '''
+    Infusion input is a dictionary
+    '''
     # Calculate all infusion values "Inf_" and store in a dictionary
     infusion_data = {}
     infused_nutrient_list = ['Inf_DM',
@@ -166,8 +169,7 @@ def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
             (Dt_DMIn + infusion_data['Inf_DMIn']) * 100
     # Line 860-871
 
-    infusion_data['Inf_Rum'] = calculate_Inf_Rum(
-        infusion_input['Inf_Location'])
+    infusion_data['Inf_Rum'] = calculate_Inf_Rum(infusion_input['Inf_Location'])
     infusion_data['Inf_SI'] = calculate_Inf_SI(infusion_input['Inf_Location'])
     infusion_data['Inf_Art'] = calculate_Inf_Art(
         infusion_input['Inf_Location'])
