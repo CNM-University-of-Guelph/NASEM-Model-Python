@@ -480,17 +480,15 @@ def read_infusion_input(path_to_file = 'infusion_input.csv'):
     ```{python}
     # Define file path to infusion_input.csv
     import importlib_resources
-    path_to_inf = importlib_resources.files('nasem_dairy.data').joinpath('infusion_input.csv') 
+    path_to_inf = importlib_resources.files('nasem_dairy.data').joinpath('infusion_input.csv')
     ```
 
-    
     ```{python}
     import nasem_dairy as nd
     infusion_data = nd.read_infusion_input(path_to_inf)
     print(infusion_data)
     ```
     """
-    
     infusions = {}
     input_data = pd.read_csv(path_to_file)
     input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
