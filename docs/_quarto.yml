@@ -52,10 +52,19 @@ quartodoc:
         - calculate_Dt_DMIn_DryCow1_Close
         - calculate_Dt_DMIn_DryCow2
 
-        # the functions being documented in the package.
+    - title: Utilility functions
+      desc: Functions to execute equations from NASEM_equations 
+      
+    - subtitle: ration_balancer
+      package: nasem_dairy.ration_balancer.ration_balancer_functions
+      contents:
+        - read_infusion_input
+        #  the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
-        # - name: dev_DMI_equations
-        #   children: embedded
+      #  - ration_balancer_functions
+      #  - name: ration_balancer_functions
+      #     children: embedded
+    - subtitle: test
 
 
 format:

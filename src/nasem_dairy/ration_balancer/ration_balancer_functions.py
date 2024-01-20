@@ -370,7 +370,45 @@ def read_csv_input(path_to_file):
     return diet_info, animal_input, equation_selection
 
 
-def read_infusion_input(path_to_file):
+def read_infusion_input(path_to_file = 'infusion_input.csv'):
+    """
+    Read infusion input data from a CSV file and return it as a dictionary. 
+
+    Parameters
+    ----------
+    path_to_file : str
+        The path to the CSV file containing infusion input data.
+
+    Returns
+    -------
+    dict
+        A dictionary containing variable-value pairs parsed from the CSV file.
+
+    Notes
+    -----
+    The CSV file is expected to have four columns (same as input.csv): Location, Variable, Value, Expected Value
+
+    - **Location** must be: infusions
+    - **Variable**: str that starts with 'Inf_'
+    - **Value**: number that represents either g or %/h, depending on Variable
+    - **Expected Value**: details of units and description of Variable
+    
+    Examples
+    --------
+    Read infusion input data from a CSV file:
+
+    ```{python}
+    # Define file path to infusion_input.csv
+    import importlib_resources
+    path_to_inf = importlib_resources.files('nasem_dairy.data').joinpath('infusion_input.csv')
+    ```
+
+    ```{python}
+    import nasem_dairy as nd
+    infusion_data = nd.read_infusion_input(path_to_inf)
+    print(infusion_data)
+    ```
+    """
     infusions = {}
     input_data = pd.read_csv(path_to_file)
     input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
