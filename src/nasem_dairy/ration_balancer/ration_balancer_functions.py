@@ -373,13 +373,61 @@ def get_nutrient_intakes(df, feed_data, DMI, equation_selection, coeff_dict):
     return df
 
 
-def read_csv_input(path_to_file):
+def read_csv_input(path_to_file = "input.csv"):
+    """
+    Read input data from a CSV file and organize it into dictionaries and a DataFrame.
+    This is a convenience function for preparing the required inputs for the run_NASEM() function from a csv file that follows a particular structure, described below.
 
+    Parameters
+    ----------
+    path_to_file : str
+        The path to the CSV file containing input data.
+
+    Returns
+    -------
+    tuple
+        A tuple containing a DataFrame (user_diet), and dictionaries (animal_input, equation_selection).
+   
+    Notes
+    -----
+    The CSV file is expected to have four columns (same as input.csv): Location, Variable, Value, Expected Value
+
+    - **Location** must be: infusions
+    - **Variable**: str that starts with 'Inf_'
+    - **Value**: number that represents either g or %/h, depending on Variable
+    - **Expected Value**: details of units and description of Variable 
+
+    Examples
+    --------
+    Read input data from a CSV file:
+
+    ```{python}
+    # Define file path to input_data.csv
+    import importlib_resources
+    path_to_csv = importlib_resources.files('nasem_dairy.data').joinpath('input.csv') 
+
+    import nasem_dairy as nd
+    user_diet_in, animal_input_in, equation_selection_in = nd.read_csv_input(path_to_csv) 
+    ```
+
+    ```{python}
+    print(user_diet_in)
+    ```
+
+    ```{python}
+    print(animal_input_in)
+    ```
+
+    ```{python}
+    print(equation_selection_in)
+    ```
+
+    """
     animal_input = {}
     equation_selection = {}
-    diet_info_data = {'Feedstuff': [], 'kg_user': []}
+    user_diet_data = {'Feedstuff': [], 'kg_user': []}
 
-    input_data = pd.read_csv(path_to_file)
+    input_data = pd.read_csv(path_to_file) 
 
     for index, row in input_data.iterrows():
         location = row['Location']
@@ -387,20 +435,19 @@ def read_csv_input(path_to_file):
         value = row['Value']
 
         if location == 'equation_selection':
-            equation_selection[variable] = float(
-                value) if value.replace('.', '', 1).isdigit() else value
+            equation_selection[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
+            
         elif location == 'animal_input':
-            animal_input[variable] = float(value) if value.replace(
-                '.', '', 1).isdigit() else value
+            animal_input[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
+
         elif location == 'diet_info':
-            diet_info_data['Feedstuff'].append(variable)
-            diet_info_data['kg_user'].append(value)
+            user_diet_data['Feedstuff'].append(variable)
+            user_diet_data['kg_user'].append(value)
 
-    diet_info = pd.DataFrame(diet_info_data)
-    diet_info['kg_user'] = pd.to_numeric(
-        diet_info['kg_user'], downcast="float")
+    user_diet = pd.DataFrame(user_diet_data)
+    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], downcast="float")
 
-    return diet_info, animal_input, equation_selection
+    return user_diet, animal_input, equation_selection
 
 
 def read_infusion_input(path_to_file = 'infusion_input.csv'):

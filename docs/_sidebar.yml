@@ -26,6 +26,7 @@ website:
     - contents:
       - contents:
         - reference/read_infusion_input.qmd
+        - reference/read_csv_input.qmd
         - reference/get_feed_rows_feedlibrary.qmd
         section: ration_balancer
       - contents: []

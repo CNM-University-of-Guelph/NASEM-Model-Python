@@ -63,6 +63,7 @@ quartodoc:
       package: nasem_dairy.ration_balancer.ration_balancer_functions
       contents:
         - read_infusion_input
+        - read_csv_input
         - get_feed_rows_feedlibrary
         #  the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
