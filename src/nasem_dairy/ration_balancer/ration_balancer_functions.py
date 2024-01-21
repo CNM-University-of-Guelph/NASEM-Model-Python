@@ -68,11 +68,44 @@ def read_input(input):
     return diet_info, animal_input, equation_selection
 
 
-def fl_get_feed_rows(feeds_to_get: list,
+def get_feed_rows_feedlibrary(feeds_to_get: list,
                      feed_lib_df: pd.DataFrame) -> pd.DataFrame:
     '''
-    A function that takes a list of feed names to filter the nasem feed library (as a pandas dataframe).
-    This was originally implemented using a database but this is an alternative that uses only a df and produces the same output.
+    Filter the NASEM feed library DataFrame based on a list of feed names.
+
+    Parameters
+    ----------
+    feeds_to_get : list
+        List of feed names to filter the feed library.
+    feed_lib_df : pd.DataFrame
+        DataFrame containing the NASEM feed library.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame containing subset of NASEM feed library based on a list of feed names.
+
+    Notes
+    -----
+    - The resulting DataFrame is indexed by feed names after stripping leading and trailing whitespaces.
+
+    Examples
+    --------
+    Filter the NASEM feed library for specific feeds:
+    
+    ```{python}
+    # Import default feed library
+    import importlib_resources
+    import pandas as pd
+    feed_library_df = pd.read_csv(importlib_resources.files('nasem_dairy.data').joinpath("NASEM_feed_library.csv")) 
+    ```
+
+    ```{python}
+    import nasem_dairy as nd
+    selected_feeds_df = nd.get_feed_rows_feedlibrary(feeds_to_get=['Corn silage, typical', 'Canola meal'],
+                                            feed_lib_df=feed_library_df)
+    selected_feeds_df.info()
+    ```
     '''
 
     # Filter df using list from user
@@ -400,15 +433,17 @@ def read_infusion_input(path_to_file = 'infusion_input.csv'):
     ```{python}
     # Define file path to infusion_input.csv
     import importlib_resources
-    path_to_inf = importlib_resources.files('nasem_dairy.data').joinpath('infusion_input.csv')
+    path_to_inf = importlib_resources.files('nasem_dairy.data').joinpath('infusion_input.csv') 
     ```
 
+    
     ```{python}
     import nasem_dairy as nd
     infusion_data = nd.read_infusion_input(path_to_inf)
     print(infusion_data)
     ```
     """
+    
     infusions = {}
     input_data = pd.read_csv(path_to_file)
     input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
@@ -417,7 +452,7 @@ def read_infusion_input(path_to_file = 'infusion_input.csv'):
         # Iterate over CSV, convert to a dictionary
         variable = row['Variable']
         value = row['Value']
-        # Convert values to float if possible, otherwise leave as a string
+        # Convert values to float if possible, otherwise leave as a string 
         try:
             value = float(value)
         except ValueError:

@@ -1,6 +1,9 @@
 project:
   type: website
 
+execute:
+  freeze: false
+
 # tell quarto to read the generated sidebar
 metadata-files:
   - _sidebar.yml
@@ -19,9 +22,10 @@ website:
 quartodoc:
   # the name used to import the package you want to create reference docs for
   package: nasem_dairy
+  rewrite_all_pages: true
   renderer:
     style: markdown
-    display_name: relative
+    # display_name: relative
 
   # write sidebar data to this file
   sidebar: _sidebar.yml
@@ -59,6 +63,7 @@ quartodoc:
       package: nasem_dairy.ration_balancer.ration_balancer_functions
       contents:
         - read_infusion_input
+        - get_feed_rows_feedlibrary
         #  the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
       #  - ration_balancer_functions
