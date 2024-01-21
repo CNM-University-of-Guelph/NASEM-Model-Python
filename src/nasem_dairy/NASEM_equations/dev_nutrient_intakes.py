@@ -1623,7 +1623,13 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, Fe_rOM
     return diet_data
 
 
-def calculate_diet_data_complete(diet_data_initial, An_StatePhys, Fe_CP, equation_selection, coeff_dict):
+def calculate_diet_data_complete(
+        diet_data_initial: dict, 
+        An_StatePhys: str, 
+        Fe_CP, 
+        Monensin_eqn: int, #equation_selection['Monensin_eqn'] 
+        coeff_dict: dict
+        ):
     complete_diet_data = diet_data_initial.copy()
 
     complete_diet_data['Dt_DigCPaIn'] = calculate_Dt_DigCPaIn(complete_diet_data['Dt_CPIn'],
@@ -1643,6 +1649,6 @@ def calculate_diet_data_complete(diet_data_initial, An_StatePhys, Fe_CP, equatio
                                                       complete_diet_data['Dt_DMIn_ClfLiq'],
                                                       complete_diet_data['Dt_DEIn_base_ClfLiq'],
                                                       complete_diet_data['Dt_DEIn_base_ClfDry'],
-                                                      equation_selection['Monensin_eqn']
+                                                      Monensin_eqn
                                                       )
     return complete_diet_data
