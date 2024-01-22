@@ -1,5 +1,5 @@
 import pytest
-from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
+from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict
 # from nasem_dairy.NASEM_equations.dev_DMI_equations import calculate_Kb_LateGest_DMIn, calculate_An_PrePartWklim, calculate_Dt_DMIn_Heif_LateGestInd, calculate_Dt_DMIn_Heif_LateGestPen, calculate_Dt_NDFdev_DMI, calculate_Dt_DMIn_Heif_NRCa, calculate_Dt_DMIn_Heif_NRCad, calculate_Dt_DMIn_Heif_H1, calculate_Dt_DMIn_Heif_H2, calculate_Dt_DMIn_Heif_HJ1, calculate_Dt_DMIn_Heif_HJ2, calculate_Dt_DMIn_Lact1
 from nasem_dairy.NASEM_equations.dev_DMI_equations import (
     calculate_Kb_LateGest_DMIn,

@@ -21,11 +21,35 @@ def calculate_Fe_RumMiCP(Du_MiCP, Du_idMiCP):
     return Fe_RumMiCP
 
 
-def calculate_Fe_CPend_g(An_StatePhys, An_DMIn, An_NDF, Dt_DMIn, Dt_DMIn_ClfLiq, K_FeCPend_ClfLiq):
-    # line 1187, g/d, endogen secretions plus urea capture in microbies in rumen and LI
-    Fe_CPend_g = (12 + 0.12 * An_NDF) * Dt_DMIn
-    Fe_CPend_g = np.where(An_StatePhys == "Calf", K_FeCPend_ClfLiq *
-                          Dt_DMIn_ClfLiq + 20.6 * (An_DMIn - Dt_DMIn_ClfLiq), Fe_CPend_g)
+def calculate_Fe_CPend_g(
+        An_StatePhys: str, 
+        An_DMIn: float, 
+        An_NDF: float, 
+        Dt_DMIn: float, 
+        Dt_DMIn_ClfLiq: float, 
+        NonMilkCP_ClfLiq: int #0 or 1
+        ):
+    '''
+    An_DMIn = DMI + Infusion from calculate_An_DMIn()
+    Fe_CPend_g = Metabolic Fecal crude Protein (MFP) in g/d
+    Dt_DMIn_ClfLiq = liquid feed dry matter intake in kg/d
+    NonMilkCP_ClfLiq = or Milk_Replacer_eqn. equation_selection where 0=no non-milk protein sources in calf liquid feeds, 1=non-milk CP sources used. See lin 1188 R code
+    '''
+    if An_StatePhys == "Calf":
+        # equation 10-12; p. 210;
+        # Originally K_FeCPend_ClfLiq is set to 11.9 in book; but can be either 11.9 or 34.4 
+        # (An_DMIn - Dt_DMIn_ClfLiq) represents solid feed DM intake
+        # should only be called if calf:
+        K_FeCPend_ClfLiq = np.where(NonMilkCP_ClfLiq > 0, 34.4, 11.9)
+
+        Fe_CPend_g = K_FeCPend_ClfLiq * Dt_DMIn_ClfLiq + 20.6 * (An_DMIn - Dt_DMIn_ClfLiq)
+    else:
+        #g/d, endogen secretions plus urea capture in microbies in rumen and LI
+        # Line 1187 R Code
+        Fe_CPend_g = (12 + 0.12 * An_NDF) * Dt_DMIn
+    
+    # Fe_CPend_g = (12 + 0.12 * An_NDF) * Dt_DMIn
+    # Fe_CPend_g = np.where(An_StatePhys == "Calf", K_FeCPend_ClfLiq * Dt_DMIn_ClfLiq + 20.6 * (An_DMIn - Dt_DMIn_ClfLiq), Fe_CPend_g)
     return Fe_CPend_g
 
 
