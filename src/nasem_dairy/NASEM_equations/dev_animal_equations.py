@@ -100,6 +100,12 @@ def calculate_An_CPIn(Dt_CPIn, Inf_CPIn):
     return An_CPIn
 
 
+def calculate_An_DigNDF(An_DigNDFIn, Dt_DMIn, InfRum_DMIn, InfSI_DMIn):
+    # Line 1066, should add LI infusions
+    An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
+    return An_DigNDF
+
+
 def calculate_An_DigCPaIn(An_CPIn, InfArt_CPIn, Fe_CP):
     An_DigCPaIn = An_CPIn - InfArt_CPIn - Fe_CP  # apparent total tract
     return An_DigCPaIn
@@ -150,6 +156,13 @@ def calculate_An_DEIn(An_StatePhys, An_DENDFIn, An_DEStIn, An_DErOMIn, An_DETPIn
     An_DEIn = np.where(condition, Dt_DEIn, An_DEIn)
     An_DEIn = np.where(Monensin_eqn == 1, An_DEIn * 1.02, An_DEIn)
     return An_DEIn
+
+
+def calculate_An_DEInp(An_DEIn, An_DETPIn, An_DENPNCPIn):
+    # Line 1385, Create a nonprotein DEIn for milk protein predictions.
+    An_DEInp = An_DEIn - An_DETPIn - An_DENPNCPIn
+    return An_DEInp
+
 
 ####################
 # Animal Warpper Functions
@@ -202,6 +215,10 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, coeff_dict
                                            infusion_data['Inf_DMIn'])
     An_data['An_CPIn'] = calculate_An_CPIn(diet_data['Dt_CPIn'],
                                            infusion_data['Inf_CPIn'])
+    An_data['An_DigNDF'] = calculate_An_DigNDF(An_data['An_DigNDFIn'],
+                                               animal_input['DMI'],
+                                               infusion_data['InfRum_DMIn'],
+                                               infusion_data['InfSI_DMIn'])
     return An_data
 
 
@@ -235,6 +252,9 @@ def calculate_An_data_complete(An_data_initial, diet_data, An_StatePhys, Fe_CP, 
                                                     diet_data['Dt_DMIn_ClfLiq'],
                                                     diet_data['Dt_DEIn'],
                                                     equation_selection['Monensin_eqn'])
+    complete_An_data['An_DEInp'] = calculate_An_DEInp(complete_An_data['An_DEIn'],
+                                                      complete_An_data['An_DETPIn'],
+                                                      complete_An_data['An_DENPNCPIn'])
     return complete_An_data
 
 ####################

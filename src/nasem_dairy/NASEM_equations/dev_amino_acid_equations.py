@@ -2,6 +2,7 @@
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 import numpy as np
+import math
 
 
 def calculate_Du_AAMic(Du_MiTP_g, AA_list, coeff_dict):
@@ -72,3 +73,67 @@ def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
                          -(2 * np.sqrt(mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2) -
                            2 * mPrtmx_AA2) / (AA_mPrtmx * 0.1))
     return mPrt_k_AA
+
+
+def calculate_Abs_EAA_g(Abs_AA_g):
+    Abs_EAA_g = Abs_AA_g.sum()  # Line 1769, in R written as line below
+    # Abs_EAA_g = Abs_AA_g['Arg'] + Abs_AA_g['His'] + Abs_AA_g['Ile'] + Abs_AA_g['Leu'] + Abs_AA_g['Lys'] \
+    #             + Abs_AA_g['Met'] + Abs_AA_g['Phe'] + Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val']
+    return Abs_EAA_g
+
+
+def calculate_Abs_neAA_g(An_MPIn_g, Abs_EAA_g):
+    # Line 1771, Absorbed NEAA (Equation 20-150 p. 433)
+    Abs_neAA_g = An_MPIn_g * 1.15 - Abs_EAA_g
+    return Abs_neAA_g
+
+
+def calculate_Abs_OthAA_g(Abs_neAA_g, Abs_AA_g):
+    Abs_OthAA_g = Abs_neAA_g + Abs_AA_g['Arg'] + Abs_AA_g['Phe'] + \
+        Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + \
+        Abs_AA_g['Val']  # Line 2110, NRC eqn only
+    # Equation 20-186a, p. 436
+    return Abs_OthAA_g
+
+
+def calculate_Abs_EAA2_HILKM_g(Abs_AA_g):
+    Abs_EAA2_HILKM_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + \
+        Abs_AA_g['Lys']**2 + \
+        Abs_AA_g['Met']**2  # Line 1778, NRC 2020 (no Arg, Phe, Thr, Trp, or Val)
+    return Abs_EAA2_HILKM_g
+
+
+def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g):
+    Abs_EAA2_RHILKM_g = Abs_AA_g['Arg']**2 + Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + \
+        Abs_AA_g['Leu']**2 + \
+        Abs_AA_g['Lys']**2 + \
+        Abs_AA_g['Met']**2  # Line 1780, Virginia Tech 1 (no Phe, Thr, Trp, or Val)
+    return Abs_EAA2_RHILKM_g
+
+
+def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g):
+    Abs_EAA2_HILKMT_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + \
+        Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + \
+        Abs_AA_g['Met']**2 + Abs_AA_g['Thr']**2
+    return Abs_EAA2_HILKMT_g
+
+
+def calculate_Abs_EAA2b_g(mPrt_eqn, Abs_AA_g):
+    if mPrt_eqn == 2:
+        # Line 2107, NRC eqn.
+        Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g)
+    elif mPrt_eqn == 3:
+        # Line 2108, VT1 eqn.
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKMT_g(Abs_AA_g)
+    else:
+        # Line 2106, VT2 eqn.
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKM_g(Abs_AA_g)
+    return Abs_EAA2b_g
+
+
+def calculate_mPrt_k_EAA2(mPrtmx_Met2, mPrt_Met_0_1, Met_mPrtmx):
+    # Scale the quadratic; can be calculated from any of the AA included in the squared term. All give the same answer
+    # Methionine used to be consistent with R code
+    mPrt_k_EAA2 = (2 * math.sqrt(mPrtmx_Met2**2 - mPrt_Met_0_1 * mPrtmx_Met2) -
+                   2 * mPrtmx_Met2 + mPrt_Met_0_1) / (Met_mPrtmx * 0.1)**2  # Line 2184
+    return mPrt_k_EAA2
