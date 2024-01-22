@@ -9,7 +9,7 @@ _Fill in information for PR below. On review, add additional commits and a comme
 ### Checklist of all completed
 Mark with `[x]` to show completed [x]:  
 
-- [] Tests written (if feature added or refactored)
-- [] pytest passing
-- [] Docstrings - minor ()
-- [] Full documentation
+- [ ] Tests written (if feature added or refactored)
+- [ ] pytest passing
+- [ ] Docstrings - minor ()
+- [ ] Full documentation
