@@ -3,13 +3,12 @@ _Fill in information for PR below. On review, add additional commits and a comme
 ### Description of changes
 
 ### Issue number/s 
-(write fixes #__ to close issue)
-
+(write `fixes #__` to close issue)
 
 ### Checklist of all completed
-Mark with `[x]` to show completed [x]:  
+Mark with `[x]` to show completed:  
 
 - [ ] Tests written (if feature added or refactored)
 - [ ] pytest passing
-- [ ] Docstrings - minor ()
+- [ ] Docstrings - minor
 - [ ] Full documentation
