@@ -594,11 +594,15 @@ def calculate_TT_dcFdFA(An_StatePhys, Fd_Category, Fd_Type, Fd_dcFA, coeff_dict)
     TT_dcFdFA = np.where(np.isnan(TT_dcFdFA).any(),
                          coeff_dict['TT_dcFat_Base'], TT_dcFdFA)
 
-    condition_3 = (An_StatePhys == "Calf") and (
-        Fd_Category != "Calf Liquid Feed") and (Fd_Type == "Concentrate")
+    condition_3 = (
+        (An_StatePhys == "Calf") &
+        (~Fd_Category.isin(["Calf Liquid Feed"])) &
+        # ~ is the NOT operator, checks Fd_category is not Calf Liquid Feed
+        (Fd_Type == "Concentrate"))
+
     # Line 1255, likely an over estimate for forage
     TT_dcFdFA = np.where(
-        condition_3, coeff_dict['TT_dcFA_ClfDryFd'], TT_dcFdFA)
+        condition_3.all(), coeff_dict['TT_dcFA_ClfDryFd'], TT_dcFdFA)
 
     condition_4 = (np.isnan(TT_dcFdFA).any()) and (
         An_StatePhys == "Calf") and (Fd_Category == "Calf Liquid Feed")
