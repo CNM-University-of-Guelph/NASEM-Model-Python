@@ -22,9 +22,6 @@ def calculate_Du_IdAAMic(Du_AAMic, coeff_dict):
 
 
 def calculate_Abs_AA_g(diet_data, Du_IdAAMic, AA_list):
-    """
-    Needs test
-    """
     AA_coeffs = np.array([diet_data[f"Dt_Id{AA}_RUPIn"] for AA in AA_list])
     Abs_AA_g = Du_IdAAMic + AA_coeffs
     return Abs_AA_g

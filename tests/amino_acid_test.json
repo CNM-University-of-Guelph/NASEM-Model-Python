@@ -1,0 +1,229 @@
+[
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Arg"], "coeff_dict": null},
+        "Output": 27.35
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["His"], "coeff_dict": null},
+        "Output": 11.05
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Ile"], "coeff_dict": null},
+        "Output": 34.95
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Leu"], "coeff_dict": null},
+        "Output": 46.15
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Lys"], "coeff_dict": null},
+        "Output": 47.2
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Met"], "coeff_dict": null},
+        "Output": 13.15
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Phe"], "coeff_dict": null},
+        "Output": 31.5
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Thr"], "coeff_dict": null},
+        "Output": 31.15
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Trp"], "coeff_dict": null},
+        "Output": 6.85
+    },
+    {
+        "Name": "calculate_Du_AAMic",
+        "Input": {"Du_MiTP_g": 500, "AA_list": ["Val"], "coeff_dict": null},
+        "Output": 34.4
+    },     
+    {
+      "Name": "calculate_Du_IdAAMic",
+      "Input": {"Du_AAMic": 10, "coeff_dict": null},
+      "Output": 8
+    },
+    
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Arg"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["His"], "coeff_dict": null},
+        "Output": 326.2354651
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Ile"], "coeff_dict": null},
+        "Output": 91.07267442
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Leu"], "coeff_dict": null},
+        "Output": 25.25069767
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Lys"], "coeff_dict": null},
+        "Output": 154.5824419
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Met"], "coeff_dict": null},
+        "Output": 393.2466279
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Phe"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Thr"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Trp"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_mPrtmx_AA",
+        "Input": {"AA_list": ["Val"], "coeff_dict": null},
+        "Output": 0
+    },      
+    {
+      "Name": "calculate_mPrtmx_AA2",
+      "Input": {"mPrtmx_AA": 15, "f_mPrt_max": 0.3},
+      "Output": 4.5
+    },
+    
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Arg"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["His"], "coeff_dict": null},
+        "Output": 389.5348837
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Ile"], "coeff_dict": null},
+        "Output": 205.8139535
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Leu"], "coeff_dict": null},
+        "Output": 108.372093
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Lys"], "coeff_dict": null},
+        "Output": 268.1395349
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Met"], "coeff_dict": null},
+        "Output": 427.6744186
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Phe"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Thr"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Trp"], "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_AA_mPrtmx",
+        "Input": {"AA_list": ["Val"], "coeff_dict": null},
+        "Output": 0
+    },     
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Arg"], "coeff_dict": null},
+        "Output": -0.2843375
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["His"], "coeff_dict": null},
+        "Output": 18.9781625
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Ile"], "coeff_dict": null},
+        "Output": 9.8931625
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Leu"], "coeff_dict": null},
+        "Output": 5.0746625
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Lys"], "coeff_dict": null},
+        "Output": 12.9751625
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Met"], "coeff_dict": null},
+        "Output": 20.8641625
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Phe"], "coeff_dict": null},
+        "Output": -0.2843375
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Thr"], "coeff_dict": null},
+        "Output": -0.2843375
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Trp"], "coeff_dict": null},
+        "Output": -0.2843375
+    },
+    {
+        "Name": "calculate_mPrt_AA_01",
+        "Input": {"AA_mPrtmx": 115, "AA_list": ["Val"], "coeff_dict": null},
+        "Output": -0.2843375
+    },      
+    {
+      "Name": "calculate_mPrt_k_AA",
+      "Input": {"mPrtmx_AA2": 15, "mPrt_AA_01": 50, "AA_mPrtmx": 5},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_mPrt_k_AA",
+      "Input": {"mPrtmx_AA2": 10, "mPrt_AA_01": 10, "AA_mPrtmx": 0},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_mPrt_k_AA",
+      "Input": {"mPrtmx_AA2": 1, "mPrt_AA_01": 0.5, "AA_mPrtmx": 0.1},
+      "Output": 58.57864376
+    }
+  ]
