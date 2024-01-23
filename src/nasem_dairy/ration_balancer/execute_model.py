@@ -54,6 +54,7 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_Fd_FAhydr,
     calculate_Fd_NFC,
     calculate_Fd_rOM,
+    calculate_Fd_GEIn,
     calculate_Fd_DigNDFIn_Base,
     calculate_Fd_NPNCPIn,
     calculate_Fd_NPNIn,

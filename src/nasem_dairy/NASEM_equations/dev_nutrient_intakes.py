@@ -153,6 +153,11 @@ def calculate_Fd_rOM(Fd_NDF, Fd_St, Fd_TP, Fd_FA, Fd_fHydr_FA, Fd_Ash, Fd_NPNDM)
     return Fd_rOM
 
 
+def calculate_Fd_GEIn(Fd_GE, Fd_DMIn):
+    Fd_GEIn = Fd_GE * Fd_DMIn   # Line 544
+    return Fd_GEIn
+
+
 def calculate_Fd_DigNDFIn_Base(Fd_NDFIn, TT_dcFdNDF_Base):
     Fd_DigNDFIn_Base = TT_dcFdNDF_Base/100 * Fd_NDFIn    # Line 481
     return Fd_DigNDFIn_Base
@@ -974,7 +979,8 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                                                     complete_diet_info['Fd_fHydr_FA'],
                                                     diet_info['Fd_Ash'],
                                                     complete_diet_info['Fd_NPNDM'])
-
+    complete_diet_info['Fd_GEIn'] = calculate_Fd_GEIn(complete_diet_info['Fd_GE'], 
+                                                      complete_diet_info['Fd_DMIn'])
     # Loop through identical calculations
     column_names_XIn = ['Fd_ADF',
                         'Fd_NDF',
@@ -993,8 +999,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                         'Fd_CFat',
                         'Fd_FA',
                         'Fd_FAhydr',
-                        'Fd_Ash',
-                        'Fd_GE'
+                        'Fd_Ash'
                         ]
 
     complete_diet_info = complete_diet_info.assign(
