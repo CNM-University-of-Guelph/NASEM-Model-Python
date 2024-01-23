@@ -22,6 +22,9 @@ def calculate_Du_IdAAMic(Du_AAMic, coeff_dict):
 
 
 def calculate_Abs_AA_g(diet_data, Du_IdAAMic, AA_list):
+    """
+    Needs test
+    """
     AA_coeffs = np.array([diet_data[f"Dt_Id{AA}_RUPIn"] for AA in AA_list])
     Abs_AA_g = Du_IdAAMic + AA_coeffs
     return Abs_AA_g
@@ -64,11 +67,11 @@ def calculate_mPrt_AA_01(AA_mPrtmx, AA_list, coeff_dict):
 
 
 def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
-    condition = (mPrtmx_AA2**2 - mPrt_AA_01 *
-                 mPrtmx_AA2 <= 0) | (AA_mPrtmx == 0)
-    # Check for sqrt of 0 or divide by 0 errors and set value to 0 if encountered
-    mPrt_k_AA = np.where(condition,
-                         0,
-                         -(2 * np.sqrt(mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2) -
-                           2 * mPrtmx_AA2) / (AA_mPrtmx * 0.1))
+    condition = (mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2 <= 0) | (AA_mPrtmx == 0)
+    # Check for sqrt of negative number or divide by 0 errors and set value to 0 if encountered
+    if condition:
+        mPrt_k_AA = 0
+    else:
+        mPrt_k_AA = -(2 * np.sqrt(mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2) - 2 * mPrtmx_AA2) / (AA_mPrtmx * 0.1)
+
     return mPrt_k_AA
