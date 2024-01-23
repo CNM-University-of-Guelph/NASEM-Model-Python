@@ -24,25 +24,3 @@ def test_from_json(nutrient_intakes_data):
             assert func(**input_params) == pytest.approx(row.Output), f"{row.Name} failed: {func(**input_params)} does not equal {row.Output}"
         except AttributeError:
             print(f"Function {row.Name} not found in module.")
-
-
-def test_calculate_Abs_AA_g():
-    diet_data = {
-        'Dt_IdArg_RUPIn': 1.0,
-        'Dt_IdHis_RUPIn': 2.0,
-        'Dt_IdIle_RUPIn': 3.0,
-        'Dt_IdLeu_RUPIn': 4.0,
-        'Dt_IdLys_RUPIn': 5.0,
-        'Dt_IdMet_RUPIn': 6.0,
-        'Dt_IdPhe_RUPIn': 7.0,
-        'Dt_IdThr_RUPIn': 8.0,
-        'Dt_IdTrp_RUPIn': 9.0,
-        'Dt_IdVal_RUPIn': 10.0,
-        }
-    AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
-    result = calculate_Abs_AA_g(diet_data, 50, AA_list)
-
-
-
-
-
