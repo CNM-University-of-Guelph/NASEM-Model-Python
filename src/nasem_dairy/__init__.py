@@ -12,7 +12,7 @@ from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement, c
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement, calculate_An_MPm_g_Trg, calculate_Body_MPuse_g_Trg, calculate_Gest_MPuse_g_Trg, calculate_Mlk_MPuse_g_Trg
 from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
-from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, temp_calc_An_GasEOut, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
+from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 from nasem_dairy.NASEM_equations.dev_DMI_equations import (
     calculate_Kb_LateGest_DMIn,
@@ -244,6 +244,11 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_DMIn,
     calculate_An_CPIn,
     calculate_An_DigNDF,
+    calculate_An_GEIn,
+    calculate_An_GasEOut_Dry,
+    calculate_An_GasEOut_Lact,
+    calculate_An_GasEOut_Heif,
+    calculate_An_GasEOut,
     calculate_An_DigCPaIn,
     calculate_An_DECPIn,
     calculate_An_DENPNCPIn,
