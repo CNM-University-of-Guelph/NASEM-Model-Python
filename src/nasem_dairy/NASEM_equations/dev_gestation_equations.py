@@ -19,13 +19,10 @@ def calculate_Uter_Wt(An_Parity_rl, An_AgeDay, An_LactDay, An_GestDay, An_GestLe
         Uter_Wt = 0
 
     if An_GestDay > 0 and An_GestDay <= An_GestLength:  # Line 2314
-        Uter_Wt = Uter_Wtpart * \
-            math.exp(-(coeff_dict['Uter_Ksyn'] - coeff_dict['Uter_KsynDecay']
-                     * An_GestDay) * (An_GestLength - An_GestDay))
+        Uter_Wt = Uter_Wtpart * math.exp(-(coeff_dict['Uter_Ksyn'] - coeff_dict['Uter_KsynDecay'] * An_GestDay) * (An_GestLength - An_GestDay))
 
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:     # Line 2316
-        Uter_Wt = (Uter_Wtpart-0.204) * \
-            math.exp(-coeff_dict['Uter_Kdeg'] * An_LactDay) + 0.204
+        Uter_Wt = (Uter_Wtpart-0.204) * math.exp(-coeff_dict['Uter_Kdeg'] * An_LactDay) + 0.204
 
     if An_Parity_rl > 0 and Uter_Wt < 0.204:    # Line 2318
         Uter_Wt = 0.204
@@ -35,8 +32,7 @@ def calculate_Uter_Wt(An_Parity_rl, An_AgeDay, An_LactDay, An_GestDay, An_GestLe
 def calculate_GrUter_Wtpart(Fet_BWbrth, coeff_dict):
     req_coeff = ['GrUterWt_FetBWbrth']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    GrUter_Wtpart = Fet_BWbrth * \
-        coeff_dict['GrUterWt_FetBWbrth']    # Line 2322
+    GrUter_Wtpart = Fet_BWbrth * coeff_dict['GrUterWt_FetBWbrth']    # Line 2322
     return GrUter_Wtpart
 
 
@@ -57,8 +53,7 @@ def calculate_Uter_BWgain(An_LactDay, An_GestDay, An_GestLength, Uter_Wt, coeff_
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Uter_BWgain = coeff_dict['Uter_BWgain']
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
-        Uter_BWgain = (
-            coeff_dict['Uter_Ksyn'] - coeff_dict['Uter_KsynDecay'] * An_GestDay) * Uter_Wt
+        Uter_BWgain = (coeff_dict['Uter_Ksyn'] - coeff_dict['Uter_KsynDecay'] * An_GestDay) * Uter_Wt
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:  # uterine involution after calving
         Uter_BWgain = -coeff_dict['Uter_Kdeg'] * Uter_Wt
     return Uter_BWgain
@@ -69,8 +64,7 @@ def calculate_GrUter_BWgain(An_LactDay, An_GestDay, An_GestLength, GrUter_Wt, Ut
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     GrUter_BWgain = coeff_dict['GrUter_BWgain']     # Line 2341-2345
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
-        GrUter_BWgain = (
-            coeff_dict['GrUter_Ksyn'] - coeff_dict['GrUter_KsynDecay'] * An_GestDay) * GrUter_Wt
+        GrUter_BWgain = (coeff_dict['GrUter_Ksyn'] - coeff_dict['GrUter_KsynDecay'] * An_GestDay) * GrUter_Wt
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
         GrUter_BWgain = Uter_BWgain
     return GrUter_BWgain

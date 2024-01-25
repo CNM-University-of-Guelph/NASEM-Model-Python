@@ -1,0 +1,93 @@
+[
+    {
+      "Name": "calculate_Uter_Wtpart",
+      "Input": {"Fet_BWbrth": 50, "coeff_dict": null},
+      "Output": 11.555
+    },
+    {
+      "Name": "calculate_Uter_Wt",
+      "Input": {"An_Parity_rl": 0, "An_AgeDay": 200, "An_LactDay": 150, "An_GestDay": 0, "An_GestLength": 280, "Uter_Wtpart": 5, "coeff_dict": null},
+      "Output": 0
+    },
+    {
+        "Name": "calculate_Uter_Wt",
+        "Input": {"An_Parity_rl": 0, "An_AgeDay": 800, "An_LactDay": 150, "An_GestDay": 15, "An_GestLength": 280, "Uter_Wtpart": 35, "coeff_dict": null},
+        "Output": 0.06605058187025042
+    },
+    {
+        "Name": "calculate_Uter_Wt",
+        "Input": {"An_Parity_rl": 0, "An_AgeDay": 800, "An_LactDay": 50, "An_GestDay": 0, "An_GestLength": 280, "Uter_Wtpart": 5, "coeff_dict": null},
+        "Output": 0.20421773806314086
+    },
+    {
+        "Name": "calculate_Uter_Wt",
+        "Input": {"An_Parity_rl": 2, "An_AgeDay": 200, "An_LactDay": 110, "An_GestDay": 0, "An_GestLength": 280, "Uter_Wtpart": 5, "coeff_dict": null},
+        "Output": 0.204
+    },      
+    {
+      "Name": "calculate_GrUter_Wtpart",
+      "Input": {"Fet_BWbrth": 55, "coeff_dict": null},
+      "Output": 99.88
+    },
+    {
+      "Name": "calculate_GrUter_Wt",
+      "Input": {"An_GestDay": 0, "An_GestLength": 280, "Uter_Wt": 20, "GrUter_Wtpart": 0.5, "coeff_dict": null},
+      "Output": 20
+    },
+    {
+        "Name": "calculate_GrUter_Wt",
+        "Input": {"An_GestDay": 100, "An_GestLength": 280, "Uter_Wt": 20, "GrUter_Wtpart": 0.5, "coeff_dict": null},
+        "Output": 20
+    },
+    {
+        "Name": "calculate_GrUter_Wt",
+        "Input": {"An_GestDay": 270, "An_GestLength": 280, "Uter_Wt": 0.5, "GrUter_Wtpart": 1, "coeff_dict": null},
+        "Output": 0.8379054609161661
+    },
+    {
+        "Name": "calculate_GrUter_Wt",
+        "Input": {"An_GestDay": 300, "An_GestLength": 280, "Uter_Wt": 20, "GrUter_Wtpart": 0.5, "coeff_dict": null},
+        "Output": 20
+    },
+    {
+      "Name": "calculate_Uter_BWgain",
+      "Input": {"An_LactDay": 150, "An_GestDay": 60, "An_GestLength": 280, "Uter_Wt": 5, "coeff_dict": null},
+      "Output": 0.11041000000000001
+    },
+    {
+        "Name": "calculate_Uter_BWgain",
+        "Input": {"An_LactDay": 60, "An_GestDay": 0, "An_GestLength": 280, "Uter_Wt": 5, "coeff_dict": null},
+        "Output": -1.0
+    },
+    {
+        "Name": "calculate_Uter_BWgain",
+        "Input": {"An_LactDay": 150, "An_GestDay": 290, "An_GestLength": 280, "Uter_Wt": 5, "coeff_dict": null},
+        "Output": 0
+    },
+    {
+      "Name": "calculate_GrUter_BWgain",
+      "Input": {"An_LactDay": 110, "An_GestDay": 10, "An_GestLength": 280, "GrUter_Wt": 12, "Uter_BWgain": 2, "coeff_dict": null},
+      "Output": 0.28866
+    },
+    {
+        "Name": "calculate_GrUter_BWgain",
+        "Input": {"An_LactDay": 110, "An_GestDay": 300, "An_GestLength": 280, "GrUter_Wt": 12, "Uter_BWgain": 2, "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_GrUter_BWgain",
+        "Input": {"An_LactDay": 120, "An_GestDay": 0, "An_GestLength": 280, "GrUter_Wt": 12, "Uter_BWgain": 2, "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_GrUter_BWgain",
+        "Input": {"An_LactDay": 0, "An_GestDay": 0, "An_GestLength": 280, "GrUter_Wt": 12, "Uter_BWgain": 2, "coeff_dict": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_GrUter_BWgain",
+        "Input": {"An_LactDay": 70, "An_GestDay": 0, "An_GestLength": 280, "GrUter_Wt": 12, "Uter_BWgain": 2, "coeff_dict": null},
+        "Output": 2
+    }
+  ]
+  
