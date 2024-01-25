@@ -62,8 +62,7 @@ def calculate_Fe_CP(An_StatePhys, Dt_CPIn_ClfLiq, Dt_dcCP_ClfDry, An_CPIn, Fe_RU
     req_coeff = ['dcNPNCP', 'Dt_dcCP_ClfLiq']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1202, Double counting portion of RumMiCP derived from End CP. Needs to be fixed. MDH
-    Fe_CP = Fe_RUP + Fe_RumMiCP + Fe_CPend + \
-        InfSI_NPNCPIn * (1 - coeff_dict['dcNPNCP'] / 100)
+    Fe_CP = Fe_RUP + Fe_RumMiCP + Fe_CPend + InfSI_NPNCPIn * (1 - coeff_dict['dcNPNCP'] / 100)
     Fe_CP = np.where(An_StatePhys == "Calf",
                      (1 - coeff_dict['Dt_dcCP_ClfLiq']) * Dt_CPIn_ClfLiq +
                      (1 - Dt_dcCP_ClfDry) * (An_CPIn - Dt_CPIn_ClfLiq) + Fe_CPend,
