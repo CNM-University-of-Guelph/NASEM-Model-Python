@@ -121,7 +121,7 @@ def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
     Infusion input is a dictionary
     '''
     # Calculate all infusion values "Inf_" and store in a dictionary
-    infusion_data = {}
+    infusion_data = infusion_input.copy()
     infused_nutrient_list = ['Inf_DM',
                              'Inf_St',
                              'Inf_NDF',

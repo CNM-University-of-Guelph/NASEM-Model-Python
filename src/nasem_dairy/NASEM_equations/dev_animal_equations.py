@@ -243,6 +243,9 @@ def calculate_An_data_complete(
                                                     diet_data['Dt_DMIn_ClfLiq'],
                                                     diet_data['Dt_DEIn'],
                                                     Monensin_eqn)
+    AA_list = ['Arg', 'His', 'Ile', 'Leu','Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    for AA in AA_list:
+        complete_An_data[f'An_Id{AA}In'] = diet_data[f'Dt_Id{AA}In'] + infusion_data[f'Inf_Id{AA}In']
     return complete_An_data
 
 ####################

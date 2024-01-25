@@ -1582,9 +1582,7 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, Fe_rOM
                'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     for AA in AA_list:
         # Dt_IdAARUPIn
-        diet_data['Dt_Id{}_RUPIn'.format(
-            AA)] = df['Fd_Id{}RUPIn'.format(AA)].sum()
-
+        diet_data[f'Dt_Id{AA}RUPIn'] = df[f'Fd_Id{AA}RUPIn'].sum()
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(diet_data['Dt_CPIn'],
                                                diet_data['Dt_RUPIn'])
 
@@ -1628,8 +1626,12 @@ def calculate_diet_data_complete(
         An_StatePhys: str, 
         Fe_CP, 
         Monensin_eqn: int, #equation_selection['Monensin_eqn'] 
+        Du_IdAAMic,
         coeff_dict: dict
         ):
+    """
+    Du_IdAAMic is a series passed from the AA_values dataframe, used to calculate Dt_IdAAIn
+    """
     complete_diet_data = diet_data_initial.copy()
 
     complete_diet_data['Dt_DigCPaIn'] = calculate_Dt_DigCPaIn(complete_diet_data['Dt_CPIn'],
@@ -1651,4 +1653,8 @@ def calculate_diet_data_complete(
                                                       complete_diet_data['Dt_DEIn_base_ClfDry'],
                                                       Monensin_eqn
                                                       )
+    AA_list = ['Arg', 'His', 'Ile', 'Leu','Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    for AA in AA_list:
+        # Dt_IdAAIn
+        complete_diet_data[f'Dt_Id{AA}In'] = Du_IdAAMic[f'{AA}'] + complete_diet_data[f'Dt_Id{AA}RUPIn']
     return complete_diet_data
