@@ -1,0 +1,38 @@
+[
+    {
+      "Name": "calculate_Rum_dcNDF",
+      "Input": { "Dt_DMIn": 32, "Dt_NDFIn": 23, "Dt_StIn": 14, "Dt_CPIn": 18, "Dt_ADFIn": 13.1, "Dt_ForWet": 16.7 },
+      "Output": 0.1
+    },
+    {
+        "Name": "calculate_Rum_dcNDF",
+        "Input": { "Dt_DMIn": 24, "Dt_NDFIn": 28, "Dt_StIn": 1.4, "Dt_CPIn": 1.8, "Dt_ADFIn": 2.6, "Dt_ForWet": 1.6 },
+        "Output": 121.0849119047619
+    },
+    {
+      "Name": "calculate_Rum_dcSt",
+      "Input": { "Dt_DMIn": 30, "Dt_ForNDF": 44, "Dt_StIn": 12, "Dt_ForWet": 23 },
+      "Output": 62.774
+    },
+    {
+        "Name": "calculate_Rum_dcSt",
+        "Input": { "Dt_DMIn": 30, "Dt_ForNDF": 44, "Dt_StIn": 27, "Dt_ForWet": 23 },
+        "Output": 0.1
+    },
+    {
+        "Name": "calculate_Rum_dcSt",
+        "Input": { "Dt_DMIn": 17, "Dt_ForNDF": 79, "Dt_StIn": 5, "Dt_ForWet": 1 },
+        "Output": 100
+    },
+    {
+      "Name": "calculate_Rum_DigNDFIn",
+      "Input": { "Rum_dcNDF": 26, "Dt_NDFIn": 34 },
+      "Output": 8.84
+    },
+    {
+      "Name": "calculate_Rum_DigStIn",
+      "Input": { "Rum_dcSt": 17, "Dt_StIn": 29 },
+      "Output": 4.93
+    }
+  ]
+  
