@@ -1,0 +1,162 @@
+[
+  {
+    "Name": "calculate_An_DMIn_BW",
+    "Input": {"An_BW": 800, "Dt_DMIn": 25},
+    "Output": 0.03125
+  },
+  {
+    "Name": "calculate_An_RDPIn",
+    "Input": {"Dt_RDPIn": 15, "InfRum_RDPIn": 20},
+    "Output": 35
+  },
+  {
+    "Name": "calculate_An_RDP",
+    "Input": {"An_RDPIn": 10.6, "Dt_DMIn": 20.3, "InfRum_DMIn": 0.54},
+    "Output": 50.86372361
+  },
+  {
+    "Name": "calculate_An_RDPIn_g",
+    "Input": {"An_RDPIn": 1.2},
+    "Output": 1200
+  },
+  {
+    "Name": "calculate_An_NDFIn",
+    "Input": {"Dt_NDFIn": 15, "InfRum_NDFIn": 2.574, "InfSI_NDFIn": 0.743},
+    "Output": 18.317
+  },
+  {
+    "Name": "calculate_An_NDF",
+    "Input": {"An_NDFIn": 18, "Dt_DMIn": 12, "InfRum_DMIn": 0.5, "InfSI_DMIn": 1.4},
+    "Output": 129.4964029
+  },
+  {
+    "Name": "calculate_An_DigNDFIn",
+    "Input": {"Dt_DigNDFIn": 17, "InfRum_NDFIn": 5, "TT_dcNDF": 0.55},
+    "Output": 17.0275
+  },
+  {
+    "Name": "calculate_An_DENDFIn",
+    "Input": {"An_DigNDFIn": 15, "coeff_dict": null},
+    "Output": 63
+  },
+  {
+    "Name": "calculate_An_DigStIn",
+    "Input": {"Dt_DigStIn": 3, "Inf_StIn": 4.5, "Inf_ttdcSt": 0.15},
+    "Output": 3.00675
+  },
+  {
+    "Name": "calculate_An_DEStIn",
+    "Input": {"An_DigStIn": 6.8, "coeff_dict": null},
+    "Output": 28.764
+  },
+  {
+    "Name": "calculate_An_DigrOMaIn",
+    "Input": {"Dt_DigrOMaIn": 5, "InfRum_GlcIn": 12, "InfRum_AcetIn": 4, "InfRum_PropIn": 2.6, "InfRum_ButrIn": 13, "InfSI_GlcIn": 7.8, "InfSI_AcetIn": 9, "InfSI_PropIn": 1.356, "InfSI_ButrIn": 2},
+    "Output": 56.756
+  },
+  {
+    "Name": "calculate_An_DErOMIn",
+    "Input": {"An_DigrOMaIn": 3.4, "coeff_dict": null},
+    "Output": 13.6
+  },
+  {
+    "Name": "calculate_An_idRUPIn",
+    "Input": {"Dt_idRUPIn": 6.8, "InfRum_idRUPIn": 9, "InfSI_idTPIn": 1.379},
+    "Output": 17.179
+  },
+  {
+    "Name": "calculate_An_RUPIn",
+    "Input": {"Dt_RUPIn": 5, "InfRum_RUPIn": 12.3},
+    "Output": 17.3
+  },
+  {
+    "Name": "calculate_An_DMIn",
+    "Input": {"Dt_DMIn": 6.4, "Inf_DMIn": 8.3},
+    "Output": 14.7
+  },
+  {
+    "Name": "calculate_An_CPIn",
+    "Input": {"Dt_CPIn": 8.23, "Inf_CPIn": 1.86},
+    "Output": 10.09
+  },
+  {
+    "Name": "calculate_An_DigCPaIn",
+    "Input": {"An_CPIn": 28, "InfArt_CPIn": 12.7, "Fe_CP": 3.8},
+    "Output": 11.5
+  },
+  {
+    "Name": "calculate_An_DECPIn",
+    "Input": {"An_DigCPaIn": 6.7, "coeff_dict": null},
+    "Output": 37.855
+  },
+  {
+    "Name": "calculate_An_DENPNCPIn",
+    "Input": {"Dt_NPNCPIn": 13.8, "coeff_dict": null},
+    "Output": 12.282
+  },
+  {
+    "Name": "calculate_An_DETPIn",
+    "Input": {"An_DECPIn": 18, "An_DENPNCPIn": 2.563, "coeff_dict": null},
+    "Output": 1.729269663
+  },
+  {
+    "Name": "calculate_An_DigFAIn",
+    "Input": {"Dt_DigFAIn": 8.6, "Inf_DigFAIn": 4.73},
+    "Output": 13.33
+  },
+  {
+    "Name": "calculate_An_DEFAIn",
+    "Input": {"An_DigFAIn": 0.167, "coeff_dict": null},
+    "Output": 1.5698
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "An_DENDFIn": 12, "An_DEStIn": 14, "An_DErOMIn": 3.5, "An_DETPIn": 1.92, "An_DENPNCPIn": 6.843, "An_DEFAIn": 3.5, "Inf_DEAcetIn": 6, "Inf_DEPropIn": 1.43, "Inf_DEButrIn": 5.2, "Dt_DMIn_ClfLiq": 0, "Dt_DEIn": 12.7, "Monensin_eqn": 0},
+    "Output": 54.393
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "An_DENDFIn": 12, "An_DEStIn": 14, "An_DErOMIn": 3.5, "An_DETPIn": 1.92, "An_DENPNCPIn": 6.843, "An_DEFAIn": 3.5, "Inf_DEAcetIn": 6, "Inf_DEPropIn": 1.43, "Inf_DEButrIn": 5.2, "Dt_DMIn_ClfLiq": 0, "Dt_DEIn": 12.7, "Monensin_eqn": 1},
+    "Output": 55.48086
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Calf", "An_DENDFIn": 3.2, "An_DEStIn": 4.6, "An_DErOMIn": 9, "An_DETPIn": 10.3, "An_DENPNCPIn": 2, "An_DEFAIn": 7, "Inf_DEAcetIn": 1.3, "Inf_DEPropIn": 3.94, "Inf_DEButrIn": 6.3, "Dt_DMIn_ClfLiq": 0, "Dt_DEIn": 12.5, "Monensin_eqn": 0},
+    "Output": 47.64
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Calf", "An_DENDFIn": 3.2, "An_DEStIn": 4.6, "An_DErOMIn": 9, "An_DETPIn": 10.3, "An_DENPNCPIn": 2, "An_DEFAIn": 7, "Inf_DEAcetIn": 1.3, "Inf_DEPropIn": 3.94, "Inf_DEButrIn": 6.3, "Dt_DMIn_ClfLiq": 15, "Dt_DEIn": 12.5, "Monensin_eqn": 1},
+    "Output": 12.75
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Calf", "An_DENDFIn": 3.2, "An_DEStIn": 4.6, "An_DErOMIn": 9, "An_DETPIn": 10.3, "An_DENPNCPIn": 2, "An_DEFAIn": 7, "Inf_DEAcetIn": 1.3, "Inf_DEPropIn": 3.94, "Inf_DEButrIn": 6.3, "Dt_DMIn_ClfLiq": 0, "Dt_DEIn": 12.5, "Monensin_eqn": 1},
+    "Output": 48.5928
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Calf", "An_DENDFIn": 3.2, "An_DEStIn": 4.6, "An_DErOMIn": 9, "An_DETPIn": 10.3, "An_DENPNCPIn": 2, "An_DEFAIn": 7, "Inf_DEAcetIn": 1.3, "Inf_DEPropIn": 3.94, "Inf_DEButrIn": 6.3, "Dt_DMIn_ClfLiq": 15, "Dt_DEIn": 12.5, "Monensin_eqn": 1},
+    "Output": 12.75
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "An_DENDFIn": 12, "An_DEStIn": 14, "An_DErOMIn": 3.5, "An_DETPIn": 1.92, "An_DENPNCPIn": 6.843, "An_DEFAIn": 3.5, "Inf_DEAcetIn": 6, "Inf_DEPropIn": 1.43, "Inf_DEButrIn": 5.2, "Dt_DMIn_ClfLiq": 10, "Dt_DEIn": 12.7, "Monensin_eqn": 0},
+    "Output": 54.393
+  },
+  {
+    "Name": "calculate_An_DEIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "An_DENDFIn": 12, "An_DEStIn": 14, "An_DErOMIn": 3.5, "An_DETPIn": 1.92, "An_DENPNCPIn": 6.843, "An_DEFAIn": 3.5, "Inf_DEAcetIn": 6, "Inf_DEPropIn": 1.43, "Inf_DEButrIn": 5.2, "Dt_DMIn_ClfLiq": 10, "Dt_DEIn": 12.7, "Monensin_eqn": 1},
+    "Output": 55.48086
+  },
+  {
+    "Name": "calculate_An_MPIn",
+    "Input": {"Dt_idRUPIn": 12, "Du_idMiTP": 5.8},
+    "Output": 17.8
+  },
+  {
+    "Name": "calculate_An_MPIn_g",
+    "Input": {"An_MPIn": 2.2},
+    "Output": 2200
+  }
+]

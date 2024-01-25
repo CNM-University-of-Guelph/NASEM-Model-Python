@@ -48,8 +48,7 @@ def calculate_An_DigNDFIn(Dt_DigNDFIn, InfRum_NDFIn, TT_dcNDF):
 def calculate_An_DENDFIn(An_DigNDFIn, coeff_dict):
     req_coeff = ['En_NDF']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_DENDFIn = An_DigNDFIn * \
-        coeff_dict['En_NDF']                   # Line 1353
+    An_DENDFIn = An_DigNDFIn * coeff_dict['En_NDF']                   # Line 1353
     return An_DENDFIn
 
 
@@ -115,8 +114,7 @@ def calculate_An_DECPIn(An_DigCPaIn, coeff_dict):
 def calculate_An_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
     req_coeff = ['dcNPNCP', 'En_NPNCP']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_DENPNCPIn = Dt_NPNCPIn * \
-        coeff_dict['dcNPNCP'] / 100 * coeff_dict['En_NPNCP']
+    An_DENPNCPIn = Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 100 * coeff_dict['En_NPNCP']
     return An_DENPNCPIn
 
 
@@ -124,8 +122,7 @@ def calculate_An_DETPIn(An_DECPIn, An_DENPNCPIn, coeff_dict):
     req_coeff = ['En_NPNCP', 'En_CP']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1355, Caution! DigTPaIn not clean so subtracted DE for CP equiv of NPN to correct. Not a true DE_TP.
-    An_DETPIn = An_DECPIn - An_DENPNCPIn / \
-        coeff_dict['En_NPNCP'] * coeff_dict['En_CP']
+    An_DETPIn = An_DECPIn - An_DENPNCPIn / coeff_dict['En_NPNCP'] * coeff_dict['En_CP']
     return An_DETPIn
 
 
