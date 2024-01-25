@@ -120,8 +120,7 @@ def calculate_An_GEIn(Dt_GEIn, Inf_NDFIn, Inf_StIn, Inf_FAIn, Inf_TPIn, Inf_NPNC
 
 def calculate_An_GasEOut_Dry(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn, An_GEIn):
     An_GasEOut_Dry = 0.69 + 0.053 * An_GEIn - 0.07 * \
-        (Dt_FAIn + InfRum_FAIn) / (Dt_DMIn + InfRum_DMIn) * \
-        100   # Line 1407, Dry Cows
+        (Dt_FAIn + InfRum_FAIn) / (Dt_DMIn + InfRum_DMIn) * 100   # Line 1407, Dry Cows
     return An_GasEOut_Dry
 
 
@@ -133,8 +132,7 @@ def calculate_An_GasEOut_Lact(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn, An_Dig
 
 
 def calculate_An_GasEOut_Heif(An_GEIn, An_NDF):
-    An_GasEOut_Heif = -0.038 + 0.051 * An_GEIn + \
-        0.0091 * An_NDF   # Line 1406, Heifers/Bulls
+    An_GasEOut_Heif = -0.038 + 0.051 * An_GEIn + 0.0091 * An_NDF   # Line 1406, Heifers/Bulls
     return An_GasEOut_Heif
 
 
