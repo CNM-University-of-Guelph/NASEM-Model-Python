@@ -54,7 +54,6 @@
       "Input": {"Du_AAMic": 10, "coeff_dict": null},
       "Output": 8
     },
-    
     {
         "Name": "calculate_mPrtmx_AA",
         "Input": {"AA_list": ["Arg"], "coeff_dict": null},
