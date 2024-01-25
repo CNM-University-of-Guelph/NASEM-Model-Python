@@ -1,0 +1,138 @@
+[
+    {
+      "Name": "calculate_Inf_TPIn",
+      "Input": {"Inf_CPIn": 20, "Inf_NPNCPIn": 5},
+      "Output": 15
+    },
+    {
+      "Name": "calculate_Inf_OMIn",
+      "Input": {"Inf_DMIn": 5, "Inf_AshIn": 1},
+      "Output": 4
+    },
+    {
+      "Name": "calculate_Inf_Rum",
+      "Input": {"Inf_Location": "Rumen"},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_Inf_Rum",
+      "Input": {"Inf_Location": "Arterial"},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Inf_SI",
+      "Input": {"Inf_Location": "Abomasum"},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_Inf_SI",
+      "Input": {"Inf_Location": "Duodenum"},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_Inf_SI",
+      "Input": {"Inf_Location": "Duodenal"},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_Inf_SI",
+      "Input": {"Inf_Location": "Rumen"},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Inf_Art",
+      "Input": {"Inf_Location": "Jugular"},
+      "Output": 1
+    },
+    {
+        "Name": "calculate_Inf_Art",
+        "Input": {"Inf_Location": "Arterial"},
+        "Output": 1
+    },
+    {
+        "Name": "calculate_Inf_Art",
+        "Input": {"Inf_Location": "Iliac Artery"},
+        "Output": 1
+    },
+    {
+        "Name": "calculate_Inf_Art",
+        "Input": {"Inf_Location": "Blood"},
+        "Output": 1
+    },
+    {
+        "Name": "calculate_Inf_Art",
+        "Input": {"Inf_Location": "Rumen"},
+        "Output": 0
+    },
+    {
+      "Name": "calculate_InfRum_TPIn",
+      "Input": {"InfRum_CPIn": 10, "InfRum_NPNCPIn": 2},
+      "Output": 8
+    },
+    {
+      "Name": "calculate_InfSI_TPIn",
+      "Input": {"InfSI_CPIn": 2.5, "InfSI_NPNCPIn": 1.7},
+      "Output": 0.8
+    },
+    {
+      "Name": "calculate_InfRum_RUPIn",
+      "Input": {"InfRum_CPAIn": 3, "InfRum_CPBIn": 1, "InfRum_CPCIn": 0.5, "InfRum_NPNCPIn": 1.8, "Inf_KdCPB": 0.04, "coeff_dict": null},
+      "Output": 1.5692812030075187
+    },
+    {
+      "Name": "calculate_InfRum_RUP_CP",
+      "Input": {"InfRum_CPIn": 0, "InfRum_RUPIn": 10},
+      "Output": 0
+    },
+    {
+        "Name": "calculate_InfRum_RUP_CP",
+        "Input": {"InfRum_CPIn": 5, "InfRum_RUPIn": 10},
+        "Output": 200
+    },
+    {
+      "Name": "calculate_InfRum_idRUPIn",
+      "Input": {"InfRum_RUPIn": 6, "Inf_dcRUP": 3.5},
+      "Output": 0.21
+    },
+    {
+      "Name": "calculate_InfSI_idTPIn",
+      "Input": {"InfSI_TPIn": 9, "Inf_dcRUP": 4},
+      "Output": 0.36
+    },
+    {
+      "Name": "calculate_InfSI_idCPIn",
+      "Input": {"InfSI_idTPIn": 5, "InfSI_NPNCPIn": 7, "coeff_dict": null},
+      "Output": 12
+    },
+    {
+      "Name": "calculate_Inf_idCPIn",
+      "Input": {"InfRum_idRUPIn": 9, "InfSI_idCPIn": 2.4},
+      "Output": 11.4
+    },
+    {
+      "Name": "calculate_InfRum_RDPIn",
+      "Input": {"InfRum_CPIn": 6, "InfRum_RUPIn": 4},
+      "Output": 2
+    },
+    {
+      "Name": "calculate_Inf_DigFAIn",
+      "Input": {"Inf_FAIn": 0.6, "coeff_dict": null},
+      "Output": 43.8
+    },
+    {
+      "Name": "calculate_Inf_DEAcetIn",
+      "Input": {"Inf_AcetIn": 0.75, "coeff_dict": null},
+      "Output": 2.61
+    },
+    {
+      "Name": "calculate_Inf_DEPropIn",
+      "Input": {"Inf_PropIn": 0.39, "coeff_dict": null},
+      "Output": 1.9344000000000001
+    },
+    {
+      "Name": "calculate_Inf_DEButrIn",
+      "Input": {"Inf_ButrIn": 0.45, "coeff_dict": null},
+      "Output": 2.6775
+    }
+  ]
+  

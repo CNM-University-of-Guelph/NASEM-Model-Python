@@ -19,15 +19,13 @@ def calculate_Inf_Rum(Inf_Location):
 
 
 def calculate_Inf_SI(Inf_Location):
-    condition = (Inf_Location == "Abomasum") | (
-        Inf_Location == "Duodenum") | (Inf_Location == "Duodenal")
+    condition = (Inf_Location == "Abomasum") | (Inf_Location == "Duodenum") | (Inf_Location == "Duodenal")
     Inf_SI = np.where(condition, 1, 0)      # Line 875
     return Inf_SI
 
 
 def calculate_Inf_Art(Inf_Location):
-    condition = (Inf_Location == "Jugular") | (Inf_Location == "Arterial") | (
-        Inf_Location == "Iliac Artery") | (Inf_Location == "Blood")
+    condition = (Inf_Location == "Jugular") | (Inf_Location == "Arterial") | (Inf_Location == "Iliac Artery") | (Inf_Location == "Blood")
     Inf_Art = np.where(condition, 1, 0)     # Line 876
     return Inf_Art
 
