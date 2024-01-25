@@ -6,7 +6,7 @@ import pandas as pd
 
 @pytest.fixture
 def infusion_data():
-    return pd.read_json("./tests/animal_equations_test.json")
+    return pd.read_json("./tests/infusion_equations_test.json")
 
 
 def test_from_json(infusion_data):

@@ -5,7 +5,7 @@ import pandas as pd
 
 @pytest.fixture
 def gestation_data():
-    return pd.read_json("./tests/DMI_equations_test.json")
+    return pd.read_json("./tests/gestation_equations_test.json")
 
 
 def test_from_json(gestation_data):
