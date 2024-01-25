@@ -36,12 +36,12 @@ def test_calculate_Abs_AA_g(sample_data):
 
 
 @pytest.fixture
-def nutrient_intakes_data():
+def amino_acid_data():
     return pd.read_json("./tests/amino_acid_test.json")
 
 
-def test_from_json(nutrient_intakes_data):
-    for index, row in nutrient_intakes_data.iterrows():
+def test_from_json(amino_acid_data):
+    for index, row in amino_acid_data.iterrows():
         try:
             func = getattr(nd, row.Name)
             input_params = row.Input.copy()
