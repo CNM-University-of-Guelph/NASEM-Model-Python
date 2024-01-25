@@ -1,0 +1,68 @@
+[
+    {
+      "Name": "calculate_RDPIn_MiNmax",
+      "Input": {"Dt_DMIn": 20, "An_RDP": 10, "An_RDPIn": 5},
+      "Output": 5
+    },
+    {
+      "Name": "calculate_RDPIn_MiNmax",
+      "Input": {"Dt_DMIn": 20, "An_RDP": 12, "An_RDPIn": 5},
+      "Output": 5
+    },
+    {
+        "Name": "calculate_RDPIn_MiNmax",
+        "Input": {"Dt_DMIn": 20, "An_RDP": 15, "An_RDPIn": 5},
+        "Output": 2.4
+    },
+    {
+      "Name": "calculate_MiN_Vm",
+      "Input": {"RDPIn_MiNmax": 3, "coeff_dict": null},
+      "Output": 345.48
+    },
+    {
+      "Name": "calculate_Du_MiN_NRC2021_g",
+      "Input": {"MiN_Vm": 16, "Rum_DigNDFIn": 4.7, "Rum_DigStIn": 2.9, "An_RDPIn_g": 140, "coeff_dict": null},
+      "Output": 15.542627123053165
+    },
+    {
+        "Name": "calculate_Du_MiN_NRC2021_g",
+        "Input": {"MiN_Vm": 16, "Rum_DigNDFIn": 4.7, "Rum_DigStIn": 2.9, "An_RDPIn_g": 20, "coeff_dict": null},
+        "Output": 3.2
+    },
+    {
+      "Name": "calculate_Du_MiN_VTln_g",
+      "Input": {"Dt_rOMIn": 4, "Dt_ForNDFIn": 3.2, "An_RDPIn": 1.9, "Rum_DigStIn": 4.6, "Rum_DigNDFIn": 3.5, "coeff_dict": null},
+      "Output": 167.0864
+    },
+    {
+      "Name": "calculate_Du_MiN_VTnln_g",
+      "Input": {"An_RDPIn": 14.6, "Rum_DigNDFIn": 2.398, "Rum_DigStIn": 1.4},
+      "Output": 749.9547827808068
+    },
+    {
+      "Name": "calculate_Du_MiCP",
+      "Input": {"Du_MiCP_g": 1500},
+      "Output": 1.5
+    },
+    {
+      "Name": "calculate_Du_idMiCP_g",
+      "Input": {"Du_MiCP_g": 12.4, "coeff_dict": null},
+      "Output": 9.92
+    },
+    {
+      "Name": "calculate_Du_idMiCP",
+      "Input": {"Du_idMiCP_g": 2700},
+      "Output": 2.7
+    },
+    {
+      "Name": "calculate_Du_idMiTP_g",
+      "Input": {"Du_idMiCP_g": 127.3, "coeff_dict": null},
+      "Output": 104.8952
+    },
+    {
+      "Name": "calculate_Du_idMiTP",
+      "Input": {"Du_idMiTP_g": 1832},
+      "Output": 1.832
+    }
+  ]
+  

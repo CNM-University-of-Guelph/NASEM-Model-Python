@@ -13,8 +13,7 @@ def calculate_RDPIn_MiNmax(Dt_DMIn, An_RDP, An_RDPIn):
 def calculate_MiN_Vm(RDPIn_MiNmax, coeff_dict):
     req_coeffs = ['VmMiNInt', 'VmMiNRDPSlp']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    MiN_Vm = coeff_dict['VmMiNInt'] + \
-        coeff_dict['VmMiNRDPSlp'] * RDPIn_MiNmax     # Line 1125
+    MiN_Vm = coeff_dict['VmMiNInt'] + coeff_dict['VmMiNRDPSlp'] * RDPIn_MiNmax     # Line 1125
     return MiN_Vm
 
 
