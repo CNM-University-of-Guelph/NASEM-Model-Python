@@ -1,0 +1,18 @@
+[
+    {
+      "Name": "calculate_Trg_NEmilk_Milk",
+      "Input": {"Trg_MilkTPp": 48, "Trg_MilkFatp": 20, "Trg_MilkLacp": null},
+      "Output": 2.2979999999999996
+    },
+    {
+        "Name": "calculate_Trg_NEmilk_Milk",
+        "Input": {"Trg_MilkTPp": null, "Trg_MilkFatp": 20, "Trg_MilkLacp": 19.4},
+        "Output": 2.2979999999999996
+    },
+    {
+        "Name": "calculate_Trg_NEmilk_Milk",
+        "Input": {"Trg_MilkTPp": 48, "Trg_MilkFatp": 20, "Trg_MilkLacp": 19.4},
+        "Output": 5.4323
+    }
+  ]
+  
