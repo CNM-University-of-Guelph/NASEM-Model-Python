@@ -2,7 +2,6 @@ import pytest
 import nasem_dairy as nd
 import pandas as pd
 
-
 @pytest.fixture
 def protein_data():
     return pd.read_json("./tests/protein_equations_test.json")

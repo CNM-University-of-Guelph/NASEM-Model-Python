@@ -2,7 +2,6 @@ import pytest
 import nasem_dairy as nd
 import pandas as pd
 
-
 @pytest.fixture
 def gestation_data():
     return pd.read_json("./tests/gestation_equations_test.json")
