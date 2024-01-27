@@ -1,0 +1,23 @@
+[
+    {
+      "Name": "calculate_Gest_NCPgain_g",
+      "Input": {"GrUter_BWgain": 1.6, "coeff_dict": null},
+      "Output": 196.8
+    },
+    {
+      "Name": "calculate_Gest_NPgain_g",
+      "Input": {"Gest_NCPgain_g": 115, "coeff_dict": null},
+      "Output": 98.89999999999999
+    },
+    {
+      "Name": "calculate_Gest_NPuse_g",
+      "Input": {"Gest_NPgain_g": 74, "coeff_dict": null},
+      "Output": 74
+    },
+    {
+      "Name": "calculate_Gest_CPuse_g",
+      "Input": {"Gest_NPuse_g": 28.5, "coeff_dict": null},
+      "Output": 33.139534883720934
+    }
+  ]
+  

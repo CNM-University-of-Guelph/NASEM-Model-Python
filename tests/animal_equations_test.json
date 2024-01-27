@@ -43,6 +43,86 @@
         "Name": "calculate_An_GasEOut",
         "Input": {"An_StatePhys": "Lactating Cow", "Monensin_eqn": 1, "An_GasEOut_Dry": 10, "An_GasEOut_Lact": 20, "An_GasEOut_Heif": 30},
         "Output": 19.0
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 115, "An_BW_mature": 700, "An_StatePhys": "Calf", "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 7, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 0.09
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 60, "An_BW_mature": 700, "An_StatePhys": "Calf", "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 7, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 0.06
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 115, "An_BW_mature": 700, "An_StatePhys": "Calf", "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 7, "Dt_DMIn_ClfStrt": 3, "coeff_dict": null},
+      "Output": 0.07
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 115, "An_BW_mature": 700, "An_StatePhys": "Calf", "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 0.15
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 650, "An_BW_mature": 700, "An_StatePhys": "Dry Cow", "An_Parity_rl": 1, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 0.18
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 650, "An_BW_mature": 700, "An_StatePhys": "Dry Cow", "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 0.06
+    },
+    {
+      "Name": "calculate_An_GutFill_BW",
+      "Input": {"An_BW": 650, "An_BW_mature": 700, "An_StatePhys": "Lactating Cow", "An_Parity_rl": 1, "Dt_DMIn_ClfLiq": 5, "Dt_DMIn_ClfStrt": 6, "coeff_dict": null},
+      "Output": 0.18
+    },
+    {
+      "Name": "calculate_An_BWnp",
+      "Input": {"An_BW": 750, "GrUter_Wt": 24},
+      "Output": 726
+    },
+    {
+      "Name": "calculate_An_GutFill_Wt",
+      "Input": {"An_GutFill_BW": 0.2, "An_BWnp": 640},
+      "Output": 128
+    },
+    {
+      "Name": "calculate_An_BW_empty",
+      "Input": {"An_BW": 710, "An_GutFill_Wt": 20},
+      "Output": 690
+    },
+    {
+      "Name": "calculate_An_REgain_Calf",
+      "Input": {"Body_Gain_empty": 15, "An_BW_empty": 650},
+      "Output": 74.19038471
+    },
+    {
+      "Name": "calculate_An_MEIn",
+      "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
+      "Output": 15.06
+    },
+    {
+      "Name": "calculate_An_MEIn",
+      "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+      "Output": 14.13
+    },
+    {
+      "Name": "calculate_An_MEIn",
+      "Input": {"An_StatePhys": "Dry Cow", "An_BW": 600, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+      "Output": 6.6
+    },
+    {
+      "Name": "calculate_An_NEIn",
+      "Input": {"An_MEIn": 45.7},
+      "Output": 30.162
+    },
+    {
+      "Name": "calculate_An_NE",
+      "Input": {"An_NEIn": 47.8, "An_DMIn": 24},
+      "Output": 1.991666667
     }
   ]
   

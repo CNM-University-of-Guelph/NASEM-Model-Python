@@ -1,0 +1,12 @@
+[
+    {
+      "Name": "calculate_Scrf_CP_g",
+      "Input": {"An_BW": 782, "An_StatePhys": "Lactating Cow"},
+      "Output": 10.8881488
+    },
+    {
+        "Name": "calculate_Scrf_CP_g",
+        "Input": {"An_BW": 58, "An_StatePhys": "Calf"},
+        "Output": 2.5032309
+    }
+  ]

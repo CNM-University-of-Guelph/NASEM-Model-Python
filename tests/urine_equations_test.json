@@ -1,0 +1,13 @@
+[
+    {
+      "Name": "calculate_Ur_Nout_g",
+      "Input": {"Dt_CPIn": 5.2, "Fe_CP": 4.3, "Scrf_CP_g": 2.8, "Fe_CPend_g": 5, "Mlk_CP_g": 45.9, "Body_CPgain_g": 7.1, "Gest_CPuse_g": 3},
+      "Output": 133.792
+    },
+    {
+      "Name": "calculate_Ur_DEout",
+      "Input": {"Ur_Nout_g": 127},
+      "Output": 1.8161
+    }
+  ]
+  
