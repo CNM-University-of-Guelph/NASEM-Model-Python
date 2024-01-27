@@ -1,5 +1,5 @@
 # Protein equations
-
+import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
@@ -21,3 +21,11 @@ def calculate_Du_MiTP_g(Du_MiCP_g, coeff_dict):
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Du_MiTP_g = coeff_dict['fMiTP_MiCP'] * Du_MiCP_g     # Line 1166
     return Du_MiTP_g
+
+
+def calculate_Scrf_CP_g(An_BW, An_StatePhys):
+    Scrf_CP_g = 0.20 * An_BW**0.60   # Line 1964
+    Scrf_CP_g = np.where(An_StatePhys == "Calf", # Line 1965
+                         0.219 * An_BW**0.60,
+                         Scrf_CP_g)
+    return Scrf_CP_g

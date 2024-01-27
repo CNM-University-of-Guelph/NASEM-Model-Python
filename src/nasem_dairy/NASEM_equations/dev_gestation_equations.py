@@ -74,3 +74,31 @@ def calculate_GrUter_BWgain(An_LactDay, An_GestDay, An_GestLength, GrUter_Wt, Ut
     if An_GestDay <= 0 and An_LactDay > 0 and An_LactDay < 100:
         GrUter_BWgain = Uter_BWgain
     return GrUter_BWgain
+
+
+def calculate_Gest_NCPgain_g(GrUter_BWgain, coeff_dict):
+    req_coeff = ['CP_GrUtWt']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Gest_NCPgain_g = GrUter_BWgain * coeff_dict['CP_GrUtWt'] * 1000
+    return Gest_NCPgain_g
+
+
+def calculate_Gest_NPgain_g(Gest_NCPgain_g, coeff_dict):
+    req_coeff = ['Body_NP_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Gest_NPgain_g = Gest_NCPgain_g * coeff_dict['Body_NP_CP']
+    return Gest_NPgain_g
+
+
+def calculate_Gest_NPuse_g(Gest_NPgain_g, coeff_dict):
+    req_coeff = ['Gest_NPother_g']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Gest_NPuse_g = Gest_NPgain_g + coeff_dict['Gest_NPother_g']   # Line 2366
+    return Gest_NPuse_g
+
+
+def calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict):
+    req_coeff = ['Body_NP_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Gest_CPuse_g = Gest_NPuse_g / coeff_dict['Body_NP_CP']   # Line 2367
+    return Gest_CPuse_g

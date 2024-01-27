@@ -200,5 +200,7 @@ coeff_dict = {
 
     'Dt_dcCP_ClfLiq': 0.95,
     'TT_dcFA_ClfDryFd': 81,  # Line 1249, Used for all calf dry feed
-    'TT_dcFA_ClfLiqFd': 81      # Line 1250, Used for missing values in calf liquid feeds
+    'TT_dcFA_ClfLiqFd': 81,      # Line 1250, Used for missing values in calf liquid feeds
+    'UCT': 25,                # Line 230, calf
+    'An_GutFill_BWmature': 0.18 # Line 2400, mature animals
 }
