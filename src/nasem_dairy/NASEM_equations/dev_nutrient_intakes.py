@@ -852,6 +852,28 @@ def calculate_Dt_DEFAIn(Dt_DigFAIn, coeff_dict):
     return Dt_DEFAIn
 
 
+# This function is invovled in the calf DMIn prediction. In the future we will liekly need to pull a few of the calf intake calculations 
+# out of the wrappers to run DMI prediciton properly. It all depends on how we handle the calf calculations which hasn't been decided yet
+def calculate_Dt_DMIn_ClfStrt(An_BW, Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq, Dt_DMIn_ClfFor, An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Trg_Dt_DMIn, coeff_dict):
+    req_coeff = ['UCT']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    # Predict Calf Starter Intake, kg/d
+    # Temperate Environment Predicted Starter Intake
+    Dt_DMIn_ClfStrt = (-652.5 + 14.734 * An_BW + 18.896 * Dt_MEIn_ClfLiq    # Line 301
+                       + 73.3 * An_AgeDryFdStart / 7 
+                       + 13.496 * (An_AgeDryFdStart/7)**2 
+                       - 29.614 * An_AgeDryFdStart / 7 * Dt_MEIn_ClfLiq) / 1000
+    #Tropical Environment Predicted Starter Intake, TempCurr > UCT + 10 degrees C. 
+    Dt_DMIn_ClfStrt = np.where(Env_TempCurr > (coeff_dict['UCT'] + 10),     # Line 305
+                               (600.1 * (1 + 14863.7 * np.exp(-1.553 * An_AgeDryFdStart / 7))**-1 + 9.951 * An_BW - 130.434 * Dt_MEIn_ClfLiq) / 1000,
+                               Dt_DMIn_ClfStrt)
+    condition = (DMIn_eqn==0) and ((Dt_DMIn_ClfLiq + Dt_DMIn_ClfStrt + Dt_DMIn_ClfFor) != Trg_Dt_DMIn)
+    Dt_DMIn_ClfStrt = np.where(condition,   # Line 311
+                               Trg_Dt_DMIn - Dt_DMIn_ClfLiq - Dt_DMIn_ClfFor,
+                               Dt_DMIn_ClfStrt) # Adjust Starter Intake based on target intake if DMIeqn=0.
+    return Dt_DMIn_ClfStrt
+
+
 def calculate_Dt_DigCPaIn(Dt_CPIn, Fe_CP):
     Dt_DigCPaIn = Dt_CPIn - Fe_CP  # kg CP/d, apparent total tract digested CP
     return Dt_DigCPaIn
@@ -1311,7 +1333,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     return complete_diet_info
 
 
-def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, Fe_rOMend, coeff_dict):
+def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Fe_rOMend, coeff_dict):
     diet_data = {}
 
     # Diet Intakes
@@ -1373,7 +1395,8 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, Fe_rOM
         'DigStIn_Base',
         'DigrOMtIn',
         'idRUPIn',
-        'DigFAIn'
+        'DigFAIn',
+        'DMIn_ClfFor'
     ]
     # Lines 286, 297, 580, 587, 589, 590, 593-596, 598-614, 615, 626-638, 644, 649-652
     for col_name in column_names_sum:
@@ -1622,7 +1645,16 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, Fe_rOM
                                                        coeff_dict)
     diet_data['Dt_DEFAIn'] = calculate_Dt_DEFAIn(diet_data['Dt_DigFAIn'],
                                                  coeff_dict)
-
+    diet_data['Dt_DMIn_ClfStrt'] = calculate_Dt_DMIn_ClfStrt(An_BW,
+                                                             diet_data['Dt_MEIn_ClfLiq'],
+                                                             diet_data['Dt_DMIn_ClfLiq'],
+                                                             diet_data['Dt_DMIn_ClfFor'],
+                                                             An_AgeDryFdStart,
+                                                             Env_TempCurr,
+                                                             DMIn_eqn,
+                                                             DMI,
+                                                             coeff_dict)
+    
     return diet_data
 
 

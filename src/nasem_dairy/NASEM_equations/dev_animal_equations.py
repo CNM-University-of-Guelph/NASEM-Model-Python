@@ -209,12 +209,72 @@ def calculate_An_DEInp(An_DEIn, An_DETPIn, An_DENPNCPIn):
     return An_DEInp
 
 
+def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl, Dt_DMIn_ClfLiq, Dt_DMIn_ClfStrt, coeff_dict):
+    req_coeff = ['An_GutFill_BWmature']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_GutFill_BW = 0.06 # Line 2402, Milk fed calf, kg/kg BW
+    if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0.01) and (Dt_DMIn_ClfStrt <= 0.01) and (An_BW > 0.16 * An_BW_mature):
+        An_GutFill_BW = 0.09       # Line 2403, Heavy milk fed veal calf 
+    elif (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0.01) and (Dt_DMIn_ClfStrt > 0.01):
+        An_GutFill_BW = 0.07       # Line 2405, Milk plus starter fed calf
+    elif (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq < 0.01):
+        An_GutFill_BW = 0.15       # Line 2407, Weaned calf
+    elif ((An_StatePhys=="Dry Cow" or An_StatePhys=="Lactating Cow")) and (An_Parity_rl > 0):
+        An_GutFill_BW = coeff_dict['An_GutFill_BWmature'] # Line 2410, cow
+    else:
+        An_GutFill_BW = An_GutFill_BW  
+    return An_GutFill_BW
+
+
+def calculate_An_BWnp(An_BW, GrUter_Wt):
+    An_BWnp = An_BW - GrUter_Wt  # Line 2396, Non-pregnant BW
+    return An_BWnp
+
+
+def calculate_An_GutFill_Wt(An_GutFill_BW, An_BWnp):
+    An_GutFill_Wt = An_GutFill_BW * An_BWnp # Line 2413
+    return An_GutFill_Wt
+
+
+def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
+    An_BW_empty = An_BW - An_GutFill_Wt # Line 2414
+    return An_BW_empty
+
+
+def calculate_An_REgain_Calf(Body_Gain_empty, An_BW_empty):
+    An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205    # Line 2445, calf RE gain needed here for fat gain, mcal/d    
+    return An_REgain_Calf
+
+
+def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout, Dt_DMIn_CflLiq, Dt_DEIn_base_ClfLiq, Dt_DEIn_base_ClfDry, RumDevDisc_Clf):
+    condition = (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0.015 * An_BW) and (RumDevDisc_Clf > 0)
+    K_DE_ME_ClfDry = np.where(condition,    # Line 2755
+                              0.93 * 0.9,
+                              0.93)
+    An_MEIn = An_DEIn - An_GasEOut - Ur_DEout   # Line 2753
+    condition2 = (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0)
+    An_MEIn = np.where(condition2,
+                       Dt_DEIn_base_ClfLiq * 0.96 + Dt_DEIn_base_ClfDry * K_DE_ME_ClfDry, # Line 2757, no consideration of infusions for calves.
+                       An_MEIn)
+    return An_MEIn
+
+
+def calculate_An_NEIn(An_MEIn):
+    An_NEIn = An_MEIn * 0.66    # Line 2762
+    return An_NEIn
+
+
+def calculate_An_NE(An_NEIn, An_DMIn):
+    An_NE = An_NEIn / An_DMIn   # Line 2763
+    return An_NE
+
+
 ####################
 # Animal Warpper Functions
 ####################
 
 
-def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_eqn, coeff_dict):
+def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_eqn, GrUter_Wt, coeff_dict):
     # Could use a better name, An_data for now
     An_data = {}
     An_data['An_RDPIn'] = calculate_An_RDPIn(diet_data['Dt_RDPIn'],
@@ -293,6 +353,22 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
                                                  An_GasEOut_Dry,
                                                  An_GasEOut_Lact,
                                                  An_GasEOut_Heif)
+    
+    
+    An_data['An_GutFill_BW'] = calculate_An_GutFill_BW(animal_input['An_BW'],
+                                                       animal_input['An_BW_mature'],
+                                                       animal_input['An_StatePhys'],
+                                                       animal_input['An_Parity_rl'],
+                                                       diet_data['Dt_DMIn_ClfLiq'],
+                                                       diet_data['Dt_DMIn_ClfStrt'],
+                                                       coeff_dict)
+    An_data['An_BWnp'] = calculate_An_BWnp(animal_input['An_BW'],
+                                           GrUter_Wt)
+    An_data['An_GutFill_Wt'] = calculate_An_GutFill_Wt(An_data['An_GutFill_BW'],
+                                                       An_data['An_BWnp'])
+    An_data['An_BW_empty'] = calculate_An_BW_empty(animal_input['An_BW'],
+                                                   An_data['An_GutFill_Wt'])
+
     return An_data
 
 
