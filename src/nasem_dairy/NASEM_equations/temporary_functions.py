@@ -25,32 +25,6 @@ def temp_calc_An_DigTPaIn(Fe_CP, diet_info):
     return An_DigTPaIn
 
 
-def temp_calc_An_GasEOut(An_DigNDF, An_StatePhys, diet_info, Dt_DMIn, Monensin_eqn):
-    An_GasEOut_Dry = 0.69 + 0.053 * diet_info.loc['Diet', 'Fd_GEIn'] - 0.07 * diet_info.loc['Diet', 'Fd_FAIn'] / Dt_DMIn * 100 
-
-    An_GasEOut_Lact = 0.294 * Dt_DMIn - 0.347 * diet_info.loc['Diet', 'Fd_FAIn'] / Dt_DMIn * 100 + 0.0409 * An_DigNDF
-
-    An_GasEOut_Heif = -0.038 + 0.051 * diet_info.loc['Diet', 'Fd_GEIn'] + 0.0091 * diet_info.loc['Diet', 'Fd_NDF_%_diet'] * 100
-
-    An_GasEOut_Clf = 0                                                          # Line 1408 Calves
-
-    if An_StatePhys == 'Dry Cow':
-        An_GasEOut = An_GasEOut_Dry
-    elif An_StatePhys == 'Calf':
-        An_GasEOut = An_GasEOut_Clf
-    elif An_StatePhys == 'Lactating Cow':
-        An_GasEOut = An_GasEOut_Lact
-    else:
-        An_GasEOut = An_GasEOut_Heif
-
-    if Monensin_eqn == 1:
-        An_GasEOut = An_GasEOut * 0.95
-    else:
-        An_GasEOut = An_GasEOut
-
-    return An_GasEOut
-
-
 def calculate_Mlk_Prod(An_StatePhys, mProd_eqn, Mlk_Prod_comp, Mlk_Prod_NEalow, Mlk_Prod_MPalow, Trg_MilkProd):
 # Takes all milk production predictions and determines which to use as the milk production for future calculations 
     if An_StatePhys == "Lactating Cow" and mProd_eqn==1:    #Milk production from component predictions
