@@ -202,3 +202,39 @@ coeff_dict = {
     'TT_dcFA_ClfDryFd': 81,  # Line 1249, Used for all calf dry feed
     'TT_dcFA_ClfLiqFd': 81      # Line 1250, Used for missing values in calf liquid feeds
 }
+
+# Dictionary to use when infusions are not provided to model
+infusion_dict = {
+    'Inf_Acet_g': 0,
+    'Inf_ADF_g': 0,
+    'Inf_Arg_g': 0,
+    'Inf_Ash_g': 0,
+    'Inf_Butr_g': 0,
+    'Inf_CP_g': 0,
+    'Inf_CPARum_CP': 0,
+    'Inf_CPBRum_CP': 0,
+    'Inf_CPCRum_CP': 0,
+    'Inf_dcFA': 0,
+    'Inf_dcRUP': 0,
+    'Inf_DM_g': 0,
+    'Inf_EE_g': 0,
+    'Inf_FA_g': 0,
+    'Inf_Glc_g': 0,
+    'Inf_His_g': 0,
+    'Inf_Ile_g': 0,
+    'Inf_KdCPB': 0,
+    'Inf_Leu_g': 0,
+    'Inf_Lys_g': 0,
+    'Inf_Met_g': 0,
+    'Inf_NDF_g': 0,
+    'Inf_NPNCP_g': 0,
+    'Inf_Phe_g': 0,
+    'Inf_Prop_g': 0,
+    'Inf_St_g': 0,
+    'Inf_Thr_g': 0,
+    'Inf_Trp_g': 0,
+    'Inf_ttdcSt': 0,
+    'Inf_Val_g': 0,
+    'Inf_VFA_g': 0,
+    'Inf_Location': 0
+    }

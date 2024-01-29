@@ -299,7 +299,15 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
     return An_data
 
 
-def calculate_An_data_complete(An_data_initial, diet_data, An_StatePhys, Fe_CP, infusion_data, equation_selection, coeff_dict):
+def calculate_An_data_complete(
+        An_data_initial: dict, 
+        diet_data: dict, 
+        An_StatePhys: str, 
+        Fe_CP, 
+        infusion_data: dict, 
+        Monensin_eqn: int, #equation_selection['Monensin_eqn']
+        coeff_dict: dict
+        ):
     complete_An_data = An_data_initial.copy()
 
     complete_An_data['An_DigCPaIn'] = calculate_An_DigCPaIn(complete_An_data['An_CPIn'],

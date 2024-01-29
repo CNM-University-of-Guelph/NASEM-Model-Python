@@ -1,4 +1,4 @@
-﻿Location,Variable,Value,Expected Value
+Location,Variable,Value,Expected Value
 equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
 equation_selection,DMIn_eqn,0,int (0-17)
 equation_selection,mProd_eqn,0,int
