@@ -1,0 +1,17 @@
+[
+  {
+    "Name": "calculate_Fd_DMIn",
+    "Input": {"DMI": 10, "Fd_DMInp": 5},
+    "Output": 50
+  },
+  {
+    "Name": "calculate_TT_dcFdNDF_48h",
+    "Input": {"Fd_DNDF48": 3},
+    "Output": 13.83
+  },
+  {
+    "Name": "calculate_Fd_For",
+    "Input": {"Fd_Conc": 20},
+    "Output": 80
+  }
+]

@@ -153,11 +153,6 @@ def calculate_Fd_rOM(Fd_NDF, Fd_St, Fd_TP, Fd_FA, Fd_fHydr_FA, Fd_Ash, Fd_NPNDM)
     return Fd_rOM
 
 
-def calculate_Fd_GEIn(Fd_GE, Fd_DMIn):
-    Fd_GEIn = Fd_GE * Fd_DMIn   # Line 544
-    return Fd_GEIn
-
-
 def calculate_Fd_DigNDFIn_Base(Fd_NDFIn, TT_dcFdNDF_Base):
     Fd_DigNDFIn_Base = TT_dcFdNDF_Base/100 * Fd_NDFIn    # Line 481
     return Fd_DigNDFIn_Base
@@ -599,15 +594,11 @@ def calculate_TT_dcFdFA(An_StatePhys, Fd_Category, Fd_Type, Fd_dcFA, coeff_dict)
     TT_dcFdFA = np.where(np.isnan(TT_dcFdFA).any(),
                          coeff_dict['TT_dcFat_Base'], TT_dcFdFA)
 
-    condition_3 = (
-        (An_StatePhys == "Calf") &
-        (~Fd_Category.isin(["Calf Liquid Feed"])) &
-        # ~ is the NOT operator, checks Fd_category is not Calf Liquid Feed
-        (Fd_Type == "Concentrate"))
-
+    condition_3 = (An_StatePhys == "Calf") and (
+        Fd_Category != "Calf Liquid Feed") and (Fd_Type == "Concentrate")
     # Line 1255, likely an over estimate for forage
     TT_dcFdFA = np.where(
-        condition_3.all(), coeff_dict['TT_dcFA_ClfDryFd'], TT_dcFdFA)
+        condition_3, coeff_dict['TT_dcFA_ClfDryFd'], TT_dcFdFA)
 
     condition_4 = (np.isnan(TT_dcFdFA).any()) and (
         An_StatePhys == "Calf") and (Fd_Category == "Calf Liquid Feed")
@@ -979,8 +970,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                                                     complete_diet_info['Fd_fHydr_FA'],
                                                     diet_info['Fd_Ash'],
                                                     complete_diet_info['Fd_NPNDM'])
-    complete_diet_info['Fd_GEIn'] = calculate_Fd_GEIn(complete_diet_info['Fd_GE'], 
-                                                      complete_diet_info['Fd_DMIn'])
+
     # Loop through identical calculations
     column_names_XIn = ['Fd_ADF',
                         'Fd_NDF',
@@ -999,7 +989,8 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                         'Fd_CFat',
                         'Fd_FA',
                         'Fd_FAhydr',
-                        'Fd_Ash'
+                        'Fd_Ash',
+                        'Fd_GE'
                         ]
 
     complete_diet_info = complete_diet_info.assign(

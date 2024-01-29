@@ -100,60 +100,6 @@ def calculate_An_CPIn(Dt_CPIn, Inf_CPIn):
     return An_CPIn
 
 
-def calculate_An_DigNDF(An_DigNDFIn, Dt_DMIn, InfRum_DMIn, InfSI_DMIn):
-    # Line 1066, should add LI infusions
-    An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
-    return An_DigNDF
-
-
-def calculate_An_GEIn(Dt_GEIn, Inf_NDFIn, Inf_StIn, Inf_FAIn, Inf_TPIn, Inf_NPNCPIn, Inf_AcetIn, Inf_PropIn, Inf_ButrIn, coeff_dict):
-    req_coeff = ['En_NDF', 'En_St', 'En_FA', 'En_CP',
-                 'En_NPNCP', 'En_Acet', 'En_Prop', 'En_Butr']
-    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_GEIn = Dt_GEIn + Inf_NDFIn * coeff_dict['En_NDF'] + Inf_StIn * coeff_dict['En_St'] \
-        + Inf_FAIn * coeff_dict['En_FA'] + Inf_TPIn * coeff_dict['En_CP'] \
-        + Inf_NPNCPIn * coeff_dict['En_NPNCP'] + Inf_AcetIn * coeff_dict['En_Acet'] \
-        + Inf_PropIn * coeff_dict['En_Prop'] + \
-        Inf_ButrIn * coeff_dict['En_Butr']
-    return An_GEIn
-
-
-def calculate_An_GasEOut_Dry(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn, An_GEIn):
-    An_GasEOut_Dry = 0.69 + 0.053 * An_GEIn - 0.07 * \
-        (Dt_FAIn + InfRum_FAIn) / (Dt_DMIn + InfRum_DMIn) * 100   # Line 1407, Dry Cows
-    return An_GasEOut_Dry
-
-
-def calculate_An_GasEOut_Lact(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn, An_DigNDF):
-    An_GasEOut_Lact = (0.294 * (Dt_DMIn + InfRum_DMIn) -      # Line 1404-1405
-                       (0.347 * (Dt_FAIn + InfRum_FAIn) / (Dt_DMIn + InfRum_DMIn)) * 100 +
-                       0.0409 * An_DigNDF)
-    return An_GasEOut_Lact
-
-
-def calculate_An_GasEOut_Heif(An_GEIn, An_NDF):
-    An_GasEOut_Heif = -0.038 + 0.051 * An_GEIn + 0.0091 * An_NDF   # Line 1406, Heifers/Bulls
-    return An_GasEOut_Heif
-
-
-def calculate_An_GasEOut(An_StatePhys, Monensin_eqn, An_GasEOut_Dry, An_GasEOut_Lact, An_GasEOut_Heif):
-    if An_StatePhys == 'Dry Cow':
-        An_GasEOut = An_GasEOut_Dry
-    elif An_StatePhys == 'Calf':
-        An_GasEOut = 0  # Line 1408, An_GasEOut_Clf = 0
-    elif An_StatePhys == 'Lactating Cow':
-        An_GasEOut = An_GasEOut_Lact
-    else:
-        An_GasEOut = An_GasEOut_Heif
-
-    if Monensin_eqn == 1:
-        An_GasEOut = An_GasEOut * 0.95
-    else:
-        An_GasEOut = An_GasEOut
-
-    return An_GasEOut
-
-
 def calculate_An_DigCPaIn(An_CPIn, InfArt_CPIn, Fe_CP):
     An_DigCPaIn = An_CPIn - InfArt_CPIn - Fe_CP  # apparent total tract
     return An_DigCPaIn
@@ -205,19 +151,12 @@ def calculate_An_DEIn(An_StatePhys, An_DENDFIn, An_DEStIn, An_DErOMIn, An_DETPIn
     An_DEIn = np.where(Monensin_eqn == 1, An_DEIn * 1.02, An_DEIn)
     return An_DEIn
 
-
-def calculate_An_DEInp(An_DEIn, An_DETPIn, An_DENPNCPIn):
-    # Line 1385, Create a nonprotein DEIn for milk protein predictions.
-    An_DEInp = An_DEIn - An_DETPIn - An_DENPNCPIn
-    return An_DEInp
-
-
 ####################
 # Animal Warpper Functions
 ####################
 
 
-def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_eqn, coeff_dict):
+def calculate_An_data_initial(animal_input, diet_data, infusion_data, coeff_dict):
     # Could use a better name, An_data for now
     An_data = {}
     An_data['An_RDPIn'] = calculate_An_RDPIn(diet_data['Dt_RDPIn'],
@@ -263,39 +202,6 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
                                            infusion_data['Inf_DMIn'])
     An_data['An_CPIn'] = calculate_An_CPIn(diet_data['Dt_CPIn'],
                                            infusion_data['Inf_CPIn'])
-    An_data['An_DigNDF'] = calculate_An_DigNDF(An_data['An_DigNDFIn'],
-                                               animal_input['DMI'],
-                                               infusion_data['InfRum_DMIn'],
-                                               infusion_data['InfSI_DMIn'])
-    An_data['An_GEIn'] = calculate_An_GEIn(diet_data['Dt_GEIn'],
-                                           infusion_data['Inf_NDFIn'],
-                                           infusion_data['Inf_StIn'],
-                                           infusion_data['Inf_FAIn'],
-                                           infusion_data['Inf_TPIn'],
-                                           infusion_data['Inf_NPNCPIn'],
-                                           infusion_data['Inf_AcetIn'],
-                                           infusion_data['Inf_PropIn'],
-                                           infusion_data['Inf_ButrIn'],
-                                           coeff_dict)
-    # Next three values are passed to calculate_An_GasEOut which will assign An_GasEOut
-    # the correct value
-    An_GasEOut_Dry = calculate_An_GasEOut_Dry(animal_input['DMI'],
-                                              diet_data['Dt_FAIn'],
-                                              infusion_data['InfRum_FAIn'],
-                                              infusion_data['InfRum_DMIn'],
-                                              An_data['An_GEIn'])
-    An_GasEOut_Lact = calculate_An_GasEOut_Lact(animal_input['DMI'],
-                                                diet_data['Dt_FAIn'],
-                                                infusion_data['InfRum_FAIn'],
-                                                infusion_data['InfRum_DMIn'],
-                                                An_data['An_DigNDF'])
-    An_GasEOut_Heif = calculate_An_GasEOut_Heif(An_data['An_GEIn'],
-                                                An_data['An_NDF'])
-    An_data['An_GasEOut'] = calculate_An_GasEOut(animal_input['An_StatePhys'],
-                                                 Monensin_eqn,
-                                                 An_GasEOut_Dry,
-                                                 An_GasEOut_Lact,
-                                                 An_GasEOut_Heif)
     return An_data
 
 
@@ -336,10 +242,7 @@ def calculate_An_data_complete(
                                                     infusion_data['Inf_DEPropIn'],
                                                     diet_data['Dt_DMIn_ClfLiq'],
                                                     diet_data['Dt_DEIn'],
-                                                    equation_selection['Monensin_eqn'])
-    complete_An_data['An_DEInp'] = calculate_An_DEInp(complete_An_data['An_DEIn'],
-                                                      complete_An_data['An_DETPIn'],
-                                                      complete_An_data['An_DENPNCPIn'])
+                                                    Monensin_eqn)
     return complete_An_data
 
 ####################
