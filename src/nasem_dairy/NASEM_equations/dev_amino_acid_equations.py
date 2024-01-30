@@ -2,6 +2,7 @@
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 import numpy as np
+import math
 import pandas as pd
 
 

@@ -281,6 +281,4 @@ from nasem_dairy.NASEM_equations.dev_fecal_equations import (
     calculate_Fe_CP
 )
 
-from nasem_dairy.NASEM_equations.dev_calf_equations import (
-    calculate_K_FeCPend_ClfLiq
-)
+
