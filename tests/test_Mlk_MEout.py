@@ -1,5 +1,5 @@
 from nasem_dairy.NASEM_equations.temporary_functions import calculate_Mlk_MEout
-from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
+from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 import pytest
 
