@@ -48,8 +48,7 @@ def calculate_An_DigNDFIn(Dt_DigNDFIn, InfRum_NDFIn, TT_dcNDF):
 def calculate_An_DENDFIn(An_DigNDFIn, coeff_dict):
     req_coeff = ['En_NDF']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_DENDFIn = An_DigNDFIn * \
-        coeff_dict['En_NDF']                   # Line 1353
+    An_DENDFIn = An_DigNDFIn * coeff_dict['En_NDF']                   # Line 1353
     return An_DENDFIn
 
 
@@ -169,8 +168,7 @@ def calculate_An_DECPIn(An_DigCPaIn, coeff_dict):
 def calculate_An_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
     req_coeff = ['dcNPNCP', 'En_NPNCP']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_DENPNCPIn = Dt_NPNCPIn * \
-        coeff_dict['dcNPNCP'] / 100 * coeff_dict['En_NPNCP']
+    An_DENPNCPIn = Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 100 * coeff_dict['En_NPNCP']
     return An_DENPNCPIn
 
 
@@ -178,8 +176,7 @@ def calculate_An_DETPIn(An_DECPIn, An_DENPNCPIn, coeff_dict):
     req_coeff = ['En_NPNCP', 'En_CP']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1355, Caution! DigTPaIn not clean so subtracted DE for CP equiv of NPN to correct. Not a true DE_TP.
-    An_DETPIn = An_DECPIn - An_DENPNCPIn / \
-        coeff_dict['En_NPNCP'] * coeff_dict['En_CP']
+    An_DETPIn = An_DECPIn - An_DENPNCPIn / coeff_dict['En_NPNCP'] * coeff_dict['En_CP']
     return An_DETPIn
 
 
@@ -337,11 +334,13 @@ def calculate_An_data_complete(
                                                     diet_data['Dt_DMIn_ClfLiq'],
                                                     diet_data['Dt_DEIn'],
                                                     Monensin_eqn)
-
     complete_An_data['An_DEInp'] = calculate_An_DEInp(complete_An_data['An_DEIn'],
                                                       complete_An_data['An_DETPIn'],
                                                       complete_An_data['An_DENPNCPIn'])
 
+    AA_list = ['Arg', 'His', 'Ile', 'Leu','Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    for AA in AA_list:
+        complete_An_data[f'An_Id{AA}In'] = diet_data[f'Dt_Id{AA}In'] + infusion_data[f'Inf_Id{AA}In']
     return complete_An_data
 
 ####################

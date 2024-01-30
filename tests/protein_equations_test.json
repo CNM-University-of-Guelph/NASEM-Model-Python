@@ -1,0 +1,18 @@
+[
+    {
+      "Name": "calculate_f_mPrt_max",
+      "Input": { "An_305RHA_MlkTP": 240, "coeff_dict": null },
+      "Output": 0.8571428571428571
+    },
+    {
+      "Name": "calculate_Du_MiCP_g",
+      "Input": { "Du_MiN_g": 112 },
+      "Output": 700
+    },
+    {
+      "Name": "calculate_Du_MiTP_g",
+      "Input": { "Du_MiCP_g": 648, "coeff_dict": null },
+      "Output": 533.952
+    }
+  ]
+  

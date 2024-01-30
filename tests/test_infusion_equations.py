@@ -2,15 +2,15 @@ import pytest
 import nasem_dairy as nd
 import pandas as pd
 
-# TODO Add tests for wrapper functions calculate_An_data_initial and calculate_An_data_complete
+# TODO add test for wrapper function
 
 @pytest.fixture
-def animal_data():
-    return pd.read_json("./tests/animal_equations_test.json")
+def infusion_data():
+    return pd.read_json("./tests/infusion_equations_test.json")
 
 
-def test_from_json(animal_data):
-    for index, row in animal_data.iterrows():
+def test_from_json(infusion_data):
+    for index, row in infusion_data.iterrows():
         try:
             func = getattr(nd, row.Name)
             input_params = row.Input.copy()

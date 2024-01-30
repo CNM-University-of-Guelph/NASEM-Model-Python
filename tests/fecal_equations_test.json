@@ -1,0 +1,53 @@
+[
+    {
+      "Name": "calculate_Fe_rOMend",
+      "Input": {"Dt_DMIn": 24.5, "coeff_dict": null},
+      "Output": 0.84035
+    },
+    {
+      "Name": "calculate_Fe_RUP",
+      "Input": {"An_RUPIn": 34, "InfSI_TPIn": 4.23, "An_idRUPIn": 7.85},
+      "Output": 30.38
+    },
+    {
+      "Name": "calculate_Fe_RumMiCP",
+      "Input": {"Du_MiCP": 33.5, "Du_idMiCP": 17.8},
+      "Output": 15.7
+    },
+    {
+      "Name": "calculate_Fe_CPend_g",
+      "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": -1},
+      "Output": 338.92
+    },
+    {
+        "Name": "calculate_Fe_CPend_g",
+        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": 0},
+        "Output": 338.92
+    },
+    {
+        "Name": "calculate_Fe_CPend_g",
+        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": 5},
+        "Output": 527.92
+    },
+    {
+        "Name": "calculate_Fe_CPend_g",
+        "Input": {"An_StatePhys": "Heifer", "An_DMIn": 10, "An_NDF": 5, "Dt_DMIn": 4.67, "Dt_DMIn_ClfLiq": 0, "NonMilkCP_ClfLiq": 0},
+        "Output": 58.842
+    },
+    {
+        "Name": "calculate_Fe_CPend",
+        "Input": {"Fe_CPend_g": 17.8},
+        "Output": 0.0178
+    },
+    {
+      "Name": "calculate_Fe_CP",
+      "Input": {"An_StatePhys": "Heifer", "Dt_CPIn_ClfLiq": 12.5, "Dt_dcCP_ClfDry": 0.75, "An_CPIn": 3.91, "Fe_RUP": 6, "Fe_RumMiCP": 3.58, "Fe_CPend": 1.2, "InfSI_NPNCPIn": 11, "coeff_dict": null},
+      "Output": 10.78
+    },
+    {
+        "Name": "calculate_Fe_CP",
+        "Input": {"An_StatePhys": "Calf", "Dt_CPIn_ClfLiq": 14, "Dt_dcCP_ClfDry": 2.4, "An_CPIn": 4, "Fe_RUP": 9.2, "Fe_RumMiCP": 1.04, "Fe_CPend": 7, "InfSI_NPNCPIn": 2, "coeff_dict": null},
+        "Output": 21.7
+    }
+  ]
+  

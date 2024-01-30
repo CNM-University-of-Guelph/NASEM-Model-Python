@@ -1,0 +1,128 @@
+[
+    {
+      "Name": "calculate_Kb_LateGest_DMIn",
+      "Input": {"Dt_NDF": 20},
+      "Output": -0.280999999
+    },
+    {
+        "Name": "calculate_Kb_LateGest_DMIn",
+        "Input": {"Dt_NDF": 30},
+        "Output": -0.280999999
+    },
+    {
+        "Name": "calculate_Kb_LateGest_DMIn",
+        "Input": {"Dt_NDF": 45.2},
+        "Output": -0.238439999
+    },
+    {
+        "Name": "calculate_Kb_LateGest_DMIn",
+        "Input": {"Dt_NDF": 55},
+        "Output": -0.211
+    },
+    {
+        "Name": "calculate_Kb_LateGest_DMIn",
+        "Input": {"Dt_NDF": 70},
+        "Output": -0.211
+    },
+    {
+      "Name": "calculate_An_PrePartWklim",
+      "Input": {"An_PrePartWk": -7},
+      "Output": -3
+    },
+    {
+        "Name": "calculate_An_PrePartWklim",
+        "Input": {"An_PrePartWk": -3},
+        "Output": -3
+    },
+    {
+        "Name": "calculate_An_PrePartWklim",
+        "Input": {"An_PrePartWk": -1},
+        "Output": -1
+    },
+    {
+        "Name": "calculate_An_PrePartWklim",
+        "Input": {"An_PrePartWk": 0},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_PrePartWklim",
+        "Input": {"An_PrePartWk": 2},
+        "Output": 0
+    },
+    {
+      "Name": "calculate_Dt_DMIn_BW_LateGest_i",
+      "Input": {"An_PrePartWklim": -3, "Kb_LateGest_DMIn": -0.5, "coeff_dict": null},
+      "Output": 2.655
+    },
+    {
+      "Name": "calculate_Dt_DMIn_BW_LateGest_p",
+      "Input": {"An_PrePartWkDurat": -2, "Kb_LateGest_DMIn": -0.3, "coeff_dict": null},
+      "Output": 1.7233333333333334
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_LateGestInd",
+      "Input": {"An_BW": 910, "Dt_DMIn_BW_LateGest_i": 1.8},
+      "Output": 14.4144
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_LateGestPen",
+      "Input": {"An_BW": 645, "Dt_DMIn_BW_LateGest_p": 1.25},
+      "Output": 7.095
+    },
+    {
+      "Name": "calculate_Dt_NDFdev_DMI",
+      "Input": {"An_BW": 775, "Dt_NDF": 44},
+      "Output": -3.310924999
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_NRCa",
+      "Input": {"An_BW": 873, "An_BW_mature": 750},
+      "Output": 13.752200578
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_NRCad",
+      "Input": {"An_BW": 672, "An_BW_mature": 750, "Dt_NDF": 51},
+      "Output": 16.250055265
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_H1",
+      "Input": {"An_BW": 719},
+      "Output": 12.201912168
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_H2",
+      "Input": {"An_BW": 842, "Dt_NDFdev_DMI": -3.5},
+      "Output": 13.382596542
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_HJ1",
+      "Input": {"An_BW": 757},
+      "Output": 11.526173891
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Heif_HJ2",
+      "Input": {"An_BW": 794, "Dt_NDFdev_DMI": -3.3},
+      "Output": 12.170628031
+    },
+    {
+      "Name": "calculate_Dt_DMIn_Lact1",
+      "Input": {"Trg_MilkProd": 30, "An_BW": 700, "An_BCS": 3, "An_LactDay": 160, "An_Parity_rl": 1, "Trg_NEmilk_Milk": 0.75},
+      "Output": 23.894448
+    },
+    {
+      "Name": "calculate_Dt_DMIn_DryCow1_FarOff",
+      "Input": {"An_BW": 820, "Dt_DMIn_BW_LateGest_i": 1.9},
+      "Output": 15.58
+    },
+    {
+      "Name": "calculate_Dt_DMIn_DryCow1_Close",
+      "Input": {"An_BW": 755, "Dt_DMIn_BW_LateGest_p": 1.7},
+      "Output": 12.835
+    },
+    {
+      "Name": "calculate_Dt_DMIn_DryCow2",
+      "Input": {"An_BW": 675, "An_GestDay": 105, "An_GestLength": 280},
+      "Output": 13.35825
+    }
+  ]
+  
