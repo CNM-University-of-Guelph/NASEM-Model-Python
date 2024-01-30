@@ -2,7 +2,7 @@
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 import numpy as np
-import math
+import pandas as pd
 
 
 def calculate_Du_AAMic(Du_MiTP_g, AA_list, coeff_dict):
@@ -22,9 +22,13 @@ def calculate_Du_IdAAMic(Du_AAMic, coeff_dict):
     return Du_IdAAMic
 
 
-def calculate_Abs_AA_g(diet_data, Du_IdAAMic, AA_list):
-    AA_coeffs = np.array([diet_data[f"Dt_Id{AA}_RUPIn"] for AA in AA_list])
-    Abs_AA_g = Du_IdAAMic + AA_coeffs
+def calculate_Abs_AA_g(AA_list, An_data, infusion_data, Inf_Art):
+    # An_data and infusion_data are dictionaries, convert to Series so that Abs_AA_g
+    # can be added to AA_values dataframe
+    # Entire dictionaries are arguments as need to extract 10 values from each
+    An_IdAAIn = pd.Series([An_data[f'An_Id{AA}In'] for AA in AA_list], index=AA_list)
+    Inf_AA_g = pd.Series([infusion_data[f'Inf_{AA}_g'] for AA in AA_list], index=AA_list)
+    Abs_AA_g = An_IdAAIn + Inf_AA_g * Inf_Art
     return Abs_AA_g
 
 
@@ -65,8 +69,7 @@ def calculate_mPrt_AA_01(AA_mPrtmx, AA_list, coeff_dict):
 
 
 def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
-    condition = (mPrtmx_AA2**2 - mPrt_AA_01 *
-                 mPrtmx_AA2 <= 0) | (AA_mPrtmx == 0)
+    condition = (mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2 <= 0) | (AA_mPrtmx == 0)
     # Check for sqrt of 0 or divide by 0 errors and set value to 0 if encountered
     mPrt_k_AA = np.where(condition,
                          0,
