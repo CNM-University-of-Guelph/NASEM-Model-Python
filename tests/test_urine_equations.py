@@ -3,12 +3,12 @@ import nasem_dairy as nd
 import pandas as pd
 
 @pytest.fixture
-def milk_data():
-    return pd.read_json("./tests/milk_equations_test.json")
+def urine_data():
+    return pd.read_json("./tests/urine_equations_test.json")
 
 
-def test_from_json(milk_data):
-    for index, row in milk_data.iterrows():
+def test_from_json(urine_data):
+    for index, row in urine_data.iterrows():
         try:
             func = getattr(nd, row.Name)
             input_params = row.Input.copy()

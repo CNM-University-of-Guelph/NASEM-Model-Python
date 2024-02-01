@@ -13,6 +13,15 @@
       "Name": "calculate_Du_MiTP_g",
       "Input": { "Du_MiCP_g": 648, "coeff_dict": null },
       "Output": 533.952
+    },
+    {
+      "Name": "calculate_Scrf_CP_g",
+      "Input": {"An_BW": 782, "An_StatePhys": "Lactating Cow"},
+      "Output": 10.8881488
+    },
+    {
+        "Name": "calculate_Scrf_CP_g",
+        "Input": {"An_BW": 58, "An_StatePhys": "Calf"},
+        "Output": 2.5032309
     }
   ]
-  

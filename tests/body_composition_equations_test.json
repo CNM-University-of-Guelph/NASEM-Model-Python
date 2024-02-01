@@ -1,0 +1,83 @@
+[
+    {
+      "Name": "calculate_CPGain_FrmGain",
+      "Input": {"An_BW": 738, "An_BW_mature": 700},
+      "Output": 0.1156028571
+    },
+    {
+      "Name": "calculate_Frm_Gain",
+      "Input": {"Trg_FrmGain": 0.38},
+      "Output": 0.38
+    },
+    {
+      "Name": "calculate_Frm_Gain_empty",
+      "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
+      "Output": 1.23
+    },
+    {
+        "Name": "calculate_Frm_Gain_empty",
+        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 2, "coeff_dict": null},
+        "Output": 1.23
+    },
+    {
+        "Name": "calculate_Frm_Gain_empty",
+        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 2, "coeff_dict": null},
+        "Output": 1.365
+    },
+    {
+      "Name": "calculate_NPGain_FrmGain",
+      "Input": {"CPGain_FrmGain": 3.2, "coeff_dict": null},
+      "Output": 2.7520000000000002
+    },
+    {
+      "Name": "calculate_Rsrv_Gain",
+      "Input": {"Trg_RsrvGain": 1},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_Rsrv_Gain_empty",
+      "Input": {"Rsrv_Gain": 2.3},
+      "Output": 2.3
+    },
+    {
+      "Name": "calculate_Body_Gain_empty",
+      "Input": {"Frm_Gain_empty":6.2, "Rsrv_Gain_empty": 3.1},
+      "Output": 9.3
+    },
+    {
+      "Name": "calculate_Frm_NPgain",
+      "Input": {"An_StatePhys": "Lactating Cow", "NPGain_FrmGain": 4, "Frm_Gain_empty": 2.6, "Body_Gain_empty": 13.6, "An_REgain_Calf": 5},
+      "Output": 10.4
+    },
+    {
+        "Name": "calculate_Frm_NPgain",
+        "Input": {"An_StatePhys": "Calf", "NPGain_FrmGain": 4, "Frm_Gain_empty": 2.6, "Body_Gain_empty": 13.6, "An_REgain_Calf": 5},
+        "Output": 2.26284568
+    },
+    {
+      "Name": "calculate_NPGain_RsrvGain",
+      "Input": {"coeff_dict": null},
+      "Output": 0.058480000000000004
+    },
+    {
+      "Name": "calculate_Rsrv_NPgain",
+      "Input": {"NPGain_RsrvGain": 6.45, "Rsrv_Gain_empty": 3.4},
+      "Output": 21.93
+    },
+    {
+      "Name": "calculate_Body_NPgain",
+      "Input": {"Frm_NPgain": 2.7, "Rsrv_NPgain": 5.8},
+      "Output": 8.5
+    },
+    {
+      "Name": "calculate_Body_CPgain",
+      "Input": {"Body_NPgain": 6.1, "coeff_dict": null},
+      "Output": 7.093023255813953
+    },
+    {
+      "Name": "calculate_Body_CPgain_g",
+      "Input": {"Body_CPgain": 2.678},
+      "Output": 2678
+    }
+  ]
+  

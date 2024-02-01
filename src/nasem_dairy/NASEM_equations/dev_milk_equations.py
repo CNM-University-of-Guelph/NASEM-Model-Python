@@ -31,3 +31,9 @@ def calculate_Mlk_NP_g(An_StatePhys, An_BW, Abs_AA_g, mPrt_k_AA, Abs_neAA_g, Abs
             + An_DEInp * coeff_dict['mPrt_k_DEInp'] + (An_DigNDF - 17.06) * coeff_dict['mPrt_k_DigNDF'] + (An_DEStIn + An_DEFAIn + An_DErOMIn) \
             * coeff_dict['mPrt_k_DEIn_StFA'] + An_DENDFIn * coeff_dict['mPrt_k_DEIn_NDF'] + (An_BW - 612) * coeff_dict['mPrt_k_BW']
     return Mlk_NP_g
+
+
+def calculate_Mlk_CP_g(Mlk_NP_g):
+    Mlk_CP_g = Mlk_NP_g / 0.95  # Line 2213
+    return Mlk_CP_g
+
