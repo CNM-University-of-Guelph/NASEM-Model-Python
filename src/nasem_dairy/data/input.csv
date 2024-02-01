@@ -32,5 +32,8 @@ animal_input,An_AgeDay,820.8,int
 animal_input,An_305RHA_MlkTP,280,float
 animal_input,An_StatePhys,Lactating Cow,str
 animal_input,An_Breed,Holstein,str (Holstein or Jersey)
-animal_input,An_AgeDryFdStart,14, Day starter feed is first offered
+animal_input,An_AgeDryFdStart,14,Day starter feed is first offered
 animal_input,Env_TempCurr,22,current mean daily temperature in degrees C
+animal_input,Env_DistParlor,0,distance from the barn or paddock to the parlor in meters
+animal_input,Env_TripsParlor,0,number of daily trips to and from the parlor; generally 2 trips per milking times number of milkings
+animal_input,Env_Topo,0,the positive elevation change per day in meters

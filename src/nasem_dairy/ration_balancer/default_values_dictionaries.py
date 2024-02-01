@@ -142,7 +142,6 @@ coeff_dict = {
 
     # From calculate_An_MEgain
     'FatGain_RsrvGain': 0.622,                       # Line 2451
-    'Kr_ME_RE': 0.60,                                # Line 2834
     'Body_NP_CP': 0.86,                              # Line 1963
     'Kf_ME_RE': 0.4,                                 # Line 2831
 
