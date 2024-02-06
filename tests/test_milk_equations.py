@@ -20,4 +20,3 @@ def test_from_json(milk_data):
             assert func(**input_params) == pytest.approx(row.Output), f"{row.Name} failed: {func(**input_params)} does not equal {row.Output}"
         except AttributeError:
             print(f"Function {row.Name} not found in module.")
-            

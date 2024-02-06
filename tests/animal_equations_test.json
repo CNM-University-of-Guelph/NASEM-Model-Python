@@ -284,6 +284,10 @@
     "Name": "calculate_An_NE",
     "Input": {"An_NEIn": 47.8, "An_DMIn": 24},
     "Output": 1.991666667
+  },
+  {
+    "Name": "calculate_An_MBW",
+    "Input": {"An_BW": 730.5},
+    "Output": 140.5125661
   }
 ]
-
