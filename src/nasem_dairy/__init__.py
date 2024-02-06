@@ -8,7 +8,6 @@ from nasem_dairy.ration_balancer.execute_model import NASEM_model
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
-from nasem_dairy.NASEM_equations.ME_equations import calculate_ME_requirement, calculate_An_MEgain, calculate_An_MEmUse, calculate_Gest_MEuse, calculate_Trg_Mlk_MEout
 from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement, calculate_An_MPm_g_Trg, calculate_Body_MPuse_g_Trg, calculate_Gest_MPuse_g_Trg, calculate_Mlk_MPuse_g_Trg
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
@@ -280,6 +279,7 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_MEIn,
     calculate_An_NEIn,
     calculate_An_NE,
+    calculate_An_MBW,
     calculate_An_data_initial,
     calculate_An_data_complete,
     calculate_An_MPIn,
@@ -323,10 +323,44 @@ from nasem_dairy.NASEM_equations.dev_body_composition_equations import (
     calculate_Rsrv_NPgain,
     calculate_Body_NPgain,
     calculate_Body_CPgain,
-    calculate_Body_CPgain_g
+    calculate_Body_CPgain_g,
+    calculate_Rsrv_Gain,
+    calculate_Rsrv_Gain_empty,
+    calculate_Rsrv_Fatgain,
+    calculate_CPGain_FrmGain,
+    calculate_Rsrv_CPgain,
+    calculate_FatGain_FrmGain,
+    calculate_Frm_Gain,
+    calculate_Frm_Gain_empty,
+    calculate_Frm_Fatgain,
+    calculate_NPGain_FrmGain,
+    calculate_Frm_NPgain,
+    calculate_Frm_CPgain
 )
 
 from nasem_dairy.NASEM_equations.dev_urine_equations import (
     calculate_Ur_Nout_g,
     calculate_Ur_DEout
+)
+
+from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
+    calculate_An_NEmUse_NS,
+    calculate_An_NEm_Act_Graze,
+    calculate_An_NEm_Act_Parlor,
+    calculate_An_NEm_Act_Topo,
+    calculate_An_NEmUse_Act,
+    calculate_An_NEmUse,
+    calculate_An_MEmUse,
+    calculate_Rsrv_NEgain,
+    calculate_Kr_ME_RE,
+    calculate_Rsrv_MEgain,
+    calculate_Frm_NEgain,
+    calculate_Frm_MEgain,
+    calculate_An_MEgain,
+    calculate_Gest_REgain,
+    calculate_Gest_MEuse,
+    calculate_Trg_NEmilk_Milk,
+    calculate_Trg_Mlk_NEout,
+    calculate_Trg_Mlk_MEout,
+    calculate_Trg_MEuse
 )

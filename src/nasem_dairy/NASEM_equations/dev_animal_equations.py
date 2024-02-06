@@ -269,6 +269,13 @@ def calculate_An_NE(An_NEIn, An_DMIn):
     return An_NE
 
 
+def calculate_An_MBW(An_BW: float) -> float:
+    """
+    An_MBW: Metabolic body weight, kg
+    """
+    An_MBW = An_BW ** 0.75  # Line 223
+    return An_MBW
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -368,7 +375,7 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
                                                        An_data['An_BWnp'])
     An_data['An_BW_empty'] = calculate_An_BW_empty(animal_input['An_BW'],
                                                    An_data['An_GutFill_Wt'])
-
+    An_data['An_MBW'] = calculate_An_MBW(animal_input['An_BW'])
     return An_data
 
 

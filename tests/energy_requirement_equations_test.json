@@ -1,0 +1,133 @@
+[
+    {
+      "Name": "calculate_An_NEmUse_NS",
+      "Input": {"An_StatePhys": "Calf", "An_BW": 89, "An_BW_empty": 80, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 4},
+      "Output": 2.057045178107474
+    },
+    {
+      "Name": "calculate_An_NEmUse_NS",
+      "Input": {"An_StatePhys": "Calf", "An_BW": 93, "An_BW_empty": 85, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
+      "Output": 2.715413223228989
+    },
+    {
+      "Name": "calculate_An_NEmUse_NS",
+      "Input": {"An_StatePhys": "Heifer", "An_BW": 670, "An_BW_empty": 600, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
+      "Output": 13.169100197595132
+    },
+    {
+      "Name": "calculate_An_NEmUse_NS",
+      "Input": {"An_StatePhys": "Heifer", "An_BW": 550, "An_BW_empty": 510, "An_parity_rl": 1, "Dt_DMIn_ClfLiq": 0},
+      "Output": 11.357219439420211
+    },
+    {
+      "Name": "calculate_An_NEm_Act_Graze",
+      "Input": {"Dt_PastIn": 0, "Dt_DMIn": 23, "Dt_PastSupplIn": 0, "An_MBW": 130},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_An_NEm_Act_Graze",
+      "Input": {"Dt_PastIn": 10, "Dt_DMIn": 23, "Dt_PastSupplIn": 1, "An_MBW": 120},
+      "Output": 0.8819999999999999
+    },
+    {
+      "Name": "calculate_An_NEm_Act_Parlor",
+      "Input": {"An_BW": 687, "Env_DistParlor": 0.8, "Env_TripsParlor": 4},
+      "Output": 0.00076944
+    },
+    {
+      "Name": "calculate_An_NEm_Act_Topo",
+      "Input": {"An_BW": 765, "Env_Topo": 250},
+      "Output": 1.2813750000000002
+    },
+    {
+      "Name": "calculate_An_NEmUse_Act",
+      "Input": {"An_NEm_Act_Graze": 232, "An_NEm_Act_Parlor": 123, "An_NEm_Act_Topo": 3},
+      "Output": 358
+    },
+    {
+      "Name": "calculate_An_NEmUse",
+      "Input": {"An_NEmUse_NS": 127, "An_NEmUse_Act": 204, "coeff_dict": null},
+      "Output": 331
+    },
+    {
+      "Name": "calculate_An_MEmUse",
+      "Input": {"An_NEmUse": 204, "coeff_dict": null},
+      "Output": 309.09090909090907
+    },
+    {
+      "Name": "calculate_Rsrv_NEgain",
+      "Input": {"Rsrv_Fatgain": 89, "Rsrv_CPgain": 2.3},
+      "Output": 849.365
+    },
+    {
+      "Name": "calculate_Kr_ME_RE",
+      "Input": {"Trg_MilkProd": 34, "Trg_RsrvGain": 2},
+      "Output": 0.75
+    },
+    {
+      "Name": "calculate_Kr_ME_RE",
+      "Input": {"Trg_MilkProd": 50, "Trg_RsrvGain": -2.3},
+      "Output": 0.89
+    },
+    {
+      "Name": "calculate_Kr_ME_RE",
+      "Input": {"Trg_MilkProd": 0, "Trg_RsrvGain": 3},
+      "Output": 0.6
+    },
+    {
+      "Name": "calculate_Rsrv_MEgain",
+      "Input": {"Rsrv_NEgain": 2.4, "Kr_ME_RE": 0.5},
+      "Output": 4.8
+    },
+    {
+      "Name": "calculate_Frm_NEgain",
+      "Input": {"Frm_Fatgain": 3.4, "Frm_CPgain": 5.1},
+      "Output": 60.265
+    },
+    {
+      "Name": "calculate_Frm_MEgain",
+      "Input": {"Frm_NEgain": 4, "coeff_dict": null},
+      "Output": 10.0
+    },
+    {
+      "Name": "calculate_An_MEgain",
+      "Input": {"Rsrv_MEgain": 7, "Frm_MEgain": 12},
+      "Output": 19
+    },
+    {
+      "Name": "calculate_Gest_REgain",
+      "Input": {"GrUter_BWgain": 7.5, "coeff_dict": null},
+      "Output": 7.125
+    },
+    {
+      "Name": "calculate_Gest_MEuse",
+      "Input": {"Gest_REgain": -3},
+      "Output": -3.3707865168539324
+    },
+    {
+      "Name": "calculate_Gest_MEuse",
+      "Input": {"Gest_REgain": 2},
+      "Output": 14.285714285714285
+    },
+    {
+      "Name": "calculate_Trg_NEmilk_Milk",
+      "Input": {"Trg_MilkFatp": 3.6, "Trg_MilkTPp": 3.3, "Trg_MilkLacp": 4.8},
+      "Output": 0.7170899999999999
+    },
+    {
+      "Name": "calculate_Trg_Mlk_NEout",
+      "Input": {"Trg_MilkProd": 35, "Trg_NEmilk_Milk": 2.8},
+      "Output": 98.0
+    },
+    {
+      "Name": "calculate_Trg_Mlk_MEout",
+      "Input": {"Trg_Mlk_NEout": 212, "coeff_dict": null},
+      "Output": 321.2121212121212
+    },
+    {
+      "Name": "calculate_Trg_MEuse",
+      "Input": {"An_MEmUse": 123, "An_MEgain": 230, "Gest_MEuse": 29, "Trg_Mlk_MEout": 218},
+      "Output": 600
+    }
+  ]
+  
