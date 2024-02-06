@@ -65,6 +65,7 @@ quartodoc:
         - read_infusion_input
         - read_csv_input
         - get_feed_rows_feedlibrary
+        - check_coeffs_in_coeff_dict
         #  the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
       #  - ration_balancer_functions

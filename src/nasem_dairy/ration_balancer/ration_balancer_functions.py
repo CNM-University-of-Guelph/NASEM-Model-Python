@@ -4,7 +4,45 @@ import sqlite3
 import numpy as np
 
 
-def check_coeffs_in_coeff_dict(input_coeff_dict, required_coeffs):
+def check_coeffs_in_coeff_dict(
+        input_coeff_dict: dict, 
+        required_coeffs: list):
+    '''
+    Internal function that is used by other functions that require certain model coefficients from a coefficient dictionary. Typically this 
+    will be the built-in dictionary in [default_values_dictionaries.py]. 
+    This function will check if the required coeffs are in the dictionary provided to the function, and if not it will return a useful error.
+
+    Parameters
+    ----------
+    input_coeff_dict : dict
+        Coefficient dictionary, normally called as `coeff_dict` by functions
+    required_coeffs : list
+        A list of strings that contain the names of the required coefficients to check for in the dictionary.
+
+    Returns
+    -------
+    None
+
+    Notes
+    -----
+    
+
+    Examples
+    --------
+    Filter the NASEM feed library for specific feeds:
+    
+    ```{python}
+    import nasem_dairy as nd
+
+    req_coeffs = ['En_CP', 'En_FA', 'En_rOM', 'En_St', 'En_NDF']
+
+    nd.check_coeffs_in_coeff_dict(
+        input_coeff_dict = nd.coeff_dict, 
+        required_coeffs = req_coeffs)
+
+    ```
+
+    '''
     # Convert the list to a set for faster lookup
     req_coef = set(required_coeffs)
     dict_in = set(input_coeff_dict)

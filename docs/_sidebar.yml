@@ -28,6 +28,7 @@ website:
         - reference/read_infusion_input.qmd
         - reference/read_csv_input.qmd
         - reference/get_feed_rows_feedlibrary.qmd
+        - reference/check_coeffs_in_coeff_dict.qmd
         section: ration_balancer
       - contents: []
         section: test
