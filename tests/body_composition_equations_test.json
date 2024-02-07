@@ -153,6 +153,16 @@
       "Name": "calculate_Frm_CPgain",
       "Input": {"Frm_NPgain": 2.5, "coeff_dict": null},
       "Output": 2.9069767441860463
+    },
+    {
+      "Name": "calculate_Body_NPgain_g",
+      "Input": {"Body_NPgain": 1.915},
+      "Output": 1915
+    },
+    {
+      "Name": "calculate_An_BWmature_empty",
+      "Input": {"An_BW_mature": 750, "coeff_dict": null},
+      "Output": 615
     }
   ]
   

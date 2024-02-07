@@ -289,5 +289,15 @@
     "Name": "calculate_An_MBW",
     "Input": {"An_BW": 730.5},
     "Output": 140.5125661
+  },
+  {
+    "Name": "calculate_An_TPIn",
+    "Input": {"Dt_TPIn": 12, "Inf_TPIn": 1.4},
+    "Output": 13.4
+  },
+  {
+    "Name": "calculate_An_DigTPaIn",
+    "Input": {"An_TPIn": 15, "InfArt_CPIn": 0.8, "Fe_CP": 2.2},
+    "Output": 12
   }
 ]

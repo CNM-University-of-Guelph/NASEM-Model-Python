@@ -48,6 +48,31 @@
         "Name": "calculate_Fe_CP",
         "Input": {"An_StatePhys": "Calf", "Dt_CPIn_ClfLiq": 14, "Dt_dcCP_ClfDry": 2.4, "An_CPIn": 4, "Fe_RUP": 9.2, "Fe_RumMiCP": 1.04, "Fe_CPend": 7, "InfSI_NPNCPIn": 2, "coeff_dict": null},
         "Output": 21.7
+    },
+    {
+      "Name": "calculate_Fe_NPend",
+      "Input": {"Fe_CPend": 15},
+      "Output": 10.95
+    },
+    {
+      "Name": "calculate_Fe_NPend_g",
+      "Input": {"Fe_NPend": 2.93},
+      "Output": 2930
+    },
+    {
+      "Name": "calculate_Fe_MPendUse_g_Trg",
+      "Input": {"An_StatePhys": "Calf", "Fe_CPend_g": 2.9, "Fe_NPend_g": 15, "coeff_dict": null},
+      "Output": 4.202898550724638
+    },
+    {
+      "Name": "calculate_Fe_MPendUse_g_Trg",
+      "Input": {"An_StatePhys": "Heifer", "Fe_CPend_g": 7.1, "Fe_NPend_g": 22, "coeff_dict": null},
+      "Output": 10.289855072463768
+    },
+    {
+      "Name": "calculate_Fe_MPendUse_g_Trg",
+      "Input": {"An_StatePhys": "Lactating Cow", "Fe_CPend_g": 4.7, "Fe_NPend_g": 19.3, "coeff_dict": null},
+      "Output": 27.971014492753625
     }
   ]
   
