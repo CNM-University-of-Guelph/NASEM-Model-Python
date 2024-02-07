@@ -1,7 +1,7 @@
 # NASEM model - EXECUTE
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, get_nutrient_intakes
+from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
