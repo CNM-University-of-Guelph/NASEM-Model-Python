@@ -57,10 +57,11 @@ def check_coeffs_in_coeff_dict(
 
 
 
-def get_feed_rows_feedlibrary(feeds_to_get: list,
-                     feed_lib_df: pd.DataFrame) -> pd.DataFrame:
+def get_feed_rows_feedlibrary(
+        feeds_to_get: list,
+        feed_lib_df: pd.DataFrame) -> pd.DataFrame:
     '''
-    Filter the NASEM feed library DataFrame based on a list of feed names.
+    Filter the NASEM feed library DataFrame based on a list of feed names. 
 
     Parameters
     ----------
@@ -91,8 +92,10 @@ def get_feed_rows_feedlibrary(feeds_to_get: list,
 
     ```{python}
     import nasem_dairy as nd
-    selected_feeds_df = nd.get_feed_rows_feedlibrary(feeds_to_get=['Corn silage, typical', 'Canola meal'],
-                                            feed_lib_df=feed_library_df)
+    selected_feeds_df = nd.get_feed_rows_feedlibrary(
+        feeds_to_get=['Corn silage, typical', 'Canola meal'],
+        feed_lib_df=feed_library_df)
+        
     selected_feeds_df.info()
     ```
     '''
