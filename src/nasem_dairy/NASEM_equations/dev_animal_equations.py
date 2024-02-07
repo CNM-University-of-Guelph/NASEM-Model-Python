@@ -276,6 +276,23 @@ def calculate_An_MBW(An_BW: float) -> float:
     An_MBW = An_BW ** 0.75  # Line 223
     return An_MBW
 
+
+def calculate_An_TPIn(Dt_TPIn: float, Inf_TPIn: float) -> float:
+    """
+    Dt_TPIn: Diet true protein intake kg/d
+    Inf_TPIn: Infused true protein intake kg/d
+    """
+    An_TPIn = Dt_TPIn + Inf_TPIn    # Line 952
+    return An_TPIn
+
+
+def calculate_An_DigTPaIn(An_TPIn: float, InfArt_CPIn: float, Fe_CP: float) -> float:
+    """
+    An_DigTPaIn: Total tract digestable true protein intake kg CP/d
+    """
+    An_DigTPaIn = An_TPIn - InfArt_CPIn - Fe_CP # Very messy. Some Fe_MiTP derived from NPN and some MiNPN from Dt_TP, thus Fe_CP, Line 1229
+    return An_DigTPaIn
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -420,7 +437,11 @@ def calculate_An_data_complete(
     complete_An_data['An_DEInp'] = calculate_An_DEInp(complete_An_data['An_DEIn'],
                                                       complete_An_data['An_DETPIn'],
                                                       complete_An_data['An_DENPNCPIn'])
-
+    complete_An_data['An_TPIn'] = calculate_An_TPIn(diet_data['Dt_TPIn'], 
+                                                    infusion_data['Inf_TPIn']) 
+    complete_An_data['An_DigTPaIn'] = calculate_An_DigTPaIn(complete_An_data['An_TPIn'],
+                                                            infusion_data['InfArt_CPIn'],
+                                                            Fe_CP)
     AA_list = ['Arg', 'His', 'Ile', 'Leu','Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     for AA in AA_list:
         complete_An_data[f'An_Id{AA}In'] = diet_data[f'Dt_Id{AA}In'] + infusion_data[f'Inf_Id{AA}In']
