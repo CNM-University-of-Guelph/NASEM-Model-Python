@@ -239,3 +239,16 @@ infusion_dict = {
     'Inf_VFA_g': 0,
     'Inf_Location': 0
     }
+
+MP_NP_efficiency_dict = {
+    'Trg_AbsHis_NPHis': 0.75,
+    'Trg_AbsIle_NPIle': 0.71,
+    'Trg_AbsLeu_NPLeu': 0.73,
+    'Trg_AbsLys_NPLys': 0.72,
+    'Trg_AbsMet_NPMet': 0.73,
+    'Trg_AbsPhe_NPPhe': 0.6,
+    'Trg_AbsThr_NPThr': 0.64,
+    'Trg_AbsTrp_NPTrp': 0.86,
+    'Trg_AbsVal_NPVal': 0.74,
+    'Trg_MP_NP': 0.69
+}
