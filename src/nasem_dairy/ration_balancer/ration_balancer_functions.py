@@ -23,10 +23,6 @@ def check_coeffs_in_coeff_dict(
     -------
     None
 
-    Notes
-    -----
-    
-
     Examples
     --------
     Filter the NASEM feed library for specific feeds:
@@ -59,51 +55,6 @@ def check_coeffs_in_coeff_dict(
     return
 
 
-def read_input(input):
-    """
-    Reads a .txt file and gets the input parameters
-
-    Uses the leading character on each line to read the text file. * indicates an animal parameter, $ is for selecting different equations and
-    # skips the line. No leading character is used for the diet inputs.
-
-    Parameters:
-        input (str): pathway to the text file where users input parameters
-    """
-    # User will type the ration into input.txt
-    # This function reads that file and creates a dataframe with all of the feeds and % DM
-    data = []
-    animal_input = {}
-    equation_selection = {}
-
-    with open(input, 'r') as file:
-        for line in file:
-            line = line.strip()
-
-            if line.startswith('#') or ':' not in line:
-                continue
-
-            if line.startswith('*'):
-                key, value = line[1:].split(":")
-                animal_input[key.strip()] = float(value.strip())
-                continue
-
-            if line.startswith('$'):
-                key, value = line[1:].split(":")
-                equation_selection[key.strip()] = int(value.strip())
-                continue
-
-            feedstuff, per_DM = line.split(":")
-            data.append([feedstuff.strip(), per_DM.strip()])
-
-    diet_info = pd.DataFrame(data, columns=["Feedstuff", "%_DM_user"])
-    diet_info['%_DM_user'] = diet_info['%_DM_user'].astype(float)
-
-    diet_info['Feedstuff'] = diet_info['Feedstuff'].str.strip()
-
-    diet_info['Index'] = diet_info['Feedstuff']
-    diet_info = diet_info.set_index('Index')
-
-    return diet_info, animal_input, equation_selection
 
 
 def get_feed_rows_feedlibrary(feeds_to_get: list,
