@@ -121,6 +121,7 @@ def calculate_Rsrv_CPgain(CPGain_FrmGain: float, Rsrv_Gain_empty: float) -> floa
     Rsrv_CPgain = CPGain_FrmGain * Rsrv_Gain_empty      # Line 2470
     return Rsrv_CPgain
 
+
 def calculate_FatGain_FrmGain(An_StatePhys: str, An_REgain_Calf: float, An_BW: float, An_BW_mature: float) -> float:
     """
     FatGain_FrmGain: Fat gain per unit frame gain, g/g EBW (Empty body weight)
