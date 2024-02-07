@@ -165,7 +165,6 @@ coeff_dict = {
 
     # From calculate_An_MEgain
     'FatGain_RsrvGain': 0.622,                       # Line 2451
-    'Body_NP_CP': 0.86,                              # Line 1963
     'Kf_ME_RE': 0.4,                                 # Line 2831
 
     # From calculate_Gest_MEuse
@@ -176,7 +175,6 @@ coeff_dict = {
 
     # From calculate_An_MPm_g_Trg
     'Km_MP_NP_Trg': 0.69,                            # Line 54, 2596, 2651 and 2652
-    'Body_NP_CP': 0.86,                              # Line 1963
 
     # From calculate_Body_MPuse_g_Trg
     'Kg_MP_NP_Trg': 0.69,                            # Line 54, 2665

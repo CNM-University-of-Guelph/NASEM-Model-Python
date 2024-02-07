@@ -194,7 +194,9 @@ from nasem_dairy.NASEM_equations.dev_protein_equations import (
     calculate_f_mPrt_max, 
     calculate_Du_MiCP_g, 
     calculate_Du_MiTP_g,
-    calculate_Scrf_CP_g
+    calculate_Scrf_CP_g,
+    calculate_Scrf_NP_g,
+    calculate_Scrf_MPUse_g_Trg
 )
 
 from nasem_dairy.NASEM_equations.dev_amino_acid_equations import (
@@ -280,6 +282,8 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_NEIn,
     calculate_An_NE,
     calculate_An_MBW,
+    calculate_An_TPIn,
+    calculate_An_DigTPaIn,
     calculate_An_data_initial,
     calculate_An_data_complete,
     calculate_An_MPIn,
@@ -305,10 +309,11 @@ from nasem_dairy.NASEM_equations.dev_fecal_equations import (
     calculate_Fe_RumMiCP,
     calculate_Fe_CPend_g,
     calculate_Fe_CPend,
-    calculate_Fe_CP
+    calculate_Fe_CP,
+    calculate_Fe_NPend,
+    calculate_Fe_NPend_g,
+    calculate_Fe_MPendUse_g_Trg
 )
-
-
 
 from nasem_dairy.NASEM_equations.dev_body_composition_equations import (
     calculate_CPGain_FrmGain,
@@ -335,12 +340,17 @@ from nasem_dairy.NASEM_equations.dev_body_composition_equations import (
     calculate_Frm_Fatgain,
     calculate_NPGain_FrmGain,
     calculate_Frm_NPgain,
-    calculate_Frm_CPgain
+    calculate_Frm_CPgain,
+    calculate_Body_NPgain_g,
+    calculate_An_BWmature_empty
 )
 
 from nasem_dairy.NASEM_equations.dev_urine_equations import (
     calculate_Ur_Nout_g,
-    calculate_Ur_DEout
+    calculate_Ur_DEout,
+    calculate_Ur_Nend_g,
+    calculate_Ur_NPend_g,
+    calculate_Ur_MPendUse_g
 )
 
 from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
@@ -362,5 +372,24 @@ from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
     calculate_Trg_NEmilk_Milk,
     calculate_Trg_Mlk_NEout,
     calculate_Trg_Mlk_MEout,
-    calculate_Trg_MEuse
+    calculate_Trg_MEuse,
+    calculate_An_MEIn_approx
+)
+
+from nasem_dairy.NASEM_equations.dev_protein_requirement_equations import (
+    calculate_An_MPm_g_Trg,
+    calculate_Body_MPUse_g_Trg_initial,
+    calculate_Gest_MPUse_g_Trg,
+    calculate_Trg_Mlk_NP_g,
+    calculate_Mlk_MPUse_g_Trg,
+    calculate_An_MPuse_g_Trg_initial,
+    calculate_Min_MPuse_g,
+    calculate_Diff_MPuse_g,
+    calculate_Frm_MPUse_g_Trg,
+    calculate_Frm_NPgain_g,
+    calculate_Kg_MP_NP_Trg,
+    calculate_Rsrv_NPgain_g,
+    calculate_Rsrv_MPUse_g_Trg,
+    calculate_Body_MPUse_g_Trg,
+    calculate_An_MPuse_g_Trg
 )

@@ -190,3 +190,21 @@ def calculate_Frm_CPgain(Frm_NPgain: float, coeff_dict: dict) -> float:
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Frm_CPgain = Frm_NPgain / coeff_dict['Body_NP_CP']     # Line 2463
     return Frm_CPgain
+
+
+def calculate_Body_NPgain_g(Body_NPgain: float) -> float:
+    """
+    Body_NPgain_g: Net protein from frame and reserve gain, g
+    """
+    Body_NPgain_g = Body_NPgain * 1000  # Line 2475
+    return Body_NPgain_g
+
+
+def calculate_An_BWmature_empty(An_BW_mature, coeff_dict):
+    """
+    An_BWmature_empty: kg bodyweight with no gut fill 
+    """
+    req_coeff = ['An_GutFill_BWmature']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_BWmature_empty = An_BW_mature * (1 - coeff_dict['An_GutFill_BWmature'])
+    return An_BWmature_empty
