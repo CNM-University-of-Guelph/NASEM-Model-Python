@@ -17,3 +17,11 @@ If developing, use --watch so that quarto preview updates automatically too
 quartodoc build --watch
 
 6) run quarto preview / render as normal
+
+Adding Interlinks:
+
+Also need to run: 
+quarto add machow/quartodoc
+
+This allows interlinks to be used - linking between function names.
+NOTE: should have run in docs/ dir. The _extensions folder that it creates needs to be in docs/ not root.

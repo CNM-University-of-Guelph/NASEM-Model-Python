@@ -1,8 +1,9 @@
 project:
   type: website
+  output-dir: _site
 
-execute:
-  freeze: false
+# execute:
+#   freeze: false
 
 # tell quarto to read the generated sidebar
 metadata-files:
@@ -10,7 +11,10 @@ metadata-files:
 
 website:
   title: "docs"
+  page-navigation: true
   navbar:
+    background: light
+    pinned: true
     left:
       - href: index.qmd
         text: Home
@@ -80,5 +84,11 @@ format:
     css: styles.css
     toc: true
 
+
+filters:
+  - interlinks
+
+interlinks:
+  sources: {}
 
 
