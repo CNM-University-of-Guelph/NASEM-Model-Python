@@ -29,12 +29,10 @@ website:
         - reference/get_feed_rows_feedlibrary.qmd
         - reference/read_csv_input.qmd
         - reference/read_infusion_input.qmd
-        section: ration_balancer
+        section: Model Execution
       - contents:
         - reference/default_values_dictionaries.qmd
         section: 'Advanced: Default Values'
-      - contents: []
-        section: test
       section: Utilility functions
     id: reference
   - id: dummy-sidebar
