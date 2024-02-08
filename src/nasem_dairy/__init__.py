@@ -3,7 +3,7 @@ from importlib.metadata import version
 __version__ = version("nasem_dairy")
 
 
-from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_rows, get_nutrient_intakes, fl_get_feed_rows, read_input, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
+from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
 from nasem_dairy.ration_balancer.execute_model import NASEM_model
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE

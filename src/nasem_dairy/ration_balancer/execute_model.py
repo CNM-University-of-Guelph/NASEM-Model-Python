@@ -1,7 +1,7 @@
 # NASEM model - EXECUTE
 
 # from nasem_dairy.ration_balancer.coeff_dict import coeff_dict
-from nasem_dairy.ration_balancer.ration_balancer_functions import fl_get_feed_rows, get_nutrient_intakes
+from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
@@ -386,7 +386,7 @@ def NASEM_model(diet_info, animal_input, equation_selection, feed_library_df, co
     # list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data
     list_of_feeds = diet_info['Feedstuff'].tolist()
     # feed_data = fl_get_rows(list_of_feeds, path_to_db)
-    feed_data = fl_get_feed_rows(list_of_feeds, feed_library_df)
+    feed_data = get_feed_rows_feedlibrary(list_of_feeds, feed_library_df)
 
     # Set feed inclusion percentages
     Fd_DMInp_Sum = diet_info['kg_user'].sum()  # Total intake, kg

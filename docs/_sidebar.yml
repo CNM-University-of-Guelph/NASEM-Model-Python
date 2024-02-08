@@ -23,5 +23,16 @@ website:
         - reference/calculate_Dt_DMIn_DryCow2.qmd
         section: DMI equations
       section: NASEM_equations
+    - contents:
+      - contents:
+        - reference/check_coeffs_in_coeff_dict.qmd
+        - reference/get_feed_rows_feedlibrary.qmd
+        - reference/read_csv_input.qmd
+        - reference/read_infusion_input.qmd
+        section: Model Execution
+      - contents:
+        - reference/default_values_dictionaries.qmd
+        section: 'Advanced: Default Values'
+      section: Utilility functions
     id: reference
   - id: dummy-sidebar
