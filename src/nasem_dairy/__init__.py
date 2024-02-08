@@ -4,11 +4,11 @@ __version__ = version("nasem_dairy")
 
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
-from nasem_dairy.ration_balancer.execute_model import NASEM_model
+# Temp: disable import while using dev_refactor_NASEM.ipynb
+#from nasem_dairy.ration_balancer.execute_model import NASEM_model
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
-from nasem_dairy.NASEM_equations.MP_equations import calculate_MP_requirement, calculate_An_MPm_g_Trg, calculate_Body_MPuse_g_Trg, calculate_Gest_MPuse_g_Trg, calculate_Mlk_MPuse_g_Trg
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
