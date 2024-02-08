@@ -1,3 +1,26 @@
+"""
+This module contains two default dictionaries that are imported with nasem_dairy package. 
+These default values are from the original R Code version of the model and most users would not change. 
+However, they parsed to functions that need any of these values, so users can alter this dictionary and give to functions as needed.
+
+- `coeff_dict` - coefficients used throughout the model.
+- `infusion_dict` - All required infusion values set to 0, for when no infusions are used. Normally only used by researchers familiar with infusion techniques.
+
+Examples
+--------
+```{python}
+import nasem_dairy as nd
+
+nd.coeff_dict
+```
+
+```{python}
+nd.infusion_dict
+```
+
+"""
+
+
 # This dictionary contains the coefficients used by the model
 # The dictionary will be parsed to various functions which will check for that the required coeffs are present
 # before proceeding with the rest of the function.

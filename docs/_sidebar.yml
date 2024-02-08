@@ -25,11 +25,14 @@ website:
       section: NASEM_equations
     - contents:
       - contents:
-        - reference/read_infusion_input.qmd
-        - reference/read_csv_input.qmd
-        - reference/get_feed_rows_feedlibrary.qmd
         - reference/check_coeffs_in_coeff_dict.qmd
+        - reference/get_feed_rows_feedlibrary.qmd
+        - reference/read_csv_input.qmd
+        - reference/read_infusion_input.qmd
         section: ration_balancer
+      - contents:
+        - reference/default_values_dictionaries.qmd
+        section: 'Advanced: Default Values'
       - contents: []
         section: test
       section: Utilility functions

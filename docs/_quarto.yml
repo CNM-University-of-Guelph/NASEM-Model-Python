@@ -13,7 +13,7 @@ website:
   title: "docs"
   page-navigation: true
   navbar:
-    background: light
+    # background: light
     pinned: true
     left:
       - href: index.qmd
@@ -66,10 +66,17 @@ quartodoc:
     - subtitle: ration_balancer
       package: nasem_dairy.ration_balancer.ration_balancer_functions
       contents:
-        - read_infusion_input
-        - read_csv_input
-        - get_feed_rows_feedlibrary
         - check_coeffs_in_coeff_dict
+        - get_feed_rows_feedlibrary
+        - read_csv_input
+        - read_infusion_input
+    - subtitle: "Advanced: Default Values"
+      package: nasem_dairy.ration_balancer
+      contents:
+        - package: null
+          name: nasem_dairy.ration_balancer.default_values_dictionaries
+
+
         #  the functions being documented in the package.
         # you can refer to anything: class methods, modules, etc..
       #  - ration_balancer_functions
