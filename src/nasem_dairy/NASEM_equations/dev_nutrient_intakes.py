@@ -1330,6 +1330,23 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     complete_diet_info['Fd_DigFAIn'] = calculate_Fd_DigFAIn(complete_diet_info['TT_dcFdFA'],
                                                             diet_info['Fd_FA'],
                                                             diet_info['Fd_DMIn'])
+    
+    Dig_FA_list = [
+        'C120',
+        'C140',
+        'C160',
+        'C161',
+        'C180',
+        'C181t',
+        'C181c',
+        'C182',
+        'C183',
+        'OtherFA'
+    ]
+    complete_diet_info = complete_diet_info.assign(
+        **{f"Fd_Dig{FA}In": lambda df, FA=FA: df['TT_dcFdFA'] / 100 * df[f"Fd_{FA}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for FA in Dig_FA_list}
+    )   
+    
     return complete_diet_info
 
 
@@ -1655,6 +1672,23 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                                              DMI,
                                                              coeff_dict)
     
+    Dig_FA_list = [
+        'C120',
+        'C140',
+        'C160',
+        'C161',
+        'C180',
+        'C181t',
+        'C181c',
+        'C182',
+        'C183',
+        'OtherFA'
+    ]
+    for FA in Dig_FA_list:
+        # Dt_DigFAIn
+        diet_data[f'Dt_Dig{FA}In'] = df[f'Fd_Dig{FA}In'].sum()
+
+
     return diet_data
 
 
