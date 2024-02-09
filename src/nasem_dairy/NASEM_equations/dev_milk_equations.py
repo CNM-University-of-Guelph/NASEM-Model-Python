@@ -96,6 +96,9 @@ def calculate_Mlk_Fat_g(mFat_eqn: int, Trg_Mlk_Fat_g: float, Mlk_Fatemp_g: float
 
 
 def calculate_Mlk_Fat(Mlk_Fat_g: float) -> float:
+    """
+    Mlk_Fat: Milk fat, kg
+    """
     Mlk_Fat = Mlk_Fat_g / 1000  # Line 2267
     return Mlk_Fat
 
