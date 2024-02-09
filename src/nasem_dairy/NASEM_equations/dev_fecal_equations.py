@@ -69,3 +69,32 @@ def calculate_Fe_CP(An_StatePhys, Dt_CPIn_ClfLiq, Dt_dcCP_ClfDry, An_CPIn, Fe_RU
                      (1 - Dt_dcCP_ClfDry) * (An_CPIn - Dt_CPIn_ClfLiq) + Fe_CPend,
                      Fe_CP)  # CP based for calves. Ignores RDP, RUP, Fe_NPend, etc.  Needs refinement.
     return Fe_CP
+
+
+def calculate_Fe_NPend(Fe_CPend: float) -> float:
+    """
+    Fe_NPend: Fecal NP from endogenous secretions and urea captured by microbes, kg
+    """
+    Fe_NPend = Fe_CPend * 0.73  # 73% TP from Lapierre, kg/d, Line 1191
+    return Fe_NPend
+
+
+def calculate_Fe_NPend_g(Fe_NPend: float) -> float:
+    """
+    Fe_NPend_g: Fe_NPend in g
+    """
+    Fe_NPend_g = Fe_NPend * 1000    # Line 1192
+    return Fe_NPend_g
+
+
+def calculate_Fe_MPendUse_g_Trg(An_StatePhys: str, Fe_CPend_g: float, Fe_NPend_g: float, coeff_dict: dict) -> float:
+    """
+    Fe_MPendUse_g_Trg: Fecal MP from endogenous secretions and urea captured by microbes, g
+    """
+    req_coeff = ['Km_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
+        Fe_MPendUse_g_Trg = Fe_CPend_g / coeff_dict['Km_MP_NP_Trg'] # Line 2669
+    else:
+        Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg'] # Line 2668
+    return Fe_MPendUse_g_Trg

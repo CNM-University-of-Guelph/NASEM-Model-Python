@@ -23,9 +23,35 @@ def calculate_Du_MiTP_g(Du_MiCP_g, coeff_dict):
     return Du_MiTP_g
 
 
-def calculate_Scrf_CP_g(An_BW, An_StatePhys):
-    Scrf_CP_g = 0.20 * An_BW**0.60   # Line 1964
-    Scrf_CP_g = np.where(An_StatePhys == "Calf", # Line 1965
-                         0.219 * An_BW**0.60,
-                         Scrf_CP_g)
+def calculate_Scrf_CP_g(An_StatePhys: str, An_BW: float) -> float:
+    """
+    Scrf_CP_g: Scurf CP, g
+    """
+    if An_StatePhys == "Calf":
+        Scrf_CP_g = 0.219 * An_BW**0.60 # Line 1965
+    else:
+        Scrf_CP_g = 0.20 * An_BW**0.60   # Line 1964
     return Scrf_CP_g
+
+
+def calculate_Scrf_NP_g(Scrf_CP_g: float, coeff_dict: dict) -> float:
+    """
+    Scrf_NP_g: Scurf Net Protein, g
+    """
+    req_coeff = ['Body_NP_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Scrf_NP_g = Scrf_CP_g * coeff_dict['Body_NP_CP']    # Line 1966
+    return Scrf_NP_g
+
+
+def calculate_Scrf_MPUse_g_Trg(An_StatePhys: str, Scrf_CP_g: float, Scrf_NP_g: float, coeff_dict: dict) -> float:
+    """
+    Scrf_MPuse_g_Trg: Scurf Metabolizable protein, g
+    """
+    req_coeff = ['Km_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
+        Scrf_MPUse_g_Trg = Scrf_CP_g / coeff_dict['Km_MP_NP_Trg']   # calves and heifers are CP based., Line 2671
+    else:
+        Scrf_MPUse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']   # Line 2670
+    return Scrf_MPUse_g_Trg

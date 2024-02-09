@@ -1,0 +1,108 @@
+[
+    {
+      "Name": "calculate_An_MPm_g_Trg",
+      "Input": {"Fe_MPendUse_g_Trg": 2.6, "Scrf_MPuse_g_Trg": 7.1, "Ur_MPendUse_g": 1.9},
+      "Output": 11.6
+    },
+    {
+      "Name": "calculate_Body_MPUse_g_Trg_initial",
+      "Input": {"Body_NPgain_g": 827, "coeff_dict": null},
+      "Output": 1198.5507246376812
+    },
+    {
+      "Name": "calculate_Gest_MPUse_g_Trg",
+      "Input": {"Gest_NPuse_g": 582, "coeff_dict": null},
+      "Output": 1763.6363636363635
+    },
+    {
+        "Name": "calculate_Gest_MPUse_g_Trg",
+        "Input": {"Gest_NPuse_g": -1, "coeff_dict": null},
+        "Output": -1.0
+    },
+    {
+      "Name": "calculate_Trg_Mlk_NP_g",
+      "Input": {"Trg_MilkProd": 34, "Trg_MilkTPp": 3.3},
+      "Output": 1122
+    },
+    {
+      "Name": "calculate_Mlk_MPUse_g_Trg",
+      "Input": {"Trg_Mlk_NP_g": 320, "coeff_dict": null},
+      "Output": 463.768115942029
+    },
+    {
+      "Name": "calculate_An_MPuse_g_Trg_initial",
+      "Input": {"An_MPm_g_Trg": 164, "Body_MPUse_g_Trg": 223, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g_Trg": 492},
+      "Output": 970
+    },
+    {
+      "Name": "calculate_Min_MPuse_g",
+      "Input": {"An_StatePhys": "Heifer", "An_MPuse_g_Trg": 12, "An_BW": 723, "An_BW_mature": 750, "An_MEIn_approx": 105},
+      "Output": 3034.5
+    },
+    {
+      "Name": "calculate_Min_MPuse_g",
+      "Input": {"An_StatePhys": "Lactating Cow", "An_MPuse_g_Trg": 140, "An_BW": 430, "An_BW_mature": 750, "An_MEIn_approx": 5},
+      "Output": 140
+    },
+    {
+      "Name": "calculate_Diff_MPuse_g",
+      "Input": {"Min_MPuse_g": 351, "An_MPuse_g_Trg": 648},
+      "Output": -297
+    },
+    {
+      "Name": "calculate_Frm_MPUse_g_Trg",
+      "Input": {"An_StatePhys": "Heifer", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg": 0.5, "Diff_MPuse_g": 182},
+      "Output": 1442.0
+    },
+    {
+      "Name": "calculate_Frm_MPUse_g_Trg",
+      "Input": {"An_StatePhys": "Lactating Cow", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg": 0.5, "Diff_MPuse_g": 182},
+      "Output": 1260.0
+    },
+    {
+      "Name": "calculate_Frm_NPgain_g",
+      "Input": {"Frm_NPgain": 1.723},
+      "Output": 1723
+    },
+    {
+      "Name": "calculate_Kg_MP_NP_Trg",
+      "Input": {"An_StatePhys": "Heifer", "An_Parity_rl": 0, "An_BW": 710, "An_BW_empty": 600, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
+      "Output": 0.2914024
+    },
+    {
+        "Name": "calculate_Kg_MP_NP_Trg",
+        "Input": {"An_StatePhys": "Calf", "An_Parity_rl": 0, "An_BW": 145, "An_BW_empty": 120, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
+        "Output": 0.51354613
+    },
+    {
+        "Name": "calculate_Kg_MP_NP_Trg",
+        "Input": {"An_StatePhys": "Lactating Cow", "An_Parity_rl": 2, "An_BW": 810, "An_BW_empty": 700, "An_BW_mature": 750, "An_BWmature_empty": 690, "MP_NP_efficiency_dict": null, "coeff_dict": null},
+        "Output": 0.69
+    },
+    {
+      "Name": "calculate_Rsrv_NPgain_g",
+      "Input": {"Rsrv_NPgain": 2.18},
+      "Output": 2180
+    },
+    {
+      "Name": "calculate_Rsrv_MPUse_g_Trg",
+      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 23, "Rsrv_NPgain_g": 582, "Kg_MP_NP_Trg": 0.62},
+      "Output": 938.7096774
+    },
+    {
+      "Name": "calculate_Body_MPUse_g_Trg",
+      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+      "Output": 287.9310345
+    },
+    {
+        "Name": "calculate_Body_MPUse_g_Trg",
+        "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+        "Output": 310
+    },
+    {
+      "Name": "calculate_An_MPuse_g_Trg",
+      "Input": {"An_MPm_g_Trg": 195, "Frm_MPUse_g_Trg": 71, "Rsrv_MPUse_g_Trg": 48, "Gest_MPUse_g_Trg": 83, "Mlk_MPUse_g_Trg": 391},
+      "Output": 788
+    }
+  ]
+  

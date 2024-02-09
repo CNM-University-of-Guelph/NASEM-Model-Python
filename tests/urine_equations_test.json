@@ -8,6 +8,21 @@
       "Name": "calculate_Ur_DEout",
       "Input": {"Ur_Nout_g": 127},
       "Output": 1.8161
+    },
+    {
+      "Name": "calculate_Ur_Nend_g",
+      "Input": {"An_BW": 650},
+      "Output": 34.45
+    },
+    {
+      "Name": "calculate_Ur_NPend_g",
+      "Input": {"Ur_Nend_g": 167},
+      "Output": 1043.75
+    },
+    {
+      "Name": "calculate_Ur_MPendUse_g",
+      "Input": {"Ur_NPend_g": 5},
+      "Output": 5
     }
   ]
   
