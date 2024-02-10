@@ -65,6 +65,7 @@ quartodoc:
       package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
       contents:
         - calculate_An_NEmUse_NS
+        - calculate_An_NEm_Act_Graze
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 

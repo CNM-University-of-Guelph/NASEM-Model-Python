@@ -22,6 +22,10 @@ website:
         - reference/calculate_Dt_DMIn_DryCow1_Close.qmd
         - reference/calculate_Dt_DMIn_DryCow2.qmd
         section: DMI equations
+      - contents:
+        - reference/calculate_An_NEmUse_NS.qmd
+        - reference/calculate_An_NEm_Act_Graze.qmd
+        section: Energy equations
       section: NASEM_equations
     - contents:
       - contents:

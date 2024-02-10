@@ -9,7 +9,7 @@ def calculate_An_NEmUse_NS(
         Dt_DMIn_ClfLiq: float
         ) -> float:
     """
-    Calculate the net energy (NE) required for maintenance (NEm) in unstressed (_NS) dairy cows, measured in megacalories per day (mcal/d),
+    Calculate the net energy (NE) required for maintenance (NEm) in unstressed (_NS) dairy cows, measured in megacalories per day (Mcal/d),
     taking into account the physiological state, body weight, empty body weight, parity, and dry matter intake from calf liquid diet.
 
     Parameters
@@ -85,15 +85,60 @@ def calculate_An_NEmUse_NS(
     return An_NEmUse_NS
 
 
-def calculate_An_NEm_Act_Graze(Dt_PastIn: float, Dt_DMIn: float, Dt_PastSupplIn: float, An_MBW: float) -> float:
+def calculate_An_NEm_Act_Graze(
+        Dt_PastIn: float, 
+        Dt_DMIn: float, 
+        Dt_PastSupplIn: float, 
+        An_MBW: float
+        ) -> float:
     """
-    Net energy (NE) maintenance (NEm) mcal/d    
-    An_NEm_Act_Graze: NE use for grazing activity mcal/d
+    Calculate the net energy (NE) used for grazing activity (NEm_Act_Graze), measured in megacalories per day (Mcal/d).
+    This function estimates the additional energy expenditure due to grazing based on pasture intake, total dry matter intake, pasture supplementation,
+    and the metabolic body weight of the animal.
+
+    Parameters
+    ----------
+    Dt_PastIn : float
+        The dry matter intake from pasture in kg/d.
+    Dt_DMIn : float
+        The total dry matter intake in kg/d.
+    Dt_PastSupplIn : float
+        The dry matter intake from supplementation in kg/d. E.g. could be supplemental concentrate or forage
+    An_MBW : float
+        The metabolic body weight of the animal in kg, typically calculated as the live body weight in kg to the power of 0.75.
+
+    Returns
+    -------
+    float
+        The net energy used for grazing activity, in megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The energy expenditure for grazing activity is considered only if the proportion of pasture intake to total dry matter intake is above a certain threshold.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Lines 2793-2795
+    - Based on following equations from Nutrient Requirements of Dairy Cattle book:
+        - Equation 20-274
+    - This function assumes a linear decrease in energy expenditure for grazing as pasture supplementation increases, with a base value adjusted for the metabolic body weight of the animal.
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE used for grazing activity
+    nd.calculate_An_NEm_Act_Graze(
+        Dt_PastIn=15,
+        Dt_DMIn=20,
+        Dt_PastSupplIn=5,
+        An_MBW=500
+    )
+    ```
     """
     if Dt_PastIn / Dt_DMIn < 0.005:     # Line 2793
         An_NEm_Act_Graze = 0
     else:
-        An_NEm_Act_Graze = 0.0075 * An_MBW * (600 - 12 * Dt_PastSupplIn) / 600
+        An_NEm_Act_Graze = 0.0075 * An_MBW * (600 - 12 * Dt_PastSupplIn) / 600 # Lines 2794-5
     return An_NEm_Act_Graze
 
 
