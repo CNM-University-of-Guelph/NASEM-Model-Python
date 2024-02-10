@@ -238,7 +238,41 @@ def calculate_An_NEm_Act_Topo(
 
 def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, An_NEm_Act_Topo: float) -> float:
     """
-    An_NEmUse_Act: Total NE use for activity on pasture, mcal/d
+    Calculate the total net energy (NE) used for activity (An_NEmUse_Act) in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function sums the energy expenditures due to grazing, walking to and from the parlor, and navigating topography.
+
+    Parameters
+    ----------
+    An_NEm_Act_Graze : float
+        The net energy used for grazing activity, in Mcal/d.
+    An_NEm_Act_Parlor : float
+        The net energy used for walking to and from the parlor, in Mcal/d.
+    An_NEm_Act_Topo : float
+        The net energy used due to topography (positive elevation change), in Mcal/d.
+
+    Returns
+    -------
+    float
+        The total net energy used for activity, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - This function implements the summation of total activity costs as per Equation 20-277 from the Nutrient Requirements of Dairy Cattle book.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Main calculation: Line 2798
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of total NE used for activity
+    nd.calculate_An_NEmUse_Act(
+        An_NEm_Act_Graze=3.3,
+        An_NEm_Act_Parlor=0.5,
+        An_NEm_Act_Topo=0.4
+    )
+    ```
     """
     An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2798
     return An_NEmUse_Act
@@ -246,11 +280,49 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, A
 
 def calculate_An_NEmUse(An_NEmUse_NS: float, An_NEmUse_Act: float, coeff_dict: dict) -> float:
     """
-    An_NEmUse: Total NE use for maintenance, mcal/d
+    Calculate the total net energy (NE) used for maintenance (NEmUse) in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function computes the sum of net energy for non-stressed maintenance, net energy used for activities, and net energy used due to environmental factors.
+
+    Parameters
+    ----------
+    An_NEmUse_NS : float
+        The net energy used for non-stressed maintenance, in Mcal/d.
+    An_NEmUse_Act : float
+        The total net energy used for activity, in Mcal/d.
+    coeff_dict : dict
+        A dictionary containing coefficients required for the calculation, specifically 'An_NEmUse_Env' for environmental energy use.
+
+    Returns
+    -------
+    float
+        The total net energy used for maintenance, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - This function calculates the adjusted net energy for maintenance (NEm) as per Equation 20-278 from the Nutrient Requirements of Dairy Cattle book.
+    - Requires the coefficient for environmental net energy use ('An_NEmUse_Env') within the coeff_dict
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Main calculation: Line 2802
+
+    - TODO: The An_NEmUse_Env should be 0 unless otherwise calculated, lines 2786-2790. Consider removing from coeff_dict.
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of total NE used for maintenance
+    example_coeff_dict = {'An_NEmUse_Env': 0.05}
+    nd.calculate_An_NEmUse(
+        An_NEmUse_NS=1.2,
+        An_NEmUse_Act=0.35,
+        coeff_dict=example_coeff_dict
+    )
+    ```
     """
     req_coeff = ['An_NEmUse_Env']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_NEmUse = An_NEmUse_NS + coeff_dict['An_NEmUse_Env'] + An_NEmUse_Act  # Line 2801
+    An_NEmUse = An_NEmUse_NS + coeff_dict['An_NEmUse_Env'] + An_NEmUse_Act  # Line 2802
     return An_NEmUse
 
 

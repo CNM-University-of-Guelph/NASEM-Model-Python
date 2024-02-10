@@ -27,6 +27,7 @@ website:
         - reference/calculate_An_NEm_Act_Graze.qmd
         - reference/calculate_An_NEm_Act_Parlor.qmd
         - reference/calculate_An_NEm_Act_Topo.qmd
+        - reference/calculate_An_NEmUse_Act.qmd
         section: Energy equations
       section: NASEM_equations
     - contents:
