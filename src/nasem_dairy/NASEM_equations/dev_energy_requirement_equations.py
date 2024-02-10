@@ -187,10 +187,6 @@ def calculate_An_NEm_Act_Parlor(
         Env_TripsParlor=4
     )
     ```
-    
-    Env_DistParlor (float): Distance from barn or paddock to the parlor in meters.
-    Env_TripsParlor (int): Number of daily trips to and from parlor, usually two times the number of milkings.
-    An_NEm_Act_Parlor: NE use walking to parlor mcal/d
     """
     An_NEm_Act_Parlor = (0.00035 * Env_DistParlor / 1000) * Env_TripsParlor * An_BW  # Line 2796
     return An_NEm_Act_Parlor
