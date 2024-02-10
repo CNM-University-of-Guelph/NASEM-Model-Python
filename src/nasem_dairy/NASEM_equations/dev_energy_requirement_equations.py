@@ -196,12 +196,47 @@ def calculate_An_NEm_Act_Parlor(
     return An_NEm_Act_Parlor
 
 
-def calculate_An_NEm_Act_Topo(An_BW: float, Env_Topo: float) -> float:
+def calculate_An_NEm_Act_Topo(
+        An_BW: float, 
+        Env_Topo: float
+        ) -> float:
     """
-    Env_Topo (float): Positive elevation change per day in meters
-    An_NEm_Act_Topo: NE use due to topography mcal/d
+    Calculate the net energy (NE) used due to topographical activity (NEm_Act_Topo) in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function estimates the energy expenditure associated with the daily total climb due to topography and during transit between
+    the milking parlor and the barn or paddock, considering only the meters of uphill climb, as downhill movement has negligible locomotion cost.
+
+    Parameters
+    ----------
+    An_BW : float
+        The body weight of the animal in kg.
+    Env_Topo : float
+        The positive elevation change per day in meters, considering only the uphill climb.
+
+    Returns
+    -------
+    float
+        The net energy used due to topography, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The calculation takes into account the physical effort required to overcome positive elevation changes while grazing and in transit
+      to and from milking, which is directly proportional to the animal's body weight and the total meters climbed uphill.
+    - Reference to Equation 20-276 in the Nutrient Requirements of Dairy Cattle book and specific line in the R Code:
+        - Main calculation: Line 2797
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE used due to topographical activity
+    nd.calculate_An_NEm_Act_Topo(
+        An_BW=650,
+        Env_Topo=100  # Assuming 100 meters of uphill climb per day
+    )
+    ```
     """
-    An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW      # Line 2797
+    An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW     # Line 2797
     return An_NEm_Act_Topo
 
 
