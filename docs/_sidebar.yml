@@ -29,6 +29,7 @@ website:
         - reference/calculate_An_NEm_Act_Topo.qmd
         - reference/calculate_An_NEmUse_Act.qmd
         - reference/calculate_An_MEmUse.qmd
+        - reference/calculate_Rsrv_NEgain.qmd
         section: Energy equations
       section: NASEM_equations
     - contents:

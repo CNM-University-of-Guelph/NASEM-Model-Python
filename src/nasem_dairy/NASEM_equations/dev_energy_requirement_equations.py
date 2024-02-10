@@ -352,7 +352,7 @@ def calculate_An_MEmUse(
       and specific feeding conditions, such as dry feed only, liquid feed only, or mixed feeding for calves, and standard values for heifers,
       lactating cows, or dry cows.
     - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
-        - Main calculation: Line 2844
+        - Main calculation: Line 2845
     - See equations 20-279 to 20-282
 
     - TODO: Remove coeff_dict and replace with further functions, Include refactored code below for the original lines 2806-2818 in R Code.
@@ -398,15 +398,52 @@ def calculate_An_MEmUse(
     # elif An_StatePhys == "Lactating Cow" or An_StatePhys == "Dry Cow":
     #     Km_ME_NE = 0.66
 
-    An_MEmUse = An_NEmUse / coeff_dict['Km_ME_NE']      # Line 2844
+    An_MEmUse = An_NEmUse / coeff_dict['Km_ME_NE']      # Line 2845
     return An_MEmUse
 
 
-def calculate_Rsrv_NEgain(Rsrv_Fatgain: float, Rsrv_CPgain: float) -> float:
+def calculate_Rsrv_NEgain(
+        Rsrv_Fatgain: float, 
+        Rsrv_CPgain: float
+        ) -> float:
     """
-    Rsrv_NEgain: NE of body reserve gain, mcal/d
+    Calculate the net energy (NE) of body reserve gain in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function estimates the energy content of body reserve gains based on the relative proportions of fat and protein gained,
+    using their respective heats of combustion.
+
+    Parameters
+    ----------
+    Rsrv_Fatgain : float
+        The amount of body fat gained in kg/day.
+    Rsrv_CPgain : float
+        The amount of crude protein (CP) gained in kg/day.
+
+    Returns
+    -------
+    float
+        The net energy of body reserve gain, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The energy value of a kilogram of true body tissue that is lost or gained is dependent on the relative proportions of fat and protein in the tissue and their respective heat of combustion.
+    - The committee, as in the seventh edition of the Nutrient Requirements of Dairy Cattle, chose 9.4 Mcal/kg for retained body fat and 5.55 Mcal/kg for retained body protein as the heats of combustion.
+    - This calculation is based on Equation 3-20c from the Nutrient Requirements of Dairy Cattle book.
+    
+    - NOTE: Comment in original R code: "These are really REgain.  Abbreviations on NEgain need to be sorted out. MDH"
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE of body reserve gain
+    nd.calculate_Rsrv_NEgain(
+        Rsrv_Fatgain=0.2,  # 0.2 kg of body fat gained per day
+        Rsrv_CPgain=0.05   # 0.05 kg of crude protein gained per day
+    )
+    ```
     """
-    Rsrv_NEgain = 9.4 * Rsrv_Fatgain + 5.55 * Rsrv_CPgain              # Line 2866
+    Rsrv_NEgain = 9.4 * Rsrv_Fatgain + 5.55 * Rsrv_CPgain              # Line 2867 #These are really REgain.  Abbreviations on NEgain need to be sorted out. MDH
     return Rsrv_NEgain
 
 
