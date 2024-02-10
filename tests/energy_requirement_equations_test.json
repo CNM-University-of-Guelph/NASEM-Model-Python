@@ -16,7 +16,7 @@
     },
     {
       "Name": "calculate_An_NEmUse_NS",
-      "Input": {"An_StatePhys": "Heifer", "An_BW": 550, "An_BW_empty": 510, "An_parity_rl": 1, "Dt_DMIn_ClfLiq": 0},
+      "Input": {"An_StatePhys": "Lactating Cow", "An_BW": 550, "An_BW_empty": 510, "An_parity_rl": 1, "Dt_DMIn_ClfLiq": 0},
       "Output": 11.357219439420211
     },
     {

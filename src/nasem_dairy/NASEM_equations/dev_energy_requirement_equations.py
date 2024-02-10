@@ -1,23 +1,87 @@
 import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
-def calculate_An_NEmUse_NS(An_StatePhys: str, An_BW: float, An_BW_empty: float, An_parity_rl: int, Dt_DMIn_ClfLiq: float) -> float:
+def calculate_An_NEmUse_NS(
+        An_StatePhys: str, 
+        An_BW: float, 
+        An_BW_empty: float, 
+        An_parity_rl: int, 
+        Dt_DMIn_ClfLiq: float
+        ) -> float:
     """
-    An_NEmUse_NS: NE required for maintenance in unstressed cow, mcal/d
-    Unstressed (NS)
-    Net energy (NE) maintenance (NEm) mcal/d    
-    """
-    An_NEmUse_NS = 0.10 * An_BW ** 0.75  # Heifers, Line 2781
-    An_NEmUse_NS = np.where(An_StatePhys == "Calf",     # milk or mixed diet, Line 2779
-                            0.0769 * An_BW_empty**0.75,
-                            An_NEmUse_NS)
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq == 0)
-    An_NEmUse_NS = np.where(condition,                  # weaned calf, Line 2780
-                            0.097 * An_BW_empty**0.75,
-                            An_NEmUse_NS)
-    An_NEmUse_NS = np.where(An_parity_rl > 0,   # Cows, Line 2782
-                            0.10 * An_BW**0.75,
-                            An_NEmUse_NS)
+    Calculate the net energy (NE) required for maintenance (NEm) in unstressed (_NS) dairy cows, measured in megacalories per day (mcal/d),
+    taking into account the physiological state, body weight, empty body weight, parity, and dry matter intake from calf liquid diet.
+
+    Parameters
+    ----------
+    An_StatePhys : str
+        The physiological state of the animal ("Calf", "Heifer", "Dry Cow", "Lactating Cow", "Other").
+    An_BW : float
+        The body weight of the animal in kg.
+    An_BW_empty : float
+        The empty body weight of the animal in kg, applicable for calves.
+    An_parity_rl : int
+        The parity of the cow as real value from 0 to 2.
+    Dt_DMIn_ClfLiq : float
+        The dry matter intake from calf liquid diet in kg, applicable for calves.
+
+    Returns
+    -------
+    float
+        The net energy required for maintenance (NEm) in unstressed cows, in megacalories per day (mcal/d).
+
+    Notes
+    -----
+    - The calculation varies based on the physiological state of the animal, with specific adjustments for calves on milk or mixed diet,
+      weaned calves, heifers, and cows.
+    - Reference to specific lines in the Nutrient Requirements of Dairy Cattle R Code:
+        - Heifers: Line 2781
+        - Calves on milk or mixed diet: Line 2779
+        - Weaned calves: Line 2780
+        - Cows: Line 2782
+    - Based on following equations from Nutrient Requirements of Dairy Cattle book:
+        - An_NEmUse_NS for cow and heifer is same as NELmaint (Mcal/d) from Equation 3-13
+        - km = 0.0769 (milk and/or milk + solid) & km = 0.97 (weaned calves) from Table 10-1 (Item: NEm, kcal/kg EBW^0.75)
+        - __NOTE__: these are not consistent with the values presented in Equation 20-272 ?
+
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example for a calf on a milk diet
+    nd.calculate_An_NEmUse_NS(
+        An_StatePhys='Calf',
+        An_BW=93,
+        An_BW_empty=85,
+        An_parity_rl=0,
+        Dt_DMIn_ClfLiq=4
+    )
+    ```
+    # """
+
+    # Heifers, R code line 2781
+    # R code note: 'Back calculated from MEm of 0.15 and Km_NE_ME = 0.66'
+    An_NEmUse_NS = 0.10 * An_BW ** 0.75  
+    
+    # Calves drinking milk or eating mixed diet
+    # R code line 2779
+    if An_StatePhys == "Calf" and Dt_DMIn_ClfLiq > 0:
+        An_NEmUse_NS = 0.0769 * An_BW_empty**0.75
+
+    # Adjust NEm for weaned calves (Calf state with zero DMI from calf liquid diet)
+    # R code line 2780
+    elif An_StatePhys == "Calf" and Dt_DMIn_ClfLiq == 0:
+        An_NEmUse_NS = 0.097 * An_BW_empty**0.75
+
+    # Adjust NEm for cows based on parity (assuming parity > 0 implies cow)
+    # R code line 2782
+    elif An_parity_rl > 0:
+        # This recalculates what is already set as default for Heifers
+        # Equation 20-272 says An_BW is An_BW NPr_3 i.e. Equation 20-246
+        An_NEmUse_NS = 0.10 * An_BW**0.75
+
     return An_NEmUse_NS
 
 
