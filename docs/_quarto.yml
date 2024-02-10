@@ -59,6 +59,12 @@ quartodoc:
         - calculate_Dt_DMIn_DryCow1_FarOff
         - calculate_Dt_DMIn_DryCow1_Close
         - calculate_Dt_DMIn_DryCow2
+    
+    - subtitle: Energy equations
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_An_NEmUse_NS
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 
