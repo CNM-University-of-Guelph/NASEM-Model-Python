@@ -142,13 +142,57 @@ def calculate_An_NEm_Act_Graze(
     return An_NEm_Act_Graze
 
 
-def calculate_An_NEm_Act_Parlor(An_BW: float, Env_DistParlor: float, Env_TripsParlor: float) -> float:
+def calculate_An_NEm_Act_Parlor(
+        An_BW: float, 
+        Env_DistParlor: float, 
+        Env_TripsParlor: float
+        ) -> float:
     """
+    Calculate the net energy (NE) used for activity related to walking to and from the parlor (NEm_Act_Parlor) in dairy cows,
+    measured in Megacalories per day (Mcal/d). This function estimates the energy expenditure based on the distance from barn or paddock to the parlor,
+    the number of daily trips to and from the parlor, and the body weight of the animal.
+
+    Parameters
+    ----------
+    An_BW : float
+        The body weight of the animal in kg.
+    Env_DistParlor : float
+        The distance from barn or paddock to the parlor in meters.
+    Env_TripsParlor : float
+        The number of daily trips to and from the parlor, usually two times the number of milkings.
+
+    Returns
+    -------
+    float
+        The net energy used for walking to the parlor activity, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The energy expenditure for walking to the parlor is calculated by considering the distance, the number of trips,
+      and the animal's body weight to estimate the total energy spent in this activity.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Main calculation: Line 2796
+    - Based on following equations from Nutrient Requirements of Dairy Cattle book:
+        - Equation 20-275
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE used for walking to the parlor
+    nd.calculate_An_NEm_Act_Parlor(
+        An_BW=650,
+        Env_DistParlor=500,
+        Env_TripsParlor=4
+    )
+    ```
+    
     Env_DistParlor (float): Distance from barn or paddock to the parlor in meters.
     Env_TripsParlor (int): Number of daily trips to and from parlor, usually two times the number of milkings.
     An_NEm_Act_Parlor: NE use walking to parlor mcal/d
     """
-    An_NEm_Act_Parlor = (0.00035 * Env_DistParlor / 1000) * Env_TripsParlor * An_BW  # Line 2795
+    An_NEm_Act_Parlor = (0.00035 * Env_DistParlor / 1000) * Env_TripsParlor * An_BW  # Line 2796
     return An_NEm_Act_Parlor
 
 
@@ -157,7 +201,7 @@ def calculate_An_NEm_Act_Topo(An_BW: float, Env_Topo: float) -> float:
     Env_Topo (float): Positive elevation change per day in meters
     An_NEm_Act_Topo: NE use due to topography mcal/d
     """
-    An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW      # Line 2796
+    An_NEm_Act_Topo = 0.0067 * Env_Topo / 1000 * An_BW      # Line 2797
     return An_NEm_Act_Topo
 
 
@@ -165,7 +209,7 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, A
     """
     An_NEmUse_Act: Total NE use for activity on pasture, mcal/d
     """
-    An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2797
+    An_NEmUse_Act = An_NEm_Act_Graze + An_NEm_Act_Parlor + An_NEm_Act_Topo  # Line 2798
     return An_NEmUse_Act
 
 

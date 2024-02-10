@@ -66,6 +66,7 @@ quartodoc:
       contents:
         - calculate_An_NEmUse_NS
         - calculate_An_NEm_Act_Graze
+        - calculate_An_NEm_Act_Parlor 
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 
