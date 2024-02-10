@@ -326,12 +326,78 @@ def calculate_An_NEmUse(An_NEmUse_NS: float, An_NEmUse_Act: float, coeff_dict: d
     return An_NEmUse
 
 
-def calculate_An_MEmUse(An_NEmUse: float, coeff_dict: dict) -> float:
+def calculate_An_MEmUse(
+        An_NEmUse: float, 
+        coeff_dict: dict) -> float:
     """
-    An_MEmUse: Total Metabolizable Energy use for maintenance, mcal/d
+    Calculate the total Metabolizable Energy (MEm) used for maintenance in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function converts net energy (NEm) use for maintenance into metabolizable energy (MEm) use by applying a conversion efficiency coefficient (Km_ME_NE),
+    which varies based on physiological state and specific feeding conditions.
+
+    Parameters
+    ----------
+    An_NEmUse : float
+        The total net energy used for maintenance, in Mcal/d.
+    coeff_dict : dict
+        A dictionary containing the conversion coefficient 'Km_ME_NE' for converting NEm to MEm.
+
+    Returns
+    -------
+    float
+        The total metabolizable energy used for maintenance, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The conversion coefficient 'Km_ME_NE' is crucial for calculating MEm from NEm and must be determined based on the animal's physiological state
+      and specific feeding conditions, such as dry feed only, liquid feed only, or mixed feeding for calves, and standard values for heifers,
+      lactating cows, or dry cows.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Main calculation: Line 2844
+    - See equations 20-279 to 20-282
+
+    - TODO: Remove coeff_dict and replace with further functions, Include refactored code below for the original lines 2806-2818 in R Code.
+    - NOTE: The value used for liquid feed in R is 0.723 but in book it is 0.718 (equation 20-280)
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of total MEm used for maintenance
+    coeff_dict = {'Km_ME_NE': 0.66}  # Example coefficient for a lactating cow
+    nd.calculate_An_MEmUse(
+        An_NEmUse=2.5,
+        coeff_dict=coeff_dict
+    )
+    ```
     """
     req_coeff = ['Km_ME_NE']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    # Km_ME_NE is based on further inputs. The following is refactored version of lines 2806-2818
+    # # Calculate dry matter intake from dry feed and corresponding ME and NE values for calves
+    # An_MEIn_ClfDry = An_MEIn - Dt_MEIn_ClfLiq
+    # An_ME_ClfDry = An_MEIn_ClfDry / (An_DMIn - Dt_DMIn_ClfLiq) if (An_DMIn - Dt_DMIn_ClfLiq) > 0 else 0
+    # An_NE_ClfDry = 1.1104 * An_ME_ClfDry - 0.0946 * An_ME_ClfDry**2 + 0.0065 * An_ME_ClfDry**3 - 0.7783
+
+    # # Initialize Km_ME_NE with a default value or None to handle unexpected physiological states
+    # Km_ME_NE = None
+
+    # # Set Km_ME_NE based on physiological state and specific conditions
+    # if An_StatePhys == "Calf":
+    #     if Dt_DMIn_ClfLiq == 0 and An_ME_ClfDry > 0 and An_NE_ClfDry > 0:
+    #         # Dry feed only
+    #         Km_ME_NE = An_NE_ClfDry / An_ME_ClfDry
+    #     elif Dt_DMIn_ClfStrt == 0 and Dt_DMIn_ClfLiq > 0:
+    #         # Liquid feed only
+    #         Km_ME_NE = 0.723
+    #     else:
+    #         # Default to mixed dry and liquid feed for calves
+    #         Km_ME_NE = 0.69
+    # elif An_StatePhys == "Heifer":
+    #     Km_ME_NE = 0.63
+    # elif An_StatePhys == "Lactating Cow" or An_StatePhys == "Dry Cow":
+    #     Km_ME_NE = 0.66
+
     An_MEmUse = An_NEmUse / coeff_dict['Km_ME_NE']      # Line 2844
     return An_MEmUse
 
