@@ -8,5 +8,95 @@
       "Name": "calculate_Mlk_CP_g",
       "Input": {"Mlk_NP_g": 1046},
       "Output": 1101.052632
+    },
+    {
+      "Name": "calculate_An_LactDay_MlkPred",
+      "Input": {"An_LactDay": 120},
+      "Output": 120
+    },
+    {
+      "Name": "calculate_An_LactDay_MlkPred",
+      "Input": {"An_LactDay": 400},
+      "Output": 375
+    },
+    {
+      "Name": "calculate_Trg_Mlk_Fat",
+      "Input": {"Trg_MilkProd": 37, "Trg_MilkFatp": 4.4},
+      "Output": 1.628
+    },
+    {
+      "Name": "calculate_Trg_Mlk_Fat_g",
+      "Input": {"Trg_Mlk_Fat": 3.982},
+      "Output": 3982
+    },
+    {
+      "Name": "calculate_Mlk_Fatemp_g",
+      "Input": {"An_StatePhys": "Lactating Cow", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_Ile_g": 1.4, "Abs_Met_g": 3.2},
+      "Output": 1222.69
+    },
+    {
+      "Name": "calculate_Mlk_Fatemp_g",
+      "Input": {"An_StatePhys": "Heifer", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_Ile_g": 1.4, "Abs_Met_g": 3.2},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Mlk_Fat_g",
+      "Input": {"mFat_eqn": 0, "Trg_Mlk_Fat_g": 1452, "Mlk_Fatemp_g": 2391},
+      "Output": 1452
+    },
+    {
+      "Name": "calculate_Mlk_Fat_g",
+      "Input": {"mFat_eqn": 1, "Trg_Mlk_Fat_g": 1452, "Mlk_Fatemp_g": 2391},
+      "Output": 2391
+    },
+    {
+      "Name": "calculate_Mlk_Fat",
+      "Input": {"Mlk_Fat_g": 4371},
+      "Output": 4.371
+    },
+    {
+      "Name": "calculate_Mlk_NP",
+      "Input": {"Mlk_NP_g": 3215},
+      "Output": 3.215
+    },
+    {
+      "Name": "calculate_Mlk_Prod_comp",
+      "Input": {"An_Breed": "Holstein", "Mlk_NP": 3.21, "Mlk_Fat": 3.6, "An_DEIn": 35, "An_LactDay_MlkPred": 115, "An_Parity_rl": 1},
+      "Output": 57.701424134422034
+    },
+    {
+      "Name": "calculate_Mlk_Prod_comp",
+      "Input": {"An_Breed": "Jersey", "Mlk_NP": 3.21, "Mlk_Fat": 3.6, "An_DEIn": 35, "An_LactDay_MlkPred": 115, "An_Parity_rl": 1},
+      "Output": 54.301424134422035
+    },
+    {
+      "Name": "calculate_Mlk_Prod_comp",
+      "Input": {"An_Breed": "Gurnsey", "Mlk_NP": 3.21, "Mlk_Fat": 3.6, "An_DEIn": 35, "An_LactDay_MlkPred": 115, "An_Parity_rl": 1},
+      "Output": 56.17542413442203
+    },
+    {
+      "Name": "calculate_An_MPavail_Milk_Trg",
+      "Input": {"An_MPIn": 38, "An_MPuse_g_Trg": 1478, "Mlk_MPUse_g_Trg": 314},
+      "Output": 36.836
+    },
+    {
+      "Name": "calculate_Mlk_NP_MPalow_Trg_g",
+      "Input": {"An_MPavail_Milk_Trg": 3.1, "coeff_dict": null},
+      "Output": 2139.0
+    },
+    {
+      "Name": "calculate_Mlk_Prod_MPalow",
+      "Input": {"Mlk_NP_MPalow_Trg_g": 37.3, "Trg_MilkTPp": 3.4},
+      "Output": 1.097058824
+    },
+    {
+      "Name": "calculate_An_MEavail_Milk",
+      "Input": {"An_MEIn": 46, "An_MEgain": 9.2, "An_MEmUse": 3.7, "Gest_MEuse": 2.8},
+      "Output": 30.3
+    },
+    {
+      "Name": "calculate_Mlk_Prod_NEalow",
+      "Input": {"An_MEavail_Milk": 38, "Trg_NEmilk_Milk": 0.43, "coeff_dict": null},
+      "Output": 58.32558139534884
     }
   ]

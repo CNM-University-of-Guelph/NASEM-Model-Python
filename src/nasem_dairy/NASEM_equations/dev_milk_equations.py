@@ -37,3 +37,164 @@ def calculate_Mlk_CP_g(Mlk_NP_g):
     Mlk_CP_g = Mlk_NP_g / 0.95  # Line 2213
     return Mlk_CP_g
 
+
+def calculate_An_LactDay_MlkPred(An_LactDay: int) -> int:
+    """
+    An_LactDay_MlkPred: An_LactDay but capped at day 375
+    """
+    # Cap DIM at 375 d to prevent the polynomial from getting out of range, Line 2259
+    if An_LactDay <= 375:
+        An_LactDay_MlkPred = An_LactDay
+    elif An_LactDay > 375:
+        An_LactDay_MlkPred = 375
+
+    return An_LactDay_MlkPred
+
+
+def calculate_Trg_Mlk_Fat(Trg_MilkProd: float, Trg_MilkFatp: float) -> float:
+    """
+    Trg_Mlk_Fat: Target milk fat in kg, based on user input milk production and fat % 
+    """
+    Trg_Mlk_Fat = Trg_MilkProd * Trg_MilkFatp / 100  # Line 2262
+    return Trg_Mlk_Fat
+
+
+def calculate_Trg_Mlk_Fat_g(Trg_Mlk_Fat: float) -> float:
+    """
+    Trg_Mlk_Fat_g: Target milk fat g, based on user input milk production and fat % 
+    """
+    Trg_Mlk_Fat_g = Trg_Mlk_Fat * 1000  # Line 2263
+    return Trg_Mlk_Fat_g
+
+
+def calculate_Mlk_Fatemp_g(An_StatePhys: str, An_LactDay_MlkPred: int, Dt_DMIn: float, Dt_FAIn: float, Dt_DigC160In: float, Dt_DigC183In: float, Abs_Ile_g: float, Abs_Met_g: float):
+    """
+    Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
+
+        Dt_FAIn (Number): Fatty acid intake, kg/d
+        Dt_DigC160In (Number): Digestable C16:0 fatty acid intake, kg/d
+        Dt_DigC183In (Number): Digestable C18:3 fatty acid intake, kg/d 
+        
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        
+        An_LactDay_MlkPred: An_LactDay but capped at day 375, prevents polynomial from getting out of range
+
+        Abs_Ile_g: Net absorbed hydrated Isoleucine (g/d) from diet, microbes and infusions 
+        Abs_Met_g: Net absorbed hydrated Methionine (g/d) from diet, microbes and infusions
+    """
+    if An_StatePhys == "Lactating Cow":
+        # Line 2259, (Equation 20-215, p. 440)
+        Mlk_Fatemp_g = 453 - 1.42 * An_LactDay_MlkPred \
+            + 24.52 * (Dt_DMIn - Dt_FAIn) \
+            + 0.41 * Dt_DigC160In * 1000 \
+            + 1.80 * Dt_DigC183In * 1000 \
+            + 1.45 * Abs_Ile_g \
+            + 1.34 * Abs_Met_g
+    else:
+        Mlk_Fatemp_g = 0    # Line 2261
+    return Mlk_Fatemp_g
+
+
+def calculate_Mlk_Fat_g(mFat_eqn: int, Trg_Mlk_Fat_g: float, Mlk_Fatemp_g: float) -> float:
+    """
+    Mlk_Fat_g: Predicted milk fat, g
+    """
+    if mFat_eqn == 0:
+        Mlk_Fat_g = Trg_Mlk_Fat_g
+    else:
+        Mlk_Fat_g = Mlk_Fatemp_g
+    return Mlk_Fat_g
+
+
+def calculate_Mlk_Fat(Mlk_Fat_g: float) -> float:
+    """
+    Mlk_Fat: Milk fat, kg
+    """
+    Mlk_Fat = Mlk_Fat_g / 1000  # Line 2267
+    return Mlk_Fat
+
+
+def calculate_Mlk_NP(Mlk_NP_g: float) -> float:
+    """
+    Mlk_NP: Net protein in milk, kg NP/d
+    """
+    Mlk_NP = Mlk_NP_g / 1000    # Line 2210
+    return Mlk_NP
+
+
+def calculate_Mlk_Prod_comp(An_Breed: str, Mlk_NP: float, Mlk_Fat: float, An_DEIn: float, An_LactDay_MlkPred: int, An_Parity_rl: int) -> float:
+    """
+    Mlk_Prod_comp: Component based milk production prediciton, kg/d
+    An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_LactDay_MlkPred (Number): A variable to max the days in milk at 375 to prevent polynomial from getting out of range
+        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
+    """
+    # Component based milk production prediction; derived by regression from predicted milk protein and milk fat
+    # Holstein equation, Line 2275
+    Mlk_Prod_comp = 4.541 \
+        + 11.13 * Mlk_NP \
+        + 2.648 * Mlk_Fat \
+        + 0.1829 * An_DEIn \
+        - 0.06257 * (An_LactDay_MlkPred - 137.1) \
+        + 2.766e-4 * (An_LactDay_MlkPred - 137.1)**2 \
+        + 1.603e-6 * (An_LactDay_MlkPred - 137.1)**3 \
+        - 7.397e-9 * (An_LactDay_MlkPred - 137.1)**4 \
+        + 1.567 * (An_Parity_rl - 1)
+
+    if An_Breed == "Jersey":
+        Mlk_Prod_comp = Mlk_Prod_comp - 3.400   # Line 2278
+    elif (An_Breed != "Jersey") & (An_Breed != "Holstein"):
+        Mlk_Prod_comp = Mlk_Prod_comp - 1.526
+    return Mlk_Prod_comp
+
+
+def calculate_An_MPavail_Milk_Trg(An_MPIn: float, An_MPuse_g_Trg: float, Mlk_MPUse_g_Trg: float) -> float:
+    """
+    An_MPavail_Milk_Trg: Metabolizalbe protein available for milk production, kg MP
+
+    An_MPuse_g_Trg (Number): Metabolizable protein requirement, g/d
+        Mlk_MPuse_g_Trg (Number): Metabolizable protein requirement for milk, g/d
+        An_MPIn (Number): Metabolizlable protein intake, kg/d 
+        Trg_MilkTPp (Percentage): Animal Milk True Protein percentage
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
+    """
+    An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000    # Line 2706
+    return An_MPavail_Milk_Trg
+
+
+def calculate_Mlk_NP_MPalow_Trg_g(An_MPavail_Milk_Trg: float, coeff_dict: dict) -> float:
+    """
+    Mlk_NP_MPalow_Trg_g: net protein available for milk production, g milk NP/d
+    """
+    req_coeff = ['Kx_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Mlk_NP_MPalow_Trg_g = An_MPavail_Milk_Trg * coeff_dict['Kx_MP_NP_Trg'] * 1000   # g milk NP/d, Line 2707
+    return Mlk_NP_MPalow_Trg_g
+
+
+def calculate_Mlk_Prod_MPalow(Mlk_NP_MPalow_Trg_g: float, Trg_MilkTPp: float) -> float:
+    """
+    Mlk_Prod_MPalow: Metabolizable protein allowable milk production, kg/d
+    """
+    Mlk_Prod_MPalow = Mlk_NP_MPalow_Trg_g / (Trg_MilkTPp / 100) / 1000  
+    # Line 2708, kg milk/d using Trg milk protein % to predict volume
+    return Mlk_Prod_MPalow
+
+
+def calculate_An_MEavail_Milk(An_MEIn: float, An_MEgain: float, An_MEmUse: float, Gest_MEuse: float) -> float:
+    """
+    An_MEavail_Milk: Metabolisable energy available milk production, Mcal/d
+    """
+    An_MEavail_Milk = An_MEIn - An_MEgain - An_MEmUse - Gest_MEuse  # Line 2897
+    return An_MEavail_Milk
+
+
+def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float, Trg_NEmilk_Milk: float, coeff_dict: dict) -> float:
+    """
+    Mlk_Prod_NEalow: Net energy allowable milk production, kg/d
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    # Line 2898, Energy allowable Milk Production, kg/d
+    Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk
+    return Mlk_Prod_NEalow

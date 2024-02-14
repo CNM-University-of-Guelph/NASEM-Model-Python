@@ -8,7 +8,6 @@ from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_
 #from nasem_dairy.ration_balancer.execute_model import NASEM_model
 from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
 from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
-from nasem_dairy.NASEM_equations.Milk_equations import calculate_Mlk_Fat_g, calculate_Mlk_Prod_comp, calculate_Mlk_Prod_MPalow, calculate_Mlk_Prod_NEalow, check_animal_lactation_day
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
 from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
 from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
@@ -37,7 +36,20 @@ from nasem_dairy.NASEM_equations.dev_DMI_equations import (
 from nasem_dairy.NASEM_equations.dev_milk_equations import (
     calculate_Trg_NEmilk_Milk,
     calculate_Mlk_NP_g,
-    calculate_Mlk_CP_g
+    calculate_Mlk_CP_g,
+    calculate_An_LactDay_MlkPred,
+    calculate_Trg_Mlk_Fat,
+    calculate_Trg_Mlk_Fat_g,
+    calculate_Mlk_Fatemp_g,
+    calculate_Mlk_Fat_g,
+    calculate_Mlk_Fat,
+    calculate_Mlk_NP,
+    calculate_Mlk_Prod_comp,
+    calculate_An_MPavail_Milk_Trg,
+    calculate_Mlk_NP_MPalow_Trg_g,
+    calculate_Mlk_Prod_MPalow,
+    calculate_An_MEavail_Milk,
+    calculate_Mlk_Prod_NEalow,
 )
 
 from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
