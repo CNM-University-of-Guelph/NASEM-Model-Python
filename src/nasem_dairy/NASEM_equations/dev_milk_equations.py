@@ -70,6 +70,17 @@ def calculate_Trg_Mlk_Fat_g(Trg_Mlk_Fat: float) -> float:
 def calculate_Mlk_Fatemp_g(An_StatePhys: str, An_LactDay_MlkPred: int, Dt_DMIn: float, Dt_FAIn: float, Dt_DigC160In: float, Dt_DigC183In: float, Abs_Ile_g: float, Abs_Met_g: float):
     """
     Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
+
+        Dt_FAIn (Number): Fatty acid intake, kg/d
+        Dt_DigC160In (Number): Digestable C16:0 fatty acid intake, kg/d
+        Dt_DigC183In (Number): Digestable C18:3 fatty acid intake, kg/d 
+        
+        Dt_DMIn (Number): Dry matter intake, kg/d
+        
+        An_LactDay_MlkPred:
+
+        Abs_Ile_g
+        Abse_Met_g
     """
     if An_StatePhys == "Lactating Cow":
         # Line 2259, (Equation 20-215, p. 440)
@@ -114,6 +125,9 @@ def calculate_Mlk_NP(Mlk_NP_g: float) -> float:
 def calculate_Mlk_Prod_comp(An_Breed: str, Mlk_NP: float, Mlk_Fat: float, An_DEIn: float, An_LactDay_MlkPred: int, An_Parity_rl: int) -> float:
     """
     Mlk_Prod_comp: Component based milk production prediciton, kg/d
+    An_DEIn (Number): Digestible energy intake in Mcal/d
+        An_LactDay_MlkPred (Number): A variable to max the days in milk at 375 to prevent polynomial from getting out of range
+        An_Parity_rl (Number): Animal Parity where 1 = Primiparous and 2 = Multiparous.
     """
     # Component based milk production prediction; derived by regression from predicted milk protein and milk fat
     # Holstein equation, Line 2275
@@ -137,6 +151,12 @@ def calculate_Mlk_Prod_comp(An_Breed: str, Mlk_NP: float, Mlk_Fat: float, An_DEI
 def calculate_An_MPavail_Milk_Trg(An_MPIn: float, An_MPuse_g_Trg: float, Mlk_MPUse_g_Trg: float) -> float:
     """
     An_MPavail_Milk_Trg: Metabolizalbe protein available for milk production, kg MP
+
+    An_MPuse_g_Trg (Number): Metabolizable protein requirement, g/d
+        Mlk_MPuse_g_Trg (Number): Metabolizable protein requirement for milk, g/d
+        An_MPIn (Number): Metabolizlable protein intake, kg/d 
+        Trg_MilkTPp (Percentage): Animal Milk True Protein percentage
+        coeff_dict (Dict): Dictionary containing all coefficients for the model
     """
     An_MPavail_Milk_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Mlk_MPUse_g_Trg / 1000    # Line 2706
     return An_MPavail_Milk_Trg
