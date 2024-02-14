@@ -449,11 +449,50 @@ def calculate_Rsrv_NEgain(
 
 def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
     """
-    Kr_ME_RE: Efficiency of ME to reserve RE for heifers/dry cows (91), lactating 
+    Calculate the efficiency of metabolizable energy (ME) conversion to reserve energy (RE) for heifers, dry cows, and lactating cows,
+    depending on their milk production and body reserve gain objectives. The efficiency varies based on the physiological state and whether
+    the animal is gaining or losing body reserves.
+
+    Parameters
+    ----------
+    Trg_MilkProd : float
+        The targeted milk production in kg/day. A value greater than 0 indicates a lactating cow.
+    Trg_RsrvGain : float
+        The targeted body reserve gain in kg/day. Positive values indicate gain, while negative values indicate loss.
+
+    Returns
+    -------
+    float
+        The efficiency of ME to RE conversion for reserves gain or loss, varying by physiological state.
+
+    Notes
+    -----
+    - This function categorizes animals into three scenarios based on their milk production and reserve gain targets:
+        1. Lactating cows with positive reserve gain have an efficiency of 0.75.
+        2. Animals (typically cows) losing reserves have an efficiency of 0.89, reflecting the higher efficiency when metabolizing reserves for energy.
+        3. Heifers and dry cows gaining reserves, or lactating cows without specified milk production but with reserve gain, have an efficiency of 0.60.
+
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
+        - Lines 2835-7
+    - Unknown equations from book
+
+    
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation for a lactating cow gaining reserves
+    nd.calculate_Kr_ME_RE(
+        Trg_MilkProd=20,  # 20 kg of milk production per day
+        Trg_RsrvGain=0.2  # 0.2 kg of body reserve gain per day
+    )
+    ```
+
     """
-    if Trg_MilkProd > 0 and Trg_RsrvGain > 0:   # Efficiency of ME to Rsrv RE for lactating cows gaining Rsrv, Line 2835
+    if Trg_MilkProd > 0 and Trg_RsrvGain > 0:   # Efficiency of ME to Rsrv RE for lactating cows gaining Rsrv, Line 2836
         Kr_ME_RE = 0.75
-    elif Trg_RsrvGain <= 0:     # Line 2836,Efficiency of ME generated for cows losing Rsrv
+    elif Trg_RsrvGain <= 0:     # Line 2837, Efficiency of ME generated for cows losing Rsrv
         Kr_ME_RE = 0.89
     else:
         # Efficiency of ME to RE for reserves gain, Heifers and dry cows, Line 2835

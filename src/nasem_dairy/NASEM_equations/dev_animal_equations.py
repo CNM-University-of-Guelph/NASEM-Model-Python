@@ -227,6 +227,9 @@ def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl, Dt_
 
 
 def calculate_An_BWnp(An_BW, GrUter_Wt):
+    '''
+    Equation 20-230
+    '''
     An_BWnp = An_BW - GrUter_Wt  # Line 2396, Non-pregnant BW
     return An_BWnp
 
@@ -237,6 +240,9 @@ def calculate_An_GutFill_Wt(An_GutFill_BW, An_BWnp):
 
 
 def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
+    '''
+    Equation 20-242
+    '''
     An_BW_empty = An_BW - An_GutFill_Wt # Line 2414
     return An_BW_empty
 
