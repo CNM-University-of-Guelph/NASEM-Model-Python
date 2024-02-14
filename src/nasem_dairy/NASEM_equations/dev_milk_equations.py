@@ -77,10 +77,10 @@ def calculate_Mlk_Fatemp_g(An_StatePhys: str, An_LactDay_MlkPred: int, Dt_DMIn: 
         
         Dt_DMIn (Number): Dry matter intake, kg/d
         
-        An_LactDay_MlkPred:
+        An_LactDay_MlkPred: An_LactDay but capped at day 375, prevents polynomial from getting out of range
 
-        Abs_Ile_g
-        Abse_Met_g
+        Abs_Ile_g: Net absorbed hydrated Isoleucine (g/d) from diet, microbes and infusions 
+        Abs_Met_g: Net absorbed hydrated Methionine (g/d) from diet, microbes and infusions
     """
     if An_StatePhys == "Lactating Cow":
         # Line 2259, (Equation 20-215, p. 440)
