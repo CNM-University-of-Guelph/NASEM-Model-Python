@@ -35,7 +35,7 @@ def calculate_An_NEmUse_NS(
     - The calculation varies based on the physiological state of the animal, with specific adjustments for calves on milk or mixed diet,
       weaned calves, heifers, and cows.
     - Reference to specific lines in the Nutrient Requirements of Dairy Cattle R Code:
-        - Heifers: Line 2781
+        - Heifers: Line 2777
         - Calves on milk or mixed diet: Line 2779
         - Weaned calves: Line 2780
         - Cows: Line 2782
@@ -61,7 +61,7 @@ def calculate_An_NEmUse_NS(
     ```
     # """
 
-    # Heifers, R code line 2781
+    # Heifers, R code line 2777
     # R code note: 'Back calculated from MEm of 0.15 and Km_NE_ME = 0.66'
     An_NEmUse_NS = 0.10 * An_BW ** 0.75  
     
