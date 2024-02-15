@@ -449,8 +449,7 @@ def calculate_Rsrv_NEgain(
 
 def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
     """
-    Calculate the efficiency of metabolizable energy (ME) conversion to reserve energy (RE) for heifers, dry cows, and lactating cows,
-    depending on their milk production and body reserve gain objectives. The efficiency varies based on the physiological state and whether
+    Select the efficiency of metabolizable energy (ME) conversion to retained energy (RE). The efficiency varies based on the physiological state and whether
     the animal is gaining or losing body reserves.
 
     Parameters
@@ -474,7 +473,10 @@ def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
 
     - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
         - Lines 2835-7
-    - Unknown equations from book
+    - Values from book appear to be from Table 3-2.
+        - Text on Page 34 (above equation 3-19a) & Table 3-2 mentions a Kr_ME_RE of 0.74 for lactating cows (but 0.75 is used in model)
+        - Dry cow: 0.60 is consistent between model and Table 3-2
+        - 0.89 appears to be the conversion of RE to NEL, i.e. because gain is negative the RE is being converted to NEL
 
     
     Examples

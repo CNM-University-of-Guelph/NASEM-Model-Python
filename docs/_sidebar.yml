@@ -30,6 +30,7 @@ website:
         - reference/calculate_An_NEmUse_Act.qmd
         - reference/calculate_An_MEmUse.qmd
         - reference/calculate_Rsrv_NEgain.qmd
+        - reference/calculate_Kr_ME_RE.qmd
         section: Energy equations
       section: NASEM_equations
     - contents:
