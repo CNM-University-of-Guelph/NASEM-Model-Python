@@ -504,7 +504,39 @@ def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
 
 def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     """
-    Rsrv_MEgain: ME of body reserve gain, mcal/d
+    Calculate the metabolizable energy (ME) of body reserve gain in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function uses the net energy (NE) gain from body reserves and the efficiency of ME conversion to reserve energy (RE) to
+    estimate the total ME associated with body reserve gains.
+
+    Parameters
+    ----------
+    Rsrv_NEgain : float
+        The net energy of body reserve gain, in Mcal/d. 
+    Kr_ME_RE : float
+        The efficiency of metabolizable energy to reserve energy conversion for reserves gain. 
+
+    Returns
+    -------
+    float
+        The metabolizable energy associated with body reserve gain, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The calculation inversely applies the conversion efficiency (Kr_ME_RE) to the net energy gain (Rsrv_NEgain) to estimate the metabolizable
+      energy required for the observed gain in body reserves.
+    - Reference to line number in the Nutrient Requirements of Dairy Cattle R Code: Line 2871
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of ME associated with body reserve gain
+    nd.calculate_Rsrv_MEgain(
+        Rsrv_NEgain=1.5,  # 1.5 Mcal/d of net energy gain from body reserves
+        Kr_ME_RE=0.75     # Efficiency of ME to RE conversion for reserves gain
+    )
+    ```
     """
     Rsrv_MEgain = Rsrv_NEgain / Kr_ME_RE    # Line 2871
     return Rsrv_MEgain

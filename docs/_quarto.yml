@@ -72,6 +72,7 @@ quartodoc:
         - calculate_An_MEmUse 
         - calculate_Rsrv_NEgain 
         - calculate_Kr_ME_RE
+        - calculate_Rsrv_MEgain
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 
