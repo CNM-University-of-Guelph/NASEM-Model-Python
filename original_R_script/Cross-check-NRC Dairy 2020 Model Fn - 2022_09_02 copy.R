@@ -2921,7 +2921,7 @@ Mlk_NE_DE <- Mlk_NEout / An_DEIn #proportion of DEIn used for milk
 
 ## Total Energy Use, Mcal/d ##
 An_MEuse <- An_MEmUse + An_MEgain + Gest_MEuse + Mlk_MEout
-Trg_MEuse <- An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout
+#*#Trg_MEuse <- An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout
 An_NEuse <- An_NEmUse + An_REgain + Gest_REgain + Mlk_NEout
 Trg_NEuse <- An_NEmUse + An_REgain + Gest_REgain + Trg_Mlk_NEout
 An_NELuse <- An_MEuse * Kl_ME_NE

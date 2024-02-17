@@ -45,6 +45,7 @@ website:
       - contents:
         - reference/calculate_Trg_Mlk_NEout.qmd
         - reference/calculate_Trg_Mlk_MEout.qmd
+        - reference/calculate_Trg_MEuse.qmd
         section: Energy of Milk
       - contents:
         - reference/calculate_Trg_NEmilk_Milk.qmd

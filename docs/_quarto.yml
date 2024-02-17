@@ -95,6 +95,7 @@ quartodoc:
       contents:
         - calculate_Trg_Mlk_NEout
         - calculate_Trg_Mlk_MEout
+        - calculate_Trg_MEuse
 
     - subtitle: Temp - milk equations
       desc: ""

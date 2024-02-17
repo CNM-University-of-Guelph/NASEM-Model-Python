@@ -863,9 +863,50 @@ def calculate_Trg_Mlk_MEout(Trg_Mlk_NEout: float, coeff_dict: dict) -> float:
 
 def calculate_Trg_MEuse(An_MEmUse: float, An_MEgain: float, Gest_MEuse: float, Trg_Mlk_MEout: float) -> float:
     """
-    Trg_MEuse: Total metabolizable energy requirement mcal/d 
+    *Calculate Total Target (Trg) Metabolizable Energy (ME) Use*
+
+    This function sums the ME requirements for maintenance (MEmUse), body and frame gain (MEgain), gestation (MEuse), and target milk output (MEout) to determine the overall ME requirements.
+
+    Parameters
+    ----------
+    An_MEmUse : float
+        The ME required for maintenance, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_MEmUse`).
+    An_MEgain : float
+        The ME associated with body and frame gain, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_MEgain`).
+    Gest_MEuse : float
+        The ME required for gestation, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Gest_MEuse`).
+    Trg_Mlk_MEout : float
+        The ME output for milk production, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Trg_Mlk_MEout`).
+
+    Returns
+    -------
+    float
+        The total ME requirement, in Mcal/d.
+
+    Notes
+    -----
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2924.
+    - TODO: Check for how to implement with Predicted instead of Target milk?
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of total ME requirement
+    nd.calculate_Trg_MEuse(
+        An_MEmUse=20,     # 20 Mcal/d for maintenance
+        An_MEgain=5,      # 5 Mcal/d for body and frame gain
+        Gest_MEuse=1,     # 1 Mcal/d for gestation
+        Trg_Mlk_MEout=35  # 35 Mcal/d for milk production
+    )
+    ```
     """
-    Trg_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout   # Line 2923
+    Trg_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Trg_Mlk_MEout   # Line 2924
     return Trg_MEuse
 
 
