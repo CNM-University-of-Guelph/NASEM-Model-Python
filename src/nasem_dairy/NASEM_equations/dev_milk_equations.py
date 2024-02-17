@@ -36,6 +36,7 @@ def calculate_Trg_NEmilk_Milk(
         - If all milk fat, true protein, and lactose are known - Equation 3-14b 
         - If only milk fat known - Equation 3-14c
         - Note that equation using CP instead of TP is not implemented (Equation 3-14a) 
+        - Also, see Equation 20-217 and 20-218
     
     - TODO: Currently, model can't catch when Trg_MilkTPp or Trg_MilkLacp is missing. No way to pass 'None' via input.csv. This first if statement is also not tested. 
 

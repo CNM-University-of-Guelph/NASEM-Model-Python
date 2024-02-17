@@ -43,6 +43,9 @@ website:
         - reference/calculate_Gest_MEuse.qmd
         section: Energy of Gestation
       - contents:
+        - reference/calculate_Trg_Mlk_NEout.qmd
+        section: Energy of Milk
+      - contents:
         - reference/calculate_Trg_NEmilk_Milk.qmd
         section: Temp - milk equations
       section: NASEM_equations

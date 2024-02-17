@@ -89,6 +89,12 @@ quartodoc:
         - calculate_Gest_REgain
         - calculate_Gest_MEuse
 
+    - subtitle: Energy of Milk
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_Trg_Mlk_NEout
+
     - subtitle: Temp - milk equations
       desc: ""
       package: nasem_dairy.NASEM_equations.dev_milk_equations

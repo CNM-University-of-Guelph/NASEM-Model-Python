@@ -775,7 +775,41 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
 
 def calculate_Trg_Mlk_NEout(Trg_MilkProd: float, Trg_NEmilk_Milk: float) -> float:
     """
-    Trg_Mlk_NEout: NE requirement for milk production, mcal/d
+    *Calculate Target (Trg) Milk Net Energy Output (NEout)*
+
+    Calculate the NE requirement for the Target milk production, measured in Megacalories per day (Mcal/d). 
+    This function multiplies the target milk production by the target energy output per kg of milk to determine the total energy output required for the specified level of milk production.
+
+    Parameters
+    ----------
+    Trg_MilkProd : float
+        The target milk production, in kg/d.
+    Trg_NEmilk_Milk : float
+        The target energy output in Mcal per kg of milk. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_milk_equations.calculate_Trg_NEmilk_Milk`).
+
+    Returns
+    -------
+    float
+        The NE requirement for the Target milk production, in Mcal/d.
+
+    Notes
+    -----
+    - This is based on the Target milk production
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2889.
+    - Equation from the Nutrient Requirements of Dairy Cattle book: Equation 20-220
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE requirement for milk production
+    nd.calculate_Trg_Mlk_NEout(
+        Trg_MilkProd=30,  # 30 kg of milk production per day
+        Trg_NEmilk_Milk=0.65  # 0.65 Mcal of energy output per kg of milk
+    )
+    ```
     """
     Trg_Mlk_NEout = Trg_MilkProd * Trg_NEmilk_Milk  # Line 2889
     return Trg_Mlk_NEout
