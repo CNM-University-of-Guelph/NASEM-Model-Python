@@ -256,6 +256,17 @@ def calculate_An_REgain_Calf(Body_Gain_empty, An_BW_empty):
     An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205    # Line 2445, calf RE gain needed here for fat gain, mcal/d    
     return An_REgain_Calf
 
+def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float, An_DigTPaIn: float, Body_NPgain: float, An_GasEOut: float, coeff_dict: dict) -> float:
+    """
+    An_MEIn_approx: Approximate ME intake, see note:
+        Adjust heifer MPuse target if the MP:ME ratio is below optimum for development.
+        Can't calculate ME before MP, thus estimated ME in the MP:ME ratio using the target NPgain.  Will be incorrect
+        if the animal is lactating or gestating.
+    This is used by Equation 11-11
+    """
+    An_MEIn_approx = An_DEInp + An_DENPNCPIn + (An_DigTPaIn - Body_NPgain) * 4.0 + Body_NPgain * coeff_dict['En_CP'] - An_GasEOut   # Line 2685
+    return An_MEIn_approx
+
 
 def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout, Dt_DMIn_CflLiq, Dt_DEIn_base_ClfLiq, Dt_DEIn_base_ClfDry, RumDevDisc_Clf):
     condition = (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0.015 * An_BW) and (RumDevDisc_Clf > 0)

@@ -123,11 +123,6 @@
       "Name": "calculate_Trg_MEuse",
       "Input": {"An_MEmUse": 123, "An_MEgain": 230, "Gest_MEuse": 29, "Trg_Mlk_MEout": 218},
       "Output": 600
-    },
-    {
-      "Name": "calculate_An_MEIn_approx",
-      "Input": {"An_DEInp": 23, "An_DENPNCPIn": 6.1, "An_DigTPaIn": 15.9, "Body_NPgain": 6.3, "An_GasEOut": 27, "coeff_dict": null},
-      "Output": 76.095
     }
   ]
   

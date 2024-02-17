@@ -910,12 +910,3 @@ def calculate_Trg_MEuse(An_MEmUse: float, An_MEgain: float, Gest_MEuse: float, T
     return Trg_MEuse
 
 
-def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float, An_DigTPaIn: float, Body_NPgain: float, An_GasEOut: float, coeff_dict: dict) -> float:
-    """
-    An_MEIn_approx: Approximate ME intake, see note:
-        Adjust heifer MPuse target if the MP:ME ratio is below optimum for development.
-        Can't calculate ME before MP, thus estimated ME in the MP:ME ratio using the target NPgain.  Will be incorrect
-        if the animal is lactating or gestating.
-    """
-    An_MEIn_approx = An_DEInp + An_DENPNCPIn + (An_DigTPaIn - Body_NPgain) * 4.0 + Body_NPgain * coeff_dict['En_CP'] - An_GasEOut   # Line 2685
-    return An_MEIn_approx

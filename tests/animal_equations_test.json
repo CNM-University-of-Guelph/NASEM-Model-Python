@@ -261,6 +261,11 @@
     "Output": 74.19038471
   },
   {
+    "Name": "calculate_An_MEIn_approx",
+    "Input": {"An_DEInp": 23, "An_DENPNCPIn": 6.1, "An_DigTPaIn": 15.9, "Body_NPgain": 6.3, "An_GasEOut": 27, "coeff_dict": null},
+    "Output": 76.095
+  },
+  {
     "Name": "calculate_An_MEIn",
     "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
     "Output": 15.06
