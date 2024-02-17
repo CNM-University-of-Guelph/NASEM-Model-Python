@@ -587,12 +587,55 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
 
 def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
     """
-    Frm_MEgain: ME of frame gain mcal/d
+    Calculate the metabolizable energy (ME) of frame gain in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function converts retained energy (RE) gain from frame tissue into metabolizable energy (ME) using a conversion coefficient (Kf_ME_RE).
+
+    Parameters
+    ----------
+    Frm_NEgain : float
+        The net energy gain from frame tissue (should be called retained energy), in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Frm_NEgain`)
+    coeff_dict : dict
+        A dictionary containing the conversion coefficient 'Kf_ME_RE' for converting RE to ME for frame gains.
+
+    Returns
+    -------
+    float
+        The metabolizable energy associated with frame gain, in Megacalories per day (Mcal/d).
+
+    Notes
+    -----
+    - The conversion coefficient 'Kf_ME_RE' is currently specified in the coeff_dict. 
+    - TODO: However, update code with logic for selecting correct Kf_ME_RE - might still need to have defaults set in coeff_dict for calf liquid (0.56) and cow/heifer (0.4)
+
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2873.
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book:
+        - Equation 3-20d - noting that here `Frm_NEgain` should really be called RE (retained energy), and that 0.4 in book is default value for Kf_ME_RE
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of ME associated with frame gain
+    coeff_dict = {'Kf_ME_RE': 0.4}  # Example conversion coefficient for frame gain
+    nd.calculate_Frm_MEgain(
+        Frm_NEgain=1.0,  # 1.0 Mcal/d of net energy gain from frame tissue
+        coeff_dict=coeff_dict
+    )
+    ```
     """
     req_coeff = ['Kf_ME_RE']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    # Line 2872
-    Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE']
+    # Lines 2827 - 2832
+    # ## Frame (f) Gain (excludes Reserves Gain or Loss) ##
+    # #Calf frame gain
+    # Kf_ME_RE_ClfLiq <- 0.56
+    # Kf_ME_RE_ClfDry <- (1.1376*An_DE*0.93 -0.1198*(An_DE*0.93)^2+0.0076*(An_DE*0.93)^3-1.2979)/(An_DE*0.93)
+    # Kf_ME_RE_Clf <- Kf_ME_RE_ClfLiq*Dt_DMIn_ClfLiq/Dt_DMIn + Kf_ME_RE_ClfDry*(Dt_DMIn-Dt_DMIn_ClfLiq)/Dt_DMIn
+
+    # Kf_ME_RE <- ifelse(An_StatePhys == "Calf", Kf_ME_RE_Clf, 0.4)    #Default frame gain is 0.4 for heifers and cows
+    
+    Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE'] # Line 2873
     return Frm_MEgain
 
 

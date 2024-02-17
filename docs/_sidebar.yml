@@ -31,6 +31,9 @@ website:
         - reference/calculate_An_MEmUse.qmd
         - reference/calculate_Rsrv_NEgain.qmd
         - reference/calculate_Kr_ME_RE.qmd
+        - reference/calculate_Rsrv_MEgain.qmd
+        - reference/calculate_Frm_NEgain.qmd
+        - reference/calculate_Frm_MEgain.qmd
         section: Energy equations
       section: NASEM_equations
     - contents:

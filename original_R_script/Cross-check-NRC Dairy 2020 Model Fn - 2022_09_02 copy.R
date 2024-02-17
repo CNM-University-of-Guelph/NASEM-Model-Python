@@ -2869,7 +2869,7 @@ Frm_NEgain <- 9.4*Frm_Fatgain + 5.55*Frm_CPgain
 Rsrv_NE_DE <- Rsrv_NEgain / An_DEIn #proportion of DEIn used for Reserves gain
 Frm_NE_DE <- Frm_NEgain / An_DEIn #proportion of DEIn used for Frame gain
 Body_NEgain_BWgain <- An_REgain / Body_Gain #mcal NE/kg BW gain
-#*#Rsrv_MEgain <- Rsrv_NEgain / Kr_ME_RE
+#Rsrv_MEgain <- Rsrv_NEgain / Kr_ME_RE
 Frm_MEgain <- Frm_NEgain / Kf_ME_RE
 An_MEgain <- Rsrv_MEgain + Frm_MEgain
 An_ME_NEg <- An_REgain / An_MEgain  #A weighted average efficiency based on user entered or prediction frame and reserves gains. Cows only at this time.
