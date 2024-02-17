@@ -905,6 +905,17 @@ def calculate_Dt_DEIn(An_StatePhys, Dt_DENDFIn, Dt_DEStIn, Dt_DErOMIn, Dt_DETPIn
                        1.02, Dt_DEIn)       # Line 1374
     return Dt_DEIn
 
+
+def calculate_Dt_acMg(An_StatePhys: str, Dt_K: float, Dt_MgIn_min: float, Dt_MgIn: float) -> float:
+    Dt_acMg = np.where(An_StatePhys == "Calf",  # Line 1880
+                       1,
+                       (44.1 - 5.42 * math.log(Dt_K * 10) - 0.08 * Dt_MgIn_min / Dt_MgIn * 100) / 100)
+    return Dt_acMg
+
+def calculate_Abs_MgIn(Dt_acMg: float, Dt_MgIn: float) -> float:
+    Abs_MgIn = Dt_acMg * Dt_MgIn    # Mg absorption is inhibited by K, Line 1881
+    return Abs_MgIn
+
 ####################
 # Functions for Digestability Coefficients
 ####################
@@ -1688,7 +1699,27 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
         # Dt_DigFAIn
         diet_data[f'Dt_Dig{FA}In'] = df[f'Fd_Dig{FA}In'].sum()
 
+    Abs_micro_list = [
+        'CaIn',
+        'PIn',
+        'NaIn',
+        'KIn',
+        'ClIn',
+        'CoIn',
+        'CuIn',
+        'FeIn',
+        'MnIn',
+        'ZnIn'
+    ]
+    for micro in Abs_micro_list:
+        diet_data[f"Abs_{micro}"] = df[f"Fd_abs{micro}"].sum()
 
+    diet_data['Dt_acMg'] = calculate_Dt_acMg(An_StatePhys,
+                                             diet_data['Dt_K'],
+                                             diet_data['Dt_MgIn_min'],
+                                             diet_data['Dt_MgIn'])
+    diet_data['Abs_MgIn'] = calculate_Abs_MgIn(diet_data['Dt_acMg'],
+                                               diet_data['Dt_MgIn'])
     return diet_data
 
 
