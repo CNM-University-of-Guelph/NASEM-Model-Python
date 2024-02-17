@@ -682,9 +682,44 @@ def calculate_An_MEgain(Rsrv_MEgain: float, Frm_MEgain: float) -> float:
 
 def calculate_Gest_REgain(GrUter_BWgain: float, coeff_dict: dict) -> float:
     """
-    Gest_REgain: reserve energy for gesation gain (uterine growth / regression)
+    *Calculate Gestation (Gest) Retained Energy (RE) Gain*
+
+    Calculate the gestational requirements for net energy (NE, Mcal/d) based on the change in gravid uterus weight during gestation (GrUter_BWgain; kg/d) 
+    multiplied by the concentration of energy in the final gravid uterus at parturition (NE_GrUtWt, Mcal/kg)
+    
+
+    Parameters
+    ----------
+    GrUter_BWgain : float
+        The gross uterine body weight gain (or loss) in kg/d, representing changes due to uterine growth or regression. Usually calculated by [](`~nasem_dairy.NASEM_equations.dev_gestation_equations.calculate_GrUter_BWgain`)
+    coeff_dict : dict
+        A dictionary containing the coefficient 'NE_GrUtWt' which is the concentration of NE per kg of fresh Gravid Uterus weight at birth (Mcal/kg), defaults to 0.95.
+
+    Returns
+    -------
+    float
+        The RE gain for gestation (called NE in book), accounting for uterine growth or regression, in Mcal/d.
+
+    Notes
+    -----
+    - While this method estimates the release or requirement of NE for uterine weight changes, a note was left in the R code that says it will slightly underestimates the release of NE from the regressing uterus.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2361.
+    - Equation from the Nutrient Requirements of Dairy Cattle book: Equation 20-234 & Table 20-10
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of gestation RE gain
+    coeff_dict = {'NE_GrUtWt': 0.95}  
+    nd.calculate_Gest_REgain(
+        GrUter_BWgain=0.1,  # 0.1 kg/d of uterine body weight gain
+        coeff_dict=coeff_dict
+    )
+    ```
     """
-    Gest_REgain = GrUter_BWgain * coeff_dict['NE_GrUtWt']   # This will slightly underestimate release of NE from the regressing uterus, Line 2360
+    Gest_REgain = GrUter_BWgain * coeff_dict['NE_GrUtWt']   # This will slightly underestimate release of NE from the regressing uterus, Line 2361
     return Gest_REgain
 
 

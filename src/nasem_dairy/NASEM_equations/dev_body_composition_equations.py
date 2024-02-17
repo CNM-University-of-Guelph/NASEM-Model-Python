@@ -127,6 +127,7 @@ def calculate_FatGain_FrmGain(An_StatePhys: str, An_REgain_Calf: float, An_BW: f
     FatGain_FrmGain: Fat gain per unit frame gain, kg/kg EBW (Empty body weight)
     This is the proportion of the empty body weight that is fat, which increases (and protein decreases) as the animal matures
     This is why it is scaled to a proportion of mature BW (An_BW / An_BW_mature)
+    Also in equation 20-253
     """
     FatGain_FrmGain = np.where(An_StatePhys == "Calf",  # Line 2446
                                0.0786 + 0.0370 * An_REgain_Calf,   # Calves, ..., g/g EBW
@@ -148,6 +149,7 @@ def calculate_Frm_Gain_empty(Frm_Gain: float, Dt_DMIn_ClfLiq: float, Dt_DMIn_Clf
     """
     Frm_Gain_empty: Frame gain assuming the dame gut fill for frame gain, kg/d
     Equation 11-6b : 0.85 * gain (kg/d) - assumes the 15% of live = empty
+    Also in Equation 20-250 
     """
     Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])   # Assume the same gut fill for frame gain, Line 2439 
     if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:

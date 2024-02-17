@@ -60,7 +60,7 @@ quartodoc:
         - calculate_Dt_DMIn_DryCow1_Close
         - calculate_Dt_DMIn_DryCow2
     
-    - subtitle: Energy equations
+    - subtitle: Energy of Maintenance
       desc: ""
       package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
       contents:
@@ -70,12 +70,23 @@ quartodoc:
         - calculate_An_NEm_Act_Topo 
         - calculate_An_NEmUse_Act 
         - calculate_An_MEmUse 
+    
+    - subtitle: Energy of Gain
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
         - calculate_Rsrv_NEgain 
         - calculate_Kr_ME_RE
         - calculate_Rsrv_MEgain
         - calculate_Frm_NEgain
         - calculate_Frm_MEgain
         - calculate_An_MEgain
+    
+    - subtitle: Energy of Gestation
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_Gest_REgain
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 

@@ -29,13 +29,18 @@ website:
         - reference/calculate_An_NEm_Act_Topo.qmd
         - reference/calculate_An_NEmUse_Act.qmd
         - reference/calculate_An_MEmUse.qmd
+        section: Energy of Maintenance
+      - contents:
         - reference/calculate_Rsrv_NEgain.qmd
         - reference/calculate_Kr_ME_RE.qmd
         - reference/calculate_Rsrv_MEgain.qmd
         - reference/calculate_Frm_NEgain.qmd
         - reference/calculate_Frm_MEgain.qmd
         - reference/calculate_An_MEgain.qmd
-        section: Energy equations
+        section: Energy of Gain
+      - contents:
+        - reference/calculate_Gest_REgain.qmd
+        section: Energy of Gestation
       section: NASEM_equations
     - contents:
       - contents:
