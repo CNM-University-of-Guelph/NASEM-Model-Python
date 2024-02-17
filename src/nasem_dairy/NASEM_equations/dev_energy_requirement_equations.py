@@ -725,11 +725,49 @@ def calculate_Gest_REgain(GrUter_BWgain: float, coeff_dict: dict) -> float:
 
 def calculate_Gest_MEuse(Gest_REgain: float) -> float:
     """
-    Gest_MEuse: ME requirement for gestation, mcal/d
-    Ky_ME_NE: efficiencies of Energy Use , Mcal NE/Mcal ME
+    *Calculate Gestation (Gest) Metabolizable Energy (ME) Use*
+
+    Calculate the ME requirement for gestation in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function determines the ME needed to support gestation, taking into account the reserve energy (RE) gain for gestation and adjusting for energy efficiencies.
+
+    Parameters
+    ----------
+    Gest_REgain : float
+        The reserve energy gain for gestation, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Gest_REgain`).
+
+    Returns
+    -------
+    float
+        The ME requirement for gestation, in Mcal/d.
+
+    Notes
+    -----
+    - The efficiency of energy use (Ky_ME_NE), expressed in Mcal NE/Mcal ME, varies based on whether there is a gain (0.14) or loss (0.89) in gestation energy, reflecting different physiological needs during pregnancy.
+    - These efficiencies are derived from Ferrell et al., 1976, with the assumption that the loss efficiency is equivalent to reserve loss efficiency.
+    - This method provides insight into the additional ME required to support gestational processes, including uterine growth or regression.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: 
+        - Ky_ME_NE = Line 2840
+        - Gest_MEuse = Line 2860
+    - Equation from the Nutrient Requirements of Dairy Cattle book:
+        - Ky_ME_NE = Equation 20-236
+        - Gest_MEuse = Equation 20-237
+
+    - TODO: Consider adding the default Ky values to coeff_dict, e.g. Ky_ME_NE_gain = 0.14, Ky_ME_NE_loss = 0.89
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of ME requirement for gestation
+    Gest_REgain = 0.2  # 0.2 Mcal/d of RE gain for gestation
+    nd.calculate_Gest_MEuse(Gest_REgain)
+    ```
     """
-    Ky_ME_NE = np.where(Gest_REgain >= 0, 0.14, 0.89)
-    # Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss, Line 2859
+
+    Ky_ME_NE = np.where(Gest_REgain >= 0, 0.14, 0.89) 
+    # Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss, Line 2860
     Gest_MEuse = Gest_REgain / Ky_ME_NE
     return Gest_MEuse
 

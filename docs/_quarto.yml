@@ -87,6 +87,7 @@ quartodoc:
       package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
       contents:
         - calculate_Gest_REgain
+        - calculate_Gest_MEuse
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 

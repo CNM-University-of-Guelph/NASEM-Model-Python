@@ -40,6 +40,7 @@ website:
         section: Energy of Gain
       - contents:
         - reference/calculate_Gest_REgain.qmd
+        - reference/calculate_Gest_MEuse.qmd
         section: Energy of Gestation
       section: NASEM_equations
     - contents:

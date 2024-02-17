@@ -2295,7 +2295,7 @@ An_Preg <- ifelse(An_GestDay > 0 & An_GestDay <= An_GestLength, 1, 0)
 
 GrUterWt_FetBWbrth <- 1.816	#kg of Gravid Uterus/kg of calf birth weight based on 280 d gestation and Bell solutions.
 UterWt_FetBWbrth <- 0.2311;	#kg Maternal Tissue/kg calf weight at parturition from fits to Bell 1995 data
-NE_GrUtWt <- 0.950;		#mcal/kg fresh Gravid Uterus weight at birth which represents the accumulated values
+#*# NE_GrUtWt <- 0.950;		#mcal/kg fresh Gravid Uterus weight at birth which represents the accumulated values
 CP_GrUtWt <- 0.123;		#kg CP/kg fresh Gr Uterus weight
 
 #Gravid uterine, fetal, and uterine (+cotyledons) growth rate constants derived from Bell data
@@ -2358,7 +2358,7 @@ Gest_NPother_g <- 0
 	#Body_NP_CP is the conversion of CP to TP.
 
 #### Gestation Energy ####
-Gest_REgain <- GrUter_BWgain * NE_GrUtWt;	#This will slightly underestimate release of NE from the regressing uterus
+#*# Gest_REgain <- GrUter_BWgain * NE_GrUtWt;	#This will slightly underestimate release of NE from the regressing uterus
 
 #### Estimate net rates of NP (g/d), and AA (g/d) deposition in the Gravid uterus ####
 Gest_NCPgain_g <- GrUter_BWgain * CP_GrUtWt * 1000
@@ -2837,7 +2837,7 @@ Kf_ME_RE <- ifelse(An_StatePhys == "Calf", Kf_ME_RE_Clf, 0.4)    #Default frame 
 #*#Kr_ME_RE <- ifelse(Trg_RsrvGain <= 0, 0.89, Kr_ME_RE)                #Efficiency of ME generated for cows losing Rsrv
 
 ##Gestation ##
-Ky_ME_NE <- ifelse(Gest_REgain >= 0, 0.14, 0.89) #Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss
+#*# Ky_ME_NE <- ifelse(Gest_REgain >= 0, 0.14, 0.89) #Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss
    
 
 
@@ -2857,7 +2857,7 @@ An_NEprod_Avail <- An_NEIn - An_NEmUse
 An_MEprod_Avail <- An_MEIn - An_MEmUse
 
 ############################# Gestation ###########################################
-Gest_MEuse <- Gest_REgain / Ky_ME_NE
+#*# Gest_MEuse <- Gest_REgain / Ky_ME_NE
 Gest_NELuse <- Gest_MEuse * Kl_ME_NE  #mcal/d ME required. ??This should not be used, delete.
 Gest_NE_ME <- Gest_MEuse / An_MEIn #proportion of MEIn used for Gestation
 Gest_NE_DE <- Gest_REgain / An_DEIn #proportion of DEIn retained in gravid uterus tissue
@@ -2869,8 +2869,8 @@ Frm_NEgain <- 9.4*Frm_Fatgain + 5.55*Frm_CPgain
 Rsrv_NE_DE <- Rsrv_NEgain / An_DEIn #proportion of DEIn used for Reserves gain
 Frm_NE_DE <- Frm_NEgain / An_DEIn #proportion of DEIn used for Frame gain
 Body_NEgain_BWgain <- An_REgain / Body_Gain #mcal NE/kg BW gain
-#Rsrv_MEgain <- Rsrv_NEgain / Kr_ME_RE
-Frm_MEgain <- Frm_NEgain / Kf_ME_RE
+#*# Rsrv_MEgain <- Rsrv_NEgain / Kr_ME_RE
+#*# Frm_MEgain <- Frm_NEgain / Kf_ME_RE
 An_MEgain <- Rsrv_MEgain + Frm_MEgain
 An_ME_NEg <- An_REgain / An_MEgain  #A weighted average efficiency based on user entered or prediction frame and reserves gains. Cows only at this time.
 

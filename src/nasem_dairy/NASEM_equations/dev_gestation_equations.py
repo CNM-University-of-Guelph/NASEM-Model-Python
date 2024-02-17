@@ -33,6 +33,10 @@ def calculate_Uter_Wt(An_Parity_rl, An_AgeDay, An_LactDay, An_GestDay, An_GestLe
 
 
 def calculate_GrUter_Wtpart(Fet_BWbrth, coeff_dict):
+    '''
+    GrUterWt_FetBWbrth default 1.816 based on equation 20-225
+    See Equation 3-15a, supposed to be 1.825?
+    '''
     req_coeff = ['GrUterWt_FetBWbrth']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     GrUter_Wtpart = Fet_BWbrth * \
@@ -65,6 +69,13 @@ def calculate_Uter_BWgain(An_LactDay, An_GestDay, An_GestLength, Uter_Wt, coeff_
 
 
 def calculate_GrUter_BWgain(An_LactDay, An_GestDay, An_GestLength, GrUter_Wt, Uter_BWgain, coeff_dict):
+    '''
+    Equation 3-17a
+    GrUter_Ksyn = 0.0243
+    GrUter_KsynDecay = 0.00000245
+
+
+    '''
     req_coeff = ['GrUter_BWgain', 'GrUter_Ksyn', 'GrUter_KsynDecay']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     GrUter_BWgain = coeff_dict['GrUter_BWgain']     # Line 2341-2345
