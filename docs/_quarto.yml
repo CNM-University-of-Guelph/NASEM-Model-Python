@@ -89,6 +89,12 @@ quartodoc:
         - calculate_Gest_REgain
         - calculate_Gest_MEuse
 
+    - subtitle: Temp - milk equations
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_milk_equations
+      contents:
+        - calculate_Trg_NEmilk_Milk
+
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 
       

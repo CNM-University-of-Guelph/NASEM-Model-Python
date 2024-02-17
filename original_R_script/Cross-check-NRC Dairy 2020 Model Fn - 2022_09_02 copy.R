@@ -381,9 +381,9 @@ Dt_DMIn_Heif_HJ2i <- ifelse(An_PrePartWk > An_PrePartWkDurat,
 ########################### Lactating Cows ###########################
 # Calculate Target Milk Energy to use for DMI predictions #
 #Needed to predict DMI for lactating cows
-Trg_NEmilk_Milk <- 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
+#*# Trg_NEmilk_Milk <- 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
 #If milk protein and lactose are not provided, use the Tyrrell and Reid (1965) eqn.
-Trg_NEmilk_Milk <- ifelse(is.na(Trg_NEmilk_Milk), 0.36+9.69*Trg_MilkFatp/100, Trg_NEmilk_Milk)
+#*# Trg_NEmilk_Milk <- ifelse(is.na(Trg_NEmilk_Milk), 0.36+9.69*Trg_MilkFatp/100, Trg_NEmilk_Milk)
 Trg_NEmilkOut <- Trg_NEmilk_Milk * Trg_MilkProd
 
 ### Animal factors only, eqn. 2-1 ###
@@ -2884,8 +2884,8 @@ An_NEgain_ME <- An_REgain / An_MEIn
 ######################## Lactation Energy ########################
 Trg_MilkLacp <- ifelse(is.na(Trg_MilkLacp),4.78,Trg_MilkLacp)	#use the median if missing
 Trg_MilkLac <- Trg_MilkLacp/100 * Trg_MilkProd
-Trg_NEmilk_Milk <- 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
-Trg_NEmilk_Milk <- ifelse(is.na(Trg_NEmilk_Milk), 0.36+9.69*Trg_MilkFatp/100, Trg_NEmilk_Milk) #If milk protein and lactose are not provided, use the Tyrrell and Reid (1965) eqn.
+#*#Trg_NEmilk_Milk <- 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
+#*#Trg_NEmilk_Milk <- ifelse(is.na(Trg_NEmilk_Milk), 0.36+9.69*Trg_MilkFatp/100, Trg_NEmilk_Milk) #If milk protein and lactose are not provided, use the Tyrrell and Reid (1965) eqn.
 Trg_Mlk_NEout <- Trg_MilkProd * Trg_NEmilk_Milk
 Trg_Mlk_MEout <- Trg_Mlk_NEout / Kl_ME_NE
 Trg_NEmilk_DEIn <- Trg_Mlk_NEout / An_DEIn

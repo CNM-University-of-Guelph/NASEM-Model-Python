@@ -7,11 +7,56 @@ def calculate_Trg_NEmilk_Milk(
         Trg_MilkFatp: float, 
         Trg_MilkTPp: float, 
         Trg_MilkLacp: float) -> float:
+    """
+    *Calculate Target (Trg) Net Energy of Milk (NEmilk) per Kilogram of Milk*
+
+    Calculate the target energy output in Megacalories (Mcal/kg milk) based on the milk composition: fat, true protein, and lactose percentages. 
+
+    Parameters
+    ----------
+    Trg_MilkFatp : float
+        The target percentage of milk fat.
+    Trg_MilkTPp : float
+        The target percentage of milk true protein.
+    Trg_MilkLacp : float
+        The target percentage of milk lactose, typically about 4.85%.
+
+    Returns
+    -------
+    float
+        The target net energy of milk (NEmilk; Mcal/kg of milk)
+
+    Notes
+    -----
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: 
+        - If Lactose or TP missing: Line 384 & repeated on line 2887.
+        - else: Line Line 386 & repeated on line 2888.
+        - It was repeated in R code due to needing values for predicting DMI of lactating cows
+    - Equations from the Nutrient Requirements of Dairy Cattle book:
+        - If all milk fat, true protein, and lactose are known - Equation 3-14b 
+        - If only milk fat known - Equation 3-14c
+        - Note that equation using CP instead of TP is not implemented (Equation 3-14a) 
+    
+    - TODO: Currently, model can't catch when Trg_MilkTPp or Trg_MilkLacp is missing. No way to pass 'None' via input.csv. This first if statement is also not tested. 
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of target net energy of milk
+    nd.calculate_Trg_NEmilk_Milk(
+        Trg_MilkFatp=3.5,  # 3.5% milk fat
+        Trg_MilkTPp=3.0,   # 3.0% true protein
+        Trg_MilkLacp=4.85   # 4.85% lactose
+    )
+    ```
+    """    
     # If milk protein or milk lactose are missing use Tyrrell and Reid (1965) eqn.
     if Trg_MilkLacp is None or Trg_MilkTPp is None:
         Trg_NEmilk_Milk = 0.36 + 9.69 * Trg_MilkFatp/100    # Line 384/2887
     else:
-        Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp/100 + 5.85 * Trg_MilkTPp/100 + 3.95 * Trg_MilkLacp/100  # Line 383/2887
+        Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp/100 + 5.85 * Trg_MilkTPp/100 + 3.95 * Trg_MilkLacp/100  # Line 386/2888
     return Trg_NEmilk_Milk
 
 
