@@ -124,11 +124,13 @@ def calculate_Rsrv_CPgain(CPGain_FrmGain: float, Rsrv_Gain_empty: float) -> floa
 
 def calculate_FatGain_FrmGain(An_StatePhys: str, An_REgain_Calf: float, An_BW: float, An_BW_mature: float) -> float:
     """
-    FatGain_FrmGain: Fat gain per unit frame gain, g/g EBW (Empty body weight)
+    FatGain_FrmGain: Fat gain per unit frame gain, kg/kg EBW (Empty body weight)
+    This is the proportion of the empty body weight that is fat, which increases (and protein decreases) as the animal matures
+    This is why it is scaled to a proportion of mature BW (An_BW / An_BW_mature)
     """
     FatGain_FrmGain = np.where(An_StatePhys == "Calf",  # Line 2446
                                0.0786 + 0.0370 * An_REgain_Calf,   # Calves, ..., g/g EBW
-                               (0.067 + 0.375 * An_BW / An_BW_mature))  # Heifers and cows, g/g EBW
+                               (0.067 + 0.375 * An_BW / An_BW_mature))  # Heifers and cows, g/g EBW p. 258 Equation 11-5a
     if np.isnan(FatGain_FrmGain):   # trap NA when no Body_Gain, Line 2449
         FatGain_FrmGain = 0
     return FatGain_FrmGain
@@ -145,8 +147,9 @@ def calculate_Frm_Gain(Trg_FrmGain: float) -> float:
 def calculate_Frm_Gain_empty(Frm_Gain: float, Dt_DMIn_ClfLiq: float, Dt_DMIn_ClfStrt: float, coeff_dict: dict) -> float:
     """
     Frm_Gain_empty: Frame gain assuming the dame gut fill for frame gain, kg/d
+    Equation 11-6b : 0.85 * gain (kg/d) - assumes the 15% of live = empty
     """
-    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])   # Assume the same gut fill for frame gain, Line 2439
+    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])   # Assume the same gut fill for frame gain, Line 2439 
     if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:
         # slightly different for grain & milk fed, Line 2440
         Frm_Gain_empty = Frm_Gain * 0.91
@@ -155,7 +158,11 @@ def calculate_Frm_Gain_empty(Frm_Gain: float, Dt_DMIn_ClfLiq: float, Dt_DMIn_Clf
 
 def calculate_Frm_Fatgain(FatGain_FrmGain: float, Frm_Gain_empty: float) -> float:
     """
-    Frm_Fatgain: Frame fat gain kg/d?
+    Frm_Fatgain: Frame fat gain kg/?
+    FatGain_FrmGain is the kg of fat per kg of empty frame gain, based on the BW of the animal as a % of mature BW. 
+    Here, the actual kg/kg * EBG (kg/d) = frame fat gain kg/d
+    In the book, the Fat_ADG from equation 3-20a (which is  FatGain_FrmGain here) is corrected for empty body weight (e.g. x 0.85), keeping it in kg/kg units. 
+     this is a mix of Equations 11-5a and 11-6a (but 11-6a assumes 0.85, not EBG/ADG)
     """
     Frm_Fatgain = FatGain_FrmGain * Frm_Gain_empty      # Line 2452
     return Frm_Fatgain

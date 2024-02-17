@@ -544,10 +544,45 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
 
 def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     """
-    Frm_NEgain: NE of frame gain mcal/d
+    Calculate the net energy (NE) of frame gain in dairy cows, measured in Megacalories per day (Mcal/d).
+    This function estimates the energy content of frame gains based on the amounts of fat and protein gained,
+    utilizing their respective heats of combustion.
+
+    Parameters
+    ----------
+    Frm_Fatgain : float
+        The amount of fat gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_body_composition_equations.calculate_Frm_Fatgain`).
+    Frm_CPgain : float
+        The amount of crude protein (CP) gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_body_composition_equations.calculate_Frm_CPgain`).
+
+    Returns
+    -------
+    float
+        The retained energy of frame gain, in Megacalories per kg.
+
+    Notes
+    -----
+    - The energy value of frame tissue gain is calculated similarly to body reserve gains, based on the relative proportions of fat and protein in the tissue and their respective heat of combustion.
+    - The committee, as in the seventh edition of the Nutrient Requirements of Dairy Cattle, chose 9.4 Mcal/kg for fat and 5.55 Mcal/kg for protein as the heats of combustion for these components (page 257)
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book:
+       - Equation 11-5d (RE_EBG) - However, this version takes Frm_Fatgain and Frm_CPgain which are kg/d (based on target frame gain input) whereas the book calculates per kg of gain, i.e. with Fat_EBG (kg/kg) and Protein_EBG (kg/kg)
+       - Note that Equation 3-20c (RE_FADG; frame average daily gain) is similar, but is correcting for empty body weight in 3-20a and 2-20b via (EBG/ADG) which is empty body weight gain / live BW gain, which is 0.85 for 15% assumption.
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2867.
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of NE of frame gain
+    nd.calculate_Frm_NEgain(
+        Frm_Fatgain=0.1,  # 0.1 kg of fat gained in the frame per day
+        Frm_CPgain=0.05   # 0.05 kg of crude protein gained in the frame per day
+    )
+    ```
     """
     Frm_NEgain = 9.4 * Frm_Fatgain + 5.55 * Frm_CPgain      # Line 2867
-    return Frm_NEgain
+    return Frm_NEgain 
 
 
 def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
