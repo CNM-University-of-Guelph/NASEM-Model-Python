@@ -2821,7 +2821,7 @@ Km_ME_NE <- ifelse(An_StatePhys=="Lactating Cow" | An_StatePhys=="Dry Cow", Km_M
 #Km_ME_NEact <- 0.66
 
 ## Lactation ##
-Kl_ME_NE <- 0.66
+#*# Kl_ME_NE <- 0.66
 
 ## Frame (f) Gain (excludes Reserves Gain or Loss) ##
 #Calf frame gain
@@ -2886,8 +2886,8 @@ Trg_MilkLacp <- ifelse(is.na(Trg_MilkLacp),4.78,Trg_MilkLacp)	#use the median if
 Trg_MilkLac <- Trg_MilkLacp/100 * Trg_MilkProd
 #*#Trg_NEmilk_Milk <- 9.29*Trg_MilkFatp/100 + 5.85*Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100
 #*#Trg_NEmilk_Milk <- ifelse(is.na(Trg_NEmilk_Milk), 0.36+9.69*Trg_MilkFatp/100, Trg_NEmilk_Milk) #If milk protein and lactose are not provided, use the Tyrrell and Reid (1965) eqn.
-Trg_Mlk_NEout <- Trg_MilkProd * Trg_NEmilk_Milk
-Trg_Mlk_MEout <- Trg_Mlk_NEout / Kl_ME_NE
+#*#Trg_Mlk_NEout <- Trg_MilkProd * Trg_NEmilk_Milk
+#*# Trg_Mlk_MEout <- Trg_Mlk_NEout / Kl_ME_NE
 Trg_NEmilk_DEIn <- Trg_Mlk_NEout / An_DEIn
 Trg_MilkProd_EPcor <- 0.327*Trg_MilkProd + (12.97*Trg_MilkFatp/100*Trg_MilkProd) + 
      (7.65*Trg_MilkTPp/100*Trg_MilkProd)  #energy and protein corrected milk

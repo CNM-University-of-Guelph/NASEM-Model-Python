@@ -94,6 +94,7 @@ quartodoc:
       package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
       contents:
         - calculate_Trg_Mlk_NEout
+        - calculate_Trg_Mlk_MEout
 
     - subtitle: Temp - milk equations
       desc: ""

@@ -44,6 +44,7 @@ website:
         section: Energy of Gestation
       - contents:
         - reference/calculate_Trg_Mlk_NEout.qmd
+        - reference/calculate_Trg_Mlk_MEout.qmd
         section: Energy of Milk
       - contents:
         - reference/calculate_Trg_NEmilk_Milk.qmd

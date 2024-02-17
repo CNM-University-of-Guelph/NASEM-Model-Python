@@ -775,7 +775,7 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
 
 def calculate_Trg_Mlk_NEout(Trg_MilkProd: float, Trg_NEmilk_Milk: float) -> float:
     """
-    *Calculate Target (Trg) Milk Net Energy Output (NEout)*
+    *Calculate Target (Trg) Milk Net Energy (NE) Output*
 
     Calculate the NE requirement for the Target milk production, measured in Megacalories per day (Mcal/d). 
     This function multiplies the target milk production by the target energy output per kg of milk to determine the total energy output required for the specified level of milk production.
@@ -817,12 +817,47 @@ def calculate_Trg_Mlk_NEout(Trg_MilkProd: float, Trg_NEmilk_Milk: float) -> floa
 
 def calculate_Trg_Mlk_MEout(Trg_Mlk_NEout: float, coeff_dict: dict) -> float:
     """
-    Kl_ME_NE: Conversion of NE to ME for lactation
-    Trg_Mlk_MEout: ME requirement for milk production, mcal/d
+    *Calculate Target (Trg) Milk Metabolizable Energy (ME) Output*
+
+    This function converts NE output required for milk production into its metabolizable energy (ME) equivalent, 
+    using a conversion coefficient (Kl_ME_NE) that reflects the efficiency of converting consumed ME into milk NE.
+
+    Parameters
+    ----------
+    Trg_Mlk_NEout : float
+        The NE requirement for milk production, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Trg_Mlk_NEout`).
+    coeff_dict : dict
+        A dictionary containing the conversion coefficient 'Kl_ME_NE' for converting NE to ME for lactation. Defaults to 0.66.
+
+    Returns
+    -------
+    float
+        The ME requirement for milk production, in Mcal/d.
+
+    Notes
+    -----
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2890.
+    - Reference to specific equations and line in the Nutrient Requirements of Dairy Cattle R Code: 
+        - Kl_ME_NE  = Equation 20-223 = 0.66
+        - Equation 20-222
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of ME requirement for milk production
+    coeff_dict = {'Kl_ME_NE': 0.66}  # Conversion coefficient for NE to ME for lactation
+    nd.calculate_Trg_Mlk_MEout(
+        Trg_Mlk_NEout=2,  
+        coeff_dict=coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Kl_ME_NE']
+    req_coeff = ['Kl_ME_NE'] # Equation 20-223
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Trg_Mlk_MEout = Trg_Mlk_NEout / coeff_dict['Kl_ME_NE']  # Line 2890
+    Trg_Mlk_MEout = Trg_Mlk_NEout / coeff_dict['Kl_ME_NE']  # Line 2890 Equation 20-222
     return Trg_Mlk_MEout
 
 
