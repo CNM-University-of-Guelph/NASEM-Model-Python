@@ -3,15 +3,15 @@
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
-def calculate_Trg_NEmilk_Milk(Trg_MilkTPp,
-                              Trg_MilkFatp,
-                              Trg_MilkLacp):
+def calculate_Trg_NEmilk_Milk(
+        Trg_MilkFatp: float, 
+        Trg_MilkTPp: float, 
+        Trg_MilkLacp: float) -> float:
     # If milk protein or milk lactose are missing use Tyrrell and Reid (1965) eqn.
     if Trg_MilkLacp is None or Trg_MilkTPp is None:
-        Trg_NEmilk_Milk = 0.36 + 9.69 * Trg_MilkFatp/100    # Line 385/2888
+        Trg_NEmilk_Milk = 0.36 + 9.69 * Trg_MilkFatp/100    # Line 384/2887
     else:
-        Trg_NEmilk_Milk = 9.29*Trg_MilkFatp/100 + 5.85 * \
-            Trg_MilkTPp/100 + 3.95*Trg_MilkLacp/100  # Line 383/2887
+        Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp/100 + 5.85 * Trg_MilkTPp/100 + 3.95 * Trg_MilkLacp/100  # Line 383/2887
     return Trg_NEmilk_Milk
 
 

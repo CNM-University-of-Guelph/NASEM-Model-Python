@@ -772,18 +772,6 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
     return Gest_MEuse
 
 
-def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float, Trg_MilkTPp: float, Trg_MilkLacp: float) -> float:
-    """
-    Trg_NEmilk_Milk: Target energy output (mcal) per kg milk
-    Trg = target
-    p = percent
-    """
-    Trg_NEmilk_Milk = 9.29 * Trg_MilkFatp / 100 + 5.85 * Trg_MilkTPp / 100 + 3.95 * Trg_MilkLacp / 100  # Line 2887
-    if np.isnan(Trg_NEmilk_Milk):
-        # If milk protein and lactose are not provided, use the Tyrrell and Reid (1965) eqn., Line 2888
-        Trg_NEmilk_Milk = 0.36 + 9.69 * Trg_MilkFatp / 100
-    return Trg_NEmilk_Milk
-
 
 def calculate_Trg_Mlk_NEout(Trg_MilkProd: float, Trg_NEmilk_Milk: float) -> float:
     """
