@@ -524,7 +524,7 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     -----
     - The calculation inversely applies the conversion efficiency (Kr_ME_RE) to the net energy gain (Rsrv_NEgain) to estimate the metabolizable
       energy required for the observed gain in body reserves.
-    - Reference to line number in the Nutrient Requirements of Dairy Cattle R Code: Line 2871
+    - Reference to line number in the Nutrient Requirements of Dairy Cattle R Code: Line 2872
 
     Examples
     --------
@@ -538,7 +538,7 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     )
     ```
     """
-    Rsrv_MEgain = Rsrv_NEgain / Kr_ME_RE    # Line 2871
+    Rsrv_MEgain = Rsrv_NEgain / Kr_ME_RE    # Line 2872
     return Rsrv_MEgain
 
 
@@ -641,9 +641,42 @@ def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
 
 def calculate_An_MEgain(Rsrv_MEgain: float, Frm_MEgain: float) -> float:
     """
-    An_MEgain: total ME required for frame + reserve gain, mcal/d
+    *Calculate Animal (An) Metabolizable Energy (ME) Gain*
+
+    Calculate the total ME required for both frame and reserve gain in the animal, measured in Megacalories per day (Mcal/d).
+
+    Parameters
+    ----------
+    Rsrv_MEgain : float
+        The metabolizable energy of body reserve gain, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Rsrv_MEgain`).
+    Frm_MEgain : float
+        The metabolizable energy of frame gain, in Mcal/d. Normally calculated by 
+        [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Frm_MEgain`).
+
+    Returns
+    -------
+    float
+        The total metabolizable energy required for frame and reserve gain, in Mcal/d.
+
+    Notes
+    -----
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2874.
+    - Equation from the Nutrient Requirements of Dairy Cattle book: Equation 20-247
+
+    Examples
+    --------
+    ```{python}
+    import nasem_dairy as nd
+
+    # Example calculation of total ME required for frame and reserve gain
+    nd.calculate_An_MEgain(
+        Rsrv_MEgain=1.5,  # Metabolizable energy gain from body reserves, in Mcal/d
+        Frm_MEgain=0.5    # Metabolizable energy gain from frame, in Mcal/d
+    )
+    ```
     """
-    An_MEgain = Rsrv_MEgain + Frm_MEgain    # Line 2873
+    An_MEgain = Rsrv_MEgain + Frm_MEgain    # Line 2874
     return An_MEgain
 
 

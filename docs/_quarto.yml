@@ -75,6 +75,7 @@ quartodoc:
         - calculate_Rsrv_MEgain
         - calculate_Frm_NEgain
         - calculate_Frm_MEgain
+        - calculate_An_MEgain
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 

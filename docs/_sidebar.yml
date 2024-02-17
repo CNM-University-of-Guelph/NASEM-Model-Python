@@ -34,6 +34,7 @@ website:
         - reference/calculate_Rsrv_MEgain.qmd
         - reference/calculate_Frm_NEgain.qmd
         - reference/calculate_Frm_MEgain.qmd
+        - reference/calculate_An_MEgain.qmd
         section: Energy equations
       section: NASEM_equations
     - contents:
