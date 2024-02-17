@@ -177,6 +177,8 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_TT_dcNDF,
     calculate_TT_dcSt_Base,
     calculate_TT_dcSt,
+    calculate_Dt_acMg,
+    calculate_Abs_MgIn,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
