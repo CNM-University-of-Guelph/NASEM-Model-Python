@@ -9,8 +9,10 @@ def calculate_An_NEmUse_NS(
         Dt_DMIn_ClfLiq: float
         ) -> float:
     """
-    Calculate the net energy (NE) required for maintenance (NEm) in unstressed (_NS) dairy cows, measured in megacalories per day (Mcal/d),
-    taking into account the physiological state, body weight, empty body weight, parity, and dry matter intake from calf liquid diet.
+    *Calculate Animal (An) Net Energy (NE) of maintenance in unstressed (NS) dairy cows*
+
+    Calculate the NE required for maintenance in unstressed dairy cows, taking into account the physiological state, 
+    body weight, empty body weight, parity, and dry matter intake from calf liquid diet.
 
     Parameters
     ----------
@@ -92,7 +94,9 @@ def calculate_An_NEm_Act_Graze(
         An_MBW: float
         ) -> float:
     """
-    Calculate the net energy (NE) used for grazing activity (NEm_Act_Graze), measured in megacalories per day (Mcal/d).
+    *Calculate Animal (An) Net Energy (NE) of maintenance for grazing activity (Act_Graze)*
+    
+    Calculate the NE used for grazing activity (NEm_Act_Graze).
     This function estimates the additional energy expenditure due to grazing based on pasture intake, total dry matter intake, pasture supplementation,
     and the metabolic body weight of the animal.
 
@@ -110,7 +114,7 @@ def calculate_An_NEm_Act_Graze(
     Returns
     -------
     float
-        The net energy used for grazing activity, in megacalories per day (Mcal/d).
+        The net energy used for grazing activity, in Mcal/d.
 
     Notes
     -----
@@ -148,8 +152,10 @@ def calculate_An_NEm_Act_Parlor(
         Env_TripsParlor: float
         ) -> float:
     """
-    Calculate the net energy (NE) used for activity related to walking to and from the parlor (NEm_Act_Parlor) in dairy cows,
-    measured in Megacalories per day (Mcal/d). This function estimates the energy expenditure based on the distance from barn or paddock to the parlor,
+    *Calculate Animal (An) Net Energy (NE) of maintenance for activity walk to/from parlor (Act_Parlor)*
+    
+    Calculate the NE used for activity related to walking to and from the parlor (NEm_Act_Parlor).
+    This function estimates the NE expenditure based on the distance from barn or paddock to the parlor,
     the number of daily trips to and from the parlor, and the body weight of the animal.
 
     Parameters
@@ -164,16 +170,14 @@ def calculate_An_NEm_Act_Parlor(
     Returns
     -------
     float
-        The net energy used for walking to the parlor activity, in Megacalories per day (Mcal/d).
+        The net energy used for walking to the parlor activity, in Mcal/d.
 
     Notes
     -----
     - The energy expenditure for walking to the parlor is calculated by considering the distance, the number of trips,
       and the animal's body weight to estimate the total energy spent in this activity.
-    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
-        - Main calculation: Line 2796
-    - Based on following equations from Nutrient Requirements of Dairy Cattle book:
-        - Equation 20-275
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code: Line 2796
+    - Based on following equations from Nutrient Requirements of Dairy Cattle book: Equation 20-275
 
     Examples
     --------
@@ -197,7 +201,9 @@ def calculate_An_NEm_Act_Topo(
         Env_Topo: float
         ) -> float:
     """
-    Calculate the net energy (NE) used due to topographical activity (NEm_Act_Topo) in dairy cows, measured in Megacalories per day (Mcal/d).
+    *Calculate Animal (An) Net Energy (NE) of maintenance for topographical activity (Act_Topo)*
+    
+    Calculate the NE used due to topographical activity (NEm_Act_Topo) in dairy cows, measured in Megacalories per day (Mcal/d).
     This function estimates the energy expenditure associated with the daily total climb due to topography and during transit between
     the milking parlor and the barn or paddock, considering only the meters of uphill climb, as downhill movement has negligible locomotion cost.
 
@@ -217,8 +223,9 @@ def calculate_An_NEm_Act_Topo(
     -----
     - The calculation takes into account the physical effort required to overcome positive elevation changes while grazing and in transit
       to and from milking, which is directly proportional to the animal's body weight and the total meters climbed uphill.
-    - Reference to Equation 20-276 in the Nutrient Requirements of Dairy Cattle book and specific line in the R Code:
+    - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
         - Main calculation: Line 2797
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book: Equation 20-276
 
     Examples
     --------
@@ -238,17 +245,19 @@ def calculate_An_NEm_Act_Topo(
 
 def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, An_NEm_Act_Topo: float) -> float:
     """
-    Calculate the total net energy (NE) used for activity (An_NEmUse_Act) in dairy cows, measured in Megacalories per day (Mcal/d).
+    *Calculate Animal (An) Net Energy (NE) of maintenance use (mUse) for activity (Act)*
+    
+    Calculate the total NE used for activity (An_NEmUse_Act) in dairy cows, measured in Megacalories per day (Mcal/d).
     This function sums the energy expenditures due to grazing, walking to and from the parlor, and navigating topography.
 
     Parameters
     ----------
     An_NEm_Act_Graze : float
-        The net energy used for grazing activity, in Mcal/d.
+        The net energy used for grazing activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEm_Act_Graze`).
     An_NEm_Act_Parlor : float
-        The net energy used for walking to and from the parlor, in Mcal/d.
+        The net energy used for walking to and from the parlor, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEm_Act_Parlor`).
     An_NEm_Act_Topo : float
-        The net energy used due to topography (positive elevation change), in Mcal/d.
+        The net energy used due to topography (positive elevation change), in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEm_Act_Topo`).
 
     Returns
     -------
@@ -257,9 +266,9 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, A
 
     Notes
     -----
-    - This function implements the summation of total activity costs as per Equation 20-277 from the Nutrient Requirements of Dairy Cattle book.
     - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
         - Main calculation: Line 2798
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book: Equation 20-277
 
     Examples
     --------
@@ -280,15 +289,17 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, An_NEm_Act_Parlor: float, A
 
 def calculate_An_NEmUse(An_NEmUse_NS: float, An_NEmUse_Act: float, coeff_dict: dict) -> float:
     """
-    Calculate the total net energy (NE) used for maintenance (NEmUse) in dairy cows, measured in Megacalories per day (Mcal/d).
+    *Calculate Animal (An) Net Energy (ME) maintenance use (mUse)*
+
+    Calculate the total net energy (NE) used for maintenance (NEmUse) in dairy cows.
     This function computes the sum of net energy for non-stressed maintenance, net energy used for activities, and net energy used due to environmental factors.
 
     Parameters
     ----------
     An_NEmUse_NS : float
-        The net energy used for non-stressed maintenance, in Mcal/d.
+        The net energy used for non-stressed maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEmUse_NS`).
     An_NEmUse_Act : float
-        The total net energy used for activity, in Mcal/d.
+        The total net energy used for activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEmUse_Act`).
     coeff_dict : dict
         A dictionary containing coefficients required for the calculation, specifically 'An_NEmUse_Env' for environmental energy use.
 
@@ -299,10 +310,10 @@ def calculate_An_NEmUse(An_NEmUse_NS: float, An_NEmUse_Act: float, coeff_dict: d
 
     Notes
     -----
-    - This function calculates the adjusted net energy for maintenance (NEm) as per Equation 20-278 from the Nutrient Requirements of Dairy Cattle book.
     - Requires the coefficient for environmental net energy use ('An_NEmUse_Env') within the coeff_dict
     - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
         - Main calculation: Line 2802
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book: Equation 20-278
 
     - TODO: The An_NEmUse_Env should be 0 unless otherwise calculated, lines 2786-2790. Consider removing from coeff_dict.
 
@@ -330,14 +341,15 @@ def calculate_An_MEmUse(
         An_NEmUse: float, 
         coeff_dict: dict) -> float:
     """
-    Calculate the total Metabolizable Energy (MEm) used for maintenance in dairy cows, measured in Megacalories per day (Mcal/d).
-    This function converts net energy (NEm) use for maintenance into metabolizable energy (MEm) use by applying a conversion efficiency coefficient (Km_ME_NE),
+    *Calculate Animal (An) Metabolizable Energy (ME) maintenance use (mUse)*
+
+    This function converts net energy (NE) use for maintenance into ME use by applying a conversion efficiency coefficient (Km_ME_NE),
     which varies based on physiological state and specific feeding conditions.
 
     Parameters
     ----------
     An_NEmUse : float
-        The total net energy used for maintenance, in Mcal/d.
+        The total net energy used for maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_An_NEmUse`).
     coeff_dict : dict
         A dictionary containing the conversion coefficient 'Km_ME_NE' for converting NEm to MEm.
 
@@ -348,12 +360,12 @@ def calculate_An_MEmUse(
 
     Notes
     -----
-    - The conversion coefficient 'Km_ME_NE' is crucial for calculating MEm from NEm and must be determined based on the animal's physiological state
+    - The conversion coefficient 'Km_ME_NE' is determined based on the animal's physiological state
       and specific feeding conditions, such as dry feed only, liquid feed only, or mixed feeding for calves, and standard values for heifers,
       lactating cows, or dry cows.
     - Reference to specific line in the Nutrient Requirements of Dairy Cattle R Code:
         - Main calculation: Line 2845
-    - See equations 20-279 to 20-282
+     - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book: Equations 20-279 to 20-282
 
     - TODO: Remove coeff_dict and replace with further functions, Include refactored code below for the original lines 2806-2818 in R Code.
     - NOTE: The value used for liquid feed in R is 0.723 but in book it is 0.718 (equation 20-280)
@@ -407,16 +419,17 @@ def calculate_Rsrv_NEgain(
         Rsrv_CPgain: float
         ) -> float:
     """
-    Calculate the net energy (NE) of body reserve gain in dairy cows, measured in Megacalories per day (Mcal/d).
-    This function estimates the energy content of body reserve gains based on the relative proportions of fat and protein gained,
+    *Calculate Reserve (Rsrv) Net Energy (NE) Gain*
+
+    This function estimates the NE content of body reserve gains based on the relative proportions of fat and protein gained,
     using their respective heats of combustion.
 
     Parameters
     ----------
     Rsrv_Fatgain : float
-        The amount of body fat gained in kg/day.
+        The amount of body fat gained in kg/day. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_body_composition_equations.calculate_Rsrv_Fatgain`).
     Rsrv_CPgain : float
-        The amount of crude protein (CP) gained in kg/day.
+        The amount of crude protein (CP) gained in kg/day. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_body_composition_equations.calculate_Rsrv_CPgain`).
 
     Returns
     -------
@@ -427,7 +440,7 @@ def calculate_Rsrv_NEgain(
     -----
     - The energy value of a kilogram of true body tissue that is lost or gained is dependent on the relative proportions of fat and protein in the tissue and their respective heat of combustion.
     - The committee, as in the seventh edition of the Nutrient Requirements of Dairy Cattle, chose 9.4 Mcal/kg for retained body fat and 5.55 Mcal/kg for retained body protein as the heats of combustion.
-    - This calculation is based on Equation 3-20c from the Nutrient Requirements of Dairy Cattle book.
+    - This calculation is based on following equations from the Nutrient Requirements of Dairy Cattle book: Equation 3-20c
     
     - NOTE: Comment in original R code: "These are really REgain.  Abbreviations on NEgain need to be sorted out. MDH"
 
@@ -449,7 +462,9 @@ def calculate_Rsrv_NEgain(
 
 def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
     """
-    Select the efficiency of metabolizable energy (ME) conversion to retained energy (RE). The efficiency varies based on the physiological state and whether
+    *Calculate Kr (efficiency of converting) Metabolizable Energy (ME) to Retained Energy (RE)*
+
+    Select the efficiency of ME conversion to RE. The efficiency varies based on the physiological state and whether
     the animal is gaining or losing body reserves.
 
     Parameters
@@ -504,6 +519,8 @@ def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
 
 def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     """
+    *Calculate Reserve (Rsrv) Metabolizable Energy (ME) Gain*
+
     Calculate the metabolizable energy (ME) of body reserve gain in dairy cows, measured in Megacalories per day (Mcal/d).
     This function uses the net energy (NE) gain from body reserves and the efficiency of ME conversion to reserve energy (RE) to
     estimate the total ME associated with body reserve gains.
@@ -511,9 +528,9 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     Parameters
     ----------
     Rsrv_NEgain : float
-        The net energy of body reserve gain, in Mcal/d. 
+        The net energy of body reserve gain, in Mcal/d. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Rsrv_NEgain`).
     Kr_ME_RE : float
-        The efficiency of metabolizable energy to reserve energy conversion for reserves gain. 
+        The efficiency of converting ME to RE for reserves gain. Normally calculated by [](`~nasem_dairy.NASEM_equations.dev_energy_requirement_equations.calculate_Kr_ME_RE`).
 
     Returns
     -------
@@ -544,8 +561,10 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
 
 def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     """
+    *Calculate Frame (Frm) Net Energy (NE) Gain*
+
     Calculate the net energy (NE) of frame gain in dairy cows, measured in Megacalories per day (Mcal/d).
-    This function estimates the energy content of frame gains based on the amounts of fat and protein gained,
+    This function estimates the NE content of frame gains based on the amounts of fat and protein gained,
     utilizing their respective heats of combustion.
 
     Parameters
@@ -558,7 +577,7 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     Returns
     -------
     float
-        The retained energy of frame gain, in Megacalories per kg.
+        The retained energy of frame gain, in Mcal/d.
 
     Notes
     -----
@@ -587,8 +606,9 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
 
 def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
     """
-    Calculate the metabolizable energy (ME) of frame gain in dairy cows, measured in Megacalories per day (Mcal/d).
-    This function converts retained energy (RE) gain from frame tissue into metabolizable energy (ME) using a conversion coefficient (Kf_ME_RE).
+    *Calculate Frame (Frm) Metabolizable Energy (ME) Gain*
+
+    This function converts retained energy (RE) gain from frame tissue into ME using a conversion coefficient (Kf_ME_RE).
 
     Parameters
     ----------
