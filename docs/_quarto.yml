@@ -37,6 +37,65 @@ quartodoc:
   sections:
     - title: NASEM_equations
       desc: Functions that contain only equations from the Nutrient Requirements of Dairy Cattle model.
+   
+    - subtitle: Energy of Maintenance
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_An_NEmUse_NS
+        - calculate_An_NEm_Act_Graze
+        - calculate_An_NEm_Act_Parlor 
+        - calculate_An_NEm_Act_Topo 
+        - calculate_An_NEmUse_Act 
+        - calculate_An_NEmUse
+        - calculate_An_MEmUse 
+    
+    - subtitle: Energy of Gain
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_Rsrv_NEgain 
+        - calculate_Kr_ME_RE
+        - calculate_Rsrv_MEgain
+        - calculate_Frm_NEgain
+        - calculate_Frm_MEgain
+        - calculate_An_MEgain
+    
+    - subtitle: Energy of Gestation
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_Gest_REgain
+        - calculate_Gest_MEuse
+
+    - subtitle: Energy of Milk
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      contents:
+        - calculate_Trg_Mlk_NEout
+        - calculate_Trg_Mlk_MEout
+        - calculate_Trg_MEuse
+
+    - subtitle: Temp - milk equations
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_milk_equations
+      contents:
+        - calculate_Trg_NEmilk_Milk
+      
+    - subtitle: Temp - body comp
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_body_composition_equations
+      contents:
+        - calculate_Frm_Fatgain
+        - calculate_Frm_CPgain
+        - calculate_Rsrv_Fatgain
+        - calculate_Rsrv_CPgain
+      
+    - subtitle: Temp - gestation eqns
+      desc: ""
+      package: nasem_dairy.NASEM_equations.dev_gestation_equations
+      contents:
+        - calculate_GrUter_BWgain
 
     - subtitle: DMI equations
       desc: ALL DMI equations
@@ -59,6 +118,7 @@ quartodoc:
         - calculate_Dt_DMIn_DryCow1_FarOff
         - calculate_Dt_DMIn_DryCow1_Close
         - calculate_Dt_DMIn_DryCow2
+
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 

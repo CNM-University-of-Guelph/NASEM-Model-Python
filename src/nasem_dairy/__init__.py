@@ -290,6 +290,7 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_GutFill_Wt,
     calculate_An_BW_empty,
     calculate_An_REgain_Calf,
+    calculate_An_MEIn_approx,
     calculate_An_MEIn,
     calculate_An_NEIn,
     calculate_An_NE,
@@ -381,11 +382,9 @@ from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
     calculate_An_MEgain,
     calculate_Gest_REgain,
     calculate_Gest_MEuse,
-    calculate_Trg_NEmilk_Milk,
     calculate_Trg_Mlk_NEout,
     calculate_Trg_Mlk_MEout,
-    calculate_Trg_MEuse,
-    calculate_An_MEIn_approx
+    calculate_Trg_MEuse
 )
 
 from nasem_dairy.NASEM_equations.dev_protein_requirement_equations import (

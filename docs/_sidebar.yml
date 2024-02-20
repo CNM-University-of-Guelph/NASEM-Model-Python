@@ -4,6 +4,44 @@ website:
     - reference/index.qmd
     - contents:
       - contents:
+        - reference/calculate_An_NEmUse_NS.qmd
+        - reference/calculate_An_NEm_Act_Graze.qmd
+        - reference/calculate_An_NEm_Act_Parlor.qmd
+        - reference/calculate_An_NEm_Act_Topo.qmd
+        - reference/calculate_An_NEmUse_Act.qmd
+        - reference/calculate_An_NEmUse.qmd
+        - reference/calculate_An_MEmUse.qmd
+        section: Energy of Maintenance
+      - contents:
+        - reference/calculate_Rsrv_NEgain.qmd
+        - reference/calculate_Kr_ME_RE.qmd
+        - reference/calculate_Rsrv_MEgain.qmd
+        - reference/calculate_Frm_NEgain.qmd
+        - reference/calculate_Frm_MEgain.qmd
+        - reference/calculate_An_MEgain.qmd
+        section: Energy of Gain
+      - contents:
+        - reference/calculate_Gest_REgain.qmd
+        - reference/calculate_Gest_MEuse.qmd
+        section: Energy of Gestation
+      - contents:
+        - reference/calculate_Trg_Mlk_NEout.qmd
+        - reference/calculate_Trg_Mlk_MEout.qmd
+        - reference/calculate_Trg_MEuse.qmd
+        section: Energy of Milk
+      - contents:
+        - reference/calculate_Trg_NEmilk_Milk.qmd
+        section: Temp - milk equations
+      - contents:
+        - reference/calculate_Frm_Fatgain.qmd
+        - reference/calculate_Frm_CPgain.qmd
+        - reference/calculate_Rsrv_Fatgain.qmd
+        - reference/calculate_Rsrv_CPgain.qmd
+        section: Temp - body comp
+      - contents:
+        - reference/calculate_GrUter_BWgain.qmd
+        section: Temp - gestation eqns
+      - contents:
         - reference/calculate_Kb_LateGest_DMIn.qmd
         - reference/calculate_An_PrePartWklim.qmd
         - reference/calculate_Dt_DMIn_Heif_LateGestInd.qmd

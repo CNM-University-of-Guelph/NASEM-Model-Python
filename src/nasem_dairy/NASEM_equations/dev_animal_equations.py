@@ -210,6 +210,11 @@ def calculate_An_DEInp(An_DEIn, An_DETPIn, An_DENPNCPIn):
 
 
 def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl, Dt_DMIn_ClfLiq, Dt_DMIn_ClfStrt, coeff_dict):
+    """
+    see page 34 for comments, gut fill is default 0.18 for cows
+    Weaned calf == heifer, which is based on equations 11-1a/b using 85% (inverse of 0.15)
+    Comments in book suggest this is not always a suitable assumption (that gut fill is 15% of BW), consider making this a coeff that can be changed in coeff_dict?
+    """
     req_coeff = ['An_GutFill_BWmature']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_GutFill_BW = 0.06 # Line 2402, Milk fed calf, kg/kg BW
@@ -227,6 +232,9 @@ def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl, Dt_
 
 
 def calculate_An_BWnp(An_BW, GrUter_Wt):
+    '''
+    Equation 20-230
+    '''
     An_BWnp = An_BW - GrUter_Wt  # Line 2396, Non-pregnant BW
     return An_BWnp
 
@@ -237,6 +245,9 @@ def calculate_An_GutFill_Wt(An_GutFill_BW, An_BWnp):
 
 
 def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
+    '''
+    Equation 20-242
+    '''
     An_BW_empty = An_BW - An_GutFill_Wt # Line 2414
     return An_BW_empty
 
@@ -244,6 +255,17 @@ def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
 def calculate_An_REgain_Calf(Body_Gain_empty, An_BW_empty):
     An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205    # Line 2445, calf RE gain needed here for fat gain, mcal/d    
     return An_REgain_Calf
+
+def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float, An_DigTPaIn: float, Body_NPgain: float, An_GasEOut: float, coeff_dict: dict) -> float:
+    """
+    An_MEIn_approx: Approximate ME intake, see note:
+        Adjust heifer MPuse target if the MP:ME ratio is below optimum for development.
+        Can't calculate ME before MP, thus estimated ME in the MP:ME ratio using the target NPgain.  Will be incorrect
+        if the animal is lactating or gestating.
+    This is used by Equation 11-11
+    """
+    An_MEIn_approx = An_DEInp + An_DENPNCPIn + (An_DigTPaIn - Body_NPgain) * 4.0 + Body_NPgain * coeff_dict['En_CP'] - An_GasEOut   # Line 2685
+    return An_MEIn_approx
 
 
 def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout, Dt_DMIn_CflLiq, Dt_DEIn_base_ClfLiq, Dt_DEIn_base_ClfDry, RumDevDisc_Clf):
