@@ -1,7 +1,7 @@
 import pytest
 import nasem_dairy as nd
 import pandas as pd
-from nasem_dairy.NASEM_equations.dev_amino_acid_equations import calculate_Abs_AA_g
+from nasem_dairy.NASEM_equations.amino_acid_equations import calculate_Abs_AA_g
 
 
 @pytest.fixture
