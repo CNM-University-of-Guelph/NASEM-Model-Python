@@ -51,7 +51,11 @@ from nasem_dairy.NASEM_equations.dev_milk_equations import (
     calculate_An_MEavail_Milk,
     calculate_Mlk_Prod_NEalow,
     calculate_MlkNP_Milk,
-    calculate_Mlk_Prod
+    calculate_Mlk_Prod,
+    calculate_MlkFat_Milk,
+    calculate_MlkNE_Milk,
+    calculate_Mlk_NEout,
+    calculate_Mlk_MEout
 )
 
 from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
