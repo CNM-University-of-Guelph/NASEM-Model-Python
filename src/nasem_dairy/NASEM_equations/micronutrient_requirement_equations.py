@@ -693,6 +693,8 @@ def calculate_An_Fe_l(Trg_MilkProd: float) -> float:
 def calculate_An_Fe_req(An_StatePhys: str, Dt_DMIn_ClfLiq: float, An_Fe_Clf: float, An_Fe_g: float, An_Fe_y: float, An_Fe_l: float) -> float:
     """
     An_Fe_req: Fe requirement, mg/d
+    There's a comment in the R code saying: #add An_Fe_m when I move the eqn up here.
+    Also includes Line 3290; An_Fe_m <- 0  #no Fe maintenance requirement
     """
     if An_StatePhys == 'Calf' and Dt_DMIn_ClfLiq > 0:   # Line 3068-3069
         An_Fe_req = An_Fe_Clf
