@@ -6,11 +6,7 @@ __version__ = version("nasem_dairy")
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
 # Temp: disable import while using dev_refactor_NASEM.ipynb
 #from nasem_dairy.ration_balancer.execute_model import NASEM_model
-from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
-from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
-from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
-from nasem_dairy.NASEM_equations.temporary_functions import calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 # Import statements for updated functions
 from nasem_dairy.NASEM_equations.dev_DMI_equations import (
