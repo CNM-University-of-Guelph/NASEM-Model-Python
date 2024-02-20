@@ -210,6 +210,7 @@ def calculate_An_BWmature_empty(An_BW_mature, coeff_dict):
     An_BWmature_empty = An_BW_mature * (1 - coeff_dict['An_GutFill_BWmature'])
     return An_BWmature_empty
 
+
 def calculate_Body_Gain(Frm_Gain: float, Rsrv_Gain: float) -> float:
     """
     Body_Gain: Bodyweight gain, kg/d

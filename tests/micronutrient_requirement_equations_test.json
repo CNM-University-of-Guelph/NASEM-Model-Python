@@ -1,0 +1,692 @@
+[
+    {
+        "Name": "calculate_Ca_Mlk",
+        "Input": {"An_Breed": "Holstein"},
+        "Output": 1.17
+    },
+    {
+        "Name": "calculate_Ca_Mlk",
+        "Input": {"An_Breed": ""},
+        "Output": 1.03
+    },
+    {
+        "Name": "calculate_Fe_Ca_m",
+        "Input": {"An_DMIn": 25},
+        "Output": 22.5
+    },
+    {
+        "Name": "calculate_An_Ca_g",
+        "Input": {"An_BW_mature": 750, "An_BW": 684, "Body_Gain": 0.6},
+        "Output": 6.0187444470346145
+    },
+    {
+        "Name": "calculate_An_Ca_y",
+        "Input": {"An_GestDay": 129, "An_BW": 783},
+        "Output": 0.4158712230667302
+    },
+    {
+        "Name": "calculate_An_Ca_l",
+        "Input": {"Mlk_NP_g": 1240, "Ca_Mlk": 3.8, "Trg_MilkProd": 30, "Trg_MilkTPp": 3.9},
+        "Output": 36.812999999999995
+    },
+    {
+        "Name": "calculate_An_Ca_l",
+        "Input": {"Mlk_NP_g": null, "Ca_Mlk": 3.8, "Trg_MilkProd": 30, "Trg_MilkTPp": 3.9},
+        "Output": 114.0
+    },
+    {
+        "Name": "calculate_An_Ca_Clf",
+        "Input": {"An_BW_empty": 700, "Body_Gain_empty": 1.3},
+        "Output": 22.494154004791408
+    },
+    {
+        "Name": "calculate_An_Ca_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 5.0, "An_Ca_Clf": 2.9, "Fe_Ca_m": 4.1, "An_Ca_g": 14.6, "An_Ca_y": 40.4, "An_Ca_l": 10.9},
+        "Output": 70.0
+    },
+    {
+        "Name": "calculate_An_Ca_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 5.0, "An_Ca_Clf": 2.9, "Fe_Ca_m": 4.1, "An_Ca_g": 14.6, "An_Ca_y": 0, "An_Ca_l": 0},
+        "Output": 2.9
+    },
+    {
+        "Name": "calculate_An_Ca_bal",
+        "Input": {"Abs_CaIn": 34.1, "An_Ca_req": 29.6},
+        "Output": 4.5
+    },
+    {
+        "Name": "calculate_An_Ca_prod",
+        "Input": {"An_Ca_y": 6.3, "An_Ca_l": 14.9, "An_Ca_g": 7.2},
+        "Output": 28.4
+    },
+    {
+        "Name": "calculate_Ur_P_m",
+        "Input": {"An_BW": 745},
+        "Output": 0.447
+    },
+    {
+        "Name": "calculate_Fe_P_m",
+        "Input": {"An_Parity_rl": 0, "An_DMIn": 18.4},
+        "Output": 14.72
+    },
+    {
+        "Name": "calculate_Fe_P_m",
+        "Input": {"An_Parity_rl": 1, "An_DMIn": 18.4},
+        "Output": 18.4
+    },
+    {
+        "Name": "calculate_An_P_m",
+        "Input": {"Ur_P_m": 4.9, "Fe_P_m": 7.3},
+        "Output": 12.2
+    },
+    {
+        "Name": "calculate_An_P_g",
+        "Input": {"An_BW_mature": 750, "An_BW": 783, "Body_Gain": 0.4},
+        "Output": 2.316519821790819
+    },
+    {
+        "Name": "calculate_An_P_y",
+        "Input": {"An_GestDay": 59, "An_BW": 712},
+        "Output": 0.024921222441948256
+    },
+    {
+        "Name": "calculate_An_P_l",
+        "Input": {"Trg_MilkProd": 31, "MlkNP_Milk": 3.3},
+        "Output": 1344.7799999999997
+    },
+    {
+        "Name": "calculate_An_P_l",
+        "Input": {"Trg_MilkProd": null, "MlkNP_Milk": 3.3},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_P_Clf",
+        "Input": {"An_BW_empty": 731, "Body_Gain_empty": 1.9},
+        "Output": 27.5814733846347
+    },
+    {
+        "Name": "calculate_An_P_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_P_Clf": 30.2, "An_P_m": 6.7, "An_P_g": 4.8, "An_P_y": 13.1, "An_P_l": 21.5},
+        "Output": 46.1
+    },
+    {
+        "Name": "calculate_An_P_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 5.2, "An_P_Clf": 30.2, "An_P_m": 6.7, "An_P_g": 4.8, "An_P_y": 13.1, "An_P_l": 21.5},
+        "Output": 30.2
+    },
+    {
+        "Name": "calculate_An_P_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_P_Clf": 30.2, "An_P_m": 6.7, "An_P_g": 4.8, "An_P_y": 13.1, "An_P_l": 21.5},
+        "Output": 46.1
+    },
+    {
+        "Name": "calculate_An_P_bal",
+        "Input": {"Abs_PIn": 49.1, "An_P_req": 37.1},
+        "Output": 12.0
+    },
+    {
+        "Name": "calculate_Fe_P_g",
+        "Input": {"Dt_PIn": 76.8, "An_P_l": 13.1, "An_P_y": 15.7, "An_P_g": 9.3, "Ur_P_m": 10.8},
+        "Output": 27.9
+    },
+    {
+        "Name": "calculate_An_P_prod",
+        "Input": {"An_P_y": 4.3, "An_P_l": 17.1, "An_P_g": 14.8},
+        "Output": 36.2
+    },
+    {
+        "Name": "calculate_An_Mg_Clf",
+        "Input": {"An_BW_empty": 684, "Body_Gain_empty": 4.9},
+        "Output": 15.727544083108711
+    },
+    {
+        "Name": "calculate_Ur_Mg_m",
+        "Input": {"An_BW": 784},
+        "Output": 0.5488
+    },
+    {
+        "Name": "calculate_Fe_Mg_m",
+        "Input": {"An_DMIn": 34},
+        "Output": 10.2
+    },
+    {
+        "Name": "calculate_An_Mg_m",
+        "Input": {"Ur_Mg_m": 7.1, "Fe_Mg_m": 9.5},
+        "Output": 16.6
+    },
+    {
+        "Name": "calculate_An_Mg_g",
+        "Input": {"Body_Gain": 3.7},
+        "Output": 1.665
+    },
+    {
+        "Name": "calculate_An_Mg_y",
+        "Input": {"An_GestDay": 130, "An_BW": 762},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Mg_y",
+        "Input": {"An_GestDay": 200, "An_BW": 762},
+        "Output": 0.3197202797
+    },
+    {
+        "Name": "calculate_An_Mg_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Mg_l",
+        "Input": {"Trg_MilkProd": 32.7},
+        "Output": 3.597
+    },
+    {
+        "Name": "calculate_An_Mg_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Mg_Clf": 37, "An_Mg_m": 4.6, "An_Mg_g": 8.4, "An_Mg_y": 19.6, "An_Mg_l": 11.8},
+        "Output": 44.4
+    },
+    {
+        "Name": "calculate_An_Mg_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 4, "An_Mg_Clf": 37, "An_Mg_m": 4.6, "An_Mg_g": 8.4, "An_Mg_y": 19.6, "An_Mg_l": 11.8},
+        "Output": 37
+    },
+    {
+        "Name": "calculate_An_Mg_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Mg_Clf": 37, "An_Mg_m": 4.6, "An_Mg_g": 8.4, "An_Mg_y": 19.6, "An_Mg_l": 11.8},
+        "Output": 44.4
+    },
+    {
+        "Name": "calculate_An_Mg_bal",
+        "Input": {"Abs_MgIn": 35, "An_Mg_req": 29},
+        "Output": 6
+    },
+    {
+        "Name": "calculate_An_Mg_prod",
+        "Input": {"An_Mg_y": 7.2, "An_Mg_l": 10.3, "An_Mg_g": 18.6},
+        "Output": 36.1
+    },
+    {
+        "Name": "calculate_An_Na_Clf",
+        "Input": {"An_BW_empty": 130, "Body_Gain_empty": 8.3},
+        "Output": 45.34334717569791
+    },
+    {
+        "Name": "calculate_Fe_Na_m",
+        "Input": {"An_DMIn": 26.3},
+        "Output": 38.135
+    },
+    {
+        "Name": "calculate_An_Na_g",
+        "Input": {"Body_Gain": 5.4},
+        "Output": 7.56
+    },
+    {
+        "Name": "calculate_An_Na_y",
+        "Input": {"An_GestDay": 100, "An_BW": 683},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Na_y",
+        "Input": {"An_GestDay": 200, "An_BW": 683},
+        "Output": 1.3373426573426572
+    },
+    {
+        "Name": "calculate_An_Na_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Na_l",
+        "Input": {"Trg_MilkProd": 30.8},
+        "Output": 12.32
+    },
+    {
+        "Name": "calculate_An_Na_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Na_Clf": 41.8, "Fe_Na_m": 7.6, "An_Na_g": 8.4, "An_Na_y": 13.1, "An_Na_l": 24.9},
+        "Output": 54.0
+    },
+    {
+        "Name": "calculate_An_Na_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 3, "An_Na_Clf": 41.8, "Fe_Na_m": 7.6, "An_Na_g": 8.4, "An_Na_y": 13.1, "An_Na_l": 24.9},
+        "Output": 41.8
+    },
+    {
+        "Name": "calculate_An_Na_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Na_Clf": 41.8, "Fe_Na_m": 7.6, "An_Na_g": 8.4, "An_Na_y": 13.1, "An_Na_l": 24.9},
+        "Output": 54.0
+    },
+    {
+        "Name": "calculate_An_Na_bal",
+        "Input": {"Abs_NaIn": 38.1, "An_Na_req": 27.5},
+        "Output": 10.6
+    },
+    {
+        "Name": "calculate_An_Na_prod",
+        "Input": {"An_Na_y": 15.8, "An_Na_l": 13.4, "An_Na_g": 8.7},
+        "Output": 37.9
+    },
+    {
+        "Name": "calculate_An_Cl_Clf",
+        "Input": {"An_BW_empty": 697, "Body_Gain_empty": 6.4},
+        "Output": 38.76116556552273
+    },
+    {
+        "Name": "calculate_Fe_Cl_m",
+        "Input": {"An_DMIn": 37},
+        "Output": 41.07
+    },
+    {
+        "Name": "calculate_An_Cl_g",
+        "Input": {"Body_Gain": 12.3},
+        "Output": 12.3
+    },
+    {
+        "Name": "calculate_An_Cl_y",
+        "Input": {"An_GestDay": 90, "An_BW": 764},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Cl_y",
+        "Input": {"An_GestDay": 200, "An_BW": 764},
+        "Output": 1.068531469
+    },
+    {
+        "Name": "calculate_An_Cl_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Cl_l",
+        "Input": {"Trg_MilkProd": 42.1},
+        "Output": 42.1
+    },
+    {
+        "Name": "calculate_An_Cl_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Cl_Clf": 31.6, "Fe_Cl_m": 7.8, "An_Cl_g": 13.3, "An_Cl_y": 9.7, "An_Cl_l": 20.5},
+        "Output": 51.3
+    },
+    {
+        "Name": "calculate_An_Cl_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 3, "An_Cl_Clf": 31.6, "Fe_Cl_m": 7.8, "An_Cl_g": 13.3, "An_Cl_y": 9.7, "An_Cl_l": 20.5},
+        "Output": 31.6
+    },
+    {
+        "Name": "calculate_An_Cl_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Cl_Clf": 31.6, "Fe_Cl_m": 7.8, "An_Cl_g": 13.3, "An_Cl_y": 9.7, "An_Cl_l": 20.5},
+        "Output": 51.3
+    },
+    {
+        "Name": "calculate_An_Cl_bal",
+        "Input": {"Abs_ClIn": 31.5, "An_Cl_req": 34.6},
+        "Output": -3.1
+    },
+    {
+        "Name": "calculate_An_Cl_prod",
+        "Input": {"An_Cl_y": 17.8, "An_Cl_l": 10.5, "An_Cl_g": 9.4},
+        "Output": 37.7
+    },
+    {
+        "Name": "calculate_An_K_Clf",
+        "Input": {"An_BW_empty": 665, "Body_Gain_empty": 3.5},
+        "Output": 126.30873963356025
+    },
+    {
+        "Name": "calculate_Ur_K_m",
+        "Input": {"Trg_MilkProd": 36, "An_BW": 739},
+        "Output": 147.8
+    },
+    {
+        "Name": "calculate_Ur_K_m",
+        "Input": {"Trg_MilkProd": 0, "An_BW": 739},
+        "Output": 51.73
+    },
+    {
+        "Name": "calculate_Fe_K_m",
+        "Input": {"An_DMIn": 17.5},
+        "Output": 43.75
+    },
+    {
+        "Name": "calculate_An_K_m",
+        "Input": {"Ur_K_m": 4.8, "Fe_K_m": 7.9},
+        "Output": 12.7
+    },
+    {
+        "Name": "calculate_An_K_g",
+        "Input": {"Body_Gain": 8.4},
+        "Output": 21
+    },
+    {
+        "Name": "calculate_An_K_y",
+        "Input": {"An_GestDay": 100, "An_BW": 793},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_K_y",
+        "Input": {"An_GestDay": 200, "An_BW": 793},
+        "Output": 1.142363636
+    },
+    {
+        "Name": "calculate_An_K_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_K_l",
+        "Input": {"Trg_MilkProd": 33.2},
+        "Output": 49.8
+    },
+    {
+        "Name": "calculate_An_K_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_K_Clf": 30.4, "An_K_m": 6.7, "An_K_g": 18.4, "An_K_y": 13.4, "An_K_l": 2.8},
+        "Output": 41.3
+    },
+    {
+        "Name": "calculate_An_K_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 5, "An_K_Clf": 30.4, "An_K_m": 6.7, "An_K_g": 18.4, "An_K_y": 13.4, "An_K_l": 2.8},
+        "Output": 30.4
+    },
+    {
+        "Name": "calculate_An_K_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_K_Clf": 30.4, "An_K_m": 6.7, "An_K_g": 18.4, "An_K_y": 13.4, "An_K_l": 2.8},
+        "Output": 41.3
+    },
+    {
+        "Name": "calculate_An_K_bal",
+        "Input": {"Abs_KIn": 37.9, "An_K_req": 24.1},
+        "Output": 13.8
+    },
+    {
+        "Name": "calculate_An_K_prod",
+        "Input": {"An_K_y": 4.5, "An_K_l": 3.9, "An_K_g": 7.2},
+        "Output": 15.6
+    },
+    {
+        "Name": "calculate_An_S_req",
+        "Input": {"An_DMIn": 19.4},
+        "Output": 38.8
+    },
+    {
+        "Name": "calculate_An_S_bal",
+        "Input": {"Dt_SIn": 29.3, "An_S_req": 16.2},
+        "Output": 13.1
+    },
+    {
+        "Name": "calculate_An_Co_req",
+        "Input": {"An_DMIn": 26.5},
+        "Output": 5.3
+    },
+    {
+        "Name": "calculate_An_Co_bal",
+        "Input": {"Abs_CoIn": 25.1, "An_Co_req": 17.2},
+        "Output": 7.9
+    },
+    {
+        "Name": "calculate_An_Cu_Clf",
+        "Input": {"An_BW": 730, "Body_Gain_empty": 5.2},
+        "Output": 47.17
+    },
+    {
+        "Name": "calculate_An_Cu_m",
+        "Input": {"An_BW": 729},
+        "Output": 10.5705
+    },
+    {
+        "Name": "calculate_An_Cu_g",
+        "Input": {"Body_Gain": 2.6},
+        "Output": 5.2
+    },
+    {
+        "Name": "calculate_An_Cu_y",
+        "Input": {"An_GestDay": 80, "An_BW": 715},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Cu_y",
+        "Input": {"An_GestDay": 200, "An_BW": 715},
+        "Output": 1.6445
+    },
+    {
+        "Name": "calculate_An_Cu_y",
+        "Input": {"An_GestDay": 150, "An_BW": 715},
+        "Output": 0.2145
+    },
+    {
+        "Name": "calculate_An_Cu_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Cu_l",
+        "Input": {"Trg_MilkProd": 38.2},
+        "Output": 1.528
+    },
+    {
+        "Name": "calculate_An_Cu_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Cu_Clf": 27.2, "An_Cu_m": 4.8, "An_Cu_g": 12.7, "An_Cu_y": 9.8, "An_Cu_l": 3.6},
+        "Output": 30.9
+    },
+    {
+        "Name": "calculate_An_Cu_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 5, "An_Cu_Clf": 27.2, "An_Cu_m": 4.8, "An_Cu_g": 12.7, "An_Cu_y": 9.8, "An_Cu_l": 3.6},
+        "Output": 27.2
+    },
+    {
+        "Name": "calculate_An_Cu_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Cu_Clf": 27.2, "An_Cu_m": 4.8, "An_Cu_g": 12.7, "An_Cu_y": 9.8, "An_Cu_l": 3.6},
+        "Output": 30.9
+    },
+    {
+        "Name": "calculate_An_Cu_bal",
+        "Input": {"Abs_CuIn": 19.4, "An_Cu_req": 7.4},
+        "Output": 12.0
+    },
+    {
+        "Name": "calculate_An_Cu_prod",
+        "Input": {"An_Cu_y": 15.2, "An_Cu_l": 7.2, "An_Cu_g": 16.8},
+        "Output": 39.2
+    },
+    {
+        "Name": "calculate_An_I_req",
+        "Input": {"An_StatePhys": "Calf", "An_DMIn": 7.3, "An_BW": 140, "Trg_MilkProd": 0},
+        "Output": 5.84
+    },
+    {
+        "Name": "calculate_An_I_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "An_DMIn": 27.3, "An_BW": 740, "Trg_MilkProd": 30},
+        "Output": 10.069815808440236
+    },
+    {
+        "Name": "calculate_An_I_bal",
+        "Input": {"Dt_IIn": 36.2, "An_I_req": 40.5},
+        "Output": -4.3
+    },
+    {
+        "Name": "calculate_An_Fe_Clf",
+        "Input": {"Body_Gain": 6.3},
+        "Output": 856.8
+    },
+    {
+        "Name": "calculate_An_Fe_g",
+        "Input": {"Body_Gain": 2.5},
+        "Output": 85
+    },
+    {
+        "Name": "calculate_An_Fe_y",
+        "Input": {"An_GestDay": 50, "An_BW": 718},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Fe_y",
+        "Input": {"An_GestDay": 250, "An_BW": 718},
+        "Output": 17.95
+    },
+    {
+        "Name": "calculate_An_Fe_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Fe_l",
+        "Input": {"Trg_MilkProd": 28.6},
+        "Output": 28.6
+    },
+    {
+        "Name": "calculate_An_Fe_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Fe_Clf": 42.1, "An_Fe_g": 28.4, "An_Fe_y": 6.7, "An_Fe_l": 13.8},
+        "Output": 48.9
+    },
+    {
+        "Name": "calculate_An_Fe_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 3, "An_Fe_Clf": 42.1, "An_Fe_g": 28.4, "An_Fe_y": 6.7, "An_Fe_l": 13.8},
+        "Output": 42.1
+    },
+    {
+        "Name": "calculate_An_Fe_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Fe_Clf": 42.1, "An_Fe_g": 28.4, "An_Fe_y": 6.7, "An_Fe_l": 13.8},
+        "Output": 48.9
+    },
+    {
+        "Name": "calculate_An_Fe_bal",
+        "Input": {"Abs_FeIn": 32.1, "An_Fe_req": 20.4},
+        "Output": 11.7
+    },
+    {
+        "Name": "calculate_An_Fe_prod",
+        "Input": {"An_Fe_y": 5.8, "An_Fe_l": 17.3, "An_Fe_g": 20.6},
+        "Output": 43.7
+    },
+    {
+        "Name": "calculate_An_Mn_Clf",
+        "Input": {"An_BW": 95, "Body_Gain": 2.8},
+        "Output": 220.7
+    },
+    {
+        "Name": "calculate_An_Mn_m",
+        "Input": {"An_BW": 712},
+        "Output": 1.8512
+    },
+    {
+        "Name": "calculate_An_Mn_g",
+        "Input": {"Body_Gain": 6.4},
+        "Output": 4.48
+    },
+    {
+        "Name": "calculate_An_Mn_y",
+        "Input": {"An_GestDay": 40, "An_BW": 673},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Mn_y",
+        "Input": {"An_GestDay": 210, "An_BW": 673},
+        "Output": 0.28266
+    },
+    {
+        "Name": "calculate_An_Mn_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Mn_l",
+        "Input": {"Trg_MilkProd": 32.1},
+        "Output": 0.963
+    },
+    {
+        "Name": "calculate_An_Mn_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Mn_Clf": 46.8, "An_Mn_m": 8.4, "An_Mn_g": 16, "An_Mn_y": 3.7, "An_Mn_l": 26.5},
+        "Output": 54.6
+    },
+    {
+        "Name": "calculate_An_Mn_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 4, "An_Mn_Clf": 46.8, "An_Mn_m": 8.4, "An_Mn_g": 16, "An_Mn_y": 3.7, "An_Mn_l": 26.5},
+        "Output": 46.8
+    },
+    {
+        "Name": "calculate_An_Mn_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 0, "An_Mn_Clf": 46.8, "An_Mn_m": 8.4, "An_Mn_g": 16, "An_Mn_y": 3.7, "An_Mn_l": 26.5},
+        "Output": 54.6
+    },
+    {
+        "Name": "calculate_An_Mn_bal",
+        "Input": {"Abs_MnIn": 31.2, "An_Mn_req": 20.6},
+        "Output": 10.6
+    },
+    {
+        "Name": "calculate_An_Mn_prod",
+        "Input": {"An_Mn_y": 10.8, "An_Mn_l": 16.7, "An_Mn_g": 9.3},
+        "Output": 36.8
+    },
+    {
+        "Name": "calculate_An_Se_req",
+        "Input": {"An_DMIn": 24.8},
+        "Output": 7.44
+    },
+    {
+        "Name": "calculate_An_Se_bal",
+        "Input": {"Dt_SeIn": 19.4, "An_Se_req": 14.2},
+        "Output": 5.2
+    },
+    {
+        "Name": "calculate_An_Zn_Clf",
+        "Input": {"An_DMIn": 32.6, "Body_Gain": 3.6},
+        "Output": 606.4000000000001
+    },
+    {
+        "Name": "calculate_An_Zn_m",
+        "Input": {"An_DMIn": 26.2},
+        "Output": 131
+    },
+    {
+        "Name": "calculate_An_Zn_g",
+        "Input": {"Body_Gain": 4.2},
+        "Output": 100.8
+    },
+    {
+        "Name": "calculate_An_Zn_y",
+        "Input": {"An_GestDay": 140, "An_BW": 738},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Zn_y",
+        "Input": {"An_GestDay": 240, "An_BW": 738},
+        "Output": 12.546
+    },
+    {
+        "Name": "calculate_An_Zn_l",
+        "Input": {"Trg_MilkProd": null},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_An_Zn_l",
+        "Input": {"Trg_MilkProd": 28.3},
+        "Output": 113.2
+    },
+    {
+        "Name": "calculate_An_Zn_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 0, "An_Zn_Clf": 40.3, "An_Zn_m": 17.5, "An_Zn_g": 9.1, "An_Zn_y": 13.6, "An_Zn_l": 28.7},
+        "Output": 68.9
+    },
+    {
+        "Name": "calculate_An_Zn_req",
+        "Input": {"An_StatePhys": "Calf", "Dt_DMIn_ClfLiq": 3, "An_Zn_Clf": 40.3, "An_Zn_m": 17.5, "An_Zn_g": 9.1, "An_Zn_y": 13.6, "An_Zn_l": 28.7},
+        "Output": 40.3
+    },
+    {
+        "Name": "calculate_An_Zn_req",
+        "Input": {"An_StatePhys": "Lactating Cow", "Dt_DMIn_ClfLiq": 3, "An_Zn_Clf": 40.3, "An_Zn_m": 17.5, "An_Zn_g": 9.1, "An_Zn_y": 13.6, "An_Zn_l": 28.7},
+        "Output": 68.9
+    },
+    {
+        "Name": "calculate_An_Zn_bal",
+        "Input": {"Abs_ZnIn": 36.7, "An_Zn_req": 29.4},
+        "Output": 7.3
+    },
+    {
+        "Name": "calculate_An_Zn_prod",
+        "Input": {"An_Zn_y": 12.4, "An_Zn_l": 19.6, "An_Zn_g": 20.2},
+        "Output": 52.2
+    },
+    {
+        "Name": "calculate_An_DCADmeq",
+        "Input": {"Dt_K": 0.147, "Dt_Na": 0.204, "Dt_Cl": 0.36, "Dt_S": 0.45},
+        "Output": -256.2704908380046
+    }
+]
