@@ -49,8 +49,9 @@ def calculate_An_Ca_l(Mlk_NP_g: float, Ca_Mlk: float, Trg_MilkProd: float, Trg_M
         An_Ca_l = Ca_Mlk * Trg_MilkProd 
     else:
         An_Ca_l = (0.295 + 0.239 * Trg_MilkTPp) * Trg_MilkProd
-    if math.isnan(An_Ca_l): # Line 2968
-        An_Ca_l = 0
+    # Line 2969 - this is not possible for An_Ca_l to be NA, but keeping commented out for record of R code line number:
+    # if math.isnan(An_Ca_l):
+    #     An_Ca_l = 0
     return An_Ca_l
 
 
