@@ -98,5 +98,40 @@
       "Name": "calculate_Mlk_Prod_NEalow",
       "Input": {"An_MEavail_Milk": 38, "Trg_NEmilk_Milk": 0.43, "coeff_dict": null},
       "Output": 58.32558139534884
+    },
+    {
+      "Name": "calculate_MlkNP_Milk",
+      "Input": {"An_StatePhys": "Lactating Cow", "Mlk_NP_g": 320, "Mlk_Prod": 27},
+      "Output": 0.0118518518518519
+    },
+    {
+      "Name": "calculate_MlkNP_Milk",
+      "Input": {"An_StatePhys": "Calf", "Mlk_NP_g": 0, "Mlk_Prod": 0},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Mlk_Prod",
+      "Input": {"An_StatePhys": "Lactating Cow", "mProd_eqn": 1, "Mlk_Prod_comp": 31, "Mlk_Prod_NEalow": 28, "Mlk_Prod_MPalow": 34, "Trg_MilkProd": 30},
+      "Output": 31
+    },
+    {
+      "Name": "calculate_Mlk_Prod",
+      "Input": {"An_StatePhys": "Lactating Cow", "mProd_eqn": 2, "Mlk_Prod_comp": 31, "Mlk_Prod_NEalow": 28, "Mlk_Prod_MPalow": 34, "Trg_MilkProd": 30},
+      "Output": 28
+    },
+    {
+      "Name": "calculate_Mlk_Prod",
+      "Input": {"An_StatePhys": "Lactating Cow", "mProd_eqn": 3, "Mlk_Prod_comp": 31, "Mlk_Prod_NEalow": 28, "Mlk_Prod_MPalow": 34, "Trg_MilkProd": 30},
+      "Output": 34
+    },
+    {
+      "Name": "calculate_Mlk_Prod",
+      "Input": {"An_StatePhys": "Lactating Cow", "mProd_eqn": 4, "Mlk_Prod_comp": 31, "Mlk_Prod_NEalow": 28, "Mlk_Prod_MPalow": 34, "Trg_MilkProd": 30},
+      "Output": 28
+    },
+    {
+      "Name": "calculate_Mlk_Prod",
+      "Input": {"An_StatePhys": "Lactating Cow", "mProd_eqn": 0, "Mlk_Prod_comp": 31, "Mlk_Prod_NEalow": 28, "Mlk_Prod_MPalow": 34, "Trg_MilkProd": 30},
+      "Output": 30
     }
   ]

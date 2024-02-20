@@ -245,6 +245,7 @@ def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float, Trg_NEmilk_Milk: float, co
     Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk
     return Mlk_Prod_NEalow
 
+
 def calculate_MlkNP_Milk(An_StatePhys: str, Mlk_NP_g: float, Mlk_Prod: float):
     """
     MlkNP_Milk: Net protein content of milk, g/g
