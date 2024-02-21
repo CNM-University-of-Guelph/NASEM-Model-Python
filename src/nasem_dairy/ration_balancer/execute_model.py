@@ -503,20 +503,20 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
 
 
 def execute_model(user_diet: pd.DataFrame, 
-                      animal_input: dict, 
-                      equation_selection: dict, 
-                      feed_library_df: pd.DataFrame, 
-                      coeff_dict: dict = coeff_dict,
-                      infusion_input: dict = infusion_dict,
-                      MP_NP_efficiency_input: dict = MP_NP_efficiency_dict
-                      ):
+                  animal_input: dict, 
+                  equation_selection: dict, 
+                  feed_library_df: pd.DataFrame, 
+                  coeff_dict: dict = coeff_dict,
+                  infusion_input: dict = infusion_dict,
+                  MP_NP_efficiency_input: dict = MP_NP_efficiency_dict
+                  ):
     """
-    Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle  model.
+    Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
 
     Parameters
     ----------
     user_diet : pd.DataFrame
-        DataFrame containing user-defined diet composition.
+        DataFrame containing user-defined diet composition in kg of feed ingredient. Expects two columns, 'Feedstuff' as a string with the name from the feed library and 'kg_user' as a float with the kg of the ingredient to feed.
     animal_input : dict
         Dictionary containing animal-specific input values.
     equation_selection : dict
@@ -527,6 +527,8 @@ def execute_model(user_diet: pd.DataFrame,
         Dictionary containing coefficients for the model, by default `nd.coeff_dict`.
     infusion_input : dict, optional
         Dictionary containing infusion input data, by default `nd.infusion_dict`.
+    MP_NP_efficiency_input : dict, optional
+        Dictionary containing amino acid conversion efficiencies, by default `nd.MP_NP_efficiency_dict`.
 
     Returns
     -------
@@ -536,8 +538,9 @@ def execute_model(user_diet: pd.DataFrame,
 
     Notes
     -----
-    - 
-
+    - user_diet, animal_input an equation_selection can be generated from a CSV file using nd.read_csv_input
+    - The default feed_library_df can be read from NASEM_feed_library.csv
+    
     Examples
     --------
     Run the NASEM dairy model with user-defined inputs:
