@@ -244,3 +244,68 @@ def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float, Trg_NEmilk_Milk: float, co
     # Line 2898, Energy allowable Milk Production, kg/d
     Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk
     return Mlk_Prod_NEalow
+
+
+def calculate_MlkNP_Milk(An_StatePhys: str, Mlk_NP_g: float, Mlk_Prod: float):
+    """
+    MlkNP_Milk: Net protein content of milk, g/g
+    """
+    if An_StatePhys == "Lactating Cow": 
+        MlkNP_Milk = Mlk_NP_g / 1000 / Mlk_Prod # Milk true protein, g/g, Line 2907-2908
+    else:
+        MlkNP_Milk = 0
+    return MlkNP_Milk
+
+
+def calculate_Mlk_Prod(An_StatePhys: str, mProd_eqn: int, Mlk_Prod_comp: float, Mlk_Prod_NEalow: float, Mlk_Prod_MPalow: float, Trg_MilkProd: float) -> float:
+    """
+    Mlk_Prod: Milk production, kg/d, can be user entered target or a prediction 
+    """
+    if An_StatePhys == "Lactating Cow" and mProd_eqn==1:    # Milk production from component predictions, Line 2282
+        Mlk_Prod = Mlk_Prod_comp
+    elif An_StatePhys == "Lactating Cow" and mProd_eqn==2:  # use NE Allowable Milk prediction, Line 2899
+        Mlk_Prod = Mlk_Prod_NEalow
+    elif An_StatePhys == "Lactating Cow" and mProd_eqn==3:  # Use MP Allowable based predictions, Line 2709
+        Mlk_Prod = Mlk_Prod_MPalow
+    elif An_StatePhys == "Lactating Cow" and mProd_eqn==4:  # Use min of NE and MP Allowable, Line 2900
+        Mlk_Prod = min(Mlk_Prod_NEalow, Mlk_Prod_MPalow)
+    else:
+        Mlk_Prod = Trg_MilkProd     # Use user entered production if no prediction selected or if not a lactating cow
+    return Mlk_Prod
+
+
+def calculate_MlkFat_Milk(An_StatePhys: str, Mlk_Fat: float, Mlk_Prod: float) -> float:
+    """
+    MlkFat_Milk: Milk fat g/g 
+    """
+    if An_StatePhys == "Lactating Cow":
+        MlkFat_Milk = Mlk_Fat / Mlk_Prod  # Milk Fat, g/g, Line 2909
+    else:
+        MlkFat_Milk = 0
+    return MlkFat_Milk
+
+
+def calculate_MlkNE_Milk(MlkFat_Milk: float, MlkNP_Milk: float, Trg_MilkLacp: float) -> float:
+    """
+    MlkNE_Milk: NE content of milk, NE/kg
+    """
+    MlkNE_Milk = 9.29 * MlkFat_Milk + 5.85 * MlkNP_Milk + 3.95 * Trg_MilkLacp / 100     # Line 2916
+    return MlkNE_Milk
+
+
+def calculate_Mlk_NEout(MlkNE_Milk: float, Mlk_Prod: float) -> float:
+    """
+    Mlk_NEout: Total NE in milk Mcal/d
+    """
+    Mlk_NEout = MlkNE_Milk * Mlk_Prod   # Line 2918
+    return Mlk_NEout
+
+
+def calculate_Mlk_MEout(Mlk_NEout: float, coeff_dict: dict) -> float:
+    """
+    Mlk_MEout: Total ME in milk Mcal/d
+    """
+    req_coeffs = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    Mlk_MEout = Mlk_NEout / coeff_dict['Kl_ME_NE']  
+    return Mlk_MEout

@@ -6,14 +6,10 @@ __version__ = version("nasem_dairy")
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
 # Temp: disable import while using dev_refactor_NASEM.ipynb
 #from nasem_dairy.ration_balancer.execute_model import NASEM_model
-from nasem_dairy.NASEM_equations.dev_gestation_equations import calculate_GrUter_BWgain
-from nasem_dairy.NASEM_equations.Animal_supply_equations import calculate_An_DEIn, calculate_An_NE
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
-from nasem_dairy.NASEM_equations.micronutrient_equations import mineral_requirements
-from nasem_dairy.NASEM_equations.temporary_functions import temp_MlkNP_Milk, temp_calc_An_DigTPaIn, calculate_Mlk_Prod, calculate_MlkNE_Milk, calculate_Mlk_MEout
 
 # Import statements for updated functions
-from nasem_dairy.NASEM_equations.dev_DMI_equations import (
+from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Kb_LateGest_DMIn,
     calculate_An_PrePartWklim,
     calculate_Dt_DMIn_Heif_LateGestInd,
@@ -33,7 +29,7 @@ from nasem_dairy.NASEM_equations.dev_DMI_equations import (
     calculate_Dt_DMIn_DryCow2
 )
 
-from nasem_dairy.NASEM_equations.dev_milk_equations import (
+from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_Trg_NEmilk_Milk,
     calculate_Mlk_NP_g,
     calculate_Mlk_CP_g,
@@ -50,9 +46,15 @@ from nasem_dairy.NASEM_equations.dev_milk_equations import (
     calculate_Mlk_Prod_MPalow,
     calculate_An_MEavail_Milk,
     calculate_Mlk_Prod_NEalow,
+    calculate_MlkNP_Milk,
+    calculate_Mlk_Prod,
+    calculate_MlkFat_Milk,
+    calculate_MlkNE_Milk,
+    calculate_Mlk_NEout,
+    calculate_Mlk_MEout
 )
 
-from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
+from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_TT_dcFdNDF_Lg,
     calculate_Fd_DNDF48,
     calculate_TT_dcFdNDF_48h,
@@ -177,19 +179,21 @@ from nasem_dairy.NASEM_equations.dev_nutrient_intakes import (
     calculate_TT_dcNDF,
     calculate_TT_dcSt_Base,
     calculate_TT_dcSt,
+    calculate_Dt_acMg,
+    calculate_Abs_MgIn,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
 )
 
-from nasem_dairy.NASEM_equations.dev_rumen_equations import (
+from nasem_dairy.NASEM_equations.rumen_equations import (
     calculate_Rum_dcNDF,
     calculate_Rum_dcSt,
     calculate_Rum_DigNDFIn,
     calculate_Rum_DigStIn
 )
 
-from nasem_dairy.NASEM_equations.dev_microbial_protein_equations import (
+from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_RDPIn_MiNmax,
     calculate_MiN_Vm,
     calculate_Du_MiN_NRC2021_g,
@@ -202,7 +206,7 @@ from nasem_dairy.NASEM_equations.dev_microbial_protein_equations import (
     calculate_Du_idMiTP
 )
 
-from nasem_dairy.NASEM_equations.dev_protein_equations import (
+from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_f_mPrt_max, 
     calculate_Du_MiCP_g, 
     calculate_Du_MiTP_g,
@@ -211,7 +215,7 @@ from nasem_dairy.NASEM_equations.dev_protein_equations import (
     calculate_Scrf_MPUse_g_Trg
 )
 
-from nasem_dairy.NASEM_equations.dev_amino_acid_equations import (
+from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Du_AAMic,
     calculate_Du_IdAAMic,
     calculate_Abs_AA_g,
@@ -231,7 +235,7 @@ from nasem_dairy.NASEM_equations.dev_amino_acid_equations import (
 )
 
 
-from nasem_dairy.NASEM_equations.dev_infusion_equations import (
+from nasem_dairy.NASEM_equations.infusion_equations import (
     calculate_Inf_TPIn,
     calculate_Inf_OMIn,
     calculate_Inf_Rum,
@@ -253,7 +257,7 @@ from nasem_dairy.NASEM_equations.dev_infusion_equations import (
     calculate_infusion_data
 )
 
-from nasem_dairy.NASEM_equations.dev_animal_equations import (
+from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DMIn_BW,
     calculate_An_RDPIn,
     calculate_An_RDP,
@@ -303,7 +307,7 @@ from nasem_dairy.NASEM_equations.dev_animal_equations import (
     calculate_An_MPIn_g
 )
 
-from nasem_dairy.NASEM_equations.dev_gestation_equations import (
+from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Uter_Wtpart,
     calculate_Uter_Wt,
     calculate_GrUter_Wtpart,
@@ -316,7 +320,7 @@ from nasem_dairy.NASEM_equations.dev_gestation_equations import (
     calculate_Gest_CPuse_g
 )
 
-from nasem_dairy.NASEM_equations.dev_fecal_equations import (
+from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_rOMend,
     calculate_Fe_RUP,
     calculate_Fe_RumMiCP,
@@ -328,7 +332,7 @@ from nasem_dairy.NASEM_equations.dev_fecal_equations import (
     calculate_Fe_MPendUse_g_Trg
 )
 
-from nasem_dairy.NASEM_equations.dev_body_composition_equations import (
+from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_CPGain_FrmGain,
     calculate_Frm_Gain,
     calculate_Frm_Gain_empty,
@@ -355,10 +359,11 @@ from nasem_dairy.NASEM_equations.dev_body_composition_equations import (
     calculate_Frm_NPgain,
     calculate_Frm_CPgain,
     calculate_Body_NPgain_g,
-    calculate_An_BWmature_empty
+    calculate_An_BWmature_empty,
+    calculate_Body_Gain
 )
 
-from nasem_dairy.NASEM_equations.dev_urine_equations import (
+from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_Nout_g,
     calculate_Ur_DEout,
     calculate_Ur_Nend_g,
@@ -366,7 +371,7 @@ from nasem_dairy.NASEM_equations.dev_urine_equations import (
     calculate_Ur_MPendUse_g
 )
 
-from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
+from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_An_NEmUse_NS,
     calculate_An_NEm_Act_Graze,
     calculate_An_NEm_Act_Parlor,
@@ -387,7 +392,7 @@ from nasem_dairy.NASEM_equations.dev_energy_requirement_equations import (
     calculate_Trg_MEuse
 )
 
-from nasem_dairy.NASEM_equations.dev_protein_requirement_equations import (
+from nasem_dairy.NASEM_equations.protein_requirement_equations import (
     calculate_An_MPm_g_Trg,
     calculate_Body_MPUse_g_Trg_initial,
     calculate_Gest_MPUse_g_Trg,
@@ -403,4 +408,103 @@ from nasem_dairy.NASEM_equations.dev_protein_requirement_equations import (
     calculate_Rsrv_MPUse_g_Trg,
     calculate_Body_MPUse_g_Trg,
     calculate_An_MPuse_g_Trg
+)
+
+from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
+    calculate_Ca_Mlk,
+    calculate_Fe_Ca_m,
+    calculate_An_Ca_g,
+    calculate_An_Ca_y,
+    calculate_An_Ca_l,
+    calculate_An_Ca_Clf,
+    calculate_An_Ca_req,
+    calculate_An_Ca_bal,
+    calculate_An_Ca_prod,
+    calculate_Ur_P_m,
+    calculate_Fe_P_m,
+    calculate_An_P_m,
+    calculate_An_P_g,
+    calculate_An_P_y,
+    calculate_An_P_l,
+    calculate_An_P_Clf,
+    calculate_An_P_req,
+    calculate_An_P_bal,
+    calculate_Fe_P_g,
+    calculate_An_P_prod,
+    calculate_An_Mg_Clf,
+    calculate_Ur_Mg_m,
+    calculate_Fe_Mg_m,
+    calculate_An_Mg_m,
+    calculate_An_Mg_g,
+    calculate_An_Mg_y,
+    calculate_An_Mg_l,
+    calculate_An_Mg_req,
+    calculate_An_Mg_bal,
+    calculate_An_Mg_prod,
+    calculate_An_Na_Clf,
+    calculate_Fe_Na_m,
+    calculate_An_Na_g,
+    calculate_An_Na_y,
+    calculate_An_Na_l,
+    calculate_An_Na_req,
+    calculate_An_Na_bal,
+    calculate_An_Na_prod,
+    calculate_An_Cl_Clf,
+    calculate_Fe_Cl_m,
+    calculate_An_Cl_g,
+    calculate_An_Cl_y,
+    calculate_An_Cl_l,
+    calculate_An_Cl_req,
+    calculate_An_Cl_bal,
+    calculate_An_Cl_prod,
+    calculate_An_K_Clf,
+    calculate_Ur_K_m,
+    calculate_Fe_K_m,
+    calculate_An_K_m,
+    calculate_An_K_g,
+    calculate_An_K_y,
+    calculate_An_K_l,
+    calculate_An_K_req,
+    calculate_An_K_bal,
+    calculate_An_K_prod,
+    calculate_An_S_req,
+    calculate_An_S_bal,
+    calculate_An_Co_req,
+    calculate_An_Co_bal,
+    calculate_An_Cu_Clf,
+    calculate_An_Cu_m,
+    calculate_An_Cu_g,
+    calculate_An_Cu_y,
+    calculate_An_Cu_l,
+    calculate_An_Cu_req,
+    calculate_An_Cu_bal,
+    calculate_An_Cu_prod,
+    calculate_An_I_req,
+    calculate_An_I_bal,
+    calculate_An_Fe_Clf,
+    calculate_An_Fe_g,
+    calculate_An_Fe_y,
+    calculate_An_Fe_l,
+    calculate_An_Fe_req,
+    calculate_An_Fe_bal,
+    calculate_An_Fe_prod,
+    calculate_An_Mn_Clf,
+    calculate_An_Mn_m,
+    calculate_An_Mn_g,
+    calculate_An_Mn_y,
+    calculate_An_Mn_l,
+    calculate_An_Mn_req,
+    calculate_An_Mn_bal,
+    calculate_An_Mn_prod,
+    calculate_An_Se_req,
+    calculate_An_Se_bal,
+    calculate_An_Zn_Clf,
+    calculate_An_Zn_m,
+    calculate_An_Zn_g,
+    calculate_An_Zn_y,
+    calculate_An_Zn_l,
+    calculate_An_Zn_req,
+    calculate_An_Zn_bal,
+    calculate_An_Zn_prod,
+    calculate_An_DCADmeq
 )

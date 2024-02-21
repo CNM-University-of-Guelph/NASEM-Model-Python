@@ -163,6 +163,11 @@
       "Name": "calculate_An_BWmature_empty",
       "Input": {"An_BW_mature": 750, "coeff_dict": null},
       "Output": 615
+    },
+    {
+      "Name": "calculate_Body_Gain",
+      "Input": {"Frm_Gain": 7.3, "Rsrv_Gain": 10.2},
+      "Output": 17.5
     }
   ]
   
