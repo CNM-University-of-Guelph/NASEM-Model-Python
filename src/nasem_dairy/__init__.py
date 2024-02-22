@@ -258,7 +258,6 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_RDPIn,
     calculate_An_RDP,
     calculate_An_RDPIn_g,
-    calculate_An_DMIn_BW,
     calculate_An_NDFIn,
     calculate_An_NDF,
     calculate_An_DigNDFIn,
