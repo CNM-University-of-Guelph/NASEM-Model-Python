@@ -1,6 +1,32 @@
 import pandas as pd
 
 class ModelOutput:
+    """
+    A class for storing the output from run_NASEM
+
+    Attributes:
+        locals_input (dict): Dictionary with all variables calculated in the run_NASEM function
+
+    Methods:
+        __init__(locals_input):
+            Initalizes the ModelOutput instance. Runs sorting methods when initalized to sort locals_input.
+
+        __populate_category(category_name, group_names, *variable_lists):
+            Creates and populates a nested dictionary using lists of variable names
+        
+        __populate_uncategorized():
+            Stores all remaining values in locals_input in the Uncategorized category and pops them from locals_input.
+
+        get_value(name):
+            Retrieves a value, dictionary or dataframe with a given name from the ModelOutput instance.
+
+    Example:
+        # Create an instance of ModelOutput
+        model_output = ModelOutput(locals_input=my_locals_input_dict)
+
+        # Retrieve a specific group of variables
+        requirements_group = model_output.get_value('Requirements')
+    """
     def __init__(self, locals_input):
         # Dictionary with all variables from execute_model
         self.locals_input = locals_input
@@ -19,12 +45,15 @@ class ModelOutput:
 
     def __populate_category(self, category_name, group_names, *variable_lists):
         """
-        Creates and populates nested dictionaries using lists of variiable names. The variable_lists must be passed
-        in the same order as group_names. Use when variables need to be grouped into a dictionary.
+        Creates and populates nested dictionaries using lists of variable names.
 
-        category_name: Name of dictionary to populate
-        group_names: Names of the neseted dictionaries to create
-        variable_lists: List of variable names, one list for each nested dictionary 
+        Notes:
+            The varaiable_lists must be passed in the same order as listed in group_names
+        
+        Parameters:
+            category_name (str): Name of the dictionary to populate.
+            group_names (list): Names of the nested dictionaries to create.
+            variable_lists (list): List of variable names, one list for each nested dictionary.
         """ 
         # Check if the Category exists, and create it if it does not
         if not hasattr(self, category_name):
@@ -50,6 +79,9 @@ class ModelOutput:
 
 
     def __filter_locals_input(self):
+        """
+        Remove specified variables from locals_input.
+        """
         variables_to_remove = ['key', 'value', 'num_value', 'feed_library_df', 
                                'feed_data', 'diet_info_initial', 'diet_data_initial',
                                 'AA_list', 'An_data_initial']
@@ -59,6 +91,9 @@ class ModelOutput:
 
 
     def __sort_Input(self):
+        """
+        Sort and store specific variables related to model inputs in the Inputs category.
+        """
         setattr(self, 'Inputs', {})
         variables_to_add = ['user_diet', 'animal_input', 'equation_selection', 'coeff_dict', 'infusion_input', 'MP_NP_efficiency_input']
         for key in variables_to_add:
@@ -69,6 +104,9 @@ class ModelOutput:
 
 
     def __sort_Intakes(self):
+        """
+        Sort and store specific variables related to nutrient intakes in the Intakes category.
+        """
         setattr(self, 'Intakes', {})
         variables_to_add = ['diet_info', 'infusion_data', 'diet_data', 'An_data']
         for key in variables_to_add:
@@ -88,6 +126,9 @@ class ModelOutput:
 
 
     def __sort_Requirements(self):
+        """
+        Sort and store specific variables related to required intakes in the Requirements category.
+        """
         # Name digestability groups
         group_names = ['energy', 'protein']
         # Lists of variables to store
@@ -128,6 +169,9 @@ class ModelOutput:
 
 
     def __sort_Production(self):
+        """
+        Sort and store specific variables related to production, including body composition changes and gestation, in the Production category.
+        """
         # Name production groups
         group_names = ['milk', 'composition', 'gestation', 'MiCP']
         # List variables to store
@@ -143,6 +187,9 @@ class ModelOutput:
 
 
     def __sort_Excretion(self):
+        """
+        Sort and store specific variables related to excreted nutrients in the Excretion category.
+        """
         # Name excretion groups
         group_names = ['fecal', 'urinary', 'gaseous', 'scurf'] 
         # Lists of variables to store
@@ -155,6 +202,9 @@ class ModelOutput:
 
 
     def __sort_Digestibility(self):
+        """
+        Sort and store specific variables related to digestability in the Digestability category.
+        """
         # Name digestability groups
         group_names = ['rumen', 'TT']
         # Lists of variables to store
@@ -165,6 +215,9 @@ class ModelOutput:
 
 
     def __sort_Efficiencies(self):
+        """
+        Sort and store specific variables related to conversion efficiencies in the Efficiencies category.
+        """
         # Name digestability groups
         group_names = ['energy', 'protein']
         # Lists of variables to store
@@ -175,6 +228,9 @@ class ModelOutput:
 
 
     def __sort_Miscellaneous(self):
+        """
+        Sort and store specific miscellaneous variables that need a final location in the Miscellaneous category.
+        """
         # These variables need to be given a storage location
         group_names = ['misc']
         # Lists of variables to store
@@ -183,15 +239,15 @@ class ModelOutput:
         self.__populate_category('Miscellaneous', group_names, misc_variables)
    
 
-    def get_value(self, group_name):
+    def get_value(self, name):
         """
-        Retrieve a dictionary or dataframe with a given name from the ModelOutput instance.
+        Retrieve a value, dictionary or dataframe with a given name from the ModelOutput instance.
 
         Parameters:
-        Group_name (str): The name of the group to retrieve.
+        name (str): The name of the group to retrieve.
 
         Returns:
-        dict or pd.DataFrame or None: The dictionary or dataframe with the given name, or None if not found.
+        str or int or float or dict or pd.DataFrame or None: The object with the given name, or None if not found.
         """
         # Helper function to recursively search for a group in a nested dictionary
         def recursive_search(dictionary, target_name):
@@ -208,12 +264,12 @@ class ModelOutput:
         for category_name in dir(self):
             category = getattr(self, category_name, None)
             if category is not None:
-                if isinstance(category, dict) and category_name == group_name:
+                if isinstance(category, dict) and category_name == name:
                     return category
-                elif isinstance(category, pd.DataFrame) and category_name == group_name:
+                elif isinstance(category, pd.DataFrame) and category_name == name:
                     return category
                 elif isinstance(category, dict):
-                    result = recursive_search(category, group_name)
+                    result = recursive_search(category, name)
                     if result is not None:
                         return result
 
