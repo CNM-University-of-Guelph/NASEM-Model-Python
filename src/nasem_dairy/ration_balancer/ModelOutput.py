@@ -122,7 +122,7 @@ class ModelOutput:
         FA_variables = []
         rumen_digestable_variables = ['Rum_DigNDFIn', 'Rum_DigStIn']
         # Store variables
-        self.__populate_category('Excretion', group_names, energy_variables, protein_variables, AA_variables, FA_variables, rumen_digestable_variables)
+        self.__populate_category('Intakes', group_names, energy_variables, protein_variables, AA_variables, FA_variables, rumen_digestable_variables)
 
 
     def __sort_Requirements(self):
