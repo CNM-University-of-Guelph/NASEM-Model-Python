@@ -71,6 +71,9 @@ website:
       - contents:
         - reference/default_values_dictionaries.qmd
         section: 'Advanced: Default Values'
+      - contents:
+        - reference/ModelOutput.qmd
+        section: Model Output
       section: Utilility functions
     id: reference
   - id: dummy-sidebar

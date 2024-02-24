@@ -40,7 +40,7 @@ quartodoc:
    
     - subtitle: Energy of Maintenance
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      package: nasem_dairy.NASEM_equations.energy_requirement_equations
       contents:
         - calculate_An_NEmUse_NS
         - calculate_An_NEm_Act_Graze
@@ -52,7 +52,7 @@ quartodoc:
     
     - subtitle: Energy of Gain
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      package: nasem_dairy.NASEM_equations.energy_requirement_equations
       contents:
         - calculate_Rsrv_NEgain 
         - calculate_Kr_ME_RE
@@ -63,14 +63,14 @@ quartodoc:
     
     - subtitle: Energy of Gestation
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      package: nasem_dairy.NASEM_equations.energy_requirement_equations
       contents:
         - calculate_Gest_REgain
         - calculate_Gest_MEuse
 
     - subtitle: Energy of Milk
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_energy_requirement_equations
+      package: nasem_dairy.NASEM_equations.energy_requirement_equations
       contents:
         - calculate_Trg_Mlk_NEout
         - calculate_Trg_Mlk_MEout
@@ -78,13 +78,13 @@ quartodoc:
 
     - subtitle: Temp - milk equations
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_milk_equations
+      package: nasem_dairy.NASEM_equations.milk_equations
       contents:
         - calculate_Trg_NEmilk_Milk
       
     - subtitle: Temp - body comp
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_body_composition_equations
+      package: nasem_dairy.NASEM_equations.body_composition_equations
       contents:
         - calculate_Frm_Fatgain
         - calculate_Frm_CPgain
@@ -93,13 +93,13 @@ quartodoc:
       
     - subtitle: Temp - gestation eqns
       desc: ""
-      package: nasem_dairy.NASEM_equations.dev_gestation_equations
+      package: nasem_dairy.NASEM_equations.gestation_equations
       contents:
         - calculate_GrUter_BWgain
 
     - subtitle: DMI equations
       desc: ALL DMI equations
-      package: nasem_dairy.NASEM_equations.dev_DMI_equations
+      package: nasem_dairy.NASEM_equations.DMI_equations
       contents:
         - calculate_Kb_LateGest_DMIn
         - calculate_An_PrePartWklim
@@ -135,6 +135,11 @@ quartodoc:
       package: nasem_dairy.ration_balancer
       contents:
         - default_values_dictionaries
+
+    - subtitle: "Model Output"
+      package: nasem_dairy.ration_balancer.ModelOutput
+      contents:
+        - ModelOutput
 
 
         #  the functions being documented in the package.
