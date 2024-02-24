@@ -1,4 +1,5 @@
 import pandas as pd
+from nasem_dairy.ration_balancer.ModelOutput import ModelOutput
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary #, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
 from nasem_dairy.NASEM_equations.DMI_equations import (
@@ -1607,17 +1608,11 @@ def execute_model(user_diet: pd.DataFrame,
                                          diet_data['Dt_Cl'],
                                          diet_data['Dt_S'])
 
-    ########################################
-    # Temporary results export
-    ########################################
-    
-    model_out_dict = {
-        'infusion_data' : infusion_data,
-        'Du_MiN_g' : Du_MiN_g,
-        # testing Monensin:
-        'Dt_DEIn': diet_data['Dt_DEIn'],
-        'An_DEIn': An_data['An_DEIn'],
-        'Trg_NEmilk_Milk' : Trg_NEmilk_Milk 
-    }
 
-    return animal_input, diet_info, equation_selection, diet_data, AA_values, infusion_data, An_data, model_out_dict
+    ########################################
+    # Capture Outputs
+    ########################################
+    locals_dict = locals()
+    output = ModelOutput(locals_input=locals_dict)
+    
+    return output
