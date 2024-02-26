@@ -12,9 +12,9 @@ from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_i
 
 
 def calculate_TT_dcFdNDF_Lg(Fd_NDF, Fd_Lg):
-    Fd_NFD_check = np.where(Fd_NDF == 0, 1e-6, Fd_NDF)
-    TT_dcFdNDF_Lg = 0.75 * (Fd_NDF - Fd_Lg) * (1 - (Fd_Lg / Fd_NFD_check)
-                                               ** 0.667) / Fd_NFD_check * 100  # Line 235-236
+    # Ensure Fd_NDF is not zero for division
+    Fd_NDF_check = np.where(Fd_NDF == 0, 1e-6, Fd_NDF)
+    TT_dcFdNDF_Lg = 0.75 * (Fd_NDF - Fd_Lg) * (1 - (Fd_Lg / Fd_NDF_check)**0.667) / Fd_NDF_check * 100 # Line 235-236
     return TT_dcFdNDF_Lg
 
 
@@ -954,7 +954,7 @@ def calculate_TT_dcSt(TT_dcSt_Base, An_DMIn_BW):
 # Wrapper functions for feed and diet intakes
 ####################
 
-@profile
+# @profile
 def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     # Start with copy of diet_info
     complete_diet_info = diet_info.copy()
@@ -1031,9 +1031,11 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                         'Fd_Ash'
                         ]
 
-    complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df, col=col: df[col] / 100 * df['Fd_DMIn'] for col in column_names_XIn}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"{col}In": lambda df, col=col: df[col] / 100 * df['Fd_DMIn'] for col in column_names_XIn}
+    # )
+    for col in column_names_XIn:
+        complete_diet_info[f"{col}In"] = diet_info[col] / 100 * complete_diet_info['Fd_DMIn']
 
     # Calculate nutrient intakes for each feed
     complete_diet_info['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(diet_info['Fd_NDF'],
@@ -1113,9 +1115,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                          'Fd_OtherFA'
                          ]
 
-    complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df, col=col: df[f"{col}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for col in column_names_FAIn}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"{col}In": lambda df, col=col: df[f"{col}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for col in column_names_FAIn}
+    # )
+    for col in column_names_FAIn:
+        complete_diet_info[f"{col}In"] = diet_info[f"{col}_FA"] / 100 * diet_info['Fd_FA'] / 100 * complete_diet_info['Fd_DMIn']
+
 
     complete_diet_info['Fd_DE_base_1'] = calculate_Fd_DE_base_1(diet_info['Fd_NDF'],
                                                                 diet_info['Fd_Lg'],
@@ -1179,9 +1184,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                              'Fd_S'
                              ]
 
-    complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] / 100 * 1000 for col in macro_mineral_intakes}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] / 100 * 1000 for col in macro_mineral_intakes}
+    # )
+    for col in macro_mineral_intakes:
+        complete_diet_info[f"{col}In"] = complete_diet_info['Fd_DMIn'] * diet_info[col] / 100 * 1000
+
 
     complete_diet_info['Fd_PinorgIn'] = calculate_Fd_PinorgIn(complete_diet_info['Fd_PIn'],
                                                               complete_diet_info['Fd_Pinorg_P'])
@@ -1202,9 +1210,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                              ]
 
     # Line 741-749
-    complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] for col in micro_mineral_intakes}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] for col in micro_mineral_intakes}
+    # )
+    for col in micro_mineral_intakes:
+        complete_diet_info[f"{col}In"] = complete_diet_info['Fd_DMIn'] * diet_info[col]
+
 
     vitamin_intakes = ['Fd_VitA',
                        'Fd_VitD',
@@ -1215,9 +1226,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                        'Fd_B_Carotene'
                        ]
     # Line 752-759
-    complete_diet_info = complete_diet_info.assign(
-        **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] for col in vitamin_intakes}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"{col}In": lambda df, col=col: df['Fd_DMIn'] * df[col] for col in vitamin_intakes}
+    # )
+    for col in vitamin_intakes:
+        complete_diet_info[f"{col}In"] = complete_diet_info['Fd_DMIn'] * diet_info[col]
+
 
     Dt_DMIn_ClfLiq = complete_diet_info['Fd_DMIn_ClfLiq'].sum()
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
@@ -1267,9 +1281,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                         'Mn',
                         'Zn']
 
-    complete_diet_info = complete_diet_info.assign(
-        **{f"Fd_abs{col}In": lambda df, col=col: df[f"Fd_{col}In"] * df[f"Fd_ac{col}"] for col in micro_absorption}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"Fd_abs{col}In": lambda df, col=col: df[f"Fd_{col}In"] * df[f"Fd_ac{col}"] for col in micro_absorption}
+    # )
+    for col in micro_absorption:
+        complete_diet_info[f"Fd_abs{col}In"] = complete_diet_info[f"Fd_{col}In"] * complete_diet_info[f"Fd_ac{col}"]
+
 
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
     # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
@@ -1317,11 +1334,16 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     #     # Note: eval() is used to access SIDig__ values defined above
     #     complete_diet_info[f"Fd_Id{AA}RUPIn"] = complete_diet_info['Fd_dcRUP'] / 100 * complete_diet_info[f"Fd_{AA}RUPIn"] * eval(f"SIDig{AA}RUPf")
 
-    complete_diet_info = complete_diet_info.assign(
-        **{f"Fd_{AA}t_CP": lambda df, AA=AA: df[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"] for AA in AA_list},
-        **{f"Fd_{AA}RUPIn": lambda df, AA=AA: df[f"Fd_{AA}t_CP"] / 100 * df['Fd_RUPIn'] * 1000 for AA in AA_list},
-        **{f"Fd_Id{AA}RUPIn": lambda df, AA=AA: df['Fd_dcRUP'] / 100 * df[f"Fd_{AA}RUPIn"] * SIDig_values[AA] for AA in AA_list}
-    )
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"Fd_{AA}t_CP": lambda df, AA=AA: df[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"] for AA in AA_list},
+    #     **{f"Fd_{AA}RUPIn": lambda df, AA=AA: df[f"Fd_{AA}t_CP"] / 100 * df['Fd_RUPIn'] * 1000 for AA in AA_list},
+    #     **{f"Fd_Id{AA}RUPIn": lambda df, AA=AA: df['Fd_dcRUP'] / 100 * df[f"Fd_{AA}RUPIn"] * SIDig_values[AA] for AA in AA_list}
+    # )
+    for AA in AA_list:
+        complete_diet_info[f"Fd_{AA}t_CP"] = complete_diet_info[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
+        complete_diet_info[f"Fd_{AA}RUPIn"] = complete_diet_info[f"Fd_{AA}t_CP"] / 100 * complete_diet_info['Fd_RUPIn'] * 1000
+        complete_diet_info[f"Fd_Id{AA}RUPIn"] = complete_diet_info['Fd_dcRUP'] / 100 * complete_diet_info[f"Fd_{AA}RUPIn"] * SIDig_values[AA]
+
 
     complete_diet_info['Fd_DigSt'] = calculate_Fd_DigSt(diet_info['Fd_St'],
                                                         diet_info['Fd_dcSt'])
@@ -1354,9 +1376,12 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
         'C183',
         'OtherFA'
     ]
-    complete_diet_info = complete_diet_info.assign(
-        **{f"Fd_Dig{FA}In": lambda df, FA=FA: df['TT_dcFdFA'] / 100 * df[f"Fd_{FA}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for FA in Dig_FA_list}
-    )   
+    # complete_diet_info = complete_diet_info.assign(
+    #     **{f"Fd_Dig{FA}In": lambda df, FA=FA: df['TT_dcFdFA'] / 100 * df[f"Fd_{FA}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for FA in Dig_FA_list}
+    # )  
+    for FA in Dig_FA_list:
+        complete_diet_info[f"Fd_Dig{FA}In"] = complete_diet_info['TT_dcFdFA'] / 100 * diet_info[f"Fd_{FA}_FA"] / 100 * diet_info['Fd_FA'] / 100 * complete_diet_info['Fd_DMIn']
+ 
     
     return complete_diet_info
 
