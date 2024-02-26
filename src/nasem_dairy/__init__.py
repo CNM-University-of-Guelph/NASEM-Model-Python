@@ -2,13 +2,10 @@
 from importlib.metadata import version
 __version__ = version("nasem_dairy")
 
-
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
-# Temp: disable import while using dev_refactor_NASEM.ipynb
-#from nasem_dairy.ration_balancer.execute_model import NASEM_model
+from nasem_dairy.ration_balancer.ModelOutput import ModelOutput
+from nasem_dairy.ration_balancer.execute_model import execute_model
 from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
-
-# Import statements for updated functions
 from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Kb_LateGest_DMIn,
     calculate_An_PrePartWklim,
@@ -262,7 +259,6 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_RDPIn,
     calculate_An_RDP,
     calculate_An_RDPIn_g,
-    calculate_An_DMIn_BW,
     calculate_An_NDFIn,
     calculate_An_NDF,
     calculate_An_DigNDFIn,
