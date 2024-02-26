@@ -37,14 +37,14 @@ def calculate_TT_dcFdNDF_48h(Fd_DNDF48):
 
 
 def calculate_TT_dcFdNDF_Base(Use_DNDF_IV, Fd_Conc, TT_dcFdNDF_Lg, TT_dcFdNDF_48h):
-    condition1 = (Use_DNDF_IV == 1) & (
-        Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna()  # Line 249, Forages only
-    condition2 = (Use_DNDF_IV == 2) & ~TT_dcFdNDF_48h.isna(
-    )                    # Line 251, All Ingredients
-    # Line 248, Prefill with the Lg based predictions as a default
-    TT_dcFdNDF_Base = TT_dcFdNDF_Lg
-    TT_dcFdNDF_Base = np.where(condition1, TT_dcFdNDF_48h, TT_dcFdNDF_Base)
-    TT_dcFdNDF_Base = np.where(condition2, TT_dcFdNDF_48h, TT_dcFdNDF_Base)
+    
+    if (Use_DNDF_IV == 2) & ~TT_dcFdNDF_48h.isna():
+       TT_dcFdNDF_Base = TT_dcFdNDF_48h #48h DNDF based total tract NDF digestibility scaled to a true DC
+    elif (Use_DNDF_IV == 1) & (Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna():
+       TT_dcFdNDF_Base =  TT_dcFdNDF_48h
+    else:
+       TT_dcFdNDF_Base = TT_dcFdNDF_Lg #Lignin based NDF total tract digestibility coefficient
+
     return TT_dcFdNDF_Base
 
 
@@ -954,7 +954,7 @@ def calculate_TT_dcSt(TT_dcSt_Base, An_DMIn_BW):
 # Wrapper functions for feed and diet intakes
 ####################
 
-
+@profile
 def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     # Start with copy of diet_info
     complete_diet_info = diet_info.copy()
