@@ -315,7 +315,17 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_DCADmeq
 )
 
+# Allows @profile decorator to not interfere if running outside of kernprof
+# Also allows tests to pass
+try:
+    profile  # Assumes @profile is defined by kernprof
+except NameError:
+    def profile(func):
+        def wrapper(*args, **kwargs):
+            return func(*args, **kwargs)
+        return wrapper
 
+@profile
 def execute_model(user_diet: pd.DataFrame, 
                   animal_input: dict, 
                   equation_selection: dict, 
