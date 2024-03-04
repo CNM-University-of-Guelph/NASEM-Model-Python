@@ -108,6 +108,21 @@
       "Name": "calculate_Gest_CPuse_g",
       "Input": {"Gest_NPuse_g": 28.5, "coeff_dict": null},
       "Output": 33.139534883720934
+    },
+    {
+      "Name": "calculate_An_PostPartDay",
+      "Input": {"An_LactDay": -1},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_An_PostPartDay",
+      "Input": {"An_LactDay": 160},
+      "Output": 100
+    },
+    {
+      "Name": "calculate_An_PostPartDay",
+      "Input": {"An_LactDay": 70},
+      "Output": 70
     }
   ]
   
