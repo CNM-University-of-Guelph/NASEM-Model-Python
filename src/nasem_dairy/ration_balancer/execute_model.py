@@ -123,7 +123,8 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Gest_NCPgain_g,
     calculate_Gest_NPgain_g,
     calculate_Gest_NPuse_g,
-    calculate_Gest_CPuse_g
+    calculate_Gest_CPuse_g,
+    calculate_An_PostPartDay
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -166,7 +167,9 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Frm_CPgain,
     calculate_Body_NPgain_g,
     calculate_An_BWmature_empty,
-    calculate_Body_Gain
+    calculate_Body_Gain,
+    calculate_Trg_BWgain,
+    calculate_Trg_BWgain_g
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -315,6 +318,8 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_DCADmeq
 )
 
+from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
+
 
 def execute_model(user_diet: pd.DataFrame, 
                   animal_input: dict, 
@@ -406,6 +411,8 @@ def execute_model(user_diet: pd.DataFrame,
     animal_input['An_PrePartDay'] = animal_input['An_GestDay'] - animal_input['An_GestLength']
     animal_input['An_PrePartWk'] = animal_input['An_PrePartDay'] / 7
 
+    animal_input['An_PostPartDay'] = calculate_An_PostPartDay(animal_input['An_LactDay'])
+
     del (list_of_feeds, Fd_DMInp)
 
     # Check equation_selection to make sure they are integers.
@@ -434,6 +441,12 @@ def execute_model(user_diet: pd.DataFrame,
     NPGain_RsrvGain = calculate_NPGain_RsrvGain(coeff_dict)
     Rsrv_NPgain = calculate_Rsrv_NPgain(NPGain_RsrvGain,
                                            Rsrv_Gain_empty)
+
+    coeff_dict['LCT'] = adjust_LCT(animal_input['An_AgeDay'])
+    animal_input['Trg_BWgain'] = calculate_Trg_BWgain(animal_input['Trg_FrmGain'],
+                                      animal_input['Trg_RsrvGain'])
+
+    animal_input['Trg_BWgain_g'] = calculate_Trg_BWgain_g(animal_input['Trg_BWgain'])
 
     # if animal_input['An_StatePhys'] != 'Lactating Cow':
     #     animal_input['Trg_MilkProd'] = None

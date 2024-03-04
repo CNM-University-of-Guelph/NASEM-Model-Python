@@ -222,7 +222,9 @@ coeff_dict = {
     'TT_dcFA_ClfDryFd': 81,  # Line 1249, Used for all calf dry feed
     'TT_dcFA_ClfLiqFd': 81,      # Line 1250, Used for missing values in calf liquid feeds
     'UCT': 25,                # Line 230, calf
-    'An_GutFill_BWmature': 0.18 # Line 2400, mature animals
+    'An_GutFill_BWmature': 0.18, # Line 2400, mature animals
+    'LCT': 15,                # calf < 3 wks of age, Line 228, NOTE: LCT is changed to 5 whe An_AgeDay > 21, should it be part of coeff_dict?
+    'UCT': 25                 # calf, line 230
 }
 
 # Dictionary to use when infusions are not provided to model

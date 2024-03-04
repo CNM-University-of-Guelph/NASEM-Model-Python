@@ -37,10 +37,8 @@ def calculate_TT_dcFdNDF_48h(Fd_DNDF48):
 
 
 def calculate_TT_dcFdNDF_Base(Use_DNDF_IV, Fd_Conc, TT_dcFdNDF_Lg, TT_dcFdNDF_48h):
-    condition1 = (Use_DNDF_IV == 1) & (
-        Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna()  # Line 249, Forages only
-    condition2 = (Use_DNDF_IV == 2) & ~TT_dcFdNDF_48h.isna(
-    )                    # Line 251, All Ingredients
+    condition1 = (Use_DNDF_IV == 1) & (Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna()  # Line 249, Forages only
+    condition2 = (Use_DNDF_IV == 2) & ~TT_dcFdNDF_48h.isna()                    # Line 251, All Ingredients
     # Line 248, Prefill with the Lg based predictions as a default
     TT_dcFdNDF_Base = TT_dcFdNDF_Lg
     TT_dcFdNDF_Base = np.where(condition1, TT_dcFdNDF_48h, TT_dcFdNDF_Base)

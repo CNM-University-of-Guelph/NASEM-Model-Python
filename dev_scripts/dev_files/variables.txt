@@ -492,3 +492,7 @@ Dt_IdPheIn
 Dt_IdThrIn
 Dt_IdTrpIn
 Dt_IdValIn
+An_MBW
+An_PostPartDay
+Trg_BWgain
+Trg_BWgain_g

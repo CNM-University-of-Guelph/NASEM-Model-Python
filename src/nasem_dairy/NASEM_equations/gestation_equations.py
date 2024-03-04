@@ -113,3 +113,18 @@ def calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict):
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Gest_CPuse_g = Gest_NPuse_g / coeff_dict['Body_NP_CP']   # Line 2367
     return Gest_CPuse_g
+
+
+def calculate_An_PostPartDay(An_LactDay):
+    """
+    An_LactDay: Day of lactation
+    An_PostPartDay: Days postpartum 
+    """
+    # Calculate day postpartum and trap nonsense values
+    if An_LactDay <= 0:     # Line 220
+       An_PostPartDay = 0
+    elif An_LactDay > 100:  # Line 221
+        An_PostPartDay = 100
+    else:
+        An_PostPartDay = An_LactDay
+    return An_PostPartDay 
