@@ -23,7 +23,8 @@ from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Dt_DMIn_BW_LateGest_p,
     calculate_Dt_DMIn_DryCow1_FarOff,
     calculate_Dt_DMIn_DryCow1_Close,
-    calculate_Dt_DMIn_DryCow2
+    calculate_Dt_DMIn_DryCow2,
+    calculate_Dt_DMIn_Calf1
 )
 
 from nasem_dairy.NASEM_equations.milk_equations import (

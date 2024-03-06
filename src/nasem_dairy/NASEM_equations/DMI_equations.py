@@ -347,3 +347,13 @@ def calculate_Dt_DMIn_DryCow2(An_BW, An_GestDay, An_GestLength):
 
     Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest
     return Dt_DMIn_DryCow2
+
+
+# Need to implement into execute_model
+def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float, Dt_DMIn_ClfStrt: float, Dt_DMIn_ClfFor: float) -> float:
+    """
+    Dt_DMIn_Calf1: Calf DMI with predicted starter intake, kg/d
+    Liquid feed + calfd starter + forage intake
+    """
+    Dt_DMIn_Calf1 = Dt_DMIn_ClfLiq + Dt_DMIn_ClfStrt + Dt_DMIn_ClfFor   # DMI w/ predicted starter, Line 308
+    return Dt_DMIn_Calf1
