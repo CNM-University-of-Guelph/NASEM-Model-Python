@@ -464,7 +464,6 @@ def execute_model(user_diet: pd.DataFrame,
     
     # # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
     Dt_NDF = (diet_info_initial['Fd_NDF'] * diet_info_initial['Fd_DMInp']).sum()
-
     # Predict DMI for heifers
     Kb_LateGest_DMIn = calculate_Kb_LateGest_DMIn(Dt_NDF)
     An_PrePartWklim = calculate_An_PrePartWklim(animal_input['An_PrePartWk'])
