@@ -510,3 +510,7 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
+from nasem_dairy.NASEM_equations.unused_equations import (
+    calculate_Dt_DMIn_BW,
+    calculate_Dt_DMIn_MBW
+)

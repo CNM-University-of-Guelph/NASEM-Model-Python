@@ -234,7 +234,7 @@ class ModelOutput:
         # These variables need to be given a storage location
         group_names = ['misc']
         # Lists of variables to store
-        misc_variables = ['Kb_LateGest_DMIn', 'An_PrePartWklim', 'An_PrePartWkDurat', 'An_DMIn_BW', 'f_mPrt_max', 'mPrt_k_EAA2', 'An_REgain_Calf', 'An_LactDay_MlkPred', 'An_DCADmeq']
+        misc_variables = ['Kb_LateGest_DMIn', 'An_PrePartWklim', 'An_PrePartWkDurat', 'An_DMIn_BW', 'f_mPrt_max', 'mPrt_k_EAA2', 'An_REgain_Calf', 'An_LactDay_MlkPred', 'An_DCADmeq', 'Dt_DMIn_BW', 'Dt_DMIn_MBW']
         # Store variables
         self.__populate_category('Miscellaneous', group_names, misc_variables)
    

@@ -1,0 +1,12 @@
+[
+    {
+        "Name": "calculate_Dt_DMIn_BW",
+        "Input": {"Dt_DMIn": 35.4, "An_BW": 793},
+        "Output": 0.044640605296343
+    },
+    {
+        "Name": "calculate_Dt_DMIn_MBW",
+        "Input": {"Dt_DMIn": 46.1, "An_BW": 703},
+        "Output": 0.337663744021071
+    }
+]

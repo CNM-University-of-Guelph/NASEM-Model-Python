@@ -320,6 +320,10 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
+from nasem_dairy.NASEM_equations.unused_equations import (
+    calculate_Dt_DMIn_BW,
+    calculate_Dt_DMIn_MBW
+)
 
 
 def execute_model(user_diet: pd.DataFrame, 
@@ -643,6 +647,10 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 3: Feed Based Calculations
     ########################################
     # Calculate An_DMIn_BW with the final DMI value; required for calculating diet_data_initial
+    Dt_DMIn_BW = calculate_Dt_DMIn_BW(animal_input["DMI"],
+                                      animal_input['An_BW'])
+    Dt_DMIn_MBW = calculate_Dt_DMIn_MBW(animal_input['DMI'],
+                                        animal_input['An_BW'])
     An_DMIn_BW = calculate_An_DMIn_BW(animal_input['An_BW'],
                                          animal_input['DMI'])
     Fe_rOMend = calculate_Fe_rOMend(animal_input['DMI'],
