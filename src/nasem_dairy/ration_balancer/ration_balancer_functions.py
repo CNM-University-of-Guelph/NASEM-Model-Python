@@ -108,11 +108,10 @@ def get_feed_rows_feedlibrary(
     # selected_feed_data.index = selected_feed_data.index.str.strip()
     
     selected_feed_data =  (
-        feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
-        .assign(Fd_Name=lambda df: df["Fd_Name"].str.strip()) # clean whitespace
+        feed_lib_df.assign(Fd_Name=lambda df: df["Fd_Name"].str.strip()) # clean whitespace
+        .loc[lambda df: df["Fd_Name"].isin(feeds_to_get)] # filter Fd_Name to match feeds_to_get
         .rename(columns={'Fd_Name': 'Feedstuff'}) # rename column
-        .pipe(lambda df: df[['Feedstuff'] + [col for col in df.columns if col != 'Feedstuff']]) # reorder columns
-        )
+        .pipe(lambda df: df[['Feedstuff'] + [col for col in df.columns if col != 'Feedstuff']])) #reorder columns
 
     return selected_feed_data
 
