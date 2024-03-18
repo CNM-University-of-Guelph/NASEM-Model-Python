@@ -182,7 +182,9 @@ def read_csv_input(path_to_file = "input.csv"):
             user_diet_data['kg_user'].append(value)
 
     user_diet = pd.DataFrame(user_diet_data)
-    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], downcast="float")
+    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], 
+                                         #downcast="float"
+                                         )
 
     return user_diet, animal_input, equation_selection
 
