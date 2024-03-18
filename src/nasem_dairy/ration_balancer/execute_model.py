@@ -395,7 +395,7 @@ def execute_model(user_diet: pd.DataFrame,
     # list_of_feeds = user_diet['Feedstuff'].tolist()
     # feed_data = fl_get_rows(list_of_feeds, '../../src/nasem_dairy/data/diet_database.db')
 
-    feed_data = feed_data.reset_index(names='Feedstuff')
+    #feed_data = feed_data.reset_index(names='Feedstuff')
 
     diet_info_initial = pd.DataFrame({'Feedstuff': user_diet['Feedstuff']})
     diet_info_initial = diet_info_initial.merge(feed_data, how='left', on='Feedstuff')

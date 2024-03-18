@@ -98,14 +98,21 @@ def get_feed_rows_feedlibrary(
     ```
     '''
 
-    # Filter df using list from user
-    selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
+    # # Filter df using list from user
+    # selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
 
-    # set names as index for downstream
-    selected_feed_data = selected_feed_data.set_index('Fd_Name')
+    # # set names as index for downstream
+    # selected_feed_data = selected_feed_data.set_index('Fd_Name')
 
-    # Clean names:
-    selected_feed_data.index = selected_feed_data.index.str.strip()
+    # # Clean names:
+    # selected_feed_data.index = selected_feed_data.index.str.strip()
+    
+    selected_feed_data =  (
+        feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
+        .assign(Fd_Name=lambda df: df["Fd_Name"].str.strip()) # clean whitespace
+        .rename(columns={'Fd_Name': 'Feedstuff'}) # rename column
+        .pipe(lambda df: df[['Feedstuff'] + [col for col in df.columns if col != 'Feedstuff']]) # reorder columns
+        )
 
     return selected_feed_data
 
