@@ -43,6 +43,26 @@ class ModelOutput:
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
 
+    
+    def __str__(self):
+        summary = "=====================\n"
+        summary += "Model Output Summary\n"
+        summary += "=====================\n"
+        summary += f"Predicted Milk Production: {self.Production['milk']['Mlk_Prod']} kg/d\n"
+        summary += f"Metabolizable Energy Requirement: {self.Requirements['energy']['Trg_MEuse']} Mcal/d\n\n"
+        summary += "Categories\n"
+        summary += "---------------------\n"
+        summary += "Inputs: " + ", ".join(self.Inputs.keys()) + "\n"
+        summary += "Intakes: " + ", ".join(self.Intakes.keys()) + "\n"
+        summary += "Requirements: " + ", ".join(self.Requirements.keys()) + "\n"
+        summary += "Production: " + ", ".join(self.Production.keys()) + "\n"
+        summary += "Excretion: " + ", ".join(self.Excretion.keys()) + "\n"
+        summary += "Digestibility: " + ", ".join(self.Digestibility.keys()) + "\n"
+        summary += "Efficiencies: " + ", ".join(self.Efficiencies.keys()) + "\n"
+        summary += "Miscellaneous: " + ", ".join(self.Miscellaneous.keys()) + "\n"
+        summary += "=====================\n"
+        return summary
+
 
     def __populate_category(self, category_name, group_names, *variable_lists):
         """
