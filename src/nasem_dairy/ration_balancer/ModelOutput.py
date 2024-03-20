@@ -281,7 +281,7 @@ class ModelOutput:
     def search(self, search_string, dictionaries_to_search=None):
         # Define the dictionaries to search within, by default all dictionaries where outputs are stored
         if dictionaries_to_search is None:
-            dictionaries_to_search = ['Input', 'Intakes', 'Requirements', 'Production',
+            dictionaries_to_search = ['Inputs', 'Intakes', 'Requirements', 'Production',
                                       'Excretion', 'Digestibility', 'Efficiencies',
                                       'Miscellaneous', 'Uncategorized']
         result = {}
