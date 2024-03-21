@@ -19,7 +19,8 @@ from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Dt_DMIn_BW_LateGest_p,
     calculate_Dt_DMIn_DryCow1_FarOff,
     calculate_Dt_DMIn_DryCow1_Close,
-    calculate_Dt_DMIn_DryCow2
+    calculate_Dt_DMIn_DryCow2,
+    calculate_Dt_DMIn_Calf1
 )
 
 from nasem_dairy.NASEM_equations.milk_equations import (
@@ -123,7 +124,8 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Gest_NCPgain_g,
     calculate_Gest_NPgain_g,
     calculate_Gest_NPuse_g,
-    calculate_Gest_CPuse_g
+    calculate_Gest_CPuse_g,
+    calculate_An_PostPartDay
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -166,7 +168,9 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Frm_CPgain,
     calculate_Body_NPgain_g,
     calculate_An_BWmature_empty,
-    calculate_Body_Gain
+    calculate_Body_Gain,
+    calculate_Trg_BWgain,
+    calculate_Trg_BWgain_g
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -315,6 +319,12 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_DCADmeq
 )
 
+from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
+from nasem_dairy.NASEM_equations.unused_equations import (
+    calculate_Dt_DMIn_BW,
+    calculate_Dt_DMIn_MBW
+)
+
 
 def execute_model(user_diet: pd.DataFrame, 
                   animal_input: dict, 
@@ -406,6 +416,8 @@ def execute_model(user_diet: pd.DataFrame,
     animal_input['An_PrePartDay'] = animal_input['An_GestDay'] - animal_input['An_GestLength']
     animal_input['An_PrePartWk'] = animal_input['An_PrePartDay'] / 7
 
+    animal_input['An_PostPartDay'] = calculate_An_PostPartDay(animal_input['An_LactDay'])
+
     del (list_of_feeds, Fd_DMInp)
 
     # Check equation_selection to make sure they are integers.
@@ -435,6 +447,12 @@ def execute_model(user_diet: pd.DataFrame,
     Rsrv_NPgain = calculate_Rsrv_NPgain(NPGain_RsrvGain,
                                            Rsrv_Gain_empty)
 
+    coeff_dict['LCT'] = adjust_LCT(animal_input['An_AgeDay'])
+    animal_input['Trg_BWgain'] = calculate_Trg_BWgain(animal_input['Trg_FrmGain'],
+                                      animal_input['Trg_RsrvGain'])
+
+    animal_input['Trg_BWgain_g'] = calculate_Trg_BWgain_g(animal_input['Trg_BWgain'])
+
     # if animal_input['An_StatePhys'] != 'Lactating Cow':
     #     animal_input['Trg_MilkProd'] = None
 
@@ -450,7 +468,6 @@ def execute_model(user_diet: pd.DataFrame,
     
     # # Need to precalculate Dt_NDF for DMI predicitons, this will be based on the user entered DMI (animal_input['DMI])
     Dt_NDF = (diet_info_initial['Fd_NDF'] * diet_info_initial['Fd_DMInp']).sum()
-
     # Predict DMI for heifers
     Kb_LateGest_DMIn = calculate_Kb_LateGest_DMIn(Dt_NDF)
     An_PrePartWklim = calculate_An_PrePartWklim(animal_input['An_PrePartWk'])
@@ -630,6 +647,10 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 3: Feed Based Calculations
     ########################################
     # Calculate An_DMIn_BW with the final DMI value; required for calculating diet_data_initial
+    Dt_DMIn_BW = calculate_Dt_DMIn_BW(animal_input["DMI"],
+                                      animal_input['An_BW'])
+    Dt_DMIn_MBW = calculate_Dt_DMIn_MBW(animal_input['DMI'],
+                                        animal_input['An_BW'])
     An_DMIn_BW = calculate_An_DMIn_BW(animal_input['An_BW'],
                                          animal_input['DMI'])
     Fe_rOMend = calculate_Fe_rOMend(animal_input['DMI'],

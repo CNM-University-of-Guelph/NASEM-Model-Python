@@ -168,6 +168,16 @@
       "Name": "calculate_Body_Gain",
       "Input": {"Frm_Gain": 7.3, "Rsrv_Gain": 10.2},
       "Output": 17.5
+    },
+    {
+      "Name": "calculate_Trg_BWgain",
+      "Input": {"Trg_FrmGain": 12.4, "Trg_RsrvGain": 5.3},
+      "Output": 17.7
+    },
+    {
+      "Name": "calculate_Trg_BWgain_g",
+      "Input": {"Trg_BWgain": 20.35},
+      "Output": 20350
     }
   ]
   
