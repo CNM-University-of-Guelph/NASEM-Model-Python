@@ -1,5 +1,6 @@
 import pandas as pd
 import re
+import numpy as np
 
 class ModelOutput:
     """
@@ -44,24 +45,89 @@ class ModelOutput:
         self.__populate_uncategorized()
 
     
-    def __str__(self):
-        summary = "=====================\n"
-        summary += "Model Output Summary\n"
-        summary += "=====================\n"
-        summary += f"Predicted Milk Production: {self.Production['milk']['Mlk_Prod']} kg/d\n"
-        summary += f"Metabolizable Energy Requirement: {self.Requirements['energy']['Trg_MEuse']} Mcal/d\n\n"
-        summary += "Categories\n"
-        summary += "---------------------\n"
-        summary += "Inputs: " + ", ".join(self.Inputs.keys()) + "\n"
-        summary += "Intakes: " + ", ".join(self.Intakes.keys()) + "\n"
-        summary += "Requirements: " + ", ".join(self.Requirements.keys()) + "\n"
-        summary += "Production: " + ", ".join(self.Production.keys()) + "\n"
-        summary += "Excretion: " + ", ".join(self.Excretion.keys()) + "\n"
-        summary += "Digestibility: " + ", ".join(self.Digestibility.keys()) + "\n"
-        summary += "Efficiencies: " + ", ".join(self.Efficiencies.keys()) + "\n"
-        summary += "Miscellaneous: " + ", ".join(self.Miscellaneous.keys()) + "\n"
-        summary += "=====================\n"
-        return summary
+    def __repr__(self):
+        summary_intro = "This is a snapshot of the model outputs, followed by instructions for accessing all outputs.\n\n"
+        summary_intro += "=====================\n"
+        summary_intro += "Model Output Snapshot\n"
+        summary_intro += "=====================\n"
+               
+        snapshot_vars = {
+            'Milk production kg (Mlk_Prod_comp)': 'Mlk_Prod_comp',
+            'Milk fat g/g (MlkFat_Milk)': 'MlkFat_Milk',
+            'Milk protein g/g (MlkNP_Milk)': 'MlkNP_Milk',
+            'Milk Production - MP allowable kg (Mlk_Prod_MPalow)': 'Mlk_Prod_MPalow',
+            'Milk Production - NE allowable kg (Mlk_Prod_NEalow)': 'Mlk_Prod_NEalow', 
+            'Animal ME intake Mcal/d (An_MEIn)': 'An_MEIn',
+            'Target ME use Mcal/d (Trg_MEuse)': 'Trg_MEuse',
+            'Animal MP intake g/d (An_MPIn_g)': 'An_MPIn_g',
+            'Animal MP use g/d (An_MPuse_g_Trg)': 'An_MPuse_g_Trg',
+            'Animal RDP intake g/d (An_RDPIn_g)': 'An_RDPIn_g',
+            'Diet DCAD meq (An_DCADmeq)': 'An_DCADmeq'
+        }
+
+        for description, key in snapshot_vars.items():
+            raw_value = self.get_value(key)
+            if isinstance(raw_value, (float, int)):  # Check if the value is numeric
+                value = round(raw_value, 3)  
+            elif isinstance(raw_value, (np.ndarray)) and raw_value.size == 1:
+                # This is required for any numbers handled by np.where() that return arrays instead of floats - needs cleaning up
+                value = round(float(raw_value),3)
+            else:
+                value = raw_value  
+            summary_intro += f"{description}: {value}\n" 
+
+        object_intro = "\n" 
+        object_intro += "=====================\n"
+        object_intro += "Access Model Outputs\n"
+        object_intro += "=====================\n"
+
+        object_intro += "This is a `ModelOutput` object returned by `nd.execute_model()`.\n"
+        object_intro += "Each of the following categories can be called directly as methods, \n"
+        object_intro += "e.g. if the name of my object is `output`, I would call `output.Production` to see the contents of Production. \n\n"
+        
+        object_intro += "The following list shows which dictionaries are within each category.\n\n"
+        object_intro += "Categories\n---------------------\n"
+        
+        categories = {
+            'Inputs': self.Inputs,
+            'Intakes': self.Intakes,
+            'Requirements': self.Requirements,
+            'Production': self.Production,
+            'Excretion': self.Excretion,
+            'Digestibility': self.Digestibility,
+            'Efficiencies': self.Efficiencies,
+            'Miscellaneous': self.Miscellaneous
+        }
+
+        for category, keys in categories.items():
+            object_intro += f"{category}: {', '.join(keys.keys())}\n"
+
+        object_intro += "\n\nThese outputs can be accessed by name, e.g. `output.Production['milk']['Mlk_Prod']"
+        object_intro += "\n\nThere is also a `.search()` method which takes a string and will return a df of all outputs with that string (case insensitive).\n"
+        object_intro += "e.g. `output.search('Mlk')`\n"
+        object_intro += "An individual output can be retrieved directly by providing its exact name to the  `.get_value()` method.\n"
+        object_intro += "e.g. `output.get_value('Mlk_Prod')\n"
+
+        object_intro += "=====================\n"
+        return summary_intro + object_intro
+
+        # summary = "=====================\n"
+        # summary += "Model Output Summary\n"
+        # summary += "=====================\n"
+        # summary += f"Predicted Milk Production: {self.Production['milk']['Mlk_Prod']} kg/d\n"
+        # summary += f"Metabolizable Energy Requirement: {self.Requirements['energy']['Trg_MEuse']} Mcal/d\n\n"
+        # summary += "Categories\n"
+        # summary += "---------------------\n"
+        # summary += "Inputs: " + ", ".join(self.Inputs.keys()) + "\n"
+        # summary += "Intakes: " + ", ".join(self.Intakes.keys()) + "\n"
+        # summary += "Requirements: " + ", ".join(self.Requirements.keys()) + "\n"
+        # summary += "Production: " + ", ".join(self.Production.keys()) + "\n"
+        # summary += "Excretion: " + ", ".join(self.Excretion.keys()) + "\n"
+        # summary += "Digestibility: " + ", ".join(self.Digestibility.keys()) + "\n"
+        # summary += "Efficiencies: " + ", ".join(self.Efficiencies.keys()) + "\n"
+        # summary += "Miscellaneous: " + ", ".join(self.Miscellaneous.keys()) + "\n"
+        # summary += "=====================\n"
+        # return summary
 
 
     def __populate_category(self, category_name, group_names, *variable_lists):
@@ -194,7 +260,7 @@ class ModelOutput:
         Sort and store specific variables related to production, including body composition changes and gestation, in the Production category.
         """
         # Name production groups
-        group_names = ['milk', 'composition', 'gestation', 'MiCP']
+        group_names = ['milk', 'body_composition', 'gestation', 'MiCP']
         # List variables to store
         milk_variables = ['Trg_NEmilk_Milk', 'Mlk_NP_g', 'Mlk_CP_g', 'Trg_Mlk_Fat' ,'Trg_Mlk_Fat_g', 'Mlk_Fatemp_g', 'Mlk_Fat_g', 'Mlk_Fat', 'Mlk_NP', 'Mlk_Prod_comp',
                           'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout']
