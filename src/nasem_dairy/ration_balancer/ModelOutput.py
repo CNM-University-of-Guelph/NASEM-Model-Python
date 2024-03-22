@@ -44,14 +44,91 @@ class ModelOutput:
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
 
+    def _repr_html_(self):
+        # This is the HTML display when the ModelOutput object is called directly in a IPython setting (e.g. juptyer notebook, VSCode interactive)
+        # summary_sentence = f"Outputs for a {self.get_value('An_StatePhys')}, weighing {self.get_value('An_BW')} kg, eating {self.get_value('DMI')} kg with {self.get_value('An_LactDay')} days in milk."
+        # df_diet_html = pd.DataFrame(self.get_value('user_diet')).to_html(index=False, escape=False)
+        
+        snapshot_data = self.__snapshot_data()
+        # snapshot_data = [{'Description': description, 'Value': self.get_value(key)} for description, key in snapshot_vars.items()]        
+        df_snapshot_html = pd.DataFrame(snapshot_data).to_html(index=False, escape=False)
+
+        # Constructing the accordion (drop down box) for the "Access Model Outputs" section
+        accordion_html = """
+        <details>
+            <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
+            <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
+            <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
+            <p>The following list shows which dictionaries are within each category:</p>
+            <ul>
+        """
+
+        categories = self.__categories_dict()
+        # Adding categories and keys to the accordion content as bullet points
+        for category, keys in categories.items():
+            accordion_html += f"<li><b>{category}:</b> {', '.join(keys.keys())}</li>"
+
+        accordion_html += """
+            </ul>
+            <div>
+                <p>These outputs can be accessed by name, e.g., <code>output.Production['milk']['Mlk_Prod']</code>.</p>
+                <p>There is also a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (case insensitive), e.g., <code>output.search('Mlk')</code>.</p>
+                <p>An individual output can be retrieved directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Prod')</code>.</p>
+            </div>
+        </details>
+        """
+
+        # Combining everything into the final HTML
+        # {summary_sentence}
+        # {df_diet_html}
+        final_html = f"""
+        <div>
+            <h2>Model Output Snapshot</h2>
+            {df_snapshot_html}
+            <hr>
+            {accordion_html}
+        </div>
+        """
+
+        # Note: This method must return a string containing HTML, so if using in a live Jupyter environment,
+        # you might want to use 'display(HTML(final_html))' instead of 'return final_html' for direct rendering.
+        return final_html
+
     
-    def __repr__(self):
-        summary_intro = "This is a snapshot of the model outputs, followed by instructions for accessing all outputs.\n\n"
-        summary_intro += "=====================\n"
-        summary_intro += "Model Output Snapshot\n"
-        summary_intro += "=====================\n"
+    def __str__(self):
+        summary = "=====================\n"
+        summary += "Model Output Snapshot\n"
+        summary += "=====================\n"
                
-        snapshot_vars = {
+        lines = [f"{entry['Description']}: {entry['Value']}" for entry in self.__snapshot_data()]
+        summary += "\n".join(lines)
+
+        summary += "\n\nThis is a `ModelOutput` object with methods to access all model outputs. See help(ModelOutput)."
+
+        return summary
+
+    def __categories_dict(self):
+        """
+        Return dictionary of categories from this object for _refr_html_ and __str__
+        """
+        categories_dict = {
+                'Inputs': self.Inputs,
+                'Intakes': self.Intakes,
+                'Requirements': self.Requirements,
+                'Production': self.Production,
+                'Excretion': self.Excretion,
+                'Digestibility': self.Digestibility,
+                'Efficiencies': self.Efficiencies,
+                'Miscellaneous': self.Miscellaneous
+            }
+        return categories_dict
+    
+
+    def __snapshot_data(self):
+        """
+        Return a list of dictionaries of snapshot variables for _refr_html_ and __str__
+        """
+        snapshot_dict = {
             'Milk production kg (Mlk_Prod_comp)': 'Mlk_Prod_comp',
             'Milk fat g/g (MlkFat_Milk)': 'MlkFat_Milk',
             'Milk protein g/g (MlkNP_Milk)': 'MlkNP_Milk',
@@ -65,7 +142,8 @@ class ModelOutput:
             'Diet DCAD meq (An_DCADmeq)': 'An_DCADmeq'
         }
 
-        for description, key in snapshot_vars.items():
+        snapshot_data = []
+        for description, key in snapshot_dict.items():
             raw_value = self.get_value(key)
             if isinstance(raw_value, (float, int)):  # Check if the value is numeric
                 value = round(raw_value, 3)  
@@ -74,61 +152,11 @@ class ModelOutput:
                 value = round(float(raw_value),3)
             else:
                 value = raw_value  
-            summary_intro += f"{description}: {value}\n" 
-
-        object_intro = "\n" 
-        object_intro += "=====================\n"
-        object_intro += "Access Model Outputs\n"
-        object_intro += "=====================\n"
-
-        object_intro += "This is a `ModelOutput` object returned by `nd.execute_model()`.\n"
-        object_intro += "Each of the following categories can be called directly as methods, \n"
-        object_intro += "e.g. if the name of my object is `output`, I would call `output.Production` to see the contents of Production. \n\n"
         
-        object_intro += "The following list shows which dictionaries are within each category.\n\n"
-        object_intro += "Categories\n---------------------\n"
-        
-        categories = {
-            'Inputs': self.Inputs,
-            'Intakes': self.Intakes,
-            'Requirements': self.Requirements,
-            'Production': self.Production,
-            'Excretion': self.Excretion,
-            'Digestibility': self.Digestibility,
-            'Efficiencies': self.Efficiencies,
-            'Miscellaneous': self.Miscellaneous
-        }
+            snapshot_data.append({'Description': description, 'Value': value})
 
-        for category, keys in categories.items():
-            object_intro += f"{category}: {', '.join(keys.keys())}\n"
-
-        object_intro += "\n\nThese outputs can be accessed by name, e.g. `output.Production['milk']['Mlk_Prod']"
-        object_intro += "\n\nThere is also a `.search()` method which takes a string and will return a df of all outputs with that string (case insensitive).\n"
-        object_intro += "e.g. `output.search('Mlk')`\n"
-        object_intro += "An individual output can be retrieved directly by providing its exact name to the  `.get_value()` method.\n"
-        object_intro += "e.g. `output.get_value('Mlk_Prod')\n"
-
-        object_intro += "=====================\n"
-        return summary_intro + object_intro
-
-        # summary = "=====================\n"
-        # summary += "Model Output Summary\n"
-        # summary += "=====================\n"
-        # summary += f"Predicted Milk Production: {self.Production['milk']['Mlk_Prod']} kg/d\n"
-        # summary += f"Metabolizable Energy Requirement: {self.Requirements['energy']['Trg_MEuse']} Mcal/d\n\n"
-        # summary += "Categories\n"
-        # summary += "---------------------\n"
-        # summary += "Inputs: " + ", ".join(self.Inputs.keys()) + "\n"
-        # summary += "Intakes: " + ", ".join(self.Intakes.keys()) + "\n"
-        # summary += "Requirements: " + ", ".join(self.Requirements.keys()) + "\n"
-        # summary += "Production: " + ", ".join(self.Production.keys()) + "\n"
-        # summary += "Excretion: " + ", ".join(self.Excretion.keys()) + "\n"
-        # summary += "Digestibility: " + ", ".join(self.Digestibility.keys()) + "\n"
-        # summary += "Efficiencies: " + ", ".join(self.Efficiencies.keys()) + "\n"
-        # summary += "Miscellaneous: " + ", ".join(self.Miscellaneous.keys()) + "\n"
-        # summary += "=====================\n"
-        # return summary
-
+        return snapshot_data
+    
 
     def __populate_category(self, category_name, group_names, *variable_lists):
         """
