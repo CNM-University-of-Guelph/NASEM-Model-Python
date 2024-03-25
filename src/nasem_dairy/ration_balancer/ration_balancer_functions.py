@@ -98,14 +98,20 @@ def get_feed_rows_feedlibrary(
     ```
     '''
 
-    # Filter df using list from user
-    selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
+    # # Filter df using list from user
+    # selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
 
-    # set names as index for downstream
-    selected_feed_data = selected_feed_data.set_index('Fd_Name')
+    # # set names as index for downstream
+    # selected_feed_data = selected_feed_data.set_index('Fd_Name')
 
-    # Clean names:
-    selected_feed_data.index = selected_feed_data.index.str.strip()
+    # # Clean names:
+    # selected_feed_data.index = selected_feed_data.index.str.strip()
+    
+    selected_feed_data =  (
+        feed_lib_df.assign(Fd_Name=lambda df: df["Fd_Name"].str.strip()) # clean whitespace
+        .loc[lambda df: df["Fd_Name"].isin(feeds_to_get)] # filter Fd_Name to match feeds_to_get
+        .rename(columns={'Fd_Name': 'Feedstuff'}) # rename column
+        .pipe(lambda df: df[['Feedstuff'] + [col for col in df.columns if col != 'Feedstuff']])) #reorder columns
 
     return selected_feed_data
 
@@ -182,7 +188,9 @@ def read_csv_input(path_to_file = "input.csv"):
             user_diet_data['kg_user'].append(value)
 
     user_diet = pd.DataFrame(user_diet_data)
-    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], downcast="float")
+    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], 
+                                         #downcast="float"
+                                         )
 
     return user_diet, animal_input, equation_selection
 

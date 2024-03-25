@@ -386,29 +386,22 @@ def execute_model(user_diet: pd.DataFrame,
     user_diet = user_diet.copy()
     animal_input = animal_input.copy()
 
-    # list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data
-    list_of_feeds = user_diet['Feedstuff'].tolist()
-    # feed_data = fl_get_rows(list_of_feeds, path_to_db)
-    feed_data = get_feed_rows_feedlibrary(list_of_feeds, feed_library_df)
+    # retrieve user's feeds from feed library
+    feed_data = get_feed_rows_feedlibrary(
+        feeds_to_get=user_diet['Feedstuff'].tolist(), 
+        feed_lib_df=feed_library_df)
 
-    # list_of_feeds is used to query the database and retrieve the ingredient composition, stored in feed_data
-    # list_of_feeds = user_diet['Feedstuff'].tolist()
-    # feed_data = fl_get_rows(list_of_feeds, '../../src/nasem_dairy/data/diet_database.db')
-
-    feed_data = feed_data.reset_index(names='Feedstuff')
-
-    diet_info_initial = pd.DataFrame({'Feedstuff': user_diet['Feedstuff']})
-    diet_info_initial = diet_info_initial.merge(feed_data, how='left', on='Feedstuff')
-
-    # Add Fd_DMInp to the diet_info dataframe
-    Fd_DMInp = user_diet.set_index('Feedstuff')['kg_user'] / user_diet['kg_user'].sum()
-
-    diet_info_initial.insert(1, 'Fd_DMInp', 
-        Fd_DMInp.reindex(
-            diet_info_initial['Feedstuff']).values)
-
-    diet_info_initial['Fd_DMIn'] = diet_info_initial['Fd_DMInp'] * animal_input['DMI']      # Should this be done after DMI equations?
-
+    # Calculate Fd_DMInp (percentage inclusion as sum of kg_user column)
+    # Then, use the percentages to calculate the DMIn for each ingredient, and merge feed data on
+    diet_info_initial = (
+        user_diet
+        .assign(
+            Fd_DMInp = lambda df: df['kg_user'] / df['kg_user'].sum(),
+            Fd_DMIn = lambda df: df['Fd_DMInp'] * animal_input['DMI']
+            )
+        .merge(feed_data, how='left', on='Feedstuff')
+    )
+    
     # Add Fd_DNDF48 column, need to add to the database
     # diet_info_initial['Fd_DNDF48'] = 0
 
@@ -418,7 +411,9 @@ def execute_model(user_diet: pd.DataFrame,
 
     animal_input['An_PostPartDay'] = calculate_An_PostPartDay(animal_input['An_LactDay'])
 
-    del (list_of_feeds, Fd_DMInp)
+    animal_input['An_PostPartDay'] = calculate_An_PostPartDay(animal_input['An_LactDay'])
+
+
 
     # Check equation_selection to make sure they are integers.
     # This is especially important for Shiny, which may return strings
