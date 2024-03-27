@@ -256,6 +256,7 @@ def calculate_An_REgain_Calf(Body_Gain_empty, An_BW_empty):
     An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205    # Line 2445, calf RE gain needed here for fat gain, mcal/d    
     return An_REgain_Calf
 
+
 def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float, An_DigTPaIn: float, Body_NPgain: float, An_GasEOut: float, coeff_dict: dict) -> float:
     """
     An_MEIn_approx: Approximate ME intake, see note:
@@ -314,6 +315,142 @@ def calculate_An_DigTPaIn(An_TPIn: float, InfArt_CPIn: float, Fe_CP: float) -> f
     """
     An_DigTPaIn = An_TPIn - InfArt_CPIn - Fe_CP # Very messy. Some Fe_MiTP derived from NPN and some MiNPN from Dt_TP, thus Fe_CP, Line 1229
     return An_DigTPaIn
+
+
+def calculate_An_DMIn_MBW(An_DMIn: float, An_MBW: float) -> float:
+    """
+    An_DMIn_MBW: kg Dry matter intake per kg metabolic body weight, kg/kg
+    """
+    An_DMIn_MBW = An_DMIn / An_MBW  # Line 936
+    return An_DMIn_MBW 
+
+
+def calculate_An_StIn(Dt_StIn: float, InfRum_StIn: float, InfSI_StIn: float) -> float:
+    """
+    An_StIn: Dietary + infused starch intake, kg
+    """
+    An_StIn = Dt_StIn + InfRum_StIn + InfSI_StIn    # Line 937
+    return An_StIn 
+
+
+def calculate_An_St(An_StIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_St: Starch % of diet + infusions
+    """
+    An_St = An_StIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 938
+    return An_St
+
+
+def calculate_An_rOMIn(Dt_rOMIn: float, InfRum_GlcIn: float, InfRum_AcetIn: float, InfRum_PropIn: float, InfRum_ButrIn: float, InfSI_AcetIn: float, InfSI_PropIn: float, InfSI_ButrIn: float) -> float:
+    """
+    An_rOMIn: Residual organic matter intake from diet + infusions, kg
+    """
+    An_rOMIn = Dt_rOMIn + InfRum_GlcIn + InfRum_AcetIn \
+    + InfRum_PropIn + InfRum_ButrIn + InfSI_AcetIn \
+    + InfSI_PropIn + InfSI_ButrIn   # Line 939-940
+    return An_rOMIn
+
+
+def calculate_An_rOM(An_rOMIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_rOM: Residual organic matter % of diet + infusions
+    """
+    An_rOM = An_rOMIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 941
+    return An_rOM
+
+
+def calculate_An_NDFIn(Dt_NDFIn: float, InfRum_NDFIn: float, InfSI_NDFIn: float) -> float:
+    """
+    An_NDFIn: NDF intake from diet and infusions, kg
+    """
+    An_NDFIn = (Dt_NDFIn + InfRum_NDFIn + InfSI_NDFIn)  # Line 942
+    return An_NDFIn
+
+
+def calculate_An_NDFIn_BW(An_NDFIn: float, An_BW: float) -> float: 
+    """
+    An_NDFIn_BW: NDF over bodyweight, kg/kg
+    """    
+    An_NDFIn_BW = An_NDFIn / An_BW * 100    # Line 943
+    return An_NDFIn_BW
+
+
+def calculate_An_NDF(An_NDFIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_NDF: NDF % of diet + infusion intake
+    """
+    An_NDF = An_NDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 944
+    return An_NDF
+
+
+def calculate_An_ADFIn(Dt_ADFIn: float, InfRum_ADFIn: float, InfSI_ADFIn: float) -> float:
+    """
+    An_ADFIn: ADF intake from diet + infusions, kg
+    """    
+    An_ADFIn = (Dt_ADFIn + InfRum_ADFIn + InfSI_ADFIn)  # Line 945
+    return An_ADFIn
+
+
+def calculate_An_ADF(An_ADFIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_ADF: ADF % of diet + infusion intake
+    """
+    An_ADF = An_ADFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 946
+    return An_ADF
+
+
+def calculate_An_CPIn_g(An_CPIn: float) -> float:
+    """
+    An_CPIn_g: Crude protein intake from diet + infusions, g
+    """
+    An_CPIn_g = An_CPIn * 1000  # Line 948
+    return An_CPIn_g
+
+
+def calculate_An_CP(An_CPIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_CP: Crude protein % of diet + infusion intake
+    """
+    An_CP = An_CPIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 949
+    return An_CP
+
+
+def calculate_An_NIn_g(An_CPIn: float) -> float:
+    """
+    An_NIn_g: Nitrogen intake from diet + infusions, g
+    """
+    An_NIn_g = An_CPIn * 0.16 * 1000    # Line 950
+    return An_NIn_g
+
+
+def calculate_An_FAhydrIn(Dt_FAhydrIn: float, Inf_FAIn: float) -> float:
+    An_FAhydrIn = Dt_FAhydrIn + Inf_FAIn  # Line 954, need to specify FA vs TAG in the infusion matrix to account for differences there. MDH
+    return An_FAhydrIn
+
+
+def calculate_An_FA(An_FAIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_FA: Fatty acid % of diet + infusions
+    """
+    An_FA = An_FAIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 955
+    return An_FA
+
+
+def calculate_An_AshIn(Dt_AshIn: float, InfRum_AshIn: float, InfSI_AshIn: float) -> float:
+    """
+    An_AshIn: Ash intake from diet + infusions, kg
+    """
+    An_AshIn = (Dt_AshIn + InfRum_AshIn + InfSI_AshIn)  # Line 956
+    return An_AshIn
+
+
+def calculate_An_Ash(An_AshIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_Ash: Ash % of diet + infusions intake
+    """
+    An_Ash = An_AshIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 957
+    return An_Ash
+
 
 ####################
 # Animal Warpper Functions
@@ -422,7 +559,9 @@ def calculate_An_data_complete(
         An_data_initial: dict, 
         diet_data: dict, 
         An_StatePhys: str, 
-        Fe_CP, 
+        An_BW: float,
+        DMI: float,
+        Fe_CP: float, 
         infusion_data: dict, 
         Monensin_eqn: int, #equation_selection['Monensin_eqn']
         coeff_dict: dict
@@ -467,6 +606,67 @@ def calculate_An_data_complete(
     AA_list = ['Arg', 'His', 'Ile', 'Leu','Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     for AA in AA_list:
         complete_An_data[f'An_Id{AA}In'] = diet_data[f'Dt_Id{AA}In'] + infusion_data[f'Inf_Id{AA}In']
+
+    nutrient_list = ['CPIn', 'NPNCPIn', 'TPIn', 'FAIn']
+    for nutrient in nutrient_list:
+        complete_An_data[f'An_{nutrient}'] = diet_data[f'Dt_{nutrient}'] + infusion_data[f'Inf_{nutrient}']
+
+    complete_An_data['An_DMIn_MBW'] = calculate_An_DMIn_MBW(complete_An_data['An_DMIn'],
+                                                            complete_An_data['An_MBW'])
+    complete_An_data['An_StIn'] = calculate_An_StIn(diet_data['Dt_StIn'],
+                                                    infusion_data['InfRum_StIn'],
+                                                    infusion_data['InfSI_StIn'])
+    complete_An_data['An_St'] = calculate_An_St(complete_An_data['An_StIn'],
+                                                DMI,
+                                                infusion_data['InfRum_DMIn'],
+                                                infusion_data['InfSI_DMIn'])
+    complete_An_data['An_rOMIn'] = calculate_An_rOMIn(diet_data['Dt_rOMIn'],
+                                                      infusion_data['InfRum_GlcIn'],
+                                                      infusion_data['InfRum_AcetIn'],
+                                                      infusion_data['InfRum_PropIn'],
+                                                      infusion_data['InfRum_ButrIn'],
+                                                      infusion_data['InfSI_AcetIn'],
+                                                      infusion_data['InfSI_PropIn'],
+                                                      infusion_data['InfSI_ButrIn'])
+    complete_An_data['An_rOM'] = calculate_An_rOM(complete_An_data['An_rOMIn'],
+                                                  DMI,
+                                                  infusion_data['InfRum_DMIn'],
+                                                  infusion_data['InfSI_DMIn'])
+    complete_An_data['An_NDFIn'] = calculate_An_NDFIn(diet_data['Dt_NDFIn'],
+                                                      infusion_data['InfRum_NDFIn'],
+                                                      infusion_data['InfSI_NDFIn'])
+    complete_An_data['An_NDFIn_BW'] = calculate_An_NDFIn_BW(complete_An_data['An_NDFIn'],
+                                                            An_BW)
+    complete_An_data['An_NDF'] = calculate_An_NDF(complete_An_data['An_NDFIn'],
+                                                  DMI,
+                                                  infusion_data['InfRum_DMIn'],
+                                                  infusion_data['InfSI_DMIn'])
+    complete_An_data['An_ADFIn'] = calculate_An_ADFIn(diet_data['Dt_ADFIn'],
+                                                      infusion_data['InfRum_ADFIn'],
+                                                      infusion_data['InfSI_ADFIn'])
+    complete_An_data['An_ADF'] = calculate_An_ADF(complete_An_data['An_ADFIn'],
+                                                  DMI,
+                                                  infusion_data['InfRum_DMIn'],
+                                                  infusion_data['InfSI_DMIn'])
+    complete_An_data['An_CPIn_g'] = calculate_An_CPIn_g(complete_An_data['An_CPIn'])
+    complete_An_data['An_CP'] = calculate_An_CP(complete_An_data['An_CPIn'],
+                                                DMI,
+                                                infusion_data['InfRum_DMIn'],
+                                                infusion_data['InfSI_DMIn'])
+    complete_An_data['An_NIn_g'] = calculate_An_NIn_g(complete_An_data['An_CPIn'])
+    complete_An_data['An_FAhydrIn'] = calculate_An_FAhydrIn(diet_data['Dt_FAhydrIn'],
+                                                            infusion_data['Inf_FAIn'])
+    complete_An_data['An_FA'] = calculate_An_FA(complete_An_data['An_FAIn'],
+                                                DMI,
+                                                infusion_data['InfRum_DMIn'],
+                                                infusion_data['InfSI_DMIn'])
+    complete_An_data['An_AshIn'] = calculate_An_AshIn(diet_data['Dt_AshIn'],
+                                                      infusion_data['InfRum_AshIn'],
+                                                      infusion_data['InfSI_AshIn'])
+    complete_An_data['An_Ash'] = calculate_An_Ash(complete_An_data['An_AshIn'],
+                                                  DMI,
+                                                  infusion_data['InfRum_DMIn'],
+                                                  infusion_data['InfSI_DMIn'])
     return complete_An_data
 
 ####################
