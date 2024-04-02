@@ -188,7 +188,10 @@ from nasem_dairy.NASEM_equations.rumen_equations import (
     calculate_Rum_dcNDF,
     calculate_Rum_dcSt,
     calculate_Rum_DigNDFIn,
-    calculate_Rum_DigStIn
+    calculate_Rum_DigStIn,
+    calculate_Rum_DigNDFnfIn,
+    calculate_Du_StPas,
+    calculate_Du_NDFPas
 )
 
 from nasem_dairy.NASEM_equations.microbial_protein_equations import (

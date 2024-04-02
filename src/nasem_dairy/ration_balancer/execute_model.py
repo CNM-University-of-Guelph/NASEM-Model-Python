@@ -58,7 +58,10 @@ from nasem_dairy.NASEM_equations.rumen_equations import (
     calculate_Rum_dcNDF,
     calculate_Rum_dcSt,
     calculate_Rum_DigNDFIn,
-    calculate_Rum_DigStIn
+    calculate_Rum_DigStIn,
+    calculate_Rum_DigNDFnfIn,
+    calculate_Du_StPas,
+    calculate_Du_NDFPas
 )
 
 from nasem_dairy.NASEM_equations.microbial_protein_equations import (
@@ -749,6 +752,18 @@ def execute_model(user_diet: pd.DataFrame,
 
     Rum_DigStIn = calculate_Rum_DigStIn(Rum_dcSt,
                                            diet_data_initial['Dt_StIn'])
+    
+    Rum_DigNDFnfIn = calculate_Rum_DigNDFnfIn(Rum_dcNDF,
+                                              diet_data_initial['Dt_NDFnfIn'])
+    
+    # Duodenal Passage?
+    Du_StPas = calculate_Du_StPas(diet_data_initial['Dt_StIn'],
+                                  infusion_data['InfRum_StIn'],
+                                  Rum_DigStIn)
+    
+    Du_NDFPas = calculate_Du_NDFPas(diet_data_initial['Dt_NDFIn'],
+                                    infusion_data['Inf_NDFIn'],
+                                    Rum_DigNDFIn)
 
     ########################################
     # Step 7: Microbial Protein Calculations

@@ -35,3 +35,29 @@ def calculate_Rum_DigStIn(Rum_dcSt, Dt_StIn):
     # Line 998
     Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn
     return Rum_DigStIn
+
+
+def calculate_Rum_DigNDFnfIn(Rum_dcNDF: float, Dt_NDFnfIn: float) -> float:
+    """
+    Rum_DigNDFnfIn: Rumen digested Nitrogen free NDF intake, kg
+    """
+    Rum_DigNDFnfIn = Rum_dcNDF / 100 * Dt_NDFnfIn  # Not used.  IF used, should consider infusions, Line 996
+    return Rum_DigNDFnfIn
+
+
+def calculate_Du_StPas(Dt_StIn: float, InfRum_StIn: float, Rum_DigStIn: float) -> float:
+    """
+    Du_StPas: Duodenal starch passage?, kg?
+    """
+    Du_StPas = Dt_StIn + InfRum_StIn - Rum_DigStIn  # Line 999
+    if Du_StPas < 0:    #All grass diets predicted to be very slightly negative, Line 1000
+        Du_StPas = 0
+    return Du_StPas
+
+
+def calculate_Du_NDFPas(Dt_NDFIn: float, Inf_NDFIn: float, Rum_DigNDFIn: float) -> float:
+    """
+    Du_NDFPas: Duodenal NDF passage?, kg?
+    """
+    Du_NDFPas = Dt_NDFIn + Inf_NDFIn - Rum_DigNDFIn # Line 1001
+    return Du_NDFPas

@@ -563,3 +563,6 @@ An_Ash
 An_WaIn_Lact
 An_WaIn_Dry
 An_WaIn
+Rum_DigNDFnfIn
+Du_StPas
+Du_NDFPas
