@@ -325,6 +325,8 @@ from nasem_dairy.NASEM_equations.unused_equations import (
     calculate_Dt_DMIn_MBW
 )
 
+from nasem_dairy.NASEM_equations.water_equations import calculate_An_WaIn
+
 
 def execute_model(user_diet: pd.DataFrame, 
                   animal_input: dict, 
@@ -1631,6 +1633,16 @@ def execute_model(user_diet: pd.DataFrame,
                                          diet_data['Dt_Cl'],
                                          diet_data['Dt_S'])
 
+    ########################################
+    # Water Calculations
+    ########################################
+    An_WaIn = calculate_An_WaIn(animal_input['An_StatePhys'],
+                                animal_input['DMI'],
+                                diet_data['Dt_DM'],
+                                diet_data['Dt_Na'],
+                                diet_data['Dt_K'],
+                                diet_data['Dt_CP'],
+                                animal_input['Env_TempCurr'])
 
     ########################################
     # Capture Outputs

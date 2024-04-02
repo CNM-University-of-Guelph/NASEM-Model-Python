@@ -514,3 +514,5 @@ from nasem_dairy.NASEM_equations.unused_equations import (
     calculate_Dt_DMIn_BW,
     calculate_Dt_DMIn_MBW
 )
+
+from nasem_dairy.NASEM_equations.water_equations import calculate_An_WaIn

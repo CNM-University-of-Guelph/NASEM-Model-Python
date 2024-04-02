@@ -114,15 +114,16 @@ class ModelOutput:
             self.locals_input.pop(key, None)
 
         # Name intake groups
-        group_names = ['energy', 'protein', 'AA', 'FA', 'rumen_digestable'] 
+        group_names = ['energy', 'protein', 'AA', 'FA', 'rumen_digestable', 'water'] 
         # Lists of variables to store
         energy_variables = ['An_MEIn', 'An_NEIn', 'An_NE', 'An_MEIn_approx']
         protein_variables = ['An_MPIn', 'An_MPIn_g']
         AA_variables = ['AA_values', 'Abs_EAA_g', 'Abs_neAA_g', 'Abs_OthAA_g', 'Abs_EAA2b_g']
         FA_variables = []
         rumen_digestable_variables = ['Rum_DigNDFIn', 'Rum_DigStIn']
+        water_variables = ['An_WaIn']
         # Store variables
-        self.__populate_category('Intakes', group_names, energy_variables, protein_variables, AA_variables, FA_variables, rumen_digestable_variables)
+        self.__populate_category('Intakes', group_names, energy_variables, protein_variables, AA_variables, FA_variables, rumen_digestable_variables, water_variables)
 
 
     def __sort_Requirements(self):
