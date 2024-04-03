@@ -98,3 +98,19 @@ def calculate_Fe_MPendUse_g_Trg(An_StatePhys: str, Fe_CPend_g: float, Fe_NPend_g
     else:
         Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg'] # Line 2668
     return Fe_MPendUse_g_Trg
+
+
+def calculate_Fe_rOM(An_rOMIn: float, An_DigrOMaIn: float) -> float:
+    """
+    Fe_rOM: Fecal residual organic matter, kg/d
+    """
+    Fe_rOM = An_rOMIn - An_DigrOMaIn  # includes undigested rOM and fecal endogenous rOM, Line 1045
+    return Fe_rOM
+
+
+def calculate_Fe_St(Dt_StIn: float, Inf_StIn: float, An_DigStIn: float) -> float:
+    """
+    Fe_St: Fecal starch, kg/d
+    """
+    Fe_St = Dt_StIn + Inf_StIn - An_DigStIn # Line 1052
+    return Fe_St

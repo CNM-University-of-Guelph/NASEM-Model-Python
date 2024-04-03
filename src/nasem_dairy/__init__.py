@@ -130,6 +130,10 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Fd_idRUPIn,
     calculate_TT_dcFdFA,
     calculate_Fd_DigFAIn,
+    calculate_Fd_DigrOMa,
+    calculate_Fd_DigrOMaIn,
+    calculate_Fd_DigWSC,
+    calculate_Fd_DigWSCIn,
     calculate_Dt_ForDNDF48,
     calculate_Dt_ForDNDF48_ForNDF,
     calculate_Dt_ADF_NDF,
@@ -177,8 +181,17 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_TT_dcNDF,
     calculate_TT_dcSt_Base,
     calculate_TT_dcSt,
+    calculate_TT_dcAnSt,
+    calculate_TT_dcrOMa,
+    calculate_TT_dcrOMt,
     calculate_Dt_acMg,
     calculate_Abs_MgIn,
+    calculate_Dt_DigWSCIn,
+    calculate_Dt_DigSt,
+    calculate_Dt_DigWSC,
+    calculate_Dt_DigrOMa,
+    calculate_Dt_DigrOMa_Dt,
+    calculate_Dt_DigrOMt,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
@@ -304,7 +317,14 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_data_initial,
     calculate_An_data_complete,
     calculate_An_MPIn,
-    calculate_An_MPIn_g
+    calculate_An_MPIn_g,
+    calculate_An_DigStIn_Base,
+    calculate_An_DigWSCIn,
+    calculate_An_DigrOMtIn,
+    calculate_An_DigSt,
+    calculate_An_DigWSC,
+    calculate_An_DigrOMa,
+    calculate_An_DigrOMt,
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -330,8 +350,10 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_CP,
     calculate_Fe_NPend,
     calculate_Fe_NPend_g,
-    calculate_Fe_MPendUse_g_Trg
-)
+    calculate_Fe_MPendUse_g_Trg,
+    calculate_Fe_rOM,
+    calculate_Fe_St,
+)   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_CPGain_FrmGain,

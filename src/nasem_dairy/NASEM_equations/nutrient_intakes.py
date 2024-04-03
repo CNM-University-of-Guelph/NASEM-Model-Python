@@ -619,6 +619,41 @@ def calculate_Fd_DigFAIn(TT_dcFdFA, Fd_FA, Fd_DMIn):
     Fd_DigFAIn = TT_dcFdFA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigFAIn
 
+
+def calculate_Fd_DigrOMa(Fd_DigrOMt: float, coeff_dict: dict) -> float:
+    """
+    Fd_DigrOMa: Apparently digested residual organic matter, % DM
+    """
+    req_coeff = ['Fe_rOMend_DMI']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Fd_DigrOMa = Fd_DigrOMt - coeff_dict['Fe_rOMend_DMI'] # Line 1008
+    # Apparently digested (% DM). Generates some negative values for minerals and other low rOM feeds.
+    return Fd_DigrOMa
+
+
+def calculate_Fd_DigrOMaIn(Fd_DigrOMa: float, Fd_DMIn: float) -> float:  
+    """
+    Fd_DigrOMaIn: Apparently digested residual organic matter intkae, kg/d
+    """
+    Fd_DigrOMaIn = Fd_DigrOMa / 100 * Fd_DMIn   # kg/d, Line 1009
+    return Fd_DigrOMaIn
+
+
+def calculate_Fd_DigWSC(Fd_WSC: float) -> float:
+    """
+    Fd_DigWSC: Digested water soluble carbohydrate, % DM
+    """
+    Fd_DigWSC = Fd_WSC  # 100% digestible, Line 1011
+    return Fd_DigWSC
+
+
+def calculate_Fd_DigWSCIn(Fd_DigWSC: float, Fd_DMIn: float) -> float:
+    """
+    Fd_DigWSCIn: Digested water soluble carbohydrate intake , kg/d
+    """
+    Fd_DigWSCIn = Fd_DigWSC / 100 * Fd_DMIn # Line 1012
+    return Fd_DigWSCIn
+
 ####################
 # Functions for Diet Intakes
 ####################
@@ -910,9 +945,63 @@ def calculate_Dt_acMg(An_StatePhys: str, Dt_K: float, Dt_MgIn_min: float, Dt_MgI
                        (44.1 - 5.42 * math.log(Dt_K * 10) - 0.08 * Dt_MgIn_min / Dt_MgIn * 100) / 100)
     return Dt_acMg
 
+
 def calculate_Abs_MgIn(Dt_acMg: float, Dt_MgIn: float) -> float:
     Abs_MgIn = Dt_acMg * Dt_MgIn    # Mg absorption is inhibited by K, Line 1881
     return Abs_MgIn
+
+
+def calculate_Dt_DigWSCIn(Fd_DigWSCIn: float) -> float:
+    """
+    Dt_DigWSCIn: Digestable water soluble carbohydrate intake, kg/d
+    """
+    Dt_DigWSCIn = sum(Fd_DigWSCIn)	# This is not used as it isn't additive with St, MDH. Line 1019
+    return Dt_DigWSCIn
+
+
+def calculate_Dt_DigSt(Dt_DigStIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigSt: Digestable starch, % DM
+    """
+    Dt_DigSt = Dt_DigStIn / Dt_DMIn * 100   # Line 1036
+    return Dt_DigSt
+
+
+def calculate_Dt_DigWSC(Dt_DigWSCIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigWSC: Digestable water soluble carbohydrate, % DM
+    """
+    Dt_DigWSC = Dt_DigWSCIn / Dt_DMIn * 100 # line 1038
+    return Dt_DigWSC
+
+
+def calculate_Dt_DigrOMa(Dt_DigrOMaIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigrOMa: Apparently digestable residual organic matter, % DM
+    """
+    Dt_DigrOMa = Dt_DigrOMaIn / Dt_DMIn * 100   # Line 1040
+    return Dt_DigrOMa
+
+
+def calculate_Dt_DigrOMa_Dt(Dt_rOM: float, coeff_dict: dict) -> float:
+    """
+    Dt_DigrOMa_Dt: Apparently digestable residual organic matter, % DM???
+    
+    This variable is not used anywhere, used as crosscheck? (see comment)
+    """
+    req_coeff = ['Fe_rOMend_DMI']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    # In R code variable is Dt_DigrOMa.Dt
+    Dt_DigrOMa_Dt = Dt_rOM * 0.96 - coeff_dict['Fe_rOMend_DMI']   # Crosscheck the feed level calculation and summation., Line 1041
+    return Dt_DigrOMa_Dt
+
+
+def calculate_Dt_DigrOMt(Dt_DigrOMtIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigrOMt: Truly digested residual organic matter, % DM
+    """
+    Dt_DigrOMt = Dt_DigrOMtIn / Dt_DMIn * 100   # Line 1042
+    return Dt_DigrOMt
 
 ####################
 # Functions for Digestability Coefficients
@@ -947,6 +1036,32 @@ def calculate_TT_dcSt(TT_dcSt_Base, An_DMIn_BW):
     TT_dcSt = np.where(TT_dcSt_Base == 0, 0, TT_dcSt_Base -
                        (1.0 * (An_DMIn_BW - 0.035)) * 100)
     return TT_dcSt
+
+
+def calculate_TT_dcAnSt(An_DigStIn: float, Dt_StIn: float, Inf_StIn: float) -> float:
+    """
+    TT_dcAnSt: Starch total tract digestability coefficient
+    """
+    TT_dcAnSt = An_DigStIn / (Dt_StIn + Inf_StIn) * 100 # Line 1034
+    if np.isnan(TT_dcAnSt):   # Line 1035
+        TT_dcAnSt = 0
+    return TT_dcAnSt
+
+
+def calculate_TT_dcrOMa(An_DigrOMaIn: float, Dt_rOMIn: float, InfRum_GlcIn: float, InfRum_AcetIn: float, InfRum_PropIn: float, InfRum_ButrIn: float, InfSI_GlcIn: float, InfSI_AcetIn: float, InfSI_PropIn: float, InfSI_ButrIn: float) -> float:
+    """
+    TT_dcrOMa: Apparent digested residual organic matter total tract digestability coefficient
+    """
+    TT_dcrOMa = An_DigrOMaIn / (Dt_rOMIn + InfRum_GlcIn + InfRum_AcetIn + InfRum_PropIn + InfRum_ButrIn + InfSI_GlcIn + InfSI_AcetIn + InfSI_PropIn + InfSI_ButrIn) * 100   # Line 1047-1048
+    return TT_dcrOMa
+
+
+def calculate_TT_dcrOMt(An_DigrOMtIn: float, Dt_rOMIn: float, InfRum_GlcIn: float, InfRum_AcetIn: float, InfRum_PropIn: float, InfRum_ButrIn: float, InfSI_GlcIn: float, InfSI_AcetIn: float, InfSI_PropIn: float, InfSI_ButrIn: float) -> float:
+    """
+    TT_dcrOMt: Truly digested residual organic matter total tract digestability coefficient
+    """
+    TT_dcrOMt = An_DigrOMtIn / (Dt_rOMIn + InfRum_GlcIn + InfRum_AcetIn + InfRum_PropIn + InfRum_ButrIn + InfSI_GlcIn + InfSI_AcetIn + InfSI_PropIn + InfSI_ButrIn) * 100   # Line 1049-1050
+    return TT_dcrOMt
 
 ####################
 # Wrapper functions for feed and diet intakes
@@ -1356,6 +1471,14 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
         **{f"Fd_Dig{FA}In": lambda df, FA=FA: df['TT_dcFdFA'] / 100 * df[f"Fd_{FA}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for FA in Dig_FA_list}
     )   
     
+    complete_diet_info['Fd_DigrOMa'] = calculate_Fd_DigrOMa(complete_diet_info['Fd_DigrOMt'],
+                                                            coeff_dict)
+    complete_diet_info['Fd_DigrOMaIn'] = calculate_Fd_DigrOMaIn(complete_diet_info['Fd_DigrOMa'],
+                                                                complete_diet_info['Fd_DMIn'])
+    complete_diet_info['Fd_DigWSC'] = calculate_Fd_DigWSC(complete_diet_info['Fd_WSC'])
+    complete_diet_info['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(complete_diet_info['Fd_DigWSC'],
+                                                              complete_diet_info['Fd_DMIn'])
+    
     return complete_diet_info
 
 
@@ -1718,6 +1841,17 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                              diet_data['Dt_MgIn'])
     diet_data['Abs_MgIn'] = calculate_Abs_MgIn(diet_data['Dt_acMg'],
                                                diet_data['Dt_MgIn'])
+    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(df['Fd_DigWSCIn'])
+    diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'],
+                                               DMI)
+    diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(diet_data['Dt_DigWSCIn'],
+                                                 DMI)
+    diet_data['Dt_DigrOMa'] = calculate_Dt_DigrOMa(diet_data['Dt_DigrOMaIn'],
+                                                   DMI)
+    diet_data['Dt_DigrOMa_Dt'] = calculate_Dt_DigrOMa_Dt(diet_data['Dt_rOM'],
+                                                         coeff_dict)
+    diet_data['Dt_DigrOMt'] = calculate_Dt_DigrOMt(diet_data['Dt_DigrOMtIn'],
+                                                   DMI)  
     return diet_data
 
 

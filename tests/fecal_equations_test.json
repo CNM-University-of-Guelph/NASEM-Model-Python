@@ -73,6 +73,16 @@
       "Name": "calculate_Fe_MPendUse_g_Trg",
       "Input": {"An_StatePhys": "Lactating Cow", "Fe_CPend_g": 4.7, "Fe_NPend_g": 19.3, "coeff_dict": null},
       "Output": 27.971014492753625
+    },
+    {
+      "Name": "calculate_Fe_rOM",
+      "Input": {"An_rOMIn": 23.5, "An_DigrOMaIn": 12.9},
+      "Output": 10.6
+    },
+    {
+      "Name": "calculate_Fe_St",
+      "Input": {"Dt_StIn": 38.2, "Inf_StIn": 2.5, "An_DigStIn": 2.9},
+      "Output": 37.800000000000004
     }
   ]
   

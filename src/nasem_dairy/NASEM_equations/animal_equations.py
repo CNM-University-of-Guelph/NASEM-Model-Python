@@ -452,6 +452,64 @@ def calculate_An_Ash(An_AshIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_
     return An_Ash
 
 
+def calculate_An_DigStIn_Base(Dt_DigStIn_Base: float, Inf_StIn: float, Inf_ttdcSt: float) -> float:
+    """
+    An_DigStIn_Base: 
+    """
+    An_DigStIn_Base = Dt_DigStIn_Base + Inf_StIn * Inf_ttdcSt / 100	# Glc considered as WSC and thus with rOM, Line 1017
+    return An_DigStIn_Base
+
+
+def calculate_An_DigWSCIn(Dt_DigWSCIn: float, InfRum_GlcIn: float, InfSI_GlcIn: float) -> float:
+    """
+    Digestable water soluble carbohydrate intake, kg/d
+    """
+    An_DigWSCIn = Dt_DigWSCIn + InfRum_GlcIn + InfSI_GlcIn  # Line 1022
+    return An_DigWSCIn
+
+
+def calculate_An_DigrOMtIn(Dt_DigrOMtIn: float, InfRum_GlcIn: float, InfRum_AcetIn: float, InfRum_PropIn: float, InfRum_ButrIn: float, InfSI_GlcIn: float, InfSI_AcetIn: float, InfSI_PropIn: float, InfSI_ButrIn: float) -> float:
+    """
+    An_DigrOMtIn: truly digestable residual organic matter intake, kg/d
+    """
+    An_DigrOMtIn = Dt_DigrOMtIn + InfRum_GlcIn + InfRum_AcetIn + InfRum_PropIn \
+                   + InfRum_ButrIn + InfSI_GlcIn + InfSI_AcetIn + InfSI_PropIn + InfSI_ButrIn   # Line 1025-1026
+    # Possibly missing a small amount of rOM when ingredients are infused. 
+    # Should infusions also drive endogenous rOM??
+    return An_DigrOMtIn
+
+
+def calculate_An_DigSt(An_DigStIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigSt: Digestable starch intake, kg/d
+    """
+    An_DigSt = An_DigStIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 1037
+    return An_DigSt
+
+
+def calculate_An_DigWSC(An_DigWSCIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigWSC: Digestable water soluble carbohydrates, % DM
+    """
+    An_DigWSC = An_DigWSCIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 1039
+    return An_DigWSC
+
+
+def calculate_An_DigrOMa(An_DigrOMaIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    Apparent digestable residual organic matter, % DM
+    """
+    An_DigrOMa = An_DigrOMaIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 1043
+    return An_DigrOMa
+
+
+def calculate_An_DigrOMt(An_DigrOMtIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigrOMt: Truly digestable residual organic matter, % DM
+    """
+    An_DigrOMt = An_DigrOMtIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 1044
+    return An_DigrOMt
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -667,6 +725,37 @@ def calculate_An_data_complete(
                                                   DMI,
                                                   infusion_data['InfRum_DMIn'],
                                                   infusion_data['InfSI_DMIn'])
+    complete_An_data['An_DigStIn_Base'] = calculate_An_DigStIn_Base(diet_data['Dt_DigStIn_Base'],
+                                                                    infusion_data['Inf_StIn'],
+                                                                    infusion_data['Inf_ttdcSt'])
+    complete_An_data['An_DigWSCIn'] = calculate_An_DigWSCIn(diet_data['Dt_DigWSCIn'],
+                                                            infusion_data['InfRum_GlcIn'],
+                                                            infusion_data['InfSI_GlcIn'])
+    complete_An_data['An_DigrOMtIn'] = calculate_An_DigrOMtIn(diet_data['Dt_DigrOMtIn'],
+                                                              infusion_data['InfRum_GlcIn'],
+                                                              infusion_data['InfRum_AcetIn'],
+                                                              infusion_data['InfRum_PropIn'],
+                                                              infusion_data['InfRum_ButrIn'],
+                                                              infusion_data['InfSI_GlcIn'],
+                                                              infusion_data['InfSI_AcetIn'],
+                                                              infusion_data['InfSI_PropIn'],
+                                                              infusion_data['InfSI_ButrIn'])
+    complete_An_data['An_DigSt'] = calculate_An_DigSt(complete_An_data['An_DigStIn'],
+                                                      DMI,
+                                                      infusion_data['InfRum_DMIn'],
+                                                      infusion_data['InfSI_DMIn'])
+    complete_An_data['An_DigWSC'] = calculate_An_DigWSC(complete_An_data['An_DigWSCIn'],
+                                                        DMI,
+                                                        infusion_data['InfRum_DMIn'],
+                                                        infusion_data['InfSI_DMIn'])
+    complete_An_data['An_DigrOMa'] = calculate_An_DigrOMa(complete_An_data['An_DigrOMaIn'],
+                                                          DMI,
+                                                          infusion_data['InfRum_DMIn'],
+                                                          infusion_data['InfSI_DMIn'])
+    complete_An_data['An_DigrOMt'] = calculate_An_DigrOMt(complete_An_data['An_DigrOMtIn'],
+                                                          DMI,
+                                                          infusion_data['InfRum_DMIn'],
+                                                          infusion_data['InfSI_DMIn'])    
     return complete_An_data
 
 ####################

@@ -51,7 +51,10 @@ from nasem_dairy.NASEM_equations.milk_equations import (
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_diet_info,
     calculate_diet_data_initial,
-    calculate_diet_data_complete
+    calculate_diet_data_complete,
+    calculate_TT_dcAnSt,
+    calculate_TT_dcrOMa,
+    calculate_TT_dcrOMt,
 )
 
 from nasem_dairy.NASEM_equations.rumen_equations import (
@@ -140,7 +143,9 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_CP,
     calculate_Fe_NPend,
     calculate_Fe_NPend_g,
-    calculate_Fe_MPendUse_g_Trg
+    calculate_Fe_MPendUse_g_Trg,
+    calculate_Fe_rOM,
+    calculate_Fe_St,
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -862,6 +867,38 @@ def execute_model(user_diet: pd.DataFrame,
                                             infusion_data,
                                             equation_selection['Monensin_eqn'],
                                             coeff_dict)
+
+    # Calculate remaining digestability coefficients
+    diet_data['TT_dcAnSt'] = calculate_TT_dcAnSt(An_data['An_DigStIn'],
+                                                 diet_data['Dt_StIn'],
+                                                 infusion_data['Inf_StIn'])
+    diet_data['TT_dcrOMa'] = calculate_TT_dcrOMa(An_data['An_DigrOMaIn'],
+                                                 diet_data['Dt_rOMIn'],
+                                                 infusion_data['InfRum_GlcIn'],
+                                                 infusion_data['InfRum_AcetIn'],
+                                                 infusion_data['InfRum_PropIn'],
+                                                 infusion_data['InfRum_ButrIn'],
+                                                 infusion_data['InfSI_GlcIn'],
+                                                 infusion_data['InfSI_AcetIn'],
+                                                 infusion_data['InfSI_PropIn'],
+                                                 infusion_data['InfSI_ButrIn'])
+    diet_data['TT_dcrOMt'] = calculate_TT_dcrOMt(An_data['An_DigrOMtIn'],
+                                                 diet_data['Dt_rOMIn'],
+                                                 infusion_data['InfRum_GlcIn'],
+                                                 infusion_data['InfRum_AcetIn'],
+                                                 infusion_data['InfRum_PropIn'],
+                                                 infusion_data['InfRum_ButrIn'],
+                                                 infusion_data['InfSI_GlcIn'],
+                                                 infusion_data['InfSI_AcetIn'],
+                                                 infusion_data['InfSI_PropIn'],
+                                                 infusion_data['InfSI_ButrIn'])
+
+    # Fecal loss
+    Fe_rOM = calculate_Fe_rOM(An_data['An_rOMIn'],
+                              An_data['An_DigrOMaIn'])
+    Fe_St = calculate_Fe_St(diet_data['Dt_StIn'],
+                            infusion_data['Inf_StIn'],
+                            An_data['An_DigStIn'])
 
 ########################################
 # Step 10: Metabolizable Protein Intake

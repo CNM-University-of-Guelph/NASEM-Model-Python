@@ -304,5 +304,50 @@
     "Name": "calculate_An_DigTPaIn",
     "Input": {"An_TPIn": 15, "InfArt_CPIn": 0.8, "Fe_CP": 2.2},
     "Output": 12
+  },
+  {
+    "Name": "calculate_An_DigStIn_Base",
+    "Input": {"Dt_DigStIn_Base": 15, "Inf_StIn": 1.6, "Inf_ttdcSt": 2.4},
+    "Output": 15.0384
+  },
+  {
+    "Name": "calculate_An_DigWSCIn",
+    "Input": {"Dt_DigWSCIn": 14.6, "InfRum_GlcIn": 3.6, "InfSI_GlcIn": 2.9},
+    "Output": 21.099999999999998
+  },
+  {
+    "Name": "calculate_An_DigrOMtIn",
+    "Input": {
+      "Dt_DigrOMtIn": 12,
+      "InfRum_GlcIn": 2.4,
+      "InfRum_AcetIn": 2,
+      "InfRum_PropIn": 1.9,
+      "InfRum_ButrIn": 3.5,
+      "InfSI_GlcIn": 1.9,
+      "InfSI_AcetIn": 0.4,
+      "InfSI_PropIn": 1.2,
+      "InfSI_ButrIn": 0.8
+    },
+    "Output": 26.099999999999994
+  },
+  {
+    "Name": "calculate_An_DigSt",
+    "Input": {"An_DigStIn": 32.7, "Dt_DMIn": 24.8, "InfRum_DMIn": 1.5, "InfSI_DMIn": 2.5},
+    "Output": 113.54166666666667
+  },
+  {
+    "Name": "calculate_An_DigWSC",
+    "Input": {"An_DigWSCIn": 22.5, "Dt_DMIn": 31, "InfRum_DMIn": 2.9, "InfSI_DMIn": 0.7},
+    "Output": 65.02890173410404
+  },
+  {
+    "Name": "calculate_An_DigrOMa",
+    "Input": {"An_DigrOMaIn": 12, "Dt_DMIn": 23, "InfRum_DMIn": 1.4, "InfSI_DMIn": 2.9},
+    "Output": 43.95604395604396
+  },
+  {
+    "Name": "calculate_An_DigrOMt",
+    "Input": {"An_DigrOMtIn": 13, "Dt_DMIn": 18, "InfRum_DMIn": 1.8, "InfSI_DMIn": 4.3},
+    "Output": 53.941908713692946
   }
 ]
