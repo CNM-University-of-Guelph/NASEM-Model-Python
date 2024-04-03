@@ -548,8 +548,8 @@ def calculate_Fd_acZn(An_StatePhys, Fd_acZn, Dt_DMIn_ClfLiq):
 
 
 def calculate_Fd_DigSt(Fd_St, Fd_dcSt):
-    Fd_Dig_St = Fd_St * Fd_dcSt / 100       # Line 1014
-    return Fd_Dig_St
+    Fd_DigSt = Fd_St * Fd_dcSt / 100       # Line 1014
+    return Fd_DigSt
 
 
 def calculate_Fd_DigStIn_Base(Fd_DigSt, Fd_DMIn):
