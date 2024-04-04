@@ -114,3 +114,19 @@ def calculate_Fe_St(Dt_StIn: float, Inf_StIn: float, An_DigStIn: float) -> float
     """
     Fe_St = Dt_StIn + Inf_StIn - An_DigStIn # Line 1052
     return Fe_St
+
+
+def calculate_Fe_NDF(Dt_NDFIn: float, Dt_DigNDFIn: float) -> float:
+    """
+    Fe_NDF: Fecal NDF, kg/d
+    """
+    Fe_NDF = Dt_NDFIn - Dt_DigNDFIn
+    return Fe_NDF
+
+
+def calculate_Fe_NDFnf(Dt_NDFnfIn: float, Dt_DigNDFnfIn: float) -> float:
+    """
+    Fe_NDFnf: Fecal Nitrogen free NDF, kg/d
+    """
+    Fe_NDFnf = Dt_NDFnfIn - Dt_DigNDFnfIn
+    return Fe_NDFnf

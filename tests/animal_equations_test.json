@@ -349,5 +349,10 @@
     "Name": "calculate_An_DigrOMt",
     "Input": {"An_DigrOMtIn": 13, "Dt_DMIn": 18, "InfRum_DMIn": 1.8, "InfSI_DMIn": 4.3},
     "Output": 53.941908713692946
+  },
+  {
+    "Name": "calculate_An_DigNDFIn_Base",
+    "Input": {"Dt_NDFIn": 42.1, "InfRum_NDFIn": 2, "TT_dcNDF_Base": 6.43},
+    "Output": 2.83563
   }
 ]

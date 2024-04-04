@@ -146,6 +146,8 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_MPendUse_g_Trg,
     calculate_Fe_rOM,
     calculate_Fe_St,
+    calculate_Fe_NDF,
+    calculate_Fe_NDFnf,  
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -899,6 +901,11 @@ def execute_model(user_diet: pd.DataFrame,
     Fe_St = calculate_Fe_St(diet_data['Dt_StIn'],
                             infusion_data['Inf_StIn'],
                             An_data['An_DigStIn'])
+    Fe_NDF = calculate_Fe_NDF(diet_data['Dt_NDFIn'],
+                              diet_data['Dt_DigNDFIn'])
+    Fe_NDFnf = calculate_Fe_NDFnf(diet_data['Dt_NDFnfIn'],
+                                  diet_data['Dt_DigNDFnfIn'])
+
 
 ########################################
 # Step 10: Metabolizable Protein Intake

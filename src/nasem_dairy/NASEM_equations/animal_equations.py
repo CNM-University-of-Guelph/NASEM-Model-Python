@@ -510,6 +510,15 @@ def calculate_An_DigrOMt(An_DigrOMtIn: float, Dt_DMIn: float, InfRum_DMIn: float
     An_DigrOMt = An_DigrOMtIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 1044
     return An_DigrOMt
 
+
+def calculate_An_DigNDFIn_Base(Dt_NDFIn: float, InfRum_NDFIn: float, TT_dcNDF_Base: float) -> float:
+    """
+    An_DigNDFIn_Base: Base Digestable NDF Intake, kg/d
+    """
+    An_DigNDFIn_Base = (Dt_NDFIn + InfRum_NDFIn) * TT_dcNDF_Base / 100  # Line 1057
+    return An_DigNDFIn_Base
+
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -756,7 +765,11 @@ def calculate_An_data_complete(
                                                           DMI,
                                                           infusion_data['InfRum_DMIn'],
                                                           infusion_data['InfSI_DMIn'])    
+    complete_An_data['An_DigNDFIn_Base'] = calculate_An_DigNDFIn_Base(diet_data['Dt_NDFIn'],
+                                                                      infusion_data['InfRum_NDFIn'],
+                                                                      diet_data['TT_dcNDF_Base'])
     return complete_An_data
+
 
 ####################
 # Animal Functions not in Wrapper

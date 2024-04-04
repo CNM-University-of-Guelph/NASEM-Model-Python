@@ -192,6 +192,9 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Dt_DigrOMa,
     calculate_Dt_DigrOMa_Dt,
     calculate_Dt_DigrOMt,
+    calculate_Dt_DigNDFnfIn,
+    calculate_Dt_DigNDF,
+    calculate_Dt_DigNDFnf,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
@@ -325,6 +328,7 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DigWSC,
     calculate_An_DigrOMa,
     calculate_An_DigrOMt,
+    calculate_An_DigNDFIn_Base,
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -353,6 +357,8 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_MPendUse_g_Trg,
     calculate_Fe_rOM,
     calculate_Fe_St,
+    calculate_Fe_NDF,
+    calculate_Fe_NDFnf,
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (

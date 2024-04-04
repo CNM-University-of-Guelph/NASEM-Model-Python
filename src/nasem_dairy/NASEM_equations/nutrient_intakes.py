@@ -1003,6 +1003,30 @@ def calculate_Dt_DigrOMt(Dt_DigrOMtIn: float, Dt_DMIn: float) -> float:
     Dt_DigrOMt = Dt_DigrOMtIn / Dt_DMIn * 100   # Line 1042
     return Dt_DigrOMt
 
+
+def calculate_Dt_DigNDFnfIn(TT_dcNDF: float, Dt_NDFnfIn: float) -> float:
+    """
+    Dt_DigNDFnfIn: Nitrogen Free Digestable NDF Intake, kg/d 
+    """
+    Dt_DigNDFnfIn = TT_dcNDF / 100 * Dt_NDFnfIn  # Line 1064
+    return Dt_DigNDFnfIn
+
+
+def calculate_Dt_DigNDF(Dt_DigNDFIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigNDF: Digestable NDF, % DM
+    """
+    Dt_DigNDF = Dt_DigNDFIn / Dt_DMIn * 100  # Line 1065
+    return Dt_DigNDF
+
+
+def calculate_Dt_DigNDFnf(Dt_DigNDFnfIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigNDFnf: Nitrogen free Digestable NDF, % DM
+    """
+    Dt_DigNDFnf = Dt_DigNDFnfIn / Dt_DMIn * 100
+    return Dt_DigNDFnf
+
 ####################
 # Functions for Digestability Coefficients
 ####################
@@ -1852,6 +1876,12 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                                          coeff_dict)
     diet_data['Dt_DigrOMt'] = calculate_Dt_DigrOMt(diet_data['Dt_DigrOMtIn'],
                                                    DMI)  
+    diet_data['Dt_DigNDFnfIn'] = calculate_Dt_DigNDFnfIn(diet_data['TT_dcNDF'],
+                                                         diet_data['Dt_NDFnfIn'])
+    diet_data['Dt_DigNDF'] = calculate_Dt_DigNDF(diet_data['Dt_DigNDFIn'],
+                                                 DMI)
+    diet_data['Dt_DigNDFnf'] = calculate_Dt_DigNDFnf(diet_data['Dt_DigNDFnfIn'],
+                                                     DMI)
     return diet_data
 
 
