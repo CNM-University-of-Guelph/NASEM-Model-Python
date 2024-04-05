@@ -654,6 +654,23 @@ def calculate_Fd_DigWSCIn(Fd_DigWSC: float, Fd_DMIn: float) -> float:
     Fd_DigWSCIn = Fd_DigWSC / 100 * Fd_DMIn # Line 1012
     return Fd_DigWSCIn
 
+
+def calculate_Fd_idRUP(Fd_CPIn: float | pd.Series, Fd_idRUPIn: float | pd.Series, Fd_DMIn: float | pd.Series) -> float | pd.Series:
+    """
+    Fd_idRUP: Intestinally digested RUP, % DM
+    """
+    Fd_idRUP = np.where(Fd_CPIn > 0, Fd_idRUPIn / Fd_DMIn * 100, 0) # Line 1073
+    return Fd_idRUP
+
+
+def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series, Fd_dcRUP: float | pd.Series) -> float | pd.Series:
+    """
+    Fd_Fe_RUPout: Fecal RUP output, kg/d
+    """
+    Fd_Fe_RUPout = Fd_RUPIn * (1 - Fd_dcRUP / 100)  # Line 1078
+    return Fd_Fe_RUPout
+
+
 ####################
 # Functions for Diet Intakes
 ####################
@@ -1026,6 +1043,49 @@ def calculate_Dt_DigNDFnf(Dt_DigNDFnfIn: float, Dt_DMIn: float) -> float:
     """
     Dt_DigNDFnf = Dt_DigNDFnfIn / Dt_DMIn * 100
     return Dt_DigNDFnf
+
+
+def calculate_Dt_idcRUP(Dt_idRUPIn: float, Dt_RUPIn: float) -> float:
+    """
+    Dt_idcRUP: Intestinal digestability of RUP, no units
+    """
+    Dt_idcRUP = Dt_idRUPIn / Dt_RUPIn * 100  # Intestinal digestibility of RUP, Line 1075
+    return Dt_idcRUP
+
+
+def calculate_Dt_Fe_RUPout(Fd_Fe_RUPout: float | pd.Series) -> float:
+    """
+    Dt_Fe_RUPout: Fecal rumed undegradable protein output from diet, kg/d
+    """
+    Dt_Fe_RUPout  = Fd_Fe_RUPout.sum()  # Line 1081 
+    return Dt_Fe_RUPout
+
+
+def calculate_Dt_RDTPIn(Dt_RDPIn: float, Dt_NPNCPIn: float, coeff_dict: dict) -> float:
+    """
+    Dt_RDTPIn: Rumed degradable true protein intake, kg/d
+    """
+    req_coeff = ['dcNPNCP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Dt_RDTPIn = Dt_RDPIn - (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 100)  # assumes all NPN is soluble.  Reflects only urea and ammonium salt NPN sources, Line 1102
+    return Dt_RDTPIn
+
+
+def calculate_Dt_RDP(Dt_RDPIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_RDP: Diet rumed degradable protein, % DM
+    """
+    Dt_RDP = Dt_RDPIn / Dt_DMIn * 100   # Line 1103
+    return Dt_RDP
+
+
+def calculate_Dt_RDP_CP(Dt_RDP: float, Dt_CP: float) -> float:
+    """
+    Dt_RDP_CP: Diet rumed degradable protein % of crude protein
+    """
+    Dt_RDP_CP = Dt_RDP / Dt_CP * 100   # Line 1104
+    return Dt_RDP_CP
+
 
 ####################
 # Functions for Digestability Coefficients
@@ -1502,7 +1562,11 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     complete_diet_info['Fd_DigWSC'] = calculate_Fd_DigWSC(complete_diet_info['Fd_WSC'])
     complete_diet_info['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(complete_diet_info['Fd_DigWSC'],
                                                               complete_diet_info['Fd_DMIn'])
-    
+    complete_diet_info['Fd_idRUP'] = calculate_Fd_idRUP(complete_diet_info['Fd_CPIn'],
+                                                        complete_diet_info['Fd_idRUPIn'],
+                                                        complete_diet_info['Fd_DMIn'])    
+    complete_diet_info['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(complete_diet_info['Fd_RUPIn'],
+                                                                complete_diet_info['Fd_dcRUP'])
     return complete_diet_info
 
 
@@ -1882,6 +1946,16 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                                  DMI)
     diet_data['Dt_DigNDFnf'] = calculate_Dt_DigNDFnf(diet_data['Dt_DigNDFnfIn'],
                                                      DMI)
+    diet_data['Dt_idcRUP'] = calculate_Dt_idcRUP(diet_data['Dt_idRUPIn'],
+                                                 diet_data['Dt_RUPIn'])
+    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(df['Fd_Fe_RUPout'])
+    diet_data['Dt_RDTPIn'] = calculate_Dt_RDTPIn(diet_data['Dt_RDPIn'],
+                                                 diet_data['Dt_NPNCPIn'],
+                                                 coeff_dict)
+    diet_data['Dt_RDP'] = calculate_Dt_RDP(diet_data['Dt_RDPIn'],
+                                           DMI)
+    diet_data['Dt_RDP_CP'] = calculate_Dt_RDP_CP(diet_data['Dt_RDP'],
+                                                 diet_data['Dt_CP'])
     return diet_data
 
 

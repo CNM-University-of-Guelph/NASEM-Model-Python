@@ -354,5 +354,40 @@
     "Name": "calculate_An_DigNDFIn_Base",
     "Input": {"Dt_NDFIn": 42.1, "InfRum_NDFIn": 2, "TT_dcNDF_Base": 6.43},
     "Output": 2.83563
+  },
+  {
+    "Name": "calculate_An_RDNPNCPIn",
+    "Input": {"Dt_NPNCPIn": 14.8, "InfRum_NPNCPIn": 2.5},
+    "Output": 17.3
+  },
+  {
+    "Name": "calculate_An_RUP",
+    "Input": {"An_RUPIn": 9.4, "Dt_DMIn": 23.1, "InfRum_DMIn": 4.1},
+    "Output": 34.55882352941176
+  },
+  {
+    "Name": "calculate_An_RUP_CP",
+    "Input": {"An_RUPIn": 12.4, "Dt_CPIn": 19.8, "InfRum_CPIn": 3.2},
+    "Output": 53.91304347826087
+  },
+  {
+    "Name": "calculate_An_idRUCPIn",
+    "Input": {"Dt_idRUPIn": 12.5, "InfRum_idRUPIn": 2.8, "InfSI_idCPIn": 0.3},
+    "Output": 15.600000000000001
+  },
+  {
+    "Name": "calculate_An_idRUP",
+    "Input": {"An_idRUPIn": 23.1, "Dt_DMIn": 29.3, "InfRum_DMIn": 0.5, "InfSI_DMIn": 1.2},
+    "Output": 0.7451612903225807
+  },
+  {
+    "Name": "calculate_An_RDTPIn",
+    "Input": {"Dt_RDTPIn": 23, "InfRum_RDPIn": 3.6, "InfRum_NPNCPIn": 2.3, "coeff_dict": null},
+    "Output": 24.3
+  },
+  {
+    "Name": "calculate_An_RDP_CP",
+    "Input": {"An_RDPIn": 15.2, "Dt_CPIn": 17.4, "InfRum_CPIn": 0.7},
+    "Output": 83.97790055248619
   }
 ]

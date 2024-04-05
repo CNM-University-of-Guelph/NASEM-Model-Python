@@ -519,6 +519,64 @@ def calculate_An_DigNDFIn_Base(Dt_NDFIn: float, InfRum_NDFIn: float, TT_dcNDF_Ba
     return An_DigNDFIn_Base
 
 
+def calculate_An_RDNPNCPIn(Dt_NPNCPIn: float, InfRum_NPNCPIn: float) -> float:
+    """
+    An_RDNPNCPIn: Rumen degradable CP from NPN Intake?, kg/d
+    """
+    An_RDNPNCPIn = Dt_NPNCPIn + InfRum_NPNCPIn  # Line 1094
+    return An_RDNPNCPIn 
+
+
+def calculate_An_RUP(An_RUPIn: float, Dt_DMIn: float, InfRum_DMIn: float) -> float:
+    """
+    An_RUP: Rumen undegradable protein from diet + infusions, % DM
+    """
+    An_RUP = An_RUPIn / (Dt_DMIn + InfRum_DMIn) * 100   # Line 1096
+    return An_RUP
+
+
+def calculate_An_RUP_CP(An_RUPIn: float, Dt_CPIn: float, InfRum_CPIn: float) -> float:
+    """
+    An_RUP_CP: Rumen undegradable protein % of crude protein
+    """
+    An_RUP_CP = An_RUPIn / (Dt_CPIn + InfRum_CPIn) * 100    # Line 1097
+    return An_RUP_CP
+
+
+def calculate_An_idRUCPIn(Dt_idRUPIn: float, InfRum_idRUPIn: float, InfSI_idCPIn: float) -> float:
+    """
+    An_idRUCPIn: Intestinally digested rumen undegradable crude protein intake, kg/d
+    """
+    An_idRUCPIn = Dt_idRUPIn + InfRum_idRUPIn + InfSI_idCPIn	# RUP + infused idCP, Line 1099
+    return An_idRUCPIn
+
+
+def calculate_An_idRUP(An_idRUPIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_idRUP: Intestinally digestable rumen undegradable protein, % DM
+    """
+    An_idRUP = An_idRUPIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn)    # Line 1100
+    return An_idRUP
+
+
+def calculate_An_RDTPIn(Dt_RDTPIn: float, InfRum_RDPIn: float, InfRum_NPNCPIn: float, coeff_dict: dict) -> float:
+    """
+    An_RDTPIn: Rumen degradable true protein intake, kg/d
+    """
+    req_coeff = ['dcNPNCP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_RDTPIn = Dt_RDTPIn + (InfRum_RDPIn - InfRum_NPNCPIn * coeff_dict['dcNPNCP'] / 100)   # Line 1107
+    return An_RDTPIn
+
+
+def calculate_An_RDP_CP(An_RDPIn: float, Dt_CPIn: float, InfRum_CPIn: float) -> float:
+    """
+    An_RDP_CP: Rumen degradable protein % of crude protein
+    """
+    An_RDP_CP = An_RDPIn / (Dt_CPIn + InfRum_CPIn) * 100    # Line 1109
+    return An_RDP_CP
+
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -619,6 +677,29 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
     An_data['An_BW_empty'] = calculate_An_BW_empty(animal_input['An_BW'],
                                                    An_data['An_GutFill_Wt'])
     An_data['An_MBW'] = calculate_An_MBW(animal_input['An_BW'])
+    
+    An_data['An_RDNPNCPIn'] = calculate_An_RDNPNCPIn(diet_data['Dt_NPNCPIn'],
+                                                     infusion_data['InfRum_NPNCPIn'])
+    An_data['An_RUP'] = calculate_An_RUP(An_data['An_RUPIn'],
+                                         animal_input['DMI'],
+                                         infusion_data['InfRum_DMIn'])
+    An_data['An_RUP_CP'] = calculate_An_RUP_CP(An_data['An_RUPIn'],
+                                               diet_data['Dt_CPIn'],
+                                               infusion_data['InfRum_CPIn'])
+    An_data['An_idRUCPIn'] = calculate_An_idRUCPIn(diet_data['Dt_idRUPIn'],
+                                                   infusion_data['InfRum_idRUPIn'],
+                                                   infusion_data['InfSI_idCPIn'])
+    An_data['An_idRUP'] = calculate_An_idRUP(An_data['An_idRUPIn'],
+                                             animal_input["DMI"],
+                                             infusion_data['InfRum_DMIn'],
+                                             infusion_data['InfSI_DMIn'])
+    An_data['An_RDTPIn'] = calculate_An_RDTPIn(diet_data['Dt_RDTPIn'],
+                                               infusion_data['InfRum_RDPIn'],
+                                               infusion_data['InfRum_NPNCPIn'],
+                                               coeff_dict)
+    An_data['An_RDP_CP'] = calculate_An_RDP_CP(An_data['An_RDPIn'],
+                                               diet_data['Dt_CPIn'],
+                                               infusion_data['InfRum_CPIn'])
     return An_data
 
 
