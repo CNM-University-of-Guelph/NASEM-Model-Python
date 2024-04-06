@@ -866,3 +866,11 @@ def calculate_An_MPIn(Dt_idRUPIn, Du_idMiTP):
 def calculate_An_MPIn_g(An_MPIn):
     An_MPIn_g = An_MPIn * 1000                      # Line 1238
     return An_MPIn_g
+
+
+def calculate_An_RDPbal_g(An_RDPIn_g: float, Du_MiCP_g: float) -> float:
+    """
+    An_RDPbal_g: Rumen degradable protein balance, g/d
+    """
+    An_RDPbal_g = An_RDPIn_g - Du_MiCP_g    # Line 1168
+    return An_RDPbal_g

@@ -182,7 +182,8 @@ class ModelOutput:
                                  'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
                                'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain']
-        MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP']
+        MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 
+                          'Du_MiTP', 'Du_EndCP_g', 'Du_EndN_g', 'Du_EndCP', 'Du_EndN', 'Du_NAN_g', 'Du_NANMN_g']
         # Store variables
         self.__populate_category('Production', group_names, milk_variables, composition_variables, gestation_variables, MiCP_variables)
 
@@ -235,7 +236,7 @@ class ModelOutput:
         # These variables need to be given a storage location
         group_names = ['misc']
         # Lists of variables to store
-        misc_variables = ['Kb_LateGest_DMIn', 'An_PrePartWklim', 'An_PrePartWkDurat', 'An_DMIn_BW', 'f_mPrt_max', 'mPrt_k_EAA2', 'An_REgain_Calf', 'An_LactDay_MlkPred', 'An_DCADmeq', 'Dt_DMIn_BW', 'Dt_DMIn_MBW']
+        misc_variables = ['Kb_LateGest_DMIn', 'An_PrePartWklim', 'An_PrePartWkDurat', 'An_DMIn_BW', 'f_mPrt_max', 'mPrt_k_EAA2', 'An_REgain_Calf', 'An_LactDay_MlkPred', 'An_DCADmeq', 'Dt_DMIn_BW', 'Dt_DMIn_MBW', 'An_RDPbal_g']
         # Store variables
         self.__populate_category('Miscellaneous', group_names, misc_variables)
    

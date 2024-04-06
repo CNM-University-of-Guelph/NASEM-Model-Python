@@ -220,7 +220,14 @@ from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_Du_idMiCP_g,
     calculate_Du_idMiCP,
     calculate_Du_idMiTP_g,
-    calculate_Du_idMiTP
+    calculate_Du_idMiTP,
+    calculate_Du_MiTP,
+    calculate_Du_EndCP_g,
+    calculate_Du_EndN_g,
+    calculate_Du_EndCP,
+    calculate_Du_EndN,
+    calculate_Du_NAN_g,
+    calculate_Du_NANMN_g
 )
 
 from nasem_dairy.NASEM_equations.protein_equations import (
@@ -329,6 +336,7 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DigrOMa,
     calculate_An_DigrOMt,
     calculate_An_DigNDFIn_Base,
+    calculate_An_RDPbal_g
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (

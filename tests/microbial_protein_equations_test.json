@@ -63,6 +63,41 @@
       "Name": "calculate_Du_idMiTP",
       "Input": {"Du_idMiTP_g": 1832},
       "Output": 1.832
+    },
+    {
+      "Name": "calculate_Du_MiTP",
+      "Input": {"Du_MiTP_g": 14.2},
+      "Output": 0.014199999999999999
+    },
+    {
+      "Name": "calculate_Du_EndCP_g",
+      "Input": {"Dt_DMIn": 23.4, "InfRum_DMIn": 3.7},
+      "Output": 300.43399999999997
+    },
+    {
+      "Name": "calculate_Du_EndN_g",
+      "Input": {"Dt_DMIn": 19.3, "InfRum_DMIn": 0.1},
+      "Output": 38.874
+    },
+    {
+      "Name": "calculate_Du_EndCP",
+      "Input": {"Du_EndCP_g": 1964},
+      "Output": 1.964
+    },
+    {
+      "Name": "calculate_Du_EndN",
+      "Input": {"Du_EndN_g": 4021},
+      "Output": 4.021
+    },
+    {
+      "Name": "calculate_Du_NAN_g",
+      "Input": {"Du_MiN_g": 141, "An_RUPIn": 23.1, "Du_EndN_g": 269},
+      "Output": 4106.0
+    },
+    {
+      "Name": "calculate_Du_NANMN_g",
+      "Input": {"An_RUPIn": 19.4, "Du_EndN_g": 2100},
+      "Output": 5204.0
     }
   ]
   

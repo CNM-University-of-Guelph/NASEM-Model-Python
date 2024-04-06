@@ -389,5 +389,10 @@
     "Name": "calculate_An_RDP_CP",
     "Input": {"An_RDPIn": 15.2, "Dt_CPIn": 17.4, "InfRum_CPIn": 0.7},
     "Output": 83.97790055248619
+  },
+  {
+    "Name": "calculate_An_RDPbal_g",
+    "Input": {"An_RDPIn_g": 16.4, "Du_MiCP_g": 15},
+    "Output": 1.3999999999999986
   }
 ]

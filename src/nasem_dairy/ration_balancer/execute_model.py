@@ -77,7 +77,15 @@ from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_Du_idMiCP_g,
     calculate_Du_idMiCP,
     calculate_Du_idMiTP_g,
-    calculate_Du_idMiTP
+    calculate_Du_idMiTP,
+    calculate_Du_idMiTP,
+    calculate_Du_MiTP,
+    calculate_Du_EndCP_g,
+    calculate_Du_EndN_g,
+    calculate_Du_EndCP,
+    calculate_Du_EndN,
+    calculate_Du_NAN_g,
+    calculate_Du_NANMN_g
 )
 
 from nasem_dairy.NASEM_equations.protein_equations import (
@@ -117,7 +125,8 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_data_initial,
     calculate_An_data_complete,
     calculate_An_MPIn,
-    calculate_An_MPIn_g
+    calculate_An_MPIn_g,
+    calculate_An_RDPbal_g
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -806,8 +815,22 @@ def execute_model(user_diet: pd.DataFrame,
     Du_MiTP_g = calculate_Du_MiTP_g(Du_MiCP_g, coeff_dict)
     Du_MiCP = calculate_Du_MiCP(Du_MiCP_g)
     Du_idMiCP_g = calculate_Du_idMiCP_g(Du_MiCP_g,
-                                           coeff_dict)
+                                        coeff_dict)
     Du_idMiCP = calculate_Du_idMiCP(Du_idMiCP_g)
+    Du_MiTP = calculate_Du_MiTP(Du_MiTP_g)
+    Du_EndCP_g = calculate_Du_EndCP_g(animal_input['DMI'],
+                                      infusion_data['InfRum_DMIn'])
+    Du_EndN_g = calculate_Du_EndN_g(animal_input['DMI'],
+                                    infusion_data['InfRum_DMIn'])
+    Du_EndCP = calculate_Du_EndCP(Du_EndCP_g)
+    Du_EndN = calculate_Du_EndN(Du_EndN_g)
+    Du_NAN_g = calculate_Du_NAN_g(Du_MiN_g,
+                                  An_data_initial['An_RUPIn'],
+                                  Du_EndN_g)
+    Du_NANMN_g = calculate_Du_NANMN_g(An_data_initial['An_RUPIn'],
+                                      Du_EndN_g)
+    An_RDPbal_g = calculate_An_RDPbal_g(An_data_initial['An_RDPIn_g'],
+                                        Du_MiCP_g)
 
     ########################################
     # Step 7.1: Fe_CP Calculation /  Finish Dt_ and An_ calculations

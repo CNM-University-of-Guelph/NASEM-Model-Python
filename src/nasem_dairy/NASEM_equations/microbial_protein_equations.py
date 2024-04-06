@@ -87,3 +87,59 @@ def calculate_Du_idMiTP_g(Du_idMiCP_g, coeff_dict):
 def calculate_Du_idMiTP(Du_idMiTP_g):
     Du_idMiTP = Du_idMiTP_g / 1000
     return Du_idMiTP
+
+
+def calculate_Du_MiTP(Du_MiTP_g: float) -> float:
+    """
+    Du_MiTP_g: Duodenal microbial true protein, g/d
+    """
+    Du_MiTP = Du_MiTP_g / 1000  # Line 1167
+    return Du_MiTP
+
+
+def calculate_Du_EndCP_g(Dt_DMIn: float, InfRum_DMIn: float) -> float:
+    """
+    Du_EndCP_g: Duodenal endogenous flow of crude protein, g/d
+    """
+    Du_EndCP_g = 96.1 + 7.54 * (Dt_DMIn + InfRum_DMIn)  # Line 1170
+    return Du_EndCP_g
+
+
+def calculate_Du_EndN_g(Dt_DMIn, InfRum_DMIn) -> float:
+    """
+    Du_EndN_g: Duodenal endogenous flow of nitrogen, g/d 
+    """
+    Du_EndN_g = 15.4 + 1.21 * (Dt_DMIn + InfRum_DMIn);	# g/d, recalc of the above eqn (calculate_Du_EndCP_g) at 16% N in CP, Line 1171
+    return Du_EndN_g
+
+
+def calculate_Du_EndCP(Du_EndCP_g: float) -> float:
+    """
+    Du_EndCP: Duodenal endogenous flow of crude protein, kg/d 
+    """
+    Du_EndCP = Du_EndCP_g / 1000    # Line 1172
+    return Du_EndCP
+
+
+def calculate_Du_EndN(Du_EndN_g: float) -> float:
+    """
+    Du_EndN: Duodenal endogenous flow of nitrogen, kg/d 
+    """
+    Du_EndN = Du_EndN_g / 1000  # Line 1173
+    return Du_EndN
+
+
+def calculate_Du_NAN_g(Du_MiN_g: float, An_RUPIn: float, Du_EndN_g: float) -> float:
+    """
+    Du_NAN_g: ??? Not sure what NAN means. Something to do with Nitrogen flow. g/d
+    """
+    Du_NAN_g = Du_MiN_g +  An_RUPIn * 0.16 * 1000 + Du_EndN_g   # Line 1175
+    return Du_NAN_g
+
+
+def calculate_Du_NANMN_g(An_RUPIn: float, Du_EndN_g: float) -> float:
+    """
+    Du_NANMN_g: ??? Not sure what NANMN means, Also has to do with Nitrogen flow, g/d
+    """
+    Du_NANMN_g = An_RUPIn * 0.16 * 1000 + Du_EndN_g # Line 1176
+    return Du_NANMN_g
