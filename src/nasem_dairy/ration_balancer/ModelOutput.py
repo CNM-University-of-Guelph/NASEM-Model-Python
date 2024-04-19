@@ -117,7 +117,7 @@ class ModelOutput:
         group_names = ['energy', 'protein', 'AA', 'FA', 'rumen_digestable', 'water'] 
         # Lists of variables to store
         energy_variables = ['An_MEIn', 'An_NEIn', 'An_NE', 'An_MEIn_approx']
-        protein_variables = ['An_MPIn', 'An_MPIn_g']
+        protein_variables = ['An_MPIn', 'An_MPIn_g', 'An_MP', 'An_MP_CP']
         AA_variables = ['AA_values', 'Abs_EAA_g', 'Abs_neAA_g', 'Abs_OthAA_g', 'Abs_EAA2b_g']
         FA_variables = []
         rumen_digestable_variables = ['Rum_DigNDFIn', 'Rum_DigStIn', 'Rum_DigNDFnfIn', 'Du_StPas', 'Du_NDFPas']

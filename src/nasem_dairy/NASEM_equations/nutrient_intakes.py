@@ -1147,6 +1147,92 @@ def calculate_TT_dcrOMt(An_DigrOMtIn: float, Dt_rOMIn: float, InfRum_GlcIn: floa
     TT_dcrOMt = An_DigrOMtIn / (Dt_rOMIn + InfRum_GlcIn + InfRum_AcetIn + InfRum_PropIn + InfRum_ButrIn + InfSI_GlcIn + InfSI_AcetIn + InfSI_PropIn + InfSI_ButrIn) * 100   # Line 1049-1050
     return TT_dcrOMt
 
+
+def calculate_Dt_DigCPtIn(An_StatePhys: str, Dt_DigCPaIn: float, Fe_CPend: float, Dt_RDPIn: float, Dt_idRUPIn: float) -> float:
+    """
+    Dt_DigCPtIn: True total tract digested CP, kg/d
+    """
+    if An_StatePhys == "Calf":
+        Dt_DigCPtIn = Dt_DigCPaIn + Fe_CPend    # Line 1210
+    else:
+        Dt_DigCPtIn = Dt_RDPIn + Dt_idRUPIn	# kg CP/d, true total tract digested CP, Line 1209
+    return Dt_DigCPtIn
+
+    
+def calculate_Dt_DigTPaIn(Dt_RDTPIn: float, Fe_MiTP: float, Dt_idRUPIn: float, Fe_NPend: float) -> float:
+    """
+    Dt_DigTPaIn: Apparent total tract digested true protein, kg/d 
+    """
+    Dt_DigTPaIn = Dt_RDTPIn - Fe_MiTP + Dt_idRUPIn - Fe_NPend  # Doesn't apply to calves, Line 1211
+    return Dt_DigTPaIn
+
+    
+def calculate_Dt_DigTPtIn(Dt_RDTPIn: float, Dt_idRUPIn: float) -> float:
+    """
+    Dt_DigTPtIn: True total tract digested true protein, kg/d
+    """
+    Dt_DigTPtIn = Dt_RDTPIn + Dt_idRUPIn    # Line 1212
+    return Dt_DigTPtIn
+
+    
+def calculate_Dt_DigCPa(Dt_DigCPaIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigCPa: Dietary apparent total tract CP as % of DM
+    """
+    Dt_DigCPa = Dt_DigCPaIn / Dt_DMIn * 100    # Dietary Apparrent total tract % of DM, Line 1213
+    return Dt_DigCPa
+
+    
+def calculate_TT_dcDtCPa(Dt_DigCPaIn: float, Dt_CPIn: float) -> float:
+    """
+    TT_dcDtCPa: Digestability coefficient apparent total tract CP, % CP
+    """
+    TT_dcDtCPa = Dt_DigCPaIn / Dt_CPIn * 100		# % of CP, Line 1214
+    return TT_dcDtCPa
+
+    
+def calculate_Dt_DigCPt(Dt_DigCPtIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigCPt: Dietary true total tract digested CP, % DM    
+    """
+    Dt_DigCPt = Dt_DigCPtIn / Dt_DMIn * 100 	# Dietary True total tract % of DM, Line 1215
+    return Dt_DigCPt
+
+    
+def calculate_Dt_DigTPt(Dt_DigTPtIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigTPt: Dietary true total tract digested true protein, % DM
+    """
+    Dt_DigTPt = Dt_DigTPtIn / Dt_DMIn * 100 	# True total tract % of DM, Line 1216
+    return Dt_DigTPt
+
+    
+def calculate_TT_dcDtCPt(Dt_DigCPtIn: float, Dt_CPIn: float) -> float:
+    """
+    TT_dcDtCPt: Digestability coefficient true total tract CP, % CP
+    """
+    TT_dcDtCPt = Dt_DigCPtIn / Dt_CPIn * 100    # % of CP, Line 1217
+    return TT_dcDtCPt
+
+    
+def calculate_Dt_MPIn(An_StatePhys: str, Dt_CPIn: float, Fe_CP: float, Fe_CPend: float, Dt_idRUPIn: float, Du_idMiTP: float) -> float:
+    """
+    Dt_MPIn: Dietary metabolizable protein intake, kg/d
+    """
+    if An_StatePhys == "Calf":
+        Dt_MPIn = Dt_CPIn - Fe_CP + Fe_CPend    # ignores all ruminal activity, Line 1219
+    else:
+        Dt_MPIn = Dt_idRUPIn + Du_idMiTP    # Line 1218
+    return Dt_MPIn
+
+    
+def calculate_Dt_MP(Dt_MPIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_MP: Dietary metabolizable protein, % DM 
+    """
+    Dt_MP = Dt_MPIn / Dt_DMIn * 100 # % of DM, Line 1220
+    return Dt_MP
+
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
@@ -1962,9 +2048,14 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
 def calculate_diet_data_complete(
         diet_data_initial: dict, 
         An_StatePhys: str, 
-        Fe_CP, 
+        DMI: float,
+        Fe_CP: float,
+        Fe_CPend: float, 
+        Fe_MiTP: float,
+        Fe_NPend: float,
         Monensin_eqn: int, #equation_selection['Monensin_eqn'] 
-        Du_IdAAMic,
+        Du_IdAAMic: pd.Series,
+        Du_idMiTP: float,
         coeff_dict: dict
         ):
     """
@@ -1974,6 +2065,46 @@ def calculate_diet_data_complete(
 
     complete_diet_data['Dt_DigCPaIn'] = calculate_Dt_DigCPaIn(complete_diet_data['Dt_CPIn'],
                                                               Fe_CP)
+    complete_diet_data['Dt_DigCPtIn'] = calculate_Dt_DigCPtIn(An_StatePhys,
+                                                 complete_diet_data['Dt_DigCPaIn'],
+                                                 Fe_CPend,
+                                                 complete_diet_data['Dt_RDPIn'],
+                                                 complete_diet_data['Dt_idRUPIn'])
+    complete_diet_data['Dt_DigTPaIn'] = calculate_Dt_DigTPaIn(complete_diet_data['Dt_RDTPIn'],
+                                                              Fe_MiTP,
+                                                              complete_diet_data['Dt_idRUPIn'],
+                                                              Fe_NPend)
+    complete_diet_data['Dt_DigTPtIn'] = calculate_Dt_DigTPtIn(complete_diet_data['Dt_RDTPIn'],
+                                                              complete_diet_data['Dt_idRUPIn'])
+    complete_diet_data['Dt_DigCPa'] = calculate_Dt_DigCPa(complete_diet_data['Dt_DigCPaIn'],
+                                                          DMI)
+    complete_diet_data['TT_dcDtCPa'] = calculate_TT_dcDtCPa(complete_diet_data['Dt_DigCPaIn'],
+                                                            complete_diet_data['Dt_CPIn'])
+    complete_diet_data['Dt_DigCPt'] = calculate_Dt_DigCPt(complete_diet_data['Dt_DigCPtIn'],
+                                                          DMI)
+    complete_diet_data['Dt_DigTPt'] = calculate_Dt_DigTPt(complete_diet_data['Dt_DigTPtIn'],
+                                                          DMI)
+    complete_diet_data['TT_dcDtCPt'] = calculate_TT_dcDtCPt(complete_diet_data['Dt_DigCPtIn'],
+                                                            complete_diet_data['Dt_CPIn'])
+    complete_diet_data['Dt_MPIn'] = calculate_Dt_MPIn(An_StatePhys,
+                                                      complete_diet_data['Dt_CPIn'],
+                                                      Fe_CP,
+                                                      Fe_CPend,
+                                                      complete_diet_data['Dt_idRUPIn'],
+                                                      Du_idMiTP)
+    complete_diet_data['Dt_MP'] = calculate_Dt_MP(complete_diet_data['Dt_MPIn'], 
+                                       DMI)
+
+
+
+
+
+
+
+
+
+
+
     complete_diet_data['Dt_DECPIn'] = calculate_Dt_DECPIn(complete_diet_data['Dt_DigCPaIn'],
                                                           coeff_dict)
     complete_diet_data['Dt_DETPIn'] = calculate_Dt_DETPIn(complete_diet_data['Dt_DECPIn'],

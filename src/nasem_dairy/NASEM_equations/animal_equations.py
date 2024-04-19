@@ -577,6 +577,96 @@ def calculate_An_RDP_CP(An_RDPIn: float, Dt_CPIn: float, InfRum_CPIn: float) -> 
     return An_RDP_CP
 
 
+def calculate_An_DigCPa(An_DigCPaIn: float, An_DMIn: float, InfArt_DMIn: float) -> float:
+    """
+    An_DigCPa: Apparent total tract digested CP, % DM
+    """
+    An_DigCPa = An_DigCPaIn / (An_DMIn - InfArt_DMIn) * 100	# % of DM, Line 1222
+    return An_DigCPa
+
+    
+def calculate_TT_dcAnCPa(An_DigCPaIn: float, An_CPIn: float, InfArt_CPIn: float) -> float:
+    """
+    TT_dcAnCPa: Digestability coefficient apparent total tract CP, % CP
+    """
+    TT_dcAnCPa = An_DigCPaIn / (An_CPIn - InfArt_CPIn) * 100	# % of CP, Line 1223
+    return TT_dcAnCPa
+
+    
+def calculate_An_DigCPtIn(An_StatePhys: str, Dt_DigCPtIn: float, Inf_idCPIn: float, An_RDPIn: float, An_idRUPIn: float) -> float:
+    """
+    An_DigCPtIn: True total tract digested CP intake, kg/d
+    """
+    if An_StatePhys == "Calf":
+        An_DigCPtIn = Dt_DigCPtIn + Inf_idCPIn  # This may need more work depending on infusion type and protein source, Line 1226
+    else:
+        An_DigCPtIn = An_RDPIn + An_idRUPIn # true CP total tract, Line 1225
+    return An_DigCPtIn
+
+    
+def calculate_An_DigNtIn_g(An_DigCPtIn: float) -> float:
+    """
+    An_DigNtIn_g: True total tract digested N intake, g/d
+    """
+    An_DigNtIn_g = An_DigCPtIn / 6.25 * 1000   # some of the following are not valid for calves, Line 1227
+    return An_DigNtIn_g
+
+    
+def calculate_An_DigTPtIn(An_RDTPIn: float, Fe_MiTP: float, An_idRUPIn: float, Fe_NPend: float) -> float:
+    """
+    An_DigTPtIn: True total tract digested true protein intake, kg/d
+    """
+    An_DigTPtIn = An_RDTPIn - Fe_MiTP + An_idRUPIn - Fe_NPend   # Line 1228
+    return An_DigTPtIn
+
+    
+def calculate_An_DigCPt(An_DigCPtIn: float, An_DMIn: float, InfArt_DMIn: float) -> float:
+    """
+    An_DigCPt: True total tract digested CP, % DMI
+    """
+    An_DigCPt = An_DigCPtIn / (An_DMIn - InfArt_DMIn) * 100	# % of DMIn, Line 1230
+    return An_DigCPt
+
+    
+def calculate_An_DigTPt(An_DigTPtIn: float, An_DMIn: float, InfArt_DMIn: float) -> float:
+    """
+    An_DigTPt: True digested total tract true protein, % DMI
+    """
+    An_DigTPt = An_DigTPtIn / (An_DMIn - InfArt_DMIn) * 100	# % of DMIn, Line 1231
+    return An_DigTPt
+
+    
+def calculate_TT_dcAnCPt(An_DigCPtIn: float, An_CPIn: float, InfArt_CPIn: float) -> float:
+    """
+    TT_dcAnCPt: Digestability coefficient true total tract CP intake, % CP
+    """
+    TT_dcAnCPt = An_DigCPtIn / (An_CPIn - InfArt_CPIn) * 100	# % of CP, Line 1232
+    return TT_dcAnCPt
+
+    
+def calculate_TT_dcAnTPt(An_DigTPtIn: float, An_TPIn: float, InfArt_CPIn: float, InfRum_NPNCPIn: float, InfSI_NPNCPIn: float) -> float:
+    """
+    TT_dcAnTPt: Digestabgility coefficient apparent total tract true protein, % TP
+    """
+    TT_dcAnTPt = An_DigTPtIn / (An_TPIn + InfArt_CPIn - InfRum_NPNCPIn - InfSI_NPNCPIn) * 100	# % of TP, Line 1233
+    return TT_dcAnTPt
+
+    
+def calculate_SI_dcAnRUP(An_idRUPIn: float, An_RUPIn: float) -> float:
+    """
+    SI_dcAnRUP: ?, doesn't get used anywhere in the model, reported in table
+    """
+    SI_dcAnRUP = An_idRUPIn / An_RUPIn * 100    # Line 1234
+    return SI_dcAnRUP
+
+    
+def calculate_An_idCPIn(An_idRUPIn: float, Du_idMiCP: float) -> float:
+    """
+    An_idCPIn: Intestinally digested CP intake, kg/d
+    """
+    An_idCPIn = An_idRUPIn + Du_idMiCP  # not a true value as ignores recycled endCP, line 1235
+    return An_idCPIn
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -710,6 +800,9 @@ def calculate_An_data_complete(
         An_BW: float,
         DMI: float,
         Fe_CP: float, 
+        Fe_MiTP: float,
+        Fe_NPend: float,
+        Du_idMiCP: float,
         infusion_data: dict, 
         Monensin_eqn: int, #equation_selection['Monensin_eqn']
         coeff_dict: dict
@@ -849,6 +942,40 @@ def calculate_An_data_complete(
     complete_An_data['An_DigNDFIn_Base'] = calculate_An_DigNDFIn_Base(diet_data['Dt_NDFIn'],
                                                                       infusion_data['InfRum_NDFIn'],
                                                                       diet_data['TT_dcNDF_Base'])
+    complete_An_data['An_DigCPa'] = calculate_An_DigCPa(complete_An_data['An_DigCPaIn'],
+                                                        complete_An_data['An_DMIn'],
+                                                        infusion_data['InfArt_DMIn'])
+    complete_An_data['TT_dcAnCPa'] = calculate_TT_dcAnCPa(complete_An_data['An_DigCPaIn'],
+                                                          complete_An_data['An_CPIn'],
+                                                          infusion_data['InfArt_CPIn'])
+    complete_An_data['An_DigCPtIn'] = calculate_An_DigCPtIn(An_StatePhys,
+                                                            diet_data['Dt_DigCPtIn'],
+                                                            infusion_data['Inf_idCPIn'],
+                                                            complete_An_data['An_RDPIn'],
+                                                            complete_An_data['An_idRUPIn'])
+    complete_An_data['An_DigNtIn_g'] = calculate_An_DigNtIn_g(complete_An_data['An_DigCPtIn'])
+    complete_An_data['An_DigTPtIn'] = calculate_An_DigTPtIn(complete_An_data['An_RDTPIn'],
+                                                            Fe_MiTP,
+                                                            complete_An_data['An_idRUPIn'],
+                                                            Fe_NPend)
+    complete_An_data['An_DigCPt'] = calculate_An_DigCPt(complete_An_data['An_DigCPtIn'],
+                                                        complete_An_data['An_DMIn'],
+                                                        infusion_data['InfArt_DMIn'])
+    complete_An_data['An_DigTPt'] = calculate_An_DigTPt(complete_An_data['An_DigTPtIn'],
+                                                        complete_An_data['An_DMIn'],
+                                                        infusion_data['InfArt_DMIn'])
+    complete_An_data['TT_dcAnCPt'] = calculate_TT_dcAnCPt(complete_An_data['An_DigCPtIn'],
+                                                          complete_An_data['An_CPIn'],
+                                                          infusion_data['InfArt_CPIn'])
+    complete_An_data['TT_dcAnTPt'] = calculate_TT_dcAnTPt(complete_An_data['An_DigTPtIn'],
+                                                          complete_An_data['An_TPIn'],
+                                                          infusion_data['InfArt_CPIn'],
+                                                          infusion_data['InfRum_NPNCPIn'],
+                                                          infusion_data['InfSI_NPNCPIn'])
+    complete_An_data['SI_dcAnRUP'] = calculate_SI_dcAnRUP(complete_An_data['An_idRUPIn'],
+                                                          complete_An_data['An_RUPIn'])
+    complete_An_data['An_idCPIn'] = calculate_An_idCPIn(complete_An_data['An_idRUPIn'],
+                                                        Du_idMiCP)
     return complete_An_data
 
 
@@ -874,3 +1001,24 @@ def calculate_An_RDPbal_g(An_RDPIn_g: float, Du_MiCP_g: float) -> float:
     """
     An_RDPbal_g = An_RDPIn_g - Du_MiCP_g    # Line 1168
     return An_RDPbal_g
+
+
+def calculate_An_MP_CP(An_MPIn: float, An_CPIn: float) -> float:
+    """
+    An_MP_CP: Metabolizable protein % of CP
+
+    NOTE: This gets calculated twice, first at line 1240 and again at line 3123
+    An_MP_CP is not used in any caclulations. I've set it to the second equation so
+    the Python and R outputs match - Braeden 
+    """
+    # An_MP_CP = An_MPIn / An_CPIn * 100  # Line 1240
+    An_MP_CP = An_MPIn / An_CPIn    # Line 3123
+    return An_MP_CP
+
+
+def calculate_An_MP(An_MPIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_MP: Metabolizable protein, % DMI
+    """
+    An_MP = An_MPIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 1239
+    return An_MP   

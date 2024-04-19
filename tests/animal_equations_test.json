@@ -394,5 +394,75 @@
     "Name": "calculate_An_RDPbal_g",
     "Input": {"An_RDPIn_g": 16.4, "Du_MiCP_g": 15},
     "Output": 1.3999999999999986
+  },
+  {
+    "Name": "calculate_An_DigCPa",
+    "Input": {"An_DigCPaIn": 3.7, "An_DMIn": 16.2, "InfArt_DMIn": 0.1},
+    "Output": 22.981366459627335
+  },
+  {
+    "Name": "calculate_TT_dcAnCPa",
+    "Input": {"An_DigCPaIn": 3.1, "An_CPIn": 14.6, "InfArt_CPIn": 0.8},
+    "Output": 22.46376811594203
+  },
+  {
+    "Name": "calculate_An_DigCPtIn",
+    "Input": {"An_StatePhys": "Calf", "Dt_DigCPtIn": 14.5, "Inf_idCPIn": 1.4, "An_RDPIn": 12.7, "An_idRUPIn": 3.6},
+    "Output": 15.9
+  },
+  {
+    "Name": "calculate_An_DigCPtIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "Dt_DigCPtIn": 14.5, "Inf_idCPIn": 1.4, "An_RDPIn": 12.7, "An_idRUPIn": 3.6},
+    "Output": 16.3
+  },
+  {
+    "Name": "calculate_An_DigNtIn_g",
+    "Input": {"An_DigCPtIn": 16.3},
+    "Output": 2608.0
+  },
+  {
+    "Name": "calculate_An_DigTPtIn",
+    "Input": {"An_RDTPIn": 15.2, "Fe_MiTP": 2.7, "An_idRUPIn": 3.9, "Fe_NPend": 12.1},
+    "Output": 4.299999999999999
+  },
+  {
+    "Name": "calculate_An_DigCPt",
+    "Input": {"An_DigCPtIn": 12.6, "An_DMIn": 23.1, "InfArt_DMIn": 2.5},
+    "Output": 61.165048543689316
+  },
+  {
+    "Name": "calculate_An_DigTPt",
+    "Input": {"An_DigTPtIn": 18.1, "An_DMIn": 27.4, "InfArt_DMIn": 1.5},
+    "Output": 69.88416988416989
+  },
+  {
+    "Name": "calculate_TT_dcAnCPt",
+    "Input": {"An_DigCPtIn": 12.9, "An_CPIn": 23.5, "InfArt_CPIn": 0.2},
+    "Output": 55.36480686695279
+  },
+  {
+    "Name": "calculate_TT_dcAnTPt",
+    "Input": {"An_DigTPtIn": 23.1, "An_TPIn": 2.9, "InfArt_CPIn": 0.4, "InfRum_NPNCPIn": 0.8, "InfSI_NPNCPIn": 1.6},
+    "Output": 2566.666666666667
+  },
+  {
+    "Name": "calculate_SI_dcAnRUP",
+    "Input": {"An_idRUPIn": 16.2, "An_RUPIn": 7.9},
+    "Output": 205.06329113924048
+  },
+  {
+    "Name": "calculate_An_idCPIn",
+    "Input": {"An_idRUPIn": 18.4, "Du_idMiCP": 231},
+    "Output": 249.4
+  },
+  {
+    "Name": "calculate_An_MP",
+    "Input": {"An_MPIn": 18.5, "Dt_DMIn": 20.4, "InfRum_DMIn": 0.5, "InfSI_DMIn": 1.1},
+    "Output": 84.0909090909091
+  },
+  {
+    "Name": "calculate_An_MP_CP",
+    "Input": {"An_MPIn": 129.4, "An_CPIn": 230},
+    "Output": 0.562608695652174
   }
 ]

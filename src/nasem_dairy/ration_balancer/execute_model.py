@@ -126,7 +126,9 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_data_complete,
     calculate_An_MPIn,
     calculate_An_MPIn_g,
-    calculate_An_RDPbal_g
+    calculate_An_RDPbal_g,
+    calculate_An_MP_CP,
+    calculate_An_MP
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -914,20 +916,29 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 7.3: Complete diet_data and An_data
     ########################################
     diet_data = calculate_diet_data_complete(diet_data_initial,
-                                                animal_input['An_StatePhys'],
-                                                Fe_CP,
-                                                equation_selection['Monensin_eqn'],
-                                                AA_values['Du_IdAAMic'],
-                                                coeff_dict)
+                                             animal_input['An_StatePhys'],
+                                             animal_input['DMI'],
+                                             Fe_CP,
+                                             Fe_CPend,
+                                             Fe_MiTP,
+                                             Fe_NPend,
+                                             equation_selection['Monensin_eqn'],
+                                             AA_values['Du_IdAAMic'],
+                                             Du_idMiTP,
+                                             coeff_dict)
+    
     An_data = calculate_An_data_complete(An_data_initial,
-                                            diet_data,
-                                            animal_input['An_StatePhys'],
-                                            animal_input['An_BW'],
-                                            animal_input['DMI'],
-                                            Fe_CP,
-                                            infusion_data,
-                                            equation_selection['Monensin_eqn'],
-                                            coeff_dict)
+                                         diet_data,
+                                         animal_input['An_StatePhys'],
+                                         animal_input['An_BW'],
+                                         animal_input['DMI'],
+                                         Fe_CP,
+                                         Fe_MiTP,
+                                         Fe_NPend,
+                                         Du_idMiCP,
+                                         infusion_data,
+                                         equation_selection['Monensin_eqn'],
+                                         coeff_dict)
 
     # Calculate remaining digestability coefficients
     diet_data['TT_dcAnSt'] = calculate_TT_dcAnSt(An_data['An_DigStIn'],
@@ -972,6 +983,11 @@ def execute_model(user_diet: pd.DataFrame,
     An_MPIn = calculate_An_MPIn(diet_data['Dt_idRUPIn'],
                                    Du_idMiTP)
     An_MPIn_g = calculate_An_MPIn_g(An_MPIn)
+    An_MP = calculate_An_MP(An_MPIn,
+                            animal_input['DMI'],
+                            infusion_data['InfRum_DMIn'],
+                            infusion_data['InfSI_DMIn'])
+    An_MP_CP = calculate_An_MP_CP(An_MPIn, An_data['An_CPIn'])
 
     ########################################
     # Step 8: Amino Acid Calculations

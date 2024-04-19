@@ -195,6 +195,16 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Dt_DigNDFnfIn,
     calculate_Dt_DigNDF,
     calculate_Dt_DigNDFnf,
+    calculate_Dt_DigCPtIn,
+    calculate_Dt_DigTPaIn,
+    calculate_Dt_DigTPtIn,
+    calculate_Dt_DigCPa,
+    calculate_TT_dcDtCPa,
+    calculate_Dt_DigCPt,
+    calculate_Dt_DigTPt,
+    calculate_TT_dcDtCPt,
+    calculate_Dt_MPIn,
+    calculate_Dt_MP,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
@@ -336,7 +346,20 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DigrOMa,
     calculate_An_DigrOMt,
     calculate_An_DigNDFIn_Base,
-    calculate_An_RDPbal_g
+    calculate_An_RDPbal_g,
+    calculate_An_DigCPa,
+    calculate_TT_dcAnCPa,
+    calculate_An_DigCPtIn,
+    calculate_An_DigNtIn_g,
+    calculate_An_DigTPtIn,
+    calculate_An_DigCPt,
+    calculate_An_DigTPt,
+    calculate_TT_dcAnCPt,
+    calculate_TT_dcAnTPt,
+    calculate_SI_dcAnRUP,
+    calculate_An_idCPIn,
+    calculate_An_MP,
+    calculate_An_MP_CP
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
