@@ -157,6 +157,14 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_St,
     calculate_Fe_NDF,
     calculate_Fe_NDFnf,  
+    calculate_Fe_Nend,
+    calculate_Fe_RDPend,
+    calculate_Fe_RUPend,
+    calculate_Fe_MiTP,
+    calculate_Fe_InfCP,
+    calculate_Fe_TP,
+    calculate_Fe_N,
+    calculate_Fe_N_g
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -831,6 +839,9 @@ def execute_model(user_diet: pd.DataFrame,
                                       Du_EndN_g)
     An_RDPbal_g = calculate_An_RDPbal_g(An_data_initial['An_RDPIn_g'],
                                         Du_MiCP_g)
+    Du_idMiTP_g = calculate_Du_idMiTP_g(Du_idMiCP_g,
+                                           coeff_dict)
+    Du_idMiTP = calculate_Du_idMiTP(Du_idMiTP_g)
 
     ########################################
     # Step 7.1: Fe_CP Calculation /  Finish Dt_ and An_ calculations
@@ -859,6 +870,31 @@ def execute_model(user_diet: pd.DataFrame,
                                Fe_CPend,
                                infusion_data['InfSI_NPNCPIn'],
                                coeff_dict)
+    Fe_Nend = calculate_Fe_Nend(Fe_CPend)
+    Fe_NPend = calculate_Fe_NPend(Fe_CPend)
+    Fe_NPend_g = calculate_Fe_NPend_g(Fe_NPend)
+    Fe_MPendUse_g_Trg = calculate_Fe_MPendUse_g_Trg(animal_input['An_StatePhys'],
+                                                    Fe_CPend_g,
+                                                    Fe_NPend_g,
+                                                    coeff_dict)
+    Fe_RDPend = calculate_Fe_RDPend(Fe_CPend,
+                                    An_data_initial['An_RDPIn'],
+                                    An_data_initial['An_CPIn'])
+    Fe_RUPend = calculate_Fe_RUPend(Fe_CPend,
+                                    An_data_initial['An_RUPIn'],
+                                    An_data_initial['An_CPIn'])
+    Fe_MiTP = calculate_Fe_MiTP(Du_MiTP,
+                                Du_idMiTP)
+    Fe_InfCP = calculate_Fe_InfCP(infusion_data['InfRum_RUPIn'],
+                                  infusion_data['InfSI_CPIn'],
+                                  infusion_data['InfRum_idRUPIn'],
+                                  infusion_data['InfSI_idCPIn'])
+    Fe_TP = calculate_Fe_TP(Fe_RUP,
+                            Fe_MiTP,
+                            Fe_NPend)
+    Fe_N = calculate_Fe_N(Fe_CP)
+    Fe_N_g = calculate_Fe_N_g(Fe_N)    
+
 
 ########################################
 # Step 7.2: Microbial Amino Acid Calculations
@@ -933,9 +969,6 @@ def execute_model(user_diet: pd.DataFrame,
 ########################################
 # Step 10: Metabolizable Protein Intake
 ########################################
-    Du_idMiTP_g = calculate_Du_idMiTP_g(Du_idMiCP_g,
-                                           coeff_dict)
-    Du_idMiTP = calculate_Du_idMiTP(Du_idMiTP_g)
     An_MPIn = calculate_An_MPIn(diet_data['Dt_idRUPIn'],
                                    Du_idMiTP)
     An_MPIn_g = calculate_An_MPIn_g(An_MPIn)
@@ -1178,16 +1211,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 17: Protein Requirement
     ########################################
-    # Maintenance Requirement
-    Fe_NPend = calculate_Fe_NPend(Fe_CPend)
-    
-    Fe_NPend_g = calculate_Fe_NPend_g(Fe_NPend)
-    
-    Fe_MPendUse_g_Trg = calculate_Fe_MPendUse_g_Trg(animal_input['An_StatePhys'],
-                                                       Fe_CPend_g,
-                                                       Fe_NPend_g,
-                                                       coeff_dict)
-       
+    # Maintenance Requirement     
     Scrf_NP_g = calculate_Scrf_NP_g(Scrf_CP_g,
                                        coeff_dict)
         

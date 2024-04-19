@@ -195,7 +195,8 @@ class ModelOutput:
         # Name excretion groups
         group_names = ['fecal', 'urinary', 'gaseous', 'scurf'] 
         # Lists of variables to store
-        fecal_variables = ['Fe_rOMend', 'Fe_RUP', 'Fe_RumMiCP', 'Fe_CPend_g', 'Fe_CPend', 'Fe_CP', 'Fe_NPend', 'Fe_NPend_g', 'Fe_MPendUse_g_Trg', 'Fe_rOM', 'Fe_St', 'Fe_NDF', 'Fe_NDFnf']
+        fecal_variables = ['Fe_rOMend', 'Fe_RUP', 'Fe_RumMiCP', 'Fe_CPend_g', 'Fe_CPend', 'Fe_CP', 'Fe_NPend', 'Fe_NPend_g', 'Fe_MPendUse_g_Trg', 'Fe_rOM', 'Fe_St', 'Fe_NDF', 'Fe_NDFnf',
+                           'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g']
         urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g']
         gaseous_variables = []
         scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg']

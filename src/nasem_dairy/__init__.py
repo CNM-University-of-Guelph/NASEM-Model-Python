@@ -367,6 +367,14 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_St,
     calculate_Fe_NDF,
     calculate_Fe_NDFnf,
+    calculate_Fe_Nend,
+    calculate_Fe_RDPend,
+    calculate_Fe_RUPend,
+    calculate_Fe_MiTP,
+    calculate_Fe_InfCP,
+    calculate_Fe_TP,
+    calculate_Fe_N,
+    calculate_Fe_N_g
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (

@@ -93,6 +93,46 @@
       "Name": "calculate_Fe_NDFnf",
       "Input": {"Dt_NDFnfIn": 35.4, "Dt_DigNDFnfIn": 1.7},
       "Output": 33.699999999999996
+    },
+    {
+      "Name": "calculate_Fe_Nend",
+      "Input": {"Fe_CPend": 1.5},
+      "Output": 0.24
+    },
+    {
+      "Name": "calculate_Fe_RDPend",
+      "Input": {"Fe_CPend": 3.1, "An_RDPIn": 13.9, "An_CPIn": 18.4},
+      "Output": 2.341847826086957
+    },
+    {
+      "Name": "calculate_Fe_RUPend",
+      "Input": {"Fe_CPend": 2.5, "An_RUPIn": 6.2, "An_CPIn": 12.4},
+      "Output": 1.25
+    },
+    {
+      "Name": "calculate_Fe_MiTP",
+      "Input": {"Du_MiTP": 7.4, "Du_idMiTP": 3.9},
+      "Output": 3.5000000000000004
+    },
+    {
+      "Name": "calculate_Fe_InfCP",
+      "Input": {"InfRum_RUPIn": 1.9, "InfSI_CPIn": 2.2, "InfRum_idRUPIn": 2.6, "InfSI_idCPIn": 0.5},
+      "Output": 0.9999999999999996
+    },
+    {
+      "Name": "calculate_Fe_TP",
+      "Input": {"Fe_RUP": 2.4, "Fe_MiTP": 1.9, "Fe_NPend": 0.8},
+      "Output": 5.1
+    },
+    {
+      "Name": "calculate_Fe_N",
+      "Input": {"Fe_CP": 18.7},
+      "Output": 2.992
+    },
+    {
+      "Name": "calculate_Fe_N_g",
+      "Input": {"Fe_N": 3.1},
+      "Output": 3100
     }
   ]
   

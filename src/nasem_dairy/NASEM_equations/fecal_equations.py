@@ -1,4 +1,5 @@
 # dev_fecal_equations
+#Fecal N Flow;     Fecal Outputs should be renamed Fe_xxxOut to avoid confusion with conc, MDH
 import numpy as np
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
@@ -130,3 +131,67 @@ def calculate_Fe_NDFnf(Dt_NDFnfIn: float, Dt_DigNDFnfIn: float) -> float:
     """
     Fe_NDFnf = Dt_NDFnfIn - Dt_DigNDFnfIn
     return Fe_NDFnf
+
+
+def calculate_Fe_Nend(Fe_CPend: float) -> float:
+    """
+    Fe_Nend: Endogenous N lost in feces (kg/d)
+    """
+    Fe_Nend = Fe_CPend * 0.16	# kg/d, Line 1190
+    return Fe_Nend 
+
+
+def calculate_Fe_RDPend(Fe_CPend: float, An_RDPIn: float, An_CPIn: float) -> float:
+    """
+    Fe_RDPend: Endogenous RDP lost in feces (kg/d), arbitrary value (see comment)
+    """
+    Fe_RDPend = Fe_CPend * An_RDPIn / An_CPIn  # Arbitrary assignment of Fe_CPend to RDP and RUP based on CPI proportion, Line 1193
+    return Fe_RDPend 
+
+
+def calculate_Fe_RUPend(Fe_CPend: float, An_RUPIn: float, An_CPIn: float) -> float:
+    """
+    Fe_RUPend: Endogenous RUP lost in feces (kg/d), arbitrary value (see comment)
+    """
+    Fe_RUPend = Fe_CPend * An_RUPIn / An_CPIn  # Only used for tabular reporting to DE from RDP and RUP.  No other function., Line 1194
+    return Fe_RUPend 
+
+
+def calculate_Fe_MiTP(Du_MiTP: float, Du_idMiTP: float) -> float:
+    """
+    Fe_MiTP: Microbial true protein lost in feces (kg/d)
+    """
+    Fe_MiTP = Du_MiTP - Du_idMiTP   # Line 1196
+    return Fe_MiTP 
+
+
+def calculate_Fe_InfCP(InfRum_RUPIn: float, InfSI_CPIn: float, InfRum_idRUPIn: float, InfSI_idCPIn: float) -> float:
+    """
+    Fe_InfCP: Infused CP lost in feces (kg/d)
+    """
+    Fe_InfCP = (InfRum_RUPIn + InfSI_CPIn) - (InfRum_idRUPIn + InfSI_idCPIn) # Included in An_RUP, Line 1198
+    return Fe_InfCP 
+
+
+def calculate_Fe_TP(Fe_RUP: float, Fe_MiTP: float, Fe_NPend: float) -> float:
+    """
+    Fe_TP: True protein lost in feces (kg/d)
+    """
+    Fe_TP = Fe_RUP + Fe_MiTP + Fe_NPend  # Doesn't apply for calves, Line 1204
+    return Fe_TP 
+
+
+def calculate_Fe_N(Fe_CP: float) -> float:
+    """
+    Fe_N: N lost in feces (kg/d)
+    """
+    Fe_N = Fe_CP * 0.16 # Line 1205
+    return Fe_N 
+
+
+def calculate_Fe_N_g(Fe_N: float) -> float:
+    """
+    Fe_N_g: N lost in feces (g/d)
+    """
+    Fe_N_g = Fe_N * 1000    # Line 1206
+    return Fe_N_g 
