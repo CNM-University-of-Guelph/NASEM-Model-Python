@@ -559,5 +559,25 @@
     "Name": "calculate_An_DEnp",
     "Input": {"An_DEInp": 34.8, "An_DMIn": 31.4},
     "Output": 110.828025477707
+  },
+  {
+    "Name": "calculate_An_GasE_IPCC2",
+    "Input": {"An_GEIn": 56.3},
+    "Output": 3.6595
+  },
+  {
+    "Name": "calculate_GasE_DMIn",
+    "Input": {"An_GasEOut": 46.2, "An_DMIn": 23.8},
+    "Output": 1.9411764705882353
+  },
+  {
+    "Name": "calculate_GasE_GEIn",
+    "Input": {"An_GasEOut": 62.6, "An_GEIn": 19.5},
+    "Output": 3.2102564102564104
+  },
+  {
+    "Name": "calculate_GasE_DEIn",
+    "Input": {"An_GasEOut": 74.1, "An_DEIn": 23.8},
+    "Output": 3.11344537815126
   }
 ]

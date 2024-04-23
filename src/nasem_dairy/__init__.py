@@ -219,6 +219,11 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Dt_DE,
     calculate_Dt_TDN,
     calculate_Dt_TDNIn,
+    calculate_Dt_GasE_IPCC2,
+    calculate_Dt_GasEOut_Lact,
+    calculate_Dt_GasEOut_Heif,
+    calculate_Dt_GasEOut_Dry,
+    calculate_Dt_GasEOut,
     calculate_diet_info,
     calculate_diet_data_initial,
     calculate_diet_data_complete
@@ -393,7 +398,11 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DEidRUPIn,
     calculate_An_DE,
     calculate_An_DE_GE,
-    calculate_An_DEnp
+    calculate_An_DEnp,
+    calculate_An_GasE_IPCC2,
+    calculate_GasE_DMIn,
+    calculate_GasE_GEIn,
+    calculate_GasE_DEIn
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (

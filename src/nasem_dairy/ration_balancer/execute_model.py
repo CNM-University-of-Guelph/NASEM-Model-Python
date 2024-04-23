@@ -708,6 +708,7 @@ def execute_model(user_diet: pd.DataFrame,
                                                        animal_input['An_AgeDryFdStart'],
                                                        animal_input['Env_TempCurr'],
                                                        equation_selection['DMIn_eqn'],
+                                                       equation_selection['Monensin_eqn'],
                                                        Fe_rOMend,
                                                        coeff_dict)
     # diet_data contains everything starting with "Dt_"

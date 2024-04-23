@@ -827,6 +827,38 @@ def calculate_An_DEnp(An_DEInp: float, An_DMIn: float) -> float:
     return An_DEnp
 
 
+def calculate_An_GasE_IPCC2(An_GEIn: float) -> float:
+    """
+    An_GasE_IPCC2: ? (Mcal/d)
+    """
+    An_GasE_IPCC2 = 0.065 * An_GEIn	# but it reflects the whole farm not individual animal types, Line 1393
+    return An_GasE_IPCC2
+
+
+def calculate_GasE_DMIn(An_GasEOut: float, An_DMIn: float) -> float:
+    """
+    GasE_DMIn: Gaseous energy loss per kg DMI (Mcal/kg)
+    """
+    GasE_DMIn = An_GasEOut / An_DMIn    # Line 1413
+    return GasE_DMIn
+
+
+def calculate_GasE_GEIn(An_GasEOut: float, An_GEIn: float) -> float:
+    """
+    GasE_GEIn: Gaseous energy loss per Mcal gross energy intake
+    """
+    GasE_GEIn = An_GasEOut / An_GEIn    # Line 1414
+    return GasE_GEIn
+
+
+def calculate_GasE_DEIn(An_GasEOut: float, An_DEIn: float) -> float:
+    """
+    GasE_DEIn: Gaseous energy loss per Mcal digestable energy intake
+    """
+    GasE_DEIn = An_GasEOut / An_DEIn    # Line 1415
+    return GasE_DEIn
+
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -950,6 +982,7 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
     An_data['An_RDP_CP'] = calculate_An_RDP_CP(An_data['An_RDPIn'],
                                                diet_data['Dt_CPIn'],
                                                infusion_data['InfRum_CPIn'])
+    An_data['An_GasE_IPCC2'] = calculate_An_GasE_IPCC2(An_data['An_GEIn'])
     return An_data
 
 
@@ -1208,6 +1241,16 @@ def calculate_An_data_complete(
                                                       complete_An_data['An_GEIn'])
     complete_An_data['An_DEnp'] = calculate_An_DEnp(complete_An_data['An_DEInp'],
                                                     complete_An_data['An_DMIn'])   
+    complete_An_data['GasE_DMIn'] = calculate_GasE_DMIn(complete_An_data['An_GasEOut'],
+                                                        complete_An_data['An_DMIn'])
+    complete_An_data['GasE_GEIn'] = calculate_GasE_GEIn(complete_An_data['An_GasEOut'],
+                                                        complete_An_data['An_GEIn'])
+    complete_An_data['GasE_DEIn'] = calculate_GasE_DEIn(complete_An_data['An_GasEOut'],
+                                                        complete_An_data['An_DEIn'])
+    
+    
+    
+    
     return complete_An_data
 
 

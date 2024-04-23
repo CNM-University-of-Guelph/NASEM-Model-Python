@@ -1119,6 +1119,55 @@ def calculate_Dt_TDNIn(Dt_TDN: float, Dt_DMIn: float) -> float:
     return Dt_TDNIn
 
 
+def calculate_Dt_GasE_IPCC2(Dt_GEIn: float) -> float:
+    """
+    Dt_GasE_IPCC2: ? (Mcal/d)
+    """
+    Dt_GasE_IPCC2 = 0.065 * Dt_GEIn	# for comparison purposes, Line 1392 
+    return Dt_GasE_IPCC2
+
+
+def calculate_Dt_GasEOut_Lact(Dt_DMIn: float, Dt_FA: float, Dt_DigNDF: float) -> float:
+    """
+    Dt_GasEOut_Lact: Gaseous energy loss, lactating cow (Mcal/d)
+    """
+    Dt_GasEOut_Lact = 0.294 * Dt_DMIn - 0.347 * Dt_FA + 0.0409 * Dt_DigNDF  # Lact Cows, Line 1395
+    return Dt_GasEOut_Lact
+
+
+def calculate_Dt_GasEOut_Heif(Dt_GEIn: float, Dt_NDF: float) -> float:
+    """
+    Dt_GasEOut_Heif: Gaseous energy loss, heifer (Mcal/d)
+    """
+    Dt_GasEOut_Heif = -0.038 + 0.051 * Dt_GEIn - 0.0091 * Dt_NDF   # Heifers/Buls, Line 1396
+    return Dt_GasEOut_Heif
+
+
+def calculate_Dt_GasEOut_Dry(Dt_GEIn: float, Dt_FA: float) -> float:
+    """
+    Dt_GasEOut_Dry: Gaseous energy loss, dry cow (Mcal/d)
+    """
+    Dt_GasEOut_Dry = -0.69 + 0.053 * Dt_GEIn - 0.0789 * Dt_FA   # Heifers/Bulls, convert from EE to FA assum 57% FA in EE, from BW, Line 1397
+    return Dt_GasEOut_Dry
+
+
+def calculate_Dt_GasEOut(An_StatePhys: str, Monensin_eqn: int, Dt_DMIn: float, Dt_FA: float, Dt_DigNDF: float, Dt_GEIn: float, Dt_NDF: float) -> float:
+    """
+    Dt_GasEOut: Gaseous energy loss (Mcal/d)
+    """
+    if An_StatePhys == "Lactating Cow": # Line 1400-1404
+        Dt_GasEOut = calculate_Dt_GasEOut_Lact(Dt_DMIn, Dt_FA, Dt_DigNDF)
+    elif An_StatePhys == "Heifer":
+        Dt_GasEOut = calculate_Dt_GasEOut_Heif(Dt_GEIn, Dt_NDF)
+    elif An_StatePhys == "Dry Cow":
+        Dt_GasEOut = calculate_Dt_GasEOut_Dry(Dt_GEIn, Dt_FA)
+    elif An_StatePhys == "Calf":
+        Dt_GasEOut = 0 #No observations on calves.  Would not be 0 once the calf starts eating dry feed.
+    elif Monensin_eqn == 1:
+        Dt_GasEOut = Dt_GasEOut * 0.95
+    return Dt_GasEOut
+
+
 ####################
 # Functions for Digestability Coefficients
 ####################
@@ -1769,7 +1818,7 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
     return complete_diet_info
 
 
-def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Fe_rOMend, coeff_dict):
+def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Monensin_eqn, Fe_rOMend, coeff_dict):
     diet_data = {}
 
     # Diet Intakes
@@ -2193,6 +2242,14 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
     diet_data['TT_dcDtFA'] = calculate_TT_dcDtFA(diet_data['Dt_DigFAIn'],
                                                  diet_data['Dt_FAIn'])
     diet_data['Dt_GE'] = calculate_Dt_GE(diet_data['Dt_GEIn'], DMI)
+    diet_data['Dt_GasE_IPCC2'] = calculate_Dt_GasE_IPCC2(diet_data['Dt_GEIn'])
+    diet_data['Dt_GasEOut'] = calculate_Dt_GasEOut(An_StatePhys,
+                                                   Monensin_eqn,
+                                                   DMI,
+                                                   diet_data['Dt_FA'],
+                                                   diet_data['Dt_DigNDF'],
+                                                   diet_data['Dt_GEIn'],
+                                                   diet_data['Dt_NDF'])    
     return diet_data
 
 
