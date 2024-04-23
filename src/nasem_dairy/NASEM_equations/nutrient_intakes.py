@@ -108,7 +108,7 @@ def calculate_Fd_NDFnf(Fd_NDF, Fd_NDFIP):
 
 
 def calculate_Fd_NPNCP(Fd_CP, Fd_NPN_CP):
-    Fd_NPNCP = Fd_CP * Fd_NPN_CP * 100  # Line 455
+    Fd_NPNCP = Fd_CP * Fd_NPN_CP / 100  # Line 455
     return Fd_NPNCP
 
 

@@ -1,4 +1,6 @@
 import pandas as pd
+import re
+import numpy as np
 
 class ModelOutput:
     """
@@ -42,6 +44,119 @@ class ModelOutput:
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
 
+    def _repr_html_(self):
+        # This is the HTML display when the ModelOutput object is called directly in a IPython setting (e.g. juptyer notebook, VSCode interactive)
+        # summary_sentence = f"Outputs for a {self.get_value('An_StatePhys')}, weighing {self.get_value('An_BW')} kg, eating {self.get_value('DMI')} kg with {self.get_value('An_LactDay')} days in milk."
+        # df_diet_html = pd.DataFrame(self.get_value('user_diet')).to_html(index=False, escape=False)
+        
+        snapshot_data = self.__snapshot_data()
+        # snapshot_data = [{'Description': description, 'Value': self.get_value(key)} for description, key in snapshot_vars.items()]        
+        df_snapshot_html = pd.DataFrame(snapshot_data).to_html(index=False, escape=False)
+
+        # Constructing the accordion (drop down box) for the "Access Model Outputs" section
+        accordion_html = """
+        <details>
+            <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
+            <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
+            <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
+            <p>The following list shows which dictionaries are within each category:</p>
+            <ul>
+        """
+
+        categories = self.__categories_dict()
+        # Adding categories and keys to the accordion content as bullet points
+        for category, keys in categories.items():
+            accordion_html += f"<li><b>{category}:</b> {', '.join(keys.keys())}</li>"
+
+        accordion_html += """
+            </ul>
+            <div>
+                <p>These outputs can be accessed by name, e.g., <code>output.Production['milk']['Mlk_Prod']</code>.</p>
+                <p>There is also a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (case insensitive), e.g., <code>output.search('Mlk')</code>.</p>
+                <p>An individual output can be retrieved directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Prod')</code>.</p>
+            </div>
+        </details>
+        """
+
+        # Combining everything into the final HTML
+        # {summary_sentence}
+        # {df_diet_html}
+        final_html = f"""
+        <div>
+            <h2>Model Output Snapshot</h2>
+            {df_snapshot_html}
+            <hr>
+            {accordion_html}
+        </div>
+        """
+
+        # Note: This method must return a string containing HTML, so if using in a live Jupyter environment,
+        # you might want to use 'display(HTML(final_html))' instead of 'return final_html' for direct rendering.
+        return final_html
+
+    
+    def __str__(self):
+        summary = "=====================\n"
+        summary += "Model Output Snapshot\n"
+        summary += "=====================\n"
+               
+        lines = [f"{entry['Description']}: {entry['Value']}" for entry in self.__snapshot_data()]
+        summary += "\n".join(lines)
+
+        summary += "\n\nThis is a `ModelOutput` object with methods to access all model outputs. See help(ModelOutput)."
+
+        return summary
+
+    def __categories_dict(self):
+        """
+        Return dictionary of categories from this object for _refr_html_ and __str__
+        """
+        categories_dict = {
+                'Inputs': self.Inputs,
+                'Intakes': self.Intakes,
+                'Requirements': self.Requirements,
+                'Production': self.Production,
+                'Excretion': self.Excretion,
+                'Digestibility': self.Digestibility,
+                'Efficiencies': self.Efficiencies,
+                'Miscellaneous': self.Miscellaneous
+            }
+        return categories_dict
+    
+
+    def __snapshot_data(self):
+        """
+        Return a list of dictionaries of snapshot variables for _refr_html_ and __str__
+        """
+        snapshot_dict = {
+            'Milk production kg (Mlk_Prod_comp)': 'Mlk_Prod_comp',
+            'Milk fat g/g (MlkFat_Milk)': 'MlkFat_Milk',
+            'Milk protein g/g (MlkNP_Milk)': 'MlkNP_Milk',
+            'Milk Production - MP allowable kg (Mlk_Prod_MPalow)': 'Mlk_Prod_MPalow',
+            'Milk Production - NE allowable kg (Mlk_Prod_NEalow)': 'Mlk_Prod_NEalow', 
+            'Animal ME intake Mcal/d (An_MEIn)': 'An_MEIn',
+            'Target ME use Mcal/d (Trg_MEuse)': 'Trg_MEuse',
+            'Animal MP intake g/d (An_MPIn_g)': 'An_MPIn_g',
+            'Animal MP use g/d (An_MPuse_g_Trg)': 'An_MPuse_g_Trg',
+            'Animal RDP intake g/d (An_RDPIn_g)': 'An_RDPIn_g',
+            'Diet DCAD meq (An_DCADmeq)': 'An_DCADmeq'
+        }
+
+        snapshot_data = []
+        for description, key in snapshot_dict.items():
+            raw_value = self.get_value(key)
+            if isinstance(raw_value, (float, int)):  # Check if the value is numeric
+                value = round(raw_value, 3)  
+            elif isinstance(raw_value, (np.ndarray)) and raw_value.size == 1:
+                # This is required for any numbers handled by np.where() that return arrays instead of floats - needs cleaning up
+                value = round(float(raw_value),3)
+            else:
+                value = raw_value  
+        
+            snapshot_data.append({'Description': description, 'Value': value})
+
+        return snapshot_data
+    
 
     def __populate_category(self, category_name, group_names, *variable_lists):
         """
@@ -174,7 +289,7 @@ class ModelOutput:
         Sort and store specific variables related to production, including body composition changes and gestation, in the Production category.
         """
         # Name production groups
-        group_names = ['milk', 'composition', 'gestation', 'MiCP']
+        group_names = ['milk', 'body_composition', 'gestation', 'MiCP']
         # List variables to store
         milk_variables = ['Trg_NEmilk_Milk', 'Mlk_NP_g', 'Mlk_CP_g', 'Trg_Mlk_Fat' ,'Trg_Mlk_Fat_g', 'Mlk_Fatemp_g', 'Mlk_Fat_g', 'Mlk_Fat', 'Mlk_NP', 'Mlk_Prod_comp',
                           'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout']
@@ -278,4 +393,63 @@ class ModelOutput:
 
         # Return None if not found
         return None
+       
+
+    def search(self, search_string, dictionaries_to_search=None):
+        # Define the dictionaries to search within, by default all dictionaries where outputs are stored
+        if dictionaries_to_search is None:
+            dictionaries_to_search = ['Inputs', 'Intakes', 'Requirements', 'Production',
+                                      'Excretion', 'Digestibility', 'Efficiencies',
+                                      'Miscellaneous', 'Uncategorized']
+        result = {}
+        visited_keys = set()
+        table_rows = []
+
+        def recursive_search(d, path=''):
+            for key, value in d.items():
+                full_key = path + key
+                if re.search(search_string, str(full_key), flags=re.IGNORECASE) and full_key not in visited_keys:
+                    result[full_key] = value
+                    visited_keys.add(full_key)
+                if isinstance(value, dict):
+                    recursive_search(value, full_key + '.')
+                elif isinstance(value, pd.DataFrame):
+                    matching_columns = [col for col in value.columns if re.search(search_string, col, flags=re.IGNORECASE)]
+                    if matching_columns:
+                        columns_key = full_key + '_columns'
+                        if columns_key not in visited_keys:
+                            result[columns_key] = matching_columns
+                            visited_keys.add(columns_key)
+
+        def extract_dataframe_and_column(key, value):
+            parts = key.split('.')[-1].rsplit('_', 1)
+            # variable_name = parts[0]
+            dataframe_name, column_name = parts[-1], "column"
+            return {'Name': value, 'Value': f'{parts[0]}[{column_name}]'}
+
+        # Iterate over specified dictionaries
+        for dictionary_name in dictionaries_to_search:
+            dictionary = getattr(self, dictionary_name, None)
+            if dictionary is not None and isinstance(dictionary, dict):
+                recursive_search(dictionary, dictionary_name + '.')
+
+        # Create output dataframe
+        for key, value in result.items():
+            variable_name = key.split('.')[-1]
+            if isinstance(value, dict):
+                value_display = 'dict'
+            elif isinstance(value, pd.DataFrame):
+                value_display = 'Dataframe'
+            elif isinstance(value, list) and key.endswith('_columns'):
+                table_rows.extend([extract_dataframe_and_column(key, col) for col in value])
+            elif isinstance(value, list):
+                value_display = 'list'
+            else:
+                value_display = value  
+            # Add the current row to the list
+            if not (isinstance(value, list) and key.endswith('_columns')):
+                table_rows.append({'Name': variable_name, 'Value': value_display})
+
+        output_table = pd.DataFrame(table_rows)
+        return output_table
     
