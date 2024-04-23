@@ -143,3 +143,15 @@ def calculate_Du_NANMN_g(An_RUPIn: float, Du_EndN_g: float) -> float:
     """
     Du_NANMN_g = An_RUPIn * 0.16 * 1000 + Du_EndN_g # Line 1176
     return Du_NANMN_g
+
+
+def calculate_Du_MiN_NRC2001_g(Dt_TDNIn: float, An_RDPIn: float) -> float:
+    """
+    Du_MiN_NRC2001_g: Microbial N flow, NRC 2001 equation (g/d)
+    """
+    # NRC 2001 eqn. for N flow comparison purposes, Line 1389
+    if 0.13 * Dt_TDNIn > 0.85 * An_RDPIn: 
+        Du_MiN_NRC2001_g = 0.85 * An_RDPIn * 1000 * 0.16
+    else:  
+         Du_MiN_NRC2001_g = 0.13 * Dt_TDNIn * 1000 * 0.16
+    return Du_MiN_NRC2001_g

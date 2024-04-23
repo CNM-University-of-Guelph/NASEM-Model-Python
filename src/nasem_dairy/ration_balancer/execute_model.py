@@ -85,7 +85,8 @@ from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_Du_EndCP,
     calculate_Du_EndN,
     calculate_Du_NAN_g,
-    calculate_Du_NANMN_g
+    calculate_Du_NANMN_g,
+    calculate_Du_MiN_NRC2001_g
 )
 
 from nasem_dairy.NASEM_equations.protein_equations import (
@@ -169,7 +170,13 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_N_g,
     calculate_Fe_FA,
     calculate_Fe_OM,
-    calculate_Fe_OM_end
+    calculate_Fe_OM_end,
+    calculate_Fe_DEMiCPend,
+    calculate_Fe_DERDPend,
+    calculate_Fe_DERUPend,
+    calculate_Fe_DEout,
+    calculate_Fe_DE_GE,
+    calculate_Fe_DE
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -901,6 +908,9 @@ def execute_model(user_diet: pd.DataFrame,
                             infusion_data['Inf_DigFAIn'])
     Fe_OM_end = calculate_Fe_OM_end(Fe_rOMend,
                                     Fe_CPend)
+    Fe_DEMiCPend = calculate_Fe_DEMiCPend(Fe_RumMiCP, coeff_dict)
+    Fe_DERDPend = calculate_Fe_DERDPend(Fe_RDPend, coeff_dict)
+    Fe_DERUPend = calculate_Fe_DERUPend(Fe_RUPend, coeff_dict)
 
 ########################################
 # Step 7.2: Microbial Amino Acid Calculations
@@ -939,6 +949,9 @@ def execute_model(user_diet: pd.DataFrame,
                                          Fe_CP,
                                          Fe_MiTP,
                                          Fe_NPend,
+                                         Fe_DEMiCPend,
+                                         Fe_DERDPend,
+                                         Fe_DERUPend,
                                          Du_idMiCP,
                                          infusion_data,
                                          equation_selection['Monensin_eqn'],
@@ -969,6 +982,9 @@ def execute_model(user_diet: pd.DataFrame,
                                                  infusion_data['InfSI_PropIn'],
                                                  infusion_data['InfSI_ButrIn'])
 
+    # NRC 2001 Microbial N flow
+    Du_MiN_NRC2001_g = calculate_Du_MiN_NRC2001_g(diet_data['Dt_TDNIn'], An_data['An_RDPIn'])
+
     # Fecal loss
     Fe_rOM = calculate_Fe_rOM(An_data['An_rOMIn'],
                               An_data['An_DigrOMaIn'])
@@ -984,6 +1000,9 @@ def execute_model(user_diet: pd.DataFrame,
                             Fe_St,
                             Fe_rOM,
                             Fe_FA)
+    Fe_DEout = calculate_Fe_DEout(An_data['An_GEIn'], An_data['An_DEIn'])
+    Fe_DE_GE = calculate_Fe_DE_GE(Fe_DEout, An_data['An_GEIn'])
+    Fe_DE = calculate_Fe_DE(Fe_DEout, An_data['An_DMIn'])
 
 ########################################
 # Step 10: Metabolizable Protein Intake

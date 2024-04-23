@@ -1087,6 +1087,38 @@ def calculate_Dt_RDP_CP(Dt_RDP: float, Dt_CP: float) -> float:
     return Dt_RDP_CP
 
 
+def calculate_Dt_GE(Dt_GEIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_GE: Gross energy concentration (Mcal/kg diet)
+    """
+    Dt_GE = Dt_GEIn / Dt_DMIn   # Line 1340
+    return Dt_GE
+
+
+def calculate_Dt_DE(Dt_DEIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DE: Digestable energy (Mcal/d)
+    """
+    Dt_DE = Dt_DEIn / Dt_DMIn   # Line 1377
+    return Dt_DE
+
+
+def calculate_Dt_TDN(Dt_DigSt: float, Dt_DigNDF: float, Dt_DigrOMa: float, Dt_DigCPa: float, Dt_DigFA: float) -> float:
+    """
+    Dt_TDN: Dietary total digestable nutrients (kg/d)
+    """
+    Dt_TDN = Dt_DigSt + Dt_DigNDF + Dt_DigrOMa + Dt_DigCPa + Dt_DigFA * 2.25    # Line 1387
+    return Dt_TDN
+
+
+def calculate_Dt_TDNIn(Dt_TDN: float, Dt_DMIn: float) -> float:
+    """
+    Dt_TDNIn: Total digestable nutrients (% DMI)
+    """
+    Dt_TDNIn = Dt_TDN / 100 * Dt_DMIn   # Line 1388
+    return Dt_TDNIn
+
+
 ####################
 # Functions for Digestability Coefficients
 ####################
@@ -2160,6 +2192,7 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
     
     diet_data['TT_dcDtFA'] = calculate_TT_dcDtFA(diet_data['Dt_DigFAIn'],
                                                  diet_data['Dt_FAIn'])
+    diet_data['Dt_GE'] = calculate_Dt_GE(diet_data['Dt_GEIn'], DMI)
     return diet_data
 
 
@@ -2247,4 +2280,10 @@ def calculate_diet_data_complete(
                                                           DMI)
     complete_diet_data['Dt_DigOMt'] = calculate_Dt_DigOMt(complete_diet_data['Dt_DigOMtIn'],
                                                           DMI)
+    complete_diet_data['Dt_DE'] = calculate_Dt_DE(complete_diet_data['Dt_DEIn'], DMI)    
+    complete_diet_data['Dt_TDN'] = calculate_Dt_TDN(complete_diet_data['Dt_DigSt'], complete_diet_data['Dt_DigNDF'],
+                                                    complete_diet_data['Dt_DigrOMa'],
+                                                    complete_diet_data['Dt_DigCPa'],
+                                                    complete_diet_data['Dt_DigFA'])
+    complete_diet_data['Dt_TDNIn'] = calculate_Dt_TDNIn(complete_diet_data['Dt_TDN'], DMI)
     return complete_diet_data

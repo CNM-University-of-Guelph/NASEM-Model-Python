@@ -219,3 +219,57 @@ def calculate_Fe_OM_end(Fe_rOMend: float, Fe_CPend: float) -> float:
     """
     Fe_OM_end = Fe_rOMend + Fe_CPend    # Line 1315
     return Fe_OM_end
+
+
+def calculate_Fe_DEMiCPend(Fe_RumMiCP: float, coeff_dict: dict) -> float:
+    """
+    Fe_DEMiCPend: Digestable energy in undigested ruminacl MiCP and RDP (Mcal/d)
+    """
+    req_coeff = ['En_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Fe_DEMiCPend = Fe_RumMiCP * coeff_dict['En_CP']  # DE in undigested ruminal MiCP and RDP portion of Fe_EndCP, Line 1356
+    return Fe_DEMiCPend
+
+
+def calculate_Fe_DERDPend(Fe_RDPend: float, coeff_dict: dict) -> float:
+    """
+    Fe_DERDPend: Digestable energy in fecal RDP, arbitrary value (Mcal/d)
+    """
+    req_coeff = ['En_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Fe_DERDPend = Fe_RDPend * coeff_dict['En_CP']  # Arbitrary DE assignment of Fe_CPend DE to RDP and RUP. Reporting use only, Line 1357
+    return Fe_DERDPend
+
+
+def calculate_Fe_DERUPend(Fe_RUPend: float, coeff_dict: dict) -> float:
+    """
+    Fe_DERUPend: Digestable energy in fecal RUP, arbitrary value (Mcal/d)
+    """
+    req_coeff = ['En_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Fe_DERUPend = Fe_RUPend * coeff_dict['En_CP']   # Line 1358
+    return Fe_DERUPend
+
+
+def calculate_Fe_DEout(An_GEIn: float, An_DEIn: float) -> float:
+    """
+    Fe_DEout: Digestable energy lost in feces (Mcal/d)
+    """ 
+    Fe_DEout = An_GEIn - An_DEIn    # Line 1380
+    return Fe_DEout
+
+
+def calculate_Fe_DE_GE(Fe_DEout: float, An_GEIn: float) -> float:
+    """
+    Fe_DE_GE: Ratio of DE loss to GE
+    """
+    Fe_DE_GE = Fe_DEout / An_GEIn   # Line 1381
+    return Fe_DE_GE
+
+
+def calculate_Fe_DE(Fe_DEout: float, An_DMIn: float) -> float:
+    """
+    Fe_DE: Digestable energy lost in feces per kg DMI (Mcal/kg)
+    """
+    Fe_DE = Fe_DEout / An_DMIn  # Line 1382
+    return Fe_DE

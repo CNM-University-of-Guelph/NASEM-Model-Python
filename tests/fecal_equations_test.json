@@ -148,6 +148,36 @@
       "Name": "calculate_Fe_OM_end",
       "Input": {"Fe_rOMend": 2.5, "Fe_CPend": 5.2},
       "Output": 7.7
+    },
+    {
+      "Name": "calculate_Fe_DEMiCPend",
+      "Input": {"Fe_RumMiCP": 4.3, "coeff_dict": null},
+      "Output": 24.295
+    },
+    {
+      "Name": "calculate_Fe_DERDPend",
+      "Input": {"Fe_RDPend": 16.9, "coeff_dict": null},
+      "Output": 95.485
+    },
+    {
+      "Name": "calculate_Fe_DERUPend",
+      "Input": {"Fe_RUPend": 34.6, "coeff_dict": null},
+      "Output": 195.49
+    },
+    {
+      "Name": "calculate_Fe_DEout",
+      "Input": {"An_GEIn": 79.3, "An_DEIn": 24.1},
+      "Output": 55.199999999999996
+    },
+    {
+      "Name": "calculate_Fe_DE_GE",
+      "Input": {"Fe_DEout": 48.3, "An_GEIn": 71.9},
+      "Output": 0.6717663421418636
+    },
+    {
+      "Name": "calculate_Fe_DE",
+      "Input": {"Fe_DEout": 35.7, "An_DMIn": 32.5},
+      "Output": 1.0984615384615386
     }
   ]
   

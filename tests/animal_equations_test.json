@@ -524,5 +524,40 @@
     "Name": "calculate_An_DigOMt",
     "Input": {"An_DigOMtIn": 13.8, "Dt_DMIn": 30.4, "InfRum_DMIn": 2.9, "InfSI_DMIn": 0.1},
     "Output": 41.31736526946108
+  },
+  {
+    "Name": "calculate_An_GEIn",
+    "Input": {"Dt_GEIn": 14.9, "Inf_NDFIn": 1.9, "Inf_StIn": 2.5, "Inf_FAIn": 0.1, "Inf_TPIn": 0.4, "Inf_NPNCPIn": 0.6, "Inf_AcetIn": 1.5, "Inf_PropIn": 4.5, "Inf_ButrIn": 1.6, "coeff_dict": null},
+    "Output": 74.24899999999998
+  },
+  {
+    "Name": "calculate_An_GE",
+    "Input": {"An_GEIn": 87.3, "An_DMIn": 24.7},
+    "Output": 3.534412955465587
+  },
+  {
+    "Name": "calculate_An_DERDTPIn",
+    "Input": {"An_RDTPIn": 23.6, "Fe_DEMiCPend": 2.9, "Fe_DERDPend": 14.2, "coeff_dict": null},
+    "Output": 116.24
+  },
+  {
+    "Name": "calculate_An_DEidRUPIn",
+    "Input": {"An_idRUPIn": 14.9, "Fe_DERUPend": 2.4, "coeff_dict": null},
+    "Output": 81.785
+  },
+  {
+    "Name": "calculate_An_DE",
+    "Input": {"An_DEIn": 94.2, "An_DMIn": 20.5},
+    "Output": 4.595121951219513
+  },
+  {
+    "Name": "calculate_An_DE_GE",
+    "Input": {"An_DEIn": 75.2, "An_GEIn": 90.3},
+    "Output": 0.832779623477298
+  },
+  {
+    "Name": "calculate_An_DEnp",
+    "Input": {"An_DEInp": 34.8, "An_DMIn": 31.4},
+    "Output": 110.828025477707
   }
 ]

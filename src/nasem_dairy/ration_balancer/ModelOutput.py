@@ -44,6 +44,7 @@ class ModelOutput:
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
 
+
     def _repr_html_(self):
         # This is the HTML display when the ModelOutput object is called directly in a IPython setting (e.g. juptyer notebook, VSCode interactive)
         # summary_sentence = f"Outputs for a {self.get_value('An_StatePhys')}, weighing {self.get_value('An_BW')} kg, eating {self.get_value('DMI')} kg with {self.get_value('An_LactDay')} days in milk."
@@ -106,6 +107,7 @@ class ModelOutput:
         summary += "\n\nThis is a `ModelOutput` object with methods to access all model outputs. See help(ModelOutput)."
 
         return summary
+
 
     def __categories_dict(self):
         """
@@ -298,7 +300,7 @@ class ModelOutput:
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
                                'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain']
         MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 
-                          'Du_MiTP', 'Du_EndCP_g', 'Du_EndN_g', 'Du_EndCP', 'Du_EndN', 'Du_NAN_g', 'Du_NANMN_g']
+                          'Du_MiTP', 'Du_EndCP_g', 'Du_EndN_g', 'Du_EndCP', 'Du_EndN', 'Du_NAN_g', 'Du_NANMN_g', 'Du_MiN_NRC2001_g']
         # Store variables
         self.__populate_category('Production', group_names, milk_variables, composition_variables, gestation_variables, MiCP_variables)
 
@@ -311,7 +313,8 @@ class ModelOutput:
         group_names = ['fecal', 'urinary', 'gaseous', 'scurf'] 
         # Lists of variables to store
         fecal_variables = ['Fe_rOMend', 'Fe_RUP', 'Fe_RumMiCP', 'Fe_CPend_g', 'Fe_CPend', 'Fe_CP', 'Fe_NPend', 'Fe_NPend_g', 'Fe_MPendUse_g_Trg', 'Fe_rOM', 'Fe_St', 'Fe_NDF', 'Fe_NDFnf',
-                           'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g', 'Fe_FA', 'Fe_OM_end', 'Fe_OM']
+                           'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g', 'Fe_FA', 'Fe_OM_end', 'Fe_OM', 'Fe_DEMiCPend', 'Fe_DERDPend', 'Fe_DERUPend', 
+                           'Fe_DEout', 'Fe_DE_GE', 'Fe_DE']
         urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g']
         gaseous_variables = []
         scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg']

@@ -764,6 +764,69 @@ def calculate_An_DigOMt(An_DigOMtIn: float, Dt_DMIn: float, InfRum_DMIn: float, 
     return An_DigOMt
 
 
+def calculate_An_GEIn(Dt_GEIn: float, Inf_NDFIn: float, Inf_StIn: float, Inf_FAIn: float, Inf_TPIn: float, Inf_NPNCPIn: float, Inf_AcetIn: float, Inf_PropIn: float, Inf_ButrIn: float, coeff_dict: dict) -> float:
+    """
+    An_GEIn: Gross energy intake (Mcal/d)
+    """
+    req_coeff = ['En_NDF', 'En_St', 'En_FA', 'En_CP', 'En_NPNCP', 'En_Acet', 'En_Prop', 'En_Butr']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_GEIn = Dt_GEIn + Inf_NDFIn * coeff_dict['En_NDF'] + Inf_StIn * coeff_dict['En_St'] + Inf_FAIn * coeff_dict['En_FA'] + Inf_TPIn * coeff_dict['En_CP'] \
+              + Inf_NPNCPIn * coeff_dict['En_NPNCP'] + Inf_AcetIn * coeff_dict['En_Acet'] + Inf_PropIn * coeff_dict['En_Prop'] + Inf_ButrIn * coeff_dict['En_Butr'] # Line 1338-1339
+    return An_GEIn
+
+
+def calculate_An_GE(An_GEIn: float, An_DMIn: float) -> float:
+    """
+    An_GE: Gross energy intake, including infusions (Mcal/kg diet)
+    """
+    An_GE = An_GEIn / An_DMIn  # included all infusions in DMIn, Line 1341
+    return An_GE
+
+
+def calculate_An_DERDTPIn(An_RDTPIn: float, Fe_DEMiCPend: float, Fe_DERDPend: float, coeff_dict: dict) -> float:
+    """
+    An_DERDTPIn: Digestable energy in rumen degradable true protein (Mcal/d)
+    """
+    req_coeff = ['En_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_DERDTPIn = An_RDTPIn * coeff_dict['En_CP'] - Fe_DEMiCPend - Fe_DERDPend  # Line 1359
+    return An_DERDTPIn
+
+
+def calculate_An_DEidRUPIn(An_idRUPIn: float, Fe_DERUPend: float, coeff_dict: dict) -> float:
+    """
+    An_DEidRUPIn: Digestable energy in intestinally digested RUP (Mcal/d)
+    """
+    req_coeff = ['En_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_DEidRUPIn = An_idRUPIn * coeff_dict['En_CP'] - Fe_DERUPend   # Line 1360
+    return An_DEidRUPIn
+
+
+def calculate_An_DE(An_DEIn: float, An_DMIn: float) -> float:
+    """
+    An_DE: Digestable energy, diet + infusions (Mcal/d)
+    """
+    An_DE = An_DEIn / An_DMIn   # Line 1378
+    return An_DE
+
+
+def calculate_An_DE_GE(An_DEIn: float, An_GEIn: float) -> float:
+    """
+    An_DE_GE: Ratio of DE to GE
+    """
+    An_DE_GE = An_DEIn / An_GEIn    # Line 1379
+    return An_DE_GE
+
+
+def calculate_An_DEnp(An_DEInp: float, An_DMIn: float) -> float:
+    """
+    An_DEnp: Nonprotein digestable energy intake (Mcal/kg)
+    """
+    An_DEnp = An_DEInp / An_DMIn * 100  # Line 1386
+    return An_DEnp
+
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -887,50 +950,6 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
     An_data['An_RDP_CP'] = calculate_An_RDP_CP(An_data['An_RDPIn'],
                                                diet_data['Dt_CPIn'],
                                                infusion_data['InfRum_CPIn'])
-    # An_data['An_DigFA'] = calculate_An_DigFA(An_data['An_DigFAIn'],
-    #                                          animal_input['DMI'],
-    #                                          infusion_data['InfRum_DMIn'],
-    #                                          infusion_data['InfSI_DMIn'])
-    # An_data['TT_dcAnFA'] = calculate_TT_dcAnFA(diet_data['Dt_DigFAIn'],
-    #                                            infusion_data['Inf_DigFAIn'],
-    #                                            diet_data['Dt_FAIn'],
-    #                                            infusion_data['Inf_FAIn'])
-    # An_data['An_OMIn'] = calculate_An_OMIn(diet_data['Dt_OMIn'],
-    #                                        infusion_data['Inf_OMIn'])
-    # An_data['An_DigOMaIn_Base'] = calculate_An_DigOMaIn_Base(An_data['An_DigNDFIn_Base'],
-    #                                                          An_data['An_DigStIn_Base'],
-    #                                                          An_data['An_DigFAIn'],
-    #                                                          An_data['An_DigrOMaIn'],
-    #                                                          An_data['An_DigCPaIn'])
-    # An_data['An_DigOMtIn_Base'] = calculate_An_DigOMtIn_Base(An_data['An_DigNDFIn_Base'],
-    #                                                          An_data['An_DigStIn_Base'],
-    #                                                          An_data['An_DigFAIn'],
-    #                                                          An_data['An_DigrOMtIn'],
-    #                                                          An_data['An_DigCPtIn'])
-    # An_data['An_DigOMaIn'] = calculate_An_DigOMaIn(An_data['An_DigNDFIn'],
-    #                                                An_data['An_DigStIn'],
-    #                                                An_data['An_DigFAIn'],
-    #                                                An_data['An_DigrOMaIn'],
-    #                                                An_data['An_DigCPaIn'])
-    # An_data['An_DigOMtIn'] = calculate_An_DigOMtIn(An_data['An_DigNDFIn'],
-    #                                                An_data['An_DigStIn'],
-    #                                                An_data['An_DigFAIn'],
-    #                                                An_data['An_DigrOMtIn'],
-    #                                                An_data['An_DigCPtIn'])
-    # An_data['TT_dcOMa'] = calculate_TT_dcOMa(An_data['An_DigOMaIn'],
-    #                                          An_data['An_OMIn'])
-    # An_data['TT_dcOMt'] = calculate_TT_dcOMt(An_data['An_DigOMtIn'],
-    #                                          An_data['An_OMIn'])
-    # An_data['TT_dcOMt_Base'] = calculate_TT_dcOMt_Base(An_data['An_DigOMtIn_Base'],
-    #                                                    An_data['An_OMIn'])
-    # An_data['An_DigOMa'] = calculate_An_DigOMa(An_data['An_DigOMaIn'],
-    #                                            animal_input['DMI'],
-    #                                            infusion_data['InfRum_DMIn'],
-    #                                            An_data['InfSI_DMIn'])
-    # An_data['An_DigOMt'] = calculate_An_DigOMt(An_data['An_DigOMtIn'],
-    #                                            animal_input['DMI'],
-    #                                            infusion_data['InfRum_DMIn'],
-    #                                            infusion_data['InfSI_DMIn'])
     return An_data
 
 
@@ -943,6 +962,9 @@ def calculate_An_data_complete(
         Fe_CP: float, 
         Fe_MiTP: float,
         Fe_NPend: float,
+        Fe_DEMiCPend: float,
+        Fe_DERDPend: float,
+        Fe_DERUPend: float,
         Du_idMiCP: float,
         infusion_data: dict, 
         Monensin_eqn: int, #equation_selection['Monensin_eqn']
@@ -1161,6 +1183,31 @@ def calculate_An_data_complete(
                                                         DMI,
                                                         infusion_data['InfRum_DMIn'],
                                                         infusion_data['InfSI_DMIn'])
+    complete_An_data['An_GEIn'] = calculate_An_GEIn(diet_data['Dt_GEIn'],
+                                                    infusion_data['Inf_NDFIn'],
+                                                    infusion_data['Inf_StIn'],
+                                                    infusion_data['Inf_FAIn'],
+                                                    infusion_data['Inf_TPIn'],
+                                                    infusion_data['Inf_NPNCPIn'],
+                                                    infusion_data['Inf_AcetIn'],
+                                                    infusion_data['Inf_PropIn'],
+                                                    infusion_data['Inf_ButrIn'],
+                                                    coeff_dict)
+    complete_An_data['An_GE'] = calculate_An_GE(complete_An_data['An_GEIn'],
+                                                complete_An_data['An_DMIn'])
+    complete_An_data['An_DERDTPIn'] = calculate_An_DERDTPIn(complete_An_data['An_RDTPIn'],
+                                                            Fe_DEMiCPend,
+                                                            Fe_DERDPend,
+                                                            coeff_dict)
+    complete_An_data['An_DEidRUPIn'] = calculate_An_DEidRUPIn(complete_An_data['An_idRUPIn'],
+                                                              Fe_DERUPend,
+                                                              coeff_dict)
+    complete_An_data['An_DE'] = calculate_An_DE(complete_An_data['An_DEIn'],
+                                                complete_An_data['An_DMIn'])
+    complete_An_data['An_DE_GE'] = calculate_An_DE_GE(complete_An_data['An_DEIn'],
+                                                      complete_An_data['An_GEIn'])
+    complete_An_data['An_DEnp'] = calculate_An_DEnp(complete_An_data['An_DEInp'],
+                                                    complete_An_data['An_DMIn'])   
     return complete_An_data
 
 
