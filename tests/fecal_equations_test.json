@@ -133,6 +133,21 @@
       "Name": "calculate_Fe_N_g",
       "Input": {"Fe_N": 3.1},
       "Output": 3100
+    },
+    {
+      "Name": "calculate_Fe_FA",
+      "Input": {"Dt_FAIn": 5.3, "InfRum_FAIn": 1.2, "InfSI_FAIn": 0.6, "Dt_DigFAIn": 2.9, "Inf_DigFAIn": 3},
+      "Output": 1.1999999999999993
+    },
+    {
+      "Name": "calculate_Fe_OM",
+      "Input": {"Fe_CP": 0.5, "Fe_NDF": 2.4, "Fe_St": 7.2, "Fe_rOM": 3.1, "Fe_FA": 2.5},
+      "Output": 15.7
+    },
+    {
+      "Name": "calculate_Fe_OM_end",
+      "Input": {"Fe_rOMend": 2.5, "Fe_CPend": 5.2},
+      "Output": 7.7
     }
   ]
   

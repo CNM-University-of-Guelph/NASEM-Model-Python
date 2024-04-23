@@ -158,7 +158,7 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_rOM,
     calculate_Fe_St,
     calculate_Fe_NDF,
-    calculate_Fe_NDFnf,  
+    calculate_Fe_NDFnf,   
     calculate_Fe_Nend,
     calculate_Fe_RDPend,
     calculate_Fe_RUPend,
@@ -166,7 +166,10 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_InfCP,
     calculate_Fe_TP,
     calculate_Fe_N,
-    calculate_Fe_N_g
+    calculate_Fe_N_g,
+    calculate_Fe_FA,
+    calculate_Fe_OM,
+    calculate_Fe_OM_end
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -896,7 +899,13 @@ def execute_model(user_diet: pd.DataFrame,
                             Fe_NPend)
     Fe_N = calculate_Fe_N(Fe_CP)
     Fe_N_g = calculate_Fe_N_g(Fe_N)    
-
+    Fe_FA = calculate_Fe_FA(diet_data_initial['Dt_FAIn'],
+                            infusion_data['InfRum_FAIn'],
+                            infusion_data['InfSI_FAIn'],
+                            diet_data_initial['Dt_DigFAIn'],
+                            infusion_data['Inf_DigFAIn'])
+    Fe_OM_end = calculate_Fe_OM_end(Fe_rOMend,
+                                    Fe_CPend)
 
 ########################################
 # Step 7.2: Microbial Amino Acid Calculations
@@ -975,7 +984,11 @@ def execute_model(user_diet: pd.DataFrame,
                               diet_data['Dt_DigNDFIn'])
     Fe_NDFnf = calculate_Fe_NDFnf(diet_data['Dt_NDFnfIn'],
                                   diet_data['Dt_DigNDFnfIn'])
-
+    Fe_OM = calculate_Fe_OM(Fe_CP,
+                            Fe_NDF,
+                            Fe_St,
+                            Fe_rOM,
+                            Fe_FA)
 
 ########################################
 # Step 10: Metabolizable Protein Intake

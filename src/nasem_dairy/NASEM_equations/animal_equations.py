@@ -667,6 +667,103 @@ def calculate_An_idCPIn(An_idRUPIn: float, Du_idMiCP: float) -> float:
     An_idCPIn = An_idRUPIn + Du_idMiCP  # not a true value as ignores recycled endCP, line 1235
     return An_idCPIn
 
+
+def calculate_An_DigFA(An_DigFAIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigFA: Digestable FA, dietary and infusions, % of DMI
+    """
+    An_DigFA = An_DigFAIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 1309
+    return An_DigFA
+
+
+def calculate_TT_dcAnFA(Dt_DigFAIn: float, Inf_DigFAIn: float, Dt_FAIn: float, Inf_FAIn: float) -> float:
+    """
+    TT_dcAnFA: Digestability coefficient for total tract FA
+    """
+    TT_dcAnFA = (Dt_DigFAIn + Inf_DigFAIn) / (Dt_FAIn + Inf_FAIn) * 100  # this should be just gut infusions, but don't have those calculated as ruminal and SI DC will not be the same, Line 1312
+    return TT_dcAnFA
+
+
+def calculate_An_OMIn(Dt_OMIn: float, Inf_OMIn: float) -> float:
+    """
+    An_OMIn: Organic matter intake, dietary and infusions (kg/d)
+    """
+    An_OMIn = Dt_OMIn + Inf_OMIn    # Line 1317
+    return An_OMIn
+
+
+def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float, An_DigFAIn: float, An_DigrOMaIn: float, An_DigCPaIn: float) -> float:
+    """
+    An_DigOMaIn_Base: Base apparent digested organic matter intake? (kg/d) 
+    """
+    An_DigOMaIn_Base = An_DigNDFIn_Base + An_DigStIn_Base + An_DigFAIn + An_DigrOMaIn + An_DigCPaIn # Line 1318
+    return An_DigOMaIn_Base
+
+
+def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float, An_DigFAIn: float, An_DigrOMtIn: float, An_DigCPtIn: float) -> float:
+    """
+    An_DigOMtIn_Base: Base true digested organic matter intake? (kg/d)
+    """
+    An_DigOMtIn_Base = An_DigNDFIn_Base + An_DigStIn_Base + An_DigFAIn + An_DigrOMtIn + An_DigCPtIn # Line 1319
+    return An_DigOMtIn_Base
+
+
+def calculate_An_DigOMaIn(An_DigNDFIn: float, An_DigStIn: float, An_DigFAIn: float, An_DigrOMaIn: float, An_DigCPaIn: float) -> float:
+    """
+    An_DigOMaIn: Apparent digested organic matter intake (kg/d)
+    """
+    An_DigOMaIn = An_DigNDFIn + An_DigStIn + An_DigFAIn + An_DigrOMaIn + An_DigCPaIn # Line 1322
+    return An_DigOMaIn
+
+
+def calculate_An_DigOMtIn(An_DigNDFIn: float, An_DigStIn: float, An_DigFAIn: float, An_DigrOMtIn: float, An_DigCPtIn: float) -> float:
+    """
+    An_DigOMtIn: True digested organic matter intake (kg/d)
+    """
+    An_DigOMtIn = An_DigNDFIn + An_DigStIn + An_DigFAIn + An_DigrOMtIn + An_DigCPtIn    # Line 1323
+    return An_DigOMtIn
+
+
+def calculate_TT_dcOMa(An_DigOMaIn: float, An_OMIn: float) -> float:
+    """
+    TT_dcOMa: Digestability coefficient apparent total tract organic matter 
+    """
+    TT_dcOMa = An_DigOMaIn / An_OMIn * 100  # Line 1324
+    return TT_dcOMa
+
+
+def calculate_TT_dcOMt(An_DigOMtIn: float, An_OMIn: float) -> float:
+    """
+    TT_dcOMt: Digestability coefficient true total tract organic matter
+    """
+    TT_dcOMt = An_DigOMtIn / An_OMIn * 100  # Line 1325
+    return TT_dcOMt
+
+
+def calculate_TT_dcOMt_Base(An_DigOMtIn_Base: float, An_OMIn: float) -> float:
+    """
+    TT_dcOMt_Base: Digestability coefficient base true total tract organic matter? 
+    """
+    TT_dcOMt_Base = An_DigOMtIn_Base / An_OMIn * 100    # Line 1326
+    return TT_dcOMt_Base
+
+
+def calculate_An_DigOMa(An_DigOMaIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigOMa: Apparent digested organic matter, dietary + infusions, % DMI
+    """
+    An_DigOMa = An_DigOMaIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 1329
+    return An_DigOMa
+
+
+def calculate_An_DigOMt(An_DigOMtIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_DigOMt: True digested organic matter, dietary + infusions, % DMI
+    """
+    An_DigOMt = An_DigOMtIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 1330
+    return An_DigOMt
+
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -790,6 +887,50 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data, Monensin_e
     An_data['An_RDP_CP'] = calculate_An_RDP_CP(An_data['An_RDPIn'],
                                                diet_data['Dt_CPIn'],
                                                infusion_data['InfRum_CPIn'])
+    # An_data['An_DigFA'] = calculate_An_DigFA(An_data['An_DigFAIn'],
+    #                                          animal_input['DMI'],
+    #                                          infusion_data['InfRum_DMIn'],
+    #                                          infusion_data['InfSI_DMIn'])
+    # An_data['TT_dcAnFA'] = calculate_TT_dcAnFA(diet_data['Dt_DigFAIn'],
+    #                                            infusion_data['Inf_DigFAIn'],
+    #                                            diet_data['Dt_FAIn'],
+    #                                            infusion_data['Inf_FAIn'])
+    # An_data['An_OMIn'] = calculate_An_OMIn(diet_data['Dt_OMIn'],
+    #                                        infusion_data['Inf_OMIn'])
+    # An_data['An_DigOMaIn_Base'] = calculate_An_DigOMaIn_Base(An_data['An_DigNDFIn_Base'],
+    #                                                          An_data['An_DigStIn_Base'],
+    #                                                          An_data['An_DigFAIn'],
+    #                                                          An_data['An_DigrOMaIn'],
+    #                                                          An_data['An_DigCPaIn'])
+    # An_data['An_DigOMtIn_Base'] = calculate_An_DigOMtIn_Base(An_data['An_DigNDFIn_Base'],
+    #                                                          An_data['An_DigStIn_Base'],
+    #                                                          An_data['An_DigFAIn'],
+    #                                                          An_data['An_DigrOMtIn'],
+    #                                                          An_data['An_DigCPtIn'])
+    # An_data['An_DigOMaIn'] = calculate_An_DigOMaIn(An_data['An_DigNDFIn'],
+    #                                                An_data['An_DigStIn'],
+    #                                                An_data['An_DigFAIn'],
+    #                                                An_data['An_DigrOMaIn'],
+    #                                                An_data['An_DigCPaIn'])
+    # An_data['An_DigOMtIn'] = calculate_An_DigOMtIn(An_data['An_DigNDFIn'],
+    #                                                An_data['An_DigStIn'],
+    #                                                An_data['An_DigFAIn'],
+    #                                                An_data['An_DigrOMtIn'],
+    #                                                An_data['An_DigCPtIn'])
+    # An_data['TT_dcOMa'] = calculate_TT_dcOMa(An_data['An_DigOMaIn'],
+    #                                          An_data['An_OMIn'])
+    # An_data['TT_dcOMt'] = calculate_TT_dcOMt(An_data['An_DigOMtIn'],
+    #                                          An_data['An_OMIn'])
+    # An_data['TT_dcOMt_Base'] = calculate_TT_dcOMt_Base(An_data['An_DigOMtIn_Base'],
+    #                                                    An_data['An_OMIn'])
+    # An_data['An_DigOMa'] = calculate_An_DigOMa(An_data['An_DigOMaIn'],
+    #                                            animal_input['DMI'],
+    #                                            infusion_data['InfRum_DMIn'],
+    #                                            An_data['InfSI_DMIn'])
+    # An_data['An_DigOMt'] = calculate_An_DigOMt(An_data['An_DigOMtIn'],
+    #                                            animal_input['DMI'],
+    #                                            infusion_data['InfRum_DMIn'],
+    #                                            infusion_data['InfSI_DMIn'])
     return An_data
 
 
@@ -976,6 +1117,50 @@ def calculate_An_data_complete(
                                                           complete_An_data['An_RUPIn'])
     complete_An_data['An_idCPIn'] = calculate_An_idCPIn(complete_An_data['An_idRUPIn'],
                                                         Du_idMiCP)
+    complete_An_data['An_DigFA'] = calculate_An_DigFA(complete_An_data['An_DigFAIn'],
+                                                      DMI,
+                                                      infusion_data['InfRum_DMIn'],
+                                                      infusion_data['InfSI_DMIn'])
+    complete_An_data['TT_dcAnFA'] = calculate_TT_dcAnFA(diet_data['Dt_DigFAIn'],
+                                                        infusion_data['Inf_DigFAIn'],
+                                                        diet_data['Dt_FAIn'],
+                                                        infusion_data['Inf_FAIn'])
+    complete_An_data['An_OMIn'] = calculate_An_OMIn(diet_data['Dt_OMIn'],
+                                                    infusion_data['Inf_OMIn'])
+    complete_An_data['An_DigOMaIn_Base'] = calculate_An_DigOMaIn_Base(complete_An_data['An_DigNDFIn_Base'],
+                                                                      complete_An_data['An_DigStIn_Base'],
+                                                                      complete_An_data['An_DigFAIn'],
+                                                                      complete_An_data['An_DigrOMaIn'],
+                                                                      complete_An_data['An_DigCPaIn'])
+    complete_An_data['An_DigOMtIn_Base'] = calculate_An_DigOMtIn_Base(complete_An_data['An_DigNDFIn_Base'],
+                                                                      complete_An_data['An_DigStIn_Base'],
+                                                                      complete_An_data['An_DigFAIn'],
+                                                                      complete_An_data['An_DigrOMtIn'],
+                                                                      complete_An_data['An_DigCPtIn'])
+    complete_An_data['An_DigOMaIn'] = calculate_An_DigOMaIn(complete_An_data['An_DigNDFIn'],
+                                                            complete_An_data['An_DigStIn'],
+                                                            complete_An_data['An_DigFAIn'],
+                                                            complete_An_data['An_DigrOMaIn'],
+                                                            complete_An_data['An_DigCPaIn'])
+    complete_An_data['An_DigOMtIn'] = calculate_An_DigOMtIn(complete_An_data['An_DigNDFIn'],
+                                                            complete_An_data['An_DigStIn'],
+                                                            complete_An_data['An_DigFAIn'],
+                                                            complete_An_data['An_DigrOMtIn'],
+                                                            complete_An_data['An_DigCPtIn'])
+    complete_An_data['TT_dcOMa'] = calculate_TT_dcOMa(complete_An_data['An_DigOMaIn'],
+                                                      complete_An_data['An_OMIn'])
+    complete_An_data['TT_dcOMt'] = calculate_TT_dcOMt(complete_An_data['An_DigOMtIn'],
+                                                      complete_An_data['An_OMIn'])
+    complete_An_data['TT_dcOMt_Base'] = calculate_TT_dcOMt_Base(complete_An_data['An_DigOMtIn_Base'],
+                                                                complete_An_data['An_OMIn'])
+    complete_An_data['An_DigOMa'] = calculate_An_DigOMa(complete_An_data['An_DigOMaIn'],
+                                                        DMI,
+                                                        infusion_data['InfRum_DMIn'],
+                                                        infusion_data['InfSI_DMIn'])
+    complete_An_data['An_DigOMt'] = calculate_An_DigOMt(complete_An_data['An_DigOMtIn'],
+                                                        DMI,
+                                                        infusion_data['InfRum_DMIn'],
+                                                        infusion_data['InfSI_DMIn'])
     return complete_An_data
 
 

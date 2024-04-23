@@ -464,5 +464,65 @@
     "Name": "calculate_An_MP_CP",
     "Input": {"An_MPIn": 129.4, "An_CPIn": 230},
     "Output": 0.562608695652174
+  },
+  {
+    "Name": "calculate_An_DigFA",
+    "Input": {"An_DigFAIn": 4.8, "Dt_DMIn": 29.4, "InfRum_DMIn": 1.6, "InfSI_DMIn": 0.5},
+    "Output": 15.238095238095237
+  },
+  {
+    "Name": "calculate_TT_dcAnFA",
+    "Input": {"Dt_DigFAIn": 2.9, "Inf_DigFAIn": 1.4, "Dt_FAIn": 2.1, "Inf_FAIn": 0.7},
+    "Output": 153.57142857142858
+  },
+  {
+    "Name": "calculate_An_OMIn",
+    "Input": {"Dt_OMIn": 5.8, "Inf_OMIn": 2.0},
+    "Output": 7.8
+  },
+  {
+    "Name": "calculate_An_DigOMaIn_Base",
+    "Input": {"An_DigNDFIn_Base": 23.5, "An_DigStIn_Base": 17.1, "An_DigFAIn": 8.3, "An_DigrOMaIn": 9.5, "An_DigCPaIn": 18.4},
+    "Output": 76.80000000000001
+  },
+  {
+    "Name": "calculate_An_DigOMtIn_Base",
+    "Input": {"An_DigNDFIn_Base": 37.5, "An_DigStIn_Base": 17.2, "An_DigFAIn": 7.6, "An_DigrOMtIn": 9.1, "An_DigCPtIn": 14.8},
+    "Output": 86.2
+  },
+  {
+    "Name": "calculate_An_DigOMaIn",
+    "Input": {"An_DigNDFIn": 42.8, "An_DigStIn": 10.1, "An_DigFAIn": 5.8, "An_DigrOMaIn": 14.8, "An_DigCPaIn": 15.9},
+    "Output": 89.4
+  },
+  {
+    "Name": "calculate_An_DigOMtIn",
+    "Input": {"An_DigNDFIn": 36.8, "An_DigStIn": 19.3, "An_DigFAIn": 4.9, "An_DigrOMtIn": 20.4, "An_DigCPtIn": 16.2},
+    "Output": 97.6
+  },
+  {
+    "Name": "calculate_TT_dcOMa",
+    "Input": {"An_DigOMaIn": 29.5, "An_OMIn": 42.4},
+    "Output": 69.5754716981132
+  },
+  {
+    "Name": "calculate_TT_dcOMt",
+    "Input": {"An_DigOMtIn": 14.1, "An_OMIn": 5.7},
+    "Output": 247.36842105263156
+  },
+  {
+    "Name": "calculate_TT_dcOMt_Base",
+    "Input": {"An_DigOMtIn_Base": 17.8, "An_OMIn": 20.6},
+    "Output": 86.40776699029125
+  },
+  {
+    "Name": "calculate_An_DigOMa",
+    "Input": {"An_DigOMaIn": 18.5, "Dt_DMIn": 26.6, "InfRum_DMIn": 2.3, "InfSI_DMIn": 1.9},
+    "Output": 60.064935064935064
+  },
+  {
+    "Name": "calculate_An_DigOMt",
+    "Input": {"An_DigOMtIn": 13.8, "Dt_DMIn": 30.4, "InfRum_DMIn": 2.9, "InfSI_DMIn": 0.1},
+    "Output": 41.31736526946108
   }
 ]

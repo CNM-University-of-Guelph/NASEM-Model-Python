@@ -1233,6 +1233,87 @@ def calculate_Dt_MP(Dt_MPIn: float, Dt_DMIn: float) -> float:
     Dt_MP = Dt_MPIn / Dt_DMIn * 100 # % of DM, Line 1220
     return Dt_MP
 
+
+def calculate_Dt_DigUFAIn(Dt_DigC161In: float, Dt_DigC181tIn: float, Dt_DigC181cIn: float, Dt_DigC182In: float, Dt_DigC183In: float) -> float:
+    """
+    Dt_DigUFAIn: Dietary digestable unsaturated FA intake, kg/d 
+    """
+    Dt_DigUFAIn = Dt_DigC161In + Dt_DigC181tIn + Dt_DigC181cIn + Dt_DigC182In + Dt_DigC183In    # Line 1282
+    return Dt_DigUFAIn
+
+
+def calculate_Dt_DigMUFAIn(Dt_DigC161In: float, Dt_DigC181tIn: float, Dt_DigC181cIn: float) -> float:
+    """
+    Dt_DigMUFAIn: Dietary digestable monounsaturated fatty acid intake, kg/d
+    """
+    Dt_DigMUFAIn = Dt_DigC161In + Dt_DigC181tIn + Dt_DigC181cIn # Line 1283
+    return Dt_DigMUFAIn
+
+
+def calculate_Dt_DigPUFAIn(Dt_DigC182In: float, Dt_DigC183In: float) -> float:
+    """
+    Dt_DigPUFAIn: Dietary digestable polyunsaturated fatty acid intake, kg/d 
+    """
+    Dt_DigPUFAIn = Dt_DigC182In + Dt_DigC183In  # Line 1284
+    return Dt_DigPUFAIn
+
+
+def calculate_Dt_DigSatFAIn(Dt_DigFAIn: float, Dt_DigUFAIn: float) -> float:
+    """
+    Dt_DigSatFAIn: Dietary digestable saturated fatty acid intake, kg/d
+    """
+    Dt_DigSatFAIn = Dt_DigFAIn - Dt_DigUFAIn    # Line 1285
+    return Dt_DigSatFAIn
+
+
+def calculate_Dt_DigFA(Dt_DigFAIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigFA: Dietary digested FA, % of DMI
+    """
+    Dt_DigFA = Dt_DigFAIn / Dt_DMIn * 100   # Line 1313
+    return Dt_DigFA
+
+
+def calculate_Dt_DigOMaIn(Dt_DigNDFIn: float, Dt_DigStIn: float, Dt_DigFAIn: float, Dt_DigrOMaIn: float, Dt_DigCPaIn: float) -> float:
+    """
+    Dt_DigOMaIn: Apparent digested organic matter intake (kg/d)
+    """
+    Dt_DigOMaIn = Dt_DigNDFIn + Dt_DigStIn + Dt_DigFAIn + Dt_DigrOMaIn + Dt_DigCPaIn    # Line 1320
+    return Dt_DigOMaIn
+
+
+def calculate_Dt_DigOMtIn(Dt_DigNDFIn: float, Dt_DigStIn: float, Dt_DigFAIn: float, Dt_DigrOMtIn: float, Dt_DigCPtIn: float) -> float:
+    """
+    Dt_DigOMtIn: True digested organic matter intake (kg/d)
+    """
+    Dt_DigOMtIn = Dt_DigNDFIn + Dt_DigStIn + Dt_DigFAIn + Dt_DigrOMtIn + Dt_DigCPtIn    # Line 1321
+    return Dt_DigOMtIn
+
+
+def calculate_Dt_DigOMa(Dt_DigOMaIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigOMa: Apparent digested dietary organic matter, % DMI
+    """
+    Dt_DigOMa = Dt_DigOMaIn / Dt_DMIn * 100 # Line 1327
+    return Dt_DigOMa
+
+
+def calculate_Dt_DigOMt(Dt_DigOMtIn: float, Dt_DMIn: float) -> float:
+    """
+    Dt_DigOMt: True digested dietary organic matter, % DMI
+    """
+    Dt_DigOMt = Dt_DigOMtIn / Dt_DMIn * 100 # Line 1328
+    return Dt_DigOMt
+
+
+def calculate_TT_dcDtFA(Dt_DigFAIn: float, Dt_FAIn: float) -> float:
+    """
+    TT_dcDtFA: Digestability coefficient for total tract dietary FA 
+    """
+    TT_dcDtFA = Dt_DigFAIn / Dt_FAIn * 100  # Line 1311
+    return TT_dcDtFA
+
+
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
@@ -2042,6 +2123,43 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                            DMI)
     diet_data['Dt_RDP_CP'] = calculate_Dt_RDP_CP(diet_data['Dt_RDP'],
                                                  diet_data['Dt_CP'])
+    
+    diet_data['Dt_DigUFAIn'] = calculate_Dt_DigUFAIn(diet_data['Dt_DigC161In'],
+                                                     diet_data['Dt_DigC181tIn'],
+                                                     diet_data['Dt_DigC181cIn'],
+                                                     diet_data['Dt_DigC182In'],
+                                                     diet_data['Dt_DigC183In'])
+    diet_data['Dt_DigMUFAIn'] = calculate_Dt_DigMUFAIn(diet_data['Dt_DigC161In'],
+                                                       diet_data['Dt_DigC181tIn'],
+                                                       diet_data['Dt_DigC181cIn'])
+    diet_data['Dt_DigPUFAIn'] = calculate_Dt_DigPUFAIn(diet_data['Dt_DigC182In'],
+                                                       diet_data['Dt_DigC183In'])
+    diet_data['Dt_DigSatFAIn'] = calculate_Dt_DigSatFAIn(diet_data['Dt_DigFAIn'],
+                                                         diet_data['Dt_DigUFAIn'])
+    diet_data['Dt_DigFA'] = calculate_Dt_DigFA(diet_data['Dt_DigFAIn'],
+                                               DMI)
+    DigFA_FA_list = [
+        'DigFA',
+        'DigC120',
+        'DigC140',
+        'DigC160',
+        'DigC161',
+        'DigC180',
+        'DigC181t',
+        'DigC181c',
+        'DigC182',
+        'DigC183',
+        'DigUFA',
+        'DigMUFA',
+        'DigPUFA',
+        'DigSatFA',
+        'DigOtherFA'
+    ]
+    for FA in DigFA_FA_list:
+        diet_data[f'Dt_{FA}_FA'] = diet_data[f'Dt_{FA}In'] / diet_data['Dt_FAIn'] * 100 # Line 1288-1302
+    
+    diet_data['TT_dcDtFA'] = calculate_TT_dcDtFA(diet_data['Dt_DigFAIn'],
+                                                 diet_data['Dt_FAIn'])
     return diet_data
 
 
@@ -2094,17 +2212,6 @@ def calculate_diet_data_complete(
                                                       Du_idMiTP)
     complete_diet_data['Dt_MP'] = calculate_Dt_MP(complete_diet_data['Dt_MPIn'], 
                                        DMI)
-
-
-
-
-
-
-
-
-
-
-
     complete_diet_data['Dt_DECPIn'] = calculate_Dt_DECPIn(complete_diet_data['Dt_DigCPaIn'],
                                                           coeff_dict)
     complete_diet_data['Dt_DETPIn'] = calculate_Dt_DETPIn(complete_diet_data['Dt_DECPIn'],
@@ -2126,4 +2233,18 @@ def calculate_diet_data_complete(
     for AA in AA_list:
         # Dt_IdAAIn
         complete_diet_data[f'Dt_Id{AA}In'] = Du_IdAAMic[f'{AA}'] + complete_diet_data[f'Dt_Id{AA}RUPIn']
+    complete_diet_data['Dt_DigOMaIn'] = calculate_Dt_DigOMaIn(complete_diet_data['Dt_DigNDFIn'],
+                                                              complete_diet_data['Dt_DigStIn'],
+                                                              complete_diet_data['Dt_DigFAIn'],
+                                                              complete_diet_data['Dt_DigrOMaIn'],
+                                                              complete_diet_data['Dt_DigCPaIn'])
+    complete_diet_data['Dt_DigOMtIn'] = calculate_Dt_DigOMtIn(complete_diet_data['Dt_DigNDFIn'],
+                                                              complete_diet_data['Dt_DigStIn'],
+                                                              complete_diet_data['Dt_DigFAIn'],
+                                                              complete_diet_data['Dt_DigrOMtIn'],
+                                                              complete_diet_data['Dt_DigCPtIn'])
+    complete_diet_data['Dt_DigOMa'] = calculate_Dt_DigOMa(complete_diet_data['Dt_DigOMaIn'],
+                                                          DMI)
+    complete_diet_data['Dt_DigOMt'] = calculate_Dt_DigOMt(complete_diet_data['Dt_DigOMtIn'],
+                                                          DMI)
     return complete_diet_data

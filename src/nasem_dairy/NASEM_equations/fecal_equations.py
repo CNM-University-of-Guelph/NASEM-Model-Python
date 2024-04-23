@@ -195,3 +195,27 @@ def calculate_Fe_N_g(Fe_N: float) -> float:
     """
     Fe_N_g = Fe_N * 1000    # Line 1206
     return Fe_N_g 
+
+
+def calculate_Fe_FA(Dt_FAIn: float, InfRum_FAIn: float, InfSI_FAIn: float, Dt_DigFAIn: float, Inf_DigFAIn: float) -> float:
+    """
+    Fe_FA: FA lost in feces (kg/d)
+    """
+    Fe_FA = Dt_FAIn + InfRum_FAIn + InfSI_FAIn - Dt_DigFAIn - Inf_DigFAIn   # Line 1310
+    return Fe_FA
+
+
+def calculate_Fe_OM(Fe_CP: float, Fe_NDF: float, Fe_St: float, Fe_rOM: float, Fe_FA: float) -> float:
+    """
+    Fe_OM: Organic matter lost in feces (kg/d)
+    """
+    Fe_OM = Fe_CP + Fe_NDF + Fe_St + Fe_rOM + Fe_FA   # kg/d, Line 1314
+    return Fe_OM
+
+
+def calculate_Fe_OM_end(Fe_rOMend: float, Fe_CPend: float) -> float:
+    """
+    Fe_OM_end: Endogenous organic matter lost in feces (kg/d)
+    """
+    Fe_OM_end = Fe_rOMend + Fe_CPend    # Line 1315
+    return Fe_OM_end
