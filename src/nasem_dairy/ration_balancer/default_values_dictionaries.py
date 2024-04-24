@@ -224,7 +224,34 @@ coeff_dict = {
     'UCT': 25,                # Line 230, calf
     'An_GutFill_BWmature': 0.18, # Line 2400, mature animals
     'LCT': 15,                # calf < 3 wks of age, Line 228, NOTE: LCT is changed to 5 whe An_AgeDay > 21, should it be part of coeff_dict?
-    'UCT': 25                 # calf, line 230
+    'UCT': 25,                # calf, line 230
+    
+    # Doudenal endogenous CP AA profile (g hydrated AA / 100 g CP) corrected for 24 h 
+    # hydrolysis recovery. Lapierre et al.from Orskov et al. 1986.  Br. J. Nutr. 56:241-248. 
+    # corrected for 24 h recovery by Lapierre
+    'EndArgProf': 4.61, # Line 1446-1455
+    'EndHisProf': 2.90,
+    'EndIleProf': 4.09,
+    'EndLeuProf': 7.67,
+    'EndLysProf': 6.23,
+    'EndMetProf': 1.26,
+    'EndPheProf': 3.98,
+    'EndThrProf': 5.18,
+    'EndTrpProf': 1.29,
+    'EndValProf': 5.29,
+
+    #AA dehydration factors for mass change during peptide formation (g anhyd AAt / g hydrated AAt)
+    'HydrArg': 0.8967,
+    'HydrHis': 0.8840,
+    'HydrIle': 0.8628,
+    'HydrLeu': 0.8628,
+    'HydrLys': 0.8769,
+    'HydrMet': 0.8794,
+    'HydrPhe': 0.8910,
+    'HydrThr': 0.8490,
+    'HydrTrp': 0.9118,
+    'HydrVal': 0.8464
+
 }
 
 # Dictionary to use when infusions are not provided to model

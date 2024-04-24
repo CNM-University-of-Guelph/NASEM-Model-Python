@@ -1815,6 +1815,13 @@ def calculate_diet_info(DMI, An_StatePhys, Use_DNDF_IV, diet_info, coeff_dict):
                                                         complete_diet_info['Fd_DMIn'])    
     complete_diet_info['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(complete_diet_info['Fd_RUPIn'],
                                                                 complete_diet_info['Fd_dcRUP'])
+    complete_diet_info = complete_diet_info.assign(
+        **{f"Fd_{AA}In": lambda df, AA=AA: np.where(
+            df['Fd_CPIn'] > 0,  # condition
+            (df[f"Fd_{AA}t_CP"] / 100) * (df['Fd_CP'] / 100) * (df['Fd_DMIn'] * 1000),  # if True
+            0   # if False
+        ) for AA in AA_list}    # Line 1500-1509
+    )
     return complete_diet_info
 
 
@@ -1881,9 +1888,29 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
         'DigrOMtIn',
         'idRUPIn',
         'DigFAIn',
-        'DMIn_ClfFor'
+        'DMIn_ClfFor',
+        'ArgIn',
+        'HisIn',
+        'IleIn',
+        'LeuIn',
+        'LysIn',
+        'MetIn',
+        'PheIn',
+        'ThrIn',
+        'TrpIn',
+        'ValIn',
+        'ArgRUPIn',
+        'HisRUPIn',
+        'IleRUPIn',
+        'LeuRUPIn',
+        'LysRUPIn',
+        'MetRUPIn',
+        'PheRUPIn',
+        'ThrRUPIn',
+        'TrpRUPIn',
+        'ValRUPIn'
     ]
-    # Lines 286, 297, 580, 587, 589, 590, 593-596, 598-614, 615, 626-638, 644, 649-652
+    # Lines 286, 297, 580, 587, 589, 590, 593-596, 598-614, 615, 626-638, 644, 649-652, 1513-1522, 1537-1546
     for col_name in column_names_sum:
         diet_data[f'Dt_{col_name}'] = (df[f'Fd_{col_name}']).sum()
 
@@ -2250,6 +2277,8 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                                    diet_data['Dt_DigNDF'],
                                                    diet_data['Dt_GEIn'],
                                                    diet_data['Dt_NDF'])    
+    for AA in AA_list:
+        diet_data[f"Dt{AA}RUP_Dt{AA}"] = diet_data[f"Dt_{AA}RUPIn"] / diet_data[f"Dt_{AA}In"]
     return diet_data
 
 

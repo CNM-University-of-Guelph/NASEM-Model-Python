@@ -285,7 +285,11 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_EAA2_RHILKM_g,
     calculate_Abs_EAA2_HILKMT_g,
     calculate_Abs_EAA2b_g,
-    calculate_mPrt_k_EAA2
+    calculate_mPrt_k_EAA2,
+    calculate_Du_AAEndP,
+    calculate_Du_AA,
+    calculate_DuAA_AArg,
+    calculate_Du_AA24h
 )
 
 

@@ -141,3 +141,48 @@ def calculate_mPrt_k_EAA2(mPrtmx_Met2, mPrt_Met_0_1, Met_mPrtmx):
     mPrt_k_EAA2 = (2 * math.sqrt(mPrtmx_Met2**2 - mPrt_Met_0_1 * mPrtmx_Met2) -
                    2 * mPrtmx_Met2 + mPrt_Met_0_1) / (Met_mPrtmx * 0.1)**2  # Line 2184
     return mPrt_k_EAA2
+
+
+def calculate_Du_AAEndP(Du_EndCP_g: float, AA_list: list, coeff_dict: dict) -> pd.Series:
+    """
+    Du_AAEndP: Duodenal EndPAA, g hydrated true AA/d 
+    """
+    # Duodenal EndPAA, g hydrated true AA/d 
+    req_coeffs = ['EndArgProf', 'EndHisProf', 'EndIleProf', 'EndLeuProf', 'EndLysProf', 
+                  'EndMetProf', 'EndPheProf', 'EndThrProf', 'EndTrpProf', 'EndValProf']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    AA_coeffs = np.array([coeff_dict[f"End{AA}Prof"] for AA in AA_list])
+    Du_AAEndP = Du_EndCP_g * AA_coeffs / 100  # Lines 1585-1594
+    return Du_AAEndP
+
+
+def calculate_Du_AA(diet_data, infusion_data, Du_AAMic, Du_AAEndP, AA_list) -> pd.Series:
+    """
+    Du_AA: Total ruminal AA outflows, g hydr, fully recovered AA/d (true protein bound AA flows)
+    """
+    # Total ruminal AA outflows, g hydr, fully recovered AA/d (true protein bound AA flows)
+    # These should have _g at the end of each
+    Dt_AARUPIn = np.array([diet_data[f"Dt_{AA}RUPIn"] for AA in AA_list])
+    Inf_AARUPIn = np.array([infusion_data[f"Inf_{AA}RUPIn"] for AA in AA_list])
+    Du_AA = Dt_AARUPIn + Inf_AARUPIn + Du_AAMic + Du_AAEndP # Line 1597-1606
+    return Du_AA
+
+
+def calculate_DuAA_AArg(Du_AA, diet_data, AA_list) -> pd.Series:
+    """
+    DuAA_DtAA: Duodenal AA flow expressed as a fraction of dietary AA
+    """
+    # Duodenal AA flow expressed as a fraction of dietary AA, ruminally infused included in Du but not Dt
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    DuAA_DtAA = Du_AA / Dt_AAIn # Line 1610-1619
+    return DuAA_DtAA
+
+
+def calculate_Du_AA24h(Du_AA, AA_list, coeff_dict) -> pd.Series:
+    """
+    Du_AA24h: g hydrat 24h recovered AA/d
+    """
+    # The following predicted AA flows are for comparison to observed Duod AA flows, g hydrat 24h recovered AA/d
+    RecAA = np.array([coeff_dict[f"Rec{AA}"] for AA in AA_list])
+    Du_AA24h = Du_AA * RecAA    # Line 1622-1631
+    return Du_AA24h

@@ -111,7 +111,11 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_neAA_g,
     calculate_Abs_OthAA_g,
     calculate_Abs_EAA2b_g,
-    calculate_mPrt_k_EAA2
+    calculate_mPrt_k_EAA2,
+    calculate_Du_AAEndP,
+    calculate_Du_AA,
+    calculate_DuAA_AArg,
+    calculate_Du_AA24h
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -920,12 +924,24 @@ def execute_model(user_diet: pd.DataFrame,
                'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     AA_values = pd.DataFrame(index=AA_list)
     # Dataframe for storing all individual amino acid values
-
     AA_values['Du_AAMic'] = calculate_Du_AAMic(Du_MiTP_g,
                                                   AA_list,
                                                   coeff_dict)
     AA_values['Du_IdAAMic'] = calculate_Du_IdAAMic(AA_values['Du_AAMic'],
                                                       coeff_dict)
+    AA_values['Du_AAEndP'] = calculate_Du_AAEndP(Du_EndCP_g, AA_list, coeff_dict)
+    AA_values['Du_AA'] = calculate_Du_AA(diet_data_initial,
+                                         infusion_data,
+                                         AA_values['Du_AAMic'],
+                                         AA_values['Du_AAEndP'],
+                                         AA_list)
+    Du_EAA_g = AA_values['Du_AA'].sum()
+    AA_values['DuAA_DtAA'] = calculate_DuAA_AArg(AA_values['Du_AA'],
+                                                 diet_data_initial,
+                                                 AA_list)
+    AA_values['Du_AA24h'] = calculate_Du_AA24h(AA_values['Du_AA'],
+                                               AA_list,
+                                               coeff_dict)
 
     ########################################
     # Step 7.3: Complete diet_data and An_data
@@ -1005,9 +1021,9 @@ def execute_model(user_diet: pd.DataFrame,
     Fe_DE_GE = calculate_Fe_DE_GE(Fe_DEout, An_data['An_GEIn'])
     Fe_DE = calculate_Fe_DE(Fe_DEout, An_data['An_DMIn'])
 
-########################################
-# Step 10: Metabolizable Protein Intake
-########################################
+    ########################################
+    # Step 10: Metabolizable Protein Intake
+    ########################################
     An_MPIn = calculate_An_MPIn(diet_data['Dt_idRUPIn'],
                                    Du_idMiTP)
     An_MPIn_g = calculate_An_MPIn_g(An_MPIn)
@@ -1020,7 +1036,6 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 8: Amino Acid Calculations
     ########################################
-
     AA_values['Abs_AA_g'] = calculate_Abs_AA_g(AA_list,
                                                   An_data,
                                                   infusion_data,
