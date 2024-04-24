@@ -115,7 +115,8 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Du_AAEndP,
     calculate_Du_AA,
     calculate_DuAA_AArg,
-    calculate_Du_AA24h
+    calculate_Du_AA24h,
+    calculate_IdAA_DtAA
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -942,6 +943,7 @@ def execute_model(user_diet: pd.DataFrame,
     AA_values['Du_AA24h'] = calculate_Du_AA24h(AA_values['Du_AA'],
                                                AA_list,
                                                coeff_dict)
+    # AA_values['IdAA_DtAA'] = calculate_IdAA_DtAA(diet_data_initial, An_data_initial, AA_list)
 
     ########################################
     # Step 7.3: Complete diet_data and An_data
@@ -1055,7 +1057,8 @@ def execute_model(user_diet: pd.DataFrame,
     AA_values['mPrt_k_AA'] = calculate_mPrt_k_AA(AA_values['mPrtmx_AA2'],
                                                     AA_values['mPrt_AA_01'],
                                                     AA_values['AA_mPrtmx'])
-
+    AA_values['IdAA_DtAA'] = calculate_IdAA_DtAA(diet_data, An_data, AA_list)
+    
     Abs_EAA_g = calculate_Abs_EAA_g(AA_values['Abs_AA_g'])
     Abs_neAA_g = calculate_Abs_neAA_g(An_MPIn_g,
                                          Abs_EAA_g)

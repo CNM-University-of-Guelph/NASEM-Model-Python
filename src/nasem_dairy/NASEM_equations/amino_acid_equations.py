@@ -186,3 +186,15 @@ def calculate_Du_AA24h(Du_AA, AA_list, coeff_dict) -> pd.Series:
     RecAA = np.array([coeff_dict[f"Rec{AA}"] for AA in AA_list])
     Du_AA24h = Du_AA * RecAA    # Line 1622-1631
     return Du_AA24h
+
+
+def calculate_IdAA_DtAA(diet_data: dict, An_data: dict, AA_list: list) -> np.array:
+    """
+    IdAA_DtAA: Intestinally Digested AA flow expressed as a fraction of dietary AA
+    """
+    #Intestinally Digested AA flow expressed as a fraction of dietary AA
+    #ruminally and intesntinally infused included in id but not Dt
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    An_IdAAIn = np.array([An_data[f'An_Id{AA}In'] for AA in AA_list])
+    IdAA_DtAA = An_IdAAIn / Dt_AAIn # Lines 1728-1737
+    return IdAA_DtAA
