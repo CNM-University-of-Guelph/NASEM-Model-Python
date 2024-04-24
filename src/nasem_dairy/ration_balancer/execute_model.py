@@ -120,7 +120,11 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_EAA2_g,
     calculate_Abs_EAA2_HILKM_g,
     calculate_Abs_EAA2_RHILKM_g,
-    calculate_Abs_EAA2_HILKMT_g
+    calculate_Abs_EAA2_HILKMT_g,
+    calculate_Abs_AA_MPp,
+    calculate_Abs_AA_p,
+    calculate_Abs_AA_DEI,
+    calculate_Abs_AA_mol
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -1077,6 +1081,15 @@ def execute_model(user_diet: pd.DataFrame,
     Abs_EAA2_HILKM_g = calculate_Abs_EAA2_HILKM_g(AA_values['Abs_AA_g'])
     Abs_EAA2_RHILKM_g = calculate_Abs_EAA2_RHILKM_g(AA_values['Abs_AA_g'])
     Abs_EAA2_HILKMT_g = calculate_Abs_EAA2_HILKMT_g(AA_values['Abs_AA_g'])
+    AA_values['Abs_AA_MPp'] = calculate_Abs_AA_MPp(AA_values['Abs_AA_g'],
+                                                   An_MPIn_g)
+    AA_values['Abs_AA_p'] = calculate_Abs_AA_p(AA_values['Abs_AA_g'],
+                                               Abs_EAA_g)
+    AA_values['Abs_AA_DEI'] = calculate_Abs_AA_DEI(AA_values['Abs_AA_g'],
+                                                   An_data['An_DEIn'])
+    AA_values['Abs_AA_mol'] = calculate_Abs_AA_mol(AA_values['Abs_AA_g'],
+                                                   coeff_dict,
+                                                   AA_list)
 
     ########################################
     # Step 11: Milk Production Prediciton

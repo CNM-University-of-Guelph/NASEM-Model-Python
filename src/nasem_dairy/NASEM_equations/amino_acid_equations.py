@@ -207,3 +207,36 @@ def calculate_IdAA_DtAA(diet_data: dict, An_data: dict, AA_list: list) -> np.arr
     An_IdAAIn = np.array([An_data[f'An_Id{AA}In'] for AA in AA_list])
     IdAA_DtAA = An_IdAAIn / Dt_AAIn # Lines 1728-1737
     return IdAA_DtAA
+
+
+def calculate_Abs_AA_MPp(Abs_AA_g: pd.Series, An_MPIn_g: float) -> pd.Series:
+    """
+    Abs_AA_MPp: AA as a percent of metabolizable protein
+    """
+    Abs_AA_MPp = Abs_AA_g / An_MPIn_g * 100   # Lines 1787-1796
+    return Abs_AA_MPp
+    
+
+def calculate_Abs_AA_p(Abs_AA_g: pd.Series, Abs_EAA_g: float) -> pd.Series:
+    """
+    Abs_AA_p: Absorbed AA as a percent of total absorbed EAA
+    """
+    Abs_AA_p = Abs_AA_g / Abs_EAA_g * 100   # Lines 1799-1808
+    return Abs_AA_p
+    
+
+def calculate_Abs_AA_DEI(Abs_AA_g: pd.Series, An_DEIn: float) -> pd.Series:
+    """
+    Abs_AA_DEI: Absorbed AA per Mcal digestable energy intake (g/Mcal)?
+    """
+    Abs_AA_DEI = Abs_AA_g / An_DEIn # Lines 1811-1820
+    return Abs_AA_DEI
+    
+
+def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, coeff_dict: dict, AA_list: list) -> np.array:
+    """
+    Abs_AA_mol: moles of absorbed AA (mol/d)
+    """
+    MWAA = np.array([coeff_dict[f"MW{AA}"] for AA in AA_list])
+    Abs_AA_mol = Abs_AA_g / MWAA    # Line 1823-1832
+    return Abs_AA_mol   

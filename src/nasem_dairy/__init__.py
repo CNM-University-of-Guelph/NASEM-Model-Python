@@ -290,7 +290,11 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Du_AA,
     calculate_DuAA_AArg,
     calculate_Du_AA24h,
-    calculate_IdAA_DtAA
+    calculate_IdAA_DtAA,
+    calculate_Abs_AA_MPp,
+    calculate_Abs_AA_p,
+    calculate_Abs_AA_DEI,
+    calculate_Abs_AA_mol
 )
 
 
