@@ -266,7 +266,11 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_Du_MiTP_g,
     calculate_Scrf_CP_g,
     calculate_Scrf_NP_g,
-    calculate_Scrf_MPUse_g_Trg
+    calculate_Scrf_MPUse_g_Trg,
+    calculate_Scrf_NP,
+    calculate_Scrf_N_g,
+    calculate_Scrf_AA_g,
+    calculate_ScrfAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -411,7 +415,9 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_GasE_IPCC2,
     calculate_GasE_DMIn,
     calculate_GasE_GEIn,
-    calculate_GasE_DEIn
+    calculate_GasE_DEIn,
+    calculate_An_NPm_Use,
+    calculate_An_CPm_Use
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -458,7 +464,9 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DERUPend,
     calculate_Fe_DEout,
     calculate_Fe_DE_GE,
-    calculate_Fe_DE
+    calculate_Fe_DE,
+    calculate_Fe_AAMet_g,
+    calculate_Fe_AAMet_AbsAA
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -499,7 +507,21 @@ from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_DEout,
     calculate_Ur_Nend_g,
     calculate_Ur_NPend_g,
-    calculate_Ur_MPendUse_g
+    calculate_Ur_MPendUse_g,
+    calculate_Ur_Nend_Urea_g,
+    calculate_Ur_Nend_Creatn_g,
+    calculate_Ur_Nend_Creat_g,
+    calculate_Ur_Nend_PD_g,
+    calculate_Ur_NPend_3MH_g,
+    calculate_Ur_Nend_3MH_g,
+    calculate_Ur_Nend_sum_g,
+    calculate_Ur_Nend_Hipp_g,
+    calculate_Ur_NPend,
+    calculate_Ur_MPend,
+    calculate_Ur_EAAend_g,
+    calculate_Ur_AAEnd_g,
+    calculate_Ur_AAEnd_AbsAA,
+    calculate_Ur_EAAEnd_g
 )
 
 from nasem_dairy.NASEM_equations.energy_requirement_equations import (

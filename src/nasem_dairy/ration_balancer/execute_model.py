@@ -95,7 +95,11 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_Du_MiTP_g,
     calculate_Scrf_CP_g,
     calculate_Scrf_NP_g,
-    calculate_Scrf_MPUse_g_Trg
+    calculate_Scrf_MPUse_g_Trg,
+    calculate_Scrf_NP,
+    calculate_Scrf_N_g,
+    calculate_Scrf_AA_g,
+    calculate_ScrfAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -142,7 +146,9 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_MPIn_g,
     calculate_An_RDPbal_g,
     calculate_An_MP_CP,
-    calculate_An_MP
+    calculate_An_MP,
+    calculate_An_NPm_Use,
+    calculate_An_CPm_Use
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -189,7 +195,10 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DERUPend,
     calculate_Fe_DEout,
     calculate_Fe_DE_GE,
-    calculate_Fe_DE
+    calculate_Fe_DE,
+    calculate_Fe_AAMet_g,
+    calculate_Fe_AAMet_AbsAA
+
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -230,7 +239,21 @@ from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_DEout,
     calculate_Ur_Nend_g,
     calculate_Ur_NPend_g,
-    calculate_Ur_MPendUse_g
+    calculate_Ur_MPendUse_g,
+    calculate_Ur_Nend_Urea_g,
+    calculate_Ur_Nend_Creatn_g,
+    calculate_Ur_Nend_Creat_g,
+    calculate_Ur_Nend_PD_g,
+    calculate_Ur_NPend_3MH_g,
+    calculate_Ur_Nend_3MH_g,
+    calculate_Ur_Nend_sum_g,
+    calculate_Ur_Nend_Hipp_g,
+    calculate_Ur_NPend,
+    calculate_Ur_MPend,
+    calculate_Ur_EAAend_g,
+    calculate_Ur_AAEnd_g,
+    calculate_Ur_AAEnd_AbsAA,
+    calculate_Ur_EAAEnd_g
 )
 
 from nasem_dairy.NASEM_equations.energy_requirement_equations import (
@@ -1089,7 +1112,10 @@ def execute_model(user_diet: pd.DataFrame,
                                                    An_data['An_DEIn'])
     AA_values['Abs_AA_mol'] = calculate_Abs_AA_mol(AA_values['Abs_AA_g'],
                                                    coeff_dict,
-                                                   AA_list)
+                                                   AA_list) 
+    # Fecal AA loss
+    Fe_AAMet_g = calculate_Fe_AAMet_g(Fe_NPend_g, coeff_dict, AA_list)
+    Fe_AAMet_AbsAA = calculate_Fe_AAMet_AbsAA(Fe_AAMet_g, AA_values['Abs_AA_g'])
 
     ########################################
     # Step 11: Milk Production Prediciton
@@ -1157,7 +1183,6 @@ def execute_model(user_diet: pd.DataFrame,
                                     Mlk_CP_g,
                                     Body_CPgain_g,
                                     Gest_CPuse_g)
-
     Ur_DEout = calculate_Ur_DEout(Ur_Nout_g)
 
 ########################################
@@ -1301,12 +1326,35 @@ def execute_model(user_diet: pd.DataFrame,
                                                      Scrf_CP_g,
                                                      Scrf_NP_g,
                                                      coeff_dict)
+    Scrf_NP = calculate_Scrf_NP(Scrf_NP_g)
+    Scrf_N_g = calculate_Scrf_N_g(Scrf_CP_g)
+    Scrf_AA_g = calculate_Scrf_AA_g(Scrf_NP_g, coeff_dict, AA_list)
+    ScrfAA_AbsAA = calculate_ScrfAA_AbsAA(Scrf_AA_g, AA_values['Abs_AA_g'])
         
     Ur_Nend_g = calculate_Ur_Nend_g(animal_input['An_BW'])
-    
     Ur_NPend_g = calculate_Ur_NPend_g(Ur_Nend_g)
-    
     Ur_MPendUse_g = calculate_Ur_MPendUse_g(Ur_NPend_g)
+    Ur_Nend_Urea_g = calculate_Ur_Nend_Urea_g(animal_input['An_BW'])
+    Ur_Nend_Creatn_g = calculate_Ur_Nend_Creatn_g(animal_input['An_BW'])
+    Ur_Nend_Creat_g = calculate_Ur_Nend_Creat_g(Ur_Nend_Creatn_g)
+    Ur_Nend_PD_g = calculate_Ur_Nend_PD_g(animal_input['An_BW'])
+    Ur_NPend_3MH_g = calculate_Ur_NPend_3MH_g(animal_input['An_BW'])
+    Ur_Nend_3MH_g = calculate_Ur_Nend_3MH_g(Ur_NPend_3MH_g, coeff_dict)
+    Ur_Nend_sum_g = calculate_Ur_Nend_sum_g(Ur_Nend_Urea_g, 
+                                            Ur_Nend_Creatn_g, 
+                                            Ur_Nend_Creat_g, 
+                                            Ur_Nend_PD_g, 
+                                            Ur_Nend_3MH_g)
+    Ur_Nend_Hipp_g = calculate_Ur_Nend_Hipp_g(Ur_Nend_sum_g)
+    Ur_NPend = calculate_Ur_NPend(Ur_NPend_g)
+    Ur_MPend = calculate_Ur_MPend(Ur_NPend)
+    Ur_EAAend_g = calculate_Ur_EAAend_g(animal_input['An_BW'])
+    Ur_AAEnd_g = calculate_Ur_AAEnd_g(Ur_EAAend_g,
+                                      Ur_NPend_3MH_g,
+                                      coeff_dict,
+                                      AA_list)
+    Ur_AAEnd_AbsAA = calculate_Ur_AAEnd_AbsAA(Ur_AAEnd_g, AA_values['Abs_AA_g'])
+    Ur_EAAEnd_g = calculate_Ur_EAAEnd_g(Ur_AAEnd_g)
     
     An_MPm_g_Trg = calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg,
                                              Scrf_MPUse_g_Trg,
@@ -1394,7 +1442,9 @@ def execute_model(user_diet: pd.DataFrame,
                                                  Rsrv_MPUse_g_Trg,
                                                  Gest_MPUse_g_Trg,
                                                  Mlk_MPUse_g_Trg)
-    
+    An_NPm_Use = calculate_An_NPm_Use(Scrf_NP_g, Fe_NPend_g, Ur_NPend_g)
+    An_CPm_Use = calculate_An_CPm_Use(Scrf_CP_g, Fe_CPend_g, Ur_NPend_g)
+
     ########################################
     # Milk Production Calculations
     ########################################

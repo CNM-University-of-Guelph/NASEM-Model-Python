@@ -261,7 +261,69 @@ coeff_dict = {
     'MWPhe': 165.2,
     'MWThr': 119.1,
     'MWTrp': 204.2,
-    'MWVal': 117.2
+    'MWVal': 117.2,
+
+    # Milk Protein AA Composition, g/100 g of TP
+    'Mlk_Arg_TP': 3.74,
+    'Mlk_His_TP': 2.92,
+    'Mlk_Ile_TP': 6.18,
+    'Mlk_Leu_TP': 10.56,
+    'Mlk_Lys_TP': 8.82,
+    'Mlk_Met_TP': 3.03,
+    'Mlk_Phe_TP': 5.26,
+    'Mlk_Thr_TP': 4.62,
+    'Mlk_Trp_TP': 1.65,
+    'Mlk_Val_TP': 6.90,
+
+    # Body Protein AA Composition, g/100 g of TP
+    'Body_Arg_TP': 8.20,
+    'Body_His_TP': 3.04,
+    'Body_Ile_TP': 3.69,
+    'Body_Leu_TP': 8.27,
+    'Body_Lys_TP': 7.90,
+    'Body_Met_TP': 2.37,
+    'Body_Phe_TP': 4.41,
+    'Body_Thr_TP': 4.84,
+    'Body_Trp_TP': 1.05,
+    'Body_Val_TP': 5.15,
+
+    # Endogenous Urinary Protein AA Composition, g/100 g of TP; these are set equal to body protein AA comp
+    'Ur_ArgEnd_TP': 8.20,
+    'Ur_HisEnd_TP': 3.04,
+    'Ur_IleEnd_TP': 3.69,
+    'Ur_LeuEnd_TP': 8.27,
+    'Ur_LysEnd_TP': 7.90,
+    'Ur_MetEnd_TP': 2.37,
+    'Ur_PheEnd_TP': 4.41,
+    'Ur_ThrEnd_TP': 4.84,
+    'Ur_TrpEnd_TP': 1.05,
+    'Ur_ValEnd_TP': 5.15,
+
+    # Metabolic Fecal Protein AA Composition, g/100 g of TP
+    'Fe_ArgMetab_TP': 5.90,
+    'Fe_HisMetab_TP': 3.54,
+    'Fe_IleMetab_TP': 5.39,
+    'Fe_LeuMetab_TP': 9.19,
+    'Fe_LysMetab_TP': 7.61,
+    'Fe_MetMetab_TP': 1.73,
+    'Fe_PheMetab_TP': 5.28,
+    'Fe_ThrMetab_TP': 7.36,
+    'Fe_TrpMetab_TP': 1.79,
+    'Fe_ValMetab_TP': 7.01,
+
+    #Scurf Protein AA Composition, g/100 g of TP
+    'Scrf_Arg_TP': 9.60,
+    'Scrf_His_TP': 1.75,
+    'Scrf_Ile_TP': 2.96,
+    'Scrf_Leu_TP': 6.93,
+    'Scrf_Lys_TP': 5.64,
+    'Scrf_Met_TP': 1.40,
+    'Scrf_Phe_TP': 3.61,
+    'Scrf_Thr_TP': 4.01,
+    'Scrf_Trp_TP': 0.73,
+    'Scrf_Val_TP': 4.66,
+
+    'fN_3MH': (3*14)/169
 }
 
 # Dictionary to use when infusions are not provided to model

@@ -1,6 +1,7 @@
 # dev_fecal_equations
 #Fecal N Flow;     Fecal Outputs should be renamed Fe_xxxOut to avoid confusion with conc, MDH
 import numpy as np
+import pandas as pd
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
@@ -273,3 +274,20 @@ def calculate_Fe_DE(Fe_DEout: float, An_DMIn: float) -> float:
     """
     Fe_DE = Fe_DEout / An_DMIn  # Line 1382
     return Fe_DE
+
+
+def calculate_Fe_AAMet_g(Fe_NPend_g: float, coeff_dict: dict, AA_list: list) -> np.array:
+    """
+    Fe_AAMet_g: Metabolic fecal AA (g/d)
+    """
+    Fe_AAMetab_TP = np.array([coeff_dict[f"Fe_{AA}Metab_TP"] for AA in AA_list])
+    Fe_AAMet_g = Fe_NPend_g * Fe_AAMetab_TP / 100   # Lines 1994-2003
+    return Fe_AAMet_g
+
+
+def calculate_Fe_AAMet_AbsAA(Fe_AAMet_g: np.array, Abs_AA_g: pd.Series) -> np.array:
+    """
+    Fe_AAMet_AbsAA: Metabolic fecal AA as fraction of absorbed AA 
+    """
+    Fe_AAMet_AbsAA = Fe_AAMet_g / Abs_AA_g  # Lines 2006-2015
+    return Fe_AAMet_AbsAA

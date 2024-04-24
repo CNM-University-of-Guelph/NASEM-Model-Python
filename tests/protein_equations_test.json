@@ -53,5 +53,20 @@
       "Name": "calculate_Scrf_MPUse_g_Trg",
       "Input": {"An_StatePhys": "Lactating Cow", "Scrf_CP_g": 5.1, "Scrf_NP_g": 8.9, "coeff_dict": null},
       "Output": 12.898550724637683
+    },
+    {
+      "Name": "calculate_Scrf_NP",
+      "Input": {"Scrf_NP_g": 1509},
+      "Output": 1.5090000000000001
+    },
+    {
+      "Name": "calculate_Scrf_N_g",
+      "Input": {"Scrf_CP_g": 4820},
+      "Output": 771.2
+    },
+    {
+      "Name": "calculate_ScrfAA_AbsAA",
+      "Input": {"Scrf_AA_g": 1043, "Abs_AA_g": 2303},
+      "Output": 0.45288753799392095
     }
   ]

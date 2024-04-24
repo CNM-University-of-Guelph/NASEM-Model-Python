@@ -253,7 +253,7 @@ class ModelOutput:
         energy_variables = ['An_NEmUse_NS', 'An_NEm_Act_Graze', 'An_NEm_Act_Parlor', 'An_NEm_Act_Topo',
                             'An_NEmUse_Act', 'An_NEmUse', 'An_MEmUse', 'Gest_MEuse', 'Trg_Mlk_NEout', 'Trg_Mlk_MEout', 'Trg_MEuse']
         protein_variables = ['Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g', 'An_MPm_g_Trg', 'Body_NPgain_g', 'Body_MPUse_g_Trg', 'Gest_MPUse_g_Trg', 'Trg_Mlk_NP_g', 'Mlk_MPUse_g_Trg', 'An_MPuse_g_Trg', 'Min_MPuse_g',
-                             'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 'Rsrv_MPUse_g_Trg']
+                             'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 'Rsrv_MPUse_g_Trg', 'An_NPm_Use', 'An_CPm_Use']
         # Store variables
         self.__populate_category('Requirements', group_names, energy_variables, protein_variables)
 
@@ -314,10 +314,11 @@ class ModelOutput:
         # Lists of variables to store
         fecal_variables = ['Fe_rOMend', 'Fe_RUP', 'Fe_RumMiCP', 'Fe_CPend_g', 'Fe_CPend', 'Fe_CP', 'Fe_NPend', 'Fe_NPend_g', 'Fe_MPendUse_g_Trg', 'Fe_rOM', 'Fe_St', 'Fe_NDF', 'Fe_NDFnf',
                            'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g', 'Fe_FA', 'Fe_OM_end', 'Fe_OM', 'Fe_DEMiCPend', 'Fe_DERDPend', 'Fe_DERUPend', 
-                           'Fe_DEout', 'Fe_DE_GE', 'Fe_DE']
-        urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g']
+                           'Fe_DEout', 'Fe_DE_GE', 'Fe_DE', 'Fe_AAMet_g', 'Fe_AAMet_AbsAA']
+        urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g', 'Ur_Nend_Urea_g', 'Ur_Nend_Creatn_g', 'Ur_Nend_Creat_g', 'Ur_Nend_PD_g', 'Ur_NPend_3MH_g', 
+                             'Ur_Nend_3MH_g', 'Ur_Nend_sum_g', 'Ur_Nend_Hipp_g', 'Ur_NPend', 'Ur_MPend', 'Ur_EAAend_g', 'Ur_AAEnd_g', 'Ur_AAEnd_AbsAA', 'Ur_EAAEnd_g']
         gaseous_variables = []
-        scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg']
+        scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg', 'Scrf_NP', 'Scrf_N_g', 'Scrf_AA_g', 'ScrfAA_AbsAA']
         # Store variables
         self.__populate_category('Excretion', group_names, fecal_variables, urinary_variables, gaseous_variables, scurf_variables)
 

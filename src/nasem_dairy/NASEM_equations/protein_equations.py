@@ -1,5 +1,6 @@
 # Protein equations
 import numpy as np
+import pandas as pd
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
@@ -55,3 +56,36 @@ def calculate_Scrf_MPUse_g_Trg(An_StatePhys: str, Scrf_CP_g: float, Scrf_NP_g: f
     else:
         Scrf_MPUse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']   # Line 2670
     return Scrf_MPUse_g_Trg
+
+
+def calculate_Scrf_NP(Scrf_NP_g: float) -> float:
+    """
+    Scrf_NP: Scurf net protein (kg/d)
+    """
+    Scrf_NP = Scrf_NP_g * 0.001 # Line 1967
+    return Scrf_NP
+
+
+def calculate_Scrf_N_g(Scrf_CP_g: float) -> float:
+    """
+    Scrf_N_g: Scurf N (g/d)
+    """
+    Scrf_N_g = Scrf_CP_g * 0.16    # Line 1968
+    return Scrf_N_g
+
+
+def calculate_Scrf_AA_g(Scrf_NP_g: float, coeff_dict: dict, AA_list: list) -> np.array:
+    """
+    Scrf_AA_g: AA in scurf (g/d)
+    """
+    Scrf_AA_TP = np.array([coeff_dict[f"Scrf_{AA}_TP"] for AA in AA_list])
+    Scrf_AA_g = Scrf_NP_g * Scrf_AA_TP / 100    # Lines 1969-1978
+    return Scrf_AA_g
+
+
+def calculate_ScrfAA_AbsAA(Scrf_AA_g: pd.Series, Abs_AA_g: pd.Series) -> np.array:
+    """
+    ScrfAA_AbsAA: Scurf AA as a fraction of absorbed AA
+    """
+    ScrfAA_AbsAA = Scrf_AA_g / Abs_AA_g # Line 1981-1990
+    return ScrfAA_AbsAA

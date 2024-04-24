@@ -23,6 +23,66 @@
       "Name": "calculate_Ur_MPendUse_g",
       "Input": {"Ur_NPend_g": 5},
       "Output": 5
+    },
+    {
+      "Name": "calculate_Ur_Nend_Urea_g",
+      "Input": {"An_BW": 650},
+      "Output": 6.5
+    },
+    {
+      "Name": "calculate_Ur_Nend_Creatn_g",
+      "Input": {"An_BW": 810},
+      "Output": 7.662599999999999
+    },
+    {
+      "Name": "calculate_Ur_Nend_Creat_g",
+      "Input": {"Ur_Nend_Creatn_g": 319},
+      "Output": 118.03
+    },
+    {
+      "Name": "calculate_Ur_Nend_PD_g",
+      "Input": {"An_BW": 703},
+      "Output": 3.699864205503923
+    },
+    {
+      "Name": "calculate_Ur_NPend_3MH_g",
+      "Input": {"An_BW": 791},
+      "Output": 0.44289
+    },
+    {
+      "Name": "calculate_Ur_Nend_3MH_g",
+      "Input": {"Ur_NPend_3MH_g": 106, "coeff_dict": null},
+      "Output": 26.34319526627219
+    },
+    {
+      "Name": "calculate_Ur_Nend_sum_g",
+      "Input": {"Ur_Nend_Urea_g": 129, "Ur_Nend_Creatn_g": 78, "Ur_Nend_Creat_g": 301, "Ur_Nend_PD_g": 285, "Ur_Nend_3MH_g": 108},
+      "Output": 1668.5185185185185
+    },
+    {
+      "Name": "calculate_Ur_Nend_Hipp_g",
+      "Input": {"Ur_Nend_sum_g": 1065},
+      "Output": 489.90000000000003
+    },
+    {
+      "Name": "calculate_Ur_NPend",
+      "Input": {"Ur_NPend_g": 301},
+      "Output": 0.301
+    },
+    {
+      "Name": "calculate_Ur_MPend",
+      "Input": {"Ur_NPend": 410},
+      "Output": 410
+    },
+    {
+      "Name": "calculate_Ur_EAAend_g",
+      "Input": {"An_BW": 810},
+      "Output": 50.625
+    },
+    {
+      "Name": "calculate_Ur_AAEnd_AbsAA",
+      "Input": {"Ur_AAEnd_g": 192, "Abs_AA_g": 6.4},
+      "Output": 30.0
     }
   ]
   

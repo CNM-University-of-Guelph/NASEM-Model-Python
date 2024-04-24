@@ -579,5 +579,15 @@
     "Name": "calculate_GasE_DEIn",
     "Input": {"An_GasEOut": 74.1, "An_DEIn": 23.8},
     "Output": 3.11344537815126
+  },
+  {
+    "Name": "calculate_An_NPm_Use",
+    "Input": {"Scrf_NP_g": 360, "Fe_NPend_g": 259, "Ur_NPend_g": 430},
+    "Output": 1049
+  },
+  {
+    "Name": "calculate_An_CPm_Use",
+    "Input": {"Scrf_CP_g": 1029, "Fe_CPend_g": 319, "Ur_NPend_g": 510},
+    "Output": 1858
   }
 ]

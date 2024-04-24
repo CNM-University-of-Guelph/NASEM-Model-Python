@@ -1297,3 +1297,19 @@ def calculate_An_MP(An_MPIn: float, Dt_DMIn: float, InfRum_DMIn: float, InfSI_DM
     """
     An_MP = An_MPIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100    # Line 1239
     return An_MP   
+
+
+def calculate_An_NPm_Use(Scrf_NP_g: float, Fe_NPend_g: float, Ur_NPend_g: float) -> float:
+    """
+    An_NPm_Use: Net protein used for maintenance? (g/d)
+    """
+    An_NPm_Use = Scrf_NP_g + Fe_NPend_g + Ur_NPend_g    # Line 2063
+    return An_NPm_Use
+
+
+def calculate_An_CPm_Use(Scrf_CP_g: float, Fe_CPend_g: float, Ur_NPend_g: float) -> float:
+    """
+    An_CPm_Use: Crude protein used for maintenance? (g/d)
+    """
+    An_CPm_Use = Scrf_CP_g + Fe_CPend_g + Ur_NPend_g    # Line 2064
+    return An_CPm_Use
