@@ -100,6 +100,15 @@ def calculate_Abs_OthAA_g(Abs_neAA_g, Abs_AA_g):
     return Abs_OthAA_g
 
 
+def calculate_Abs_EAA2_g(Abs_AA_g: pd.Series) -> float:
+    """
+    Abs_EAA2_g: Sum of all squared EAA
+    """
+    Abs_EAA2_g = Abs_AA_g['Arg']**2 + Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + \
+                 Abs_AA_g['Met']**2 + Abs_AA_g['Phe']**2 + Abs_AA_g['Thr']**2 + Abs_AA_g['Trp']**2 + Abs_AA_g['Val']**2 # Line 1775-1776
+    return Abs_EAA2_g
+
+
 def calculate_Abs_EAA2_HILKM_g(Abs_AA_g):
     Abs_EAA2_HILKM_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + \
         Abs_AA_g['Lys']**2 + \

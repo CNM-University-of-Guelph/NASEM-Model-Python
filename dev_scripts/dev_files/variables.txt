@@ -890,3 +890,17 @@ IdPhe_DtPhe
 IdThr_DtThr
 IdTrp_DtTrp
 IdVal_DtVal
+Abs_Arg_g
+Abs_His_g
+Abs_Ile_g
+Abs_Leu_g
+Abs_Lys_g
+Abs_Met_g
+Abs_Phe_g
+Abs_Thr_g
+Abs_Trp_g
+Abs_Val_g
+Abs_EAA2_g
+Abs_EAA2_HILKM_g
+Abs_EAA2_RHILKM_g
+Abs_EAA2_HILKMT_g

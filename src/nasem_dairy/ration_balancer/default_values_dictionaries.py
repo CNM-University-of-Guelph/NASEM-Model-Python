@@ -250,8 +250,18 @@ coeff_dict = {
     'HydrPhe': 0.8910,
     'HydrThr': 0.8490,
     'HydrTrp': 0.9118,
-    'HydrVal': 0.8464
+    'HydrVal': 0.8464,
 
+    'MWArg': 174.2,
+    'MWHis': 155.2,
+    'MWIle': 131.2,
+    'MWLeu': 131.2,
+    'MWLys': 146.2,
+    'MWMet': 149.2,
+    'MWPhe': 165.2,
+    'MWThr': 119.1,
+    'MWTrp': 204.2,
+    'MWVal': 117.2
 }
 
 # Dictionary to use when infusions are not provided to model

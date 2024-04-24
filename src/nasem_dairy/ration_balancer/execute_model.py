@@ -116,7 +116,11 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Du_AA,
     calculate_DuAA_AArg,
     calculate_Du_AA24h,
-    calculate_IdAA_DtAA
+    calculate_IdAA_DtAA,
+    calculate_Abs_EAA2_g,
+    calculate_Abs_EAA2_HILKM_g,
+    calculate_Abs_EAA2_RHILKM_g,
+    calculate_Abs_EAA2_HILKMT_g
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -1069,7 +1073,10 @@ def execute_model(user_diet: pd.DataFrame,
     mPrt_k_EAA2 = calculate_mPrt_k_EAA2(AA_values.loc['Met', 'mPrtmx_AA2'],
                                            AA_values.loc['Met', 'mPrt_AA_01'],
                                            AA_values.loc['Met', 'AA_mPrtmx'])
-
+    Abs_EAA2_g = calculate_Abs_EAA2_g(AA_values['Abs_AA_g'])
+    Abs_EAA2_HILKM_g = calculate_Abs_EAA2_HILKM_g(AA_values['Abs_AA_g'])
+    Abs_EAA2_RHILKM_g = calculate_Abs_EAA2_RHILKM_g(AA_values['Abs_AA_g'])
+    Abs_EAA2_HILKMT_g = calculate_Abs_EAA2_HILKMT_g(AA_values['Abs_AA_g'])
 
     ########################################
     # Step 11: Milk Production Prediciton
