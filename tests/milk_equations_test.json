@@ -158,5 +158,36 @@
       "Name": "calculate_Mlk_MEout",
       "Input": {"Mlk_NEout": 1049, "coeff_dict": null},
       "Output": 1589.3939393939393
+    },
+
+    {
+      "Name": "calculate_MlkNP_MlkNPmx",
+      "Input": {"Mlk_NP_g": 3018, "Mlk_NPmx": 4201},
+      "Output": 0.7184003808616996
+    },
+    {
+      "Name": "calculate_Mlk_CP",
+      "Input": {"Mlk_CP_g": 1309},
+      "Output": 1.309
+    },
+    {
+      "Name": "calculate_MlkNP_AnMP",
+      "Input": {"Mlk_NP_g": 2310, "An_MPIn_g": 4320},
+      "Output": 0.5347222222222222
+    },
+    {
+      "Name": "calculate_MlkAA_AbsAA",
+      "Input": {"Mlk_AA_g": 1592, "Abs_AA_g": 2341},
+      "Output": 0.6800512601452371
+    },
+    {
+      "Name": "calculate_MlkEAA_AbsEAA",
+      "Input": {"Mlk_EAA_g": 235, "Abs_EAA_g": 371},
+      "Output": 0.633423180592992
+    },
+    {
+      "Name": "calculate_MlkNP_AnCP",
+      "Input": {"Mlk_NP_g": 2542, "An_CPIn": 3471},
+      "Output": 0.0007323537885335638
     }
 ]

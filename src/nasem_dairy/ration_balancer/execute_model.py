@@ -46,7 +46,17 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkFat_Milk,
     calculate_MlkNE_Milk,
     calculate_Mlk_NEout,
-    calculate_Mlk_MEout
+    calculate_Mlk_MEout,
+    calculate_Mlk_NPmx,
+    calculate_MlkNP_MlkNPmx,
+    calculate_Mlk_CP,
+    calculate_Mlk_AA_g,
+    calculate_Mlk_EAA_g,
+    calculate_MlkNP_AnMP,
+    calculate_MlkAA_AbsAA,
+    calculate_MlkEAA_AbsEAA,
+    calculate_MlkNP_AnCP,
+    calculate_MlkAA_DtAA
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -465,7 +475,6 @@ def execute_model(user_diet: pd.DataFrame,
     user_diet = user_diet.copy()
     animal_input = animal_input.copy()
     mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
-    print(mPrt_coeff)
     # retrieve user's feeds from feed library
     feed_data = get_feed_rows_feedlibrary(
         feeds_to_get=user_diet['Feedstuff'].tolist(), 
@@ -1117,30 +1126,50 @@ def execute_model(user_diet: pd.DataFrame,
     AA_values['Abs_AA_mol'] = calculate_Abs_AA_mol(AA_values['Abs_AA_g'],
                                                    coeff_dict,
                                                    AA_list) 
-    # Fecal AA loss
-    Fe_AAMet_g = calculate_Fe_AAMet_g(Fe_NPend_g, coeff_dict, AA_list)
-    Fe_AAMet_AbsAA = calculate_Fe_AAMet_AbsAA(Fe_AAMet_g, AA_values['Abs_AA_g'])
-
     ########################################
     # Step 11: Milk Production Prediciton
     ########################################
+    Mlk_NPmx = calculate_Mlk_NPmx(AA_values['mPrtmx_AA2'],
+                                  An_data['An_DEInp'],
+                                  An_data['An_DigNDF'],
+                                  animal_input['An_BW'],
+                                  Abs_neAA_g,
+                                  Abs_OthAA_g,
+                                  mPrt_coeff)
     Mlk_NP_g = calculate_Mlk_NP_g(animal_input['An_StatePhys'],
-                                     animal_input['An_BW'],
-                                     AA_values['Abs_AA_g'],
-                                     AA_values['mPrt_k_AA'],
-                                     Abs_neAA_g,
-                                     Abs_OthAA_g,
-                                     Abs_EAA2b_g,
-                                     mPrt_k_EAA2,
-                                     An_data['An_DigNDF'],
-                                     An_data['An_DEInp'],
-                                     An_data['An_DEStIn'],
-                                     An_data['An_DEFAIn'],
-                                     An_data['An_DErOMIn'],
-                                     An_data['An_DENDFIn'],
-                                     coeff_dict)
-                                     
+                                  animal_input['An_BW'],
+                                  AA_values['Abs_AA_g'],
+                                  AA_values['mPrt_k_AA'],
+                                  Abs_neAA_g,
+                                  Abs_OthAA_g,
+                                  Abs_EAA2b_g,
+                                  mPrt_k_EAA2,
+                                  An_data['An_DigNDF'],
+                                  An_data['An_DEInp'],
+                                  An_data['An_DEStIn'],
+                                  An_data['An_DEFAIn'],
+                                  An_data['An_DErOMIn'],
+                                  An_data['An_DENDFIn'],
+                                  coeff_dict) 
+    MlkNP_MlkNPmx = calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
     Mlk_CP_g = calculate_Mlk_CP_g(Mlk_NP_g)
+    Mlk_CP = calculate_Mlk_CP(Mlk_CP_g)
+    AA_values['Mlk_AA_g'] = calculate_Mlk_AA_g(Mlk_NP_g, 
+                                               coeff_dict,
+                                               AA_list)
+    Mlk_EAA_g = calculate_Mlk_EAA_g(AA_values['Mlk_AA_g'])
+    MlkNP_AnMP = calculate_MlkNP_AnMP(Mlk_NP_g, An_MPIn_g)
+    AA_values['MlkAA_AbsAA'] = calculate_MlkAA_AbsAA(AA_values['Mlk_AA_g'],
+                                                     AA_values['Abs_AA_g'])
+    MlkEAA_AbsEAA = calculate_MlkEAA_AbsEAA(Mlk_EAA_g, Abs_EAA_g)
+    MlkNP_AnCP = calculate_MlkNP_AnCP(Mlk_NP_g, An_data['An_CPIn'])
+    AA_values['MlkAA_DtAA'] = calculate_MlkAA_DtAA(AA_values['Mlk_AA_g'],
+                                                   diet_data,
+                                                   AA_list)
+
+    # Fecal AA loss
+    Fe_AAMet_g = calculate_Fe_AAMet_g(Fe_NPend_g, coeff_dict, AA_list)
+    Fe_AAMet_AbsAA = calculate_Fe_AAMet_AbsAA(Fe_AAMet_g, AA_values['Abs_AA_g'])
         
     ########################################
     # Step 12: Body Frame and Reserve Gain

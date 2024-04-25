@@ -49,7 +49,17 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkFat_Milk,
     calculate_MlkNE_Milk,
     calculate_Mlk_NEout,
-    calculate_Mlk_MEout
+    calculate_Mlk_MEout,
+    calculate_Mlk_NPmx,
+    calculate_MlkNP_MlkNPmx,
+    calculate_Mlk_CP,
+    calculate_Mlk_AA_g,
+    calculate_Mlk_EAA_g,
+    calculate_MlkNP_AnMP,
+    calculate_MlkAA_AbsAA,
+    calculate_MlkEAA_AbsEAA,
+    calculate_MlkNP_AnCP,
+    calculate_MlkAA_DtAA
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (

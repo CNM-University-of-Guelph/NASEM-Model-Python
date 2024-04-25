@@ -201,7 +201,7 @@ class ModelOutput:
         """
         variables_to_remove = ['key', 'value', 'num_value', 'feed_library_df', 
                                'feed_data', 'diet_info_initial', 'diet_data_initial',
-                                'AA_list', 'An_data_initial']
+                                'AA_list', 'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA']
         for key in variables_to_remove:
             # Remove values that should be excluded from output
             self.locals_input.pop(key, None)
@@ -212,7 +212,8 @@ class ModelOutput:
         Sort and store specific variables related to model inputs in the Inputs category.
         """
         setattr(self, 'Inputs', {})
-        variables_to_add = ['user_diet', 'animal_input', 'equation_selection', 'coeff_dict', 'infusion_input', 'MP_NP_efficiency_input']
+        variables_to_add = ['user_diet', 'animal_input', 'equation_selection', 'coeff_dict', 'infusion_input', 
+                            'MP_NP_efficiency_input', 'mPrt_coeff']
         for key in variables_to_add:
             # Add to the Inputs Category
             self.Inputs[key] = self.locals_input[key]
@@ -294,7 +295,8 @@ class ModelOutput:
         group_names = ['milk', 'body_composition', 'gestation', 'MiCP']
         # List variables to store
         milk_variables = ['Trg_NEmilk_Milk', 'Mlk_NP_g', 'Mlk_CP_g', 'Trg_Mlk_Fat' ,'Trg_Mlk_Fat_g', 'Mlk_Fatemp_g', 'Mlk_Fat_g', 'Mlk_Fat', 'Mlk_NP', 'Mlk_Prod_comp',
-                          'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout']
+                          'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 
+                          'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP']
         composition_variables = ['CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain', 'Rsrv_Gain_empty', 'NPGain_RsrvGain', 'Rsrv_NPgain',
                                  'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',

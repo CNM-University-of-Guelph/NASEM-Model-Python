@@ -1,5 +1,7 @@
 # dev_milk_equations
 # All calculations related to milk production, milk components, and milk energy
+import numpy as np
+import pandas as pd
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 
 
@@ -309,3 +311,95 @@ def calculate_Mlk_MEout(Mlk_NEout: float, coeff_dict: dict) -> float:
     check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Mlk_MEout = Mlk_NEout / coeff_dict['Kl_ME_NE']  
     return Mlk_MEout
+
+
+def calculate_Mlk_NPmx(mPrtmx_AA2: pd.Series, An_DEInp: float, An_DigNDF: float, An_BW: float, Abs_neAA_g: float, Abs_OthAA_g: float, mPrt_coeff: dict) -> float:
+    """
+    Mlk_NPmx: Maximal milk protein output at the entered DE, DigNDF, and BW
+    """
+    # Calculate the maximal milk protein output at the entered DE, DigNDF, and BW.
+    Mlk_NPmx = mPrt_coeff['mPrt_Int_src'] + mPrtmx_AA2['Arg'] + mPrtmx_AA2['His'] + mPrtmx_AA2['Ile'] + mPrtmx_AA2['Leu'] + \
+               mPrtmx_AA2['Lys'] + mPrtmx_AA2['Met'] + mPrtmx_AA2['Thr'] + mPrtmx_AA2['Val'] + \
+               An_DEInp * mPrt_coeff['mPrt_k_DEInp_src'] + (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF_src'] + \
+               (An_BW - 612) * mPrt_coeff['mPrt_k_BW_src'] + Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA_src'] + Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA_src']    # Line 2195-2197
+    return Mlk_NPmx
+
+
+def calculate_MlkNP_MlkNPmx(Mlk_NP_g: float, Mlk_NPmx: float) -> float:
+    """
+    MlkNP_MlkNPmx: Predicted milk net protein as fraction of maximum milk net protein
+    """
+    # Calculate predicted Mlk_NP as proportion of max mPrt for reporting purposes.
+    # This value should not exceed ~0.8 for an 18% CP diet with ~60% MP for peak production. (0.8 needs refinement)
+    # If it does, this is an indication that the genetic potential scalar, f_mPrt_max, is set too low.
+    MlkNP_MlkNPmx = Mlk_NP_g / Mlk_NPmx # Line 2202
+    return MlkNP_MlkNPmx
+
+
+def calculate_Mlk_CP(Mlk_CP_g: float) -> float:
+    """
+    Mlk_CP: Milk crude protein (kg)
+    """
+    Mlk_CP = Mlk_CP_g / 1000   # Line 2213
+    return Mlk_CP
+
+
+def calculate_Mlk_AA_g(Mlk_NP_g: float, coeff_dict: dict, AA_list: list) -> pd.Series:
+    """
+    Mlk_AA_g: AA output in milk protein 
+    """
+    req_coeff = ['Mlk_Arg_TP', 'Mlk_His_TP', 'Mlk_Ile_TP', 'Mlk_Leu_TP', 'Mlk_Lys_TP', 
+                 'Mlk_Met_TP', 'Mlk_Phe_TP', 'Mlk_Thr_TP', 'Mlk_Trp_TP', 'Mlk_Val_TP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Mlk_AA_TP = np.array([coeff_dict[f"Mlk_{AA}_TP"] for AA in AA_list])
+    Mlk_AA_g = Mlk_NP_g * Mlk_AA_TP / 100   # Line 2216-2225
+    return Mlk_AA_g
+
+
+def calculate_Mlk_EAA_g(Mlk_AA_g: pd.Series) -> float:
+    """
+    Mlk_EAA_g: Total EAA in milk protein 
+    """
+    Mlk_EAA_g = Mlk_AA_g.sum()  # Line 2226
+    return Mlk_EAA_g
+
+
+def calculate_MlkNP_AnMP(Mlk_NP_g: float, An_MPIn_g: float) -> float:
+    """
+    MlkNP_AnMP: Milk protein as a fraction of metabolizable protein 
+    """
+    MlkNP_AnMP = Mlk_NP_g / An_MPIn_g   # Line 2229
+    return MlkNP_AnMP
+
+
+def calculate_MlkAA_AbsAA(Mlk_AA_g: pd.Series, Abs_AA_g: pd.Series) -> pd.Series:
+    """
+    MlkAA_AbsAA: Milk AA efficiency as fraction of absorbed AA
+    """
+    MlkAA_AbsAA = Mlk_AA_g / Abs_AA_g    # Line 2230-2239
+    return MlkAA_AbsAA
+
+
+def calculate_MlkEAA_AbsEAA(Mlk_EAA_g: float, Abs_EAA_g: float) -> float:
+    """
+    MlkEAA_AbsEAA: Milk EAA as a fraction of absorbed EAA
+    """
+    MlkEAA_AbsEAA = Mlk_EAA_g / Abs_EAA_g   # Line 2240
+    return MlkEAA_AbsEAA
+
+
+def calculate_MlkNP_AnCP(Mlk_NP_g: float, An_CPIn: float) -> float:
+    """
+    MlkNP_AnCP: Milk net protein as fraction of crude protein intake (g/g)
+    """
+    MlkNP_AnCP = Mlk_NP_g / (An_CPIn * 1000)    # Line 2242
+    return MlkNP_AnCP
+
+
+def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series, diet_data: pd.DataFrame, AA_list: list) -> float:
+    """
+    MlkAA_DtAA: Milk AA as a fraction of diet AA intake (g/g)
+    """
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    MlkAA_DtAA = Mlk_AA_g / Dt_AAIn # Line 2243-2252
+    return MlkAA_DtAA
