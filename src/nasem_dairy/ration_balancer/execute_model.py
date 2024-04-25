@@ -1,7 +1,8 @@
 import pandas as pd
+import numpy as np
 from nasem_dairy.ration_balancer.ModelOutput import ModelOutput
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary #, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
-from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict
+from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list
 from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Kb_LateGest_DMIn,
     calculate_An_PrePartWklim,
@@ -409,7 +410,8 @@ def execute_model(user_diet: pd.DataFrame,
                   feed_library_df: pd.DataFrame, 
                   coeff_dict: dict = coeff_dict,
                   infusion_input: dict = infusion_dict,
-                  MP_NP_efficiency_input: dict = MP_NP_efficiency_dict
+                  MP_NP_efficiency_input: dict = MP_NP_efficiency_dict,
+                  mPrt_coeff_list: list = mPrt_coeff_list
                   ):
     """
     Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
@@ -462,7 +464,8 @@ def execute_model(user_diet: pd.DataFrame,
     # prevent mutable changes outside of expected scope (especially for Shiny):
     user_diet = user_diet.copy()
     animal_input = animal_input.copy()
-
+    mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
+    print(mPrt_coeff)
     # retrieve user's feeds from feed library
     feed_data = get_feed_rows_feedlibrary(
         feeds_to_get=user_diet['Feedstuff'].tolist(), 
@@ -1069,22 +1072,22 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 8: Amino Acid Calculations
     ########################################
+    # Create array from of coefficients for the AA calculations
+    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
     AA_values['Abs_AA_g'] = calculate_Abs_AA_g(AA_list,
                                                   An_data,
                                                   infusion_data,
                                                   infusion_data['Inf_Art'])
 
-    AA_values['mPrtmx_AA'] = calculate_mPrtmx_AA(AA_list,
-                                                    coeff_dict)
+    AA_values['mPrtmx_AA'] = calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
     f_mPrt_max = calculate_f_mPrt_max(animal_input['An_305RHA_MlkTP'],
                                          coeff_dict)
     AA_values['mPrtmx_AA2'] = calculate_mPrtmx_AA2(AA_values['mPrtmx_AA'],
                                                       f_mPrt_max)
-    AA_values['AA_mPrtmx'] = calculate_AA_mPrtmx(AA_list,
-                                                    coeff_dict)
-    AA_values['mPrt_AA_01'] = calculate_mPrt_AA_01(AA_values['AA_mPrtmx'],
-                                                      AA_list,
-                                                      coeff_dict)
+    AA_values['AA_mPrtmx'] = calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
+    AA_values['mPrt_AA_01'] = calculate_mPrt_AA_01(AA_values['AA_mPrtmx'], 
+                                                   mPrt_k_AA,
+                                                   mPrt_coeff)
     AA_values['mPrt_k_AA'] = calculate_mPrt_k_AA(AA_values['mPrtmx_AA2'],
                                                     AA_values['mPrt_AA_01'],
                                                     AA_values['AA_mPrtmx'])
@@ -1101,9 +1104,10 @@ def execute_model(user_diet: pd.DataFrame,
                                            AA_values.loc['Met', 'mPrt_AA_01'],
                                            AA_values.loc['Met', 'AA_mPrtmx'])
     Abs_EAA2_g = calculate_Abs_EAA2_g(AA_values['Abs_AA_g'])
-    Abs_EAA2_HILKM_g = calculate_Abs_EAA2_HILKM_g(AA_values['Abs_AA_g'])
-    Abs_EAA2_RHILKM_g = calculate_Abs_EAA2_RHILKM_g(AA_values['Abs_AA_g'])
-    Abs_EAA2_HILKMT_g = calculate_Abs_EAA2_HILKMT_g(AA_values['Abs_AA_g'])
+    # NOTE These are part of calculate_Abs_EAA2b_g, should be removed if unused
+    # Abs_EAA2_HILKM_g = calculate_Abs_EAA2_HILKM_g(AA_values['Abs_AA_g'])
+    # Abs_EAA2_RHILKM_g = calculate_Abs_EAA2_RHILKM_g(AA_values['Abs_AA_g'])
+    # Abs_EAA2_HILKMT_g = calculate_Abs_EAA2_HILKMT_g(AA_values['Abs_AA_g'])
     AA_values['Abs_AA_MPp'] = calculate_Abs_AA_MPp(AA_values['Abs_AA_g'],
                                                    An_MPIn_g)
     AA_values['Abs_AA_p'] = calculate_Abs_AA_p(AA_values['Abs_AA_g'],

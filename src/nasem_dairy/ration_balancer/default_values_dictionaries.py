@@ -102,19 +102,19 @@ coeff_dict = {
     'MiTPValProf': 6.88,
 
     # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631
-    # Two other sets of values are included in the R code
-    'mPrt_k_Arg_src': 0,
-    'mPrt_k_His_src': 1.675,
-    'mPrt_k_Ile_src': 0.885,
-    'mPrt_k_Leu_src': 0.466,
-    'mPrt_k_Lys_src': 1.153,
-    'mPrt_k_Met_src': 1.839,
-    'mPrt_k_Phe_src': 0,
-    'mPrt_k_Thr_src': 0,
-    'mPrt_k_Trp_src': 0,
-    'mPrt_k_Val_src': 0,
-
-    'mPrt_k_EAA2_src': -0.00215,
+    # Two other sets of values are included in the R  
+    # NOTE added to their own dictionary
+    # 'mPrt_k_Arg_src': 0,
+    # 'mPrt_k_His_src': 1.675,
+    # 'mPrt_k_Ile_src': 0.885,
+    # 'mPrt_k_Leu_src': 0.466,
+    # 'mPrt_k_Lys_src': 1.153,
+    # 'mPrt_k_Met_src': 1.839,
+    # 'mPrt_k_Phe_src': 0,
+    # 'mPrt_k_Thr_src': 0,
+    # 'mPrt_k_Trp_src': 0,
+    # 'mPrt_k_Val_src': 0,
+    # 'mPrt_k_EAA2_src': -0.00215,
 
     # From calculate_An_NE
     'Body_NP_CP': 0.86,                                             # Line 1964
@@ -374,3 +374,69 @@ MP_NP_efficiency_dict = {
     'Trg_AbsVal_NPVal': 0.74,
     'Trg_MP_NP': 0.69
 }
+
+mPrt_coeff_list = [
+    {   # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
+        "mPrt_Int_src": -97.0,
+        "mPrt_k_BW_src": -0.4201,
+        "mPrt_k_DEInp_src": 10.79,
+        "mPrt_k_DigNDF_src": -4.595,
+        "mPrt_k_DEIn_StFA_src": 0,
+        "mPrt_k_DEIn_NDF_src": 0,
+        "mPrt_k_Arg_src": 0,
+        "mPrt_k_His_src": 1.675,
+        "mPrt_k_Ile_src": 0.885,
+        "mPrt_k_Leu_src": 0.466,
+        "mPrt_k_Lys_src": 1.153,
+        "mPrt_k_Met_src": 1.839,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 0,
+        "mPrt_k_Trp_src": 0.0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0,
+        "mPrt_k_OthAA_src": 0.0773,
+        "mPrt_k_EAA2_src": -0.00215
+    },
+    {   # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
+        "mPrt_Int_src": -141,
+        "mPrt_k_BW_src": -0.4146,
+        "mPrt_k_DEInp_src": 10.65,
+        "mPrt_k_DigNDF_src": -4.62,
+        "mPrt_k_DEIn_StFA_src": 0,
+        "mPrt_k_DEIn_NDF_src": 0,
+        "mPrt_k_Arg_src": 0.8175,
+        "mPrt_k_His_src": 1.641,
+        "mPrt_k_Ile_src": 0.837,
+        "mPrt_k_Leu_src": 0.623,
+        "mPrt_k_Lys_src": 1.235,
+        "mPrt_k_Met_src": 1.846,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 0,
+        "mPrt_k_Trp_src": 0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0.0925,
+        "mPrt_k_OthAA_src": 0,
+        "mPrt_k_EAA2_src": -0.002451
+    },
+    {   # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
+        "mPrt_Int_src": -73.7,
+        "mPrt_k_BW_src": -0.3663,
+        "mPrt_k_DEInp_src": 0,
+        "mPrt_k_DigNDF_src": 0,
+        "mPrt_k_DEIn_StFA_src": 10.87,
+        "mPrt_k_DEIn_NDF_src": 5.43,
+        "mPrt_k_Arg_src": 0,
+        "mPrt_k_His_src": 1.19,
+        "mPrt_k_Ile_src": 1.08,
+        "mPrt_k_Leu_src": 0.238,
+        "mPrt_k_Lys_src": 1.08,
+        "mPrt_k_Met_src": 1.91,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 1.36,
+        "mPrt_k_Trp_src": 0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0.075,
+        "mPrt_k_OthAA_src": 0,
+        "mPrt_k_EAA2_src": -0.00175
+    }
+]

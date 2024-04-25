@@ -33,13 +33,11 @@ def calculate_Abs_AA_g(AA_list, An_data, infusion_data, Inf_Art):
     return Abs_AA_g
 
 
-def calculate_mPrtmx_AA(AA_list, coeff_dict):
-    req_coeffs = ['mPrt_k_Arg_src', 'mPrt_k_His_src', 'mPrt_k_Ile_src', 'mPrt_k_Leu_src',
-                  'mPrt_k_Lys_src', 'mPrt_k_Met_src', 'mPrt_k_Phe_src', 'mPrt_k_Thr_src',
-                  'mPrt_k_Trp_src', 'mPrt_k_Val_src', 'mPrt_k_EAA2_src']
-    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    AA_coeffs = np.array([coeff_dict[f'mPrt_k_{AA}_src'] for AA in AA_list])
-    mPrtmx_AA = -(AA_coeffs**2) / (4 * coeff_dict['mPrt_k_EAA2_src'])
+def calculate_mPrtmx_AA(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
+    """
+    mPrtmx_AA: Maximum milk protein responses from each AA
+    """
+    mPrtmx_AA = -(mPrt_k_AA**2) / (4 * mPrt_coeff['mPrt_k_EAA2_src'])   # maximum milk protein responses from each AA, Line 2117-2126
     return mPrtmx_AA
 
 
@@ -48,24 +46,19 @@ def calculate_mPrtmx_AA2(mPrtmx_AA, f_mPrt_max):
     return mPrtmx_AA2
 
 
-def calculate_AA_mPrtmx(AA_list, coeff_dict):
-    req_coeffs = ['mPrt_k_Arg_src', 'mPrt_k_His_src', 'mPrt_k_Ile_src', 'mPrt_k_Leu_src',
-                  'mPrt_k_Lys_src', 'mPrt_k_Met_src', 'mPrt_k_Phe_src', 'mPrt_k_Thr_src',
-                  'mPrt_k_Trp_src', 'mPrt_k_Val_src', 'mPrt_k_EAA2_src']
-    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    AA_coeffs = np.array([coeff_dict[f"mPrt_k_{AA}_src"] for AA in AA_list])
-    AA_mPrtmx = -AA_coeffs / (2 * coeff_dict['mPrt_k_EAA2_src'])
+def calculate_AA_mPrtmx(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
+    """
+    AA_mPrtmx: AA input at maximum milk protein response for each AA
+    """
+    AA_mPrtmx = -mPrt_k_AA / (2 * mPrt_coeff['mPrt_k_EAA2_src'])    # AA input at maximum milk protein response for each AA, Line 2127-2136
     return AA_mPrtmx
 
 
-def calculate_mPrt_AA_01(AA_mPrtmx, AA_list, coeff_dict):
-    req_coeffs = ['mPrt_k_Arg_src', 'mPrt_k_His_src', 'mPrt_k_Ile_src', 'mPrt_k_Leu_src',
-                  'mPrt_k_Lys_src', 'mPrt_k_Met_src', 'mPrt_k_Phe_src', 'mPrt_k_Thr_src',
-                  'mPrt_k_Trp_src', 'mPrt_k_Val_src', 'mPrt_k_EAA2_src']
-    check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    AA_coeffs = np.array([coeff_dict[f"mPrt_k_{AA}_src"] for AA in AA_list])
-    mPrt_AA_01 = AA_mPrtmx * 0.1 * AA_coeffs + \
-        (AA_mPrtmx * 0.1)**2 * coeff_dict['mPrt_k_EAA2_src']
+def calculate_mPrt_AA_01(AA_mPrtmx: np.array, mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
+    """
+    mPrt_AA_01: Milk protein from each EAA at 10% of max response
+    """
+    mPrt_AA_01 = AA_mPrtmx * 0.1 * mPrt_k_AA + (AA_mPrtmx * 0.1)**2 * mPrt_coeff['mPrt_k_EAA2_src'] # Milk prt from each EAA at 10% of Max response, Line 2138-2147
     return mPrt_AA_01
 
 
