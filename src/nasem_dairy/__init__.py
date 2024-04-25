@@ -444,7 +444,10 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_An_PostPartDay,
     calculate_An_Preg,
     calculate_Fet_Wt,
-    calculate_Fet_BWgain
+    calculate_Fet_BWgain,
+    calculate_Gest_AA_g,
+    calculate_Gest_EAA_g,
+    calculate_GestAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (

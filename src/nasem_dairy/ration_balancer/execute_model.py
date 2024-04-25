@@ -176,7 +176,10 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_An_PostPartDay,
     calculate_An_Preg,
     calculate_Fet_Wt,
-    calculate_Fet_BWgain
+    calculate_Fet_BWgain,
+    calculate_Gest_AA_g,
+    calculate_Gest_EAA_g,
+    calculate_GestAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -1220,6 +1223,12 @@ def execute_model(user_diet: pd.DataFrame,
 
 
     Gest_CPuse_g = calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict)
+    AA_values['Gest_AA_g'] = calculate_Gest_AA_g(Gest_NPuse_g,
+                                    coeff_dict,
+                                    AA_list)
+    Gest_EAA_g = calculate_Gest_EAA_g(AA_values['Gest_AA_g'])
+    AA_values['GestAA_AbsAA'] = calculate_GestAA_AbsAA(AA_values['Gest_AA_g'], 
+                                                       AA_values['Abs_AA_g'])
     
 ########################################
 # Step 14: Urinary Loss

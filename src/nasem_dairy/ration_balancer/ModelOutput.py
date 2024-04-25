@@ -253,8 +253,10 @@ class ModelOutput:
         # Lists of variables to store
         energy_variables = ['An_NEmUse_NS', 'An_NEm_Act_Graze', 'An_NEm_Act_Parlor', 'An_NEm_Act_Topo',
                             'An_NEmUse_Act', 'An_NEmUse', 'An_MEmUse', 'Gest_MEuse', 'Trg_Mlk_NEout', 'Trg_Mlk_MEout', 'Trg_MEuse']
-        protein_variables = ['Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g', 'An_MPm_g_Trg', 'Body_NPgain_g', 'Body_MPUse_g_Trg', 'Gest_MPUse_g_Trg', 'Trg_Mlk_NP_g', 'Mlk_MPUse_g_Trg', 'An_MPuse_g_Trg', 'Min_MPuse_g',
-                             'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 'Rsrv_MPUse_g_Trg', 'An_NPm_Use', 'An_CPm_Use']
+        protein_variables = ['Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g', 'An_MPm_g_Trg', 
+                             'Body_NPgain_g', 'Body_MPUse_g_Trg', 'Gest_MPUse_g_Trg', 'Trg_Mlk_NP_g', 'Mlk_MPUse_g_Trg', 
+                             'An_MPuse_g_Trg', 'Min_MPuse_g', 'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 
+                             'Rsrv_MPUse_g_Trg', 'An_NPm_Use', 'An_CPm_Use', 'Gest_EAA_g']
         # Store variables
         self.__populate_category('Requirements', group_names, energy_variables, protein_variables)
 
