@@ -242,3 +242,11 @@ def calculate_Trg_BWgain_g(Trg_BWgain: float) -> float:
     """
     Trg_BWgain_g = Trg_BWgain * 1000    # Line 225
     return Trg_BWgain_g
+
+
+def calculate_Conc_BWgain(GrUter_BWgain: float, Uter_BWgain: float) -> float:
+    """
+    Conc_BWgain: ?
+    """
+    Conc_BWgain = GrUter_BWgain - Uter_BWgain   # Line 2349
+    return Conc_BWgain

@@ -178,6 +178,11 @@
       "Name": "calculate_Trg_BWgain_g",
       "Input": {"Trg_BWgain": 20.35},
       "Output": 20350
+    },
+    {
+      "Name": "calculate_Conc_BWgain",
+      "Input": {"GrUter_BWgain": 0.4, "Uter_BWgain": 0.6},
+      "Output": -0.19999999999999996
     }
   ]
   

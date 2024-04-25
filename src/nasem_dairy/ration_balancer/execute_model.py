@@ -173,7 +173,10 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Gest_NPgain_g,
     calculate_Gest_NPuse_g,
     calculate_Gest_CPuse_g,
-    calculate_An_PostPartDay
+    calculate_An_PostPartDay,
+    calculate_An_Preg,
+    calculate_Fet_Wt,
+    calculate_Fet_BWgain
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -242,7 +245,8 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_An_BWmature_empty,
     calculate_Body_Gain,
     calculate_Trg_BWgain,
-    calculate_Trg_BWgain_g
+    calculate_Trg_BWgain_g,
+    calculate_Conc_BWgain
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -798,6 +802,17 @@ def execute_model(user_diet: pd.DataFrame,
                                                GrUter_Wt,
                                                Uter_BWgain,
                                                coeff_dict)
+    An_Preg = calculate_An_Preg(animal_input['An_GestDay'], animal_input['An_GestLength'])
+    Fet_Wt = calculate_Fet_Wt(animal_input['An_GestDay'], 
+                              animal_input['An_GestLength'],
+                              animal_input['Fet_BWbrth'],
+                              coeff_dict)
+    Fet_BWgain = calculate_Fet_BWgain(animal_input['An_GestDay'], 
+                                      animal_input['An_GestLength'],
+                                      Fet_Wt,
+                                      coeff_dict)
+    Conc_BWgain = calculate_Conc_BWgain(GrUter_BWgain,
+                                        Uter_BWgain)
 
     ########################################
     # Step 5: Animal Level Calculations

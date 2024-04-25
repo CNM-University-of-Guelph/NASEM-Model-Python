@@ -2,6 +2,7 @@
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import check_coeffs_in_coeff_dict
 import math
+import numpy as np
 
 
 def calculate_Uter_Wtpart(Fet_BWbrth, coeff_dict):
@@ -128,3 +129,39 @@ def calculate_An_PostPartDay(An_LactDay):
     else:
         An_PostPartDay = An_LactDay
     return An_PostPartDay 
+
+
+def calculate_An_Preg(An_GestDay: int, An_GestLength: int) -> int:
+    """
+    An_Preg: 0 if not pregnant, 1 if pregnant
+    """
+    #Create a pregnancy switch for use in calculations.
+    if (An_GestDay > 0) & (An_GestDay <= An_GestLength):    # Line 2293
+        An_Preg = 1
+    else:
+        An_Preg = 0   
+    return An_Preg
+
+
+def calculate_Fet_Wt(An_GestDay: int, An_GestLength: int, Fet_BWbrth: float, coeff_dict: dict) -> float:
+    """
+    Fet_Wt: Fetal weight at any time (kg)
+    """
+    req_coeff = ['Fet_Ksyn', 'Fet_KsynDecay']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if (An_GestDay > 0) & (An_GestDay <= An_GestLength):    # Line 2231-2232
+        Fet_Wt =  Fet_BWbrth * np.exp(-(coeff_dict['Fet_Ksyn'] - coeff_dict['Fet_KsynDecay'] * An_GestDay) * (An_GestLength - An_GestDay))  # gestating animal
+    else:
+        Fet_Wt = 0  # open animal
+    return Fet_Wt
+
+
+def calculate_Fet_BWgain(An_GestDay: int, An_GestLength: int, Fet_Wt: float, coeff_dict: dict) -> float:
+    """
+    Fet_BWgain: Fetal bodyweight gain (kg/d)
+    """
+    if (An_GestDay > 0) & (An_GestDay <= An_GestLength):
+        Fet_BWgain = (coeff_dict['Fet_Ksyn'] - coeff_dict['Fet_KsynDecay'] * An_GestDay) * Fet_Wt   # gestating animal
+    else: 
+        Fet_BWgain = 0  # open animal, kg/d
+    return Fet_BWgain

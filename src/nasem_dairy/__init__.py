@@ -441,7 +441,10 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Gest_NPgain_g,
     calculate_Gest_NPuse_g,
     calculate_Gest_CPuse_g,
-    calculate_An_PostPartDay
+    calculate_An_PostPartDay,
+    calculate_An_Preg,
+    calculate_Fet_Wt,
+    calculate_Fet_BWgain
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -509,7 +512,8 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_An_BWmature_empty,
     calculate_Body_Gain,
     calculate_Trg_BWgain,
-    calculate_Trg_BWgain_g
+    calculate_Trg_BWgain_g,
+    calculate_Conc_BWgain
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (

@@ -298,9 +298,10 @@ class ModelOutput:
                           'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 
                           'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP']
         composition_variables = ['CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain', 'Rsrv_Gain_empty', 'NPGain_RsrvGain', 'Rsrv_NPgain',
-                                 'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain']
+                                 'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 
+                                 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain', 'Conc_BWgain']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
-                               'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain']
+                               'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain', 'An_Preg', 'Fet_Wt', 'Fet_BWgain']
         MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 
                           'Du_MiTP', 'Du_EndCP_g', 'Du_EndN_g', 'Du_EndCP', 'Du_EndN', 'Du_NAN_g', 'Du_NANMN_g', 'Du_MiN_NRC2001_g']
         # Store variables

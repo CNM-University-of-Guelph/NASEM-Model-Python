@@ -323,7 +323,12 @@ coeff_dict = {
     'Scrf_Trp_TP': 0.73,
     'Scrf_Val_TP': 4.66,
 
-    'fN_3MH': (3*14)/169
+    'fN_3MH': (3*14)/169,
+
+    'Fet_Ksyn': 5.16e-2,
+    'Fet_KsynDecay': 7.59e-5,
+    'Fet_Wt': 0,
+    'Fet_BWgain': 0     # open animal, kg/d
 }
 
 # Dictionary to use when infusions are not provided to model
