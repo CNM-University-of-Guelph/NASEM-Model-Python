@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from nasem_dairy.ration_balancer.ModelOutput import ModelOutput
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary #, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
-from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list
+from nasem_dairy.ration_balancer.default_values_dictionaries import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list, f_Imb
 from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Kb_LateGest_DMIn,
     calculate_An_PrePartWklim,
@@ -110,7 +110,20 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_Scrf_NP,
     calculate_Scrf_N_g,
     calculate_Scrf_AA_g,
-    calculate_ScrfAA_AbsAA
+    calculate_ScrfAA_AbsAA,
+    calculate_An_CPxprt_g,
+    calculate_An_NPxprt_g,
+    calculate_Trg_NPxprt_g,
+    calculate_An_CPprod_g,
+    calculate_An_NPprod_g,
+    calculate_Trg_NPprod_g,
+    calculate_An_NPprod_MPIn,
+    calculate_Trg_NPuse_g,
+    calculate_An_NPuse_g,
+    calculate_An_NCPuse_g,
+    calculate_An_Nprod_g,
+    calculate_An_Nprod_NIn,
+    calculate_An_Nprod_DigNIn
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -142,7 +155,19 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_AA_mol,
     calculate_Body_AAGain_g,
     calculate_Body_EAAGain_g,
-    calculate_BodyAA_AbsAA
+    calculate_BodyAA_AbsAA,
+    calculate_An_AAUse_g,
+    calculate_An_EAAUse_g,
+    calculate_AnAAUse_AbsAA,
+    calculate_AnEAAUse_AbsEAA,
+    calculate_An_AABal_g,
+    calculate_An_EAABal_g,
+    calculate_Trg_AbsEAA_NPxprtEAA,
+    calculate_Trg_AbsArg_NPxprtArg,
+    calculate_Trg_AAEff_EAAEff,
+    calculate_An_AAEff_EAAEff,
+    calculate_Imb_AA,
+    calculate_Imb_EAA
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -459,7 +484,8 @@ def execute_model(user_diet: pd.DataFrame,
                   coeff_dict: dict = coeff_dict,
                   infusion_input: dict = infusion_dict,
                   MP_NP_efficiency_input: dict = MP_NP_efficiency_dict,
-                  mPrt_coeff_list: list = mPrt_coeff_list
+                  mPrt_coeff_list: list = mPrt_coeff_list,
+                  f_Imb: np.array = f_Imb
                   ):
     """
     Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
@@ -513,6 +539,8 @@ def execute_model(user_diet: pd.DataFrame,
     user_diet = user_diet.copy()
     animal_input = animal_input.copy()
     mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
+    AA_list = ['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
+    Trg_AbsAA_NPxprtAA = np.array([MP_NP_efficiency_dict[f"Trg_Abs{AA}_NP{AA}"] for AA in AA_list if AA != "Arg"])
     # retrieve user's feeds from feed library
     feed_data = get_feed_rows_feedlibrary(
         feeds_to_get=user_diet['Feedstuff'].tolist(), 
@@ -1013,8 +1041,6 @@ def execute_model(user_diet: pd.DataFrame,
 ########################################
 # Step 7.2: Microbial Amino Acid Calculations
 ########################################
-    AA_list = ['Arg', 'His', 'Ile', 'Leu',
-               'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val']
     AA_values = pd.DataFrame(index=AA_list)
     # Dataframe for storing all individual amino acid values
     AA_values['Du_AAMic'] = calculate_Du_AAMic(Du_MiTP_g,
@@ -1584,6 +1610,81 @@ def execute_model(user_diet: pd.DataFrame,
     Body_EAAGain_g = calculate_Body_EAAGain_g(AA_values['Body_AAGain_g'])
     AA_values['BodyAA_AbsAA'] = calculate_BodyAA_AbsAA(AA_values['Body_AAGain_g'],
                                                        AA_values['Abs_AA_g'])
+
+    ### Total NP, N and AA Use and Postabsorptive Efficiency ###
+    An_CPxprt_g = calculate_An_CPxprt_g(Scrf_CP_g,
+                                        Fe_CPend_g,
+                                        Mlk_CP_g,
+                                        Body_CPgain_g)
+    An_NPxprt_g = calculate_An_NPxprt_g(Scrf_NP_g,
+                                        Fe_NPend_g,
+                                        Mlk_NP_g,
+                                        Body_NPgain_g)
+    Trg_NPxprt_g = calculate_Trg_NPxprt_g(Scrf_NP_g,
+                                          Fe_NPend_g,
+                                          Trg_Mlk_NP_g,
+                                          Body_NPgain_g)
+    An_CPprod_g = calculate_An_CPprod_g(Mlk_CP_g,
+                                        Gest_NCPgain_g,
+                                        Body_CPgain_g)
+    An_NPprod_g = calculate_An_NPprod_g(Mlk_NP_g,
+                                        Gest_NPgain_g,
+                                        Body_NPgain_g)
+    Trg_NPprod_g = calculate_Trg_NPprod_g(Trg_Mlk_NP_g,
+                                          Gest_NPgain_g,
+                                          Body_NPgain_g)
+    An_NPprod_MPIn = calculate_An_NPprod_MPIn(An_NPprod_g,
+                                              An_MPIn_g)
+    Trg_NPuse_g = calculate_Trg_NPuse_g(Scrf_NP_g,
+                                        Fe_NPend_g,
+                                        Ur_NPend_g,
+                                        Trg_Mlk_NP_g,
+                                        Body_NPgain_g,
+                                        Gest_NPgain_g)
+    An_NPuse_g = calculate_An_NPuse_g(Scrf_NP_g,
+                                      Fe_NPend_g,
+                                      Ur_NPend_g,
+                                      Mlk_NP_g,
+                                      Body_NPgain_g,
+                                      Gest_NPgain_g)
+    An_NCPuse_g = calculate_An_NCPuse_g(Scrf_CP_g,
+                                        Fe_CPend_g,
+                                        Ur_NPend_g,
+                                        Mlk_CP_g,
+                                        Body_CPgain_g,
+                                        Gest_NCPgain_g)
+    An_Nprod_g = calculate_An_Nprod_g(Gest_NCPgain_g,
+                                      Body_CPgain_g,
+                                      Mlk_CP_g)
+    An_Nprod_NIn = calculate_An_Nprod_NIn(An_Nprod_g,
+                                          An_data['An_NIn_g'])
+    An_Nprod_DigNIn = calculate_An_Nprod_DigNIn(An_Nprod_g,
+                                                An_data['An_DigNtIn_g'])
+    AA_values['An_AAUse_g'] = calculate_An_AAUse_g(AA_values['Gest_AA_g'],
+                                                   AA_values['Mlk_AA_g'],
+                                                   AA_values['Body_AAGain_g'],
+                                                   Scrf_AA_g,
+                                                   Fe_AAMet_g,
+                                                   Ur_AAEnd_g)
+    An_EAAUse_g = calculate_An_EAAUse_g(AA_values['An_AAUse_g'])
+    AA_values['AnAAUse_AbsAA'] = calculate_AnAAUse_AbsAA(AA_values['An_AAUse_g'],
+                                                         AA_values['Abs_AA_g'])
+    AnEAAUse_AbsEAA = calculate_AnEAAUse_AbsEAA(An_EAAUse_g,
+                                                Abs_EAA_g)
+    AA_values['An_AABal_g'] = calculate_An_AABal_g(AA_values['Abs_AA_g'],
+                                                   AA_values['An_AAUse_g'])
+    An_EAABal_g = calculate_An_EAABal_g(Abs_EAA_g,
+                                        An_EAAUse_g)
+    Trg_AbsEAA_NPxprtEAA = calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA)
+    Trg_AbsArg_NPxprtArg = calculate_Trg_AbsArg_NPxprtArg(Trg_AbsEAA_NPxprtEAA)
+    Trg_AbsAA_NPxprtAA = np.insert(Trg_AbsAA_NPxprtAA, 0, Trg_AbsArg_NPxprtArg) # Add Arg efficiency to the array
+    Trg_AAEff_EAAEff = calculate_Trg_AAEff_EAAEff(Trg_AbsAA_NPxprtAA, Trg_AbsEAA_NPxprtEAA)
+    AA_values['An_AAEff_EAAEff'] = calculate_An_AAEff_EAAEff(AA_values['AnAAUse_AbsAA'],
+                                                             AnEAAUse_AbsEAA)
+    AA_values['Imb_AA'] = calculate_Imb_AA(AA_values['An_AAEff_EAAEff'],
+                                           Trg_AAEff_EAAEff,
+                                           f_Imb)
+    Imb_EAA = calculate_Imb_EAA(AA_values['Imb_AA'])
 
     ########################################
     # Milk Production Calculations

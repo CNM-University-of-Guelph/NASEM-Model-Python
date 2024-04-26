@@ -259,3 +259,108 @@ def calculate_BodyAA_AbsAA(Body_AAGain_g: pd.Series, Abs_AA_g: pd.Series) -> pd.
     BodyAA_AbsAA = Body_AAGain_g / Abs_AA_g # Line 2510-2519
     return BodyAA_AbsAA
     
+
+def calculate_An_AAUse_g(Gest_AA_g: pd.Series, Mlk_AA_g: pd.Series, Body_AAGain_g: pd.Series, Scrf_AA_g: pd.Series, Fe_AAMet_g: pd.Series, Ur_AAEnd_g: pd.Series) -> pd.Series:
+    """
+    An_AAUse_g: Total net AA use (g/d)
+    """
+    An_AAUse_g = Gest_AA_g + Mlk_AA_g + Body_AAGain_g + Scrf_AA_g + Fe_AAMet_g + Ur_AAEnd_g # Total Net AA use (Nutrient Allowable), g/d, Line 2544-2553
+    return An_AAUse_g
+
+
+def calculate_An_EAAUse_g(An_AAUse_g: pd.Series) -> float:
+    """
+    An_EAAUse_g: Total net EAA use (g/d)
+    """
+    An_EAAUse_g = An_AAUse_g.sum()  # Line 2554-2555
+    return An_EAAUse_g
+
+
+def calculate_AnAAUse_AbsAA(An_AAUse_g: pd.Series, Abs_AA_g: pd.Series) -> pd.Series:
+    """
+    AnAAUse_AbsAA: Total net AA efficieny (g/g)
+    """
+    AnAAUse_AbsAA = An_AAUse_g / Abs_AA_g   # Total Net AA efficiency, g/g absorbed, Line 2558-2567
+    return AnAAUse_AbsAA
+
+
+def calculate_AnEAAUse_AbsEAA(An_EAAUse_g: float, Abs_EAA_g: float) -> float:
+    """
+    AnEAAUse_AbsEAA: Total net EAA efficieny (g/g)
+    """
+    AnEAAUse_AbsEAA = An_EAAUse_g / Abs_EAA_g   # Line 2568
+    return AnEAAUse_AbsEAA
+
+
+def calculate_An_AABal_g(Abs_AA_g: pd.Series, An_AAUse_g: pd.Series) -> pd.Series:
+    """
+    An_AABal_g: Total net AA balance (g/d)
+    """
+    An_AABal_g = Abs_AA_g - An_AAUse_g    # Total Net AA Balance, g/d, Line 2571-2580
+    return An_AABal_g
+
+
+def calculate_An_EAABal_g(Abs_EAA_g: float, An_EAAUse_g: float) -> float:
+    """
+    An_EAABal_g: Total net EAA balance (g/d)
+    """
+    An_EAABal_g = Abs_EAA_g - An_EAAUse_g   # Line 2581
+    return An_EAABal_g
+
+
+def calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA: np.array) -> np.array:
+    """
+    Trg_AbsEAA_NPxprtEAA: Target postabsorptive EAA efficiencies based on maximum obsreved efficiencies from Martineau and LaPiere as listed in NRC, Ch. 6.
+    """
+    Trg_AbsEAA_NPxprtEAA = Trg_AbsAA_NPxprtAA.sum() / 9 # Should be weighted or derived directly from total EAA, Line 2593-2594
+    return Trg_AbsEAA_NPxprtEAA
+
+
+def calculate_Trg_AbsArg_NPxprtArg(Trg_AbsEAA_NPxprtEAA) -> float:
+    """
+    Trg_AbsArg_NPxprtArg: Target postabsorptive efficiencies based on maximum obsreved efficiencies from Martineau and LaPiere as listed in NRC, Ch. 6.
+    """
+    Trg_AbsArg_NPxprtArg = Trg_AbsEAA_NPxprtEAA # none provided thus assumed to be the same as for EAA, Line 2595
+    return Trg_AbsArg_NPxprtArg
+
+
+def calculate_Trg_AAEff_EAAEff(Trg_AbsAA_NPxprtAA: pd.Series, Trg_AbsEAA_NPxprtEAA: float) -> pd.Series:
+    """
+    Trg_AAEff_EAAEff: Estimate the degree of AA imbalance within the EAA as ratios of each Eff to the total EAA Eff.
+    """
+    # Estimate the degree of AA imbalance within the EAA as ratios of each Eff to the total EAA Eff.
+    # These "Target" ratios are calculated as efficiency target (NRC 2021 Ch. 6) / total EAA eff.
+    # Thus they are scaled to Ch. 6 targets.  Ch. 6 values should not be used directly here. Ratio first.
+    # The target eff from Ch. 6 are likely not true maximum efficiencies.
+    # ratio to the mean Trg for each EAA / total EAA Trg of 70.6%, e.g. Ile Trg is 97.3% of 70.6%
+    Trg_AAEff_EAAEff = Trg_AbsAA_NPxprtAA / Trg_AbsEAA_NPxprtEAA    # Line 2602-2611
+    return Trg_AAEff_EAAEff
+
+
+def calculate_An_AAEff_EAAEff(An_AAUse_AbsAA: pd.Series, AnEAAUse_AbsEAA: pd.Series) -> pd.Series:
+    """
+    An_AAEff_EAAEff: AA efficiency as ratio of EAA efficiency
+    """
+    # Calculate the current ratios for the diet.  This centers the ratio to the prevailing EAA Efficiency   
+    An_AAEff_EAAEff = An_AAUse_AbsAA / AnEAAUse_AbsEAA  # Line 2614-2623
+    return An_AAEff_EAAEff
+
+
+def calculate_Imb_AA(An_AAEff_EAAEff: pd.Series, Trg_AAEff_EAAEff: float, f_Imb: np.array) -> pd.Series:
+    """
+    Imb_AA: Calculate a relative penalty for each EAA to reflect the degree of imbalance for each
+    """
+    # Calculate a relative penalty for each EAA to reflect the degree of imbalance for each.
+    # if the diet eff = Trg_eff then no penalty. f_Imb is a vector of penalty costs for each EAA.
+    # f_Imb should be passed to the model fn rather than handled as a global variable.
+    Imb_AA = ((An_AAEff_EAAEff - Trg_AAEff_EAAEff) * f_Imb)**2
+    return Imb_AA
+
+
+def calculate_Imb_EAA(Imb_AA) -> float:
+    """
+    Imb_EAA: Sum the penalty to get a relative imbalance value for the optimizer 
+    """
+    # Sum the penalty to get a relative imbalance value for the optimizer
+    Imb_EAA = Imb_AA.sum()
+    return Imb_EAA

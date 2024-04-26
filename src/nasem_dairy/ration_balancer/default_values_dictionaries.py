@@ -19,7 +19,7 @@ nd.infusion_dict
 ```
 
 """
-
+import pandas as pd
 
 # This dictionary contains the coefficients used by the model
 # The dictionary will be parsed to various functions which will check for that the required coeffs are present
@@ -446,3 +446,6 @@ mPrt_coeff_list = [
         "mPrt_k_EAA2_src": -0.00175
     }
 ]
+
+f_Imb = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                  index=['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'])

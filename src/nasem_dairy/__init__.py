@@ -280,7 +280,20 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_Scrf_NP,
     calculate_Scrf_N_g,
     calculate_Scrf_AA_g,
-    calculate_ScrfAA_AbsAA
+    calculate_ScrfAA_AbsAA,
+    calculate_An_CPxprt_g,
+    calculate_An_NPxprt_g,
+    calculate_Trg_NPxprt_g,
+    calculate_An_CPprod_g,
+    calculate_An_NPprod_g,
+    calculate_Trg_NPprod_g,
+    calculate_An_NPprod_MPIn,
+    calculate_Trg_NPuse_g,
+    calculate_An_NPuse_g,
+    calculate_An_NCPuse_g,
+    calculate_An_Nprod_g,
+    calculate_An_Nprod_NIn,
+    calculate_An_Nprod_DigNIn
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -311,7 +324,19 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_AA_mol,
     calculate_Body_AAGain_g,
     calculate_Body_EAAGain_g,
-    calculate_BodyAA_AbsAA
+    calculate_BodyAA_AbsAA,
+    calculate_An_AAUse_g,
+    calculate_An_EAAUse_g,
+    calculate_AnAAUse_AbsAA,
+    calculate_AnEAAUse_AbsEAA,
+    calculate_An_AABal_g,
+    calculate_An_EAABal_g,
+    calculate_Trg_AbsEAA_NPxprtEAA,
+    calculate_Trg_AbsArg_NPxprtArg,
+    calculate_Trg_AAEff_EAAEff,
+    calculate_An_AAEff_EAAEff,
+    calculate_Imb_AA,
+    calculate_Imb_EAA
 )
 
 

@@ -213,7 +213,7 @@ class ModelOutput:
         """
         setattr(self, 'Inputs', {})
         variables_to_add = ['user_diet', 'animal_input', 'equation_selection', 'coeff_dict', 'infusion_input', 
-                            'MP_NP_efficiency_input', 'mPrt_coeff']
+                            'MP_NP_efficiency_input', 'mPrt_coeff', 'f_Imb']
         for key in variables_to_add:
             # Add to the Inputs Category
             self.Inputs[key] = self.locals_input[key]
@@ -256,7 +256,11 @@ class ModelOutput:
         protein_variables = ['Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g', 'An_MPm_g_Trg', 
                              'Body_NPgain_g', 'Body_MPUse_g_Trg', 'Gest_MPUse_g_Trg', 'Trg_Mlk_NP_g', 'Mlk_MPUse_g_Trg', 
                              'An_MPuse_g_Trg', 'Min_MPuse_g', 'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 
-                             'Rsrv_MPUse_g_Trg', 'An_NPm_Use', 'An_CPm_Use', 'Gest_EAA_g']
+                             'Rsrv_MPUse_g_Trg', 'An_NPm_Use', 'An_CPm_Use', 'Gest_EAA_g', 'Trg_AbsAA_NPxprtAA', 'An_CPxprt_g', 
+                             'An_NPxprt_g', 'Trg_NPxprt_g', 'An_CPprod_g', 'An_NPprod_g', 'Trg_NPprod_g', 'An_NPprod_MPIn', 
+                             'Trg_NPuse_g', 'An_NPuse_g', 'An_NCPuse_g', 'An_Nprod_g', 'An_Nprod_NIn', 'An_Nprod_DigNIn', 
+                             'An_EAAUse_g', 'AnEAAUse_AbsEAA', 'An_EAABal_g', 'Trg_AbsEAA_NPxprtEAA', 'Trg_AbsArg_NPxprtArg', 
+                             'Trg_AAEff_EAAEff', 'Imb_EAA']
         # Store variables
         self.__populate_category('Requirements', group_names, energy_variables, protein_variables)
 

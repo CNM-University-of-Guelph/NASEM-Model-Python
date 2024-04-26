@@ -68,5 +68,70 @@
       "Name": "calculate_ScrfAA_AbsAA",
       "Input": {"Scrf_AA_g": 1043, "Abs_AA_g": 2303},
       "Output": 0.45288753799392095
+    },
+    {
+      "Name": "calculate_An_CPxprt_g",
+      "Input": {"Scrf_CP_g": 2.5, "Fe_CPend_g": 1.1, "Mlk_CP_g": 3.6, "Body_CPgain_g": 0.6},
+      "Output": 7.8
+    },
+    {
+      "Name": "calculate_An_NPxprt_g",
+      "Input": {"Scrf_NP_g": 4.1, "Fe_NPend_g": 5, "Mlk_NP_g": 3.9, "Body_NPgain_g": 8.2},
+      "Output": 21.2
+    },
+    {
+      "Name": "calculate_Trg_NPxprt_g",
+      "Input": {"Scrf_NP_g": 6.4, "Fe_NPend_g": 8.1, "Trg_Mlk_NP_g": 1.9, "Body_NPgain_g": 2.7},
+      "Output": 19.099999999999998
+    },
+    {
+      "Name": "calculate_An_CPprod_g",
+      "Input": {"Mlk_CP_g": 1294, "Gest_NCPgain_g": 2540, "Body_CPgain_g": 210},
+      "Output": 4044
+    },
+    {
+      "Name": "calculate_An_NPprod_g",
+      "Input": {"Mlk_NP_g": 1284, "Gest_NPgain_g": 391, "Body_NPgain_g": 1290},
+      "Output": 2965
+    },
+    {
+      "Name": "calculate_Trg_NPprod_g",
+      "Input": {"Trg_Mlk_NP_g": 1940, "Gest_NPgain_g": 201, "Body_NPgain_g": 301},
+      "Output": 2442
+    },
+    {
+      "Name": "calculate_An_NPprod_MPIn",
+      "Input": {"An_NPprod_g": 1202, "An_MPIn_g": 4120},
+      "Output": 0.291747572815534
+    },
+    {
+      "Name": "calculate_Trg_NPuse_g",
+      "Input": {"Scrf_NP_g": 2933, "Fe_NPend_g": 1290, "Ur_NPend_g": 219, "Trg_Mlk_NP_g": 4712, "Body_NPgain_g": 2183, "Gest_NPgain_g": 810},
+      "Output": 12147
+    },
+    {
+      "Name": "calculate_An_NPuse_g",
+      "Input": {"Scrf_NP_g": 129, "Fe_NPend_g": 313, "Ur_NPend_g": 453, "Mlk_NP_g": 3102, "Body_NPgain_g": 612, "Gest_NPgain_g": 129},
+      "Output": 4738
+    },
+    {
+      "Name": "calculate_An_NCPuse_g",
+      "Input": {"Scrf_CP_g": 912, "Fe_CPend_g": 239, "Ur_NPend_g": 401, "Mlk_CP_g": 301, "Body_CPgain_g": 712, "Gest_NCPgain_g": 323},
+      "Output": 2888
+    },
+    {
+      "Name": "calculate_An_Nprod_g",
+      "Input": {"Gest_NCPgain_g": 123, "Body_CPgain_g": 3203, "Mlk_CP_g": 303},
+      "Output": 579.9517981072555
+    },
+    {
+      "Name": "calculate_An_Nprod_NIn",
+      "Input": {"An_Nprod_g": 313, "An_NIn_g": 1291},
+      "Output": 0.24244771494965142
+    },
+    {
+      "Name": "calculate_An_Nprod_DigNIn",
+      "Input": {"An_Nprod_g": 1012, "An_DigNtIn_g": 2013},
+      "Output": 0.5027322404371585
     }
   ]

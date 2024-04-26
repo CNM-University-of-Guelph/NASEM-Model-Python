@@ -89,3 +89,107 @@ def calculate_ScrfAA_AbsAA(Scrf_AA_g: pd.Series, Abs_AA_g: pd.Series) -> np.arra
     """
     ScrfAA_AbsAA = Scrf_AA_g / Abs_AA_g # Line 1981-1990
     return ScrfAA_AbsAA
+
+
+def calculate_An_CPxprt_g(Scrf_CP_g: float, Fe_CPend_g: float, Mlk_CP_g: float, Body_CPgain_g: float) -> float:
+    """
+    An_CPxprt_g: CP used for export protein (g/d)
+    """
+    An_CPxprt_g = Scrf_CP_g + Fe_CPend_g + Mlk_CP_g + Body_CPgain_g  # Initially defined only as true export protein, but it has migrated to include other prod proteins, Line 2525
+    return An_CPxprt_g
+
+
+def calculate_An_NPxprt_g(Scrf_NP_g: float, Fe_NPend_g: float, Mlk_NP_g: float, Body_NPgain_g: float) -> float:
+    """
+    An_NPxprt_g: NP used for export protein (g/d)
+    """
+    An_NPxprt_g = Scrf_NP_g + Fe_NPend_g + Mlk_NP_g + Body_NPgain_g  # Should have changed the name, Line 2526
+    return An_NPxprt_g
+
+
+def calculate_Trg_NPxprt_g(Scrf_NP_g: float, Fe_NPend_g: float, Trg_Mlk_NP_g: float, Body_NPgain_g: float) -> float:
+    """
+    Trg_NPxprt_g: NP used for export protein (g/d)
+    """
+    Trg_NPxprt_g = Scrf_NP_g + Fe_NPend_g + Trg_Mlk_NP_g + Body_NPgain_g  # Shouldn't these also include Gest??, Line 2527
+    return Trg_NPxprt_g
+
+
+def calculate_An_CPprod_g(Mlk_CP_g: float, Gest_NCPgain_g: float, Body_CPgain_g: float) -> float:
+    """
+    An_CPprod_g: CP use for production (g/d)
+    """
+    An_CPprod_g = Mlk_CP_g + Gest_NCPgain_g + Body_CPgain_g # CP use for production.  Be careful not to double count Gain. Line 2529
+    return An_CPprod_g
+
+
+def calculate_An_NPprod_g(Mlk_NP_g: float, Gest_NPgain_g: float, Body_NPgain_g: float) -> float:
+    """
+    An_NPprod_g: NP use for production (g/d)
+    """
+    An_NPprod_g = Mlk_NP_g + Gest_NPgain_g + Body_NPgain_g # NP use for production, Line 2530
+    return An_NPprod_g
+
+
+def calculate_Trg_NPprod_g(Trg_Mlk_NP_g: float, Gest_NPgain_g: float, Body_NPgain_g: float) -> float:
+    """
+    Trg_NPprod_g: NP used fpr production (g/d)
+    """
+    Trg_NPprod_g = Trg_Mlk_NP_g + Gest_NPgain_g + Body_NPgain_g # NP needed for production target, Line 2531
+    return Trg_NPprod_g
+
+
+def calculate_An_NPprod_MPIn(An_NPprod_g: float, An_MPIn_g: float) -> float:
+    """
+    An_NPprod_MPIn: NP used for produciton as fraction of metabolizable protein
+    """
+    An_NPprod_MPIn = An_NPprod_g / An_MPIn_g    # Line 2532
+    return An_NPprod_MPIn
+
+
+def calculate_Trg_NPuse_g(Scrf_NP_g: float, Fe_NPend_g: float, Ur_NPend_g: float, Trg_Mlk_NP_g: float, Body_NPgain_g: float, Gest_NPgain_g: float) -> float:
+    """
+    Trg_NPuse_g: Target NP use (g/d)
+    """
+    Trg_NPuse_g = Scrf_NP_g + Fe_NPend_g + Ur_NPend_g + Trg_Mlk_NP_g + Body_NPgain_g + Gest_NPgain_g    # Line 2535
+    return Trg_NPuse_g
+
+
+def calculate_An_NPuse_g(Scrf_NP_g: float, Fe_NPend_g: float, Ur_NPend_g: float, Mlk_NP_g: float, Body_NPgain_g: float, Gest_NPgain_g: float) -> float:
+    """
+    An_NPuse_g: NP use (g/d)
+    """
+    An_NPuse_g = Scrf_NP_g + Fe_NPend_g + Ur_NPend_g + Mlk_NP_g + Body_NPgain_g + Gest_NPgain_g  # includes only net use of true protein.  Excludes non-protein maintenance use, Line 2536 
+    return An_NPuse_g
+
+
+def calculate_An_NCPuse_g(Scrf_CP_g: float, Fe_CPend_g: float, Ur_NPend_g: float, Mlk_CP_g: float, Body_CPgain_g: float, Gest_NCPgain_g: float) -> float:
+    """
+    An_NCPuse_g: Net CP use (g/d)
+    """
+    An_NCPuse_g = Scrf_CP_g + Fe_CPend_g + Ur_NPend_g + Mlk_CP_g + Body_CPgain_g + Gest_NCPgain_g  # Net CP use, Line 2537
+    return An_NCPuse_g
+
+
+def calculate_An_Nprod_g(Gest_NCPgain_g: float, Body_CPgain_g: float, Mlk_CP_g: float) -> float:
+    """
+    An_Nprod_g: N used for production (g/d)
+    """
+    An_Nprod_g = (Gest_NCPgain_g + Body_CPgain_g) / 6.25 + Mlk_CP_g / 6.34  # Line 2539
+    return An_Nprod_g
+
+
+def calculate_An_Nprod_NIn(An_Nprod_g: float, An_NIn_g: float) -> float:
+    """
+    An_Nprod_NIn: N used for production as fraction of N intake
+    """
+    An_Nprod_NIn = An_Nprod_g / An_NIn_g    # Line 2540
+    return An_Nprod_NIn
+
+
+def calculate_An_Nprod_DigNIn(An_Nprod_g: float, An_DigNtIn_g: float) -> float:
+    """
+    An_Nprod_DigNIn: N used for production as fraction of digestable N intake (g/d)
+    """
+    An_Nprod_DigNIn = An_Nprod_g / An_DigNtIn_g # Line 2541
+    return An_Nprod_DigNIn
