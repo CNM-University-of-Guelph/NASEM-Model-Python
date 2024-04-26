@@ -233,3 +233,29 @@ def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, coeff_dict: dict, AA_list: list) -
     MWAA = np.array([coeff_dict[f"MW{AA}"] for AA in AA_list])
     Abs_AA_mol = Abs_AA_g / MWAA    # Line 1823-1832
     return Abs_AA_mol   
+
+
+def calculate_Body_AAGain_g(Body_NPgain_g: float, coeff_dict: dict, AA_list: list) -> np.array:
+    """
+    Body_AAGain_g: Body AA gain (g/d)
+    """
+    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
+    Body_AAGain_g = Body_NPgain_g * Body_AA_TP / 100    # Line 2497-2506
+    return Body_AAGain_g
+    
+
+def calculate_Body_EAAGain_g(Body_AAGain_g: pd.Series) -> float:
+    """
+    Body_EAAGain_g: Body EAA gain (g/d)
+    """
+    Body_EAAGain_g = Body_AAGain_g.sum()    # Line 2507-2508
+    return Body_EAAGain_g
+    
+
+def calculate_BodyAA_AbsAA(Body_AAGain_g: pd.Series, Abs_AA_g: pd.Series) -> pd.Series:
+    """
+    BodyAA_AbsAA: Body AA gain as a fraction of absolute AA intake
+    """
+    BodyAA_AbsAA = Body_AAGain_g / Abs_AA_g # Line 2510-2519
+    return BodyAA_AbsAA
+    

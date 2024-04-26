@@ -301,7 +301,10 @@ class ModelOutput:
                           'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP']
         composition_variables = ['CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain', 'Rsrv_Gain_empty', 'NPGain_RsrvGain', 'Rsrv_NPgain',
                                  'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 
-                                 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain', 'Conc_BWgain']
+                                 'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain', 'Conc_BWgain', 'BW_BCS', 'Body_Fat_EBW', 'Body_NonFat_EBW', 'Body_CP_EBW', 'Body_Ash_EBW', 
+                                 'Body_Wat_EBW', 'Body_Fat', 'Body_NonFat', 'Body_CP', 'Body_Ash', 'Body_Wat', 'An_BodConcgain', 'NonFatGain_FrmGain', 'Body_Fatgain', 
+                                 'Body_NonFatGain', 'Frm_CPgain_g', 'Rsrv_CPgain_g', 'Body_AshGain', 'Frm_AshGain', 'WatGain_RsrvGain', 'Rsrv_WatGain', 'Body_WatGain', 
+                                 'Frm_WatGain','Body_EAAGain_g']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
                                'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain', 'An_Preg', 'Fet_Wt', 'Fet_BWgain']
         MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 

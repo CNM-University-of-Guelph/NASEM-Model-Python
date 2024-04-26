@@ -328,7 +328,8 @@ coeff_dict = {
     'Fet_Ksyn': 5.16e-2,
     'Fet_KsynDecay': 7.59e-5,
     'Fet_Wt': 0,
-    'Fet_BWgain': 0     # open animal, kg/d
+    'Fet_BWgain': 0,     # open animal, kg/d
+    'AshGain_RsrvGain': 0.02
 }
 
 # Dictionary to use when infusions are not provided to model

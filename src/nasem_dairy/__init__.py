@@ -308,7 +308,10 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_AA_MPp,
     calculate_Abs_AA_p,
     calculate_Abs_AA_DEI,
-    calculate_Abs_AA_mol
+    calculate_Abs_AA_mol,
+    calculate_Body_AAGain_g,
+    calculate_Body_EAAGain_g,
+    calculate_BodyAA_AbsAA
 )
 
 
@@ -516,7 +519,35 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Body_Gain,
     calculate_Trg_BWgain,
     calculate_Trg_BWgain_g,
-    calculate_Conc_BWgain
+    calculate_Conc_BWgain,
+    calculate_BW_BCS,
+    calculate_An_BWnp3,
+    calculate_An_GutFill_Wt_Erdman,
+    calculate_An_GutFill_Wt,
+    calculate_An_BWnp_empty,
+    calculate_An_BWnp3_empty,
+    calculate_Body_Fat_EBW,
+    calculate_Body_NonFat_EBW,
+    calculate_Body_CP_EBW,
+    calculate_Body_Ash_EBW,
+    calculate_Body_Wat_EBW,
+    calculate_Body_Fat,
+    calculate_Body_NonFat,
+    calculate_Body_CP,
+    calculate_Body_Ash,
+    calculate_Body_Wat,
+    calculate_An_BodConcgain,
+    calculate_NonFatGain_FrmGain,
+    calculate_Body_Fatgain,
+    calculate_Body_NonFatGain,
+    calculate_Frm_CPgain_g,
+    calculate_Rsrv_CPgain_g,
+    calculate_Body_AshGain,
+    calculate_Frm_AshGain,
+    calculate_WatGain_RsrvGain,
+    calculate_Rsrv_WatGain,
+    calculate_Body_WatGain,
+    calculate_Frm_WatGain
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (

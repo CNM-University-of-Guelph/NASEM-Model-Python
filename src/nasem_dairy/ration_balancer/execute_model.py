@@ -139,7 +139,10 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Abs_AA_MPp,
     calculate_Abs_AA_p,
     calculate_Abs_AA_DEI,
-    calculate_Abs_AA_mol
+    calculate_Abs_AA_mol,
+    calculate_Body_AAGain_g,
+    calculate_Body_EAAGain_g,
+    calculate_BodyAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -249,7 +252,35 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Body_Gain,
     calculate_Trg_BWgain,
     calculate_Trg_BWgain_g,
-    calculate_Conc_BWgain
+    calculate_Conc_BWgain,
+    calculate_BW_BCS,
+    calculate_An_BWnp3,
+    calculate_An_GutFill_Wt_Erdman,
+    calculate_An_GutFill_Wt,
+    calculate_An_BWnp_empty,
+    calculate_An_BWnp3_empty,
+    calculate_Body_Fat_EBW,
+    calculate_Body_NonFat_EBW,
+    calculate_Body_CP_EBW,
+    calculate_Body_Ash_EBW,
+    calculate_Body_Wat_EBW,
+    calculate_Body_Fat,
+    calculate_Body_NonFat,
+    calculate_Body_CP,
+    calculate_Body_Ash,
+    calculate_Body_Wat,
+    calculate_An_BodConcgain,
+    calculate_NonFatGain_FrmGain,
+    calculate_Body_Fatgain,
+    calculate_Body_NonFatGain,
+    calculate_Frm_CPgain_g,
+    calculate_Rsrv_CPgain_g,
+    calculate_Body_AshGain,
+    calculate_Frm_AshGain,
+    calculate_WatGain_RsrvGain,
+    calculate_Rsrv_WatGain,
+    calculate_Body_WatGain,
+    calculate_Frm_WatGain
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -1210,7 +1241,44 @@ def execute_model(user_diet: pd.DataFrame,
     Body_NPgain = calculate_Body_NPgain(Frm_NPgain, Rsrv_NPgain)
     Body_CPgain = calculate_Body_CPgain(Body_NPgain, coeff_dict)
     Body_CPgain_g = calculate_Body_CPgain_g(Body_CPgain)
-
+    Rsrv_Gain = calculate_Rsrv_Gain(animal_input['Trg_RsrvGain'])
+    Body_Gain = calculate_Body_Gain(Frm_Gain,
+                                    Rsrv_Gain)
+    FatGain_FrmGain = calculate_FatGain_FrmGain(animal_input['An_StatePhys'],
+                                                An_REgain_Calf,
+                                                animal_input['An_BW'],
+                                                animal_input['An_BW_mature'])
+    BW_BCS = calculate_BW_BCS(animal_input['An_BW'])
+    An_data['An_BWnp3'] = calculate_An_BWnp3(An_data['An_BWnp'],
+                                             animal_input['An_BCS'])
+    An_data['An_GutFill_Wt_Erdman'] = calculate_An_GutFill_Wt_Erdman(animal_input['DMI'],
+                                                                     infusion_data['InfRum_DMIn'],
+                                                                     infusion_data['InfSI_DMIn'])
+    An_data['An_GutFill_Wt'] = calculate_An_GutFill_Wt(An_data['An_GutFill_BW'],
+                                                       An_data['An_BWnp'])
+    An_data['An_BWnp_empty'] = calculate_An_BWnp_empty(An_data['An_BWnp'],
+                                                       An_data['An_GutFill_Wt'])
+    An_data['An_BWnp3_empty'] = calculate_An_BWnp3_empty(An_data['An_BWnp3'],
+                                                         An_data['An_GutFill_Wt'])
+    Body_Fat_EBW = calculate_Body_Fat_EBW(animal_input['An_BW'],
+                                          animal_input['An_BW_mature'])
+    Body_NonFat_EBW = calculate_Body_NonFat_EBW(Body_Fat_EBW)
+    Body_CP_EBW = calculate_Body_CP_EBW(Body_NonFat_EBW)
+    Body_Ash_EBW = calculate_Body_Ash_EBW(Body_NonFat_EBW)
+    Body_Wat_EBW = calculate_Body_Wat_EBW(Body_NonFat_EBW)
+    Body_Fat = calculate_Body_Fat(An_data['An_BWnp_empty'],
+                                  Body_Fat_EBW)
+    Body_NonFat = calculate_Body_NonFat(An_data['An_BWnp_empty'],
+                                        Body_NonFat_EBW)
+    Body_CP = calculate_Body_CP(An_data['An_BWnp_empty'],
+                                Body_NonFat_EBW)
+    Body_Ash = calculate_Body_Ash(An_data['An_BWnp_empty'],
+                                  Body_Ash_EBW)
+    Body_Wat = calculate_Body_Wat(An_data['An_BWnp_empty'],
+                                  Body_Wat_EBW)
+    An_BodConcgain = calculate_An_BodConcgain(Body_Gain,
+                                              Conc_BWgain)
+    NonFatGain_FrmGain = calculate_NonFatGain_FrmGain(FatGain_FrmGain)
 
 ########################################
 # Step 13: Gestation Protein Use
@@ -1291,8 +1359,6 @@ def execute_model(user_diet: pd.DataFrame,
                                        coeff_dict)
 
     # Gain Requirements
-    Rsrv_Gain = calculate_Rsrv_Gain(animal_input['Trg_RsrvGain'])
-
     Rsrv_Gain_empty = calculate_Rsrv_Gain_empty(Rsrv_Gain)
 
     Rsrv_Fatgain = calculate_Rsrv_Fatgain(Rsrv_Gain_empty,
@@ -1313,11 +1379,6 @@ def execute_model(user_diet: pd.DataFrame,
     Rsrv_MEgain = calculate_Rsrv_MEgain(Rsrv_NEgain,
                                            Kr_ME_RE)
 
-    FatGain_FrmGain = calculate_FatGain_FrmGain(animal_input['An_StatePhys'],
-                                                   An_REgain_Calf,
-                                                   animal_input['An_BW'],
-                                                   animal_input['An_BW_mature'])
-
     Frm_Gain = calculate_Frm_Gain(animal_input['Trg_FrmGain'])
 
     Frm_Gain_empty = calculate_Frm_Gain_empty(Frm_Gain,
@@ -1327,7 +1388,7 @@ def execute_model(user_diet: pd.DataFrame,
 
     Frm_Fatgain = calculate_Frm_Fatgain(FatGain_FrmGain,
                                            Frm_Gain_empty)
-
+    
     NPGain_FrmGain = calculate_NPGain_FrmGain(CPGain_FrmGain,
                                                  coeff_dict)
 
@@ -1346,6 +1407,20 @@ def execute_model(user_diet: pd.DataFrame,
     Frm_MEgain = calculate_Frm_MEgain(Frm_NEgain,
                                          coeff_dict)
 
+    Body_Fatgain = calculate_Body_Fatgain(Frm_Fatgain, Rsrv_Fatgain)
+    Body_NonFatGain = calculate_Body_NonFatGain(Body_Gain_empty, Body_Fatgain)
+    Frm_CPgain_g = calculate_Frm_CPgain_g(Frm_CPgain)
+    Rsrv_CPgain_g = calculate_Rsrv_CPgain_g(Rsrv_CPgain)
+    Body_AshGain = calculate_Body_AshGain(Body_NonFatGain)
+    Frm_AshGain = calculate_Frm_AshGain(Body_AshGain)
+    WatGain_RsrvGain = calculate_WatGain_RsrvGain(NPGain_RsrvGain,
+                                                  coeff_dict)
+    Rsrv_WatGain = calculate_Rsrv_WatGain(WatGain_RsrvGain,
+                                          Rsrv_Gain_empty)
+    Body_WatGain = calculate_Body_WatGain(Body_NonFatGain)
+    Frm_WatGain = calculate_Frm_WatGain(Body_WatGain,
+                                        Rsrv_WatGain)
+    
     An_MEgain = calculate_An_MEgain(Rsrv_MEgain,
                                        Frm_MEgain)
 
@@ -1502,6 +1577,14 @@ def execute_model(user_diet: pd.DataFrame,
     An_NPm_Use = calculate_An_NPm_Use(Scrf_NP_g, Fe_NPend_g, Ur_NPend_g)
     An_CPm_Use = calculate_An_CPm_Use(Scrf_CP_g, Fe_CPend_g, Ur_NPend_g)
 
+    # AA for Body Gain
+    AA_values['Body_AAGain_g'] = calculate_Body_AAGain_g(Body_NPgain_g,
+                                                         coeff_dict,
+                                                         AA_list)
+    Body_EAAGain_g = calculate_Body_EAAGain_g(AA_values['Body_AAGain_g'])
+    AA_values['BodyAA_AbsAA'] = calculate_BodyAA_AbsAA(AA_values['Body_AAGain_g'],
+                                                       AA_values['Abs_AA_g'])
+
     ########################################
     # Milk Production Calculations
     ########################################
@@ -1583,9 +1666,6 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Mineral Requirement Calculations
     ########################################
-    Body_Gain = calculate_Body_Gain(Frm_Gain,
-                                    Rsrv_Gain)
-
     ### Calcium ###
     Ca_Mlk = calculate_Ca_Mlk(animal_input['An_Breed'])
 

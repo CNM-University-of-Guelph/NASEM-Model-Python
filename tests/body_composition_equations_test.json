@@ -183,6 +183,146 @@
       "Name": "calculate_Conc_BWgain",
       "Input": {"GrUter_BWgain": 0.4, "Uter_BWgain": 0.6},
       "Output": -0.19999999999999996
+    },
+    {
+      "Name": "calculate_BW_BCS",
+      "Input": {"An_BW": 640},
+      "Output": 60.16
+    },
+    {
+      "Name": "calculate_An_BWnp3",
+      "Input": {"An_BWnp": 510, "An_BCS": 3.5},
+      "Output": 487.1060171919771
+    },
+    {
+      "Name": "calculate_An_GutFill_Wt_Erdman",
+      "Input": {"Dt_DMIn": 32.1, "InfRum_DMIn": 1.9, "InfSI_DMIn": 0.3},
+      "Output": 202.37
+    },
+    {
+      "Name": "calculate_An_GutFill_Wt",
+      "Input": {"An_GutFill_BW": 142, "An_BWnp": 4.1},
+      "Output": 582.1999999999999
+    },
+    {
+      "Name": "calculate_An_BWnp_empty",
+      "Input": {"An_BWnp": 5.1, "An_GutFill_Wt": 210},
+      "Output": -204.9
+    },
+    {
+      "Name": "calculate_An_BWnp3_empty",
+      "Input": {"An_BWnp3": 510, "An_GutFill_Wt": 153},
+      "Output": 357
+    },
+    {
+      "Name": "calculate_Body_Fat_EBW",
+      "Input": {"An_BW": 732, "An_BW_mature": 700},
+      "Output": 0.2635942857142857
+    },
+    {
+      "Name": "calculate_Body_NonFat_EBW",
+      "Input": {"Body_Fat_EBW": 0.5},
+      "Output": 0.5
+    },
+    {
+      "Name": "calculate_Body_CP_EBW",
+      "Input": {"Body_NonFat_EBW": 0.12},
+      "Output": 0.0258
+    },
+    {
+      "Name": "calculate_Body_Ash_EBW",
+      "Input": {"Body_NonFat_EBW": 0.72},
+      "Output": 0.04032
+    },
+    {
+      "Name": "calculate_Body_Wat_EBW",
+      "Input": {"Body_NonFat_EBW": 0.34},
+      "Output": 0.24786000000000002
+    },
+    {
+      "Name": "calculate_Body_Fat",
+      "Input": {"An_BWnp_empty": 26, "Body_Fat_EBW": 1.8},
+      "Output": 46.800000000000004
+    },
+    {
+      "Name": "calculate_Body_NonFat",
+      "Input": {"An_BWnp_empty": 231, "Body_NonFat_EBW": 1.8},
+      "Output": 415.8
+    },
+    {
+      "Name": "calculate_Body_CP",
+      "Input": {"An_BWnp_empty": 198, "Body_NonFat_EBW": 2.5},
+      "Output": 495.0
+    },
+    {
+      "Name": "calculate_Body_Ash",
+      "Input": {"An_BWnp_empty": 72, "Body_Ash_EBW": 1.02},
+      "Output": 73.44
+    },
+    {
+      "Name": "calculate_Body_Wat",
+      "Input": {"An_BWnp_empty": 310, "Body_Wat_EBW": 2.5},
+      "Output": 775.0
+    },
+    {
+      "Name": "calculate_An_BodConcgain",
+      "Input": {"Body_Gain": 2.8, "Conc_BWgain": 0.3},
+      "Output": 3.0999999999999996
+    },
+    {
+      "Name": "calculate_NonFatGain_FrmGain",
+      "Input": {"FatGain_FrmGain": 1.6},
+      "Output": -0.6000000000000001
+    },
+    {
+      "Name": "calculate_Body_Fatgain",
+      "Input": {"Frm_Fatgain": 3.6, "Rsrv_Fatgain": 1.9},
+      "Output": 5.5
+    },
+    {
+      "Name": "calculate_Body_NonFatGain",
+      "Input": {"Body_Gain_empty": 3.6, "Body_Fatgain": 2.9},
+      "Output": 0.7000000000000002
+    },
+    {
+      "Name": "calculate_Frm_CPgain_g",
+      "Input": {"Frm_CPgain": 3.1},
+      "Output": 3100
+    },
+    {
+      "Name": "calculate_Rsrv_CPgain_g",
+      "Input": {"Rsrv_CPgain": 2.9},
+      "Output": 2900
+    },
+    {
+      "Name": "calculate_Body_AshGain",
+      "Input": {"Body_NonFatGain": 4.19},
+      "Output": 0.23464000000000002
+    },
+    {
+      "Name": "calculate_Frm_AshGain",
+      "Input": {"Body_AshGain": 2.9},
+      "Output": 2.9
+    },
+    {
+      "Name": "calculate_WatGain_RsrvGain",
+      "Input": {"NPGain_RsrvGain": 0.2, "coeff_dict": null},
+      "Output": 99.158
+    },
+    {
+      "Name": "calculate_Rsrv_WatGain",
+      "Input": {"WatGain_RsrvGain": 2.9, "Rsrv_Gain_empty": 10},
+      "Output": 29.0
+    },
+    {
+      "Name": "calculate_Body_WatGain",
+      "Input": {"Body_NonFatGain": 2.8},
+      "Output": 2.0412
+    },
+    {
+      "Name": "calculate_Frm_WatGain",
+      "Input": {"Body_WatGain": 5.1, "Rsrv_WatGain": 2.9},
+      "Output": 2.1999999999999997
     }
   ]
   

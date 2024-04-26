@@ -250,3 +250,231 @@ def calculate_Conc_BWgain(GrUter_BWgain: float, Uter_BWgain: float) -> float:
     """
     Conc_BWgain = GrUter_BWgain - Uter_BWgain   # Line 2349
     return Conc_BWgain
+
+
+def calculate_BW_BCS(An_BW: float) -> float:
+    """
+    BW_BCS: Calculate BCS from BW?
+    """
+    BW_BCS = 0.094 * An_BW  # Each BCS represents 94 g of weight per kg of BW, Line 2395
+    return BW_BCS
+    
+
+def calculate_An_BWnp3(An_BWnp: float, An_BCS: float) -> float:
+    """
+    An_BWnp3: Non-pregnant BW standardized to BCS 3(kg)
+    """
+    An_BWnp3 = An_BWnp / (1 + 0.094*(An_BCS - 3)) # BWnp standardized to BCS of 3 using 9.4% of BW/unit of BCS, Line 2397
+    return An_BWnp3
+    
+
+def calculate_An_GutFill_Wt_Erdman(Dt_DMIn: float, InfRum_DMIn: float, InfSI_DMIn: float) -> float:
+    """
+    An_GutFill_Wt_Erdman: Gut fill from Erdman et al. 2017
+    """
+    An_GutFill_Wt_Erdman = 5.9 * (Dt_DMIn + InfRum_DMIn + InfSI_DMIn)	# cows only, from Erdman et al. 2017; not used, Line 2411
+    return An_GutFill_Wt_Erdman
+    
+
+def calculate_An_GutFill_Wt(An_GutFill_BW: float, An_BWnp: float) -> float:
+    """
+    An_GutFill_Wt: Gut fill (kg)
+    """
+    An_GutFill_Wt = An_GutFill_BW * An_BWnp # Line 2413
+    return An_GutFill_Wt
+    
+
+def calculate_An_BWnp_empty(An_BWnp: float, An_GutFill_Wt: float) -> float:
+    """
+    An_BWnp_empty: Non pregnant empty BW (kg). 
+    Comment says 3 Std BCS standardized but this does not use An_BWnp3?
+    """
+    An_BWnp_empty = An_BWnp - An_GutFill_Wt 	# BCS3 Std EBW, Line 2416
+    return An_BWnp_empty
+    
+
+def calculate_An_BWnp3_empty(An_BWnp3: float, An_GutFill_Wt: float) -> float:
+    """
+    An_BWnp3_empty: Non pregnant empty bodyweight standardized 3 Std
+    """
+    An_BWnp3_empty = An_BWnp3 - An_GutFill_Wt 	# BCS3 Std EBWnp, Line 2417
+    return An_BWnp3_empty
+    
+
+def calculate_Body_Fat_EBW(An_BW: float, An_BW_mature: float) -> float:
+    """
+    Body_Fat_EBW: g fat / g empty BW
+    """
+    Body_Fat_EBW = 0.067 + 0.188 * An_BW / An_BW_mature # Line 2420
+    return Body_Fat_EBW
+    
+
+def calculate_Body_NonFat_EBW(Body_Fat_EBW: float) -> float:
+    """
+    Body_NonFat_EBW: Non fat empty bodyweight (g/g EBW)
+    """
+    Body_NonFat_EBW = 1 - Body_Fat_EBW  # Line 2421
+    return Body_NonFat_EBW
+    
+
+def calculate_Body_CP_EBW(Body_NonFat_EBW: float) -> float:
+    """
+    Body_CP_EBW: g CP / g EBW
+    """
+    Body_CP_EBW = 0.215 * Body_NonFat_EBW   # Line 2422
+    return Body_CP_EBW
+    
+
+def calculate_Body_Ash_EBW(Body_NonFat_EBW: float) -> float:
+    """
+    Body_Ash_EBW: g Ash / g EBW
+    """
+    Body_Ash_EBW = 0.056 * Body_NonFat_EBW  # Line 2423
+    return Body_Ash_EBW
+    
+
+def calculate_Body_Wat_EBW(Body_NonFat_EBW: float) -> float:
+    """
+    Body_Wat_EBW: g water? / g EBW
+    """
+    Body_Wat_EBW = 0.729 * Body_NonFat_EBW  # Line 2424
+    return Body_Wat_EBW
+    
+
+def calculate_Body_Fat(An_BWnp_empty: float, Body_Fat_EBW: float) -> float:
+    """
+    Body_Fat: Body fat (g)
+    """
+    Body_Fat = An_BWnp_empty * Body_Fat_EBW  # Using a non-pregnant BW, Line 2426
+    return Body_Fat
+    
+
+def calculate_Body_NonFat(An_BWnp_empty: float, Body_NonFat_EBW: float) -> float:
+    """
+    Body_NonFat: Non fat bodyweight (g)
+    """
+    Body_NonFat = An_BWnp_empty * Body_NonFat_EBW   # Line 2427
+    return Body_NonFat
+    
+
+def calculate_Body_CP(An_BWnp_empty: float, Body_NonFat_EBW: float) -> float:
+    """
+    Body_CP: CP bodyweight (g)
+    """
+    Body_CP = An_BWnp_empty * Body_NonFat_EBW   # Line 2428
+    return Body_CP
+    
+
+def calculate_Body_Ash(An_BWnp_empty: float, Body_Ash_EBW: float) -> float:
+    """
+    Body_Ash: Ash bodyweight (g)
+    """
+    Body_Ash = An_BWnp_empty * Body_Ash_EBW # Line 2429
+    return Body_Ash
+    
+
+def calculate_Body_Wat(An_BWnp_empty: float, Body_Wat_EBW: float) -> float:
+    """
+    Body_Wat: Water bodyweight (g)
+    """
+    Body_Wat = An_BWnp_empty * Body_Wat_EBW # Line 2430
+    return Body_Wat
+    
+
+def calculate_An_BodConcgain(Body_Gain: float, Conc_BWgain: float) -> float:
+    """
+    An_BodConcgain: ? (kg/d)
+    """
+    An_BodConcgain = Body_Gain + Conc_BWgain # Minus fetal fluid, Line 2437
+    return An_BodConcgain
+    
+
+def calculate_NonFatGain_FrmGain(FatGain_FrmGain: float) -> float:
+    """
+    NonFatGain_FrmGain: Non fat frame gain (g/g)
+    """
+    NonFatGain_FrmGain = 1 - FatGain_FrmGain    # Line 2450
+    return NonFatGain_FrmGain
+    
+
+def calculate_Body_Fatgain(Frm_Fatgain: float, Rsrv_Fatgain: float) -> float:
+    """
+    Body_Fatgain: Fat gain (g/g)
+    """
+    Body_Fatgain = Frm_Fatgain + Rsrv_Fatgain   # Line 2454
+    return Body_Fatgain
+    
+
+def calculate_Body_NonFatGain(Body_Gain_empty: float, Body_Fatgain: float) -> float:
+    """
+    Body_NonFatGain: Non fat gain (g/g)
+    """
+    Body_NonFatGain = Body_Gain_empty - Body_Fatgain    # Line 2455
+    return Body_NonFatGain
+    
+
+def calculate_Frm_CPgain_g(Frm_CPgain: float) -> float:
+    """
+    Frm_CPgain_g: Body frame crude protein gain (kg)
+    """
+    Frm_CPgain_g = Frm_CPgain * 1000    # Line 2464
+    return Frm_CPgain_g
+    
+
+def calculate_Rsrv_CPgain_g(Rsrv_CPgain: float) -> float:
+    """
+    Rsrv_CPgain_g: Body reserve crude protein gain (g/d)
+    """
+    Rsrv_CPgain_g = Rsrv_CPgain * 1000  # Line 2471
+    return Rsrv_CPgain_g
+      
+
+def calculate_Body_AshGain(Body_NonFatGain: float) -> float:
+    """
+    Body_AshGain: Body ash gain (g/g)
+    """
+    Body_AshGain = 0.056 * Body_NonFatGain  # Alternative method of estimation Body and Frm Ash, Line 2484
+    return Body_AshGain
+    
+
+def calculate_Frm_AshGain(Body_AshGain: float) -> float:
+    """
+    Frm_AshGain: Body frame ash gain (g/g)
+    """
+    Frm_AshGain = Body_AshGain  # Line 2485
+    return Frm_AshGain
+    
+
+def calculate_WatGain_RsrvGain(NPGain_RsrvGain: float, coeff_dict: dict) -> float:
+    """
+    WatGain_RsrvGain: Body reserve water gain (g/g)
+    """
+    req_coeff = ['FatGain_RsrvGain', 'AshGain_RsrvGain']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    WatGain_RsrvGain = 100 - coeff_dict['FatGain_RsrvGain'] - NPGain_RsrvGain - coeff_dict['AshGain_RsrvGain']    # Line 2489
+    return WatGain_RsrvGain
+
+
+def calculate_Rsrv_WatGain(WatGain_RsrvGain: float, Rsrv_Gain_empty: float) -> float:
+    """
+    Rsrv_WatGain: Body reserve water gain (g/g)
+    """
+    Rsrv_WatGain = WatGain_RsrvGain * Rsrv_Gain_empty   # Line 2491
+    return Rsrv_WatGain
+
+
+def calculate_Body_WatGain(Body_NonFatGain: float) -> float:
+    """
+    Body_WatGain: Bodyweight water gain (g/g)
+    """
+    Body_WatGain = 0.729 * Body_NonFatGain # Alternative method of estimation, Line 2493
+    return Body_WatGain
+    
+
+def calculate_Frm_WatGain(Body_WatGain: float, Rsrv_WatGain: float) -> float:
+    """
+    Frm_WatGain: Body frame water gain (g/g)
+    """
+    Frm_WatGain = Body_WatGain - Rsrv_WatGain   # Line 2494
+    return Frm_WatGain
+    
