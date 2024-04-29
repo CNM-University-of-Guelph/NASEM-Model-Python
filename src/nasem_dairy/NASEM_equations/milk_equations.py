@@ -403,3 +403,11 @@ def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series, diet_data: pd.DataFrame, AA_list: 
     Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
     MlkAA_DtAA = Mlk_AA_g / Dt_AAIn # Line 2243-2252
     return MlkAA_DtAA
+
+
+def calculate_Mlk_MPUse_g(Mlk_NP_g: float, Kl_MP_NP: float) -> float:
+    """
+    Mlk_MPUse_g: MP used for milk produciton (kg MP/d)
+    """
+    Mlk_MPUse_g = Mlk_NP_g / Kl_MP_NP  # kg MP/d for lactation, Line 2728
+    return Mlk_MPUse_g

@@ -160,3 +160,14 @@ def calculate_An_MPuse_g_Trg(An_MPm_g_Trg: float, Frm_MPUse_g_Trg: float, Rsrv_M
     """
     An_MPuse_g_Trg = An_MPm_g_Trg + Frm_MPUse_g_Trg + Rsrv_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg # Line 2697
     return An_MPuse_g_Trg
+
+
+def calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg: float, Scrf_MPUse_g_Trg: float, Ur_MPendUse_g: float, Body_MPUse_g_Trg: float, Gest_MPUse_g_Trg: float, Trg_Mlk_NP_g: float, coeff_dict: dict) -> float:
+    """
+    Trg_MPIn_req: Target MP requirement (g/d)
+    """
+    req_coeff = ['Kl_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Trg_MPIn_req = Fe_MPendUse_g_Trg + Scrf_MPUse_g_Trg + Ur_MPendUse_g + Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Trg_Mlk_NP_g / coeff_dict['Kl_MP_NP_Trg']   # Line 2710
+    return Trg_MPIn_req
+

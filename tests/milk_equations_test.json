@@ -189,5 +189,10 @@
       "Name": "calculate_MlkNP_AnCP",
       "Input": {"Mlk_NP_g": 2542, "An_CPIn": 3471},
       "Output": 0.0007323537885335638
+    },
+    {
+      "Name": "calculate_Mlk_MPUse_g",
+      "Input": {"Mlk_NP_g": 310, "Kl_MP_NP": 0.75},
+      "Output": 413.3333333333333
     }
 ]

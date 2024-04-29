@@ -178,6 +178,11 @@
       "Name": "calculate_Fe_DE",
       "Input": {"Fe_DEout": 35.7, "An_DMIn": 32.5},
       "Output": 1.0984615384615386
+    },
+    {
+      "Name": "calculate_Fe_MPendUse_g",
+      "Input": {"Fe_NPend_g": 301, "Km_MP_NP": 0.42},
+      "Output": 716.6666666666667
     }
   ]
   

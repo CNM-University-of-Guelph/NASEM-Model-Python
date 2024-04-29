@@ -56,7 +56,8 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkAA_AbsAA,
     calculate_MlkEAA_AbsEAA,
     calculate_MlkNP_AnCP,
-    calculate_MlkAA_DtAA
+    calculate_MlkAA_DtAA,
+    calculate_Mlk_MPUse_g
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -123,7 +124,21 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_An_NCPuse_g,
     calculate_An_Nprod_g,
     calculate_An_Nprod_NIn,
-    calculate_An_Nprod_DigNIn
+    calculate_An_Nprod_DigNIn,
+    calculate_An_MPBal_g_Trg,
+    calculate_Xprt_NP_MP_Trg,
+    calculate_Xprt_NP_MP,
+    calculate_Km_MP_NP,
+    calculate_Kl_MP_NP,
+    calculate_Scrf_MPUse_g,
+    calculate_An_MPuse_g,
+    calculate_An_MPuse,
+    calculate_An_MPBal_g,
+    calculate_An_MP_NP,
+    calculate_An_NPxprt_MP,
+    calculate_An_CP_NP,
+    calculate_An_NPBal_g,
+    calculate_An_NPBal
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -242,8 +257,8 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DE_GE,
     calculate_Fe_DE,
     calculate_Fe_AAMet_g,
-    calculate_Fe_AAMet_AbsAA
-
+    calculate_Fe_AAMet_AbsAA,
+    calculate_Fe_MPendUse_g
 )
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -305,7 +320,12 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_WatGain_RsrvGain,
     calculate_Rsrv_WatGain,
     calculate_Body_WatGain,
-    calculate_Frm_WatGain
+    calculate_Frm_WatGain,
+    calculate_An_MPavail_Gain_Trg,
+    calculate_Body_NPgain_MPalowTrg_g,
+    calculate_Body_CPgain_MPalowTrg_g,
+    calculate_Body_Gain_MPalowTrg_g,
+    calculate_Body_Gain_MPalowTrg
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -366,7 +386,9 @@ from nasem_dairy.NASEM_equations.protein_requirement_equations import (
     calculate_Rsrv_NPgain_g,
     calculate_Rsrv_MPUse_g_Trg,
     calculate_Body_MPUse_g_Trg,
-    calculate_An_MPuse_g_Trg
+    calculate_An_MPuse_g_Trg,
+    calculate_An_MPuse_g_Trg,
+    calculate_Trg_MPIn_req
 )
 
 from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
@@ -1763,6 +1785,64 @@ def execute_model(user_diet: pd.DataFrame,
 
     Mlk_MEout = calculate_Mlk_MEout(Mlk_NEout,
                                        coeff_dict)
+
+    ### MP Use and MP Allowable Production ###
+    An_MPBal_g_Trg = calculate_An_MPBal_g_Trg(An_MPIn_g, An_MPuse_g_Trg)
+    Xprt_NP_MP_Trg = calculate_Xprt_NP_MP_Trg(Scrf_NP_g,
+                                              Fe_NPend_g,
+                                              Trg_Mlk_NP_g,
+                                              Body_NPgain_g,
+                                              An_MPIn_g,
+                                              Ur_NPend_g,
+                                              Gest_MPUse_g_Trg)
+    Trg_MPIn_req = calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg,
+                                          Scrf_MPUse_g_Trg,
+                                          Ur_MPendUse_g,
+                                          Body_MPUse_g_Trg,
+                                          Gest_MPUse_g_Trg,
+                                          Trg_Mlk_NP_g,
+                                          coeff_dict)
+    An_MPavail_Gain_Trg = calculate_An_MPavail_Gain_Trg(An_MPIn,
+                                                        An_MPuse_g_Trg,
+                                                        Body_MPUse_g_Trg)
+    Body_NPgain_MPalowTrg_g = calculate_Body_NPgain_MPalowTrg_g(An_MPavail_Gain_Trg, 
+                                                                Kg_MP_NP_Trg)
+    Body_CPgain_MPalowTrg_g = calculate_Body_CPgain_MPalowTrg_g(Body_NPgain_MPalowTrg_g,
+                                                                coeff_dict)
+    Body_Gain_MPalowTrg_g = calculate_Body_Gain_MPalowTrg_g(Body_NPgain_MPalowTrg_g,
+                                                            NPGain_FrmGain)
+    Body_Gain_MPalowTrg = calculate_Body_Gain_MPalowTrg(Body_Gain_MPalowTrg_g)
+    Xprt_NP_MP = calculate_Xprt_NP_MP(Scrf_NP_g,
+                                      Fe_NPend_g,
+                                      Mlk_NP_g,
+                                      Body_NPgain_g,
+                                      An_MPIn_g,
+                                      Ur_NPend_g,
+                                      Gest_MPUse_g_Trg)
+    Km_MP_NP = calculate_Km_MP_NP(animal_input['An_StatePhys'],
+                                  Xprt_NP_MP)
+    Kl_MP_NP = calculate_Kl_MP_NP(Xprt_NP_MP)
+    Fe_MPendUse_g = calculate_Fe_MPendUse_g(Fe_NPend_g, Km_MP_NP)
+    Scrf_MPUse_g = calculate_Scrf_MPUse_g(Scrf_NP_g, Km_MP_NP)
+    Mlk_MPUse_g = calculate_Mlk_MPUse_g(Mlk_NP_g, Kl_MP_NP)
+    An_MPuse_g = calculate_An_MPuse_g(Fe_MPendUse_g,
+                                      Scrf_MPUse_g,
+                                      Ur_MPendUse_g,
+                                      Body_MPUse_g_Trg,
+                                      Gest_MPUse_g_Trg,
+                                      Mlk_MPUse_g)
+    An_MPuse = calculate_An_MPuse(An_MPuse_g)
+    An_MPBal_g = calculate_An_MPBal_g(An_MPIn_g, An_MPuse_g)
+    An_MP_NP = calculate_An_MP_NP(An_NPuse_g, An_MPuse_g)
+    An_NPxprt_MP = calculate_An_NPxprt_MP(An_NPuse_g, 
+                                          Ur_NPend_g,
+                                          Gest_NPuse_g,
+                                          An_MPIn_g,
+                                          Gest_MPUse_g_Trg)
+    An_CP_NP = calculate_An_CP_NP(An_NPuse_g, An_data['An_CPIn'])
+    An_NPBal_g = calculate_An_NPBal_g(An_MPIn_g, An_MP_NP, An_NPuse_g)
+    An_NPBal = calculate_An_NPBal(An_NPBal_g)
+
 
     ########################################
     # Mineral Requirement Calculations

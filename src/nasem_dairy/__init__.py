@@ -59,7 +59,8 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkAA_AbsAA,
     calculate_MlkEAA_AbsEAA,
     calculate_MlkNP_AnCP,
-    calculate_MlkAA_DtAA
+    calculate_MlkAA_DtAA,
+    calculate_Mlk_MPUse_g
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -293,7 +294,21 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_An_NCPuse_g,
     calculate_An_Nprod_g,
     calculate_An_Nprod_NIn,
-    calculate_An_Nprod_DigNIn
+    calculate_An_Nprod_DigNIn,
+    calculate_An_MPBal_g_Trg,
+    calculate_Xprt_NP_MP_Trg,
+    calculate_Xprt_NP_MP,
+    calculate_Km_MP_NP,
+    calculate_Kl_MP_NP,
+    calculate_Scrf_MPUse_g,
+    calculate_An_MPuse_g,
+    calculate_An_MPuse,
+    calculate_An_MPBal_g,
+    calculate_An_MP_NP,
+    calculate_An_NPxprt_MP,
+    calculate_An_CP_NP,
+    calculate_An_NPBal_g,
+    calculate_An_NPBal
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -510,7 +525,8 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DE_GE,
     calculate_Fe_DE,
     calculate_Fe_AAMet_g,
-    calculate_Fe_AAMet_AbsAA
+    calculate_Fe_AAMet_AbsAA,
+    calculate_Fe_MPendUse_g
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -572,7 +588,12 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_WatGain_RsrvGain,
     calculate_Rsrv_WatGain,
     calculate_Body_WatGain,
-    calculate_Frm_WatGain
+    calculate_Frm_WatGain,
+    calculate_An_MPavail_Gain_Trg,
+    calculate_Body_NPgain_MPalowTrg_g,
+    calculate_Body_CPgain_MPalowTrg_g,
+    calculate_Body_Gain_MPalowTrg_g,
+    calculate_Body_Gain_MPalowTrg
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -633,7 +654,8 @@ from nasem_dairy.NASEM_equations.protein_requirement_equations import (
     calculate_Rsrv_NPgain_g,
     calculate_Rsrv_MPUse_g_Trg,
     calculate_Body_MPUse_g_Trg,
-    calculate_An_MPuse_g_Trg
+    calculate_An_MPuse_g_Trg,
+    calculate_Trg_MPIn_req
 )
 
 from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (

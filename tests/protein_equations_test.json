@@ -133,5 +133,80 @@
       "Name": "calculate_An_Nprod_DigNIn",
       "Input": {"An_Nprod_g": 1012, "An_DigNtIn_g": 2013},
       "Output": 0.5027322404371585
+    },
+    {
+      "Name": "calculate_An_MPBal_g_Trg",
+      "Input": {"An_MPIn_g": 4030, "An_MPuse_g_Trg": 3821},
+      "Output": 209
+    },
+    {
+      "Name": "calculate_Xprt_NP_MP_Trg",
+      "Input": {"Scrf_NP_g": 129, "Fe_NPend_g": 605, "Trg_Mlk_NP_g": 3301, "Body_NPgain_g": 312, "An_MPIn_g": 5012, "Ur_NPend_g": 321, "Gest_MPUse_g_Trg": 130},
+      "Output": 0.9530804648103486
+    },
+    {
+      "Name": "calculate_Xprt_NP_MP",
+      "Input": {"Scrf_NP_g": 302, "Fe_NPend_g": 1201, "Mlk_NP_g": 4501, "Body_NPgain_g": 103, "An_MPIn_g": 419, "Ur_NPend_g": 846, "Gest_MPUse_g_Trg": 330},
+      "Output": -8.067371202113605
+    },
+    {
+      "Name": "calculate_Km_MP_NP",
+      "Input": {"An_StatePhys": "Heifer", "Xprt_NP_MP": 0.754},
+      "Output": 0.69
+    },
+    {
+      "Name": "calculate_Km_MP_NP",
+      "Input": {"An_StatePhys": "Lactating Cow", "Xprt_NP_MP": 0.754},
+      "Output": 0.754
+    },
+    {
+      "Name": "calculate_Kl_MP_NP",
+      "Input": {"Xprt_NP_MP": 0.48},
+      "Output": 0.48
+    },
+    {
+      "Name": "calculate_Scrf_MPUse_g",
+      "Input": {"Scrf_NP_g": 1301, "Km_MP_NP": 0.83},
+      "Output": 1567.4698795180723
+    },
+    {
+      "Name": "calculate_An_MPuse_g",
+      "Input": {"Fe_MPendUse_g": 310, "Scrf_MPUse_g": 741, "Ur_MPendUse_g": 810, "Body_MPUse_g_Trg": 104, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g": 3012},
+      "Output": 5068
+    },
+    {
+      "Name": "calculate_An_MPuse",
+      "Input": {"An_MPuse_g": 2693},
+      "Output": 2.693
+    },
+    {
+      "Name": "calculate_An_MPBal_g",
+      "Input": {"An_MPIn_g": 4019, "An_MPuse_g": 2034},
+      "Output": 1985
+    },
+    {
+      "Name": "calculate_An_MP_NP",
+      "Input": {"An_NPuse_g": 1291, "An_MPuse_g": 3012},
+      "Output": 0.42861885790172644
+    },
+    {
+      "Name": "calculate_An_NPxprt_MP",
+      "Input": {"An_NPuse_g": 1202, "Ur_NPend_g": 8412, "Gest_NPuse_g": 239, "An_MPIn_g": 301, "Gest_MPUse_g_Trg": 471},
+      "Output": 0.8679794919599161
+    },
+    {
+      "Name": "calculate_An_CP_NP",
+      "Input": {"An_NPuse_g": 1410, "An_CPIn": 7.4},
+      "Output": 0.19054054054054054
+    },
+    {
+      "Name": "calculate_An_NPBal_g",
+      "Input": {"An_MPIn_g": 4301, "An_MP_NP": 0.74, "An_NPuse_g": 1301},
+      "Output": 1881.7399999999998
+    },
+    {
+      "Name": "calculate_An_NPBal",
+      "Input": {"An_NPBal_g": 3013},
+      "Output": 3.013
     }
   ]

@@ -478,3 +478,44 @@ def calculate_Frm_WatGain(Body_WatGain: float, Rsrv_WatGain: float) -> float:
     Frm_WatGain = Body_WatGain - Rsrv_WatGain   # Line 2494
     return Frm_WatGain
     
+
+def calculate_An_MPavail_Gain_Trg(An_MPIn: float, An_MPuse_g_Trg: float, Body_MPUse_g_Trg: float) -> float:
+    """
+    An_MPavail_Gain_Trg: MP available for target gain? (kg/d)
+    """
+    An_MPavail_Gain_Trg = An_MPIn - An_MPuse_g_Trg / 1000 + Body_MPUse_g_Trg / 1000 # Line 2712
+    return An_MPavail_Gain_Trg
+
+
+def calculate_Body_NPgain_MPalowTrg_g(An_MPavail_Gain_Trg: float, Kg_MP_NP_Trg: float) -> float:
+    """
+    Body_NPgain_MPalowTrg_g: MP allowable NP gain (g/d)
+    """
+    Body_NPgain_MPalowTrg_g = An_MPavail_Gain_Trg  * Kg_MP_NP_Trg * 1000   # g NP gain/d, Line 2713
+    return Body_NPgain_MPalowTrg_g
+
+
+def calculate_Body_CPgain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float, coeff_dict: dict) -> float:
+    """
+    Body_CPgain_MPalowTrg_g: MP allowable CP gain (g/d)
+    """
+    req_coeff = ['Body_NP_CP']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Body_CPgain_MPalowTrg_g = Body_NPgain_MPalowTrg_g / coeff_dict['Body_NP_CP']   # g CP gain/d, Line 2714
+    return Body_CPgain_MPalowTrg_g
+
+
+def calculate_Body_Gain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float, NPGain_FrmGain: float) -> float:
+    """
+    Body_Gain_MPalowTrg_g: MP allowable body gain (g/d)
+    """
+    Body_Gain_MPalowTrg_g = Body_NPgain_MPalowTrg_g / NPGain_FrmGain  # g/d, Assume all is frame gain, Line 2715
+    return Body_Gain_MPalowTrg_g
+
+
+def calculate_Body_Gain_MPalowTrg(Body_Gain_MPalowTrg_g: float) -> float:
+    """
+    Body_Gain_MPalowTrg: MP allowable body gain (kg/d)
+    """
+    Body_Gain_MPalowTrg = Body_Gain_MPalowTrg_g / 1000  # Line 2716
+    return Body_Gain_MPalowTrg

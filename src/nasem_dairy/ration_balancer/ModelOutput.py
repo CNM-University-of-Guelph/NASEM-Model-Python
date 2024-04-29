@@ -260,7 +260,9 @@ class ModelOutput:
                              'An_NPxprt_g', 'Trg_NPxprt_g', 'An_CPprod_g', 'An_NPprod_g', 'Trg_NPprod_g', 'An_NPprod_MPIn', 
                              'Trg_NPuse_g', 'An_NPuse_g', 'An_NCPuse_g', 'An_Nprod_g', 'An_Nprod_NIn', 'An_Nprod_DigNIn', 
                              'An_EAAUse_g', 'AnEAAUse_AbsEAA', 'An_EAABal_g', 'Trg_AbsEAA_NPxprtEAA', 'Trg_AbsArg_NPxprtArg', 
-                             'Trg_AAEff_EAAEff', 'Imb_EAA']
+                             'Trg_AAEff_EAAEff', 'Imb_EAA', 'An_MPBal_g_Trg', 'Xprt_NP_MP_Trg', 'Trg_MPIn_req', 'An_MPavail_Gain_Trg',
+                             'Xprt_NP_MP', 'Km_MP_NP', 'Kl_MP_NP', 'An_MPuse_g', 'An_MPuse', 'An_MPBal_g', 'An_MP_NP', 'An_NPxprt_MP', 
+                             'An_CP_NP', 'An_NPBal_g', 'An_NPBal']
         # Store variables
         self.__populate_category('Requirements', group_names, energy_variables, protein_variables)
 
@@ -302,13 +304,14 @@ class ModelOutput:
         # List variables to store
         milk_variables = ['Trg_NEmilk_Milk', 'Mlk_NP_g', 'Mlk_CP_g', 'Trg_Mlk_Fat' ,'Trg_Mlk_Fat_g', 'Mlk_Fatemp_g', 'Mlk_Fat_g', 'Mlk_Fat', 'Mlk_NP', 'Mlk_Prod_comp',
                           'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 
-                          'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP']
+                          'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP', 
+                          'Mlk_MPUse_g']
         composition_variables = ['CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain', 'Rsrv_Gain_empty', 'NPGain_RsrvGain', 'Rsrv_NPgain',
                                  'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 
                                  'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain', 'Conc_BWgain', 'BW_BCS', 'Body_Fat_EBW', 'Body_NonFat_EBW', 'Body_CP_EBW', 'Body_Ash_EBW', 
                                  'Body_Wat_EBW', 'Body_Fat', 'Body_NonFat', 'Body_CP', 'Body_Ash', 'Body_Wat', 'An_BodConcgain', 'NonFatGain_FrmGain', 'Body_Fatgain', 
                                  'Body_NonFatGain', 'Frm_CPgain_g', 'Rsrv_CPgain_g', 'Body_AshGain', 'Frm_AshGain', 'WatGain_RsrvGain', 'Rsrv_WatGain', 'Body_WatGain', 
-                                 'Frm_WatGain','Body_EAAGain_g']
+                                 'Frm_WatGain','Body_EAAGain_g', 'Body_NPgain_MPalowTrg_g', 'Body_CPgain_MPalowTrg_g', 'Body_Gain_MPalowTrg_g', 'Body_Gain_MPalowTrg']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
                                'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain', 'An_Preg', 'Fet_Wt', 'Fet_BWgain']
         MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 
@@ -326,11 +329,11 @@ class ModelOutput:
         # Lists of variables to store
         fecal_variables = ['Fe_rOMend', 'Fe_RUP', 'Fe_RumMiCP', 'Fe_CPend_g', 'Fe_CPend', 'Fe_CP', 'Fe_NPend', 'Fe_NPend_g', 'Fe_MPendUse_g_Trg', 'Fe_rOM', 'Fe_St', 'Fe_NDF', 'Fe_NDFnf',
                            'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g', 'Fe_FA', 'Fe_OM_end', 'Fe_OM', 'Fe_DEMiCPend', 'Fe_DERDPend', 'Fe_DERUPend', 
-                           'Fe_DEout', 'Fe_DE_GE', 'Fe_DE', 'Fe_AAMet_g', 'Fe_AAMet_AbsAA']
+                           'Fe_DEout', 'Fe_DE_GE', 'Fe_DE', 'Fe_AAMet_g', 'Fe_AAMet_AbsAA', 'Fe_MPendUse_g']
         urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g', 'Ur_Nend_Urea_g', 'Ur_Nend_Creatn_g', 'Ur_Nend_Creat_g', 'Ur_Nend_PD_g', 'Ur_NPend_3MH_g', 
                              'Ur_Nend_3MH_g', 'Ur_Nend_sum_g', 'Ur_Nend_Hipp_g', 'Ur_NPend', 'Ur_MPend', 'Ur_EAAend_g', 'Ur_AAEnd_g', 'Ur_AAEnd_AbsAA', 'Ur_EAAEnd_g']
         gaseous_variables = []
-        scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg', 'Scrf_NP', 'Scrf_N_g', 'Scrf_AA_g', 'ScrfAA_AbsAA']
+        scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg', 'Scrf_NP', 'Scrf_N_g', 'Scrf_AA_g', 'ScrfAA_AbsAA', 'Scrf_MPUse_g']
         # Store variables
         self.__populate_category('Excretion', group_names, fecal_variables, urinary_variables, gaseous_variables, scurf_variables)
 

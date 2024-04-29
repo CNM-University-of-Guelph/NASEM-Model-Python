@@ -193,3 +193,122 @@ def calculate_An_Nprod_DigNIn(An_Nprod_g: float, An_DigNtIn_g: float) -> float:
     """
     An_Nprod_DigNIn = An_Nprod_g / An_DigNtIn_g # Line 2541
     return An_Nprod_DigNIn
+
+
+def calculate_An_MPBal_g_Trg(An_MPIn_g: float, An_MPuse_g_Trg: float) -> float:
+    """
+    An_MPBal_g_Trg: Target MP balance (g/d)
+    """
+    An_MPBal_g_Trg = An_MPIn_g - An_MPuse_g_Trg # Line 2700
+    return An_MPBal_g_Trg
+
+
+def calculate_Xprt_NP_MP_Trg(Scrf_NP_g: float, Fe_NPend_g: float, Trg_Mlk_NP_g: float, Body_NPgain_g: float, An_MPIn_g: float, Ur_NPend_g: float, Gest_MPUse_g_Trg: float) -> float:
+    """
+    Xprt_NP_MP_Trg: Export NP to MP efficiency
+    """
+    Xprt_NP_MP_Trg = (Scrf_NP_g + Fe_NPend_g + Trg_Mlk_NP_g + Body_NPgain_g) / (An_MPIn_g -  Ur_NPend_g - Gest_MPUse_g_Trg) # Predicted An_NP_MP using Target Milk NP, g/g, Line 2701
+     # The above excludes Ur_NPend and Gest_NPgain from the denominator and the numerator as that is how Helene and Roger derived target efficiencies. 
+     # Seems incorrect unless one does not consider Urinary endogenous as NP which is inconsistent with the definition.  Not a true, total MP efficiency
+    return Xprt_NP_MP_Trg
+
+
+def calculate_Xprt_NP_MP(Scrf_NP_g: float, Fe_NPend_g: float, Mlk_NP_g: float, Body_NPgain_g: float, An_MPIn_g: float, Ur_NPend_g: float, Gest_MPUse_g_Trg: float) -> float:
+    """
+    Xprt_NP_MP: Export efficiency NP to MP
+    """
+    Xprt_NP_MP = (Scrf_NP_g + Fe_NPend_g + Mlk_NP_g + Body_NPgain_g) / (An_MPIn_g - Ur_NPend_g - Gest_MPUse_g_Trg)  # Line 2720
+    return Xprt_NP_MP
+
+
+def calculate_Km_MP_NP(An_StatePhys: str, Xprt_NP_MP: float) -> float:
+    """
+    Km_MP_NP: MP to NP conversion efficiency
+    """
+    # MP to NP conversion efficiency assuming 100% efficiency of Ur_NPend.  Should not be named as a K as it is not a constant.  This is apparent efficiency.
+    # Assumed equal to efficiency for total proteins except for heifers.
+    if An_StatePhys == "Heifer":    # Line 2722
+        Km_MP_NP = 0.69
+    else:
+        Km_MP_NP = Xprt_NP_MP   
+    return Km_MP_NP
+
+
+def calculate_Kl_MP_NP(Xprt_NP_MP: float) -> float:
+    """
+    Kl_MP_NP: MP to NP conversio efficiency
+    """
+    Kl_MP_NP = Xprt_NP_MP   # Line 2723
+    return Kl_MP_NP
+
+
+def calculate_Scrf_MPUse_g(Scrf_NP_g: float, Km_MP_NP: float) -> float:
+    """
+    Scrf_MPUse_g: Endogenous MP in scurf (g/d)
+    """
+    Scrf_MPUse_g = Scrf_NP_g / Km_MP_NP # Line 2727
+    return Scrf_MPUse_g
+
+
+def calculate_An_MPuse_g(Fe_MPendUse_g: float, Scrf_MPUse_g: float, Ur_MPendUse_g: float, Body_MPUse_g_Trg: float, Gest_MPUse_g_Trg: float, Mlk_MPUse_g: float,) -> float:
+    """
+    An_MPuse_g: Total MP use (g/d)
+    """
+    An_MPuse_g = Fe_MPendUse_g + Scrf_MPUse_g + Ur_MPendUse_g + Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Mlk_MPUse_g
+    return An_MPuse_g
+
+
+def calculate_An_MPuse(An_MPuse_g: float):
+    """
+    An_MPuse: Total MP use (kg/d)
+    """
+    An_MPuse = An_MPuse_g / 1000    # Line 2730
+    return An_MPuse
+
+
+def calculate_An_MPBal_g(An_MPIn_g: float, An_MPuse_g: float) -> float:
+    """
+    An_MPBal_g: Metabolizable protein balance (g/d)
+    """
+    An_MPBal_g = An_MPIn_g - An_MPuse_g  # This will always be 0 given how the efficiencies are calculated. Not informative, Line 2731
+    return An_MPBal_g
+
+
+def calculate_An_MP_NP(An_NPuse_g: float, An_MPuse_g: float) -> float:
+    """
+    An_MP_NP: Conversion of MP to NP 
+    """
+    An_MP_NP = An_NPuse_g / An_MPuse_g  #Total MP Efficiency, g/g, Line 2734
+    return An_MP_NP
+
+
+def calculate_An_NPxprt_MP(An_NPuse_g: float, Ur_NPend_g: float, Gest_NPuse_g: float, An_MPIn_g: float, Gest_MPUse_g_Trg: float) -> float:
+    """
+    An_NPxprt_MP: NP to MP conversion efficiency
+    """
+    An_NPxprt_MP = (An_NPuse_g - Ur_NPend_g - Gest_NPuse_g) / (An_MPIn_g - Ur_NPend_g - Gest_MPUse_g_Trg)  # g/g. For comparison to target efficiency, but a duplicate of Xprt_NP_MP, Line 2735
+    return An_NPxprt_MP
+
+
+def calculate_An_CP_NP(An_NPuse_g: float, An_CPIn: float) -> float:
+    """
+    An_CP_NP: CP to NP conversion efficiency 
+    """
+    An_CP_NP = An_NPuse_g / (An_CPIn * 1000)  # Total CP efficiency, g/g, Line 2736
+    return An_CP_NP
+
+
+def calculate_An_NPBal_g(An_MPIn_g: float, An_MP_NP: float, An_NPuse_g: float) -> float:
+    """
+    An_NPBal_g: Net protein balance (g/d)
+    """
+    An_NPBal_g = An_MPIn_g * An_MP_NP - An_NPuse_g  # Also always 0, thus non-informative, Line 2738
+    return An_NPBal_g
+
+
+def calculate_An_NPBal(An_NPBal_g: float) -> float:
+    """
+    An_NPBal: Net protein balance (kg/d)
+    """
+    An_NPBal = An_NPBal_g / 1000    # Line 2739
+    return An_NPBal

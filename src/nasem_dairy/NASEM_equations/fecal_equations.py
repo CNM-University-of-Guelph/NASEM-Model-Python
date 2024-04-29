@@ -291,3 +291,11 @@ def calculate_Fe_AAMet_AbsAA(Fe_AAMet_g: np.array, Abs_AA_g: pd.Series) -> np.ar
     """
     Fe_AAMet_AbsAA = Fe_AAMet_g / Abs_AA_g  # Lines 2006-2015
     return Fe_AAMet_AbsAA
+
+
+def calculate_Fe_MPendUse_g(Fe_NPend_g: float, Km_MP_NP: float) -> float:
+    """
+    Fe_MPendUse_g: Endogenous MP in feces (g/d)
+    """
+    Fe_MPendUse_g = Fe_NPend_g / Km_MP_NP   # Line 2726
+    return Fe_MPendUse_g

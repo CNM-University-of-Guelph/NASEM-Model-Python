@@ -323,6 +323,31 @@
       "Name": "calculate_Frm_WatGain",
       "Input": {"Body_WatGain": 5.1, "Rsrv_WatGain": 2.9},
       "Output": 2.1999999999999997
-    }
+    },
+    {
+      "Name": "calculate_An_MPavail_Gain_Trg",
+      "Input": {"An_MPIn": 4.7, "An_MPuse_g_Trg": 2013, "Body_MPUse_g_Trg": 201},
+      "Output": 2.8880000000000003
+  },
+  {
+      "Name": "calculate_Body_NPgain_MPalowTrg_g",
+      "Input": {"An_MPavail_Gain_Trg": 112, "Kg_MP_NP_Trg": 0.04},
+      "Output": 4480.0
+  },
+  {
+      "Name": "calculate_Body_CPgain_MPalowTrg_g",
+      "Input": {"Body_NPgain_MPalowTrg_g": 4023, "coeff_dict": null},
+      "Output": 4677.906976744186
+  },
+  {
+      "Name": "calculate_Body_Gain_MPalowTrg_g",
+      "Input": {"Body_NPgain_MPalowTrg_g": 3014, "NPGain_FrmGain": 1210},
+      "Output": 2.4909090909090907
+  },
+  {
+      "Name": "calculate_Body_Gain_MPalowTrg",
+      "Input": {"Body_Gain_MPalowTrg_g": 2191},
+      "Output": 2.191
+  }
   ]
   

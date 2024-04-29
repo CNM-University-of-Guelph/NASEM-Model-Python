@@ -103,6 +103,11 @@
       "Name": "calculate_An_MPuse_g_Trg",
       "Input": {"An_MPm_g_Trg": 195, "Frm_MPUse_g_Trg": 71, "Rsrv_MPUse_g_Trg": 48, "Gest_MPUse_g_Trg": 83, "Mlk_MPUse_g_Trg": 391},
       "Output": 788
+    },
+    {
+      "Name": "calculate_Trg_MPIn_req",
+      "Input": {"Fe_MPendUse_g_Trg": 491, "Scrf_MPUse_g_Trg": 310, "Ur_MPendUse_g": 81, "Body_MPUse_g_Trg": 230, "Gest_MPUse_g_Trg": 121, "Trg_Mlk_NP_g": 1022, "coeff_dict": null},
+      "Output": 2714.159420289855
     }
   ]
   
