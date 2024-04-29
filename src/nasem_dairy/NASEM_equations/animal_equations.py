@@ -1313,3 +1313,59 @@ def calculate_An_CPm_Use(Scrf_CP_g: float, Fe_CPend_g: float, Ur_NPend_g: float)
     """
     An_CPm_Use = Scrf_CP_g + Fe_CPend_g + Ur_NPend_g    # Line 2064
     return An_CPm_Use
+
+
+def calculate_An_ME(An_MEIn: float, An_DMIn: float) -> float:
+    """
+    An_ME: ME intake as a fraction of DMI (Mcal/kg)
+    """
+    An_ME = An_MEIn / An_DMIn   # Line 2759
+    return An_ME
+
+
+def calculate_An_ME_GE(An_MEIn: float, An_GEIn: float) -> float:
+    """
+    An_ME_GE: ME intake as a fraction of GE intake (Mcal/Mcal)
+    """
+    An_ME_GE = An_MEIn / An_GEIn    # Line 2760
+    return An_ME_GE
+
+
+def calculate_An_ME_DE(An_MEIn: float, An_DEIn: float) -> float:
+    """
+    An_ME_DE: ME intake as a fraction of DE intake (Mcal/Mcal)
+    """
+    An_ME_DE = An_MEIn / An_DEIn    # Line 2761
+    return An_ME_DE
+
+
+def calculate_An_NE_GE(An_NEIn: float, An_GEIn: float) -> float:
+    """
+    An_NE_GE: NE intake as a fraction of GE intake (Mcal/Mcal)
+    """
+    An_NE_GE = An_NEIn / An_GEIn    # Line 2764
+    return An_NE_GE
+
+
+def calculate_An_NE_DE(An_NEIn: float, An_DEIn: float) -> float:
+    """
+    An_NE_DE: NE intake as a fraction of DE intake (Mcal/Mcal)
+    """
+    An_NE_DE = An_NEIn / An_DEIn    # Line 2765
+    return An_NE_DE
+
+
+def calculate_An_NE_ME(An_NEIn: float, An_MEIn: float) -> float:
+    """
+    An_NE_ME: NE intake as a fraction of ME intake (Mcal/Mcal)
+    """
+    An_NE_ME = An_NEIn / An_MEIn    # Line 2766
+    return An_NE_ME
+
+
+def calculate_An_MPIn_MEIn(An_MPIn_g: float, An_MEIn: float) -> float:
+    """
+    An_MPIn_MEIn: MP intake as a fraction of ME intake (g/Mcal)
+    """
+    An_MPIn_MEIn = An_MPIn_g / An_MEIn    # g/Mcal, Line 2767
+    return An_MPIn_MEIn

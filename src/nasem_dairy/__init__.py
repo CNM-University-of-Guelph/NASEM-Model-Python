@@ -470,7 +470,14 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_GasE_GEIn,
     calculate_GasE_DEIn,
     calculate_An_NPm_Use,
-    calculate_An_CPm_Use
+    calculate_An_CPm_Use,
+    calculate_An_ME,
+    calculate_An_ME_GE,
+    calculate_An_ME_DE,
+    calculate_An_NE_GE,
+    calculate_An_NE_DE,
+    calculate_An_NE_ME,
+    calculate_An_MPIn_MEIn
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (

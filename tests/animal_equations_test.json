@@ -589,5 +589,40 @@
     "Name": "calculate_An_CPm_Use",
     "Input": {"Scrf_CP_g": 1029, "Fe_CPend_g": 319, "Ur_NPend_g": 510},
     "Output": 1858
-  }
+  },
+  {
+    "Name": "calculate_An_ME",
+    "Input": {"An_MEIn": 19.1, "An_DMIn": 31.2},
+    "Output": 0.6121794871794872
+},
+{
+    "Name": "calculate_An_ME_GE",
+    "Input": {"An_MEIn": 15.8, "An_GEIn": 32.2},
+    "Output": 0.4906832298136646
+},
+{
+    "Name": "calculate_An_ME_DE",
+    "Input": {"An_MEIn": 31, "An_DEIn": 49.2},
+    "Output": 0.6300813008130081
+},
+{
+    "Name": "calculate_An_NE_GE",
+    "Input": {"An_NEIn": 21, "An_GEIn": 31.7},
+    "Output": 0.6624605678233438
+},
+{
+    "Name": "calculate_An_NE_DE",
+    "Input": {"An_NEIn": 41.9, "An_DEIn": 71.6},
+    "Output": 0.585195530726257
+},
+{
+    "Name": "calculate_An_NE_ME",
+    "Input": {"An_NEIn": 13.1, "An_MEIn": 19.4},
+    "Output": 0.6752577319587629
+},
+{
+    "Name": "calculate_An_MPIn_MEIn",
+    "Input": {"An_MPIn_g": 3101, "An_MEIn": 51.3},
+    "Output": 60.44834307992203
+}
 ]

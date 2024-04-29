@@ -202,7 +202,14 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_MP_CP,
     calculate_An_MP,
     calculate_An_NPm_Use,
-    calculate_An_CPm_Use
+    calculate_An_CPm_Use,
+    calculate_An_ME,
+    calculate_An_ME_GE,
+    calculate_An_ME_DE,
+    calculate_An_NE_GE,
+    calculate_An_NE_DE,
+    calculate_An_NE_ME,
+    calculate_An_MPIn_MEIn
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -1854,6 +1861,15 @@ def execute_model(user_diet: pd.DataFrame,
     UrDE_DMIn = calculate_UrDE_DMIn(Ur_DEout, An_data['An_DMIn'])
     UrDE_GEIn = calculate_UrDE_GEIn(Ur_DEout, An_data['An_GEIn'])
     UrDE_DEIn = calculate_UrDE_DEIn(Ur_DEout, An_data['An_DEIn'])
+
+    ### Estimated ME and NE Intakes ###
+    An_ME = calculate_An_ME(An_MEIn, An_data['An_DMIn'])
+    An_ME_GE = calculate_An_ME_GE(An_MEIn, An_data['An_GEIn'])
+    An_ME_DE = calculate_An_ME_DE(An_MEIn, An_data['An_DEIn'])
+    An_NE_GE = calculate_An_NE_GE(An_NEIn, An_data['An_GEIn'])
+    An_NE_DE = calculate_An_NE_DE(An_NEIn, An_data['An_DEIn'])
+    An_NE_ME = calculate_An_NE_ME(An_NEIn, An_MEIn)
+    An_MPIn_MEIn = calculate_An_MPIn_MEIn(An_MPIn_g, An_MEIn)
 
     ########################################
     # Mineral Requirement Calculations
