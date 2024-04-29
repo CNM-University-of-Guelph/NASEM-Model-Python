@@ -57,7 +57,15 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkEAA_AbsEAA,
     calculate_MlkNP_AnCP,
     calculate_MlkAA_DtAA,
-    calculate_Mlk_MPUse_g
+    calculate_Mlk_MPUse_g,
+    calculate_Trg_MilkLac,
+    calculate_Trg_NEmilk_DEIn,
+    calculate_Trg_MilkProd_EPcor,
+    calculate_Mlk_Prod_NEalow_EPcor,
+    calculate_Mlk_EPcorNEalow_DMIn,
+    calculate_MlkNP_Milk_p,
+    calculate_MlkFat_Milk_p,
+    calculate_Mlk_NE_DE
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -332,7 +340,14 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Body_NPgain_MPalowTrg_g,
     calculate_Body_CPgain_MPalowTrg_g,
     calculate_Body_Gain_MPalowTrg_g,
-    calculate_Body_Gain_MPalowTrg
+    calculate_Body_Gain_MPalowTrg,
+    calculate_An_MEavail_Grw,
+    calculate_Kg_ME_NE,
+    calculate_Body_Gain_NEalow,
+    calculate_An_BodConcgain_NEalow,
+    calculate_Body_Fatgain_NEalow,
+    calculate_Body_NPgain_NEalow,
+    calculate_An_Days_BCSdelta1
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -380,7 +395,47 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_Gest_MEuse,
     calculate_Trg_Mlk_NEout,
     calculate_Trg_Mlk_MEout,
-    calculate_Trg_MEuse
+    calculate_Trg_MEuse,
+    calculate_An_MEmUse_NS,
+    calculate_An_MEmUse_Act,
+    calculate_An_MEmUse_Env,
+    calculate_An_NEm_ME,
+    calculate_An_NEm_DE,
+    calculate_An_NEmNS_DE,
+    calculate_An_NEmAct_DE,
+    calculate_An_NEmEnv_DE,
+    calculate_An_NEprod_Avail,
+    calculate_An_MEprod_Avail,
+    calculate_Gest_NELuse,
+    calculate_Gest_NE_ME,
+    calculate_Gest_NE_DE,
+    calculate_An_REgain,
+    calculate_Rsrv_NE_DE,
+    calculate_Frm_NE_DE,
+    calculate_Body_NEgain_BWgain,
+    calculate_An_ME_NEg,
+    calculate_Rsrv_NELgain,
+    calculate_Frm_NELgain,
+    calculate_An_NELgain,
+    calculate_An_NEgain_DE,
+    calculate_An_NEgain_ME,
+    calculate_An_MEuse,
+    calculate_An_NEuse,
+    calculate_Trg_NEuse,
+    calculate_An_NELuse,
+    calculate_Trg_NELuse,
+    calculate_An_NEprod_GE,
+    calculate_Trg_NEprod_GE,
+    calculate_An_NEmlk_GE,
+    calculate_Trg_NEmlk_GE,
+    calculate_An_MEbal,
+    calculate_An_NELbal,
+    calculate_An_NEbal,
+    calculate_Trg_MEbal,
+    calculate_Trg_NELbal,
+    calculate_Trg_NEbal,
+    calculate_An_MPuse_MEuse,
+    calculate_Trg_MPuse_MEuse
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (
@@ -1870,6 +1925,92 @@ def execute_model(user_diet: pd.DataFrame,
     An_NE_DE = calculate_An_NE_DE(An_NEIn, An_data['An_DEIn'])
     An_NE_ME = calculate_An_NE_ME(An_NEIn, An_MEIn)
     An_MPIn_MEIn = calculate_An_MPIn_MEIn(An_MPIn_g, An_MEIn)
+
+    ### ME and NE Use ###
+    An_MEmUse_NS = calculate_An_MEmUse_NS(An_NEmUse_NS, coeff_dict)
+    An_MEmUse_Act = calculate_An_MEmUse_Act(An_NEmUse_Act, coeff_dict)
+    An_MEmUse_Env = calculate_An_MEmUse_Env(coeff_dict)
+    An_NEm_ME = calculate_An_NEm_ME(An_NEmUse, An_MEIn)
+    An_NEm_DE = calculate_An_NEm_DE(An_NEmUse, An_data['An_DEIn'])
+    An_NEmNS_DE = calculate_An_NEmNS_DE(An_NEmUse_NS, An_data['An_DEIn'])
+    An_NEmAct_DE = calculate_An_NEmAct_DE(An_NEmUse_Act, An_data['An_DEIn'])
+    An_NEmEnv_DE = calculate_An_NEmEnv_DE(An_data['An_DEIn'], coeff_dict)
+    An_NEprod_Avail = calculate_An_NEprod_Avail(An_NEIn, An_NEmUse)
+    An_MEprod_Avail = calculate_An_MEprod_Avail(An_MEIn, An_MEmUse)
+    Gest_NELuse = calculate_Gest_NELuse(Gest_MEuse, coeff_dict)
+    Gest_NE_ME = calculate_Gest_NE_ME(Gest_MEuse, An_MEIn)
+    Gest_NE_DE = calculate_Gest_NE_DE(Gest_REgain, An_data['An_DEIn'])
+    An_REgain = calculate_An_REgain(Body_Fatgain, Body_CPgain)
+    Rsrv_NE_DE = calculate_Rsrv_NE_DE(Rsrv_NEgain, An_data['An_DEIn'])
+    Frm_NE_DE = calculate_Frm_NE_DE(Frm_NEgain, An_data['An_DEIn'])
+    Body_NEgain_BWgain = calculate_Body_NEgain_BWgain(An_REgain, Body_Gain)
+    An_ME_NEg = calculate_An_ME_NEg(An_REgain, An_MEgain)
+    Rsrv_NELgain = calculate_Rsrv_NELgain(Rsrv_MEgain, coeff_dict)
+    Frm_NELgain = calculate_Frm_NELgain(Frm_MEgain, coeff_dict)
+    An_NELgain = calculate_An_NELgain(An_MEgain, coeff_dict)
+    An_NEgain_DE = calculate_An_NEgain_DE(An_REgain, An_data['An_DEIn'])
+    An_NEgain_ME = calculate_An_NEgain_ME(An_REgain, An_MEIn)
+    Trg_MilkLac = calculate_Trg_MilkLac(animal_input['Trg_MilkLacp'],
+                                        animal_input['Trg_MilkProd'])
+    Trg_NEmilk_DEIn = calculate_Trg_NEmilk_DEIn(Trg_Mlk_NEout, An_data['An_DEIn'])
+    Trg_MilkProd_EPcor = calculate_Trg_MilkProd_EPcor(animal_input['Trg_MilkProd'],
+                                                      animal_input['Trg_MilkFatp'],
+                                                      animal_input['Trg_MilkTPp'])
+    Mlk_Prod_NEalow_EPcor = calculate_Mlk_Prod_NEalow_EPcor(Mlk_Prod_NEalow,
+                                                            animal_input['Trg_MilkFatp'],
+                                                            animal_input['Trg_MilkTPp'])
+    Mlk_EPcorNEalow_DMIn = calculate_Mlk_EPcorNEalow_DMIn(Mlk_Prod_NEalow_EPcor,
+                                                          An_data['An_DMIn'])
+    MlkNP_Milk_p = calculate_MlkNP_Milk_p(MlkNP_Milk)
+    MlkFat_Milk_p = calculate_MlkFat_Milk_p(MlkFat_Milk)
+    Mlk_NE_DE = calculate_Mlk_NE_DE(Mlk_NEout, An_data['An_DEIn'])
+    An_MEuse = calculate_An_MEuse(An_MEmUse, 
+                                  An_MEgain,
+                                  Gest_MEuse,
+                                  Mlk_MEout)
+    An_NEuse = calculate_An_NEuse(An_NEmUse,
+                                  An_REgain,
+                                  Gest_REgain,
+                                  Mlk_NEout)
+    Trg_NEuse = calculate_Trg_NEuse(An_NEmUse,
+                                    An_REgain,
+                                    Gest_REgain,
+                                    Trg_Mlk_NEout)
+    An_NELuse = calculate_An_NELuse(An_MEuse, coeff_dict)
+    Trg_NELuse = calculate_Trg_NELuse(Trg_MEuse, coeff_dict)
+    An_NEprod_GE = calculate_An_NEprod_GE(An_NEuse,
+                                          An_NEmUse,
+                                          An_data['An_GEIn'])
+    Trg_NEprod_GE = calculate_Trg_NEprod_GE(Trg_NEuse,
+                                            An_NEmUse,
+                                            An_data['An_GEIn'])
+    An_NEmlk_GE = calculate_An_NEmlk_GE(Mlk_NEout, An_data['An_GEIn'])
+    Trg_NEmlk_GE = calculate_Trg_NEmlk_GE(Trg_Mlk_NEout, An_data['An_GEIn'])
+    An_MEbal = calculate_An_MEbal(An_MEIn, An_MEuse)
+    An_NELbal = calculate_An_NELbal(An_MEbal, coeff_dict)
+    An_NEbal = calculate_An_NEbal(An_NEIn, An_NEuse)
+    Trg_MEbal = calculate_Trg_MEbal(An_MEIn, Trg_MEuse)
+    Trg_NELbal = calculate_Trg_NELbal(Trg_MEbal, coeff_dict)
+    Trg_NEbal = calculate_Trg_NEbal(An_NEIn, Trg_NEuse)
+    An_MPuse_MEuse = calculate_An_MPuse_MEuse(An_MPuse_g, An_MEuse)
+    Trg_MPuse_MEuse = calculate_Trg_MPuse_MEuse(An_MPuse_g_Trg, An_MEuse)
+    An_MEavail_Grw = calculate_An_MEavail_Grw(An_MEIn, 
+                                              An_MEmUse,
+                                              Gest_MEuse,
+                                              Mlk_MEout)
+    Kg_ME_NE = calculate_Kg_ME_NE(Frm_NEgain,
+                                  Rsrv_NEgain,
+                                  Kr_ME_RE,
+                                  coeff_dict)
+    Body_Gain_NEalow = calculate_Body_Gain_NEalow(An_MEavail_Grw,
+                                                  Kg_ME_NE,
+                                                  Body_NEgain_BWgain)
+    An_BodConcgain_NEalow = calculate_An_BodConcgain_NEalow(Body_Gain_NEalow,
+                                                            Conc_BWgain)
+    Body_Fatgain_NEalow = calculate_Body_Fatgain_NEalow(Body_Gain_NEalow)
+    Body_NPgain_NEalow = calculate_Body_NPgain_NEalow(Body_Fatgain_NEalow)
+    An_Days_BCSdelta1 = calculate_An_Days_BCSdelta1(BW_BCS,
+                                                    Body_Gain_NEalow)
 
     ########################################
     # Mineral Requirement Calculations

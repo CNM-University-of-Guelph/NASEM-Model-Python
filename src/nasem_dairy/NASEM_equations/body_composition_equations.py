@@ -519,3 +519,62 @@ def calculate_Body_Gain_MPalowTrg(Body_Gain_MPalowTrg_g: float) -> float:
     """
     Body_Gain_MPalowTrg = Body_Gain_MPalowTrg_g / 1000  # Line 2716
     return Body_Gain_MPalowTrg
+
+
+def calculate_An_MEavail_Grw(An_MEIn: float, An_MEmUse: float, Gest_MEuse: float, Mlk_MEout: float) -> float:
+    """
+    An_MEavail_Grw: ME available for growth (Mcal/d)
+    """
+    An_MEavail_Grw = An_MEIn - An_MEmUse - Gest_MEuse - Mlk_MEout   # Line 2947
+    return An_MEavail_Grw
+
+
+def calculate_Kg_ME_NE(Frm_NEgain: float, Rsrv_NEgain: float, Kr_ME_RE: float, coeff_dict: dict) -> float:
+    """
+    Kg_ME_NE: ME to NE for NE allowable gain?
+    """
+    req_coeff = ['Kf_ME_RE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    #Use a weighted average of Kf and Kr to predict allowable gain at that mix of Frm and Rsrv gain.
+    Kg_ME_NE = coeff_dict['Kf_ME_RE'] * Frm_NEgain / (Frm_NEgain + Rsrv_NEgain) + Kr_ME_RE * Rsrv_NEgain / (Frm_NEgain + Rsrv_NEgain)
+    return Kg_ME_NE
+
+
+def calculate_Body_Gain_NEalow(An_MEavail_Grw: float, Kg_ME_NE: float, Body_NEgain_BWgain: float) -> float:
+    """
+    Body_Gain_NEalow: NE allowable body gain
+    """
+    Body_Gain_NEalow = An_MEavail_Grw * Kg_ME_NE / Body_NEgain_BWgain   # Line 2950
+    return Body_Gain_NEalow
+
+
+def calculate_An_BodConcgain_NEalow(Body_Gain_NEalow: float, Conc_BWgain: float) -> float:
+    """
+    An_BodConcgain_NEalow: ?
+    """
+    An_BodConcgain_NEalow = Body_Gain_NEalow + Conc_BWgain  # Line 2954
+    return An_BodConcgain_NEalow
+
+
+def calculate_Body_Fatgain_NEalow(Body_Gain_NEalow: float) -> float:
+    """
+    Body_Fatgain_NEalow: NE allowable body fat gain (kg/d?)
+    """
+    Body_Fatgain_NEalow = 0.85 * (Body_Gain_NEalow / 0.85 - 1.19) / 8.21    # Line 2955
+    return Body_Fatgain_NEalow
+
+
+def calculate_Body_NPgain_NEalow(Body_Fatgain_NEalow: float) -> float:
+    """
+    Body_NPgain_NEalow: NE allowable body NP gain (kg/d?)
+    """
+    Body_NPgain_NEalow = 0.85 * (1 - Body_Fatgain_NEalow / 0.85) * 0.215
+    return Body_NPgain_NEalow
+
+
+def calculate_An_Days_BCSdelta1(BW_BCS: float, Body_Gain_NEalow: float) -> float:
+    """
+    An_Days_BCSdelta1: Days to gain/lose 1 BCS 
+    """
+    An_Days_BCSdelta1 = BW_BCS / Body_Gain_NEalow   # days to gain or lose 1 BCS (9.4% of BW), 5 pt scale., Line 2958
+    return An_Days_BCSdelta1

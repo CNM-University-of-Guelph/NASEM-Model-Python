@@ -194,5 +194,45 @@
       "Name": "calculate_Mlk_MPUse_g",
       "Input": {"Mlk_NP_g": 310, "Kl_MP_NP": 0.75},
       "Output": 413.3333333333333
-    }
+    },
+    {
+      "Name": "calculate_Trg_MilkLac",
+      "Input": {"Trg_MilkLacp": 5.1, "Trg_MilkProd": 3.9},
+      "Output": 0.1989
+  },
+  {
+      "Name": "calculate_Trg_NEmilk_DEIn",
+      "Input": {"Trg_Mlk_NEout": 301, "An_DEIn": 401},
+      "Output": 0.7506234413965087
+  },
+  {
+      "Name": "calculate_Trg_MilkProd_EPcor",
+      "Input": {"Trg_MilkProd": 37.9, "Trg_MilkFatp": 3.8, "Trg_MilkTPp": 3.2},
+      "Output": 40.350614
+  },
+  {
+      "Name": "calculate_Mlk_Prod_NEalow_EPcor",
+      "Input": {"Mlk_Prod_NEalow": 4191, "Trg_MilkFatp": 3.8, "Trg_MilkTPp": 3.2},
+      "Output": 4461.99006
+  },
+  {
+      "Name": "calculate_Mlk_EPcorNEalow_DMIn",
+      "Input": {"Mlk_Prod_NEalow_EPcor": 30.1, "An_DMIn": 27.1},
+      "Output": 1.1107011070110702
+  },
+  {
+      "Name": "calculate_MlkNP_Milk_p",
+      "Input": {"MlkNP_Milk": 0.035},
+      "Output": 3.5000000000000004
+  },
+  {
+      "Name": "calculate_MlkFat_Milk_p",
+      "Input": {"MlkFat_Milk": 0.048},
+      "Output": 4.8
+  },
+  {
+      "Name": "calculate_Mlk_NE_DE",
+      "Input": {"Mlk_NEout": 391, "An_DEIn": 471},
+      "Output": 0.8301486199575372
+  }  
 ]

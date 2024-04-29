@@ -253,7 +253,15 @@ class ModelOutput:
         group_names = ['energy', 'protein']
         # Lists of variables to store
         energy_variables = ['An_NEmUse_NS', 'An_NEm_Act_Graze', 'An_NEm_Act_Parlor', 'An_NEm_Act_Topo',
-                            'An_NEmUse_Act', 'An_NEmUse', 'An_MEmUse', 'Gest_MEuse', 'Trg_Mlk_NEout', 'Trg_Mlk_MEout', 'Trg_MEuse']
+                            'An_NEmUse_Act', 'An_NEmUse', 'An_MEmUse', 'Gest_MEuse', 'Trg_Mlk_NEout', 'Trg_Mlk_MEout',
+                            'Trg_MEuse', 'An_MEmUse_NS', 'An_MEmUse_Act', 'An_MEmUse_Env', 'An_NEm_ME', 'An_NEm_DE', 
+                            'An_NEmNS_DE', 'An_NEmAct_DE', 'An_NEmEnv_DE', 'An_NEprod_Avail', 'An_MEprod_Avail', 
+                            'Gest_NELuse', 'Gest_NE_ME', 'Gest_NE_DE', 'An_REgain', 'Rsrv_NE_DE', 'Frm_NE_DE', 
+                            'Body_NEgain_BWgain', 'An_ME_NEg', 'Rsrv_NELgain', 'Frm_NELgain', 'An_NELgain', 
+                            'An_NEgain_DE', 'An_NEgain_ME', 'An_MEuse', 'An_NEuse', 'Trg_NEuse', 'An_NELuse', 
+                            'Trg_NELuse', 'An_NEprod_GE', 'Trg_NEprod_GE', 'An_NEmlk_GE', 'Trg_NEmlk_GE', 
+                            'An_MEbal', 'An_NELbal', 'An_NEbal', 'Trg_MEbal', 'Trg_NELbal', 'Trg_NEbal', 
+                            'An_MPuse_MEuse', 'Trg_MPuse_MEuse', 'An_MEavail_Grw', 'Kg_ME_NE']
         protein_variables = ['Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g', 'An_MPm_g_Trg', 
                              'Body_NPgain_g', 'Body_MPUse_g_Trg', 'Gest_MPUse_g_Trg', 'Trg_Mlk_NP_g', 'Mlk_MPUse_g_Trg', 
                              'An_MPuse_g_Trg', 'Min_MPuse_g', 'Diff_MPuse_g', 'Frm_NPgain_g', 'Frm_MPUse_g_Trg', 'Rsrv_NPgain_g', 
@@ -306,13 +314,15 @@ class ModelOutput:
         milk_variables = ['Trg_NEmilk_Milk', 'Mlk_NP_g', 'Mlk_CP_g', 'Trg_Mlk_Fat' ,'Trg_Mlk_Fat_g', 'Mlk_Fatemp_g', 'Mlk_Fat_g', 'Mlk_Fat', 'Mlk_NP', 'Mlk_Prod_comp',
                           'An_MPavail_Milk_Trg', 'Mlk_NP_MPalow_Trg_g', 'Mlk_Prod_MPalow', 'An_MEavail_Milk', 'Mlk_Prod_NEalow', 'Mlk_Prod', 'MlkNP_Milk', 'MlkFat_Milk', 
                           'MlkNE_Milk', 'Mlk_NEout', 'Mlk_MEout', 'Mlk_NPmx', 'MlkNP_MlkNPmx', 'Mlk_CP', 'Mlk_EAA_g', 'MlkNP_AnMP', 'MlkEAA_AbsEAA', 'MlkNP_AnCP', 
-                          'Mlk_MPUse_g']
+                          'Mlk_MPUse_g', 'Trg_MilkLac', 'Trg_NEmilk_DEIn', 'Trg_MilkProd_EPcor', 'Mlk_Prod_NEalow_EPcor', 'Mlk_EPcorNEalow_DMIn', 'MlkNP_Milk_p', 
+                          'MlkFat_Milk_p', 'Mlk_NE_DE']
         composition_variables = ['CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain', 'Rsrv_Gain_empty', 'NPGain_RsrvGain', 'Rsrv_NPgain',
                                  'Frm_Gain_empty', 'Body_Gain_empty', 'Frm_NPgain', 'Body_NPgain', 'Body_CPgain', 'Body_CPgain_g', 'Rsrv_Fatgain', 'Rsrv_CPgain', 
                                  'Rsrv_NEgain', 'An_BWmature_empty', 'Body_Gain', 'Conc_BWgain', 'BW_BCS', 'Body_Fat_EBW', 'Body_NonFat_EBW', 'Body_CP_EBW', 'Body_Ash_EBW', 
                                  'Body_Wat_EBW', 'Body_Fat', 'Body_NonFat', 'Body_CP', 'Body_Ash', 'Body_Wat', 'An_BodConcgain', 'NonFatGain_FrmGain', 'Body_Fatgain', 
                                  'Body_NonFatGain', 'Frm_CPgain_g', 'Rsrv_CPgain_g', 'Body_AshGain', 'Frm_AshGain', 'WatGain_RsrvGain', 'Rsrv_WatGain', 'Body_WatGain', 
-                                 'Frm_WatGain','Body_EAAGain_g', 'Body_NPgain_MPalowTrg_g', 'Body_CPgain_MPalowTrg_g', 'Body_Gain_MPalowTrg_g', 'Body_Gain_MPalowTrg']
+                                 'Frm_WatGain','Body_EAAGain_g', 'Body_NPgain_MPalowTrg_g', 'Body_CPgain_MPalowTrg_g', 'Body_Gain_MPalowTrg_g', 'Body_Gain_MPalowTrg', 
+                                 'Body_Gain_NEalow', 'An_BodConcgain_NEalow', 'Body_Fatgain_NEalow', 'Body_NPgain_NEalow', 'An_Days_BCSdelta1']
         gestation_variables = ['Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt', 'Uter_BWgain', 'GrUter_BWgain', 'Rsrv_MEgain', 'FatGain_FrmGain', 'Frm_Fatgain',
                                'Frm_CPgain', 'Frm_NEgain', 'Frm_MEgain', 'An_MEgain', 'Gest_REgain', 'An_Preg', 'Fet_Wt', 'Fet_BWgain']
         MiCP_variables = ['RDPIn_MiNmax', 'MiN_Vm', 'Du_MiN_g', 'Du_MiCP_g', 'Du_MiTP_g', 'Du_MiCP', 'Du_idMiCP_g', 'Du_idMiCP', 'Du_idMiTP_g', 'Du_idMiTP', 

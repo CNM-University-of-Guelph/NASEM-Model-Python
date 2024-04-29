@@ -123,6 +123,206 @@
       "Name": "calculate_Trg_MEuse",
       "Input": {"An_MEmUse": 123, "An_MEgain": 230, "Gest_MEuse": 29, "Trg_Mlk_MEout": 218},
       "Output": 600
-    }
-  ]
+    },
+    {
+      "Name": "calculate_An_MEmUse_NS",
+      "Input": {"An_NEmUse_NS": 301, "coeff_dict": null},
+      "Output": 456.06060606060606
+  },
+  {
+      "Name": "calculate_An_MEmUse_Act",
+      "Input": {"An_NEmUse_Act": 102, "coeff_dict": null},
+      "Output": 154.54545454545453
+  },
+  {
+      "Name": "calculate_An_MEmUse_Env",
+      "Input": {"coeff_dict": null},
+      "Output": 0
+  },
+  {
+      "Name": "calculate_An_NEm_ME",
+      "Input": {"An_NEmUse": 2011, "An_MEIn": 4021},
+      "Output": 0.5001243471773191
+  },
+  {
+      "Name": "calculate_An_NEm_DE",
+      "Input": {"An_NEmUse": 320, "An_DEIn": 210},
+      "Output": 1.5238095238095237
+  },
+  {
+      "Name": "calculate_An_NEmNS_DE",
+      "Input": {"An_NEmUse_NS": 107, "An_DEIn": 219},
+      "Output": 0.4885844748858447
+  },
+  {
+      "Name": "calculate_An_NEmAct_DE",
+      "Input": {"An_NEmUse_Act": 812, "An_DEIn": 953},
+      "Output": 0.8520461699895068
+  },
+  {
+      "Name": "calculate_An_NEmEnv_DE",
+      "Input": {"An_DEIn": 541, "coeff_dict": null},
+      "Output": 0
+  },
+  {
+      "Name": "calculate_An_NEprod_Avail",
+      "Input": {"An_NEIn": 3013, "An_NEmUse": 3092},
+      "Output": -79
+  },
+  {
+      "Name": "calculate_An_MEprod_Avail",
+      "Input": {"An_MEIn": 3174, "An_MEmUse": 519},
+      "Output": 2655
+  },
+  {
+      "Name": "calculate_Gest_NELuse",
+      "Input": {"Gest_MEuse": 317, "coeff_dict": null},
+      "Output": 209.22
+  },
+  {
+      "Name": "calculate_Gest_NE_ME",
+      "Input": {"Gest_MEuse": 612, "An_MEIn": 834},
+      "Output": 0.7338129496402878
+  },
+  {
+      "Name": "calculate_Gest_NE_DE",
+      "Input": {"Gest_REgain": 733, "An_DEIn": 938},
+      "Output": 0.7814498933901919
+  },
+  {
+      "Name": "calculate_An_REgain",
+      "Input": {"Body_Fatgain": 3.3, "Body_CPgain": 5.9},
+      "Output": 63.765
+  },
+  {
+      "Name": "calculate_Rsrv_NE_DE",
+      "Input": {"Rsrv_NEgain": 631, "An_DEIn": 1049},
+      "Output": 0.6015252621544328
+  },
+  {
+      "Name": "calculate_Frm_NE_DE",
+      "Input": {"Frm_NEgain": 6.3, "An_DEIn": 318},
+      "Output": 0.01981132075471698
+  },
+  {
+      "Name": "calculate_Body_NEgain_BWgain",
+      "Input": {"An_REgain": 2106, "Body_Gain": 331},
+      "Output": 6.362537764350453
+  },
+  {
+      "Name": "calculate_An_ME_NEg",
+      "Input": {"An_REgain": 415, "An_MEgain": 2091},
+      "Output": 0.19846963175514107
+  },
+  {
+      "Name": "calculate_Rsrv_NELgain",
+      "Input": {"Rsrv_MEgain": 931, "coeff_dict": null},
+      "Output": 614.46
+  },
+  {
+      "Name": "calculate_Frm_NELgain",
+      "Input": {"Frm_MEgain": 591, "coeff_dict": null},
+      "Output": 390.06
+  },
+  {
+      "Name": "calculate_An_NELgain",
+      "Input": {"An_MEgain": 814, "coeff_dict": null},
+      "Output": 537.24
+  },
+  {
+      "Name": "calculate_An_NEgain_DE",
+      "Input": {"An_REgain": 931, "An_DEIn": 785},
+      "Output": 1.1859872611464968
+  },
+  {
+      "Name": "calculate_An_NEgain_ME",
+      "Input": {"An_REgain": 1049, "An_MEIn": 2014},
+      "Output": 0.5208540218470705
+  },
+  {
+      "Name": "calculate_An_MEuse",
+      "Input": {"An_MEmUse": 673, "An_MEgain": 948, "Gest_MEuse": 132, "Mlk_MEout": 183},
+      "Output": 1936
+  },
+  {
+      "Name": "calculate_An_NEuse",
+      "Input": {"An_NEmUse": 1292, "An_REgain": 301, "Gest_REgain": 285, "Mlk_NEout": 391},
+      "Output": 2269
+  },
+  {
+      "Name": "calculate_Trg_NEuse",
+      "Input": {"An_NEmUse": 818, "An_REgain": 381, "Gest_REgain": 492, "Trg_Mlk_NEout": 731},
+      "Output": 2422
+  },
+  {
+      "Name": "calculate_An_NELuse",
+      "Input": {"An_MEuse": 393, "coeff_dict": null},
+      "Output": 259.38
+  },
+  {
+      "Name": "calculate_Trg_NELuse",
+      "Input": {"Trg_MEuse": 918, "coeff_dict": null},
+      "Output": 605.88
+  },
+  {
+      "Name": "calculate_An_NEprod_GE",
+      "Input": {"An_NEuse": 1835, "An_NEmUse": 281, "An_GEIn": 592},
+      "Output": 2.625
+  },
+  {
+      "Name": "calculate_Trg_NEprod_GE",
+      "Input": {"Trg_NEuse": 1291, "An_NEmUse": 847, "An_GEIn": 391},
+      "Output": 1.1355498721227621
+  },
+  {
+      "Name": "calculate_An_NEmlk_GE",
+      "Input": {"Mlk_NEout": 943, "An_GEIn": 291},
+      "Output": 3.240549828178694
+  },
+  {
+      "Name": "calculate_Trg_NEmlk_GE",
+      "Input": {"Trg_Mlk_NEout": 393, "An_GEIn": 831},
+      "Output": 0.4729241877256318
+  },
+  {
+      "Name": "calculate_An_MEbal",
+      "Input": {"An_MEIn": 4139, "An_MEuse": 3911},
+      "Output": 228
+  },
+  {
+      "Name": "calculate_An_NELbal",
+      "Input": {"An_MEbal": 511, "coeff_dict": null},
+      "Output": 337.26
+  },
+  {
+      "Name": "calculate_An_NEbal",
+      "Input": {"An_NEIn": 941, "An_NEuse": 472},
+      "Output": 469
+  },
+  {
+      "Name": "calculate_Trg_MEbal",
+      "Input": {"An_MEIn": 713, "Trg_MEuse": 183},
+      "Output": 530
+  },
+  {
+      "Name": "calculate_Trg_NELbal",
+      "Input": {"Trg_MEbal": 319, "coeff_dict": null},
+      "Output": 210.54000000000002
+  },
+  {
+      "Name": "calculate_Trg_NEbal",
+      "Input": {"An_NEIn": 841, "Trg_NEuse": 318},
+      "Output": 523
+  },
+  {
+      "Name": "calculate_An_MPuse_MEuse",
+      "Input": {"An_MPuse_g": 4104, "An_MEuse": 3139},
+      "Output": 1.3074227460974832
+  },
+  {
+      "Name": "calculate_Trg_MPuse_MEuse",
+      "Input": {"An_MPuse_g_Trg": 3103, "An_MEuse": 4130},
+      "Output": 0.7513317191283293
+  }
+]
   

@@ -60,7 +60,15 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkEAA_AbsEAA,
     calculate_MlkNP_AnCP,
     calculate_MlkAA_DtAA,
-    calculate_Mlk_MPUse_g
+    calculate_Mlk_MPUse_g,
+    calculate_Trg_MilkLac,
+    calculate_Trg_NEmilk_DEIn,
+    calculate_Trg_MilkProd_EPcor,
+    calculate_Mlk_Prod_NEalow_EPcor,
+    calculate_Mlk_EPcorNEalow_DMIn,
+    calculate_MlkNP_Milk_p,
+    calculate_MlkFat_Milk_p,
+    calculate_Mlk_NE_DE
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -600,7 +608,14 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_Body_NPgain_MPalowTrg_g,
     calculate_Body_CPgain_MPalowTrg_g,
     calculate_Body_Gain_MPalowTrg_g,
-    calculate_Body_Gain_MPalowTrg
+    calculate_Body_Gain_MPalowTrg,
+    calculate_An_MEavail_Grw,
+    calculate_Kg_ME_NE,
+    calculate_Body_Gain_NEalow,
+    calculate_An_BodConcgain_NEalow,
+    calculate_Body_Fatgain_NEalow,
+    calculate_Body_NPgain_NEalow,
+    calculate_An_Days_BCSdelta1
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -648,7 +663,47 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_Gest_MEuse,
     calculate_Trg_Mlk_NEout,
     calculate_Trg_Mlk_MEout,
-    calculate_Trg_MEuse
+    calculate_Trg_MEuse,
+    calculate_An_MEmUse_NS,
+    calculate_An_MEmUse_Act,
+    calculate_An_MEmUse_Env,
+    calculate_An_NEm_ME,
+    calculate_An_NEm_DE,
+    calculate_An_NEmNS_DE,
+    calculate_An_NEmAct_DE,
+    calculate_An_NEmEnv_DE,
+    calculate_An_NEprod_Avail,
+    calculate_An_MEprod_Avail,
+    calculate_Gest_NELuse,
+    calculate_Gest_NE_ME,
+    calculate_Gest_NE_DE,
+    calculate_An_REgain,
+    calculate_Rsrv_NE_DE,
+    calculate_Frm_NE_DE,
+    calculate_Body_NEgain_BWgain,
+    calculate_An_ME_NEg,
+    calculate_Rsrv_NELgain,
+    calculate_Frm_NELgain,
+    calculate_An_NELgain,
+    calculate_An_NEgain_DE,
+    calculate_An_NEgain_ME,
+    calculate_An_MEuse,
+    calculate_An_NEuse,
+    calculate_Trg_NEuse,
+    calculate_An_NELuse,
+    calculate_Trg_NELuse,
+    calculate_An_NEprod_GE,
+    calculate_Trg_NEprod_GE,
+    calculate_An_NEmlk_GE,
+    calculate_Trg_NEmlk_GE,
+    calculate_An_MEbal,
+    calculate_An_NELbal,
+    calculate_An_NEbal,
+    calculate_Trg_MEbal,
+    calculate_Trg_NELbal,
+    calculate_Trg_NEbal,
+    calculate_An_MPuse_MEuse,
+    calculate_Trg_MPuse_MEuse
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (

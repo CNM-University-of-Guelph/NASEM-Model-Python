@@ -411,3 +411,67 @@ def calculate_Mlk_MPUse_g(Mlk_NP_g: float, Kl_MP_NP: float) -> float:
     """
     Mlk_MPUse_g = Mlk_NP_g / Kl_MP_NP  # kg MP/d for lactation, Line 2728
     return Mlk_MPUse_g
+
+
+def calculate_Trg_MilkLac(Trg_MilkLacp: float, Trg_MilkProd: float) -> float:
+    """
+    Trg_MilkLac: Target milk lactose (kg/d)
+    """
+    Trg_MilkLac = Trg_MilkLacp / 100 * Trg_MilkProd # Line 2886
+    return Trg_MilkLac
+
+
+def calculate_Trg_NEmilk_DEIn(Trg_Mlk_NEout: float, An_DEIn: float) -> float:
+    """
+    Trg_NEmilk_DEIn: Target milk energy as a proportion of DE intake (Mcal/Mcal)
+    """
+    Trg_NEmilk_DEIn = Trg_Mlk_NEout / An_DEIn   # Line 2891
+    return Trg_NEmilk_DEIn
+
+
+def calculate_Trg_MilkProd_EPcor(Trg_MilkProd: float, Trg_MilkFatp: float, Trg_MilkTPp: float) -> float:
+    """
+    Trg_MilkProd_EPcor: Energy and protein corrected milk (kg/d)
+    """
+    Trg_MilkProd_EPcor = 0.327 * Trg_MilkProd + (12.97 * Trg_MilkFatp / 100 * Trg_MilkProd) + (7.65 * Trg_MilkTPp / 100 * Trg_MilkProd)  # energy and protein corrected milk, Line 2892-2893
+    return Trg_MilkProd_EPcor
+
+
+def calculate_Mlk_Prod_NEalow_EPcor(Mlk_Prod_NEalow: float, Trg_MilkFatp: float, Trg_MilkTPp: float) -> float:
+    """
+    Mlk_Prod_NEalow_EPcor: NE allowable energy and protein corrected milk production (kg/d)
+    """
+    Mlk_Prod_NEalow_EPcor = 0.327 * Mlk_Prod_NEalow + (12.97 * Trg_MilkFatp / 100 * Mlk_Prod_NEalow) + (7.65 * Trg_MilkTPp / 100 * Mlk_Prod_NEalow)  # energy and protein corrected milk, Line 2901-2902
+    return Mlk_Prod_NEalow_EPcor
+
+
+def calculate_Mlk_EPcorNEalow_DMIn(Mlk_Prod_NEalow_EPcor: float, An_DMIn: float) -> float:
+    """
+    Mlk_EPcorNEalow_DMIn: NE allowable energy and protein corrected milk production as a proportion of DMI (kg/kg)
+    """
+    Mlk_EPcorNEalow_DMIn = Mlk_Prod_NEalow_EPcor / An_DMIn  # Line 2903
+    return Mlk_EPcorNEalow_DMIn
+
+
+def calculate_MlkNP_Milk_p(MlkNP_Milk: float) -> float:
+    """
+    MlkNP_Milk_p: Milk NP % of milk production
+    """
+    MlkNP_Milk_p = MlkNP_Milk * 100 # Line 2913
+    return MlkNP_Milk_p
+
+
+def calculate_MlkFat_Milk_p(MlkFat_Milk: float) -> float:
+    """
+    MlkFat_Milk_p: Milk fat % of milk production
+    """
+    MlkFat_Milk_p = MlkFat_Milk * 100   # Line 2914
+    return MlkFat_Milk_p
+
+
+def calculate_Mlk_NE_DE(Mlk_NEout: float, An_DEIn: float) -> float:
+    """
+    Mlk_NE_DE: Milk NE as a proportion of DE intake
+    """
+    Mlk_NE_DE = Mlk_NEout / An_DEIn # proportion of DEIn used for milk, Line 2920
+    return Mlk_NE_DE

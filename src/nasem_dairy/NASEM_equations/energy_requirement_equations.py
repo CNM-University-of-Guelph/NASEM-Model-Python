@@ -792,7 +792,6 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
     return Gest_MEuse
 
 
-
 def calculate_Trg_Mlk_NEout(Trg_MilkProd: float, Trg_NEmilk_Milk: float) -> float:
     """
     *Calculate Target (Trg) Milk Net Energy (NE) Output*
@@ -930,3 +929,346 @@ def calculate_Trg_MEuse(An_MEmUse: float, An_MEgain: float, Gest_MEuse: float, T
     return Trg_MEuse
 
 
+def calculate_An_MEmUse_NS(An_NEmUse_NS: float, coeff_dict: dict) -> float:
+    """
+    An_MEmUse_NS: Metabolizable energy for maintenance (Mcal/d)
+    """
+    req_coeff = ['Km_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_MEmUse_NS = An_NEmUse_NS / coeff_dict['Km_ME_NE']  # Line 2846
+    return An_MEmUse_NS
+
+
+def calculate_An_MEmUse_Act(An_NEmUse_Act: float, coeff_dict: dict) -> float:
+    """
+    An_MEmUse_Act: Metabolizable energy for activity (Mcal/d)
+    """
+    req_coeff = ['Km_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_MEmUse_Act = An_NEmUse_Act / coeff_dict['Km_ME_NE']  # Line 2847
+    return An_MEmUse_Act
+
+
+def calculate_An_MEmUse_Env(coeff_dict: dict) -> float:
+    """
+    An_MEmUse_Env: Metabolizable energy lost to the environment (Mcal/d)
+    """
+    req_coeff = ['An_NEmUse_Env', 'Km_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_MEmUse_Env = coeff_dict['An_NEmUse_Env'] / coeff_dict['Km_ME_NE']    # Line 2848
+    return An_MEmUse_Env
+
+
+def calculate_An_NEm_ME(An_NEmUse: float, An_MEIn: float) -> float:
+    """
+    An_NEm_ME: Proportion of MEIn used for maintenance (Mcal/Mcal)
+    """
+    An_NEm_ME = An_NEmUse / An_MEIn # proportion of MEIn used for maintenance, Line 2849
+    return An_NEm_ME
+
+
+def calculate_An_NEm_DE(An_NEmUse: float, An_DEIn: float) -> float:
+    """
+    An_NEm_DE: Proportion of DE intake used for maintenance (Mcal/Mcal)
+    """
+    An_NEm_DE = An_NEmUse / An_DEIn # proportion of DEIn used for maintenance, Line 2850
+    return An_NEm_DE
+
+
+def calculate_An_NEmNS_DE(An_NEmUse_NS: float, An_DEIn: float) -> float:
+    """
+    An_NEmNS_DE: NE required for maintenance in an unstressed animal as a proportion of DE intake (Mcal/Mcal)
+    """
+    An_NEmNS_DE = An_NEmUse_NS / An_DEIn    # Line 2851
+    return An_NEmNS_DE
+
+
+def calculate_An_NEmAct_DE(An_NEmUse_Act: float, An_DEIn: float) -> float:
+    """
+    An_NEmAct_DE: NE required for maintenance activity as proportion of DE intake (Mcal/Mcal)
+    """
+    An_NEmAct_DE = An_NEmUse_Act / An_DEIn  # Line 2852
+    return An_NEmAct_DE
+
+
+def calculate_An_NEmEnv_DE(An_DEIn: float, coeff_dict: dict) -> float:
+    """
+    An_NEmEnv_DE: NE lost to environment as proportion of DE intake (Mcal/Mcal)
+    """
+    req_coeff = ['An_NEmUse_Env']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_NEmEnv_DE = coeff_dict['An_NEmUse_Env'] / An_DEIn  # Line 2853
+    return An_NEmEnv_DE
+
+
+def calculate_An_NEprod_Avail(An_NEIn: float, An_NEmUse: float) -> float:
+    """
+    An_NEprod_Avail: NE available for production (Mcal/d)
+    """
+    An_NEprod_Avail = An_NEIn - An_NEmUse   # Line 2856
+    return An_NEprod_Avail
+
+
+def calculate_An_MEprod_Avail(An_MEIn: float, An_MEmUse: float) -> float:
+    """
+    An_MEprod_Avail: ME available for production (Mcal/d)
+    """
+    An_MEprod_Avail = An_MEIn - An_MEmUse   # Line 2857
+    return An_MEprod_Avail
+
+
+def calculate_Gest_NELuse(Gest_MEuse: float, coeff_dict: dict) -> float:
+    """
+    Gest_NELuse: NE lactation used for gestation (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Gest_NELuse = Gest_MEuse * coeff_dict['Kl_ME_NE']  # mcal/d ME required. ??This should not be used, delete. Line 2861
+    return Gest_NELuse
+
+
+def calculate_Gest_NE_ME(Gest_MEuse: float, An_MEIn: float) -> float:
+    """
+    Gest_NE_ME: Proportion of ME intake used for gestation 
+    """
+    Gest_NE_ME = Gest_MEuse / An_MEIn # proportion of MEIn used for Gestation, Line 2862
+    return Gest_NE_ME
+
+
+def calculate_Gest_NE_DE(Gest_REgain: float, An_DEIn: float) -> float:
+    """
+    Gest_NE_DE: Proportion of DE intake retained in gravid uterus tissue (Mcal)
+    """
+    Gest_NE_DE = Gest_REgain / An_DEIn # proportion of DEIn retained in gravid uterus tissue, Line 2863
+    return Gest_NE_DE
+
+
+def calculate_An_REgain(Body_Fatgain: float, Body_CPgain: float) -> float:
+    """
+    An_REgain: Retained energy (Mcal/d)
+    """
+    An_REgain = 9.4 * Body_Fatgain + 5.55 * Body_CPgain # Retained Energy, mcal/d. Does not apply to calves, Line 2866
+    return An_REgain
+
+
+def calculate_Rsrv_NE_DE(Rsrv_NEgain: float, An_DEIn: float) -> float:
+    """
+    Rsrv_NE_DE: Proportion of DE intake used for reserves gain
+    """
+    Rsrv_NE_DE = Rsrv_NEgain / An_DEIn # proportion of DEIn used for Reserves gain, Line 2869
+    return Rsrv_NE_DE
+
+
+def calculate_Frm_NE_DE(Frm_NEgain: float, An_DEIn: float) -> float:
+    """
+    Frm_NE_DE: Proportion of DE intake used for frame gain
+    """
+    Frm_NE_DE = Frm_NEgain / An_DEIn # proportion of DEIn used for Frame gain, Line 2870
+    return Frm_NE_DE
+
+
+def calculate_Body_NEgain_BWgain(An_REgain: float, Body_Gain: float) -> float:
+    """
+    Body_NEgain_BWgain: Mcal of NE per kg bodyweight gain 
+    """
+    Body_NEgain_BWgain = An_REgain / Body_Gain # mcal NE/kg BW gain, Line 2871
+    return Body_NEgain_BWgain
+
+
+def calculate_An_ME_NEg(An_REgain: float, An_MEgain: float) -> float:
+    """
+    An_ME_NEg: Retained energy as a proportion on ME for gain
+    """
+    An_ME_NEg = An_REgain / An_MEgain  # A weighted average efficiency based on user entered or prediction frame and reserves gains. Cows only at this time, Line 2875
+    return An_ME_NEg
+
+
+def calculate_Rsrv_NELgain(Rsrv_MEgain: float, coeff_dict: dict) -> float:
+    """
+    Rsrv_NELgain: NEL required for body reserve gain (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Rsrv_NELgain = Rsrv_MEgain * coeff_dict['Kl_ME_NE']  # express body energy required in NEL terms, Line 2877
+    return Rsrv_NELgain
+
+
+def calculate_Frm_NELgain(Frm_MEgain: float, coeff_dict: dict) -> float:
+    """
+    Frm_NELgain: NEL required for frame gain (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Frm_NELgain = Frm_MEgain * coeff_dict['Kl_ME_NE'] # Line 2878
+    return Frm_NELgain
+
+
+def calculate_An_NELgain(An_MEgain: float, coeff_dict: dict) -> float:
+    """
+    An_NELgain: NEL required for bodyweight gain (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_NELgain = An_MEgain * coeff_dict['Kl_ME_NE']   # Line 2879
+    return An_NELgain
+
+
+def calculate_An_NEgain_DE(An_REgain: float, An_DEIn: float) -> float:
+    """
+    An_NEgain_DE: Retained energy as a proportion of DE intake
+    """
+    An_NEgain_DE = An_REgain / An_DEIn  # Line 2881
+    return An_NEgain_DE
+
+
+def calculate_An_NEgain_ME(An_REgain: float, An_MEIn: float) -> float:
+    """
+    An_NEgain_ME: Retained energy for gain as a proportion of ME intake
+    """
+    An_NEgain_ME = An_REgain / An_MEIn  # Line 2882
+    return An_NEgain_ME
+
+
+
+def calculate_An_MEuse(An_MEmUse: float, An_MEgain: float, Gest_MEuse: float, Mlk_MEout: float) -> float:
+    """
+    An_MEuse: Total ME use (Mcal/d)
+    """
+    An_MEuse = An_MEmUse + An_MEgain + Gest_MEuse + Mlk_MEout   # Line 2923
+    return An_MEuse
+
+
+def calculate_An_NEuse(An_NEmUse: float, An_REgain: float, Gest_REgain: float, Mlk_NEout: float) -> float:
+    """
+    An_NEuse: Total NE use (Mcal/d)
+    """
+    An_NEuse = An_NEmUse + An_REgain + Gest_REgain + Mlk_NEout  # Line 2925
+    return An_NEuse
+
+
+def calculate_Trg_NEuse(An_NEmUse: float, An_REgain: float, Gest_REgain: float, Trg_Mlk_NEout: float) -> float:
+    """
+    Trg_NEuse: Target total NE use (Mcal/d)
+    """
+    Trg_NEuse = An_NEmUse + An_REgain + Gest_REgain + Trg_Mlk_NEout # Line 2926
+    return Trg_NEuse
+
+
+def calculate_An_NELuse(An_MEuse: float, coeff_dict: dict) -> float:
+    """
+    An_NELuse: Total NEL requirement (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_NELuse = An_MEuse * coeff_dict['Kl_ME_NE'] # Line 2927
+    return An_NELuse
+
+
+def calculate_Trg_NELuse(Trg_MEuse: float, coeff_dict: dict) -> float:
+    """
+    Trg_NELuse: Target NEL requirement (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Trg_NELuse = Trg_MEuse * coeff_dict['Kl_ME_NE'] # Line 2928
+    return Trg_NELuse
+
+
+def calculate_An_NEprod_GE(An_NEuse: float, An_NEmUse: float, An_GEIn: float) -> float:
+    """
+    An_NEprod_GE: Total efficiency of GE use (predicted NE use)
+    """
+    An_NEprod_GE = (An_NEuse - An_NEmUse) / An_GEIn  # Total efficiency of GE use, Line 2930
+    return An_NEprod_GE
+
+
+def calculate_Trg_NEprod_GE(Trg_NEuse: float, An_NEmUse: float, An_GEIn: float) -> float:
+    """
+    Trg_NEprod_GE: Total efficiency of GE use (target NE use)
+    """
+    Trg_NEprod_GE = (Trg_NEuse - An_NEmUse) / An_GEIn  # Total efficiency of GE use, Line 2931
+    return Trg_NEprod_GE
+
+
+def calculate_An_NEmlk_GE(Mlk_NEout: float, An_GEIn: float) -> float:
+    """
+    An_NEmlk_GE: Efficiency of GE use for predicted milk NE
+    """
+    An_NEmlk_GE = Mlk_NEout / An_GEIn  # Efficiency of GE use for milk NE, Line 2932
+    return An_NEmlk_GE
+
+
+def calculate_Trg_NEmlk_GE(Trg_Mlk_NEout: float, An_GEIn: float) -> float:
+    """
+    Trg_NEmlk_GE: Efficiency of GE use for target milk NE
+    """
+    Trg_NEmlk_GE = Trg_Mlk_NEout / An_GEIn  # Efficiency of GE use for milk NE, Line 2933
+    return Trg_NEmlk_GE
+
+
+def calculate_An_MEbal(An_MEIn: float, An_MEuse: float) -> float:
+    """
+    An_MEbal: ME balance (Mcal/d)
+    """
+    An_MEbal = An_MEIn - An_MEuse  # Line 2935
+    return An_MEbal
+
+
+def calculate_An_NELbal(An_MEbal: float, coeff_dict: dict) -> float:
+    """
+    An_NELbal: NEL balance (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    An_NELbal = An_MEbal * coeff_dict['Kl_ME_NE'] # Line 2936
+    return An_NELbal
+
+
+def calculate_An_NEbal(An_NEIn: float, An_NEuse: float) -> float:
+    """
+    An_NEbal: NE balance (Mcal/d)
+    """
+    An_NEbal = An_NEIn - An_NEuse   # Line 2937
+    return An_NEbal
+
+
+def calculate_Trg_MEbal(An_MEIn: float, Trg_MEuse: float) -> float:
+    """
+    Trg_MEbal: Target ME balance (Mcal/d)
+    """
+    Trg_MEbal = An_MEIn - Trg_MEuse # Line 2939
+    return Trg_MEbal
+
+
+def calculate_Trg_NELbal(Trg_MEbal: float, coeff_dict: dict) -> float:
+    """
+    Trg_NELbal: Target NEL balance (Mcal/d)
+    """
+    req_coeff = ['Kl_ME_NE']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Trg_NELbal = Trg_MEbal * coeff_dict['Kl_ME_NE'] # Line 2940
+    return Trg_NELbal
+
+
+def calculate_Trg_NEbal(An_NEIn: float, Trg_NEuse: float) -> float:
+    """
+    Trg_NEbal: Target NE balance (Mcal/d)
+    """
+    Trg_NEbal = An_NEIn - Trg_NEuse # Line 2941
+    return Trg_NEbal
+
+
+def calculate_An_MPuse_MEuse(An_MPuse_g: float, An_MEuse: float) -> float:
+    """
+    An_MPuse_MEuse: Ratio of MP use to ME use (g/Mcal)
+    """
+    An_MPuse_MEuse = An_MPuse_g / An_MEuse  # g/mcal, Line 2943
+    return An_MPuse_MEuse
+
+
+def calculate_Trg_MPuse_MEuse(An_MPuse_g_Trg: float, An_MEuse: float) -> float:
+    """
+    Trg_MPuse_MEuse: Target ratio of MP use to ME use (g/Mcal)
+    """
+    Trg_MPuse_MEuse = An_MPuse_g_Trg / An_MEuse # Line 2944
+    return Trg_MPuse_MEuse
