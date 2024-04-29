@@ -152,3 +152,43 @@ def calculate_Ur_EAAEnd_g(Ur_AAEnd_g: np.array) -> float:
     """
     Ur_EAAEnd_g = Ur_AAEnd_g.sum()  # Line 2059-2061
     return Ur_EAAEnd_g
+
+
+def calculate_Ur_Nout_DigNIn(Ur_Nout_g: float, An_DigCPtIn: float) -> float:
+    """
+    Ur_Nout_DigNIn: % of digestable N lost in urine
+    """
+    Ur_Nout_DigNIn = Ur_Nout_g / (An_DigCPtIn * 1000 / 6.25) * 100  # Line 2744
+    return Ur_Nout_DigNIn
+
+
+def calculate_Ur_Nout_CPcatab(Ur_Nout_g: float, Ur_Nend_g: float) -> float:
+    """
+    Ur_Nout_CPcatab: Urinary loss of N from CP catabolism? (g/d)
+    """
+    Ur_Nout_CPcatab =  Ur_Nout_g - Ur_Nend_g  # primarily AA catab, but also absorbed non-MP N such as PD, Line 2745
+    return Ur_Nout_CPcatab
+
+
+def calculate_UrDE_DMIn(Ur_DEout: float, An_DMIn: float) -> float:
+    """
+    UrDE_DMIn: Urinary DE loss as a fraction of DMI (Mcal/kg)
+    """
+    UrDE_DMIn = Ur_DEout / An_DMIn  # Line 2748
+    return UrDE_DMIn
+
+
+def calculate_UrDE_GEIn(Ur_DEout: float, An_GEIn: float) -> float:
+    """
+    UrDE_GEIn: Urinary DE loss as a fraction of GE intake (Mcal/Mcal)
+    """
+    UrDE_GEIn = Ur_DEout / An_GEIn  # Line 2749
+    return UrDE_GEIn
+
+
+def calculate_UrDE_DEIn(Ur_DEout: float, An_DEIn: float) -> float:
+    """
+    UrDE_DEIn: Urinary DE loss as a fraction of DE intake (Mcal/Mcal)
+    """
+    UrDE_DEIn = Ur_DEout / An_DEIn  # Line 2750
+    return UrDE_DEIn

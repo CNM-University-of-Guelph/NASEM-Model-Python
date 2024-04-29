@@ -331,7 +331,8 @@ class ModelOutput:
                            'Fe_Nend', 'Fe_RDPend', 'Fe_RUPend', 'Fe_MiTP', 'Fe_InfCP', 'Fe_TP', 'Fe_N', 'Fe_N_g', 'Fe_FA', 'Fe_OM_end', 'Fe_OM', 'Fe_DEMiCPend', 'Fe_DERDPend', 'Fe_DERUPend', 
                            'Fe_DEout', 'Fe_DE_GE', 'Fe_DE', 'Fe_AAMet_g', 'Fe_AAMet_AbsAA', 'Fe_MPendUse_g']
         urinary_variables = ['Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g', 'Ur_Nend_Urea_g', 'Ur_Nend_Creatn_g', 'Ur_Nend_Creat_g', 'Ur_Nend_PD_g', 'Ur_NPend_3MH_g', 
-                             'Ur_Nend_3MH_g', 'Ur_Nend_sum_g', 'Ur_Nend_Hipp_g', 'Ur_NPend', 'Ur_MPend', 'Ur_EAAend_g', 'Ur_AAEnd_g', 'Ur_AAEnd_AbsAA', 'Ur_EAAEnd_g']
+                             'Ur_Nend_3MH_g', 'Ur_Nend_sum_g', 'Ur_Nend_Hipp_g', 'Ur_NPend', 'Ur_MPend', 'Ur_EAAend_g', 'Ur_AAEnd_g', 'Ur_AAEnd_AbsAA', 'Ur_EAAEnd_g', "Ur_Nout_DigNIn", 
+                             "Ur_Nout_CPcatab", "UrDE_DMIn", "UrDE_GEIn", "UrDE_DEIn"]
         gaseous_variables = []
         scurf_variables = ['Scrf_CP_g', 'Scrf_NP_g', 'Scrf_MPUse_g_Trg', 'Scrf_NP', 'Scrf_N_g', 'Scrf_AA_g', 'ScrfAA_AbsAA', 'Scrf_MPUse_g']
         # Store variables

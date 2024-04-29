@@ -1330,3 +1330,8 @@ An_NPxprt_MP
 An_CP_NP
 An_NPBal_g
 An_NPBal
+Ur_Nout_DigNIn
+Ur_Nout_CPcatab
+UrDE_DMIn
+UrDE_GEIn
+UrDE_DEIn

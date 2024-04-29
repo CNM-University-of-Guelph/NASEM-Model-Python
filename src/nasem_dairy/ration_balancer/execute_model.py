@@ -347,7 +347,12 @@ from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_EAAend_g,
     calculate_Ur_AAEnd_g,
     calculate_Ur_AAEnd_AbsAA,
-    calculate_Ur_EAAEnd_g
+    calculate_Ur_EAAEnd_g,
+    calculate_Ur_Nout_DigNIn,
+    calculate_Ur_Nout_CPcatab,
+    calculate_UrDE_DMIn,
+    calculate_UrDE_GEIn,
+    calculate_UrDE_DEIn
 )
 
 from nasem_dairy.NASEM_equations.energy_requirement_equations import (
@@ -1843,6 +1848,12 @@ def execute_model(user_diet: pd.DataFrame,
     An_NPBal_g = calculate_An_NPBal_g(An_MPIn_g, An_MP_NP, An_NPuse_g)
     An_NPBal = calculate_An_NPBal(An_NPBal_g)
 
+    ### Urine N and Energy Loss ###
+    Ur_Nout_DigNIn = calculate_Ur_Nout_DigNIn(Ur_Nout_g, An_data['An_DigCPtIn'])
+    Ur_Nout_CPcatab = calculate_Ur_Nout_CPcatab(Ur_Nout_g, Ur_Nend_g)
+    UrDE_DMIn = calculate_UrDE_DMIn(Ur_DEout, An_data['An_DMIn'])
+    UrDE_GEIn = calculate_UrDE_GEIn(Ur_DEout, An_data['An_GEIn'])
+    UrDE_DEIn = calculate_UrDE_DEIn(Ur_DEout, An_data['An_DEIn'])
 
     ########################################
     # Mineral Requirement Calculations

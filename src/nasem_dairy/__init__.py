@@ -615,7 +615,12 @@ from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_EAAend_g,
     calculate_Ur_AAEnd_g,
     calculate_Ur_AAEnd_AbsAA,
-    calculate_Ur_EAAEnd_g
+    calculate_Ur_EAAEnd_g,
+    calculate_Ur_Nout_DigNIn,
+    calculate_Ur_Nout_CPcatab,
+    calculate_UrDE_DMIn,
+    calculate_UrDE_GEIn,
+    calculate_UrDE_DEIn
 )
 
 from nasem_dairy.NASEM_equations.energy_requirement_equations import (

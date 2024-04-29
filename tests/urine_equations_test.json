@@ -83,6 +83,31 @@
       "Name": "calculate_Ur_AAEnd_AbsAA",
       "Input": {"Ur_AAEnd_g": 192, "Abs_AA_g": 6.4},
       "Output": 30.0
-    }
+    },
+    {
+      "Name": "calculate_Ur_Nout_DigNIn",
+      "Input": {"Ur_Nout_g": 310, "An_DigCPtIn": 14.9},
+      "Output": 13.003355704697986
+  },
+  {
+      "Name": "calculate_Ur_Nout_CPcatab",
+      "Input": {"Ur_Nout_g": 831, "Ur_Nend_g": 391},
+      "Output": 440
+  },
+  {
+      "Name": "calculate_UrDE_DMIn",
+      "Input": {"Ur_DEout": 3.1, "An_DMIn": 25.9},
+      "Output": 0.1196911196911197
+  },
+  {
+      "Name": "calculate_UrDE_GEIn",
+      "Input": {"Ur_DEout": 3.8, "An_GEIn": 18.5},
+      "Output": 0.2054054054054054
+  },
+  {
+      "Name": "calculate_UrDE_DEIn",
+      "Input": {"Ur_DEout": 16.3, "An_DEIn": 30.3},
+      "Output": 0.5379537953795379
+  }
   ]
   
