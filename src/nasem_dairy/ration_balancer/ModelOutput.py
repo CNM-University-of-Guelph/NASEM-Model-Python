@@ -250,7 +250,7 @@ class ModelOutput:
         Sort and store specific variables related to required intakes in the Requirements category.
         """
         # Name digestability groups
-        group_names = ['energy', 'protein']
+        group_names = ['energy', 'protein', 'vitamin']
         # Lists of variables to store
         energy_variables = ['An_NEmUse_NS', 'An_NEm_Act_Graze', 'An_NEm_Act_Parlor', 'An_NEm_Act_Topo',
                             'An_NEmUse_Act', 'An_NEmUse', 'An_MEmUse', 'Gest_MEuse', 'Trg_Mlk_NEout', 'Trg_Mlk_MEout',
@@ -272,8 +272,9 @@ class ModelOutput:
                              'Trg_AAEff_EAAEff', 'Imb_EAA', 'An_MPBal_g_Trg', 'Xprt_NP_MP_Trg', 'Trg_MPIn_req', 'An_MPavail_Gain_Trg',
                              'Xprt_NP_MP', 'Km_MP_NP', 'Kl_MP_NP', 'An_MPuse_g', 'An_MPuse', 'An_MPBal_g', 'An_MP_NP', 'An_NPxprt_MP', 
                              'An_CP_NP', 'An_NPBal_g', 'An_NPBal']
+        vitamin_variables = ['An_VitA_req', 'An_VitA_bal', 'An_VitD_req', 'An_VitD_bal', 'An_VitE_req', 'An_VitE_bal']
         # Store variables
-        self.__populate_category('Requirements', group_names, energy_variables, protein_variables)
+        self.__populate_category('Requirements', group_names, energy_variables, protein_variables, vitamin_variables)
 
 
         ### Store mineral requirements in nested dictionaries ###

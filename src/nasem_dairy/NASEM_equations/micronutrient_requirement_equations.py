@@ -883,6 +883,7 @@ def calculate_An_Zn_prod(An_Zn_y: float, An_Zn_l: float, An_Zn_g: float) -> floa
     An_Zn_prod = An_Zn_y + An_Zn_l + An_Zn_g    # Line 3095
     return An_Zn_prod
 
+
 ### DCAD ###
 def calculate_An_DCADmeq(Dt_K: float, Dt_Na: float, Dt_Cl: float, Dt_S: float) -> float:
     """
@@ -890,3 +891,66 @@ def calculate_An_DCADmeq(Dt_K: float, Dt_Na: float, Dt_Cl: float, Dt_S: float) -
     """
     An_DCADmeq = (Dt_K / 0.039 + Dt_Na / 0.023 - Dt_Cl / 0.0355 - Dt_S / 0.016) * 10    # #DCAD in meg/kg, Line 3096
     return An_DCADmeq
+
+
+### Vitamin Requirements ###
+def calculate_An_VitA_req(Trg_MilkProd: float, An_BW: float) -> float:
+    """
+    An_VitA_req: Vitamin A requirement (IU/d)
+    """
+    if Trg_MilkProd > 35:   # Line 3100
+        An_VitA_req = 110 * An_BW + 1000 * (Trg_MilkProd - 35)
+    else:
+        An_VitA_req = 110 * An_BW
+    return An_VitA_req
+
+
+def calculate_An_VitA_bal(Dt_VitAIn: float, An_VitA_req: float) -> float:
+    """
+    An_VitA_bal: Vitamin A balance (IU/d)
+    """
+    An_VitA_bal = Dt_VitAIn - An_VitA_req   # Line 3101
+    return An_VitA_bal
+
+
+def calculate_An_VitD_req(Trg_MilkProd: float, An_BW: float) -> float:
+    """
+    An_VitD_req: Vitamin D requirement (IU/d)
+    """
+    if Trg_MilkProd > 0:   # Line 3104
+        An_VitD_req = 40 * An_BW
+    else:
+        An_VitD_req = 32 * An_BW
+    return An_VitD_req
+
+
+def calculate_An_VitD_bal(Dt_VitDIn: float, An_VitD_req: float) -> float:
+    """
+    An_VitD_bal: Vitamin D balance (IU/d)
+    """
+    An_VitD_bal = Dt_VitDIn - An_VitD_req   # Line 3105
+    return An_VitD_bal
+
+
+def calculate_An_VitE_req(Trg_MilkProd: float, An_Parity_rl: int, An_StatePhys: str, An_BW: float, An_GestDay: int, An_Preg: int, Dt_PastIn: float) -> float:
+    """
+    An_VitE_req: Vitamin E requirement (IU/d)
+    """
+    if (Trg_MilkProd == 0 and An_Parity_rl >= 1) or An_StatePhys == "Calf":   # Line 3108-3109
+        An_VitE_req = 2 * An_BW
+    elif An_GestDay >= 259 and An_Preg == 1:    # Line 3110
+        An_VitE_req = 3 * An_BW
+    else:
+        An_VitE_req = 0.8 * An_BW
+
+    An_VitE_req = An_VitE_req - Dt_PastIn * 50  # 50 IU provided per kg of pasture DM, Line 3111
+    An_VitE_req = 0 if An_VitE_req < 0 else An_VitE_req # Line 3112
+    return An_VitE_req
+
+
+def calculate_An_VitE_bal(Dt_VitEIn: float, An_VitE_req: float) -> float:
+    """
+    An_VitE_bal: Vitamin E balance
+    """
+    An_VitE_bal = Dt_VitEIn - An_VitE_req   # Line 3113
+    return An_VitE_bal  

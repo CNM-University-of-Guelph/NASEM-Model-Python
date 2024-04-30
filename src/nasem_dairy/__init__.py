@@ -821,7 +821,13 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_Zn_req,
     calculate_An_Zn_bal,
     calculate_An_Zn_prod,
-    calculate_An_DCADmeq
+    calculate_An_DCADmeq,
+    calculate_An_VitA_req,
+    calculate_An_VitA_bal,
+    calculate_An_VitD_req,
+    calculate_An_VitD_bal,
+    calculate_An_VitE_req,
+    calculate_An_VitE_bal
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT

@@ -688,5 +688,65 @@
         "Name": "calculate_An_DCADmeq",
         "Input": {"Dt_K": 0.147, "Dt_Na": 0.204, "Dt_Cl": 0.36, "Dt_S": 0.45},
         "Output": -256.2704908380046
+    },
+    {
+        "Name": "calculate_An_VitA_req",
+        "Input": {"Trg_MilkProd": 20, "An_BW": 601},
+        "Output": 66110
+    },
+    {
+        "Name": "calculate_An_VitA_req",
+        "Input": {"Trg_MilkProd": 40, "An_BW": 601},
+        "Output": 71110
+    },
+    {
+        "Name": "calculate_An_VitA_req",
+        "Input": {"Trg_MilkProd": 35, "An_BW": 601},
+        "Output": 66110
+    },
+    {
+        "Name": "calculate_An_VitA_bal",
+        "Input": {"Dt_VitAIn": 310, "An_VitA_req": 319},
+        "Output": -9
+    },
+    {
+        "Name": "calculate_An_VitD_req",
+        "Input": {"Trg_MilkProd": 0, "An_BW": 741},
+        "Output": 23712
+    },
+    {
+        "Name": "calculate_An_VitD_req",
+        "Input": {"Trg_MilkProd": 10, "An_BW": 741},
+        "Output": 29640
+    },
+    {
+        "Name": "calculate_An_VitD_bal",
+        "Input": {"Dt_VitDIn": 591, "An_VitD_req": 319},
+        "Output": 272
+    },
+    {
+        "Name": "calculate_An_VitE_req",
+        "Input": {"Trg_MilkProd": 0, "An_Parity_rl": 1, "An_StatePhys": "Lactating Cow", "An_BW": 704, "An_GestDay": 200, "An_Preg": 0, "Dt_PastIn": 1.2},
+        "Output": 1348
+    },
+    {
+        "Name": "calculate_An_VitE_req",
+        "Input": {"Trg_MilkProd": 20, "An_Parity_rl": 1, "An_StatePhys": "Lactating Cow", "An_BW": 704, "An_GestDay": 200, "An_Preg": 0, "Dt_PastIn": 1.2},
+        "Output": 503.20000000000005
+    },
+    {
+        "Name": "calculate_An_VitE_req",
+        "Input": {"Trg_MilkProd": 20, "An_Parity_rl": 1, "An_StatePhys": "Lactating Cow", "An_BW": 704, "An_GestDay": 287, "An_Preg": 1, "Dt_PastIn": 1.2},
+        "Output": 2052
+    },
+    {
+        "Name": "calculate_An_VitE_req",
+        "Input": {"Trg_MilkProd": 20, "An_Parity_rl": 1, "An_StatePhys": "Calf", "An_BW": 704, "An_GestDay": 287, "An_Preg": 1, "Dt_PastIn": 1.2},
+        "Output": 1348
+    },
+    {
+        "Name": "calculate_An_VitE_bal",
+        "Input": {"Dt_VitEIn": 501, "An_VitE_req": 293},
+        "Output": 208
     }
 ]

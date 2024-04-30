@@ -554,7 +554,13 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_Zn_req,
     calculate_An_Zn_bal,
     calculate_An_Zn_prod,
-    calculate_An_DCADmeq
+    calculate_An_DCADmeq,
+    calculate_An_VitA_req,
+    calculate_An_VitA_bal,
+    calculate_An_VitD_req,
+    calculate_An_VitD_bal,
+    calculate_An_VitE_req,
+    calculate_An_VitE_bal
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
@@ -2356,6 +2362,25 @@ def execute_model(user_diet: pd.DataFrame,
                                          diet_data['Dt_Na'],
                                          diet_data['Dt_Cl'],
                                          diet_data['Dt_S'])
+
+    ### Vitamin Requirements ###
+    An_VitA_req = calculate_An_VitA_req(animal_input['Trg_MilkProd'],
+                                        animal_input['An_BW'])
+    An_VitA_bal = calculate_An_VitA_bal(diet_data['Dt_VitAIn'],
+                                        An_VitA_req)
+    An_VitD_req = calculate_An_VitD_req(animal_input['Trg_MilkProd'],
+                                        animal_input['An_BW'])
+    An_VitD_bal = calculate_An_VitD_bal(diet_data['Dt_VitDIn'],
+                                        An_VitD_req)
+    An_VitE_req = calculate_An_VitE_req(animal_input['Trg_MilkProd'],
+                                        animal_input['An_Parity_rl'],
+                                        animal_input['An_StatePhys'],
+                                        animal_input['An_BW'],
+                                        animal_input['An_GestDay'],
+                                        An_Preg,
+                                        diet_data['Dt_PastIn'])
+    An_VitE_bal = calculate_An_VitE_bal(diet_data['Dt_VitEIn'],
+                                        An_VitE_req)
 
     ########################################
     # Water Calculations
