@@ -364,3 +364,129 @@ def calculate_Imb_EAA(Imb_AA) -> float:
     # Sum the penalty to get a relative imbalance value for the optimizer
     Imb_EAA = Imb_AA.sum()
     return Imb_EAA
+
+
+def calculate_An_IdEAAIn(An_IdAAIn: pd.Series) -> float:
+    """
+    An_IdEAAIn: Intestinally digested EAA intake
+    """
+    An_IdEAAIn = An_IdAAIn.sum()    # Line 3126-3127
+    return An_IdEAAIn
+
+
+def calculate_Du_IdEAAMic(Du_IdAAMic: pd.Series) -> float:
+    """
+    Du_IdEAAMic: Intestinally digested microbial EAA
+    """
+    Du_IdEAAMic = Du_IdAAMic.sum()  # LIne 3128-3129
+    return Du_IdEAAMic
+
+
+def calculate_Dt_IdEAARUPIn(Dt_IdAARUPIn: pd.Series) -> float:
+    """
+    Dt_IdEAARUPIn: Intestinally digested EAA RUP intake
+    """
+    Dt_IdEAARUPIn = Dt_IdAARUPIn.sum()    # Line 3130
+    return Dt_IdEAARUPIn
+
+
+def calculate_Trg_Mlk_AA_g(Trg_Mlk_NP_g: float, Mlk_AA_TP: pd.Series) -> pd.Series:
+    """
+    Trg_Mlk_AA_g: Target Milk individual AA Outputs (g/d)
+    """
+    Trg_Mlk_AA_g = Trg_Mlk_NP_g * Mlk_AA_TP / 100   # Target Milk EAA Outputs, g/d, Line 3136-3145
+    return Trg_Mlk_AA_g
+
+
+def calculate_Trg_Mlk_EAA_g(Trg_Mlk_AA_g: pd.Series) -> float:
+    """
+    Trg_Mlk_EAA_g: Target milk EAA output (g/d)
+    """
+    Trg_Mlk_EAA_g = Trg_Mlk_AA_g.sum()
+    return Trg_Mlk_EAA_g
+
+
+def calculate_Trg_AAUse_g(Trg_Mlk_AA_g: pd.Series, Scrf_AA_g: pd.Series, Fe_AAMet_g: pd.Series, Ur_AAEnd_g: pd.Series, Gest_AA_g: pd.Series, Body_AAGain_g: pd.Series) -> pd.Series:
+    """
+    Trg_AAUse_g: Net individual AA use at user entered production (g/d)
+    """
+    # Net EAA Use at User Entered Production, g/d
+    Trg_AAUse_g = Trg_Mlk_AA_g + Scrf_AA_g + Fe_AAMet_g + Ur_AAEnd_g + Gest_AA_g + Body_AAGain_g    # Line 3151-3160
+    return Trg_AAUse_g
+
+
+def calculate_Trg_EAAUse_g(Trg_AAUse_g: pd.Series) -> float:
+    """
+    Trg_EAAUse_g: Net EAA use at user entered production (g/d)
+    """
+    Trg_EAAUse_g = Trg_AAUse_g.sum()
+    return Trg_EAAUse_g
+
+
+def calculate_Trg_AbsAA_g(Trg_Mlk_AA_g: pd.Series, Scrf_AA_g: pd.Series, Fe_AAMet_g: pd.Series, Trg_AbsAA_NPxprtAA: pd.Series, Ur_AAEnd_g: pd.Series, Gest_AA_g: pd.Series, Body_AAGain_g: pd.Series, Kg_MP_NP_Trg: float, coeff_dict) -> pd.Series:
+    """
+    Trg_AbsAA_g: Absorbed AA at user entered production (g/d)
+    """
+    req_coeff = ['Ky_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Trg_AbsAA_g = (Trg_Mlk_AA_g + Scrf_AA_g + Fe_AAMet_g) / Trg_AbsAA_NPxprtAA + Ur_AAEnd_g + Gest_AA_g / coeff_dict['Ky_MP_NP_Trg'] + Body_AAGain_g / Kg_MP_NP_Trg # Line 3165-3173
+    if 'Arg' in Trg_AbsAA_g.index:  # Arg not included in this calculation
+        Trg_AbsAA_g['Arg'] = np.nan
+    return Trg_AbsAA_g
+
+
+def calculate_Trg_AbsEAA_g(Trg_AbsAA_g: pd.Series) -> float:
+    """
+    Trg_AbsEAA_g: Absorbed EAA at user entered production (g/d)
+    """
+    Trg_AbsEAA_g = Trg_AbsAA_g.sum()    # Arg not considered as partially synthesized, Line 3174-3175
+    return Trg_AbsEAA_g
+
+
+def calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g: float, Mlk_Arg_g: float, Trg_AbsEAA_g: float) -> float:
+    """
+    Trg_MlkEAA_AbsEAA: Milk EAA as a fraction of absorbed EAA at user entered production
+    """
+    Trg_MlkEAA_AbsEAA = (Mlk_EAA_g - Mlk_Arg_g) / Trg_AbsEAA_g  # Line 3176
+    return Trg_MlkEAA_AbsEAA
+
+
+def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series, Gest_AA_g: pd.Series, Ur_AAEnd_g: pd.Series, Abs_AA_g: pd.Series, coeff_dict: dict) -> pd.Series:
+    """
+    AnNPxAA_AbsAA: Predicted Efficiency of AbsAA to export and gain NPAA using Nutrient Allowable milk protein, g NPAA/g absorbed AA
+    """
+    # Predicted Efficiency of AbsAA to export and gain NPAA using Nutrient Allowable milk protein, g NPAA/g absorbed AA (Ur_AAend use set to an efficiency of 1). 
+    # These are for comparison to Trg AA Eff.
+    req_coeff = ['Ky_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    AnNPxAA_AbsAA = (An_AAUse_g - Gest_AA_g - Ur_AAEnd_g) / (Abs_AA_g - Ur_AAEnd_g - Gest_AA_g / coeff_dict['Ky_MP_NP_Trg'])    # Subtract Gest_AA and UrEnd for use and supply, Line 3197-3206
+    return AnNPxAA_AbsAA
+
+
+def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float, Gest_EAA_g: float, Ur_EAAEnd_g: float, Abs_EAA_g: float, coeff_dict: dict) -> float:
+    """
+    AnNPxEAA_AbsEAA: Predicted Efficiency of AbsEAA to export and gain NPEAA using Nutrient Allowable milk protein, g NPEAA/g absorbed EAA
+    """
+    req_coeff = ['Ky_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    AnNPxEAA_AbsEAA = (An_EAAUse_g - Gest_EAA_g - Ur_EAAEnd_g) / (Abs_EAA_g - Ur_EAAEnd_g - Gest_EAA_g / coeff_dict['Ky_MP_NP_Trg'])    # Line 3207
+    return AnNPxEAA_AbsEAA
+
+
+def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series, Gest_AA_g: pd.Series, Ur_AAEnd_g: pd.Series, Abs_AA_g: pd.Series, coeff_dict: dict) -> pd.Series:
+    """
+    AnNPxAAUser_AbsAA: Efficiency of AbsAA to export and gain NPAA at User Entered milk protein, g NPAA/g absorbed AA
+    """
+    # Efficiency of AbsAA to export and gain NPAA at User Entered milk protein, g NPAA/g absorbed AA (Ur_AAend use set to an efficiency of 1).
+    req_coeff = ['Ky_MP_NP_Trg']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    AnNPxAAUser_AbsAA = (Trg_AAUse_g - Gest_AA_g - Ur_AAEnd_g) / (Abs_AA_g - Ur_AAEnd_g - Gest_AA_g / coeff_dict['Ky_MP_NP_Trg']) # Subtract Gest_AA and UrEnd for use and supply, Line 3210-3219
+    return AnNPxAAUser_AbsAA
+
+
+def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float, Gest_EAA_g: float, Ur_EAAEnd_g: float, Abs_EAA_g: float, coeff_dict: dict) -> float:
+    """
+    AnNPxEAAUser_AbsEAA: Efficiency of AbsEAA to export and gain NPEAA at User Entered milk protein, g NPEAA/g absorbed EAA
+    """
+    AnNPxEAAUser_AbsEAA = (Trg_EAAUse_g - Gest_EAA_g - Ur_EAAEnd_g) / (Abs_EAA_g - Ur_EAAEnd_g - Gest_EAA_g / coeff_dict['Ky_MP_NP_Trg'])   # Line 3220
+    return AnNPxEAAUser_AbsEAA

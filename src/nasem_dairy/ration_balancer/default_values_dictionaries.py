@@ -329,7 +329,10 @@ coeff_dict = {
     'Fet_KsynDecay': 7.59e-5,
     'Fet_Wt': 0,
     'Fet_BWgain': 0,     # open animal, kg/d
-    'AshGain_RsrvGain': 0.02
+    'AshGain_RsrvGain': 0.02,
+    'CH4vol_kg': 1497, # liters/kg
+    'En_CH4': 55.5 / 4.184,  # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
+    'An_Fe_m': 0    # no Fe maintenance requirement
 }
 
 # Dictionary to use when infusions are not provided to model

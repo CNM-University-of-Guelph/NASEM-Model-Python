@@ -68,7 +68,14 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_Mlk_EPcorNEalow_DMIn,
     calculate_MlkNP_Milk_p,
     calculate_MlkFat_Milk_p,
-    calculate_Mlk_NE_DE
+    calculate_Mlk_NE_DE,
+    calculate_MlkNP_Int,
+    calculate_MlkNP_DEInp,
+    calculate_MlkNP_NDF,
+    calculate_MlkNP_AbsAA,
+    calculate_MlkNP_AbsEAA,
+    calculate_MlkNP_AbsNEAA,
+    calculate_MlkNP_AbsOthAA
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -276,7 +283,8 @@ from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_Du_EndN,
     calculate_Du_NAN_g,
     calculate_Du_NANMN_g,
-    calculate_Du_MiN_NRC2001_g
+    calculate_Du_MiN_NRC2001_g,
+    calculate_Rum_MiCP_DigCHO
 )
 
 from nasem_dairy.NASEM_equations.protein_equations import (
@@ -359,7 +367,21 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Trg_AAEff_EAAEff,
     calculate_An_AAEff_EAAEff,
     calculate_Imb_AA,
-    calculate_Imb_EAA
+    calculate_Imb_EAA,
+    calculate_An_IdEAAIn,
+    calculate_Du_IdEAAMic,
+    calculate_Dt_IdEAARUPIn,
+    calculate_Trg_Mlk_AA_g,
+    calculate_Trg_Mlk_EAA_g,
+    calculate_Trg_AAUse_g,
+    calculate_Trg_EAAUse_g,
+    calculate_Trg_AbsAA_g,
+    calculate_Trg_AbsEAA_g,
+    calculate_Trg_MlkEAA_AbsEAA,
+    calculate_AnNPxAA_AbsAA,
+    calculate_AnNPxEAA_AbsEAA,
+    calculate_AnNPxAAUser_AbsAA,
+    calculate_AnNPxEAAUser_AbsEAA
 )
 
 
@@ -485,7 +507,8 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_NE_GE,
     calculate_An_NE_DE,
     calculate_An_NE_ME,
-    calculate_An_MPIn_MEIn
+    calculate_An_MPIn_MEIn,
+    calculate_An_RUPIn_g
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -827,7 +850,55 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_VitD_req,
     calculate_An_VitD_bal,
     calculate_An_VitE_req,
-    calculate_An_VitE_bal
+    calculate_An_VitE_bal,
+    calculate_Dt_acCa,
+    calculate_Dt_acP,
+    calculate_Dt_acNa,
+    recalculate_Dt_acMg,
+    calculate_Dt_acK,
+    calculate_Dt_acCl,
+    calculate_Dt_acCo,
+    calculate_Dt_acCu,
+    calculate_Dt_acFe,
+    calculate_Dt_acMn,
+    calculate_Dt_acZn,
+    calculate_CaProd_CaIn,
+    calculate_PProd_PIn,
+    calculate_MgProd_MgIn,
+    calculate_KProd_KIn,
+    calculate_NaProd_NaIn,
+    calculate_ClProd_ClIn,
+    calculate_CuProd_CuIn,
+    calculate_FeProd_FeIn,
+    calculate_MnProd_MnIn,
+    calculate_ZnProd_ZnIn,
+    calculate_CaProd_CaAbs,
+    calculate_PProd_PAbs,
+    calculate_MgProd_MgAbs,
+    calculate_KProd_KAbs,
+    calculate_NaProd_NaAbs,
+    calculate_ClProd_ClAbs,
+    calculate_CuProd_CuAbs,
+    calculate_FeProd_FeAbs,
+    calculate_MnProd_MnAbs,
+    calculate_ZnProd_ZnAbs,
+    calculate_Dt_CaReq_DMI,
+    calculate_Dt_PReq_DMI,
+    calculate_Dt_MgReq_DMI,
+    calculate_Dt_KReq_DMI,
+    calculate_Dt_NaReq_DMI,
+    calculate_Dt_ClReq_DMI,
+    calculate_Dt_SReq_DMI,
+    calculate_Dt_CoReq_DMI,
+    calculate_Dt_CuReq_DMI,
+    calculate_Dt_FeReq_DMI,
+    calculate_Dt_IReq_DMI,
+    calculate_Dt_MnReq_DMI,
+    calculate_Dt_SeReq_DMI,
+    calculate_Dt_ZnReq_DMI,
+    calculate_Dt_VitAReq_DMI,
+    calculate_Dt_VitDReq_DMI,
+    calculate_Dt_VitEReq_DMI
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
@@ -836,4 +907,42 @@ from nasem_dairy.NASEM_equations.unused_equations import (
     calculate_Dt_DMIn_MBW
 )
 
-from nasem_dairy.NASEM_equations.water_equations import calculate_An_WaIn
+from nasem_dairy.NASEM_equations.water_equations import (
+    calculate_An_WaIn,
+    calculate_An_Wa_Insens,
+    calculate_WaIn_Milk
+)
+
+from nasem_dairy.NASEM_equations.methane_equations import (
+    calculate_CH4out_g,
+    calculate_CH4out_L,
+    calculate_CH4g_Milk,
+    calculate_CH4L_Milk
+)
+
+from nasem_dairy.NASEM_equations.manure_equations import (
+    calculate_Man_out,
+    calculate_Man_Milk,
+    calculate_Man_VolSld,
+    calculate_Man_VolSld2,
+    calculate_VolSlds_Milk,
+    calculate_VolSlds_Milk2,
+    calculate_Man_Nout_g,
+    calculate_Man_Nout2_g,
+    calculate_ManN_Milk,
+    calculate_Man_Ca_out,
+    calculate_Man_P_out,
+    calculate_Man_Mg_out,
+    calculate_Man_K_out,
+    calculate_Man_Na_out,
+    calculate_Man_Cl_out,
+    calculate_Man_MacMin_out,
+    calculate_Man_Cu_out,
+    calculate_Man_Fe_out,
+    calculate_Man_Mn_out,
+    calculate_Man_Zn_out,
+    calculate_Man_MicMin_out,
+    calculate_Man_Min_out_g,
+    calculate_Man_Wa_out,
+    calculate_ManWa_Milk
+)

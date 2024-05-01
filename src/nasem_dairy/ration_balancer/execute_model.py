@@ -65,7 +65,14 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_Mlk_EPcorNEalow_DMIn,
     calculate_MlkNP_Milk_p,
     calculate_MlkFat_Milk_p,
-    calculate_Mlk_NE_DE
+    calculate_Mlk_NE_DE,
+    calculate_MlkNP_Int,
+    calculate_MlkNP_DEInp,
+    calculate_MlkNP_NDF,
+    calculate_MlkNP_AbsAA,
+    calculate_MlkNP_AbsEAA,
+    calculate_MlkNP_AbsNEAA,
+    calculate_MlkNP_AbsOthAA
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -106,7 +113,8 @@ from nasem_dairy.NASEM_equations.microbial_protein_equations import (
     calculate_Du_EndN,
     calculate_Du_NAN_g,
     calculate_Du_NANMN_g,
-    calculate_Du_MiN_NRC2001_g
+    calculate_Du_MiN_NRC2001_g,
+    calculate_Rum_MiCP_DigCHO
 )
 
 from nasem_dairy.NASEM_equations.protein_equations import (
@@ -190,7 +198,21 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Trg_AAEff_EAAEff,
     calculate_An_AAEff_EAAEff,
     calculate_Imb_AA,
-    calculate_Imb_EAA
+    calculate_Imb_EAA,
+    calculate_An_IdEAAIn,
+    calculate_Du_IdEAAMic,
+    calculate_Dt_IdEAARUPIn,
+    calculate_Trg_Mlk_AA_g,
+    calculate_Trg_Mlk_EAA_g,
+    calculate_Trg_AAUse_g,
+    calculate_Trg_EAAUse_g,
+    calculate_Trg_AbsAA_g,
+    calculate_Trg_AbsEAA_g,
+    calculate_Trg_MlkEAA_AbsEAA,
+    calculate_AnNPxAA_AbsAA,
+    calculate_AnNPxEAA_AbsEAA,
+    calculate_AnNPxAAUser_AbsAA,
+    calculate_AnNPxEAAUser_AbsEAA
 )
 
 from nasem_dairy.NASEM_equations.infusion_equations import calculate_infusion_data
@@ -217,7 +239,8 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_NE_GE,
     calculate_An_NE_DE,
     calculate_An_NE_ME,
-    calculate_An_MPIn_MEIn
+    calculate_An_MPIn_MEIn,
+    calculate_An_RUPIn_g
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -560,7 +583,55 @@ from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (
     calculate_An_VitD_req,
     calculate_An_VitD_bal,
     calculate_An_VitE_req,
-    calculate_An_VitE_bal
+    calculate_An_VitE_bal,
+    calculate_Dt_acCa,
+    calculate_Dt_acP,
+    calculate_Dt_acNa,
+    recalculate_Dt_acMg,
+    calculate_Dt_acK,
+    calculate_Dt_acCl,
+    calculate_Dt_acCo,
+    calculate_Dt_acCu,
+    calculate_Dt_acFe,
+    calculate_Dt_acMn,
+    calculate_Dt_acZn,
+    calculate_CaProd_CaIn,
+    calculate_PProd_PIn,
+    calculate_MgProd_MgIn,
+    calculate_KProd_KIn,
+    calculate_NaProd_NaIn,
+    calculate_ClProd_ClIn,
+    calculate_CuProd_CuIn,
+    calculate_FeProd_FeIn,
+    calculate_MnProd_MnIn,
+    calculate_ZnProd_ZnIn,
+    calculate_CaProd_CaAbs,
+    calculate_PProd_PAbs,
+    calculate_MgProd_MgAbs,
+    calculate_KProd_KAbs,
+    calculate_NaProd_NaAbs,
+    calculate_ClProd_ClAbs,
+    calculate_CuProd_CuAbs,
+    calculate_FeProd_FeAbs,
+    calculate_MnProd_MnAbs,
+    calculate_ZnProd_ZnAbs,
+    calculate_Dt_CaReq_DMI,
+    calculate_Dt_PReq_DMI,
+    calculate_Dt_MgReq_DMI,
+    calculate_Dt_KReq_DMI,
+    calculate_Dt_NaReq_DMI,
+    calculate_Dt_ClReq_DMI,
+    calculate_Dt_SReq_DMI,
+    calculate_Dt_CoReq_DMI,
+    calculate_Dt_CuReq_DMI,
+    calculate_Dt_FeReq_DMI,
+    calculate_Dt_IReq_DMI,
+    calculate_Dt_MnReq_DMI,
+    calculate_Dt_SeReq_DMI,
+    calculate_Dt_ZnReq_DMI,
+    calculate_Dt_VitAReq_DMI,
+    calculate_Dt_VitDReq_DMI,
+    calculate_Dt_VitEReq_DMI
 )
 
 from nasem_dairy.NASEM_equations.coefficient_adjustment import adjust_LCT
@@ -569,8 +640,45 @@ from nasem_dairy.NASEM_equations.unused_equations import (
     calculate_Dt_DMIn_MBW
 )
 
-from nasem_dairy.NASEM_equations.water_equations import calculate_An_WaIn
+from nasem_dairy.NASEM_equations.water_equations import (
+    calculate_An_WaIn,
+    calculate_An_Wa_Insens,
+    calculate_WaIn_Milk
+)
 
+from nasem_dairy.NASEM_equations.methane_equations import (
+    calculate_CH4out_g,
+    calculate_CH4out_L,
+    calculate_CH4g_Milk,
+    calculate_CH4L_Milk
+)
+
+from nasem_dairy.NASEM_equations.manure_equations import (
+    calculate_Man_out,
+    calculate_Man_Milk,
+    calculate_Man_VolSld,
+    calculate_Man_VolSld2,
+    calculate_VolSlds_Milk,
+    calculate_VolSlds_Milk2,
+    calculate_Man_Nout_g,
+    calculate_Man_Nout2_g,
+    calculate_ManN_Milk,
+    calculate_Man_Ca_out,
+    calculate_Man_P_out,
+    calculate_Man_Mg_out,
+    calculate_Man_K_out,
+    calculate_Man_Na_out,
+    calculate_Man_Cl_out,
+    calculate_Man_MacMin_out,
+    calculate_Man_Cu_out,
+    calculate_Man_Fe_out,
+    calculate_Man_Mn_out,
+    calculate_Man_Zn_out,
+    calculate_Man_MicMin_out,
+    calculate_Man_Min_out_g,
+    calculate_Man_Wa_out,
+    calculate_ManWa_Milk
+)
 
 def execute_model(user_diet: pd.DataFrame, 
                   animal_input: dict, 
@@ -2393,6 +2501,267 @@ def execute_model(user_diet: pd.DataFrame,
                                 diet_data['Dt_CP'],
                                 animal_input['Env_TempCurr'])
 
+
+    ### End of Model Calculations ###
+    Rum_MiCP_DigCHO = calculate_Rum_MiCP_DigCHO(Du_MiCP,
+                                                Rum_DigNDFIn,
+                                                Rum_DigStIn)
+
+    An_IdAAIn = pd.Series([An_data[f'An_Id{AA}In'] for AA in AA_list], index=AA_list)
+    Dt_IdAARUPIn = pd.Series([diet_data[f'Dt_Id{AA}RUPIn'] for AA in AA_list], index=AA_list)
+    Mlk_AA_TP = pd.Series([coeff_dict[f"Mlk_{AA}_TP"] for AA in AA_list], index=AA_list)
+    An_IdEAAIn = calculate_An_IdEAAIn(An_IdAAIn)
+    Du_IdEAAMic = calculate_Du_IdEAAMic(AA_values['Du_IdAAMic'])
+    Dt_IdEAARUPIn = calculate_Dt_IdEAARUPIn(Dt_IdAARUPIn)
+    An_RUPIn_g = calculate_An_RUPIn_g(An_data['An_RUPIn'])
+    AA_values['Trg_Mlk_AA_g'] = calculate_Trg_Mlk_AA_g(Trg_Mlk_NP_g,
+                                                       Mlk_AA_TP)
+    Trg_Mlk_EAA_g = calculate_Trg_Mlk_EAA_g(AA_values['Trg_Mlk_AA_g'])
+    AA_values['Trg_AAUse_g'] = calculate_Trg_AAUse_g(AA_values['Trg_Mlk_AA_g'],
+                                                     Scrf_AA_g,
+                                                     Fe_AAMet_g,
+                                                     Ur_AAEnd_g,
+                                                     AA_values['Gest_AA_g'],
+                                                     AA_values['Body_AAGain_g'])
+    Trg_EAAUse_g = calculate_Trg_EAAUse_g(AA_values['Trg_AAUse_g'])
+    AA_values['Trg_AbsAA_g'] = calculate_Trg_AbsAA_g(AA_values['Trg_Mlk_AA_g'],
+                                                     Scrf_AA_g,
+                                                     Fe_AAMet_g,
+                                                     Trg_AbsAA_NPxprtAA,
+                                                     Ur_AAEnd_g,
+                                                     AA_values['Gest_AA_g'],
+                                                     AA_values['Body_AAGain_g'],
+                                                     Kg_MP_NP_Trg,
+                                                     coeff_dict)
+    Trg_AbsEAA_g = calculate_Trg_AbsEAA_g(AA_values['Trg_AbsAA_g'])
+    Trg_MlkEAA_AbsEAA = calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g,
+                                                    AA_values.loc["Arg", "Mlk_AA_g"],
+                                                    Trg_AbsEAA_g)
+    
+    MlkNP_Int = calculate_MlkNP_Int(animal_input['An_BW'],
+                                    coeff_dict)
+    MlkNP_DEInp = calculate_MlkNP_DEInp(An_data['An_DEInp'],
+                                        coeff_dict)
+    MlkNP_NDF = calculate_MlkNP_NDF(An_data['An_DigNDF'],
+                                    coeff_dict)
+    AA_values['MlkNP_AbsAA'] = calculate_MlkNP_AbsAA(AA_values['Abs_AA_g'],
+                                                     mPrt_k_AA)
+    MlkNP_AbsEAA = calculate_MlkNP_AbsEAA(Abs_EAA2b_g,
+                                          mPrt_k_EAA2)
+    MlkNP_AbsNEAA = calculate_MlkNP_AbsNEAA(Abs_neAA_g,
+                                            coeff_dict)
+    MlkNP_AbsOthAA = calculate_MlkNP_AbsOthAA(Abs_OthAA_g,
+                                              coeff_dict)
+    AA_values['AnNPxAA_AbsAA'] = calculate_AnNPxAA_AbsAA(AA_values['An_AAUse_g'],
+                                                         AA_values['Gest_AA_g'],
+                                                         Ur_AAEnd_g,
+                                                         AA_values['Abs_AA_g'],
+                                                         coeff_dict)
+    AnNPxEAA_AbsEAA = calculate_AnNPxEAA_AbsEAA(An_EAAUse_g,
+                                                Gest_EAA_g,
+                                                Ur_EAAEnd_g,
+                                                Abs_EAA_g,
+                                                coeff_dict)
+    AA_values['AnNPxAAUser_AbsAA'] = calculate_AnNPxAAUser_AbsAA(AA_values['Trg_AAUse_g'],
+                                                                 AA_values['Gest_AA_g'],
+                                                                 Ur_AAEnd_g,
+                                                                 AA_values["Abs_AA_g"],
+                                                                 coeff_dict)
+    AnNPxEAAUser_AbsEAA = calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g, 
+                                                        Gest_EAA_g,
+                                                        Ur_EAAEnd_g,
+                                                        Abs_EAA_g,
+                                                        coeff_dict)
+    
+    Dt_acCa = calculate_Dt_acCa(diet_data['Abs_CaIn'], 
+                                diet_data['Dt_CaIn'])
+    Dt_acP = calculate_Dt_acP(diet_data['Abs_PIn'],
+                              diet_data['Dt_PIn'])
+    Dt_acNa = calculate_Dt_acNa(diet_data['Abs_NaIn'],
+                                diet_data['Dt_NaIn'])
+    Dt_acMg = recalculate_Dt_acMg(diet_data['Abs_MgIn'],
+                                  diet_data['Dt_MgIn'])
+    Dt_acK = calculate_Dt_acK(diet_data['Abs_KIn'],
+                              diet_data['Dt_KIn'])
+    Dt_acCl = calculate_Dt_acCl(diet_data['Abs_ClIn'],
+                                diet_data['Dt_ClIn'])
+    Dt_acCo = calculate_Dt_acCo(diet_data['Abs_CoIn'],
+                                diet_data['Dt_CoIn'])
+    Dt_acCu = calculate_Dt_acCu(diet_data['Abs_CuIn'],
+                                diet_data['Dt_CuIn'])
+    Dt_acFe = calculate_Dt_acFe(diet_data['Abs_FeIn'],
+                                diet_data['Dt_FeIn'])
+    Dt_acMn = calculate_Dt_acMn(diet_data['Abs_MnIn'],
+                                diet_data['Dt_MnIn'])
+    Dt_acZn = calculate_Dt_acZn(diet_data['Abs_ZnIn'],
+                                diet_data['Dt_ZnIn'])
+    
+    CH4out_g = calculate_CH4out_g(An_data['An_GasEOut'],
+                                  coeff_dict)
+    CH4out_L = calculate_CH4out_L(CH4out_g,
+                                  coeff_dict)
+    CH4g_Milk = calculate_CH4g_Milk(CH4out_g,
+                                    Mlk_Prod)
+    CH4L_Milk = calculate_CH4L_Milk(CH4out_L,
+                                    Mlk_Prod)
+    
+    Man_out = calculate_Man_out(animal_input['An_StatePhys'],
+                                An_data['An_DMIn'],
+                                diet_data['Dt_K'])
+    Man_Milk = calculate_Man_Milk(Man_out,
+                                  Mlk_Prod)
+    Man_VolSld = calculate_Man_VolSld(animal_input['DMI'],
+                                      infusion_data['InfRum_DMIn'],
+                                      infusion_data['InfSI_DMIn'],
+                                      An_data['An_NDF'],
+                                      An_data["An_CP"])
+    Man_VolSld2 = calculate_Man_VolSld2(Fe_OM,
+                                        diet_data['Dt_LgIn'],
+                                        Ur_Nout_g)
+    VolSlds_Milk = calculate_VolSlds_Milk(Man_VolSld,
+                                          Mlk_Prod)
+    VolSlds_Milk2 = calculate_VolSlds_Milk2(Man_VolSld2,
+                                            Mlk_Prod)
+    Man_Nout_g = calculate_Man_Nout_g(Ur_Nout_g,
+                                      Fe_N_g,
+                                      Scrf_N_g)
+    Man_Nout2_g = calculate_Man_Nout2_g(An_data['An_NIn_g'],
+                                        An_Nprod_g)
+    ManN_Milk = calculate_ManN_Milk(Man_Nout_g,
+                                    Mlk_Prod)
+    Man_Ca_out = calculate_Man_Ca_out(diet_data['Dt_CaIn'],
+                                      An_Ca_prod)
+    Man_P_out = calculate_Man_P_out(diet_data['Dt_PIn'],
+                                    An_P_prod)
+    Man_Mg_out = calculate_Man_Mg_out(diet_data['Dt_MgIn'],
+                                      An_Mg_prod)
+    Man_K_out = calculate_Man_K_out(diet_data['Dt_KIn'],
+                                    An_K_prod)
+    Man_Na_out = calculate_Man_Na_out(diet_data['Dt_NaIn'],
+                                      An_Na_prod)
+    Man_Cl_out = calculate_Man_Cl_out(diet_data['Dt_ClIn'],
+                                      An_Cl_prod)
+    Man_MacMin_out = calculate_Man_MacMin_out(Man_Ca_out,
+                                              Man_P_out,
+                                              Man_Mg_out,
+                                              Man_K_out,
+                                              Man_Na_out,
+                                              Man_Cl_out)
+    Man_Cu_out = calculate_Man_Cu_out(diet_data['Dt_CuIn'],
+                                      An_Cu_prod)
+    Man_Fe_out = calculate_Man_Fe_out(diet_data['Dt_FeIn'],
+                                      An_Fe_prod)
+    Man_Mn_out = calculate_Man_Mn_out(diet_data['Dt_MnIn'],
+                                      An_Mn_prod)
+    Man_Zn_out = calculate_Man_Zn_out(diet_data['Dt_ZnIn'],
+                                      An_Zn_prod)
+    Man_MicMin_out = calculate_Man_MicMin_out(Man_Cu_out,
+                                              Man_Fe_out,
+                                              Man_Mn_out,
+                                              Man_Zn_out)
+    Man_Min_out_g = calculate_Man_Min_out_g(Man_MacMin_out, 
+                                            Man_MicMin_out)
+    
+    CaProd_CaIn = calculate_CaProd_CaIn(An_Ca_prod,
+                                        diet_data['Dt_CaIn'])
+    PProd_PIn = calculate_PProd_PIn(An_P_prod,
+                                    diet_data['Dt_PIn'])
+    MgProd_MgIn = calculate_MgProd_MgIn(An_Mg_prod,
+                                        diet_data['Dt_MgIn'])
+    KProd_KIn = calculate_KProd_KIn(An_K_prod,
+                                    diet_data['Dt_KIn'])
+    NaProd_NaIn = calculate_NaProd_NaIn(An_Na_prod,
+                                        diet_data['Dt_NaIn'])
+    ClProd_ClIn = calculate_ClProd_ClIn(An_Cl_prod,
+                                        diet_data['Dt_ClIn'])
+    CuProd_CuIn = calculate_CuProd_CuIn(An_Cu_prod,
+                                        diet_data['Dt_CuIn'])
+    FeProd_FeIn = calculate_FeProd_FeIn(An_Fe_prod,
+                                        diet_data['Dt_FeIn'])
+    MnProd_MnIn = calculate_MnProd_MnIn(An_Mn_prod,
+                                        diet_data['Dt_MnIn'])
+    ZnProd_ZnIn = calculate_ZnProd_ZnIn(An_Zn_prod,
+                                        diet_data['Dt_ZnIn'])
+    CaProd_CaAbs = calculate_CaProd_CaAbs(An_Ca_prod,
+                                          diet_data['Abs_CaIn'])
+    PProd_PAbs = calculate_PProd_PAbs(An_P_prod,
+                                      diet_data['Abs_PIn'])
+    MgProd_MgAbs = calculate_MgProd_MgAbs(An_Mg_prod,
+                                          diet_data['Abs_MgIn'])
+    KProd_KAbs = calculate_KProd_KAbs(An_K_prod,
+                                      diet_data['Abs_KIn'])
+    NaProd_NaAbs = calculate_NaProd_NaAbs(An_Na_prod,
+                                          diet_data['Abs_NaIn'])
+    ClProd_ClAbs = calculate_ClProd_ClAbs(An_Cl_prod,
+                                          diet_data['Abs_ClIn'])
+    CuProd_CuAbs = calculate_CuProd_CuAbs(An_Cu_prod,
+                                          diet_data['Abs_CuIn'])
+    FeProd_FeAbs = calculate_FeProd_FeAbs(An_Fe_prod,
+                                          diet_data['Abs_FeIn'])
+    MnProd_MnAbs = calculate_MnProd_MnAbs(An_Mn_prod,
+                                          diet_data['Abs_MnIn'])
+    ZnProd_ZnAbs = calculate_ZnProd_ZnAbs(An_Zn_prod,
+                                          diet_data['Abs_ZnIn'])
+    Dt_CaReq_DMI = calculate_Dt_CaReq_DMI(An_Ca_req,
+                                          Dt_acCa,
+                                          An_data['An_DMIn'])
+    Dt_PReq_DMI = calculate_Dt_PReq_DMI(An_P_req,
+                                        Dt_acP,
+                                        An_data['An_DMIn'])
+    Dt_MgReq_DMI = calculate_Dt_MgReq_DMI(An_Mg_req,
+                                          Dt_acMg,
+                                          An_data['An_DMIn']) 
+    Dt_KReq_DMI = calculate_Dt_KReq_DMI(An_K_req,
+                                        Dt_acK,
+                                        An_data['An_DMIn'])
+    Dt_NaReq_DMI = calculate_Dt_NaReq_DMI(An_Na_req,
+                                          Dt_acNa,
+                                          An_data['An_DMIn'])
+    Dt_ClReq_DMI = calculate_Dt_ClReq_DMI(An_Cl_req,
+                                          Dt_acCl,
+                                          An_data['An_DMIn'])
+    Dt_SReq_DMI = calculate_Dt_SReq_DMI(An_S_req,
+                                        An_data["An_DMIn"])
+    Dt_CoReq_DMI = calculate_Dt_CoReq_DMI(An_Co_req,
+                                          An_data['An_DMIn'])
+    Dt_CuReq_DMI = calculate_Dt_CuReq_DMI(An_Cu_req,
+                                          Dt_acCu,
+                                          An_data['An_DMIn'])
+    Dt_FeReq_DMI = calculate_Dt_FeReq_DMI(An_Fe_req,
+                                          Dt_acFe,
+                                          An_data['An_DMIn'])
+    Dt_IReq_DMI = calculate_Dt_IReq_DMI(An_I_req,
+                                        An_data['An_DMIn'])
+    Dt_MnReq_DMI = calculate_Dt_MnReq_DMI(An_Mn_req,
+                                          Dt_acMn,
+                                          An_data['An_DMIn'])
+    Dt_SeReq_DMI = calculate_Dt_SeReq_DMI(An_Se_req,
+                                          An_data['An_DMIn'])
+    Dt_ZnReq_DMI = calculate_Dt_ZnReq_DMI(An_Zn_req,
+                                          Dt_acZn,
+                                          An_data['An_DMIn'])
+    Dt_VitAReq_DMI = calculate_Dt_VitAReq_DMI(An_VitA_req,
+                                              An_data["An_DMIn"])
+    Dt_VitDReq_DMI = calculate_Dt_VitDReq_DMI(An_VitD_req,
+                                              An_data['An_DMIn'])
+    Dt_VitEReq_DMI = calculate_Dt_VitEReq_DMI(An_VitE_req,
+                                              An_data['An_DMIn'])
+    Man_Wa_out = calculate_Man_Wa_out(animal_input['An_StatePhys'],
+                                      Man_out,
+                                      Fe_OM,
+                                      Ur_Nout_g,
+                                      Man_Min_out_g)
+    An_Wa_Insens = calculate_An_Wa_Insens(An_WaIn,
+                                          Mlk_Prod,
+                                          Man_Wa_out)
+    WaIn_Milk = calculate_WaIn_Milk(An_WaIn,
+                                    Mlk_Prod)
+    ManWa_Milk = calculate_ManWa_Milk(Man_Wa_out,
+                                      Mlk_Prod)
+    del(An_IdAAIn)
+    del(Dt_IdAARUPIn)
+    del(Mlk_AA_TP)
+    
     ########################################
     # Capture Outputs
     ########################################

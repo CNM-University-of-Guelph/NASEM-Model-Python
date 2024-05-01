@@ -748,5 +748,245 @@
         "Name": "calculate_An_VitE_bal",
         "Input": {"Dt_VitEIn": 501, "An_VitE_req": 293},
         "Output": 208
+    },
+    {
+        "Name": "calculate_Dt_acCa",
+        "Input": {"Abs_CaIn": 4.7, "Dt_CaIn": 13.9},
+        "Output": 0.3381294964028777
+    },
+    {
+        "Name": "calculate_Dt_acP",
+        "Input": {"Abs_PIn": 14.8, "Dt_PIn": 39.1},
+        "Output": 0.37851662404092073
+    },
+    {
+        "Name": "calculate_Dt_acNa",
+        "Input": {"Abs_NaIn": 13, "Dt_NaIn": 5.4},
+        "Output": 2.4074074074074074
+    },
+    {
+        "Name": "recalculate_Dt_acMg",
+        "Input": {"Abs_MgIn": 13.8, "Dt_MgIn": 30.3},
+        "Output": 0.45544554455445546
+    },
+    {
+        "Name": "calculate_Dt_acK",
+        "Input": {"Abs_KIn": 3.5, "Dt_KIn": 7.4},
+        "Output": 0.47297297297297297
+    },
+    {
+        "Name": "calculate_Dt_acCl",
+        "Input": {"Abs_ClIn": 4.1, "Dt_ClIn": 5.9},
+        "Output": 0.6949152542372881
+    },
+    {
+        "Name": "calculate_Dt_acCo",
+        "Input": {"Abs_CoIn": 34.9, "Dt_CoIn": 41.4},
+        "Output": 0.8429951690821256
+    },
+    {
+        "Name": "calculate_Dt_acCu",
+        "Input": {"Abs_CuIn": 13.8, "Dt_CuIn": 31.4},
+        "Output": 0.4394904458598727
+    },
+    {
+        "Name": "calculate_Dt_acFe",
+        "Input": {"Abs_FeIn": 51.9, "Dt_FeIn": 61.3},
+        "Output": 0.8466557911908646
+    },
+    {
+        "Name": "calculate_Dt_acMn",
+        "Input": {"Abs_MnIn": 13.6, "Dt_MnIn": 14.9},
+        "Output": 0.9127516778523489
+    },
+    {
+        "Name": "calculate_Dt_acZn",
+        "Input": {"Abs_ZnIn": 14, "Dt_ZnIn": 17.5},
+        "Output": 0.8
+    },
+    {
+        "Name": "calculate_CaProd_CaIn",
+        "Input": {"An_Ca_prod": 5.9, "Dt_CaIn": 13.4},
+        "Output": 0.44029850746268656
+    },
+    {
+        "Name": "calculate_PProd_PIn",
+        "Input": {"An_P_prod": 14.8, "Dt_PIn": 16.2},
+        "Output": 0.9135802469135803
+    },
+    {
+        "Name": "calculate_MgProd_MgIn",
+        "Input": {"An_Mg_prod": 13.2, "Dt_MgIn": 20.8},
+        "Output": 0.6346153846153846
+    },
+    {
+        "Name": "calculate_KProd_KIn",
+        "Input": {"An_K_prod": 5.9, "Dt_KIn": 18.7},
+        "Output": 0.31550802139037437
+    },
+    {
+        "Name": "calculate_NaProd_NaIn",
+        "Input": {"An_Na_prod": 21.7, "Dt_NaIn": 31.9},
+        "Output": 0.6802507836990596
+    },
+    {
+        "Name": "calculate_ClProd_ClIn",
+        "Input": {"An_Cl_prod": 14.8, "Dt_ClIn": 24.1},
+        "Output": 0.6141078838174274
+    },
+    {
+        "Name": "calculate_CuProd_CuIn",
+        "Input": {"An_Cu_prod": 14.9, "Dt_CuIn": 31},
+        "Output": 0.4806451612903226
+    },
+    {
+        "Name": "calculate_FeProd_FeIn",
+        "Input": {"An_Fe_prod": 15.9, "Dt_FeIn": 13.8},
+        "Output": 1.1521739130434783
+    },
+    {
+        "Name": "calculate_MnProd_MnIn",
+        "Input": {"An_Mn_prod": 7, "Dt_MnIn": 10.3},
+        "Output": 0.6796116504854368
+    },
+    {
+        "Name": "calculate_ZnProd_ZnIn",
+        "Input": {"An_Zn_prod": 19.3, "Dt_ZnIn": 30.2},
+        "Output": 0.6390728476821192
+    },
+    {
+        "Name": "calculate_CaProd_CaAbs",
+        "Input": {"An_Ca_prod": 13.9, "Abs_CaIn": 12.0},
+        "Output": 1.1583333333333334
+    },
+    {
+        "Name": "calculate_PProd_PAbs",
+        "Input": {"An_P_prod": 14.9, "Abs_PIn": 18.4},
+        "Output": 0.8097826086956522
+    },
+    {
+        "Name": "calculate_MgProd_MgAbs",
+        "Input": {"An_Mg_prod": 16.9, "Abs_MgIn": 19.3},
+        "Output": 0.8756476683937823
+    },
+    {
+        "Name": "calculate_KProd_KAbs",
+        "Input": {"An_K_prod": 15.7, "Abs_KIn": 24.8},
+        "Output": 0.6330645161290323
+    },
+    {
+        "Name": "calculate_NaProd_NaAbs",
+        "Input": {"An_Na_prod": 12.8, "Abs_NaIn": 41.9},
+        "Output": 0.3054892601431981
+    },
+    {
+        "Name": "calculate_ClProd_ClAbs",
+        "Input": {"An_Cl_prod": 31.9, "Abs_ClIn": 48.4},
+        "Output": 0.6590909090909091
+    },
+    {
+        "Name": "calculate_CuProd_CuAbs",
+        "Input": {"An_Cu_prod": 23.4, "Abs_CuIn": 31.5},
+        "Output": 0.7428571428571428
+    },
+    {
+        "Name": "calculate_FeProd_FeAbs",
+        "Input": {"An_Fe_prod": 15.9, "Abs_FeIn": 21.8},
+        "Output": 0.7293577981651376
+    },
+    {
+        "Name": "calculate_MnProd_MnAbs",
+        "Input": {"An_Mn_prod": 12.5, "Abs_MnIn": 18.3},
+        "Output": 0.6830601092896175
+    },
+    {
+        "Name": "calculate_ZnProd_ZnAbs",
+        "Input": {"An_Zn_prod": 13.8, "Abs_ZnIn": 22.3},
+        "Output": 0.6188340807174888
+    },
+    {
+        "Name": "calculate_Dt_CaReq_DMI",
+        "Input": {"An_Ca_req": 12, "Dt_acCa": 0.53, "An_DMIn": 24.9},
+        "Output": 0.09092975676290066
+    },
+    {
+        "Name": "calculate_Dt_PReq_DMI",
+        "Input": {"An_P_req": 14, "Dt_acP": 0.38, "An_DMIn": 34},
+        "Output": 0.10835913312693499
+    },
+    {
+        "Name": "calculate_Dt_MgReq_DMI",
+        "Input": {"An_Mg_req": 12.9, "Dt_acMg": 0.84, "An_DMIn": 23.8},
+        "Output": 0.06452581032412966
+    },
+    {
+        "Name": "calculate_Dt_KReq_DMI",
+        "Input": {"An_K_req": 18.3, "Dt_acK": 0.59, "An_DMIn": 23.7},
+        "Output": 0.1308732031752843
+    },
+    {
+        "Name": "calculate_Dt_NaReq_DMI",
+        "Input": {"An_Na_req": 14.2, "Dt_acNa": 0.69, "An_DMIn": 25.9},
+        "Output": 0.07945834032790554
+    },
+    {
+        "Name": "calculate_Dt_ClReq_DMI",
+        "Input": {"An_Cl_req": 23.9, "Dt_acCl": 0.75, "An_DMIn": 28.3},
+        "Output": 0.11260306242638396
+    },
+    {
+        "Name": "calculate_Dt_SReq_DMI",
+        "Input": {"An_S_req": 14.9, "An_DMIn": 24.3},
+        "Output": 0.06131687242798354
+    },
+    {
+        "Name": "calculate_Dt_CoReq_DMI",
+        "Input": {"An_Co_req": 23.8, "An_DMIn": 31.4},
+        "Output": 0.7579617834394905
+    },
+    {
+        "Name": "calculate_Dt_CuReq_DMI",
+        "Input": {"An_Cu_req": 21.9, "Dt_acCu": 0.68, "An_DMIn": 25.6},
+        "Output": 1.2580422794117645
+    },
+    {
+        "Name": "calculate_Dt_FeReq_DMI",
+        "Input": {"An_Fe_req": 23.9, "Dt_acFe": 0.58, "An_DMIn": 16.7},
+        "Output": 2.467478835432583
+    },
+    {
+        "Name": "calculate_Dt_IReq_DMI",
+        "Input": {"An_I_req": 12.9, "An_DMIn": 23.8},
+        "Output": 0.542016806722689
+    },
+    {
+        "Name": "calculate_Dt_MnReq_DMI",
+        "Input": {"An_Mn_req": 12.8, "Dt_acMn": 0.68, "An_DMIn": 31.9},
+        "Output": 0.5900792919048498
+    },
+    {
+        "Name": "calculate_Dt_SeReq_DMI",
+        "Input": {"An_Se_req": 12.9, "An_DMIn": 23.4},
+        "Output": 0.5512820512820513
+    },
+    {
+        "Name": "calculate_Dt_ZnReq_DMI",
+        "Input": {"An_Zn_req": 17.3, "Dt_acZn": 0.85, "An_DMIn": 26.8},
+        "Output": 0.7594381035996489
+    },
+    {
+        "Name": "calculate_Dt_VitAReq_DMI",
+        "Input": {"An_VitA_req": 13.9, "An_DMIn": 24.7},
+        "Output": 0.562753036437247
+    },
+    {
+        "Name": "calculate_Dt_VitDReq_DMI",
+        "Input": {"An_VitD_req": 16.9, "An_DMIn": 27.9},
+        "Output": 0.6057347670250895
+    },
+    {
+        "Name": "calculate_Dt_VitEReq_DMI",
+        "Input": {"An_VitE_req": 15.9, "An_DMIn": 24.3},
+        "Output": 0.654320987654321
     }
 ]

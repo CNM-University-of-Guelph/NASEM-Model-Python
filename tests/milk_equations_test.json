@@ -234,5 +234,35 @@
       "Name": "calculate_Mlk_NE_DE",
       "Input": {"Mlk_NEout": 391, "An_DEIn": 471},
       "Output": 0.8301486199575372
-  }  
+  },
+  {
+    "Name": "calculate_MlkNP_Int",
+    "Input": {"An_BW": 791, "coeff_dict": null},
+    "Output": -172.1979
+  },
+  {
+    "Name": "calculate_MlkNP_DEInp",
+    "Input": {"An_DEInp": 41, "coeff_dict": null},
+    "Output": 442.39
+  },
+  {
+    "Name": "calculate_MlkNP_NDF",
+    "Input": {"An_DigNDF": 25.9, "coeff_dict": null},
+    "Output": -40.6198
+  },
+  {
+    "Name": "calculate_MlkNP_AbsEAA",
+    "Input": {"Abs_EAA2b_g": 3.9, "mPrt_k_EAA2": 4.3},
+    "Output": 16.77
+  },
+  {
+    "Name": "calculate_MlkNP_AbsNEAA",
+    "Input": {"Abs_neAA_g": 3101, "coeff_dict": null},
+    "Output": 0
+  },
+  {
+    "Name": "calculate_MlkNP_AbsOthAA",
+    "Input": {"Abs_OthAA_g": 1312, "coeff_dict": null},
+    "Output": 101.4176
+  }
 ]

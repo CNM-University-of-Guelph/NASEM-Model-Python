@@ -155,3 +155,11 @@ def calculate_Du_MiN_NRC2001_g(Dt_TDNIn: float, An_RDPIn: float) -> float:
     else:  
          Du_MiN_NRC2001_g = 0.13 * Dt_TDNIn * 1000 * 0.16
     return Du_MiN_NRC2001_g
+
+
+def calculate_Rum_MiCP_DigCHO(Du_MiCP: float, Rum_DigNDFIn: float, Rum_DigStIn: float) -> float:
+    """
+    Rum_MiCP_DigCHO: Microbial CP as a fraction of digestable carbohydrates
+    """
+    Rum_MiCP_DigCHO = Du_MiCP / (Rum_DigNDFIn + Rum_DigStIn)    # Line 3122
+    return Rum_MiCP_DigCHO

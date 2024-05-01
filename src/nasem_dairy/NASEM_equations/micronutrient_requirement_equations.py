@@ -954,3 +954,389 @@ def calculate_An_VitE_bal(Dt_VitEIn: float, An_VitE_req: float) -> float:
     """
     An_VitE_bal = Dt_VitEIn - An_VitE_req   # Line 3113
     return An_VitE_bal  
+
+
+### Efficiency Calculations ###
+def calculate_Dt_acCa(Abs_CaIn: float, Dt_CaIn: float) -> float:
+    """
+    Dt_acCa: Diet level absorption coefficient calcium (g/g)
+    """
+    Dt_acCa = Abs_CaIn / Dt_CaIn    # Line 3223
+    return Dt_acCa
+
+
+def calculate_Dt_acP(Abs_PIn: float, Dt_PIn: float) -> float:
+    """
+    Dt_acP: Diet level absorption coefficient phosphorus (g/g)
+    """
+    Dt_acP = Abs_PIn / Dt_PIn   # Line 3224
+    return Dt_acP
+
+
+def calculate_Dt_acNa(Abs_NaIn: float, Dt_NaIn: float) -> float:
+    """
+    Dt_acNa: Diet level absorption coefficient sodium (g/g) 
+    """
+    Dt_acNa = Abs_NaIn / Dt_NaIn    # Line 3225
+    return Dt_acNa
+
+
+def recalculate_Dt_acMg(Abs_MgIn: float, Dt_MgIn: float) -> float:
+    """
+    This gets caclulated earlier then recalculated at the end of the model?
+    Dt_acMg: Diet level absorption coefficient magnesium (g/g) 
+    """
+    Dt_acMg = Abs_MgIn / Dt_MgIn    # Line 3226
+    return Dt_acMg
+
+
+def calculate_Dt_acK(Abs_KIn: float, Dt_KIn: float) -> float:
+    """
+    Dt_acK: Diet level absorption coefficient potassium (g/g)
+    """
+    Dt_acK = Abs_KIn / Dt_KIn   # Line 3227
+    return Dt_acK
+
+
+def calculate_Dt_acCl(Abs_ClIn: float, Dt_ClIn: float) -> float:
+    """
+    Dt_acCl: Diet level absorption coefficient chloride (g/g)
+    """
+    Dt_acCl = Abs_ClIn / Dt_ClIn    # Line 3228
+    return Dt_acCl
+
+
+def calculate_Dt_acCo(Abs_CoIn: float, Dt_CoIn: float) -> float:
+    """
+    Dt_acCo: Diet level absorption coefficient cobalt (g/g)
+    """
+    Dt_acCo = Abs_CoIn / Dt_CoIn    # Line 3230
+    return Dt_acCo
+
+
+def calculate_Dt_acCu(Abs_CuIn: float, Dt_CuIn: float) -> float:
+    """
+    Dt_acCu: Diet level absorption coefficient copper (g/g)
+    """
+    Dt_acCu = Abs_CuIn / Dt_CuIn    # Line 3231
+    return Dt_acCu
+
+
+def calculate_Dt_acFe(Abs_FeIn: float, Dt_FeIn: float) -> float:
+    """
+    Dt_acFe: Diet level absorption coefficient iron (g/g)
+    """
+    Dt_acFe = Abs_FeIn / Dt_FeIn    # Line 3232
+    return Dt_acFe
+
+
+def calculate_Dt_acMn(Abs_MnIn: float, Dt_MnIn: float) -> float:
+    """
+    Dt_acMn: Diet level absorption coefficient manganese (g/g)
+    """
+    Dt_acMn = Abs_MnIn / Dt_MnIn    # Line 3233
+    return Dt_acMn
+
+
+def calculate_Dt_acZn(Abs_ZnIn: float, Dt_ZnIn: float) -> float:
+    """
+    Dt_acZn: Diet level absorption coefficient zinc (g/g)
+    """
+    Dt_acZn = Abs_ZnIn / Dt_ZnIn    # Line 3234
+    return Dt_acZn
+
+
+def calculate_CaProd_CaIn(An_Ca_prod: float, Dt_CaIn: float) -> float:
+    """
+    CaProd_CaIn: Efficiency of dietary calcium use (g/g)
+    """
+    CaProd_CaIn = An_Ca_prod / Dt_CaIn  # Line 3282
+    return CaProd_CaIn
+
+
+def calculate_PProd_PIn(An_P_prod: float, Dt_PIn: float) -> float:
+    """
+    PProd_PIn: Efficiency of dietary phosphorus use (g/g)
+    """
+    PProd_PIn = An_P_prod / Dt_PIn  # Line 3283
+    return PProd_PIn
+
+
+def calculate_MgProd_MgIn(An_Mg_prod: float, Dt_MgIn: float) -> float:
+    """
+    MgProd_MgIn: Efficiency of dietary magnesium use (g/g)
+    """
+    MgProd_MgIn = An_Mg_prod / Dt_MgIn  # Line 3284
+    return MgProd_MgIn
+
+
+def calculate_KProd_KIn(An_K_prod: float, Dt_KIn: float) -> float:
+    """
+    KProd_KIn: Efficiency of dietary potassium use (g/g)
+    """
+    KProd_KIn = An_K_prod / Dt_KIn  # Line 3285
+    return KProd_KIn
+
+
+def calculate_NaProd_NaIn(An_Na_prod: float, Dt_NaIn: float) -> float:
+    """
+    NaProd_NaIn: Efficiency of dietary sodium use (g/g)
+    """
+    NaProd_NaIn = An_Na_prod / Dt_NaIn  # Line 3286
+    return NaProd_NaIn
+
+
+def calculate_ClProd_ClIn(An_Cl_prod: float, Dt_ClIn: float) -> float:
+    """
+    ClProd_ClIn: Efficiency of dietary chloride use (g/g)
+    """
+    ClProd_ClIn = An_Cl_prod / Dt_ClIn  # Line 3287
+    return ClProd_ClIn
+
+
+def calculate_CuProd_CuIn(An_Cu_prod: float, Dt_CuIn: float) -> float:
+    """
+    CuProd_CuIn: Efficiency of dietrary copper use (mg/mg)
+    """
+    CuProd_CuIn = An_Cu_prod / Dt_CuIn  # Line 3291
+    return CuProd_CuIn
+
+
+def calculate_FeProd_FeIn(An_Fe_prod: float, Dt_FeIn: float) -> float:
+    """
+    FeProd_FeIn: Efficiency of dietrary iron use (mg/mg)
+    """
+    FeProd_FeIn = An_Fe_prod / Dt_FeIn  # line 3292
+    return FeProd_FeIn
+
+
+def calculate_MnProd_MnIn(An_Mn_prod: float, Dt_MnIn: float) -> float:
+    """
+    MnProd_MnIn: Efficiency of dietrary manganese use (mg/mg)
+    """
+    MnProd_MnIn = An_Mn_prod / Dt_MnIn  # Line 3293
+    return MnProd_MnIn
+
+
+def calculate_ZnProd_ZnIn(An_Zn_prod: float, Dt_ZnIn: float) -> float:
+    """
+    ZnProd_ZnIn: Efficiency of dietrary zinc use (mg/mg)
+    """
+    ZnProd_ZnIn = An_Zn_prod / Dt_ZnIn  # line 3294
+    return ZnProd_ZnIn
+
+
+def calculate_CaProd_CaAbs(An_Ca_prod: float, Abs_CaIn: float) -> float:
+    """
+    CaProd_CaAbs: Efficiency of absorbed calcium use (g/g)
+    """
+    CaProd_CaAbs = An_Ca_prod / Abs_CaIn    # Line 3299
+    return CaProd_CaAbs
+
+
+def calculate_PProd_PAbs(An_P_prod: float, Abs_PIn: float) -> float:
+    """
+    PProd_PAbs: Efficiency of absorbed phosphorus use (g/g)
+    """
+    PProd_PAbs = An_P_prod / Abs_PIn    # Line 3300
+    return PProd_PAbs
+
+
+def calculate_MgProd_MgAbs(An_Mg_prod: float, Abs_MgIn: float) -> float:
+    """
+    MgProd_MgAbs: Efficiency of absorbed magnesium use (g/g)
+    """
+    MgProd_MgAbs = An_Mg_prod / Abs_MgIn    # Line 3301
+    return MgProd_MgAbs
+
+
+def calculate_KProd_KAbs(An_K_prod: float, Abs_KIn: float) -> float:
+    """
+    KProd_KAbs: Efficiency of absorbed potassium use (g/g)
+    """
+    KProd_KAbs = An_K_prod / Abs_KIn    # Line 3302
+    return KProd_KAbs
+
+
+def calculate_NaProd_NaAbs(An_Na_prod: float, Abs_NaIn: float) -> float:
+    """
+    NaProd_NaAbs: Efficiency of absorbed sodium use (g/g)
+    """
+    NaProd_NaAbs = An_Na_prod / Abs_NaIn    # Line 3303
+    return NaProd_NaAbs
+
+
+def calculate_ClProd_ClAbs(An_Cl_prod: float, Abs_ClIn: float) -> float:
+    """
+    ClProd_ClAbs: Efficiency of absorbed cholride use (g/g)
+    """
+    ClProd_ClAbs = An_Cl_prod / Abs_ClIn    # Line 3304
+    return ClProd_ClAbs
+
+
+def calculate_CuProd_CuAbs(An_Cu_prod: float, Abs_CuIn: float) -> float:
+    """
+    CuProd_CuAbs: Efficiency of absorbed copper use (mg/mg)
+    """
+    CuProd_CuAbs = An_Cu_prod / Abs_CuIn    # Line 3307
+    return CuProd_CuAbs
+
+
+def calculate_FeProd_FeAbs(An_Fe_prod: float, Abs_FeIn: float) -> float:
+    """
+    FeProd_FeAbs: Efficiency of absorbed iron use (mg/mg)
+    """
+    FeProd_FeAbs = An_Fe_prod / Abs_FeIn    # Line 3308
+    return FeProd_FeAbs
+
+
+def calculate_MnProd_MnAbs(An_Mn_prod: float, Abs_MnIn: float) -> float:
+    """
+    MnProd_MnAbs: Efficiency of absorbed manganese use (mg/mg)
+    """
+    MnProd_MnAbs = An_Mn_prod / Abs_MnIn    # Line 3309
+    return MnProd_MnAbs
+
+
+def calculate_ZnProd_ZnAbs(An_Zn_prod: float, Abs_ZnIn: float) -> float:
+    """
+    ZnProd_ZnAbs: Efficiency of absorbed zinc use (mg/mg)
+    """
+    ZnProd_ZnAbs = An_Zn_prod / Abs_ZnIn    # Line 3310
+    return ZnProd_ZnAbs
+
+
+def calculate_Dt_CaReq_DMI(An_Ca_req: float, Dt_acCa: float, An_DMIn: float) -> float:
+    """
+    Dt_CaReq_DMI: Required dietary calcium density to meet requirements
+    """
+    Dt_CaReq_DMI = An_Ca_req / Dt_acCa / An_DMIn / 10   # Line 3313
+    return Dt_CaReq_DMI
+
+
+def calculate_Dt_PReq_DMI(An_P_req: float, Dt_acP: float, An_DMIn: float) -> float:
+    """
+    Dt_PReq_DMI: Required dietary phosphorus density to meet requirements
+    """
+    Dt_PReq_DMI = An_P_req / Dt_acP / An_DMIn / 10  # Line 3314
+    return Dt_PReq_DMI
+
+
+def calculate_Dt_MgReq_DMI(An_Mg_req: float, Dt_acMg: float, An_DMIn: float) -> float:
+    """
+    Dt_MgReq_DMI: Required dietary magnesium density to meet requirements
+    """
+    Dt_MgReq_DMI = An_Mg_req / Dt_acMg / An_DMIn / 10   # Line 3315
+    return Dt_MgReq_DMI
+
+
+def calculate_Dt_KReq_DMI(An_K_req: float, Dt_acK: float, An_DMIn: float) -> float:
+    """
+    Dt_KReq_DMI: Required dietary potassium density to meet requirements
+    """
+    Dt_KReq_DMI = An_K_req / Dt_acK / An_DMIn / 10  # Line 3316
+    return Dt_KReq_DMI
+
+
+def calculate_Dt_NaReq_DMI(An_Na_req: float, Dt_acNa: float, An_DMIn: float) -> float:
+    """
+    Dt_NaReq_DMI: Required dietary sodium density to meet requirements
+    """
+    Dt_NaReq_DMI = An_Na_req / Dt_acNa / An_DMIn / 10   # Line 3317
+    return Dt_NaReq_DMI
+
+
+def calculate_Dt_ClReq_DMI(An_Cl_req: float, Dt_acCl: float, An_DMIn: float) -> float:
+    """
+    Dt_ClReq_DMI: Required dietary chloride density to meet requirements
+    """
+    Dt_ClReq_DMI = An_Cl_req / Dt_acCl / An_DMIn / 10   # Line 3318
+    return Dt_ClReq_DMI
+
+
+def calculate_Dt_SReq_DMI(An_S_req: float, An_DMIn: float) -> float:
+    """
+    Dt_SReq_DMI: Required dietary sulfur density to meet requirements
+    """
+    Dt_SReq_DMI = An_S_req / An_DMIn / 10  # Line 3319
+    return Dt_SReq_DMI
+
+
+def calculate_Dt_CoReq_DMI(An_Co_req: float, An_DMIn: float) -> float:
+    """
+    Dt_CoReq_DMI: Required dietary cobalt density to meet requirements
+    """
+    Dt_CoReq_DMI = An_Co_req / An_DMIn  # Line 3320
+    return Dt_CoReq_DMI
+
+
+def calculate_Dt_CuReq_DMI(An_Cu_req: float, Dt_acCu: float, An_DMIn: float) -> float:
+    """
+    Dt_CuReq_DMI: Required dietary copper density to meet requirements
+    """
+    Dt_CuReq_DMI = An_Cu_req / Dt_acCu / An_DMIn    # Line 3321
+    return Dt_CuReq_DMI
+
+
+def calculate_Dt_FeReq_DMI(An_Fe_req: float, Dt_acFe: float, An_DMIn: float) -> float:
+    """
+    Dt_FeReq_DMI: Required dietary iron density to meet requirements
+    """
+    Dt_FeReq_DMI = An_Fe_req / Dt_acFe / An_DMIn    # Line 3322
+    return Dt_FeReq_DMI
+
+
+def calculate_Dt_IReq_DMI(An_I_req: float, An_DMIn: float) -> float:
+    """
+    Dt_IReq_DMI: Required dietary iodine density to meet requirements
+    """
+    Dt_IReq_DMI = An_I_req / An_DMIn    # Line 3323
+    return Dt_IReq_DMI
+
+
+def calculate_Dt_MnReq_DMI(An_Mn_req: float, Dt_acMn: float, An_DMIn: float) -> float:
+    """
+    Dt_MnReq_DMI: Required dietary manganese density to meet requirements
+    """
+    Dt_MnReq_DMI = An_Mn_req / Dt_acMn / An_DMIn    # Line 3324
+    return Dt_MnReq_DMI
+
+
+def calculate_Dt_SeReq_DMI(An_Se_req: float, An_DMIn: float) -> float:
+    """
+    Dt_SeReq_DMI: Required dietary selenium density to meet requirements
+    """
+    Dt_SeReq_DMI = An_Se_req / An_DMIn  # Line 3325
+    return Dt_SeReq_DMI
+
+
+def calculate_Dt_ZnReq_DMI(An_Zn_req: float, Dt_acZn: float, An_DMIn: float) -> float:
+    """
+    Dt_ZnReq_DMI: Required dietary zinc density to meet requirements
+    """
+    Dt_ZnReq_DMI = An_Zn_req / Dt_acZn / An_DMIn    # Line 3326
+    return Dt_ZnReq_DMI
+
+
+def calculate_Dt_VitAReq_DMI(An_VitA_req: float, An_DMIn: float) -> float:
+    """
+    Dt_VitAReq_DMI: Required dietary vitamin A density to meet requirements
+    """
+    Dt_VitAReq_DMI = An_VitA_req / An_DMIn  # Line 3327
+    return Dt_VitAReq_DMI
+
+
+def calculate_Dt_VitDReq_DMI(An_VitD_req: float, An_DMIn: float) -> float:
+    """
+    Dt_VitDReq_DMI: Required dietary vitamin D density to meet requirements
+    """
+    Dt_VitDReq_DMI = An_VitD_req / An_DMIn  # Line 3328
+    return Dt_VitDReq_DMI
+
+
+def calculate_Dt_VitEReq_DMI(An_VitE_req: float, An_DMIn: float) -> float:
+    """
+    Dt_VitEReq_DMI: Required dietary vitamin E density to meet requirements
+    """
+    Dt_VitEReq_DMI = An_VitE_req / An_DMIn  # Line 3329
+    return Dt_VitEReq_DMI

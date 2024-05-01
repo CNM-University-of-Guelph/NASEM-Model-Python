@@ -475,3 +475,69 @@ def calculate_Mlk_NE_DE(Mlk_NEout: float, An_DEIn: float) -> float:
     """
     Mlk_NE_DE = Mlk_NEout / An_DEIn # proportion of DEIn used for milk, Line 2920
     return Mlk_NE_DE
+
+
+def calculate_MlkNP_Int(An_BW: float, coeff_dict: dict) -> float:
+    """
+    MlkNP_Int: ?
+    """
+    req_coeff = ['mPrt_Int', 'mPrt_k_BW']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_Int = coeff_dict['mPrt_Int'] + (An_BW - 612) * coeff_dict['mPrt_k_BW']    # Line 3179
+    return MlkNP_Int
+
+
+def calculate_MlkNP_DEInp(An_DEInp: float, coeff_dict: dict) -> float:
+    """
+    MlkNP_DEInp: ?
+    """
+    req_coeff = ['mPrt_k_DEInp']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_DEInp = An_DEInp * coeff_dict['mPrt_k_DEInp']   # Line 3180
+    return MlkNP_DEInp
+
+
+def calculate_MlkNP_NDF(An_DigNDF: float, coeff_dict: dict) -> float:
+    """
+    MlkNP_NDF: ?
+    """
+    req_coeff = ['mPrt_k_DigNDF']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_NDF = (An_DigNDF - 17.06) * coeff_dict['mPrt_k_DigNDF']
+    return MlkNP_NDF
+
+
+def calculate_MlkNP_AbsAA(Abs_AA_g: pd.Series, mPrt_k_AA: pd.Series) -> pd.Series:
+    """
+    MlkNP_AbsAA: ?
+    """
+    MlkNP_AbsAA = Abs_AA_g * mPrt_k_AA  # Line 3182-3191
+    return MlkNP_AbsAA
+
+
+def calculate_MlkNP_AbsEAA(Abs_EAA2b_g: float, mPrt_k_EAA2: float) -> float:
+    """
+    MlkNP_AbsEAA: ?
+    """
+    MlkNP_AbsEAA = Abs_EAA2b_g * mPrt_k_EAA2    # Line 3192
+    return MlkNP_AbsEAA
+
+
+def calculate_MlkNP_AbsNEAA(Abs_neAA_g: float, coeff_dict: dict) -> float:
+    """
+    MlkNP_AbsNEAA: ? 
+    """
+    req_coeff = ['mPrt_k_NEAA']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_AbsNEAA = Abs_neAA_g * coeff_dict['mPrt_k_NEAA']    # Line 3193
+    return MlkNP_AbsNEAA
+
+
+def calculate_MlkNP_AbsOthAA(Abs_OthAA_g: float, coeff_dict: dict) -> float:
+    """
+    MlkNP_AbsOthAA: ?
+    """
+    req_coeff = ['mPrt_k_OthAA']
+    check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_AbsOthAA = Abs_OthAA_g * coeff_dict['mPrt_k_OthAA']
+    return MlkNP_AbsOthAA

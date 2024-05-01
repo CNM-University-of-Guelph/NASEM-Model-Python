@@ -1369,3 +1369,11 @@ def calculate_An_MPIn_MEIn(An_MPIn_g: float, An_MEIn: float) -> float:
     """
     An_MPIn_MEIn = An_MPIn_g / An_MEIn    # g/Mcal, Line 2767
     return An_MPIn_MEIn
+
+
+def calculate_An_RUPIn_g(An_RUPIn: float) -> float:
+    """
+    An_RUPIn_g: RUP intake (g/d)
+    """
+    An_RUPIn_g = An_RUPIn * 1000    # Line 3132
+    return An_RUPIn_g

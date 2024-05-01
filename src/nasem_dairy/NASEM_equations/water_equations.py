@@ -16,3 +16,19 @@ def calculate_An_WaIn(An_StatePhys: str, Dt_DMIn: float, Dt_DM: float, Dt_Na: fl
     else:   # Line 968
         An_WaIn = None  #the above (An_Wa_In_Lact/Dry) does not apply to calves/other, thus set to NA
     return An_WaIn
+
+
+def calculate_An_Wa_Insens(An_WaIn: float, Mlk_Prod: float, Man_Wa_out: float) -> float:
+    """
+    An_Wa_Insens: Water baalance? (L/d)
+    """
+    An_Wa_Insens = An_WaIn - Mlk_Prod - Man_Wa_out  # L/d;  by difference, Line 3333
+    return An_Wa_Insens
+
+
+def calculate_WaIn_Milk(An_WaIn: float, Mlk_Prod: float) -> float:
+    """
+    WaIn_Milk: Water intake per kg milk production (L/kg)
+    """
+    WaIn_Milk = An_WaIn / Mlk_Prod  # L/kg, Line 3334
+    return WaIn_Milk

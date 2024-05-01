@@ -108,7 +108,11 @@
       "Name": "calculate_Du_MiN_NRC2001_g",
       "Input": {"Dt_TDNIn": 34.1, "An_RDPIn": 17.2},
       "Output": 709.2800000000002
-    }
-    
+    },
+    {
+      "Name": "calculate_Rum_MiCP_DigCHO",
+      "Input": {"Du_MiCP": 417, "Rum_DigNDFIn": 10.9, "Rum_DigStIn": 8.9},
+      "Output": 21.06060606060606
+    }    
   ]
   

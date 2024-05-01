@@ -624,5 +624,10 @@
     "Name": "calculate_An_MPIn_MEIn",
     "Input": {"An_MPIn_g": 3101, "An_MEIn": 51.3},
     "Output": 60.44834307992203
+},
+{
+  "Name": "calculate_An_RUPIn_g",
+  "Input": {"An_RUPIn": 15.8},
+  "Output": 15800
 }
 ]
