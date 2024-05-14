@@ -158,5 +158,111 @@
       "Name": "calculate_Mlk_MEout",
       "Input": {"Mlk_NEout": 1049, "coeff_dict": null},
       "Output": 1589.3939393939393
-    }
+    },
+
+    {
+      "Name": "calculate_MlkNP_MlkNPmx",
+      "Input": {"Mlk_NP_g": 3018, "Mlk_NPmx": 4201},
+      "Output": 0.7184003808616996
+    },
+    {
+      "Name": "calculate_Mlk_CP",
+      "Input": {"Mlk_CP_g": 1309},
+      "Output": 1.309
+    },
+    {
+      "Name": "calculate_MlkNP_AnMP",
+      "Input": {"Mlk_NP_g": 2310, "An_MPIn_g": 4320},
+      "Output": 0.5347222222222222
+    },
+    {
+      "Name": "calculate_MlkAA_AbsAA",
+      "Input": {"Mlk_AA_g": 1592, "Abs_AA_g": 2341},
+      "Output": 0.6800512601452371
+    },
+    {
+      "Name": "calculate_MlkEAA_AbsEAA",
+      "Input": {"Mlk_EAA_g": 235, "Abs_EAA_g": 371},
+      "Output": 0.633423180592992
+    },
+    {
+      "Name": "calculate_MlkNP_AnCP",
+      "Input": {"Mlk_NP_g": 2542, "An_CPIn": 3471},
+      "Output": 0.0007323537885335638
+    },
+    {
+      "Name": "calculate_Mlk_MPUse_g",
+      "Input": {"Mlk_NP_g": 310, "Kl_MP_NP": 0.75},
+      "Output": 413.3333333333333
+    },
+    {
+      "Name": "calculate_Trg_MilkLac",
+      "Input": {"Trg_MilkLacp": 5.1, "Trg_MilkProd": 3.9},
+      "Output": 0.1989
+  },
+  {
+      "Name": "calculate_Trg_NEmilk_DEIn",
+      "Input": {"Trg_Mlk_NEout": 301, "An_DEIn": 401},
+      "Output": 0.7506234413965087
+  },
+  {
+      "Name": "calculate_Trg_MilkProd_EPcor",
+      "Input": {"Trg_MilkProd": 37.9, "Trg_MilkFatp": 3.8, "Trg_MilkTPp": 3.2},
+      "Output": 40.350614
+  },
+  {
+      "Name": "calculate_Mlk_Prod_NEalow_EPcor",
+      "Input": {"Mlk_Prod_NEalow": 4191, "Trg_MilkFatp": 3.8, "Trg_MilkTPp": 3.2},
+      "Output": 4461.99006
+  },
+  {
+      "Name": "calculate_Mlk_EPcorNEalow_DMIn",
+      "Input": {"Mlk_Prod_NEalow_EPcor": 30.1, "An_DMIn": 27.1},
+      "Output": 1.1107011070110702
+  },
+  {
+      "Name": "calculate_MlkNP_Milk_p",
+      "Input": {"MlkNP_Milk": 0.035},
+      "Output": 3.5000000000000004
+  },
+  {
+      "Name": "calculate_MlkFat_Milk_p",
+      "Input": {"MlkFat_Milk": 0.048},
+      "Output": 4.8
+  },
+  {
+      "Name": "calculate_Mlk_NE_DE",
+      "Input": {"Mlk_NEout": 391, "An_DEIn": 471},
+      "Output": 0.8301486199575372
+  },
+  {
+    "Name": "calculate_MlkNP_Int",
+    "Input": {"An_BW": 791, "coeff_dict": null},
+    "Output": -172.1979
+  },
+  {
+    "Name": "calculate_MlkNP_DEInp",
+    "Input": {"An_DEInp": 41, "coeff_dict": null},
+    "Output": 442.39
+  },
+  {
+    "Name": "calculate_MlkNP_NDF",
+    "Input": {"An_DigNDF": 25.9, "coeff_dict": null},
+    "Output": -40.6198
+  },
+  {
+    "Name": "calculate_MlkNP_AbsEAA",
+    "Input": {"Abs_EAA2b_g": 3.9, "mPrt_k_EAA2": 4.3},
+    "Output": 16.77
+  },
+  {
+    "Name": "calculate_MlkNP_AbsNEAA",
+    "Input": {"Abs_neAA_g": 3101, "coeff_dict": null},
+    "Output": 0
+  },
+  {
+    "Name": "calculate_MlkNP_AbsOthAA",
+    "Input": {"Abs_OthAA_g": 1312, "coeff_dict": null},
+    "Output": 101.4176
+  }
 ]

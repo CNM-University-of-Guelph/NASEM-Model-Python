@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "calculate_CH4out_g",
+        "Input": {"An_GasEOut": 310, "coeff_dict": null},
+        "Output": 23370.090090090092
+    },
+    {
+        "Name": "calculate_CH4out_L",
+        "Input": {"CH4out_g": 9418, "coeff_dict": null},
+        "Output": 14098.746
+    },
+    {
+        "Name": "calculate_CH4g_Milk",
+        "Input": {"CH4out_g": 4914, "Mlk_Prod": 52.9},
+        "Output": 92.89224952741021
+    },
+    {
+        "Name": "calculate_CH4L_Milk",
+        "Input": {"CH4out_L": 49.2, "Mlk_Prod": 42.8},
+        "Output": 1.149532710280374
+    }  
+]

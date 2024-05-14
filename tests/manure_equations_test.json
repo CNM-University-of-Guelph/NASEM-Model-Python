@@ -1,0 +1,127 @@
+[
+    {
+        "Name": "calculate_Man_out",
+        "Input": {"An_StatePhys": "Lactating Cow", "An_DMIn": 23.9, "Dt_K": 3.6},
+        "Output": 102.38
+    },
+    {
+        "Name": "calculate_Man_Milk",
+        "Input": {"Man_out": 30, "Mlk_Prod": 20.6},
+        "Output": 1.4563106796116503
+    },
+    {
+        "Name": "calculate_Man_VolSld",
+        "Input": {"Dt_DMIn": 31.9, "InfRum_DMIn": 2.5, "InfSI_DMIn": 1.9, "An_NDF": 23.4, "An_CP": 18.2},
+        "Output": 12.401999999999997
+    },
+    {
+        "Name": "calculate_Man_VolSld2",
+        "Input": {"Fe_OM": 12, "Dt_LgIn": 5.8, "Ur_Nout_g": 301},
+        "Output": 8.08125
+    },
+    {
+        "Name": "calculate_VolSlds_Milk",
+        "Input": {"Man_VolSld": 783, "Mlk_Prod": 47.4},
+        "Output": 16.518987341772153
+    },
+    {
+        "Name": "calculate_VolSlds_Milk2",
+        "Input": {"Man_VolSld2": 341, "Mlk_Prod": 59.3},
+        "Output": 5.750421585160202
+    },
+    {
+        "Name": "calculate_Man_Nout_g",
+        "Input": {"Ur_Nout_g": 3013, "Fe_N_g": 4913, "Scrf_N_g": 301},
+        "Output": 8227
+    },
+    {
+        "Name": "calculate_Man_Nout2_g",
+        "Input": {"An_NIn_g": 4924, "An_Nprod_g": 3102},
+        "Output": 1822
+    },
+    {
+        "Name": "calculate_ManN_Milk",
+        "Input": {"Man_Nout_g": 3913, "Mlk_Prod": 40.5},
+        "Output": 96.61728395061728
+    },
+    {
+        "Name": "calculate_Man_Ca_out",
+        "Input": {"Dt_CaIn": 2.4, "An_Ca_prod": 1.9},
+        "Output": 0.5
+    },
+    {
+        "Name": "calculate_Man_P_out",
+        "Input": {"Dt_PIn": 5.3, "An_P_prod": 4.2},
+        "Output": 1.0999999999999996
+    },
+    {
+        "Name": "calculate_Man_Mg_out",
+        "Input": {"Dt_MgIn": 3.9, "An_Mg_prod": 1.3},
+        "Output": 2.5999999999999996
+    },
+    {
+        "Name": "calculate_Man_K_out",
+        "Input": {"Dt_KIn": 4.9, "An_K_prod": 13},
+        "Output": -8.1
+    },
+    {
+        "Name": "calculate_Man_Na_out",
+        "Input": {"Dt_NaIn": 4.5, "An_Na_prod": 6.2},
+        "Output": -1.7000000000000002
+    },
+    {
+        "Name": "calculate_Man_Cl_out",
+        "Input": {"Dt_ClIn": 16.2, "An_Cl_prod": 18},
+        "Output": -1.8000000000000007
+    },
+    {
+        "Name": "calculate_Man_MacMin_out",
+        "Input": {"Man_Ca_out": 1.8, "Man_P_out": 30, "Man_Mg_out": 2.9, "Man_K_out": 20, "Man_Na_out": 12, "Man_Cl_out": 42},
+        "Output": 108.7
+    },
+    {
+        "Name": "calculate_Man_Cu_out",
+        "Input": {"Dt_CuIn": 31, "An_Cu_prod": 30},
+        "Output": 1
+    },
+    {
+        "Name": "calculate_Man_Fe_out",
+        "Input": {"Dt_FeIn": 2.8, "An_Fe_prod": 5.2},
+        "Output": -2.4000000000000004
+    },
+    {
+        "Name": "calculate_Man_Mn_out",
+        "Input": {"Dt_MnIn": 5.8, "An_Mn_prod": 9},
+        "Output": -3.2
+    },
+    {
+        "Name": "calculate_Man_Zn_out",
+        "Input": {"Dt_ZnIn": 3.9, "An_Zn_prod": 5},
+        "Output": -1.1
+    },
+    {
+        "Name": "calculate_Man_MicMin_out",
+        "Input": {"Man_Cu_out": 1.5, "Man_Fe_out": 20, "Man_Mn_out": 40, "Man_Zn_out": 7.9},
+        "Output": 69.4
+    },
+    {
+        "Name": "calculate_Man_Min_out_g",
+        "Input": {"Man_MacMin_out": 134, "Man_MicMin_out": 693},
+        "Output": 134.693
+    },
+    {
+        "Name": "calculate_Man_Wa_out",
+        "Input": {"An_StatePhys": "Lactating Cow", "Man_out": 14, "Fe_OM": 40, "Ur_Nout_g": 1950, "Man_Min_out_g": 301},
+        "Output": -30.63433333333333
+    },
+    {
+        "Name": "calculate_Man_Wa_out",
+        "Input": {"An_StatePhys": "Calf", "Man_out": 14, "Fe_OM": 40, "Ur_Nout_g": 1950, "Man_Min_out_g": 301},
+        "Output": 0
+    },
+    {
+        "Name": "calculate_ManWa_Milk",
+        "Input": {"Man_Wa_out": 301, "Mlk_Prod": 491},
+        "Output": 0.6130346232179226
+    }
+]

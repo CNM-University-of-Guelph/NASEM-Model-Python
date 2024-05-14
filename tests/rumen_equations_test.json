@@ -33,6 +33,21 @@
       "Name": "calculate_Rum_DigStIn",
       "Input": { "Rum_dcSt": 17, "Dt_StIn": 29 },
       "Output": 4.93
+    },
+    {
+      "Name": "calculate_Rum_DigNDFnfIn",
+      "Input": {"Rum_dcNDF": 1.8, "Dt_NDFnfIn": 7.2},
+      "Output": 0.12960000000000002
+    },
+    {
+      "Name": "calculate_Du_StPas",
+      "Input": {"Dt_StIn": 23.5, "InfRum_StIn": 0.6, "Rum_DigStIn": 3.9},
+      "Output": 20.200000000000003
+    },
+    {
+      "Name": "calculate_Du_NDFPas",
+      "Input": {"Dt_NDFIn": 47.9, "Inf_NDFIn": 2.4, "Rum_DigNDFIn": 6.1},
+      "Output": 44.199999999999996
     }
-  ]
+]
   

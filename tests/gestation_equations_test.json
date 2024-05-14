@@ -123,6 +123,56 @@
       "Name": "calculate_An_PostPartDay",
       "Input": {"An_LactDay": 70},
       "Output": 70
+    },
+    {
+      "Name": "calculate_An_Preg",
+      "Input": {"An_GestDay": 0, "An_GestLength": 280},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_An_Preg",
+      "Input": {"An_GestDay": 100, "An_GestLength": 280},
+      "Output": 1
+    },
+    {
+      "Name": "calculate_An_Preg",
+      "Input": {"An_GestDay": 300, "An_GestLength": 280},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Fet_Wt",
+      "Input": {"An_GestDay": 0, "An_GestLength": 280, "Fet_BWbrth": 50, "coeff_dict": null},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Fet_Wt",
+      "Input": {"An_GestDay": 100, "An_GestLength": 280, "Fet_BWbrth": 50, "coeff_dict": null},
+      "Output": 0.01813743953330287
+    },
+    {
+      "Name": "calculate_Fet_Wt",
+      "Input": {"An_GestDay": 100, "An_GestLength": 280, "Fet_BWbrth": 50, "coeff_dict": null},
+      "Output": 0.01813743953330287
+    },
+    {
+      "Name": "calculate_Fet_Wt",
+      "Input": {"An_GestDay": 300, "An_GestLength": 280, "Fet_BWbrth": 50, "coeff_dict": null},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Fet_BWgain",
+      "Input": {"An_GestDay": 0, "An_GestLength": 280, "Fet_Wt": 57, "coeff_dict": null},
+      "Output": 0
+    },
+    {
+      "Name": "calculate_Fet_BWgain",
+      "Input": {"An_GestDay": 150, "An_GestLength": 280, "Fet_Wt": 57, "coeff_dict": null},
+      "Output": 2.292255
+    },
+    {
+      "Name": "calculate_Fet_BWgain",
+      "Input": {"An_GestDay": 300, "An_GestLength": 280, "Fet_Wt": 57, "coeff_dict": null},
+      "Output": 0
     }
   ]
   

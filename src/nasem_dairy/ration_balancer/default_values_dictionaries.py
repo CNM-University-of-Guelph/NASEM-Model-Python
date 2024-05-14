@@ -5,6 +5,9 @@ However, they parsed to functions that need any of these values, so users can al
 
 - `coeff_dict` - coefficients used throughout the model.
 - `infusion_dict` - All required infusion values set to 0, for when no infusions are used. Normally only used by researchers familiar with infusion techniques.
+- `MP_NP_efficiency_dict` - coefficients (efficiencies) for conversions of MP to NP for individual AA
+- `mPrt_coeff_list` - a list of dictionaries with coefficients for microbial protein equations
+- `f_Imb` - an array of 1's for individual AA, currently all are 1 but could be a relative penalty provided by user
 
 Examples
 --------
@@ -19,7 +22,7 @@ nd.infusion_dict
 ```
 
 """
-
+import pandas as pd
 
 # This dictionary contains the coefficients used by the model
 # The dictionary will be parsed to various functions which will check for that the required coeffs are present
@@ -102,19 +105,19 @@ coeff_dict = {
     'MiTPValProf': 6.88,
 
     # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631
-    # Two other sets of values are included in the R code
-    'mPrt_k_Arg_src': 0,
-    'mPrt_k_His_src': 1.675,
-    'mPrt_k_Ile_src': 0.885,
-    'mPrt_k_Leu_src': 0.466,
-    'mPrt_k_Lys_src': 1.153,
-    'mPrt_k_Met_src': 1.839,
-    'mPrt_k_Phe_src': 0,
-    'mPrt_k_Thr_src': 0,
-    'mPrt_k_Trp_src': 0,
-    'mPrt_k_Val_src': 0,
-
-    'mPrt_k_EAA2_src': -0.00215,
+    # Two other sets of values are included in the R  
+    # NOTE added to their own dictionary
+    # 'mPrt_k_Arg_src': 0,
+    # 'mPrt_k_His_src': 1.675,
+    # 'mPrt_k_Ile_src': 0.885,
+    # 'mPrt_k_Leu_src': 0.466,
+    # 'mPrt_k_Lys_src': 1.153,
+    # 'mPrt_k_Met_src': 1.839,
+    # 'mPrt_k_Phe_src': 0,
+    # 'mPrt_k_Thr_src': 0,
+    # 'mPrt_k_Trp_src': 0,
+    # 'mPrt_k_Val_src': 0,
+    # 'mPrt_k_EAA2_src': -0.00215,
 
     # From calculate_An_NE
     'Body_NP_CP': 0.86,                                             # Line 1964
@@ -224,7 +227,115 @@ coeff_dict = {
     'UCT': 25,                # Line 230, calf
     'An_GutFill_BWmature': 0.18, # Line 2400, mature animals
     'LCT': 15,                # calf < 3 wks of age, Line 228, NOTE: LCT is changed to 5 whe An_AgeDay > 21, should it be part of coeff_dict?
-    'UCT': 25                 # calf, line 230
+    'UCT': 25,                # calf, line 230
+    
+    # Doudenal endogenous CP AA profile (g hydrated AA / 100 g CP) corrected for 24 h 
+    # hydrolysis recovery. Lapierre et al.from Orskov et al. 1986.  Br. J. Nutr. 56:241-248. 
+    # corrected for 24 h recovery by Lapierre
+    'EndArgProf': 4.61, # Line 1446-1455
+    'EndHisProf': 2.90,
+    'EndIleProf': 4.09,
+    'EndLeuProf': 7.67,
+    'EndLysProf': 6.23,
+    'EndMetProf': 1.26,
+    'EndPheProf': 3.98,
+    'EndThrProf': 5.18,
+    'EndTrpProf': 1.29,
+    'EndValProf': 5.29,
+
+    #AA dehydration factors for mass change during peptide formation (g anhyd AAt / g hydrated AAt)
+    'HydrArg': 0.8967,
+    'HydrHis': 0.8840,
+    'HydrIle': 0.8628,
+    'HydrLeu': 0.8628,
+    'HydrLys': 0.8769,
+    'HydrMet': 0.8794,
+    'HydrPhe': 0.8910,
+    'HydrThr': 0.8490,
+    'HydrTrp': 0.9118,
+    'HydrVal': 0.8464,
+
+    'MWArg': 174.2,
+    'MWHis': 155.2,
+    'MWIle': 131.2,
+    'MWLeu': 131.2,
+    'MWLys': 146.2,
+    'MWMet': 149.2,
+    'MWPhe': 165.2,
+    'MWThr': 119.1,
+    'MWTrp': 204.2,
+    'MWVal': 117.2,
+
+    # Milk Protein AA Composition, g/100 g of TP
+    'Mlk_Arg_TP': 3.74,
+    'Mlk_His_TP': 2.92,
+    'Mlk_Ile_TP': 6.18,
+    'Mlk_Leu_TP': 10.56,
+    'Mlk_Lys_TP': 8.82,
+    'Mlk_Met_TP': 3.03,
+    'Mlk_Phe_TP': 5.26,
+    'Mlk_Thr_TP': 4.62,
+    'Mlk_Trp_TP': 1.65,
+    'Mlk_Val_TP': 6.90,
+
+    # Body Protein AA Composition, g/100 g of TP
+    'Body_Arg_TP': 8.20,
+    'Body_His_TP': 3.04,
+    'Body_Ile_TP': 3.69,
+    'Body_Leu_TP': 8.27,
+    'Body_Lys_TP': 7.90,
+    'Body_Met_TP': 2.37,
+    'Body_Phe_TP': 4.41,
+    'Body_Thr_TP': 4.84,
+    'Body_Trp_TP': 1.05,
+    'Body_Val_TP': 5.15,
+
+    # Endogenous Urinary Protein AA Composition, g/100 g of TP; these are set equal to body protein AA comp
+    'Ur_ArgEnd_TP': 8.20,
+    'Ur_HisEnd_TP': 3.04,
+    'Ur_IleEnd_TP': 3.69,
+    'Ur_LeuEnd_TP': 8.27,
+    'Ur_LysEnd_TP': 7.90,
+    'Ur_MetEnd_TP': 2.37,
+    'Ur_PheEnd_TP': 4.41,
+    'Ur_ThrEnd_TP': 4.84,
+    'Ur_TrpEnd_TP': 1.05,
+    'Ur_ValEnd_TP': 5.15,
+
+    # Metabolic Fecal Protein AA Composition, g/100 g of TP
+    'Fe_ArgMetab_TP': 5.90,
+    'Fe_HisMetab_TP': 3.54,
+    'Fe_IleMetab_TP': 5.39,
+    'Fe_LeuMetab_TP': 9.19,
+    'Fe_LysMetab_TP': 7.61,
+    'Fe_MetMetab_TP': 1.73,
+    'Fe_PheMetab_TP': 5.28,
+    'Fe_ThrMetab_TP': 7.36,
+    'Fe_TrpMetab_TP': 1.79,
+    'Fe_ValMetab_TP': 7.01,
+
+    #Scurf Protein AA Composition, g/100 g of TP
+    'Scrf_Arg_TP': 9.60,
+    'Scrf_His_TP': 1.75,
+    'Scrf_Ile_TP': 2.96,
+    'Scrf_Leu_TP': 6.93,
+    'Scrf_Lys_TP': 5.64,
+    'Scrf_Met_TP': 1.40,
+    'Scrf_Phe_TP': 3.61,
+    'Scrf_Thr_TP': 4.01,
+    'Scrf_Trp_TP': 0.73,
+    'Scrf_Val_TP': 4.66,
+
+    'fN_3MH': (3*14)/169,
+
+    'Fet_Ksyn': 5.16e-2,
+    'Fet_KsynDecay': 7.59e-5,
+    'Fet_Wt': 0,
+    'Fet_BWgain': 0,     # open animal, kg/d
+    'AshGain_RsrvGain': 0.02,
+    'CH4vol_kg': 1497, # liters/kg
+    'En_CH4': 55.5 / 4.184,  # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
+    'An_Fe_m': 0    # no Fe maintenance requirement
 }
 
 # Dictionary to use when infusions are not provided to model
@@ -275,3 +386,72 @@ MP_NP_efficiency_dict = {
     'Trg_AbsVal_NPVal': 0.74,
     'Trg_MP_NP': 0.69
 }
+
+mPrt_coeff_list = [
+    {   # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
+        "mPrt_Int_src": -97.0,
+        "mPrt_k_BW_src": -0.4201,
+        "mPrt_k_DEInp_src": 10.79,
+        "mPrt_k_DigNDF_src": -4.595,
+        "mPrt_k_DEIn_StFA_src": 0,
+        "mPrt_k_DEIn_NDF_src": 0,
+        "mPrt_k_Arg_src": 0,
+        "mPrt_k_His_src": 1.675,
+        "mPrt_k_Ile_src": 0.885,
+        "mPrt_k_Leu_src": 0.466,
+        "mPrt_k_Lys_src": 1.153,
+        "mPrt_k_Met_src": 1.839,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 0,
+        "mPrt_k_Trp_src": 0.0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0,
+        "mPrt_k_OthAA_src": 0.0773,
+        "mPrt_k_EAA2_src": -0.00215
+    },
+    {   # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
+        "mPrt_Int_src": -141,
+        "mPrt_k_BW_src": -0.4146,
+        "mPrt_k_DEInp_src": 10.65,
+        "mPrt_k_DigNDF_src": -4.62,
+        "mPrt_k_DEIn_StFA_src": 0,
+        "mPrt_k_DEIn_NDF_src": 0,
+        "mPrt_k_Arg_src": 0.8175,
+        "mPrt_k_His_src": 1.641,
+        "mPrt_k_Ile_src": 0.837,
+        "mPrt_k_Leu_src": 0.623,
+        "mPrt_k_Lys_src": 1.235,
+        "mPrt_k_Met_src": 1.846,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 0,
+        "mPrt_k_Trp_src": 0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0.0925,
+        "mPrt_k_OthAA_src": 0,
+        "mPrt_k_EAA2_src": -0.002451
+    },
+    {   # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
+        "mPrt_Int_src": -73.7,
+        "mPrt_k_BW_src": -0.3663,
+        "mPrt_k_DEInp_src": 0,
+        "mPrt_k_DigNDF_src": 0,
+        "mPrt_k_DEIn_StFA_src": 10.87,
+        "mPrt_k_DEIn_NDF_src": 5.43,
+        "mPrt_k_Arg_src": 0,
+        "mPrt_k_His_src": 1.19,
+        "mPrt_k_Ile_src": 1.08,
+        "mPrt_k_Leu_src": 0.238,
+        "mPrt_k_Lys_src": 1.08,
+        "mPrt_k_Met_src": 1.91,
+        "mPrt_k_Phe_src": 0,
+        "mPrt_k_Thr_src": 1.36,
+        "mPrt_k_Trp_src": 0,
+        "mPrt_k_Val_src": 0,
+        "mPrt_k_NEAA_src": 0.075,
+        "mPrt_k_OthAA_src": 0,
+        "mPrt_k_EAA2_src": -0.00175
+    }
+]
+
+f_Imb = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+                  index=['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'])

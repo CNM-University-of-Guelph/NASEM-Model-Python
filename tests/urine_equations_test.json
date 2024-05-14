@@ -23,6 +23,91 @@
       "Name": "calculate_Ur_MPendUse_g",
       "Input": {"Ur_NPend_g": 5},
       "Output": 5
-    }
+    },
+    {
+      "Name": "calculate_Ur_Nend_Urea_g",
+      "Input": {"An_BW": 650},
+      "Output": 6.5
+    },
+    {
+      "Name": "calculate_Ur_Nend_Creatn_g",
+      "Input": {"An_BW": 810},
+      "Output": 7.662599999999999
+    },
+    {
+      "Name": "calculate_Ur_Nend_Creat_g",
+      "Input": {"Ur_Nend_Creatn_g": 319},
+      "Output": 118.03
+    },
+    {
+      "Name": "calculate_Ur_Nend_PD_g",
+      "Input": {"An_BW": 703},
+      "Output": 3.699864205503923
+    },
+    {
+      "Name": "calculate_Ur_NPend_3MH_g",
+      "Input": {"An_BW": 791},
+      "Output": 0.44289
+    },
+    {
+      "Name": "calculate_Ur_Nend_3MH_g",
+      "Input": {"Ur_NPend_3MH_g": 106, "coeff_dict": null},
+      "Output": 26.34319526627219
+    },
+    {
+      "Name": "calculate_Ur_Nend_sum_g",
+      "Input": {"Ur_Nend_Urea_g": 129, "Ur_Nend_Creatn_g": 78, "Ur_Nend_Creat_g": 301, "Ur_Nend_PD_g": 285, "Ur_Nend_3MH_g": 108},
+      "Output": 1668.5185185185185
+    },
+    {
+      "Name": "calculate_Ur_Nend_Hipp_g",
+      "Input": {"Ur_Nend_sum_g": 1065},
+      "Output": 489.90000000000003
+    },
+    {
+      "Name": "calculate_Ur_NPend",
+      "Input": {"Ur_NPend_g": 301},
+      "Output": 0.301
+    },
+    {
+      "Name": "calculate_Ur_MPend",
+      "Input": {"Ur_NPend": 410},
+      "Output": 410
+    },
+    {
+      "Name": "calculate_Ur_EAAend_g",
+      "Input": {"An_BW": 810},
+      "Output": 50.625
+    },
+    {
+      "Name": "calculate_Ur_AAEnd_AbsAA",
+      "Input": {"Ur_AAEnd_g": 192, "Abs_AA_g": 6.4},
+      "Output": 30.0
+    },
+    {
+      "Name": "calculate_Ur_Nout_DigNIn",
+      "Input": {"Ur_Nout_g": 310, "An_DigCPtIn": 14.9},
+      "Output": 13.003355704697986
+  },
+  {
+      "Name": "calculate_Ur_Nout_CPcatab",
+      "Input": {"Ur_Nout_g": 831, "Ur_Nend_g": 391},
+      "Output": 440
+  },
+  {
+      "Name": "calculate_UrDE_DMIn",
+      "Input": {"Ur_DEout": 3.1, "An_DMIn": 25.9},
+      "Output": 0.1196911196911197
+  },
+  {
+      "Name": "calculate_UrDE_GEIn",
+      "Input": {"Ur_DEout": 3.8, "An_GEIn": 18.5},
+      "Output": 0.2054054054054054
+  },
+  {
+      "Name": "calculate_UrDE_DEIn",
+      "Input": {"Ur_DEout": 16.3, "An_DEIn": 30.3},
+      "Output": 0.5379537953795379
+  }
   ]
   

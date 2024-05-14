@@ -304,5 +304,330 @@
     "Name": "calculate_An_DigTPaIn",
     "Input": {"An_TPIn": 15, "InfArt_CPIn": 0.8, "Fe_CP": 2.2},
     "Output": 12
-  }
+  },
+  {
+    "Name": "calculate_An_DigStIn_Base",
+    "Input": {"Dt_DigStIn_Base": 15, "Inf_StIn": 1.6, "Inf_ttdcSt": 2.4},
+    "Output": 15.0384
+  },
+  {
+    "Name": "calculate_An_DigWSCIn",
+    "Input": {"Dt_DigWSCIn": 14.6, "InfRum_GlcIn": 3.6, "InfSI_GlcIn": 2.9},
+    "Output": 21.099999999999998
+  },
+  {
+    "Name": "calculate_An_DigrOMtIn",
+    "Input": {
+      "Dt_DigrOMtIn": 12,
+      "InfRum_GlcIn": 2.4,
+      "InfRum_AcetIn": 2,
+      "InfRum_PropIn": 1.9,
+      "InfRum_ButrIn": 3.5,
+      "InfSI_GlcIn": 1.9,
+      "InfSI_AcetIn": 0.4,
+      "InfSI_PropIn": 1.2,
+      "InfSI_ButrIn": 0.8
+    },
+    "Output": 26.099999999999994
+  },
+  {
+    "Name": "calculate_An_DigSt",
+    "Input": {"An_DigStIn": 32.7, "Dt_DMIn": 24.8, "InfRum_DMIn": 1.5, "InfSI_DMIn": 2.5},
+    "Output": 113.54166666666667
+  },
+  {
+    "Name": "calculate_An_DigWSC",
+    "Input": {"An_DigWSCIn": 22.5, "Dt_DMIn": 31, "InfRum_DMIn": 2.9, "InfSI_DMIn": 0.7},
+    "Output": 65.02890173410404
+  },
+  {
+    "Name": "calculate_An_DigrOMa",
+    "Input": {"An_DigrOMaIn": 12, "Dt_DMIn": 23, "InfRum_DMIn": 1.4, "InfSI_DMIn": 2.9},
+    "Output": 43.95604395604396
+  },
+  {
+    "Name": "calculate_An_DigrOMt",
+    "Input": {"An_DigrOMtIn": 13, "Dt_DMIn": 18, "InfRum_DMIn": 1.8, "InfSI_DMIn": 4.3},
+    "Output": 53.941908713692946
+  },
+  {
+    "Name": "calculate_An_DigNDFIn_Base",
+    "Input": {"Dt_NDFIn": 42.1, "InfRum_NDFIn": 2, "TT_dcNDF_Base": 6.43},
+    "Output": 2.83563
+  },
+  {
+    "Name": "calculate_An_RDNPNCPIn",
+    "Input": {"Dt_NPNCPIn": 14.8, "InfRum_NPNCPIn": 2.5},
+    "Output": 17.3
+  },
+  {
+    "Name": "calculate_An_RUP",
+    "Input": {"An_RUPIn": 9.4, "Dt_DMIn": 23.1, "InfRum_DMIn": 4.1},
+    "Output": 34.55882352941176
+  },
+  {
+    "Name": "calculate_An_RUP_CP",
+    "Input": {"An_RUPIn": 12.4, "Dt_CPIn": 19.8, "InfRum_CPIn": 3.2},
+    "Output": 53.91304347826087
+  },
+  {
+    "Name": "calculate_An_idRUCPIn",
+    "Input": {"Dt_idRUPIn": 12.5, "InfRum_idRUPIn": 2.8, "InfSI_idCPIn": 0.3},
+    "Output": 15.600000000000001
+  },
+  {
+    "Name": "calculate_An_idRUP",
+    "Input": {"An_idRUPIn": 23.1, "Dt_DMIn": 29.3, "InfRum_DMIn": 0.5, "InfSI_DMIn": 1.2},
+    "Output": 0.7451612903225807
+  },
+  {
+    "Name": "calculate_An_RDTPIn",
+    "Input": {"Dt_RDTPIn": 23, "InfRum_RDPIn": 3.6, "InfRum_NPNCPIn": 2.3, "coeff_dict": null},
+    "Output": 24.3
+  },
+  {
+    "Name": "calculate_An_RDP_CP",
+    "Input": {"An_RDPIn": 15.2, "Dt_CPIn": 17.4, "InfRum_CPIn": 0.7},
+    "Output": 83.97790055248619
+  },
+  {
+    "Name": "calculate_An_RDPbal_g",
+    "Input": {"An_RDPIn_g": 16.4, "Du_MiCP_g": 15},
+    "Output": 1.3999999999999986
+  },
+  {
+    "Name": "calculate_An_DigCPa",
+    "Input": {"An_DigCPaIn": 3.7, "An_DMIn": 16.2, "InfArt_DMIn": 0.1},
+    "Output": 22.981366459627335
+  },
+  {
+    "Name": "calculate_TT_dcAnCPa",
+    "Input": {"An_DigCPaIn": 3.1, "An_CPIn": 14.6, "InfArt_CPIn": 0.8},
+    "Output": 22.46376811594203
+  },
+  {
+    "Name": "calculate_An_DigCPtIn",
+    "Input": {"An_StatePhys": "Calf", "Dt_DigCPtIn": 14.5, "Inf_idCPIn": 1.4, "An_RDPIn": 12.7, "An_idRUPIn": 3.6},
+    "Output": 15.9
+  },
+  {
+    "Name": "calculate_An_DigCPtIn",
+    "Input": {"An_StatePhys": "Lactating Cow", "Dt_DigCPtIn": 14.5, "Inf_idCPIn": 1.4, "An_RDPIn": 12.7, "An_idRUPIn": 3.6},
+    "Output": 16.3
+  },
+  {
+    "Name": "calculate_An_DigNtIn_g",
+    "Input": {"An_DigCPtIn": 16.3},
+    "Output": 2608.0
+  },
+  {
+    "Name": "calculate_An_DigTPtIn",
+    "Input": {"An_RDTPIn": 15.2, "Fe_MiTP": 2.7, "An_idRUPIn": 3.9, "Fe_NPend": 12.1},
+    "Output": 4.299999999999999
+  },
+  {
+    "Name": "calculate_An_DigCPt",
+    "Input": {"An_DigCPtIn": 12.6, "An_DMIn": 23.1, "InfArt_DMIn": 2.5},
+    "Output": 61.165048543689316
+  },
+  {
+    "Name": "calculate_An_DigTPt",
+    "Input": {"An_DigTPtIn": 18.1, "An_DMIn": 27.4, "InfArt_DMIn": 1.5},
+    "Output": 69.88416988416989
+  },
+  {
+    "Name": "calculate_TT_dcAnCPt",
+    "Input": {"An_DigCPtIn": 12.9, "An_CPIn": 23.5, "InfArt_CPIn": 0.2},
+    "Output": 55.36480686695279
+  },
+  {
+    "Name": "calculate_TT_dcAnTPt",
+    "Input": {"An_DigTPtIn": 23.1, "An_TPIn": 2.9, "InfArt_CPIn": 0.4, "InfRum_NPNCPIn": 0.8, "InfSI_NPNCPIn": 1.6},
+    "Output": 2566.666666666667
+  },
+  {
+    "Name": "calculate_SI_dcAnRUP",
+    "Input": {"An_idRUPIn": 16.2, "An_RUPIn": 7.9},
+    "Output": 205.06329113924048
+  },
+  {
+    "Name": "calculate_An_idCPIn",
+    "Input": {"An_idRUPIn": 18.4, "Du_idMiCP": 231},
+    "Output": 249.4
+  },
+  {
+    "Name": "calculate_An_MP",
+    "Input": {"An_MPIn": 18.5, "Dt_DMIn": 20.4, "InfRum_DMIn": 0.5, "InfSI_DMIn": 1.1},
+    "Output": 84.0909090909091
+  },
+  {
+    "Name": "calculate_An_MP_CP",
+    "Input": {"An_MPIn": 129.4, "An_CPIn": 230},
+    "Output": 0.562608695652174
+  },
+  {
+    "Name": "calculate_An_DigFA",
+    "Input": {"An_DigFAIn": 4.8, "Dt_DMIn": 29.4, "InfRum_DMIn": 1.6, "InfSI_DMIn": 0.5},
+    "Output": 15.238095238095237
+  },
+  {
+    "Name": "calculate_TT_dcAnFA",
+    "Input": {"Dt_DigFAIn": 2.9, "Inf_DigFAIn": 1.4, "Dt_FAIn": 2.1, "Inf_FAIn": 0.7},
+    "Output": 153.57142857142858
+  },
+  {
+    "Name": "calculate_An_OMIn",
+    "Input": {"Dt_OMIn": 5.8, "Inf_OMIn": 2.0},
+    "Output": 7.8
+  },
+  {
+    "Name": "calculate_An_DigOMaIn_Base",
+    "Input": {"An_DigNDFIn_Base": 23.5, "An_DigStIn_Base": 17.1, "An_DigFAIn": 8.3, "An_DigrOMaIn": 9.5, "An_DigCPaIn": 18.4},
+    "Output": 76.80000000000001
+  },
+  {
+    "Name": "calculate_An_DigOMtIn_Base",
+    "Input": {"An_DigNDFIn_Base": 37.5, "An_DigStIn_Base": 17.2, "An_DigFAIn": 7.6, "An_DigrOMtIn": 9.1, "An_DigCPtIn": 14.8},
+    "Output": 86.2
+  },
+  {
+    "Name": "calculate_An_DigOMaIn",
+    "Input": {"An_DigNDFIn": 42.8, "An_DigStIn": 10.1, "An_DigFAIn": 5.8, "An_DigrOMaIn": 14.8, "An_DigCPaIn": 15.9},
+    "Output": 89.4
+  },
+  {
+    "Name": "calculate_An_DigOMtIn",
+    "Input": {"An_DigNDFIn": 36.8, "An_DigStIn": 19.3, "An_DigFAIn": 4.9, "An_DigrOMtIn": 20.4, "An_DigCPtIn": 16.2},
+    "Output": 97.6
+  },
+  {
+    "Name": "calculate_TT_dcOMa",
+    "Input": {"An_DigOMaIn": 29.5, "An_OMIn": 42.4},
+    "Output": 69.5754716981132
+  },
+  {
+    "Name": "calculate_TT_dcOMt",
+    "Input": {"An_DigOMtIn": 14.1, "An_OMIn": 5.7},
+    "Output": 247.36842105263156
+  },
+  {
+    "Name": "calculate_TT_dcOMt_Base",
+    "Input": {"An_DigOMtIn_Base": 17.8, "An_OMIn": 20.6},
+    "Output": 86.40776699029125
+  },
+  {
+    "Name": "calculate_An_DigOMa",
+    "Input": {"An_DigOMaIn": 18.5, "Dt_DMIn": 26.6, "InfRum_DMIn": 2.3, "InfSI_DMIn": 1.9},
+    "Output": 60.064935064935064
+  },
+  {
+    "Name": "calculate_An_DigOMt",
+    "Input": {"An_DigOMtIn": 13.8, "Dt_DMIn": 30.4, "InfRum_DMIn": 2.9, "InfSI_DMIn": 0.1},
+    "Output": 41.31736526946108
+  },
+  {
+    "Name": "calculate_An_GEIn",
+    "Input": {"Dt_GEIn": 14.9, "Inf_NDFIn": 1.9, "Inf_StIn": 2.5, "Inf_FAIn": 0.1, "Inf_TPIn": 0.4, "Inf_NPNCPIn": 0.6, "Inf_AcetIn": 1.5, "Inf_PropIn": 4.5, "Inf_ButrIn": 1.6, "coeff_dict": null},
+    "Output": 74.24899999999998
+  },
+  {
+    "Name": "calculate_An_GE",
+    "Input": {"An_GEIn": 87.3, "An_DMIn": 24.7},
+    "Output": 3.534412955465587
+  },
+  {
+    "Name": "calculate_An_DERDTPIn",
+    "Input": {"An_RDTPIn": 23.6, "Fe_DEMiCPend": 2.9, "Fe_DERDPend": 14.2, "coeff_dict": null},
+    "Output": 116.24
+  },
+  {
+    "Name": "calculate_An_DEidRUPIn",
+    "Input": {"An_idRUPIn": 14.9, "Fe_DERUPend": 2.4, "coeff_dict": null},
+    "Output": 81.785
+  },
+  {
+    "Name": "calculate_An_DE",
+    "Input": {"An_DEIn": 94.2, "An_DMIn": 20.5},
+    "Output": 4.595121951219513
+  },
+  {
+    "Name": "calculate_An_DE_GE",
+    "Input": {"An_DEIn": 75.2, "An_GEIn": 90.3},
+    "Output": 0.832779623477298
+  },
+  {
+    "Name": "calculate_An_DEnp",
+    "Input": {"An_DEInp": 34.8, "An_DMIn": 31.4},
+    "Output": 110.828025477707
+  },
+  {
+    "Name": "calculate_An_GasE_IPCC2",
+    "Input": {"An_GEIn": 56.3},
+    "Output": 3.6595
+  },
+  {
+    "Name": "calculate_GasE_DMIn",
+    "Input": {"An_GasEOut": 46.2, "An_DMIn": 23.8},
+    "Output": 1.9411764705882353
+  },
+  {
+    "Name": "calculate_GasE_GEIn",
+    "Input": {"An_GasEOut": 62.6, "An_GEIn": 19.5},
+    "Output": 3.2102564102564104
+  },
+  {
+    "Name": "calculate_GasE_DEIn",
+    "Input": {"An_GasEOut": 74.1, "An_DEIn": 23.8},
+    "Output": 3.11344537815126
+  },
+  {
+    "Name": "calculate_An_NPm_Use",
+    "Input": {"Scrf_NP_g": 360, "Fe_NPend_g": 259, "Ur_NPend_g": 430},
+    "Output": 1049
+  },
+  {
+    "Name": "calculate_An_CPm_Use",
+    "Input": {"Scrf_CP_g": 1029, "Fe_CPend_g": 319, "Ur_NPend_g": 510},
+    "Output": 1858
+  },
+  {
+    "Name": "calculate_An_ME",
+    "Input": {"An_MEIn": 19.1, "An_DMIn": 31.2},
+    "Output": 0.6121794871794872
+},
+{
+    "Name": "calculate_An_ME_GE",
+    "Input": {"An_MEIn": 15.8, "An_GEIn": 32.2},
+    "Output": 0.4906832298136646
+},
+{
+    "Name": "calculate_An_ME_DE",
+    "Input": {"An_MEIn": 31, "An_DEIn": 49.2},
+    "Output": 0.6300813008130081
+},
+{
+    "Name": "calculate_An_NE_GE",
+    "Input": {"An_NEIn": 21, "An_GEIn": 31.7},
+    "Output": 0.6624605678233438
+},
+{
+    "Name": "calculate_An_NE_DE",
+    "Input": {"An_NEIn": 41.9, "An_DEIn": 71.6},
+    "Output": 0.585195530726257
+},
+{
+    "Name": "calculate_An_NE_ME",
+    "Input": {"An_NEIn": 13.1, "An_MEIn": 19.4},
+    "Output": 0.6752577319587629
+},
+{
+    "Name": "calculate_An_MPIn_MEIn",
+    "Input": {"An_MPIn_g": 3101, "An_MEIn": 51.3},
+    "Output": 60.44834307992203
+},
+{
+  "Name": "calculate_An_RUPIn_g",
+  "Input": {"An_RUPIn": 15.8},
+  "Output": 15800
+}
 ]

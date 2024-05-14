@@ -345,7 +345,7 @@ def calculate_Dt_DMIn_DryCow2(An_BW, An_GestDay, An_GestLength):
         Dt_DMIn_DryCow_AdjGest = An_BW * \
             (-0.756 * math.exp(0.154 * (An_GestDay - An_GestLength))) / 100
 
-    Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest
+    Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest 
     return Dt_DMIn_DryCow2
 
 
