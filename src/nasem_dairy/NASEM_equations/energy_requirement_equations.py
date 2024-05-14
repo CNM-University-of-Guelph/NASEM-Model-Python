@@ -931,7 +931,7 @@ def calculate_Trg_MEuse(An_MEmUse: float, An_MEgain: float, Gest_MEuse: float, T
 
 def calculate_An_MEmUse_NS(An_NEmUse_NS: float, coeff_dict: dict) -> float:
     """
-    An_MEmUse_NS: Metabolizable energy for maintenance (Mcal/d)
+    An_MEmUse_NS: Metabolizable energy for maintenance (Mcal/d) NS = non stressed
     """
     req_coeff = ['Km_ME_NE']
     check_coeffs_in_coeff_dict(coeff_dict, req_coeff)

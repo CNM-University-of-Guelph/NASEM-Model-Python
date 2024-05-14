@@ -5,6 +5,9 @@ However, they parsed to functions that need any of these values, so users can al
 
 - `coeff_dict` - coefficients used throughout the model.
 - `infusion_dict` - All required infusion values set to 0, for when no infusions are used. Normally only used by researchers familiar with infusion techniques.
+- `MP_NP_efficiency_dict` - coefficients (efficiencies) for conversions of MP to NP for individual AA
+- `mPrt_coeff_list` - a list of dictionaries with coefficients for microbial protein equations
+- `f_Imb` - an array of 1's for individual AA, currently all are 1 but could be a relative penalty provided by user
 
 Examples
 --------

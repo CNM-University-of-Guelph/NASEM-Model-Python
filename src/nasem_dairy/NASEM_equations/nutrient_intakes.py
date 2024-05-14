@@ -741,6 +741,7 @@ def calculate_Dt_RUPIn(Dt_CPAIn, Dt_NPNIn, Dt_RUPBIn, Dt_CPCIn, coeff_dict, Fd_R
 
     # The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
     # if concerned about intercept, switch to using this eqn for RUP
+    # this is called Dt_RUPIn.dt in the R code line 618
     # Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
     return Dt_RUPIn
 
@@ -902,7 +903,7 @@ def calculate_Dt_DEFAIn(Dt_DigFAIn, coeff_dict):
     return Dt_DEFAIn
 
 
-# This function is invovled in the calf DMIn prediction. In the future we will liekly need to pull a few of the calf intake calculations 
+# This function is invovled in the calf DMIn prediction. In the future we will liekly need to pull a few of the calf intake calculations
 # out of the wrappers to run DMI prediciton properly. It all depends on how we handle the calf calculations which hasn't been decided yet
 def calculate_Dt_DMIn_ClfStrt(An_BW, Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq, Dt_DMIn_ClfFor, An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Trg_Dt_DMIn, coeff_dict):
     req_coeff = ['UCT']
@@ -1239,7 +1240,7 @@ def calculate_Dt_DigCPtIn(An_StatePhys: str, Dt_DigCPaIn: float, Fe_CPend: float
         Dt_DigCPtIn = Dt_RDPIn + Dt_idRUPIn	# kg CP/d, true total tract digested CP, Line 1209
     return Dt_DigCPtIn
 
-    
+
 def calculate_Dt_DigTPaIn(Dt_RDTPIn: float, Fe_MiTP: float, Dt_idRUPIn: float, Fe_NPend: float) -> float:
     """
     Dt_DigTPaIn: Apparent total tract digested true protein, kg/d 
@@ -1247,7 +1248,7 @@ def calculate_Dt_DigTPaIn(Dt_RDTPIn: float, Fe_MiTP: float, Dt_idRUPIn: float, F
     Dt_DigTPaIn = Dt_RDTPIn - Fe_MiTP + Dt_idRUPIn - Fe_NPend  # Doesn't apply to calves, Line 1211
     return Dt_DigTPaIn
 
-    
+
 def calculate_Dt_DigTPtIn(Dt_RDTPIn: float, Dt_idRUPIn: float) -> float:
     """
     Dt_DigTPtIn: True total tract digested true protein, kg/d
@@ -1255,7 +1256,7 @@ def calculate_Dt_DigTPtIn(Dt_RDTPIn: float, Dt_idRUPIn: float) -> float:
     Dt_DigTPtIn = Dt_RDTPIn + Dt_idRUPIn    # Line 1212
     return Dt_DigTPtIn
 
-    
+
 def calculate_Dt_DigCPa(Dt_DigCPaIn: float, Dt_DMIn: float) -> float:
     """
     Dt_DigCPa: Dietary apparent total tract CP as % of DM
@@ -1263,7 +1264,7 @@ def calculate_Dt_DigCPa(Dt_DigCPaIn: float, Dt_DMIn: float) -> float:
     Dt_DigCPa = Dt_DigCPaIn / Dt_DMIn * 100    # Dietary Apparrent total tract % of DM, Line 1213
     return Dt_DigCPa
 
-    
+
 def calculate_TT_dcDtCPa(Dt_DigCPaIn: float, Dt_CPIn: float) -> float:
     """
     TT_dcDtCPa: Digestability coefficient apparent total tract CP, % CP
@@ -1271,7 +1272,7 @@ def calculate_TT_dcDtCPa(Dt_DigCPaIn: float, Dt_CPIn: float) -> float:
     TT_dcDtCPa = Dt_DigCPaIn / Dt_CPIn * 100		# % of CP, Line 1214
     return TT_dcDtCPa
 
-    
+
 def calculate_Dt_DigCPt(Dt_DigCPtIn: float, Dt_DMIn: float) -> float:
     """
     Dt_DigCPt: Dietary true total tract digested CP, % DM    
@@ -1279,7 +1280,7 @@ def calculate_Dt_DigCPt(Dt_DigCPtIn: float, Dt_DMIn: float) -> float:
     Dt_DigCPt = Dt_DigCPtIn / Dt_DMIn * 100 	# Dietary True total tract % of DM, Line 1215
     return Dt_DigCPt
 
-    
+
 def calculate_Dt_DigTPt(Dt_DigTPtIn: float, Dt_DMIn: float) -> float:
     """
     Dt_DigTPt: Dietary true total tract digested true protein, % DM
@@ -1287,7 +1288,7 @@ def calculate_Dt_DigTPt(Dt_DigTPtIn: float, Dt_DMIn: float) -> float:
     Dt_DigTPt = Dt_DigTPtIn / Dt_DMIn * 100 	# True total tract % of DM, Line 1216
     return Dt_DigTPt
 
-    
+
 def calculate_TT_dcDtCPt(Dt_DigCPtIn: float, Dt_CPIn: float) -> float:
     """
     TT_dcDtCPt: Digestability coefficient true total tract CP, % CP
@@ -1295,7 +1296,7 @@ def calculate_TT_dcDtCPt(Dt_DigCPtIn: float, Dt_CPIn: float) -> float:
     TT_dcDtCPt = Dt_DigCPtIn / Dt_CPIn * 100    # % of CP, Line 1217
     return TT_dcDtCPt
 
-    
+
 def calculate_Dt_MPIn(An_StatePhys: str, Dt_CPIn: float, Fe_CP: float, Fe_CPend: float, Dt_idRUPIn: float, Du_idMiTP: float) -> float:
     """
     Dt_MPIn: Dietary metabolizable protein intake, kg/d
@@ -1306,7 +1307,7 @@ def calculate_Dt_MPIn(An_StatePhys: str, Dt_CPIn: float, Fe_CP: float, Fe_CPend:
         Dt_MPIn = Dt_idRUPIn + Du_idMiTP    # Line 1218
     return Dt_MPIn
 
-    
+
 def calculate_Dt_MP(Dt_MPIn: float, Dt_DMIn: float) -> float:
     """
     Dt_MP: Dietary metabolizable protein, % DM 

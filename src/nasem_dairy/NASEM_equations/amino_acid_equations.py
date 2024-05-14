@@ -102,14 +102,14 @@ def calculate_Abs_EAA2_g(Abs_AA_g: pd.Series) -> float:
     return Abs_EAA2_g
 
 
-def calculate_Abs_EAA2_HILKM_g(Abs_AA_g):
+def calculate_Abs_EAA2_HILKM_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_HILKM_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + \
         Abs_AA_g['Lys']**2 + \
         Abs_AA_g['Met']**2  # Line 1778, NRC 2020 (no Arg, Phe, Thr, Trp, or Val)
     return Abs_EAA2_HILKM_g
 
 
-def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g):
+def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_RHILKM_g = Abs_AA_g['Arg']**2 + Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + \
         Abs_AA_g['Leu']**2 + \
         Abs_AA_g['Lys']**2 + \
@@ -117,7 +117,7 @@ def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g):
     return Abs_EAA2_RHILKM_g
 
 
-def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g):
+def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_HILKMT_g = Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + \
         Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + \
         Abs_AA_g['Met']**2 + Abs_AA_g['Thr']**2
@@ -126,14 +126,11 @@ def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g):
 
 def calculate_Abs_EAA2b_g(mPrt_eqn, Abs_AA_g):
     if mPrt_eqn == 2:
-        # Line 2107, NRC eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g) # Line 2108, VT1 eqn.
     elif mPrt_eqn == 3:
-        # Line 2108, VT1 eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_HILKMT_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKMT_g(Abs_AA_g) # Line 2106, VT2 eqn.
     else:
-        # Line 2106, VT2 eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_HILKM_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKM_g(Abs_AA_g) # Line 2107, NRC eqn.
     return Abs_EAA2b_g
 
 
