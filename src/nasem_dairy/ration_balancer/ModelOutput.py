@@ -216,11 +216,10 @@ class ModelOutput:
         Remove specified variables from locals_input.
         Add to dev output for easier development. Not included in search or get_value methods.
         """
-        variables_to_remove = [
-            'key', 'value', 'num_value', 'feed_library_df', 'feed_data',
-            'diet_info_initial', 'diet_data_initial', 'AA_list',
-            'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA'
-        ]
+        variables_to_remove = ['key', 'value', 'num_value', 'feed_library_df', 
+                            #    'feed_data', 
+                               'diet_info_initial', 'diet_data_initial',
+                                'AA_list', 'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA']
         for key in variables_to_remove:
             # Add to the dev Category
             self.dev_out[key] = self.locals_input[key]
@@ -546,7 +545,7 @@ class ModelOutput:
             'An_RDPbal_g', 'Trg_EAAUse_g', 'Trg_AbsEAA_g'
         ]
         # Store variables
-        self.__populate_category('Miscellaneous', group_names, misc_variables)
+        self.__populate_category('Miscellaneous', group_names, misc_variables)   
 
     def get_value(self, name):
         """
