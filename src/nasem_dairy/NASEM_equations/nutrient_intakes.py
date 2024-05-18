@@ -1282,7 +1282,7 @@ def calculate_Dt_FA_FA(variables: list, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_DtAARUP_DtAA(df: pd.DataFrame, AA_list: list, diet_data: dict) -> dict:
+def calculate_DtAARUP_DtAA(AA_list: list, diet_data: dict) -> dict:
     for AA in AA_list:
         diet_data[f"Dt{AA}RUP_Dt{AA}"] = diet_data[f"Dt_{AA}RUPIn"] / diet_data[f"Dt_{AA}In"]
     return diet_data
@@ -2342,7 +2342,7 @@ def calculate_diet_data_initial(df, DMI, An_BW, An_StatePhys, An_DMIn_BW, An_Age
                                                    diet_data['Dt_DigNDF'],
                                                    diet_data['Dt_GEIn'],
                                                    diet_data['Dt_NDF'])    
-    diet_data = calculate_DtAARUP_DtAA(df, AA_list, diet_data)    
+    diet_data = calculate_DtAARUP_DtAA(AA_list, diet_data)    
     return diet_data
 
 
