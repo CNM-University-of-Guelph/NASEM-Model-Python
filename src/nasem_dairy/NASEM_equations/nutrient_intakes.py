@@ -672,46 +672,36 @@ def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series, Fd_dcRUP: float | pd.Ser
 
 
 def calculate_Fd_XIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"{var}In": (lambda df, var=var: df[var] / 100 * df['Fd_DMIn']) for var in variables})
-
+    return df.assign(**{f"{var}In": df[var] / 100 * df['Fd_DMIn'] for var in variables})
 
 def calculate_Fd_FAIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"{var}In": lambda df, var=var: df[f"{var}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for var in variables})
-
+    return df.assign(**{f"{var}In": df[f"{var}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for var in variables})
 
 def calculate_macroIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"{var}In": lambda df, var=var: df['Fd_DMIn'] * df[var] / 100 * 1000 for var in variables})
-
+    return df.assign(**{f"{var}In": df['Fd_DMIn'] * df[var] / 100 * 1000 for var in variables})
 
 def calculate_microIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"{var}In": lambda df, var=var: df['Fd_DMIn'] * df[var] for var in variables})
-
+    return df.assign(**{f"{var}In": df['Fd_DMIn'] * df[var] for var in variables})
 
 def calculate_micro_absorbtion(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"Fd_abs{var}In": lambda df, var=var: df[f"Fd_{var}In"] * df[f"Fd_ac{var}"] for var in variables})
-
+    return df.assign(**{f"Fd_abs{var}In": df[f"Fd_{var}In"] * df[f"Fd_ac{var}"] for var in variables})
 
 def calculate_Fd_AAt_CP(df: pd.DataFrame, AA_list: list, coeff_dict: dict) -> pd.DataFrame:
-    return df.assign(**{f"Fd_{AA}t_CP": lambda df, AA=AA: df[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"] for AA in AA_list})    
-
+    return df.assign(**{f"Fd_{AA}t_CP": df[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"] for AA in AA_list})
 
 def calculate_Fd_AARUPIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
-    return df.assign(**{f"Fd_{AA}RUPIn": lambda df, AA=AA: df[f"Fd_{AA}t_CP"] / 100 * df['Fd_RUPIn'] * 1000 for AA in AA_list})
-
+    return df.assign(**{f"Fd_{AA}RUPIn": df[f"Fd_{AA}t_CP"] / 100 * df['Fd_RUPIn'] * 1000 for AA in AA_list})
 
 def calculate_Fd_IdAARUPIn(df: pd.DataFrame, AA_list: list, SIDig_values: dict) -> pd.DataFrame:
-    return df.assign(**{f"Fd_Id{AA}RUPIn": lambda df, AA=AA: df['Fd_dcRUP'] / 100 * df[f"Fd_{AA}RUPIn"] * SIDig_values[AA] for AA in AA_list})
-
+    return df.assign(**{f"Fd_Id{AA}RUPIn": df['Fd_dcRUP'] / 100 * df[f"Fd_{AA}RUPIn"] * SIDig_values[AA] for AA in AA_list})
 
 def calculate_Fd_Dig_FAIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{f"Fd_Dig{var}In": lambda df, var=var: df['TT_dcFdFA'] / 100 * df[f"Fd_{var}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for var in variables})
-
+    return df.assign(**{f"Fd_Dig{var}In": df['TT_dcFdFA'] / 100 * df[f"Fd_{var}_FA"] / 100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for var in variables})
 
 def calculate_Fd_AAIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
-    return df.assign(**{f"Fd_{AA}In": lambda df, AA=AA: np.where(df['Fd_CPIn'] > 0,  
+    return df.assign(**{f"Fd_{AA}In": np.where(df['Fd_CPIn'] > 0,  
                     (df[f"Fd_{AA}t_CP"] / 100) * (df['Fd_CP'] / 100) * (df['Fd_DMIn'] * 1000),  
                     0) for AA in AA_list})
-
 
 ####################
 # Functions for Diet Intakes
