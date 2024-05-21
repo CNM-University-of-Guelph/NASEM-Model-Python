@@ -8,9 +8,7 @@ import nasem_dairy as nd
 
 @pytest.fixture
 def nutrient_intake_dfs():
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    return pd.read_json(os.path.join(script_dir, 
-                                     "nutrient_intakes_helpers_test.json"))
+    return pd.read_json("./tests/nutrient_intakes_helpers_test.json")
 
 
 def compare_values_with_tolerance(val1, val2, rtol=1e-3, atol=1e-2):
@@ -82,6 +80,3 @@ def test_from_json_dict(nutrient_intake_dfs):
             
             pd.testing.assert_frame_equal(result, expected_output, 
                                           rtol=1e-3, atol=1e-2)
-
-if __name__ == "__main__":
-    pytest.main(['./tests/test_nutrient_intakes_helpers.py'])
