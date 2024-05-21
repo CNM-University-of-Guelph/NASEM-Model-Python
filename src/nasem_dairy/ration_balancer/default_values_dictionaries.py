@@ -27,38 +27,38 @@ import pandas as pd
 
 coeff_dict = {
     # From calculate_Du_MiN_NRC2021_g
-    'VmMiNInt': 100.8,                                    # Line 1117
-    'VmMiNRDPSlp': 81.56,                                 # Line 1118
-    'KmMiNRDNDF': 0.0939,                                 # Line 1119
-    'KmMiNRDSt': 0.0274,                                  # Line 1120
+    'VmMiNInt': 100.8,  # Line 1117
+    'VmMiNRDPSlp': 81.56,  # Line 1118
+    'KmMiNRDNDF': 0.0939,  # Line 1119
+    'KmMiNRDSt': 0.0274,  # Line 1120
 
     # From calculate_Du_MiN_VTLn_g
-    'Int_MiN_VT': 18.686,                                 # Line 1134
-    'KrdSt_MiN_VT': 10.214,                               # Line 1135
-    'KrdNDF_MiN_VT': 28.976,                              # Line 1136
-    'KRDP_MiN_VT': 43.405,                                # Line 1137
-    'KrOM_MiN_VT': -11.731,                               # Line 1138
-    'KForNDF_MiN_VT': 8.895,                              # Line 1139
-    'KrOM2_MiN_VT': 2.861,                                # Line 1140
-    'KrdStxrOM_MiN_VT': 5.637,                            # Line 1141
-    'KrdNDFxForNDF_MiN_VT': -2.22,                        # Line 1142
+    'Int_MiN_VT': 18.686,  # Line 1134
+    'KrdSt_MiN_VT': 10.214,  # Line 1135
+    'KrdNDF_MiN_VT': 28.976,  # Line 1136
+    'KRDP_MiN_VT': 43.405,  # Line 1137
+    'KrOM_MiN_VT': -11.731,  # Line 1138
+    'KForNDF_MiN_VT': 8.895,  # Line 1139
+    'KrOM2_MiN_VT': 2.861,  # Line 1140
+    'KrdStxrOM_MiN_VT': 5.637,  # Line 1141
+    'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
 
     # From calculate_Mlk_NP_g
-    'mPrt_Int': -97,                                      # Line 2097, 2078
+    'mPrt_Int': -97,  # Line 2097, 2078
     # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
     'fMiTP_MiCP': 0.824,
     # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
     'SI_dcMiCP': 80,
-    'mPrt_k_NEAA': 0,                                     # Line 2103, 2094
-    'mPrt_k_OthAA': 0.0773,                               # Line 2014, 2095
-    'mPrt_k_DEInp': 10.79,                                # Line 2099, 2080
-    'mPrt_k_DigNDF': -4.595,                              # Line 2100, 2081
-    'mPrt_k_DEIn_StFA': 0,                                # Line 2101, 2082
-    'mPrt_k_DEIn_NDF': 0,                                 # Line 2102, 2083
-    'mPrt_k_BW': -0.4201,                                 # Line 2098, 2079
+    'mPrt_k_NEAA': 0,  # Line 2103, 2094
+    'mPrt_k_OthAA': 0.0773,  # Line 2014, 2095
+    'mPrt_k_DEInp': 10.79,  # Line 2099, 2080
+    'mPrt_k_DigNDF': -4.595,  # Line 2100, 2081
+    'mPrt_k_DEIn_StFA': 0,  # Line 2101, 2082
+    'mPrt_k_DEIn_NDF': 0,  # Line 2102, 2083
+    'mPrt_k_BW': -0.4201,  # Line 2098, 2079
 
     # From calculate_Mlk_Prod_MPalow
-    'Kx_MP_NP_Trg': 0.69,                                 # Line 2651, 2596
+    'Kx_MP_NP_Trg': 0.69,  # Line 2651, 2596
     # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
     'fMiTP_MiCP': 0.824,
 
@@ -77,7 +77,7 @@ coeff_dict = {
     # From Lapierre, H., et al., 2016. Pp 205-219. in Proc. Cornell Nutrition Conference for feed manufacturers.
     # Key roles of amino acids in cow performance and metabolism ? considerations for defining amino acid requirement.
     # Inverted relative to that reported by Lapierre so they are true recovery factors, MDH
-    'RecArg': 1 / 1.061,              # Line 1462-1471
+    'RecArg': 1 / 1.061,  # Line 1462-1471
     'RecHis': 1 / 1.073,
     'RecIle': 1 / 1.12,
     'RecLeu': 1 / 1.065,
@@ -102,7 +102,7 @@ coeff_dict = {
     'MiTPValProf': 6.88,
 
     # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631
-    # Two other sets of values are included in the R  
+    # Two other sets of values are included in the R
     # NOTE added to their own dictionary
     # 'mPrt_k_Arg_src': 0,
     # 'mPrt_k_His_src': 1.675,
@@ -117,10 +117,10 @@ coeff_dict = {
     # 'mPrt_k_EAA2_src': -0.00215,
 
     # From calculate_An_NE
-    'Body_NP_CP': 0.86,                                             # Line 1964
+    'Body_NP_CP': 0.86,  # Line 1964
     # Line 2400 and 2411
     'An_GutFill_BW': 0.18,
-    'CPGain_RsrvGain': 0.068,                                       # Line 2466
+    'CPGain_RsrvGain': 0.068,  # Line 2466
     # Line 2341-2345
     'GrUter_BWgain': 0,
     # Line 2298, kg CP/kg fresh Gr Uterus weight
@@ -147,44 +147,44 @@ coeff_dict = {
     'En_FA': 9.4,
 
     # From calculate GrUter_BWgain
-    'GrUter_Ksyn': 2.43e-2,                                         # Line 2302
-    'GrUter_KsynDecay': 2.45e-5,                                    # Line 2303
-    'UterWt_FetBWbrth': 0.2311,                                     # Line 2296
-    'Uter_Ksyn': 2.42e-2,                                           # Line 2306
-    'Uter_KsynDecay': 3.53e-5,                                      # Line 2307
-    'Uter_Kdeg': 0.20,                                              # Line 2308
+    'GrUter_Ksyn': 2.43e-2,  # Line 2302
+    'GrUter_KsynDecay': 2.45e-5,  # Line 2303
+    'UterWt_FetBWbrth': 0.2311,  # Line 2296
+    'Uter_Ksyn': 2.42e-2,  # Line 2306
+    'Uter_KsynDecay': 3.53e-5,  # Line 2307
+    'Uter_Kdeg': 0.20,  # Line 2308
     # Line 2312-2318
     'Uter_Wt': 0.204,
-    'GrUterWt_FetBWbrth': 1.816,                                    # Line 2295
+    'GrUterWt_FetBWbrth': 1.816,  # Line 2295
     # Open and nonregressing animal
     'Uter_BWgain': 0,
 
     # From calculate_An_MEmUse
-    'An_NEmUse_Env': 0,                                               # Line 2785
+    'An_NEmUse_Env': 0,  # Line 2785
     'Km_ME_NE': 0.66,
 
     # From calculate_An_MEgain
-    'FatGain_RsrvGain': 0.622,                       # Line 2451
-    'Kf_ME_RE': 0.4,                                 # Line 2831
+    'FatGain_RsrvGain': 0.622,  # Line 2451
+    'Kf_ME_RE': 0.4,  # Line 2831
 
     # From calculate_Gest_MEuse
-    'NE_GrUtWt': 0.95,                                # Line 2297
+    'NE_GrUtWt': 0.95,  # Line 2297
 
     # From calculate_Trg_Mlk_MEout
-    'Kl_ME_NE': 0.66,                                   # Line 2823
+    'Kl_ME_NE': 0.66,  # Line 2823
 
     # From calculate_An_MPm_g_Trg
-    'Km_MP_NP_Trg': 0.69,                            # Line 54, 2596, 2651 and 2652
+    'Km_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651 and 2652
 
     # From calculate_Body_MPuse_g_Trg
-    'Kg_MP_NP_Trg': 0.69,                            # Line 54, 2665
+    'Kg_MP_NP_Trg': 0.69,  # Line 54, 2665
 
     # From calculate_Gest_MPuse_g_Trg
-    'Ky_MP_NP_Trg': 0.33,                               # Line 2656
-    'Ky_NP_MP_Trg': 1.0,                                # Line 2657
+    'Ky_MP_NP_Trg': 0.33,  # Line 2656
+    'Ky_NP_MP_Trg': 1.0,  # Line 2657
 
     # From calculate_Mlk_MPuse_g_Trg
-    'Kl_MP_NP_Trg': 0.69,                                # Line 54, 2596, 2651, 2654
+    'Kl_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2654
 
     # From get_nutrient_intakes
     # Line 1005, this is a true digestbility.  There is a neg intercept of -3.43% of DM
@@ -217,19 +217,18 @@ coeff_dict = {
     'En_Acet': 3.48,
     'En_Prop': 4.96,
     'En_Butr': 5.95,
-
     'Dt_dcCP_ClfLiq': 0.95,
     'TT_dcFA_ClfDryFd': 81,  # Line 1249, Used for all calf dry feed
-    'TT_dcFA_ClfLiqFd': 81,      # Line 1250, Used for missing values in calf liquid feeds
-    'UCT': 25,                # Line 230, calf
-    'An_GutFill_BWmature': 0.18, # Line 2400, mature animals
-    'LCT': 15,                # calf < 3 wks of age, Line 228, NOTE: LCT is changed to 5 whe An_AgeDay > 21, should it be part of coeff_dict?
-    'UCT': 25,                # calf, line 230
-    
-    # Doudenal endogenous CP AA profile (g hydrated AA / 100 g CP) corrected for 24 h 
-    # hydrolysis recovery. Lapierre et al.from Orskov et al. 1986.  Br. J. Nutr. 56:241-248. 
+    'TT_dcFA_ClfLiqFd': 81,  # Line 1250, Used for missing values in calf liquid feeds
+    'UCT': 25,  # Line 230, calf
+    'An_GutFill_BWmature': 0.18,  # Line 2400, mature animals
+    'LCT': 15,  # calf < 3 wks of age, Line 228, NOTE: LCT is changed to 5 whe An_AgeDay > 21, should it be part of coeff_dict?
+    'UCT': 25,  # calf, line 230
+
+    # Doudenal endogenous CP AA profile (g hydrated AA / 100 g CP) corrected for 24 h
+    # hydrolysis recovery. Lapierre et al.from Orskov et al. 1986.  Br. J. Nutr. 56:241-248.
     # corrected for 24 h recovery by Lapierre
-    'EndArgProf': 4.61, # Line 1446-1455
+    'EndArgProf': 4.61,  # Line 1446-1455
     'EndHisProf': 2.90,
     'EndIleProf': 4.09,
     'EndLeuProf': 7.67,
@@ -251,7 +250,6 @@ coeff_dict = {
     'HydrThr': 0.8490,
     'HydrTrp': 0.9118,
     'HydrVal': 0.8464,
-
     'MWArg': 174.2,
     'MWHis': 155.2,
     'MWIle': 131.2,
@@ -322,17 +320,15 @@ coeff_dict = {
     'Scrf_Thr_TP': 4.01,
     'Scrf_Trp_TP': 0.73,
     'Scrf_Val_TP': 4.66,
-
-    'fN_3MH': (3*14)/169,
-
+    'fN_3MH': (3 * 14) / 169,
     'Fet_Ksyn': 5.16e-2,
     'Fet_KsynDecay': 7.59e-5,
     'Fet_Wt': 0,
-    'Fet_BWgain': 0,     # open animal, kg/d
+    'Fet_BWgain': 0,  # open animal, kg/d
     'AshGain_RsrvGain': 0.02,
-    'CH4vol_kg': 1497, # liters/kg
-    'En_CH4': 55.5 / 4.184,  # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
-    'An_Fe_m': 0    # no Fe maintenance requirement
+    'CH4vol_kg': 1497,  # liters/kg
+    'En_CH4': 55.5 / 4.184, # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
+    'An_Fe_m': 0  # no Fe maintenance requirement
 }
 
 # Dictionary to use when infusions are not provided to model
@@ -369,7 +365,7 @@ infusion_dict = {
     'Inf_Val_g': 0,
     'Inf_VFA_g': 0,
     'Inf_Location': 0
-    }
+}
 
 MP_NP_efficiency_dict = {
     'Trg_AbsHis_NPHis': 0.75,
@@ -385,7 +381,7 @@ MP_NP_efficiency_dict = {
 }
 
 mPrt_coeff_list = [
-    {   # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
+    {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
         "mPrt_Int_src": -97.0,
         "mPrt_k_BW_src": -0.4201,
         "mPrt_k_DEInp_src": 10.79,
@@ -406,7 +402,7 @@ mPrt_coeff_list = [
         "mPrt_k_OthAA_src": 0.0773,
         "mPrt_k_EAA2_src": -0.00215
     },
-    {   # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
+    {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
         "mPrt_Int_src": -141,
         "mPrt_k_BW_src": -0.4146,
         "mPrt_k_DEInp_src": 10.65,
@@ -427,7 +423,7 @@ mPrt_coeff_list = [
         "mPrt_k_OthAA_src": 0,
         "mPrt_k_EAA2_src": -0.002451
     },
-    {   # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
+    {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
         "mPrt_Int_src": -73.7,
         "mPrt_k_BW_src": -0.3663,
         "mPrt_k_DEInp_src": 0,
@@ -451,4 +447,7 @@ mPrt_coeff_list = [
 ]
 
 f_Imb = pd.Series([1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-                  index=['Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'])
+                  index=[
+                      'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr',
+                      'Trp', 'Val'
+                  ])
