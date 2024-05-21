@@ -252,7 +252,30 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Dt_GasEOut,
     calculate_diet_info,
     calculate_diet_data_initial,
-    calculate_diet_data_complete
+    calculate_diet_data_complete,
+    calculate_Fd_XIn,
+    calculate_Fd_FAIn,
+    calculate_macroIn,
+    calculate_microIn,
+    calculate_micro_absorbtion,
+    calculate_Fd_AAt_CP,
+    calculate_Fd_AARUPIn,
+    calculate_Fd_IdAARUPIn,
+    calculate_Fd_Dig_FAIn,
+    calculate_Fd_AAIn,
+    calculate_Dt_X,
+    calculate_DtIn,
+    calculate_Dt_DMI,
+    calculate_Dt_FA,
+    calculate_Dt_microIn,
+    calculate_Dt_macro,
+    calculate_Dt_micro,
+    calculate_Dt_IdAARUPIn,
+    calculate_Dt_DigFAIn,
+    calculate_Abs_micro,
+    calculate_Dt_FA_FA,
+    calculate_DtAARUP_DtAA,
+    calculate_Dt_IdAAIn
 )
 
 from nasem_dairy.NASEM_equations.rumen_equations import (
