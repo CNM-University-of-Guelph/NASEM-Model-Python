@@ -1,10 +1,11 @@
 # This file contains all of the functions used to execute the NASEM model in python
+# import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 import pandas as pd
 
 
-def check_coeffs_in_coeff_dict(
-        input_coeff_dict: dict, 
-        required_coeffs: list):
+def check_coeffs_in_coeff_dict(input_coeff_dict: dict, 
+                               required_coeffs: list
+) -> None:
     '''
     Internal function that is used by other functions that require certain model coefficients from a coefficient dictionary. Typically this 
     will be the built-in dictionary in [](`~nasem_dairy.ration_balancer.default_values_dictionaries`). 
@@ -47,17 +48,16 @@ def check_coeffs_in_coeff_dict(
     # Check if all values are present in the dictionary
     result = not bool(missing_coeffs)
 
-    # Raise an AssertionError with a custom message containing missing values if the condition is False
+    # Raise an AssertionError with a custom message containing missing values 
+    # if the condition is False
     assert result, f"Missing values in coeff_dict: {missing_coeffs}"
 
     return
 
 
-
-
-def get_feed_rows_feedlibrary(
-        feeds_to_get: list,
-        feed_lib_df: pd.DataFrame) -> pd.DataFrame:
+def get_feed_rows_feedlibrary(feeds_to_get: list,
+                              feed_lib_df: pd.DataFrame
+) -> pd.DataFrame:
     '''
     Filter the NASEM feed library DataFrame based on a list of feed names. 
 
@@ -106,17 +106,20 @@ def get_feed_rows_feedlibrary(
 
     # # Clean names:
     # selected_feed_data.index = selected_feed_data.index.str.strip()
-    
-    selected_feed_data =  (
-        feed_lib_df.assign(Fd_Name=lambda df: df["Fd_Name"].str.strip()) # clean whitespace
-        .loc[lambda df: df["Fd_Name"].isin(feeds_to_get)] # filter Fd_Name to match feeds_to_get
-        .rename(columns={'Fd_Name': 'Feedstuff'}) # rename column
-        .pipe(lambda df: df[['Feedstuff'] + [col for col in df.columns if col != 'Feedstuff']])) #reorder columns
 
+    selected_feed_data = (
+        feed_lib_df.assign(
+            Fd_Name=lambda df: df["Fd_Name"].str.strip())  # clean whitespace
+        # filter Fd_Name to match feeds_to_get
+        .loc[lambda df: df["Fd_Name"].isin(feeds_to_get)]  
+        .rename(columns={'Fd_Name': 'Feedstuff'})
+        .pipe(lambda df: df[['Feedstuff'] +
+                            [col for col in df.columns if col != 'Feedstuff']])
+    )  #reorder columns
     return selected_feed_data
 
 
-def read_csv_input(path_to_file = "input.csv"):
+def read_csv_input(path_to_file="input.csv"):
     """
     Read input data from a CSV file and organize it into dictionaries and a DataFrame.
     This is a convenience function for preparing the required inputs for the run_NASEM() function from a csv file that follows a particular structure, described below.
@@ -170,7 +173,7 @@ def read_csv_input(path_to_file = "input.csv"):
     equation_selection = {}
     user_diet_data = {'Feedstuff': [], 'kg_user': []}
 
-    input_data = pd.read_csv(path_to_file) 
+    input_data = pd.read_csv(path_to_file)
 
     for index, row in input_data.iterrows():
         location = row['Location']
@@ -178,24 +181,24 @@ def read_csv_input(path_to_file = "input.csv"):
         value = row['Value']
 
         if location == 'equation_selection':
-            equation_selection[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
-            
+            equation_selection[variable] = float(value) if value.replace(
+                '.', '', 1).isdigit() else value
+
         elif location == 'animal_input':
-            animal_input[variable] = float(value) if value.replace('.', '', 1).isdigit() else value
+            animal_input[variable] = float(value) if value.replace(
+                '.', '', 1).isdigit() else value
 
         elif location == 'diet_info':
             user_diet_data['Feedstuff'].append(variable)
             user_diet_data['kg_user'].append(value)
 
     user_diet = pd.DataFrame(user_diet_data)
-    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'], 
-                                         #downcast="float"
-                                         )
+    user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'])
 
     return user_diet, animal_input, equation_selection
 
 
-def read_infusion_input(path_to_file = 'infusion_input.csv'):
+def read_infusion_input(path_to_file='infusion_input.csv'):
     """
     Read infusion input data from a CSV file and return it as a dictionary. 
 
@@ -235,7 +238,7 @@ def read_infusion_input(path_to_file = 'infusion_input.csv'):
     print(infusion_data)
     ```
     """
-    
+
     infusions = {}
     input_data = pd.read_csv(path_to_file)
     input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
@@ -244,7 +247,7 @@ def read_infusion_input(path_to_file = 'infusion_input.csv'):
         # Iterate over CSV, convert to a dictionary
         variable = row['Variable']
         value = row['Value']
-        # Convert values to float if possible, otherwise leave as a string 
+        # Convert values to float if possible, otherwise leave as a string
         try:
             value = float(value)
         except ValueError:
