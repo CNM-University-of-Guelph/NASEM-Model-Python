@@ -11,7 +11,7 @@ https://quarto.org/docs/websites/
 4) navigate terminal to the docs folder 
 cd docs
 
-5) run quartodocs build
+5) run quartodoc build
 This creates the markdown docs in a 'reference' folder inside docs/
 If developing, use --watch so that quarto preview updates automatically too
 quartodoc build --watch
