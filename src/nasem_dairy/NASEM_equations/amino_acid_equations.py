@@ -138,14 +138,11 @@ def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g):
 
 def calculate_Abs_EAA2b_g(mPrt_eqn, Abs_AA_g):
     if mPrt_eqn == 2:
-        # Line 2107, NRC eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g) # Line 2108, VT1 eqn.
     elif mPrt_eqn == 3:
-        # Line 2108, VT1 eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_HILKMT_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKMT_g(Abs_AA_g) # Line 2106, VT2 eqn.
     else:
-        # Line 2106, VT2 eqn.
-        Abs_EAA2b_g = calculate_Abs_EAA2_HILKM_g(Abs_AA_g)
+        Abs_EAA2b_g = calculate_Abs_EAA2_HILKM_g(Abs_AA_g) # Line 2107, NRC eqn.
     return Abs_EAA2b_g
 
 

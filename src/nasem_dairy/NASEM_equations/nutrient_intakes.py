@@ -842,7 +842,6 @@ def calculate_Fd_AAIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
                     0) for AA in AA_list
         })
 
-
 ####################
 # Functions for Diet Intakes
 ####################
@@ -918,6 +917,7 @@ def calculate_Dt_RUPIn(Dt_CPAIn,
     Dt_RUPIn = np.where(Dt_RUPIn < 0, 0, Dt_RUPIn)  # Line 617
     # The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
     # if concerned about intercept, switch to using this eqn for RUP
+    # this is called Dt_RUPIn.dt in the R code line 618
     # Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
     return Dt_RUPIn
 
