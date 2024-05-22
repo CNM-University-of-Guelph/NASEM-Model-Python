@@ -32,7 +32,7 @@
     {
       "Name": "calculate_Du_MiN_VTln_g",
       "Input": {"Dt_rOMIn": 4, "Dt_ForNDFIn": 3.2, "An_RDPIn": 1.9, "Rum_DigStIn": 4.6, "Rum_DigNDFIn": 3.5, "coeff_dict": null},
-      "Output": 167.0864
+      "Output": 355.7287
     },
     {
       "Name": "calculate_Du_MiN_VTnln_g",

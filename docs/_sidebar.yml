@@ -62,6 +62,9 @@ website:
         section: DMI equations
       section: NASEM_equations
     - contents:
+      - reference/DMI_equations.qmd
+      section: DMI eq - with module doc
+    - contents:
       - contents:
         - reference/check_coeffs_in_coeff_dict.qmd
         - reference/get_feed_rows_feedlibrary.qmd
