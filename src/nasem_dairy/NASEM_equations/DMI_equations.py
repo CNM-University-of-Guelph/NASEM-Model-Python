@@ -3,6 +3,23 @@
 # Calculations are in the order coresponding to their DMIn_eqn value
 # import nasem_dairy.NASEM_equations.DMI_equations as DMI
 
+"""
+This sub-module includes all equations required to calculate dry matter intake (DMI) 
+for animals of different physiological states.
+
+
+Example
+-------
+Example of how to use this module:
+    
+    # Suggested import
+    import nasem_dairy.NASEM_equations.DMI_equations as DMI
+    
+    # Example usage
+    DMI.calculate_Kb_LateGest_DMIn()
+"""
+
+
 import math
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs

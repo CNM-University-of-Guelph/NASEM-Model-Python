@@ -119,6 +119,11 @@ quartodoc:
         - calculate_Dt_DMIn_DryCow1_Close
         - calculate_Dt_DMIn_DryCow2
 
+    - title: DMI eq - with module doc
+      package: nasem_dairy.NASEM_equations
+      contents: 
+       - DMI_equations
+
 
     - title: Utilility functions
       desc: Functions to execute equations from NASEM_equations 
