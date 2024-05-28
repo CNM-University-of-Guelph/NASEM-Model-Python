@@ -655,3 +655,57 @@ class ModelOutput:
 
         output_table = pd.DataFrame(table_rows)
         return output_table
+
+    def export_to_dict(self):
+        data_dict = {}
+        special_keys = {
+            'dataframe': [],
+            'series': [],
+            'ndarray': [],
+            'dict': [],
+            'list': []
+        }
+
+        def recursive_extract(value, parent_key=''):
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    full_key = f"{parent_key}.{k}" if parent_key else k
+                    if isinstance(v, dict):
+                        recursive_extract(v, full_key)
+                    else:
+                        final_key = full_key.split('.')[-1]
+                        data_dict[final_key] = v
+                        categorize_key(final_key, v)
+            elif isinstance(value, list):
+                for i, item in enumerate(value):
+                    full_key = f"{parent_key}[{i}]"
+                    recursive_extract(item, full_key)
+            else:
+                final_key = parent_key.split('.')[-1]
+                data_dict[final_key] = value
+                categorize_key(parent_key, value)
+
+        def categorize_key(key, value):
+            if isinstance(value, pd.DataFrame):
+                special_keys['dataframe'].append(key)
+            elif isinstance(value, pd.Series):
+                special_keys['series'].append(key)
+            elif isinstance(value, np.ndarray):
+                special_keys['ndarray'].append(key)
+            elif isinstance(value, dict):
+                special_keys['dict'].append(key)
+            elif isinstance(value, list):
+                special_keys['list'].append(key)
+
+        for attr_name in dir(self):
+            attr = getattr(self, attr_name, None)
+            if attr is not None and not attr_name.startswith('__'):
+                recursive_extract(attr, attr_name)
+
+        print("DataFrame keys:", special_keys['dataframe'])
+        print("Series keys:", special_keys['series'])
+        print("Numpy array keys:", special_keys['ndarray'])
+        print("Dict keys:", special_keys['dict'])
+        print("List keys:", special_keys['list'])
+
+        return data_dict
