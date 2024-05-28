@@ -213,13 +213,17 @@ class ModelOutput:
     def __filter_locals_input(self):
         """
         Remove specified variables from locals_input.
+        Add to dev output for easier development. Not included in search or get_value methods.
         """
+        setattr(self, 'dev_out', {})
         variables_to_remove = [
             'key', 'value', 'num_value', 'feed_library_df', 'feed_data',
             'diet_info_initial', 'diet_data_initial', 'AA_list',
             'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA'
         ]
         for key in variables_to_remove:
+            # Add to the dev Category
+            self.dev_out[key] = self.locals_input[key]
             # Remove values that should be excluded from output
             self.locals_input.pop(key, None)
 
