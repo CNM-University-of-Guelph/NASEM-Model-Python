@@ -292,6 +292,20 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay,
                        math.exp(-0.053 * An_LactDay))) # Line 390
     return Dt_DMIn_Lact1
 
+# DMIn_eqn == 9 
+def calculate_Dt_DMIn_Lact2(Dt_ForNDF, 
+                            Dt_ADF, 
+                            Dt_NDF, 
+                            Dt_ForDNDF48_ForNDF,
+                            Trg_MilkProd
+) -> float:
+    Dt_DMIn_Lact2 = (12.0 - 0.107 * Dt_ForNDF + 8.17 * Dt_ADF / Dt_NDF + 
+                     0.0253 * Dt_ForDNDF48_ForNDF - 
+                     0.328 * (Dt_ADF / Dt_NDF - 0.602) * 
+                     (Dt_ForDNDF48_ForNDF - 48.3) + 
+                     0.225 * Trg_MilkProd + 0.00390 * 
+                     (Dt_ForDNDF48_ForNDF - 48.3) * (Trg_MilkProd - 33.1))
+    return Dt_DMIn_Lact2
 
 # DMIn_eqn == 10
 def calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i):
@@ -333,17 +347,4 @@ def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float,
     return Dt_DMIn_Calf1
 
 
-# Need to implement into execute_model
-def calculate_Dt_DMIn_Lact2(Dt_ForNDF, 
-                            Dt_ADF, 
-                            Dt_NDF, 
-                            Dt_ForDNDF48_ForNDF,
-                            Trg_MilkProd
-) -> float:
-    Dt_DMIn_Lact2 = (12.0 - 0.107 * Dt_ForNDF + 8.17 * Dt_ADF / Dt_NDF + 
-                     0.0253 * Dt_ForDNDF48_ForNDF - 
-                     0.328 * (Dt_ADF / Dt_NDF - 0.602) * 
-                     (Dt_ForDNDF48_ForNDF - 48.3) + 
-                     0.225 * Trg_MilkProd + 0.00390 * 
-                     (Dt_ForDNDF48_ForNDF - 48.3) * (Trg_MilkProd - 33.1))
-    return Dt_DMIn_Lact2
+
