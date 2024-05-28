@@ -1417,7 +1417,8 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
 
 def calculate_Dt_X(df: pd.DataFrame, variables: list, diet_data: dict) -> dict:
     for var in variables:  # Line 255-256
-        diet_data[f'Dt_{var}'] = (df['Fd_DMInp'] * df[f'Fd_{var}']).sum()
+        diet_var_name = f'Dt_{var.split('_')[-1]}'
+        diet_data[diet_var_name] = (df['Fd_DMInp'] * df[var]).sum()
     return diet_data
 
 
@@ -2215,7 +2216,7 @@ def calculate_diet_info(DMI,
     return complete_diet_info
 
 
-def calculate_diet_data_initial(df, 
+def calculate_diet_data_initial(diet_info: pd.DataFrame, 
                                 DMI, 
                                 An_BW, 
                                 An_StatePhys, 
@@ -2227,11 +2228,19 @@ def calculate_diet_data_initial(df,
                                 Fe_rOMend, 
                                 coeff_dict
 ):
+    '''
+    diet_info is a pd.DataFrame of the user selected diet with columns from feed
+    library.
+
+    returns diet_data which is a dict of values that represent the diet as a whole,
+    rather than individual ingredients.
+
+    '''
     diet_data = {}
 
     # Diet Intakes
-    column_names_DMInp = ['ADF', 'NDF', 'For', 'ForNDF']
-    diet_data = calculate_Dt_X(df, column_names_DMInp, diet_data)
+    column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
+    diet_data = calculate_Dt_X(diet_info, column_names_DMInp, diet_data)
 
     column_names_sum = [
         'DMIn_ClfLiq', 'DMIn_ClfFor', 'AFIn', 'NDFIn', 'ADFIn', 'LgIn',
@@ -2246,17 +2255,17 @@ def calculate_diet_data_initial(df,
         'ArgRUPIn', 'HisRUPIn', 'IleRUPIn', 'LeuRUPIn', 'LysRUPIn', 'MetRUPIn',
         'PheRUPIn', 'ThrRUPIn', 'TrpRUPIn', 'ValRUPIn'
     ]
-    diet_data = calculate_DtIn(df, column_names_sum, diet_data)
+    diet_data = calculate_DtIn(diet_info, column_names_sum, diet_data)
 
-    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(df['Fd_DMIn'])
+    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(diet_info['Fd_DMIn'])
     diet_data['Dt_DEIn_ClfLiq'] = calculate_Dt_DEIn_ClfLiq(
-        df['Fd_DE_ClfLiq'], df['Fd_DMIn_ClfLiq']
+        diet_info['Fd_DE_ClfLiq'], diet_info['Fd_DMIn_ClfLiq']
         )
     diet_data['Dt_MEIn_ClfLiq'] = calculate_Dt_MEIn_ClfLiq(
-        df['Fd_ME_ClfLiq'], df['Fd_DMIn_ClfLiq']
+        diet_info['Fd_ME_ClfLiq'], diet_info['Fd_DMIn_ClfLiq']
         )
     diet_data['Dt_ForDNDF48'] = calculate_Dt_ForDNDF48(
-        df['Fd_DMInp'], df['Fd_Conc'], df['Fd_NDF'], df['Fd_DNDF48']
+        diet_info['Fd_DMInp'], diet_info['Fd_Conc'], diet_info['Fd_NDF'], diet_info['Fd_DNDF48']
         )
     diet_data['Dt_ForDNDF48_ForNDF'] = calculate_Dt_ForDNDF48_ForNDF(
         diet_data['Dt_ForDNDF48'], diet_data['Dt_ForNDF']
@@ -2265,13 +2274,13 @@ def calculate_diet_data_initial(df,
         diet_data['Dt_ADF'], diet_data['Dt_NDF']
         )
     diet_data['Dt_NDFnfIn'] = calculate_Dt_NDFnfIn(
-        df['Fd_DMIn'], df['Fd_NDFnf']
+        diet_info['Fd_DMIn'], diet_info['Fd_NDFnf']
         )
     diet_data['Dt_Lg_NDF'] = calculate_Dt_Lg_NDF(
         diet_data['Dt_LgIn'], diet_data['Dt_NDFIn']
         )
     diet_data['Dt_ForNDFIn'] = calculate_Dt_ForNDFIn(
-        df['Fd_DMIn'], df['Fd_ForNDF']
+        diet_info['Fd_DMIn'], diet_info['Fd_ForNDF']
         )
     diet_data['Dt_PastSupplIn'] = calculate_Dt_PastSupplIn(
         diet_data['Dt_DMInSum'], diet_data['Dt_PastIn']
@@ -2279,7 +2288,7 @@ def calculate_diet_data_initial(df,
     diet_data['Dt_NIn'] = calculate_Dt_NIn(diet_data['Dt_CPIn'])
     diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(
         diet_data['Dt_CPAIn'], diet_data['Dt_NPNIn'], diet_data['Dt_RUPBIn'], 
-        diet_data['Dt_CPCIn'], coeff_dict, Fd_RUPIn=df['Fd_RUPIn']
+        diet_data['Dt_CPCIn'], coeff_dict, Fd_RUPIn=diet_info['Fd_RUPIn']
         )
     diet_data['Dt_RUP_CP'] = calculate_Dt_RUP_CP(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
@@ -2349,7 +2358,7 @@ def calculate_diet_data_initial(df,
         'SeIn', 'ZnIn', 'VitAIn', 'VitDIn', 'VitEIn', 'CholineIn', 'BiotinIn',
         'NiacinIn', 'B_CaroteneIn'
     ]
-    diet_data = calculate_Dt_microIn(df, column_names_micronutrients, diet_data)
+    diet_data = calculate_Dt_microIn(diet_info, column_names_micronutrients, diet_data)
 
     column_names_macro = [
         'Dt_Ca', 'Dt_P', 'Dt_Pinorg', 'Dt_Porg', 'Dt_Na', 'Dt_Mg', 'Dt_K',
@@ -2367,7 +2376,7 @@ def calculate_diet_data_initial(df,
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    diet_data = calculate_Dt_IdAARUPIn(df, AA_list, diet_data)
+    diet_data = calculate_Dt_IdAARUPIn(diet_info, AA_list, diet_data)
 
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
@@ -2426,13 +2435,13 @@ def calculate_diet_data_initial(df,
         'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
         'C183', 'OtherFA'
     ]
-    diet_data = calculate_Dt_DigFAIn(df, Dig_FA_list, diet_data)
+    diet_data = calculate_Dt_DigFAIn(diet_info, Dig_FA_list, diet_data)
 
     Abs_micro_list = [
         'CaIn', 'PIn', 'NaIn', 'KIn', 'ClIn', 'CoIn', 'CuIn', 'FeIn', 'MnIn',
         'ZnIn'
     ]
-    diet_data = calculate_Abs_micro(df, Abs_micro_list, diet_data)
+    diet_data = calculate_Abs_micro(diet_info, Abs_micro_list, diet_data)
 
     diet_data['Dt_acMg'] = calculate_Dt_acMg(
         An_StatePhys, diet_data['Dt_K'], diet_data['Dt_MgIn_min'], 
@@ -2441,7 +2450,7 @@ def calculate_diet_data_initial(df,
     diet_data['Abs_MgIn'] = calculate_Abs_MgIn(
         diet_data['Dt_acMg'], diet_data['Dt_MgIn']
         )
-    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(df['Fd_DigWSCIn'])
+    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(diet_info['Fd_DigWSCIn'])
     diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'], DMI)
     diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(diet_data['Dt_DigWSCIn'], DMI)
     diet_data['Dt_DigrOMa'] = calculate_Dt_DigrOMa(
@@ -2463,7 +2472,7 @@ def calculate_diet_data_initial(df,
     diet_data['Dt_idcRUP'] = calculate_Dt_idcRUP(
         diet_data['Dt_idRUPIn'], diet_data['Dt_RUPIn']
         )
-    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(df['Fd_Fe_RUPout'])
+    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(diet_info['Fd_Fe_RUPout'])
     diet_data['Dt_RDTPIn'] = calculate_Dt_RDTPIn(
         diet_data['Dt_RDPIn'], diet_data['Dt_NPNCPIn'], coeff_dict
         )
