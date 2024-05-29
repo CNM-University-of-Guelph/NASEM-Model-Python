@@ -331,7 +331,8 @@ coeff_dict = {
     'AshGain_RsrvGain': 0.02,
     'CH4vol_kg': 1497,  # liters/kg
     'En_CH4': 55.5 / 4.184, # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
-    'An_Fe_m': 0  # no Fe maintenance requirement
+    'An_Fe_m': 0,  # no Fe maintenance requirement
+    'fIlEndTP_CP': 0.73 # Fraction of EndCP that is True Protein, from Lapierre, not used in model
 }
 
 # Dictionary to use when infusions are not provided to model
