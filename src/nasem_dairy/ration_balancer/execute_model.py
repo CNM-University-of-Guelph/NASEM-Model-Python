@@ -419,13 +419,7 @@ def execute_model(user_diet: pd.DataFrame,
 
     # Calculated again as part of diet_data, value may change depending on 
     # DMIn_eqn selections
-    del(Dt_NDF)
-    del(Dt_ADF)
-    del(Dt_ForNDF)
-    del(Fd_DNDF48)
-    del(Dt_ForDNDF48)
-    del(Dt_ForDNDF48_ForNDF)
-
+    del(Dt_NDF, Dt_ADF, Dt_ForNDF, Fd_DNDF48, Dt_ForDNDF48, Dt_ForDNDF48_ForNDF)
 
     ########################################
     # Step 3: Feed Based Calculations
