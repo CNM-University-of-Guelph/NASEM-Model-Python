@@ -98,21 +98,6 @@ def execute_model(user_diet: pd.DataFrame,
         for AA in AA_list
         if AA != "Arg"
     ])
-    # retrieve user's feeds from feed library
-    feed_data = ration_funcs.get_feed_rows_feedlibrary(
-        feeds_to_get=user_diet['Feedstuff'].tolist(),
-        feed_lib_df=feed_library_df)
-
-    # Calculate Fd_DMInp (percentage inclusion as sum of kg_user column)
-    # Then, use the percentages to calculate the DMIn for each ingredient, and 
-    # merge feed data on
-    diet_info_initial = (user_diet.assign(
-        Fd_DMInp=lambda df: df['kg_user'] / df['kg_user'].sum(),
-        Fd_DMIn=lambda df: df['Fd_DMInp'] * animal_input['DMI']).merge(
-            feed_data, how='left', on='Feedstuff'))
-
-    # Add Fd_DNDF48 column, need to add to the database
-    # diet_info_initial['Fd_DNDF48'] = 0
 
     # Calculate additional physiology values
     animal_input['An_PrePartDay'] = (animal_input['An_GestDay'] - 
@@ -166,22 +151,71 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 2: DMI Equations
     ########################################
+    # Prepare diet information
+    ########
+    # retrieve user's feeds from feed library
+    feed_data = ration_funcs.get_feed_rows_feedlibrary(
+        feeds_to_get=user_diet['Feedstuff'].tolist(),
+        feed_lib_df=feed_library_df)
+
+    # Calculate Fd_DMInp (percentage inclusion as sum of kg_user column)
+    # Then, use the percentages to calculate the DMIn for each ingredient, and 
+    # merge feed data on
+    diet_info_initial = (user_diet.assign(
+        Fd_DMInp=lambda df: df['kg_user'] / df['kg_user'].sum(),
+        Fd_DMIn=lambda df: df['Fd_DMInp'] * animal_input['DMI'],
+        )
+        .merge(feed_data, how='left', on='Feedstuff')
+       )
+
+
+    # Add Fd_DNDF48 column, need to add to the database
+    # diet_info_initial['Fd_DNDF48'] = 0
+    
+    
+    ########
     # pre calculations for DMI:
-    ###########################
+    ########
+    diet_info_for_DMI = (diet_info_initial.assign(
+            Fd_For=lambda df: diet.calculate_Fd_For(df['Fd_Conc']),
+            Fd_ForNDF=lambda df: diet.calculate_Fd_ForNDF(
+                df['Fd_NDF'], df['Fd_Conc'])
+        )
+    )
+    # # Need to precalculate Dt_NDF for DMI predicitons, this will be based on 
+    # the user entered DMI (animal_input['DMI])
+    Dt_ADF = (diet_info_for_DMI['Fd_ADF'] * diet_info_for_DMI['Fd_DMInp']).sum()
+    Dt_NDF = (diet_info_for_DMI['Fd_NDF'] * diet_info_for_DMI['Fd_DMInp']).sum()
+    #Dt_For = (diet_info_initial['Fd_For'] * diet_info_initial['Fd_DMInp']).sum()
+
+    # for eqn 9:
+    Dt_ForNDF = (diet_info_for_DMI['Fd_ForNDF'] * diet_info_for_DMI['Fd_DMInp']).sum()
+    Fd_DNDF48 = diet.calculate_Fd_DNDF48(
+        diet_info_for_DMI['Fd_Conc'],
+        diet_info_for_DMI['Fd_DNDF48'])
+    Dt_ForDNDF48 = diet.calculate_Dt_ForDNDF48(
+        diet_info_for_DMI['Fd_DMInp'], 
+        diet_info_for_DMI['Fd_Conc'], 
+        diet_info_for_DMI['Fd_NDF'], 
+        Fd_DNDF48)
+    Dt_ForDNDF48_ForNDF = diet.calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48, Dt_ForNDF)
+
     # Calculate Target milk net energy
     Trg_NEmilk_Milk = milk.calculate_Trg_NEmilk_Milk(
         animal_input['Trg_MilkTPp'], animal_input['Trg_MilkFatp'], 
         animal_input['Trg_MilkLacp']
         )
-    # # Need to precalculate Dt_NDF for DMI predicitons, this will be based on 
-    # the user entered DMI (animal_input['DMI])
-    Dt_NDF = (diet_info_initial['Fd_NDF'] * diet_info_initial['Fd_DMInp']).sum()
+
     # Predict DMI for heifers
     Kb_LateGest_DMIn = DMI.calculate_Kb_LateGest_DMIn(Dt_NDF)
     An_PrePartWklim = DMI.calculate_An_PrePartWklim(
         animal_input['An_PrePartWk']
         )
     An_PrePartWkDurat = An_PrePartWklim * 2
+
+    ####################
+    # Equation selection
+    ####################
 
     if equation_selection['DMIn_eqn'] == 0:
         # print('Using user input DMI')
@@ -195,6 +229,15 @@ def execute_model(user_diet: pd.DataFrame,
             animal_input['An_BCS'], animal_input['An_LactDay'],
             animal_input['An_Parity_rl'], Trg_NEmilk_Milk
             )
+    elif equation_selection['DMIn_eqn'] == 9:
+        animal_input['DMI'] = DMI.calculate_Dt_DMIn_Lact2(
+            Dt_ForNDF, Dt_ADF, Dt_NDF, Dt_ForDNDF48_ForNDF,
+            animal_input['Trg_MilkProd']
+        )
+
+    # elif equation_selection['DMIn_eqn'] == 1:
+
+
     # Individual Heifer DMI Predictions
     elif equation_selection['DMIn_eqn'] in [2, 3, 4, 5, 6, 7]:
         Dt_DMIn_BW_LateGest_i = DMI.calculate_Dt_DMIn_BW_LateGest_i(
@@ -376,7 +419,7 @@ def execute_model(user_diet: pd.DataFrame,
 
     # Calculated again as part of diet_data, value may change depending on 
     # DMIn_eqn selections
-    del (Dt_NDF)
+    del(Dt_NDF, Dt_ADF, Dt_ForNDF, Fd_DNDF48, Dt_ForDNDF48, Dt_ForDNDF48_ForNDF)
 
     ########################################
     # Step 3: Feed Based Calculations
