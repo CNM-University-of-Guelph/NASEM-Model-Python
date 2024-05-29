@@ -1888,8 +1888,8 @@ def calculate_diet_info(DMI,
     # Loop through identical calculations
     column_names_XIn = [
         'Fd_ADF', 'Fd_NDF', 'Fd_St', 'Fd_NFC', 'Fd_WSC', 'Fd_rOM', 'Fd_Lg',
-        'Fd_Conc', 'Fd_For', 'Fd_ForWet', 'Fd_ForDry', 'Fd_Past', 'Fd_CP',
-        'Fd_TP', 'Fd_CFat', 'Fd_FA', 'Fd_FAhydr', 'Fd_Ash'
+        'Fd_Conc', 'Fd_For', 'Fd_ForNDF', 'Fd_ForWet', 'Fd_ForDry', 'Fd_Past', 
+        'Fd_CP', 'Fd_TP', 'Fd_CFat', 'Fd_FA', 'Fd_FAhydr', 'Fd_Ash'
     ]
     complete_diet_info = calculate_Fd_XIn(complete_diet_info, column_names_XIn)
 
