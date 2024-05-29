@@ -85,8 +85,6 @@ class ModelOutput:
         """
 
         # Combining everything into the final HTML
-        # {summary_sentence}
-        # {df_diet_html}
         final_html = f"""
         <div>
             <h2>Model Output Snapshot</h2>
@@ -347,7 +345,7 @@ class ModelOutput:
         mineral_variable_lists = [
             [
                 'Ca_Mlk', 'Fe_Ca_m', 'An_Ca_g', 'An_Ca_y', 'An_Ca_l',
-                'An_Ca_Clf', 'An_Ca_req', 'An_Ca_bal', 'An_Ca_prod'
+                'An_Ca_Clf', 'An_Ca_req', 'An_Ca_bal', 'An_Ca_prod' 
             ],
             [
                 'Ur_P_m', 'Fe_P_m', 'An_P_m', 'An_P_g', 'An_P_y', 'An_P_l',
@@ -389,13 +387,13 @@ class ModelOutput:
         mineral_requirements = {}
         # NOTE Since all the mineral requirements are nested within 
         # mineral_requirements can't use populate_category()
-        for abbreviation, variable_list in zip(mineral_abbreviations,
+        for mineral, variable_list in zip(mineral_abbreviations,
                                                mineral_variable_lists):
-            mineral_requirements[abbreviation] = {}  
+            mineral_requirements[mineral] = {}  
             # Initialize the dictionary for the current mineral
             for variable in variable_list:
                 if variable in self.locals_input:
-                    mineral_requirements[abbreviation][
+                    mineral_requirements[mineral][
                         variable] = self.locals_input.pop(variable)
         self.Requirements['mineral_requirements'] = mineral_requirements
 
@@ -659,7 +657,88 @@ class ModelOutput:
 
         output_table = pd.DataFrame(table_rows)
         return output_table
+    
+    def report_minerals(self):
+        '''
+        Format mineral data with inputs, requirements and balance. 
+        Similar to tables 7_1 and 7_2 in R.
+        '''       
+        # Table 7_1 in R
+        keys_list_macro = {
+            'Ca': ['Dt_Ca', 'Dt_CaReq_DMI', 'Dt_acCa', 'An_Ca_req', 'Dt_CaIn', 
+                   'Abs_CaIn', 'An_Ca_bal', 'Fe_Ca_m', None, 'An_Ca_y', 
+                   'An_Ca_l', 'An_Ca_g'],
+            'P': ['Dt_P', 'Dt_PReq_DMI', 'Dt_acP', 'An_P_req', 'Dt_PIn', 
+                  'Abs_PIn', 'An_P_bal', 'Fe_P_m', 'Ur_P_m', 'An_P_y', 
+                  'An_P_l', 'An_P_g'],
+            'Mg': ['Dt_Mg', 'Dt_MgReq_DMI', 'Dt_acMg', 'An_Mg_req', 'Dt_MgIn', 
+                   'Abs_MgIn', 'An_Mg_bal', 'Fe_Mg_m', 'Ur_Mg_m', 'An_Mg_y', 
+                   'An_Mg_l', 'An_Mg_g'],
+            'Cl': ['Dt_Cl', 'Dt_ClReq_DMI', 'Dt_acCl', 'An_Cl_req', 'Dt_ClIn', 
+                   'Abs_ClIn', 'An_Cl_bal', 'Fe_Cl_m', None, 'An_Cl_y', 
+                   'An_Cl_l', 'An_Cl_g'],
+            'K': ['Dt_K', 'Dt_KReq_DMI', 'Dt_acK', 'An_K_req', 'Dt_KIn', 
+                  'Abs_KIn', 'An_K_bal', 'Fe_K_m', 'Ur_K_m', 'An_K_y', 
+                  'An_K_l', 'An_K_g'],
+            'Na': ['Dt_Na', 'Dt_NaReq_DMI', 'Dt_acNa', 'An_Na_req', 'Dt_NaIn', 
+                   'Abs_NaIn', 'An_Na_bal', 'Fe_Na_m', None, 'An_Na_y', 
+                   'An_Na_l', 'An_Na_g'],
+            'S': ['Dt_S', 'Dt_SReq_DMI', None, 'An_S_req', 'Dt_SIn', None, 
+                  'An_S_bal', None, None, None, None, None]
+        }
 
+        # Table 7_2 in R
+        keys_list_micro = {
+            'Co': ['Dt_Co', 'Dt_CoReq_DMI', 'Dt_acCo', 'An_Co_req', 'Dt_CoIn', 
+                   'Abs_CoIn', 'An_Co_bal', None, None, None, None],
+            'Cr': ['Dt_Cr', None, None, None, 'Dt_CrIn', None, None, None, 
+                   None, None, None],
+            'Cu': ['Dt_Cu', 'Dt_CuReq_DMI', 'Dt_acCu', 'An_Cu_req', 'Dt_CuIn', 
+                   'Abs_CuIn', 'An_Cu_bal', 'An_Cu_m', 'An_Cu_y', 'An_Cu_l', 
+                   'An_Cu_g'],
+            'Fe': ['Dt_Fe', 'Dt_FeReq_DMI', 'Dt_acFe', 'An_Fe_req', 'Dt_FeIn', 
+                   'Abs_FeIn', 'An_Fe_bal', 'An_Fe_m', 'An_Fe_y', 'An_Fe_l', 
+                   'An_Fe_g'],
+            'I': ['Dt_I', 'Dt_IReq_DMI', None, 'An_I_req', 'Dt_IIn', None, 
+                  'An_I_bal', None, None, None, None],
+            'Mn': ['Dt_Mn', 'Dt_MnReq_DMI', 'Dt_acMn', 'An_Mn_req', 'Dt_MnIn', 
+                   'Abs_MnIn', 'An_Mn_bal', 'An_Mn_m', 'An_Mn_y', 'An_Mn_l', 
+                   'An_Mn_g'],
+            'Se': ['Dt_Se', 'Dt_SeReq_DMI', None, 'An_Se_req', 'Dt_SeIn', None, 
+                   'An_Se_bal', None, None, None, None],
+            'Zn': ['Dt_Zn', 'Dt_ZnReq_DMI', 'Dt_acZn', 'An_Zn_req', 'Dt_ZnIn', 
+                   'Abs_ZnIn', 'An_Zn_bal', 'An_Zn_m', 'An_Zn_y', 'An_Zn_l', 
+                   'An_Zn_g']
+        }
+        
+        def get_mineral_values(keys):
+            return [self.get_value(key) for key in keys]
+        
+        macro_data = {mineral: get_mineral_values(keys) 
+                       for mineral, keys in keys_list_macro.items()}
+
+        micro_data = {mineral: get_mineral_values(keys) 
+                       for mineral, keys in keys_list_micro.items()}
+
+        index_macro = ["Diet Density, % DM", "Required Diet Density, % of DM", "AC, g/100 g", 
+                     "Absorb Required (TAR), g/d", "Diet Supply (TDS), g/d", "Absorbed Supply (TAS), g/d", 
+                     "Balance (TAS - TAR), g/d", "Met. Fecal, g/d", "End. Urine g/d", 
+                     "Pregn. Req., g/d", "Lact. Req., g/d", "Growth Req., g/d"]
+
+        index_micro = ["Diet, mg/kg", "Diet Required, mg/kg", "AC", 
+                     "Absorb Requir., mg/d", "Intake, mg/d", "Absorbed, mg/d", 
+                     "Balance, mg/d", "Maintenance, mg/d", "Pregn. Req., mg/d", 
+                     "Lact. Req., mg/d", "Growth Req., mg/d"]
+
+        macro_minerals = pd.DataFrame(macro_data, index=index_macro).T
+        micro_minerals = pd.DataFrame(micro_data, index=index_micro).T
+
+        return {'macro_minerals': macro_minerals.reset_index(names = 'Mineral'), 
+                'micro_minerals': micro_minerals.reset_index(names = 'Mineral')}
+
+
+
+    
     def export_to_dict(self):
         data_dict = {}
         special_keys = {
