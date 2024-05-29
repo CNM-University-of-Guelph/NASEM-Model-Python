@@ -46,6 +46,7 @@ class ModelOutput:
         self.__sort_Efficiencies()
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
+        self.dev_out = {}
 
     def _repr_html_(self):
         #This is the HTML display when the ModelOutput object is called directly
@@ -215,7 +216,6 @@ class ModelOutput:
         Remove specified variables from locals_input.
         Add to dev output for easier development. Not included in search or get_value methods.
         """
-        setattr(self, 'dev_out', {})
         variables_to_remove = [
             'key', 'value', 'num_value', 'feed_library_df', 'feed_data',
             'diet_info_initial', 'diet_data_initial', 'AA_list',
