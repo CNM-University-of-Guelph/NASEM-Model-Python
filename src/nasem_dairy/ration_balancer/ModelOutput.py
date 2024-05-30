@@ -35,6 +35,7 @@ class ModelOutput:
     def __init__(self, locals_input):
         # Dictionary with all variables from execute_model
         self.locals_input = locals_input
+        self.dev_out = {}
         # Take locals_input and store variables in different Categories
         self.__filter_locals_input()
         self.__sort_Input()
@@ -215,7 +216,6 @@ class ModelOutput:
         Remove specified variables from locals_input.
         Add to dev output for easier development. Not included in search or get_value methods.
         """
-        setattr(self, 'dev_out', {})
         variables_to_remove = [
             'key', 'value', 'num_value', 'feed_library_df', 'feed_data',
             'diet_info_initial', 'diet_data_initial', 'AA_list',
