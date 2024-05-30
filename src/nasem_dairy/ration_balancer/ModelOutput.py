@@ -35,6 +35,7 @@ class ModelOutput:
     def __init__(self, locals_input):
         # Dictionary with all variables from execute_model
         self.locals_input = locals_input
+        self.dev_out = {}
         # Take locals_input and store variables in different Categories
         self.__filter_locals_input()
         self.__sort_Input()
@@ -46,7 +47,6 @@ class ModelOutput:
         self.__sort_Efficiencies()
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
-        self.dev_out = {}
 
     def _repr_html_(self):
         #This is the HTML display when the ModelOutput object is called directly

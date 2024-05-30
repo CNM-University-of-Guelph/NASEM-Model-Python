@@ -1417,7 +1417,7 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
 
 def calculate_Dt_X(df: pd.DataFrame, variables: list, diet_data: dict) -> dict:
     for var in variables:  # Line 255-256
-        diet_var_name = f'Dt_{var.split('_')[-1]}'
+        diet_var_name = f"Dt_{var.split('_')[-1]}"
         diet_data[diet_var_name] = (df['Fd_DMInp'] * df[var]).sum()
     return diet_data
 
