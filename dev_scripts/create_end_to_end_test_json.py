@@ -286,7 +286,7 @@ if __name__ == "__main__":
     for path, name in path_name_map.items():
         dictionaries, r_data = load_R_json(path)
         user_diet_in = get_user_diet(dictionaries, r_data)
-        animal_input_in = get_animal_input(r_data)
+        animal_input_in, r_data = get_animal_input(r_data)
         equation_selection_in, r_data = get_equation_selection(r_data)
         AA_values, r_data = create_AA_values(r_data)
         arrays, r_data = create_arrays(r_data)
