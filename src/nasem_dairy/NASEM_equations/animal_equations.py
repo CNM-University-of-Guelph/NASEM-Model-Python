@@ -1122,7 +1122,7 @@ def calculate_An_ME_ClfDry(An_MEIn_ClfDry: float,
     return An_ME_ClfDry
 
 
-def caclulate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
+def calculate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
     An_NE_ClfDry = (1.1104 * An_ME_ClfDry - 0.0946 * An_ME_ClfDry**2 + 
                     0.0065 * An_ME_ClfDry**3 - 0.7783)
     return An_NE_ClfDry

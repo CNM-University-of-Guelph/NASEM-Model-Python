@@ -685,17 +685,6 @@ def execute_model(user_diet: pd.DataFrame,
         Fe_DEMiCPend, Fe_DERDPend, Fe_DERUPend, Du_idMiCP, infusion_data,
         equation_selection['Monensin_eqn'], coeff_dict
         )
-    if animal_input['An_StatePhys'] == "Calf":
-        An_data['An_MEIn_ClfDry'] = animal.calculate_An_MEIn_ClfDry(
-            An_data['An_MEIn'], diet_data['Dt_MEIn_ClfLiq']
-            )
-        An_data['An_ME_ClfDry'] = animal.calculate_An_ME_ClfDry(
-            An_data['An_MEIn_ClfDry'], An_data['An_DMIn'], 
-            diet_data['Dt_DMIn_ClfLiq']
-            )
-        An_data['An_NE_ClfDry'] = animal.calculate_An_NE_ClfDry(
-            An_data['An_ME_ClfDry']
-            )
     # Calculate remaining digestability coefficients
     diet_data['TT_dcAnSt'] = diet.calculate_TT_dcAnSt(
         An_data['An_DigStIn'], diet_data['Dt_StIn'], infusion_data['Inf_StIn']
@@ -939,6 +928,17 @@ def execute_model(user_diet: pd.DataFrame,
         )
     An_NEIn = animal.calculate_An_NEIn(An_MEIn)
     An_NE = animal.calculate_An_NE(An_NEIn, An_data['An_DMIn'])
+    if animal_input['An_StatePhys'] == "Calf":
+        An_data['An_MEIn_ClfDry'] = animal.calculate_An_MEIn_ClfDry(
+            An_MEIn, diet_data['Dt_MEIn_ClfLiq']
+            )
+        An_data['An_ME_ClfDry'] = animal.calculate_An_ME_ClfDry(
+            An_data['An_MEIn_ClfDry'], An_data['An_DMIn'], 
+            diet_data['Dt_DMIn_ClfLiq']
+            )
+        An_data['An_NE_ClfDry'] = animal.calculate_An_NE_ClfDry(
+            An_data['An_ME_ClfDry']
+            )
 
     ########################################
     # Step 16: Energy Requirement
@@ -1765,13 +1765,15 @@ def execute_model(user_diet: pd.DataFrame,
 
     CH4out_g = methane.calculate_CH4out_g(An_data['An_GasEOut'], coeff_dict)
     CH4out_L = methane.calculate_CH4out_L(CH4out_g, coeff_dict)
-    CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
-    CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
+        CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
 
     Man_out = manure.calculate_Man_out(
         animal_input['An_StatePhys'], An_data['An_DMIn'], diet_data['Dt_K']
         )
-    Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
     Man_VolSld = manure.calculate_Man_VolSld(
         animal_input['DMI'], infusion_data['InfRum_DMIn'], 
         infusion_data['InfSI_DMIn'], An_data['An_NDF'], An_data["An_CP"]
@@ -1779,8 +1781,9 @@ def execute_model(user_diet: pd.DataFrame,
     Man_VolSld2 = manure.calculate_Man_VolSld2(
         Fe_OM, diet_data['Dt_LgIn'], Ur_Nout_g
         )
-    VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
-    VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
+        VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
     Man_Nout_g = manure.calculate_Man_Nout_g(Ur_Nout_g, Fe_N_g, Scrf_N_g)
     Man_Nout2_g = manure.calculate_Man_Nout2_g(An_data['An_NIn_g'], An_Nprod_g)
     ManN_Milk = manure.calculate_ManN_Milk(Man_Nout_g, Mlk_Prod)
@@ -1885,9 +1888,10 @@ def execute_model(user_diet: pd.DataFrame,
     Man_Wa_out = manure.calculate_Man_Wa_out(
         animal_input['An_StatePhys'], Man_out, Fe_OM, Ur_Nout_g, Man_Min_out_g
         )
-    An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
-    WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
-    ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
+        WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
+        ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
     del (An_IdAAIn)
     del (Dt_IdAARUPIn)
     del (Mlk_AA_TP)

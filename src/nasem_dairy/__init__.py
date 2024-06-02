@@ -534,7 +534,7 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_RUPIn_g,
     calculate_An_MEIn_ClfDry,
     calculate_An_ME_ClfDry,
-    caclulate_An_NE_ClfDry
+    calculate_An_NE_ClfDry
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
