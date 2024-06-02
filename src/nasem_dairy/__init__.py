@@ -531,7 +531,10 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_NE_DE,
     calculate_An_NE_ME,
     calculate_An_MPIn_MEIn,
-    calculate_An_RUPIn_g
+    calculate_An_RUPIn_g,
+    calculate_An_MEIn_ClfDry,
+    calculate_An_ME_ClfDry,
+    calculate_An_NE_ClfDry
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -749,7 +752,9 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_Trg_NELbal,
     calculate_Trg_NEbal,
     calculate_An_MPuse_MEuse,
-    calculate_Trg_MPuse_MEuse
+    calculate_Trg_MPuse_MEuse,
+    calculate_Km_ME_NE_Clf,
+    calculate_Km_ME_NE
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (

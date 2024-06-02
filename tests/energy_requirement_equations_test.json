@@ -51,8 +51,8 @@
     },
     {
       "Name": "calculate_An_MEmUse",
-      "Input": {"An_NEmUse": 204, "coeff_dict": null},
-      "Output": 309.09090909090907
+      "Input": {"An_NEmUse": 204, "Km_ME_NE": 0.73},
+      "Output": 279.45205479452056
     },
     {
       "Name": "calculate_Rsrv_NEgain",
@@ -86,7 +86,7 @@
     },
     {
       "Name": "calculate_Frm_MEgain",
-      "Input": {"Frm_NEgain": 4, "coeff_dict": null},
+      "Input": {"Frm_NEgain": 4, "Kf_ME_RE": 0.4},
       "Output": 10.0
     },
     {
@@ -126,17 +126,17 @@
     },
     {
       "Name": "calculate_An_MEmUse_NS",
-      "Input": {"An_NEmUse_NS": 301, "coeff_dict": null},
+      "Input": {"An_NEmUse_NS": 301, "Km_ME_NE": 0.66},
       "Output": 456.06060606060606
   },
   {
       "Name": "calculate_An_MEmUse_Act",
-      "Input": {"An_NEmUse_Act": 102, "coeff_dict": null},
+      "Input": {"An_NEmUse_Act": 102, "Km_ME_NE": 0.66},
       "Output": 154.54545454545453
   },
   {
       "Name": "calculate_An_MEmUse_Env",
-      "Input": {"coeff_dict": null},
+      "Input": {"Km_ME_NE": 0.66, "coeff_dict": null},
       "Output": 0
   },
   {
@@ -323,6 +323,51 @@
       "Name": "calculate_Trg_MPuse_MEuse",
       "Input": {"An_MPuse_g_Trg": 3103, "An_MEuse": 4130},
       "Output": 0.7513317191283293
+  },
+  {
+      "Name": "calculate_Km_ME_NE_Clf",
+      "Input": {"An_ME_ClfDry": 1, "An_NE_ClfDry": 2, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 0},
+      "Output": 2.0
+  },
+  {
+    "Name": "calculate_Km_ME_NE_Clf",
+    "Input": {"An_ME_ClfDry": 1, "An_NE_ClfDry": 2, "Dt_DMIn_ClfLiq": 5, "Dt_DMIn_ClfStrt": 0},
+    "Output": 0.723
+  },
+  {
+    "Name": "calculate_Km_ME_NE_Clf",
+    "Input": {"An_ME_ClfDry": 0, "An_NE_ClfDry": 0, "Dt_DMIn_ClfLiq": 5, "Dt_DMIn_ClfStrt": 2},
+    "Output": 0.69
+  },
+  {
+      "Name": "calculate_Km_ME_NE",
+      "Input": {"An_StatePhys": "Lactating Cow"},
+      "Output": 0.66
+  },
+  {
+      "Name": "calculate_Km_ME_NE",
+      "Input": {"An_StatePhys": "Heifer"},
+      "Output": 0.63
+  },
+  {
+    "Name": "calculate_Km_ME_NE",
+    "Input": {"An_StatePhys": "Dry Cow"},
+    "Output": 0.66
+  },
+  {
+      "Name": "calculate_Kf_ME_RE_ClfDry",
+      "Input": {"An_DE": 685},
+      "Output": 3009.145511640296
+  },
+  {
+      "Name": "calculate_Kf_ME_RE",
+      "Input": {"An_StatePhys": "Calf", "Kf_ME_RE_ClfDry": 1.9, "Dt_DMIn_ClfLiq": 2.4, "Dt_DMIn": 5.9, "coeff_dict": null},
+      "Output": 1.354915254237288
+  },
+  {
+    "Name": "calculate_Kf_ME_RE",
+    "Input": {"An_StatePhys": "Lactating Cow", "Kf_ME_RE_ClfDry": 1.9, "Dt_DMIn_ClfLiq": 2.4, "Dt_DMIn": 5.9, "coeff_dict": null},
+    "Output": 0.4
   }
 ]
   

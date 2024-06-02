@@ -340,7 +340,7 @@ def calculate_An_NEmUse(An_NEmUse_NS: float,
     return An_NEmUse
 
 
-def calculate_An_MEmUse(An_NEmUse: float, coeff_dict: dict) -> float:
+def calculate_An_MEmUse(An_NEmUse: float, Km_ME_NE: float) -> float:
     """
     *Calculate Animal (An) Metabolizable Energy (ME) maintenance use (mUse)*
 
@@ -384,34 +384,7 @@ def calculate_An_MEmUse(An_NEmUse: float, coeff_dict: dict) -> float:
     )
     ```
     """
-    req_coeff = ['Km_ME_NE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    # Km_ME_NE is based on further inputs. The following is refactored version of lines 2806-2818
-    # # Calculate dry matter intake from dry feed and corresponding ME and NE values for calves
-    # An_MEIn_ClfDry = An_MEIn - Dt_MEIn_ClfLiq
-    # An_ME_ClfDry = An_MEIn_ClfDry / (An_DMIn - Dt_DMIn_ClfLiq) if (An_DMIn - Dt_DMIn_ClfLiq) > 0 else 0
-    # An_NE_ClfDry = 1.1104 * An_ME_ClfDry - 0.0946 * An_ME_ClfDry**2 + 0.0065 * An_ME_ClfDry**3 - 0.7783
-
-    # # Initialize Km_ME_NE with a default value or None to handle unexpected physiological states
-    # Km_ME_NE = None
-
-    # # Set Km_ME_NE based on physiological state and specific conditions
-    # if An_StatePhys == "Calf":
-    #     if Dt_DMIn_ClfLiq == 0 and An_ME_ClfDry > 0 and An_NE_ClfDry > 0:
-    #         # Dry feed only
-    #         Km_ME_NE = An_NE_ClfDry / An_ME_ClfDry
-    #     elif Dt_DMIn_ClfStrt == 0 and Dt_DMIn_ClfLiq > 0:
-    #         # Liquid feed only
-    #         Km_ME_NE = 0.723
-    #     else:
-    #         # Default to mixed dry and liquid feed for calves
-    #         Km_ME_NE = 0.69
-    # elif An_StatePhys == "Heifer":
-    #     Km_ME_NE = 0.63
-    # elif An_StatePhys == "Lactating Cow" or An_StatePhys == "Dry Cow":
-    #     Km_ME_NE = 0.66
-
-    An_MEmUse = An_NEmUse / coeff_dict['Km_ME_NE']  # Line 2845
+    An_MEmUse = An_NEmUse / Km_ME_NE  # Line 2845
     return An_MEmUse
 
 
@@ -606,7 +579,7 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     return Frm_NEgain
 
 
-def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
+def calculate_Frm_MEgain(Frm_NEgain: float, Kf_ME_RE: float) -> float:
     """
     *Calculate Frame (Frm) Metabolizable Energy (ME) Gain*
 
@@ -646,19 +619,30 @@ def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
     )
     ```
     """
-    req_coeff = ['Kf_ME_RE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    # Lines 2827 - 2832
-    # ## Frame (f) Gain (excludes Reserves Gain or Loss) ##
-    # #Calf frame gain
-    # Kf_ME_RE_ClfLiq <- 0.56
-    # Kf_ME_RE_ClfDry <- (1.1376*An_DE*0.93 -0.1198*(An_DE*0.93)^2+0.0076*(An_DE*0.93)^3-1.2979)/(An_DE*0.93)
-    # Kf_ME_RE_Clf <- Kf_ME_RE_ClfLiq*Dt_DMIn_ClfLiq/Dt_DMIn + Kf_ME_RE_ClfDry*(Dt_DMIn-Dt_DMIn_ClfLiq)/Dt_DMIn
-
-    # Kf_ME_RE <- ifelse(An_StatePhys == "Calf", Kf_ME_RE_Clf, 0.4)    #Default frame gain is 0.4 for heifers and cows
-
-    Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE']  # Line 2873
+    Frm_MEgain = Frm_NEgain / Kf_ME_RE  # Line 2873
     return Frm_MEgain
+
+
+def calculate_Kf_ME_RE_ClfDry(An_DE: float) -> float:
+    Kf_ME_RE_ClfDry = ((1.1376 * An_DE * 0.93 - 0.1198 * (An_DE * 0.93)**2 + 
+                        0.0076 * (An_DE * 0.93)**3 - 1.2979) / (An_DE * 0.93))
+    return Kf_ME_RE_ClfDry 
+
+
+def calculate_Kf_ME_RE(An_StatePhys: str, 
+                       Kf_ME_RE_ClfDry: float, 
+                       Dt_DMIn_ClfLiq: float, 
+                       Dt_DMIn: float,
+                       coeff_dict: dict
+) -> float:
+    req_coeff = ['Kf_ME_RE_ClfLiq']  # Equation 20-223
+    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if An_StatePhys == "Calf":
+        Kf_ME_RE = (coeff_dict['Kf_ME_RE_ClfLiq'] * Dt_DMIn_ClfLiq / Dt_DMIn + 
+                    Kf_ME_RE_ClfDry * (Dt_DMIn - Dt_DMIn_ClfLiq) / Dt_DMIn)
+    else:
+        Kf_ME_RE = 0.4
+    return Kf_ME_RE
 
 
 def calculate_An_MEgain(Rsrv_MEgain: float, Frm_MEgain: float) -> float:
@@ -938,33 +922,29 @@ def calculate_Trg_MEuse(An_MEmUse: float,
     return Trg_MEuse
 
 
-def calculate_An_MEmUse_NS(An_NEmUse_NS: float, coeff_dict: dict) -> float:
+def calculate_An_MEmUse_NS(An_NEmUse_NS: float, Km_ME_NE: float) -> float:
     """
     An_MEmUse_NS: Metabolizable energy for maintenance (Mcal/d) NS = non stressed
     """
-    req_coeff = ['Km_ME_NE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_MEmUse_NS = An_NEmUse_NS / coeff_dict['Km_ME_NE']  # Line 2846
+    An_MEmUse_NS = An_NEmUse_NS / Km_ME_NE  # Line 2846
     return An_MEmUse_NS
 
 
-def calculate_An_MEmUse_Act(An_NEmUse_Act: float, coeff_dict: dict) -> float:
+def calculate_An_MEmUse_Act(An_NEmUse_Act: float, Km_ME_NE: float) -> float:
     """
     An_MEmUse_Act: Metabolizable energy for activity (Mcal/d)
     """
-    req_coeff = ['Km_ME_NE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_MEmUse_Act = An_NEmUse_Act / coeff_dict['Km_ME_NE']  # Line 2847
+    An_MEmUse_Act = An_NEmUse_Act / Km_ME_NE  # Line 2847
     return An_MEmUse_Act
 
 
-def calculate_An_MEmUse_Env(coeff_dict: dict) -> float:
+def calculate_An_MEmUse_Env(Km_ME_NE: float, coeff_dict: dict) -> float:
     """
     An_MEmUse_Env: Metabolizable energy lost to the environment (Mcal/d)
     """
-    req_coeff = ['An_NEmUse_Env', 'Km_ME_NE']
+    req_coeff = ['An_NEmUse_Env']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_MEmUse_Env = coeff_dict['An_NEmUse_Env'] / coeff_dict['Km_ME_NE'] # Line 2848
+    An_MEmUse_Env = coeff_dict['An_NEmUse_Env'] / Km_ME_NE # Line 2848
     return An_MEmUse_Env
 
 
@@ -1311,3 +1291,30 @@ def calculate_Trg_MPuse_MEuse(An_MPuse_g_Trg: float, An_MEuse: float) -> float:
     """
     Trg_MPuse_MEuse = An_MPuse_g_Trg / An_MEuse  # Line 2944
     return Trg_MPuse_MEuse
+
+
+def calculate_Km_ME_NE_Clf(An_ME_ClfDry: float, 
+                           An_NE_ClfDry: float, 
+                           Dt_DMIn_ClfLiq: float, 
+                           Dt_DMIn_ClfStrt: float
+) -> float:
+    """Conversion efficiency of ME to NE for maintenance, calves"""
+    if (An_ME_ClfDry > 0 and 
+        An_NE_ClfDry > 0 and 
+        Dt_DMIn_ClfLiq == 0
+        ):
+        Km_ME_NE_Clf = An_NE_ClfDry / An_ME_ClfDry
+    elif Dt_DMIn_ClfStrt == 0 and Dt_DMIn_ClfLiq > 0:
+        Km_ME_NE_Clf = 0.723
+    else:
+        Km_ME_NE_Clf = 0.69 
+    return Km_ME_NE_Clf
+
+
+def calculate_Km_ME_NE(An_StatePhys: str) -> float:
+    """Conversion efficiency of ME to NE for maintenance"""
+    if An_StatePhys == "Lactating Cow" or An_StatePhys == "Dry Cow":
+        Km_ME_NE = 0.66 # Km_ME_NE_Cow
+    else:
+        Km_ME_NE = 0.63 # Km_ME_NE_Heif
+    return Km_ME_NE

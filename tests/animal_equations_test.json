@@ -629,5 +629,20 @@
   "Name": "calculate_An_RUPIn_g",
   "Input": {"An_RUPIn": 15.8},
   "Output": 15800
+},
+{
+  "Name": "calculate_An_MEIn_ClfDry",
+  "Input": {"An_MEIn": 650, "Dt_MEIn_ClfLiq": 283},
+  "Output": 367
+},
+{
+  "Name": "calculate_An_ME_ClfDry",
+  "Input": {"An_MEIn_ClfDry": 23, "An_DMIn": 6.3, "Dt_DMIn_ClfLiq": 1.9},
+  "Output": 5.227272727272727
+},
+{
+  "Name": "caclulate_An_NE_ClfDry",
+  "Input": {"An_ME_ClfDry": 40.2},
+  "Output": 313.25364800000006
 }
 ]

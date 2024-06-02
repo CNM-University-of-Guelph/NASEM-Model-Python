@@ -824,7 +824,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     Frm_Gain_empty = body_comp.calculate_Frm_Gain_empty(
         Frm_Gain, diet_data['Dt_DMIn_ClfLiq'], diet_data['Dt_DMIn_ClfStrt'], 
-        coeff_dict
+        An_data['An_GutFill_BW']
         )
     Body_Gain_empty = body_comp.calculate_Body_Gain_empty(
         Frm_Gain_empty, Rsrv_Gain_empty
@@ -928,6 +928,17 @@ def execute_model(user_diet: pd.DataFrame,
         )
     An_NEIn = animal.calculate_An_NEIn(An_MEIn)
     An_NE = animal.calculate_An_NE(An_NEIn, An_data['An_DMIn'])
+    if animal_input['An_StatePhys'] == "Calf":
+        An_data['An_MEIn_ClfDry'] = animal.calculate_An_MEIn_ClfDry(
+            An_MEIn, diet_data['Dt_MEIn_ClfLiq']
+            )
+        An_data['An_ME_ClfDry'] = animal.calculate_An_ME_ClfDry(
+            An_data['An_MEIn_ClfDry'], An_data['An_DMIn'], 
+            diet_data['Dt_DMIn_ClfLiq']
+            )
+        An_data['An_NE_ClfDry'] = animal.calculate_An_NE_ClfDry(
+            An_data['An_ME_ClfDry']
+            )
 
     ########################################
     # Step 16: Energy Requirement
@@ -955,7 +966,14 @@ def execute_model(user_diet: pd.DataFrame,
     An_NEmUse = energy.calculate_An_NEmUse(
         An_NEmUse_NS, An_NEmUse_Act, coeff_dict
         )
-    An_MEmUse = energy.calculate_An_MEmUse(An_NEmUse, coeff_dict)
+    if animal_input["An_StatePhys"] == "Calf":
+        Km_ME_NE = energy.calculate_Km_ME_NE_Clf(
+            An_data["An_ME_ClfDry"], An_data["An_NE_ClfDry"], 
+            diet_data["Dt_DMIn_ClfLiq"], diet_data["Dt_DMIn_ClfStrt"]
+            )
+    else:
+        Km_ME_NE = energy.calculate_Km_ME_NE(animal_input["An_StatePhys"])
+    An_MEmUse = energy.calculate_An_MEmUse(An_NEmUse, Km_ME_NE)
 
     # Gain Requirements
     Rsrv_Gain_empty = body_comp.calculate_Rsrv_Gain_empty(Rsrv_Gain)
@@ -972,10 +990,6 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Rsrv_MEgain = energy.calculate_Rsrv_MEgain(Rsrv_NEgain, Kr_ME_RE)
     Frm_Gain = body_comp.calculate_Frm_Gain(animal_input['Trg_FrmGain'])
-    Frm_Gain_empty = body_comp.calculate_Frm_Gain_empty(
-        Frm_Gain, diet_data['Dt_DMIn_ClfLiq'], diet_data['Dt_DMIn_ClfStrt'], 
-        coeff_dict
-        )
     Frm_Fatgain = body_comp.calculate_Frm_Fatgain(
         FatGain_FrmGain, Frm_Gain_empty
         )
@@ -988,7 +1002,12 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Frm_CPgain = body_comp.calculate_Frm_CPgain(Frm_NPgain, coeff_dict)
     Frm_NEgain = energy.calculate_Frm_NEgain(Frm_Fatgain, Frm_CPgain)
-    Frm_MEgain = energy.calculate_Frm_MEgain(Frm_NEgain, coeff_dict)
+    Kf_ME_RE_ClfDry = energy.calculate_Kf_ME_RE_ClfDry(An_data['An_DE'])
+    Kf_ME_RE = energy.calculate_Kf_ME_RE(
+        animal_input['An_StatePhys'], Kf_ME_RE_ClfDry, 
+        diet_data['Dt_DMIn_ClfLiq'], animal_input['DMI'], coeff_dict
+        )
+    Frm_MEgain = energy.calculate_Frm_MEgain(Frm_NEgain, Kf_ME_RE)
     Body_Fatgain = body_comp.calculate_Body_Fatgain(Frm_Fatgain, Rsrv_Fatgain)
     Body_NonFatGain = body_comp.calculate_Body_NonFatGain(
         Body_Gain_empty, Body_Fatgain
@@ -1334,9 +1353,9 @@ def execute_model(user_diet: pd.DataFrame,
     An_MPIn_MEIn = animal.calculate_An_MPIn_MEIn(An_MPIn_g, An_MEIn)
 
     ### ME and NE Use ###
-    An_MEmUse_NS = energy.calculate_An_MEmUse_NS(An_NEmUse_NS, coeff_dict)
-    An_MEmUse_Act = energy.calculate_An_MEmUse_Act(An_NEmUse_Act, coeff_dict)
-    An_MEmUse_Env = energy.calculate_An_MEmUse_Env(coeff_dict)
+    An_MEmUse_NS = energy.calculate_An_MEmUse_NS(An_NEmUse_NS, Km_ME_NE)
+    An_MEmUse_Act = energy.calculate_An_MEmUse_Act(An_NEmUse_Act, Km_ME_NE)
+    An_MEmUse_Env = energy.calculate_An_MEmUse_Env(Km_ME_NE, coeff_dict)
     An_NEm_ME = energy.calculate_An_NEm_ME(An_NEmUse, An_MEIn)
     An_NEm_DE = energy.calculate_An_NEm_DE(An_NEmUse, An_data['An_DEIn'])
     An_NEmNS_DE = energy.calculate_An_NEmNS_DE(An_NEmUse_NS, An_data['An_DEIn'])
@@ -1414,7 +1433,7 @@ def execute_model(user_diet: pd.DataFrame,
         An_MEIn, An_MEmUse, Gest_MEuse, Mlk_MEout
         )
     Kg_ME_NE = body_comp.calculate_Kg_ME_NE(
-        Frm_NEgain, Rsrv_NEgain, Kr_ME_RE, coeff_dict
+        Frm_NEgain, Rsrv_NEgain, Kr_ME_RE, Kf_ME_RE
         )
     Body_Gain_NEalow = body_comp.calculate_Body_Gain_NEalow(
         An_MEavail_Grw, Kg_ME_NE, Body_NEgain_BWgain
@@ -1746,13 +1765,15 @@ def execute_model(user_diet: pd.DataFrame,
 
     CH4out_g = methane.calculate_CH4out_g(An_data['An_GasEOut'], coeff_dict)
     CH4out_L = methane.calculate_CH4out_L(CH4out_g, coeff_dict)
-    CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
-    CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
+        CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
 
     Man_out = manure.calculate_Man_out(
         animal_input['An_StatePhys'], An_data['An_DMIn'], diet_data['Dt_K']
         )
-    Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
     Man_VolSld = manure.calculate_Man_VolSld(
         animal_input['DMI'], infusion_data['InfRum_DMIn'], 
         infusion_data['InfSI_DMIn'], An_data['An_NDF'], An_data["An_CP"]
@@ -1760,8 +1781,9 @@ def execute_model(user_diet: pd.DataFrame,
     Man_VolSld2 = manure.calculate_Man_VolSld2(
         Fe_OM, diet_data['Dt_LgIn'], Ur_Nout_g
         )
-    VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
-    VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
+        VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
     Man_Nout_g = manure.calculate_Man_Nout_g(Ur_Nout_g, Fe_N_g, Scrf_N_g)
     Man_Nout2_g = manure.calculate_Man_Nout2_g(An_data['An_NIn_g'], An_Nprod_g)
     ManN_Milk = manure.calculate_ManN_Milk(Man_Nout_g, Mlk_Prod)
@@ -1866,9 +1888,10 @@ def execute_model(user_diet: pd.DataFrame,
     Man_Wa_out = manure.calculate_Man_Wa_out(
         animal_input['An_StatePhys'], Man_out, Fe_OM, Ur_Nout_g, Man_Min_out_g
         )
-    An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
-    WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
-    ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
+    if animal_input['An_StatePhys'] == "Lactating Cow":
+        An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
+        WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
+        ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
     del (An_IdAAIn)
     del (Dt_IdAARUPIn)
     del (Mlk_AA_TP)

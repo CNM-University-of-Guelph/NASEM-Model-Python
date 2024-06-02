@@ -7,70 +7,22 @@ import numpy as np
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_CPGain_FrmGain(An_BW, An_BW_mature):
-    CPGain_FrmGain = 0.201 - 0.081 * An_BW / An_BW_mature  # Line 2458
-    return CPGain_FrmGain
-
-
-def calculate_Frm_Gain(Trg_FrmGain):
-    Frm_Gain = Trg_FrmGain  
-    # kg/d. Add any predictions of ADG and select Trg or Pred ADG here
-    return Frm_Gain
-
-
-def calculate_Frm_Gain_empty(Frm_Gain, 
-                             Dt_DMIn_ClfLiq, 
-                             Dt_DMIn_ClfStrt,
-                             coeff_dict
+def calculate_Frm_Gain_empty(Frm_Gain: float, 
+                             Dt_DMIn_ClfLiq: float, 
+                             Dt_DMIn_ClfStrt: float,
+                             An_GutFill_BW: float
 ) -> float:
-    req_coeff = ['An_GutFill_BW']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])  
+    Frm_Gain_empty = Frm_Gain * (1 - An_GutFill_BW)  
     # Line 2439, Assume the same gut fill for frame gain
-    condition = (Dt_DMIn_ClfLiq > 0) and (Dt_DMIn_ClfStrt > 0)
-    Frm_Gain_empty = np.where(
-        condition, Frm_Gain * 0.91,
-        Frm_Gain_empty)  # Line 2440, slightly different for grain & milk fed
+    if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:
+        # slightly different for grain & milk fed, Line 2440
+        Frm_Gain_empty = Frm_Gain * 0.91
     return Frm_Gain_empty
-
-
-def calculate_NPGain_FrmGain(CPGain_FrmGain, coeff_dict):
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']  
-    # Line 2460, convert to CP to TP gain / gain
-    return NPGain_FrmGain
-
-
-def calculate_Rsrv_Gain(Trg_RsrvGain):
-    Rsrv_Gain = Trg_RsrvGain  # Line 2435
-    return Rsrv_Gain
-
-
-def calculate_Rsrv_Gain_empty(Rsrv_Gain):
-    Rsrv_Gain_empty = Rsrv_Gain  
-    # Line 2441, Assume no gut fill associated with reserves gain
-    return Rsrv_Gain_empty
 
 
 def calculate_Body_Gain_empty(Frm_Gain_empty, Rsrv_Gain_empty):
     Body_Gain_empty = Frm_Gain_empty + Rsrv_Gain_empty  # Line 2442
     return Body_Gain_empty
-
-
-def calculate_Frm_NPgain(An_StatePhys, 
-                         NPGain_FrmGain, 
-                         Frm_Gain_empty, 
-                         Body_Gain_empty, 
-                         An_REgain_Calf
-) -> float:
-    Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty  # Line 2461
-    Frm_NPgain = np.where(
-        An_StatePhys == "Calf",
-        ((166.22 * Body_Gain_empty + 6.13 * An_REgain_Calf) 
-         / Body_Gain_empty) / 1000, 
-        Frm_NPgain)
-    return Frm_NPgain
 
 
 def calculate_NPGain_RsrvGain(coeff_dict):
@@ -178,24 +130,6 @@ def calculate_Frm_Gain(Trg_FrmGain: float) -> float:
     Frm_Gain = Trg_FrmGain  
     # Add any predictions of ADG and select Trg or Pred ADG here, Line 2434
     return Frm_Gain
-
-
-def calculate_Frm_Gain_empty(Frm_Gain: float, 
-                             Dt_DMIn_ClfLiq: float,
-                             Dt_DMIn_ClfStrt: float, 
-                             coeff_dict: dict
-) -> float:
-    """
-    Frm_Gain_empty: Frame gain assuming the dame gut fill for frame gain, kg/d
-    Equation 11-6b : 0.85 * gain (kg/d) - assumes the 15% of live = empty
-    Also in Equation 20-250 
-    """
-    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])  
-    # Assume the same gut fill for frame gain, Line 2439
-    if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:
-        # slightly different for grain & milk fed, Line 2440
-        Frm_Gain_empty = Frm_Gain * 0.91
-    return Frm_Gain_empty
 
 
 def calculate_Frm_Fatgain(FatGain_FrmGain: float,
@@ -617,15 +551,13 @@ def calculate_An_MEavail_Grw(An_MEIn: float,
 def calculate_Kg_ME_NE(Frm_NEgain: float, 
                        Rsrv_NEgain: float, 
                        Kr_ME_RE: float,
-                       coeff_dict: dict
+                       Kf_ME_RE: float
 ) -> float:
     """
     Kg_ME_NE: ME to NE for NE allowable gain?
     """
-    req_coeff = ['Kf_ME_RE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     #Use a weighted average of Kf and Kr to predict allowable gain at that mix of Frm and Rsrv gain.
-    Kg_ME_NE = (coeff_dict['Kf_ME_RE'] * Frm_NEgain / 
+    Kg_ME_NE = (Kf_ME_RE * Frm_NEgain / 
                 (Frm_NEgain + Rsrv_NEgain) + Kr_ME_RE * Rsrv_NEgain / 
                 (Frm_NEgain + Rsrv_NEgain))
     return Kg_ME_NE

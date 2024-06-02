@@ -11,17 +11,17 @@
     },
     {
       "Name": "calculate_Frm_Gain_empty",
-      "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
-      "Output": 1.23
+      "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 0, "An_GutFill_BW": 0.6},
+      "Output": 0.6000000000000001
     },
     {
         "Name": "calculate_Frm_Gain_empty",
-        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 2, "coeff_dict": null},
-        "Output": 1.23
+        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 2, "An_GutFill_BW": 0.7},
+        "Output": 0.45000000000000007
     },
     {
         "Name": "calculate_Frm_Gain_empty",
-        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 2, "coeff_dict": null},
+        "Input": {"Frm_Gain": 1.5, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 2, "An_GutFill_BW": 0.65},
         "Output": 1.365
     },
     {
@@ -118,16 +118,6 @@
       "Name": "calculate_Frm_Gain",
       "Input": {"Trg_FrmGain": 7},
       "Output": 7
-    },
-    {
-      "Name": "calculate_Frm_Gain_empty",
-      "Input": {"Frm_Gain": 0.8, "Dt_DMIn_ClfLiq": 3, "Dt_DMIn_ClfStrt": 4, "coeff_dict": null},
-      "Output": 0.7280000000000001
-    },
-    {
-      "Name": "calculate_Frm_Gain_empty",
-      "Input": {"Frm_Gain": 1.3, "Dt_DMIn_ClfLiq": 0, "Dt_DMIn_ClfStrt": 0, "coeff_dict": null},
-      "Output": 1.066
     },
     {
       "Name": "calculate_Frm_Fatgain",
@@ -356,7 +346,7 @@
 },
 {
     "Name": "calculate_Kg_ME_NE",
-    "Input": {"Frm_NEgain": 410, "Rsrv_NEgain": 314, "Kr_ME_RE": 0.6, "coeff_dict": null},
+    "Input": {"Frm_NEgain": 410, "Rsrv_NEgain": 314, "Kr_ME_RE": 0.6, "Kf_ME_RE": 0.4},
     "Output": 0.4867403314917127
 },
 {

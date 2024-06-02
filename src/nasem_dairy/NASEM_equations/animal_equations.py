@@ -1108,6 +1108,47 @@ def calculate_GasE_DEIn(An_GasEOut: float, An_DEIn: float) -> float:
     return GasE_DEIn
 
 
+def calculate_An_MEIn_ClfDry(An_MEIn: float, Dt_MEIn_ClfLiq: float) -> float:
+    """Calf ME intake from dry feed"""
+    An_MEIn_ClfDry = An_MEIn - Dt_MEIn_ClfLiq
+    return An_MEIn_ClfDry
+
+
+def calculate_An_ME_ClfDry(An_MEIn_ClfDry: float, 
+                           An_DMIn: float, 
+                           Dt_DMIn_ClfLiq: float
+) -> float:
+    An_ME_ClfDry = An_MEIn_ClfDry / (An_DMIn - Dt_DMIn_ClfLiq)
+    return An_ME_ClfDry
+
+
+def calculate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
+    An_NE_ClfDry = (1.1104 * An_ME_ClfDry - 0.0946 * An_ME_ClfDry**2 + 
+                    0.0065 * An_ME_ClfDry**3 - 0.7783)
+    return An_NE_ClfDry
+
+
+def calculate_An_IdAAIn(diet_data: dict, 
+                        infusion_data: dict, 
+                        AA_list: list, 
+                        complete_An_data: dict
+) -> dict:
+    for AA in AA_list:
+        complete_An_data[f'An_Id{AA}In'] = (diet_data[f'Dt_Id{AA}In'] + 
+                                            infusion_data[f'Inf_Id{AA}In'])
+    return complete_An_data
+
+
+def calculate_An_XIn(diet_data: dict, 
+                     infusion_data: dict,
+                     variables: list, 
+                     complete_An_data: dict
+) -> dict:
+    for var in variables:
+        complete_An_data[f'An_{var}'] = (diet_data[f'Dt_{var}'] + 
+                                         infusion_data[f'Inf_{var}'])
+    return complete_An_data
+
 ####################
 # Animal Warpper Functions
 ####################
@@ -1271,15 +1312,14 @@ def calculate_An_data_complete(
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    for AA in AA_list:
-        complete_An_data[f'An_Id{AA}In'] = (diet_data[f'Dt_Id{AA}In'] + 
-                                            infusion_data[f'Inf_Id{AA}In'])
+    complete_An_data = calculate_An_IdAAIn(
+        diet_data, infusion_data, AA_list, complete_An_data
+        )
 
     nutrient_list = ['CPIn', 'NPNCPIn', 'TPIn', 'FAIn']
-    for nutrient in nutrient_list:
-        complete_An_data[f'An_{nutrient}'] = (diet_data[f'Dt_{nutrient}'] + 
-                                              infusion_data[f'Inf_{nutrient}'])
-
+    complete_An_data = calculate_An_XIn(
+        diet_data, infusion_data, nutrient_list, complete_An_data
+        )
     complete_An_data['An_DMIn_MBW'] = calculate_An_DMIn_MBW(
         complete_An_data['An_DMIn'], complete_An_data['An_MBW'])
     complete_An_data['An_StIn'] = calculate_An_StIn(
