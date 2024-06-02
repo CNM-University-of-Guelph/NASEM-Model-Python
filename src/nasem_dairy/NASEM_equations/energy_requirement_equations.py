@@ -579,7 +579,7 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     return Frm_NEgain
 
 
-def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
+def calculate_Frm_MEgain(Frm_NEgain: float, Kf_ME_RE: float) -> float:
     """
     *Calculate Frame (Frm) Metabolizable Energy (ME) Gain*
 
@@ -619,19 +619,30 @@ def calculate_Frm_MEgain(Frm_NEgain: float, coeff_dict: dict) -> float:
     )
     ```
     """
-    req_coeff = ['Kf_ME_RE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    # Lines 2827 - 2832
-    # ## Frame (f) Gain (excludes Reserves Gain or Loss) ##
-    # #Calf frame gain
-    # Kf_ME_RE_ClfLiq <- 0.56
-    # Kf_ME_RE_ClfDry <- (1.1376*An_DE*0.93 -0.1198*(An_DE*0.93)^2+0.0076*(An_DE*0.93)^3-1.2979)/(An_DE*0.93)
-    # Kf_ME_RE_Clf <- Kf_ME_RE_ClfLiq*Dt_DMIn_ClfLiq/Dt_DMIn + Kf_ME_RE_ClfDry*(Dt_DMIn-Dt_DMIn_ClfLiq)/Dt_DMIn
-
-    # Kf_ME_RE <- ifelse(An_StatePhys == "Calf", Kf_ME_RE_Clf, 0.4)    #Default frame gain is 0.4 for heifers and cows
-
-    Frm_MEgain = Frm_NEgain / coeff_dict['Kf_ME_RE']  # Line 2873
+    Frm_MEgain = Frm_NEgain / Kf_ME_RE  # Line 2873
     return Frm_MEgain
+
+
+def calculate_Kf_ME_RE_ClfDry(An_DE: float) -> float:
+    Kf_ME_RE_ClfDry = ((1.1376 * An_DE * 0.93 - 0.1198 * (An_DE * 0.93)**2 + 
+                        0.0076 * (An_DE * 0.93)**3 - 1.2979) / (An_DE * 0.93))
+    return Kf_ME_RE_ClfDry 
+
+
+def calculate_Kf_ME_RE(An_StatePhys: str, 
+                       Kf_ME_RE_ClfDry: float, 
+                       Dt_DMIn_ClfLiq: float, 
+                       Dt_DMIn: float,
+                       coeff_dict: dict
+) -> float:
+    req_coeff = ['Kf_ME_RE_ClfLiq']  # Equation 20-223
+    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if An_StatePhys == "Calf":
+        Kf_ME_RE = (coeff_dict['Kf_ME_RE_ClfLiq'] * Dt_DMIn_ClfLiq / Dt_DMIn + 
+                    Kf_ME_RE_ClfDry * (Dt_DMIn - Dt_DMIn_ClfLiq) / Dt_DMIn)
+    else:
+        Kf_ME_RE = 0.4
+    return Kf_ME_RE
 
 
 def calculate_An_MEgain(Rsrv_MEgain: float, Frm_MEgain: float) -> float:

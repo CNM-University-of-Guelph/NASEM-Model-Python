@@ -551,15 +551,13 @@ def calculate_An_MEavail_Grw(An_MEIn: float,
 def calculate_Kg_ME_NE(Frm_NEgain: float, 
                        Rsrv_NEgain: float, 
                        Kr_ME_RE: float,
-                       coeff_dict: dict
+                       Kf_ME_RE: float
 ) -> float:
     """
     Kg_ME_NE: ME to NE for NE allowable gain?
     """
-    req_coeff = ['Kf_ME_RE']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     #Use a weighted average of Kf and Kr to predict allowable gain at that mix of Frm and Rsrv gain.
-    Kg_ME_NE = (coeff_dict['Kf_ME_RE'] * Frm_NEgain / 
+    Kg_ME_NE = (Kf_ME_RE * Frm_NEgain / 
                 (Frm_NEgain + Rsrv_NEgain) + Kr_ME_RE * Rsrv_NEgain / 
                 (Frm_NEgain + Rsrv_NEgain))
     return Kg_ME_NE

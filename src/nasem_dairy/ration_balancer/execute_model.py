@@ -1002,7 +1002,12 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Frm_CPgain = body_comp.calculate_Frm_CPgain(Frm_NPgain, coeff_dict)
     Frm_NEgain = energy.calculate_Frm_NEgain(Frm_Fatgain, Frm_CPgain)
-    Frm_MEgain = energy.calculate_Frm_MEgain(Frm_NEgain, coeff_dict)
+    Kf_ME_RE_ClfDry = energy.calculate_Kf_ME_RE_ClfDry(An_data['An_DE'])
+    Kf_ME_RE = energy.calculate_Kf_ME_RE(
+        animal_input['An_StatePhys'], Kf_ME_RE_ClfDry, 
+        diet_data['Dt_DMIn_ClfLiq'], animal_input['DMI'], coeff_dict
+        )
+    Frm_MEgain = energy.calculate_Frm_MEgain(Frm_NEgain, Kf_ME_RE)
     Body_Fatgain = body_comp.calculate_Body_Fatgain(Frm_Fatgain, Rsrv_Fatgain)
     Body_NonFatGain = body_comp.calculate_Body_NonFatGain(
         Body_Gain_empty, Body_Fatgain
@@ -1428,7 +1433,7 @@ def execute_model(user_diet: pd.DataFrame,
         An_MEIn, An_MEmUse, Gest_MEuse, Mlk_MEout
         )
     Kg_ME_NE = body_comp.calculate_Kg_ME_NE(
-        Frm_NEgain, Rsrv_NEgain, Kr_ME_RE, coeff_dict
+        Frm_NEgain, Rsrv_NEgain, Kr_ME_RE, Kf_ME_RE
         )
     Body_Gain_NEalow = body_comp.calculate_Body_Gain_NEalow(
         An_MEavail_Grw, Kg_ME_NE, Body_NEgain_BWgain

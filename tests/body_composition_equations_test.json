@@ -346,7 +346,7 @@
 },
 {
     "Name": "calculate_Kg_ME_NE",
-    "Input": {"Frm_NEgain": 410, "Rsrv_NEgain": 314, "Kr_ME_RE": 0.6, "coeff_dict": null},
+    "Input": {"Frm_NEgain": 410, "Rsrv_NEgain": 314, "Kr_ME_RE": 0.6, "Kf_ME_RE": 0.4},
     "Output": 0.4867403314917127
 },
 {

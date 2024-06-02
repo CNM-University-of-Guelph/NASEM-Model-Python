@@ -165,7 +165,6 @@ coeff_dict = {
 
     # From calculate_An_MEgain
     'FatGain_RsrvGain': 0.622,  # Line 2451
-    'Kf_ME_RE': 0.4,  # Line 2831
 
     # From calculate_Gest_MEuse
     'NE_GrUtWt': 0.95,  # Line 2297
@@ -329,7 +328,8 @@ coeff_dict = {
     'CH4vol_kg': 1497,  # liters/kg
     'En_CH4': 55.5 / 4.184, # mcal/kg methane; 890 kJ/mol / 16 g/mol = 55.6 MJ/kg from Rossini, 1930
     'An_Fe_m': 0,  # no Fe maintenance requirement
-    'fIlEndTP_CP': 0.73 # Fraction of EndCP that is True Protein, from Lapierre, not used in model
+    'fIlEndTP_CP': 0.73, # Fraction of EndCP that is True Protein, from Lapierre, not used in model
+    'Kf_ME_RE_ClfLiq': 0.56 # Line 2828
 }
 
 # Dictionary to use when infusions are not provided to model
