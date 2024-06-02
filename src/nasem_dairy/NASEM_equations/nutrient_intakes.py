@@ -642,45 +642,37 @@ def calculate_TT_dcFdFA(An_StatePhys,
         'TT_dcFA_Base', 'TT_dcFat_Base', 'TT_dcFA_ClfDryFd', 'TT_dcFA_ClfLiqFd'
     ]
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-
-    TT_dcFdFA = Fd_dcFA  # Line 1251
+    TT_dcFdFA = Fd_dcFA.copy()  # Line 1251
 
     condition_1 = (
-        (np.isnan(TT_dcFdFA).any()) and 
+        (TT_dcFdFA.isna()) & 
         (Fd_Category == "Fatty Acid Supplement")
         )
-    TT_dcFdFA = np.where(condition_1, 
-                         coeff_dict['TT_dcFA_Base'], TT_dcFdFA)  # Line 1252
+    TT_dcFdFA[condition_1] = coeff_dict['TT_dcFA_Base'] # Line 1252
 
     condition_2 =(
-        (np.isnan(TT_dcFdFA).any()) and 
+        (TT_dcFdFA.isna()) & 
         (Fd_Category == "Fat Supplement")
         )
-    TT_dcFdFA = np.where(condition_2, 
-                         coeff_dict['TT_dcFat_Base'], TT_dcFdFA)  # Line 1253
-
-    # Lien 1254, Fill in any remaining missing values with fat dc
-    TT_dcFdFA = np.where(np.isnan(TT_dcFdFA).any(), 
-                         coeff_dict['TT_dcFat_Base'], TT_dcFdFA)
+    TT_dcFdFA[condition_2] = coeff_dict['TT_dcFat_Base'] # Line 1253
+    # Line 1254, Fill in any remaining missing values with fat dc
+    TT_dcFdFA = TT_dcFdFA.fillna(coeff_dict['TT_dcFat_Base'])
 
     condition_3 = (
-        (An_StatePhys == "Calf") and 
-        (Fd_Category != "Calf Liquid Feed") and 
+        (An_StatePhys == "Calf") & 
+        (Fd_Category != "Calf Liquid Feed") & 
         (Fd_Type == "Concentrate")
         )
     # Line 1255, likely an over estimate for forage
-    TT_dcFdFA = np.where(condition_3, coeff_dict['TT_dcFA_ClfDryFd'], TT_dcFdFA)
+    TT_dcFdFA[condition_3] = coeff_dict['TT_dcFA_ClfDryFd']
 
     condition_4 = (
-        (np.isnan(TT_dcFdFA).any()) and 
-        (An_StatePhys == "Calf") and 
+        (TT_dcFdFA.isna()) & 
+        (An_StatePhys == "Calf") & 
         (Fd_Category == "Calf Liquid Feed")
         )
     # Line 1256, Default if dc is not entered.
-    TT_dcFdFA = np.where(condition_4, ['TT_dcFA_ClfLiqFd'], TT_dcFdFA)
-
-    # Convert back into a Pandas series, using np.isnan converts to a numpy array
-    TT_dcFdFA = pd.Series(TT_dcFdFA)
+    TT_dcFdFA[condition_4] = coeff_dict['TT_dcFA_ClfLiqFd']
     TT_dcFdFA = pd.to_numeric(TT_dcFdFA, errors='coerce').fillna(0).astype(float)
     return TT_dcFdFA
 
