@@ -7,17 +7,6 @@ import numpy as np
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_CPGain_FrmGain(An_BW, An_BW_mature):
-    CPGain_FrmGain = 0.201 - 0.081 * An_BW / An_BW_mature  # Line 2458
-    return CPGain_FrmGain
-
-
-def calculate_Frm_Gain(Trg_FrmGain):
-    Frm_Gain = Trg_FrmGain  
-    # kg/d. Add any predictions of ADG and select Trg or Pred ADG here
-    return Frm_Gain
-
-
 def calculate_Frm_Gain_empty(Frm_Gain: float, 
                              Dt_DMIn_ClfLiq: float, 
                              Dt_DMIn_ClfStrt: float,
@@ -31,43 +20,9 @@ def calculate_Frm_Gain_empty(Frm_Gain: float,
     return Frm_Gain_empty
 
 
-def calculate_NPGain_FrmGain(CPGain_FrmGain, coeff_dict):
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']  
-    # Line 2460, convert to CP to TP gain / gain
-    return NPGain_FrmGain
-
-
-def calculate_Rsrv_Gain(Trg_RsrvGain):
-    Rsrv_Gain = Trg_RsrvGain  # Line 2435
-    return Rsrv_Gain
-
-
-def calculate_Rsrv_Gain_empty(Rsrv_Gain):
-    Rsrv_Gain_empty = Rsrv_Gain  
-    # Line 2441, Assume no gut fill associated with reserves gain
-    return Rsrv_Gain_empty
-
-
 def calculate_Body_Gain_empty(Frm_Gain_empty, Rsrv_Gain_empty):
     Body_Gain_empty = Frm_Gain_empty + Rsrv_Gain_empty  # Line 2442
     return Body_Gain_empty
-
-
-def calculate_Frm_NPgain(An_StatePhys, 
-                         NPGain_FrmGain, 
-                         Frm_Gain_empty, 
-                         Body_Gain_empty, 
-                         An_REgain_Calf
-) -> float:
-    Frm_NPgain = NPGain_FrmGain * Frm_Gain_empty  # Line 2461
-    Frm_NPgain = np.where(
-        An_StatePhys == "Calf",
-        ((166.22 * Body_Gain_empty + 6.13 * An_REgain_Calf) 
-         / Body_Gain_empty) / 1000, 
-        Frm_NPgain)
-    return Frm_NPgain
 
 
 def calculate_NPGain_RsrvGain(coeff_dict):
