@@ -1108,6 +1108,25 @@ def calculate_GasE_DEIn(An_GasEOut: float, An_DEIn: float) -> float:
     return GasE_DEIn
 
 
+def calculate_An_MEIn_ClfDry(An_MEIn: float, Dt_MEIn_ClfLiq: float) -> float:
+    """Calf ME intake from dry feed"""
+    An_MEIn_ClfDry = An_MEIn - Dt_MEIn_ClfLiq
+    return An_MEIn_ClfDry
+
+
+def calculate_An_ME_ClfDry(An_MEIn_ClfDry: float, 
+                           An_DMIn: float, 
+                           Dt_DMIn_ClfLiq: float
+) -> float:
+    An_ME_ClfDry = An_MEIn_ClfDry / (An_DMIn - Dt_DMIn_ClfLiq)
+    return An_ME_ClfDry
+
+
+def caclulate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
+    An_NE_ClfDry = (1.1104 * An_ME_ClfDry - 0.0946 * An_ME_ClfDry**2 + 
+                    0.0065 * An_ME_ClfDry**3 - 0.7783)
+    return An_NE_ClfDry
+
 ####################
 # Animal Warpper Functions
 ####################

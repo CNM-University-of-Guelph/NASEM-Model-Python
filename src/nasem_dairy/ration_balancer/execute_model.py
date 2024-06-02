@@ -685,6 +685,17 @@ def execute_model(user_diet: pd.DataFrame,
         Fe_DEMiCPend, Fe_DERDPend, Fe_DERUPend, Du_idMiCP, infusion_data,
         equation_selection['Monensin_eqn'], coeff_dict
         )
+    if animal_input['An_StatePhys'] == "Calf":
+        An_data['An_MEIn_ClfDry'] = animal.calculate_An_MEIn_ClfDry(
+            An_data['An_MEIn'], diet_data['Dt_MEIn_ClfLiq']
+            )
+        An_data['An_ME_ClfDry'] = animal.calculate_An_ME_ClfDry(
+            An_data['An_MEIn_ClfDry'], An_data['An_DMIn'], 
+            diet_data['Dt_DMIn_ClfLiq']
+            )
+        An_data['An_NE_ClfDry'] = animal.calculate_An_NE_ClfDry(
+            An_data['An_ME_ClfDry']
+            )
     # Calculate remaining digestability coefficients
     diet_data['TT_dcAnSt'] = diet.calculate_TT_dcAnSt(
         An_data['An_DigStIn'], diet_data['Dt_StIn'], infusion_data['Inf_StIn']
@@ -955,7 +966,14 @@ def execute_model(user_diet: pd.DataFrame,
     An_NEmUse = energy.calculate_An_NEmUse(
         An_NEmUse_NS, An_NEmUse_Act, coeff_dict
         )
-    An_MEmUse = energy.calculate_An_MEmUse(An_NEmUse, coeff_dict)
+    if animal_input["An_StatePhys"] == "Calf":
+        Km_ME_NE = energy.calculate_Km_ME_NE_Clf(
+            An_data["An_ME_ClfDry"], An_data["An_NE_ClfDry"], 
+            diet_data["Dt_DMIn_ClfLiq"], diet_data["Dt_DMIn_ClfStrt"]
+            )
+    else:
+        Km_ME_NE = energy.calculate_Km_ME_NE(animal_input["An_StatePhys"])
+    An_MEmUse = energy.calculate_An_MEmUse(An_NEmUse, Km_ME_NE)
 
     # Gain Requirements
     Rsrv_Gain_empty = body_comp.calculate_Rsrv_Gain_empty(Rsrv_Gain)
@@ -1334,9 +1352,9 @@ def execute_model(user_diet: pd.DataFrame,
     An_MPIn_MEIn = animal.calculate_An_MPIn_MEIn(An_MPIn_g, An_MEIn)
 
     ### ME and NE Use ###
-    An_MEmUse_NS = energy.calculate_An_MEmUse_NS(An_NEmUse_NS, coeff_dict)
-    An_MEmUse_Act = energy.calculate_An_MEmUse_Act(An_NEmUse_Act, coeff_dict)
-    An_MEmUse_Env = energy.calculate_An_MEmUse_Env(coeff_dict)
+    An_MEmUse_NS = energy.calculate_An_MEmUse_NS(An_NEmUse_NS, Km_ME_NE)
+    An_MEmUse_Act = energy.calculate_An_MEmUse_Act(An_NEmUse_Act, Km_ME_NE)
+    An_MEmUse_Env = energy.calculate_An_MEmUse_Env(Km_ME_NE, coeff_dict)
     An_NEm_ME = energy.calculate_An_NEm_ME(An_NEmUse, An_MEIn)
     An_NEm_DE = energy.calculate_An_NEm_DE(An_NEmUse, An_data['An_DEIn'])
     An_NEmNS_DE = energy.calculate_An_NEmNS_DE(An_NEmUse_NS, An_data['An_DEIn'])

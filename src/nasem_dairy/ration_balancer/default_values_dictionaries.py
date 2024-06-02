@@ -164,7 +164,6 @@ coeff_dict = {
 
     # From calculate_An_MEmUse
     'An_NEmUse_Env': 0,  # Line 2785
-    'Km_ME_NE': 0.66,
 
     # From calculate_An_MEgain
     'FatGain_RsrvGain': 0.622,  # Line 2451

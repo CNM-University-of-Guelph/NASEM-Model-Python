@@ -304,7 +304,8 @@ class ModelOutput:
             'An_NEuse', 'Trg_NEuse', 'An_NELuse', 'Trg_NELuse', 'An_NEprod_GE',
             'Trg_NEprod_GE', 'An_NEmlk_GE', 'Trg_NEmlk_GE', 'An_MEbal',
             'An_NELbal', 'An_NEbal', 'Trg_MEbal', 'Trg_NELbal', 'Trg_NEbal',
-            'An_MPuse_MEuse', 'Trg_MPuse_MEuse', 'An_MEavail_Grw', 'Kg_ME_NE'
+            'An_MPuse_MEuse', 'Trg_MPuse_MEuse', 'An_MEavail_Grw', 'Kg_ME_NE',
+            'Km_ME_NE'
         ]
         protein_variables = [
             'Gest_NCPgain_g', 'Gest_NPgain_g', 'Gest_NPuse_g', 'Gest_CPuse_g',
