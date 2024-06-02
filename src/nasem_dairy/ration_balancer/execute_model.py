@@ -835,7 +835,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     Frm_Gain_empty = body_comp.calculate_Frm_Gain_empty(
         Frm_Gain, diet_data['Dt_DMIn_ClfLiq'], diet_data['Dt_DMIn_ClfStrt'], 
-        coeff_dict
+        An_data['An_GutFill_BW']
         )
     Body_Gain_empty = body_comp.calculate_Body_Gain_empty(
         Frm_Gain_empty, Rsrv_Gain_empty
@@ -990,10 +990,6 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Rsrv_MEgain = energy.calculate_Rsrv_MEgain(Rsrv_NEgain, Kr_ME_RE)
     Frm_Gain = body_comp.calculate_Frm_Gain(animal_input['Trg_FrmGain'])
-    Frm_Gain_empty = body_comp.calculate_Frm_Gain_empty(
-        Frm_Gain, diet_data['Dt_DMIn_ClfLiq'], diet_data['Dt_DMIn_ClfStrt'], 
-        coeff_dict
-        )
     Frm_Fatgain = body_comp.calculate_Frm_Fatgain(
         FatGain_FrmGain, Frm_Gain_empty
         )

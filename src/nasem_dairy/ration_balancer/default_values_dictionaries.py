@@ -121,8 +121,6 @@ coeff_dict = {
 
     # From calculate_An_NE
     'Body_NP_CP': 0.86,  # Line 1964
-    # Line 2400 and 2411
-    'An_GutFill_BW': 0.18,
     'CPGain_RsrvGain': 0.068,  # Line 2466
     # Line 2341-2345
     'GrUter_BWgain': 0,

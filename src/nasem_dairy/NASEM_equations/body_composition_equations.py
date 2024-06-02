@@ -18,19 +18,16 @@ def calculate_Frm_Gain(Trg_FrmGain):
     return Frm_Gain
 
 
-def calculate_Frm_Gain_empty(Frm_Gain, 
-                             Dt_DMIn_ClfLiq, 
-                             Dt_DMIn_ClfStrt,
-                             coeff_dict
+def calculate_Frm_Gain_empty(Frm_Gain: float, 
+                             Dt_DMIn_ClfLiq: float, 
+                             Dt_DMIn_ClfStrt: float,
+                             An_GutFill_BW: float
 ) -> float:
-    req_coeff = ['An_GutFill_BW']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])  
+    Frm_Gain_empty = Frm_Gain * (1 - An_GutFill_BW)  
     # Line 2439, Assume the same gut fill for frame gain
-    condition = (Dt_DMIn_ClfLiq > 0) and (Dt_DMIn_ClfStrt > 0)
-    Frm_Gain_empty = np.where(
-        condition, Frm_Gain * 0.91,
-        Frm_Gain_empty)  # Line 2440, slightly different for grain & milk fed
+    if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:
+        # slightly different for grain & milk fed, Line 2440
+        Frm_Gain_empty = Frm_Gain * 0.91
     return Frm_Gain_empty
 
 
@@ -178,24 +175,6 @@ def calculate_Frm_Gain(Trg_FrmGain: float) -> float:
     Frm_Gain = Trg_FrmGain  
     # Add any predictions of ADG and select Trg or Pred ADG here, Line 2434
     return Frm_Gain
-
-
-def calculate_Frm_Gain_empty(Frm_Gain: float, 
-                             Dt_DMIn_ClfLiq: float,
-                             Dt_DMIn_ClfStrt: float, 
-                             coeff_dict: dict
-) -> float:
-    """
-    Frm_Gain_empty: Frame gain assuming the dame gut fill for frame gain, kg/d
-    Equation 11-6b : 0.85 * gain (kg/d) - assumes the 15% of live = empty
-    Also in Equation 20-250 
-    """
-    Frm_Gain_empty = Frm_Gain * (1 - coeff_dict['An_GutFill_BW'])  
-    # Assume the same gut fill for frame gain, Line 2439
-    if Dt_DMIn_ClfLiq > 0 and Dt_DMIn_ClfStrt > 0:
-        # slightly different for grain & milk fed, Line 2440
-        Frm_Gain_empty = Frm_Gain * 0.91
-    return Frm_Gain_empty
 
 
 def calculate_Frm_Fatgain(FatGain_FrmGain: float,
