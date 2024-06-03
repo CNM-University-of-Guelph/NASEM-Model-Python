@@ -151,8 +151,13 @@
   },
   {
     "Name": "calculate_An_MPIn",
-    "Input": {"Dt_idRUPIn": 12, "Du_idMiTP": 5.8},
+    "Input": {"An_StatePhys":"Lactating Cow", "An_DigCPtIn": 12.5, "Dt_idRUPIn": 12, "Du_idMiTP": 5.8, "InfArt_TPIn": 0},
     "Output": 17.8
+  },
+  {
+    "Name": "calculate_An_MPIn",
+    "Input": {"An_StatePhys":"Calf", "An_DigCPtIn": 12.5, "Dt_idRUPIn": 12, "Du_idMiTP": 5.8, "InfArt_TPIn": 0},
+    "Output": 12.5
   },
   {
     "Name": "calculate_An_MPIn_g",

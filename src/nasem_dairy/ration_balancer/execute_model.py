@@ -728,7 +728,10 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 10: Metabolizable Protein Intake
     ########################################
-    An_MPIn = animal.calculate_An_MPIn(diet_data['Dt_idRUPIn'], Du_idMiTP)
+    An_MPIn = animal.calculate_An_MPIn(
+        animal_input['An_StatePhys'], An_data['An_DigCPtIn'], 
+        diet_data['Dt_idRUPIn'], Du_idMiTP, infusion_data['InfArt_TPIn']
+        )
     An_MPIn_g = animal.calculate_An_MPIn_g(An_MPIn)
     An_MP = animal.calculate_An_MP(
         An_MPIn, animal_input['DMI'], infusion_data['InfRum_DMIn'], 
