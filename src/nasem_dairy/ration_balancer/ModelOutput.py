@@ -606,8 +606,7 @@ class ModelOutput:
         def recursive_search(d, path=''):
             for key, value in d.items():
                 full_key = path + key
-                if ((re.search(search_string, str(full_key), 
-                               flags=re.IGNORECASE)) and 
+                if ((re.search(search_string, str(full_key))) and 
                     full_key not in visited_keys
                     ):
                     result[full_key] = value
@@ -617,7 +616,7 @@ class ModelOutput:
                 elif isinstance(value, pd.DataFrame):
                     matching_columns = [
                         col for col in value.columns
-                        if re.search(search_string, col, flags=re.IGNORECASE)
+                        if re.search(search_string, col)
                     ]
                     if matching_columns:
                         columns_key = full_key + '_columns'
