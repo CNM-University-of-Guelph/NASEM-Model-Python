@@ -1063,7 +1063,9 @@ def execute_model(user_diet: pd.DataFrame,
         Scrf_AA_g, AA_values['Abs_AA_g']
         )
     Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input['An_BW'])
-    Ur_NPend_g = urine.calculate_Ur_NPend_g(Ur_Nend_g)
+    Ur_NPend_g = urine.calculate_Ur_NPend_g(
+        animal_input['An_StatePhys'], animal_input['An_BW'], Ur_Nend_g
+        )
     Ur_MPendUse_g = urine.calculate_Ur_MPendUse_g(Ur_NPend_g)
     Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input['An_BW'])
     Ur_Nend_Creatn_g = urine.calculate_Ur_Nend_Creatn_g(animal_input['An_BW'])
