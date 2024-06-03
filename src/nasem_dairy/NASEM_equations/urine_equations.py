@@ -33,11 +33,17 @@ def calculate_Ur_Nend_g(An_BW: float) -> float:
     return Ur_Nend_g
 
 
-def calculate_Ur_NPend_g(Ur_Nend_g: float) -> float:
+def calculate_Ur_NPend_g(An_StatePhys: str, 
+                         An_BW: float, 
+                         Ur_Nend_g: float
+) -> float:
     """
     Ur_NPend_g: Urinary endogenous Net protein, g
     """
-    Ur_NPend_g = Ur_Nend_g * 6.25  # Line 2030
+    if An_StatePhys == "Calf":
+        Ur_NPend_g = 2.75 * An_BW**0.50
+    else:    
+        Ur_NPend_g = Ur_Nend_g * 6.25  # Line 2030
     return Ur_NPend_g
 
 

@@ -617,8 +617,11 @@ def execute_model(user_diet: pd.DataFrame,
     Fe_Nend = fecal.calculate_Fe_Nend(Fe_CPend)
     Fe_NPend = fecal.calculate_Fe_NPend(Fe_CPend)
     Fe_NPend_g = fecal.calculate_Fe_NPend_g(Fe_NPend)
+    Km_MP_NP_Trg = protein_req.calculate_Km_MP_NP_Trg(
+        animal_input['An_StatePhys'], coeff_dict
+        )
     Fe_MPendUse_g_Trg = fecal.calculate_Fe_MPendUse_g_Trg(
-        animal_input['An_StatePhys'], Fe_CPend_g, Fe_NPend_g, coeff_dict
+        animal_input['An_StatePhys'], Fe_CPend_g, Fe_NPend_g, Km_MP_NP_Trg
         )
     Fe_RDPend = fecal.calculate_Fe_RDPend(
         Fe_CPend, An_data_initial['An_RDPIn'], An_data_initial['An_CPIn']
@@ -728,7 +731,10 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 10: Metabolizable Protein Intake
     ########################################
-    An_MPIn = animal.calculate_An_MPIn(diet_data['Dt_idRUPIn'], Du_idMiTP)
+    An_MPIn = animal.calculate_An_MPIn(
+        animal_input['An_StatePhys'], An_data['An_DigCPtIn'], 
+        diet_data['Dt_idRUPIn'], Du_idMiTP, infusion_data['InfArt_TPIn']
+        )
     An_MPIn_g = animal.calculate_An_MPIn_g(An_MPIn)
     An_MP = animal.calculate_An_MP(
         An_MPIn, animal_input['DMI'], infusion_data['InfRum_DMIn'], 
@@ -1051,7 +1057,7 @@ def execute_model(user_diet: pd.DataFrame,
     # Maintenance Requirement
     Scrf_NP_g = protein.calculate_Scrf_NP_g(Scrf_CP_g, coeff_dict)
     Scrf_MPUse_g_Trg = protein.calculate_Scrf_MPUse_g_Trg(
-        animal_input['An_StatePhys'], Scrf_CP_g, Scrf_NP_g, coeff_dict
+        animal_input['An_StatePhys'], Scrf_CP_g, Scrf_NP_g, Km_MP_NP_Trg
         )
     Scrf_NP = protein.calculate_Scrf_NP(Scrf_NP_g)
     Scrf_N_g = protein.calculate_Scrf_N_g(Scrf_CP_g)
@@ -1060,7 +1066,9 @@ def execute_model(user_diet: pd.DataFrame,
         Scrf_AA_g, AA_values['Abs_AA_g']
         )
     Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input['An_BW'])
-    Ur_NPend_g = urine.calculate_Ur_NPend_g(Ur_Nend_g)
+    Ur_NPend_g = urine.calculate_Ur_NPend_g(
+        animal_input['An_StatePhys'], animal_input['An_BW'], Ur_Nend_g
+        )
     Ur_MPendUse_g = urine.calculate_Ur_MPendUse_g(Ur_NPend_g)
     Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input['An_BW'])
     Ur_Nend_Creatn_g = urine.calculate_Ur_Nend_Creatn_g(animal_input['An_BW'])
@@ -1088,8 +1096,17 @@ def execute_model(user_diet: pd.DataFrame,
         )
     # Gain Requirement
     Body_NPgain_g = body_comp.calculate_Body_NPgain_g(Body_NPgain)
+    An_BWmature_empty = body_comp.calculate_An_BWmature_empty(
+        animal_input['An_BW_mature'], coeff_dict
+        )
+    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
+        animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
+        animal_input['An_BW'], An_data['An_BW_empty'],
+        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
+        coeff_dict
+        )
     Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg_initial(
-        Body_NPgain_g, coeff_dict
+        Body_NPgain_g, Kg_MP_NP_Trg
         )
     # Gestation Requirement
     Gest_MPUse_g_Trg = protein_req.calculate_Gest_MPUse_g_Trg(
@@ -1120,15 +1137,6 @@ def execute_model(user_diet: pd.DataFrame,
         Min_MPuse_g, An_MPuse_g_Trg
         )
     Frm_NPgain_g = protein_req.calculate_Frm_NPgain_g(Frm_NPgain)
-    An_BWmature_empty = body_comp.calculate_An_BWmature_empty(
-        animal_input['An_BW_mature'], coeff_dict
-        )
-    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
-        animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
-        animal_input['An_BW'], An_data['An_BW_empty'],
-        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
-        coeff_dict
-        )
     Frm_MPUse_g_Trg = protein_req.calculate_Frm_MPUse_g_Trg(
         animal_input['An_StatePhys'], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
         )
@@ -1768,12 +1776,16 @@ def execute_model(user_diet: pd.DataFrame,
     if animal_input['An_StatePhys'] == "Lactating Cow":
         CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
         CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
-
+    else:
+        CH4g_Milk = 0
+        CH4L_Milk = 0
     Man_out = manure.calculate_Man_out(
         animal_input['An_StatePhys'], An_data['An_DMIn'], diet_data['Dt_K']
         )
     if animal_input['An_StatePhys'] == "Lactating Cow":
         Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
+    else:
+        Man_Milk = 0
     Man_VolSld = manure.calculate_Man_VolSld(
         animal_input['DMI'], infusion_data['InfRum_DMIn'], 
         infusion_data['InfSI_DMIn'], An_data['An_NDF'], An_data["An_CP"]
@@ -1784,6 +1796,9 @@ def execute_model(user_diet: pd.DataFrame,
     if animal_input['An_StatePhys'] == "Lactating Cow":
         VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
         VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
+    else:
+        VolSlds_Milk = 0
+        VolSlds_Milk2 = 0
     Man_Nout_g = manure.calculate_Man_Nout_g(Ur_Nout_g, Fe_N_g, Scrf_N_g)
     Man_Nout2_g = manure.calculate_Man_Nout2_g(An_data['An_NIn_g'], An_Nprod_g)
     ManN_Milk = manure.calculate_ManN_Milk(Man_Nout_g, Mlk_Prod)
@@ -1892,6 +1907,10 @@ def execute_model(user_diet: pd.DataFrame,
         An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
         WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
         ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
+    else:
+        An_Wa_Insens = 0
+        WaIn_Milk = 0
+        ManWa_Milk = 0
     del (An_IdAAIn)
     del (Dt_IdAARUPIn)
     del (Mlk_AA_TP)

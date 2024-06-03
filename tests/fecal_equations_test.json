@@ -61,18 +61,18 @@
     },
     {
       "Name": "calculate_Fe_MPendUse_g_Trg",
-      "Input": {"An_StatePhys": "Calf", "Fe_CPend_g": 2.9, "Fe_NPend_g": 15, "coeff_dict": null},
-      "Output": 4.202898550724638
+      "Input": {"An_StatePhys": "Calf", "Fe_CPend_g": 2.9, "Fe_NPend_g": 15, "Km_MP_NP_Trg": 0.66},
+      "Output": 4.393939393939394
     },
     {
       "Name": "calculate_Fe_MPendUse_g_Trg",
-      "Input": {"An_StatePhys": "Heifer", "Fe_CPend_g": 7.1, "Fe_NPend_g": 22, "coeff_dict": null},
-      "Output": 10.289855072463768
+      "Input": {"An_StatePhys": "Heifer", "Fe_CPend_g": 7.1, "Fe_NPend_g": 22, "Km_MP_NP_Trg": 0.66},
+      "Output": 10.757575757575756
     },
     {
       "Name": "calculate_Fe_MPendUse_g_Trg",
-      "Input": {"An_StatePhys": "Lactating Cow", "Fe_CPend_g": 4.7, "Fe_NPend_g": 19.3, "coeff_dict": null},
-      "Output": 27.971014492753625
+      "Input": {"An_StatePhys": "Lactating Cow", "Fe_CPend_g": 4.7, "Fe_NPend_g": 19.3, "Km_MP_NP_Trg": 0.66},
+      "Output": 29.242424242424242
     },
     {
       "Name": "calculate_Fe_rOM",

@@ -1502,9 +1502,17 @@ def calculate_An_data_complete(
 ####################
 
 
-def calculate_An_MPIn(Dt_idRUPIn, Du_idMiTP):
-    # Line 1236 (Equation 20-136 p. 432 - without infused TP)
-    An_MPIn = Dt_idRUPIn + Du_idMiTP
+def calculate_An_MPIn(An_StatePhys: str,
+                      An_DigCPtIn: float,
+                      Dt_idRUPIn: float, 
+                      Du_idMiTP: float, 
+                      InfArt_TPIn: float
+) -> float:
+    if An_StatePhys == "Calf":
+        An_MPIn = An_DigCPtIn # Line 1237
+    else:    
+        # Line 1236 (Equation 20-136 p. 432 - without infused TP)
+        An_MPIn = Dt_idRUPIn + Du_idMiTP + InfArt_TPIn
     return An_MPIn
 
 

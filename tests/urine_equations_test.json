@@ -16,7 +16,7 @@
     },
     {
       "Name": "calculate_Ur_NPend_g",
-      "Input": {"Ur_Nend_g": 167},
+      "Input": {"An_StatePhys": "Lactating Cow","An_BW": 650 ,"Ur_Nend_g": 167},
       "Output": 1043.75
     },
     {

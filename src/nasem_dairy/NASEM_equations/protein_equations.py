@@ -51,18 +51,16 @@ def calculate_Scrf_NP_g(Scrf_CP_g: float, coeff_dict: dict) -> float:
 def calculate_Scrf_MPUse_g_Trg(An_StatePhys: str, 
                                Scrf_CP_g: float,
                                Scrf_NP_g: float, 
-                               coeff_dict: dict
+                               Km_MP_NP_Trg: float
 ) -> float:
     """
     Scrf_MPuse_g_Trg: Scurf Metabolizable protein, g
     """
-    req_coeff = ['Km_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
-        Scrf_MPUse_g_Trg = Scrf_CP_g / coeff_dict['Km_MP_NP_Trg']  
+    if An_StatePhys in ["Calf", "Heifer"]:
+        Scrf_MPUse_g_Trg = Scrf_CP_g / Km_MP_NP_Trg  
         # calves and heifers are CP based., Line 2671
     else:
-        Scrf_MPUse_g_Trg = Scrf_NP_g / coeff_dict['Km_MP_NP_Trg']  # Line 2670
+        Scrf_MPUse_g_Trg = Scrf_NP_g / Km_MP_NP_Trg  # Line 2670
     return Scrf_MPUse_g_Trg
 
 

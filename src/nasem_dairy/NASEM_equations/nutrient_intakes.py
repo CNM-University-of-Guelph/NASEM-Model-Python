@@ -596,10 +596,12 @@ def calculate_Fd_acMn(An_StatePhys, Fd_acMn, Dt_DMIn_ClfLiq):
     return Fd_acMn
 
 
-def calculate_Fd_acZn(An_StatePhys, Fd_acZn, Dt_DMIn_ClfLiq):
-    Fd_acZn = np.where(An_StatePhys == " Calf", 1.0, Fd_acZn) # Line 1867
-    condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
-    Fd_acZn = np.where(condition, 0.20, Fd_acZn) # Line 1868
+def calculate_Fd_acZn(An_StatePhys, Fd_acZn: pd.Series , Dt_DMIn_ClfLiq):
+    Fd_acZn = Fd_acZn.copy()
+    if An_StatePhys == "Calf":
+        Fd_acZn[:] = 1.0
+    if An_StatePhys == "Calf" and Dt_DMIn_ClfLiq == 0.0:
+        Fd_acZn[:] = 0.20
     return Fd_acZn
 
 

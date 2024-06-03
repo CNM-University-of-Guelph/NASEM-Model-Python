@@ -6,8 +6,8 @@
     },
     {
       "Name": "calculate_Body_MPUse_g_Trg_initial",
-      "Input": {"Body_NPgain_g": 827, "coeff_dict": null},
-      "Output": 1198.5507246376812
+      "Input": {"Body_NPgain_g": 827, "Kg_MP_NP_Trg": 0.65},
+      "Output": 1272.3076923076924
     },
     {
       "Name": "calculate_Gest_MPUse_g_Trg",
