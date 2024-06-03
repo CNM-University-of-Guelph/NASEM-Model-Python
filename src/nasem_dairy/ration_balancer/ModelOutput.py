@@ -609,7 +609,7 @@ class ModelOutput:
                 if ((re.search(search_string, str(full_key))) and 
                     full_key not in visited_keys
                     ):
-                    result[full_key] = value
+                    result[full_key] = [value, full_key]
                     visited_keys.add(full_key)
                 if isinstance(value, dict):
                     recursive_search(value, full_key + '.')
@@ -621,7 +621,7 @@ class ModelOutput:
                     if matching_columns:
                         columns_key = full_key + '_columns'
                         if columns_key not in visited_keys:
-                            result[columns_key] = matching_columns
+                            result[columns_key] = [matching_columns, columns_key]
                             visited_keys.add(columns_key)
 
         def extract_dataframe_and_column(key, value):
@@ -639,22 +639,23 @@ class ModelOutput:
         # Create output dataframe
         for key, value in result.items():
             variable_name = key.split('.')[-1]
-            if isinstance(value, dict):
+            if isinstance(value[0], dict):
                 value_display = 'dict'
-            elif isinstance(value, pd.DataFrame):
+            elif isinstance(value[0], pd.DataFrame):
                 value_display = 'Dataframe'
-            elif isinstance(value, list) and key.endswith('_columns'):
+            elif isinstance(value[0], list) and key.endswith('_columns'):
                 table_rows.extend(
                     [extract_dataframe_and_column(key, col) for col in value])
-            elif isinstance(value, list):
+            elif isinstance(value[0], list):
                 value_display = 'list'
             else:
-                value_display = value
+                value_display = value[0]
             # Add the current row to the list
-            if not (isinstance(value, list) and key.endswith('_columns')):
+            if not (isinstance(value[0], list) and key.endswith('_columns')):
                 table_rows.append({
                     'Name': variable_name,
-                    'Value': value_display
+                    'Value': value_display,
+                    'Path': value[1]
                 })
 
         output_table = pd.DataFrame(table_rows)
