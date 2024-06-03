@@ -1093,8 +1093,17 @@ def execute_model(user_diet: pd.DataFrame,
         )
     # Gain Requirement
     Body_NPgain_g = body_comp.calculate_Body_NPgain_g(Body_NPgain)
+    An_BWmature_empty = body_comp.calculate_An_BWmature_empty(
+        animal_input['An_BW_mature'], coeff_dict
+        )
+    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
+        animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
+        animal_input['An_BW'], An_data['An_BW_empty'],
+        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
+        coeff_dict
+        )
     Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg_initial(
-        Body_NPgain_g, coeff_dict
+        Body_NPgain_g, Kg_MP_NP_Trg
         )
     # Gestation Requirement
     Gest_MPUse_g_Trg = protein_req.calculate_Gest_MPUse_g_Trg(
@@ -1125,15 +1134,6 @@ def execute_model(user_diet: pd.DataFrame,
         Min_MPuse_g, An_MPuse_g_Trg
         )
     Frm_NPgain_g = protein_req.calculate_Frm_NPgain_g(Frm_NPgain)
-    An_BWmature_empty = body_comp.calculate_An_BWmature_empty(
-        animal_input['An_BW_mature'], coeff_dict
-        )
-    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
-        animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
-        animal_input['An_BW'], An_data['An_BW_empty'],
-        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
-        coeff_dict
-        )
     Frm_MPUse_g_Trg = protein_req.calculate_Frm_MPUse_g_Trg(
         animal_input['An_StatePhys'], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
         )

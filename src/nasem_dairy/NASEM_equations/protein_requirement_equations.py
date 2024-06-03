@@ -19,14 +19,14 @@ def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float,
 
 
 def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
-                                       coeff_dict: dict
+                                       Kg_MP_NP_Trg: float
 ) -> float:
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
     """
-    req_coeff = ['Kg_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Body_MPUse_g_Trg = Body_NPgain_g / coeff_dict['Kg_MP_NP_Trg']  
+    # req_coeff = ['Kg_MP_NP_Trg']
+    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  
     # Line 2675, kg MP/d for NP gain
     return Body_MPUse_g_Trg
 
