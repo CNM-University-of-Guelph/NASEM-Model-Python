@@ -1776,12 +1776,16 @@ def execute_model(user_diet: pd.DataFrame,
     if animal_input['An_StatePhys'] == "Lactating Cow":
         CH4g_Milk = methane.calculate_CH4g_Milk(CH4out_g, Mlk_Prod)
         CH4L_Milk = methane.calculate_CH4L_Milk(CH4out_L, Mlk_Prod)
-
+    else:
+        CH4g_Milk = 0
+        CH4L_Milk = 0
     Man_out = manure.calculate_Man_out(
         animal_input['An_StatePhys'], An_data['An_DMIn'], diet_data['Dt_K']
         )
     if animal_input['An_StatePhys'] == "Lactating Cow":
         Man_Milk = manure.calculate_Man_Milk(Man_out, Mlk_Prod)
+    else:
+        Man_Milk = 0
     Man_VolSld = manure.calculate_Man_VolSld(
         animal_input['DMI'], infusion_data['InfRum_DMIn'], 
         infusion_data['InfSI_DMIn'], An_data['An_NDF'], An_data["An_CP"]
@@ -1792,6 +1796,9 @@ def execute_model(user_diet: pd.DataFrame,
     if animal_input['An_StatePhys'] == "Lactating Cow":
         VolSlds_Milk = manure.calculate_VolSlds_Milk(Man_VolSld, Mlk_Prod)
         VolSlds_Milk2 = manure.calculate_VolSlds_Milk2(Man_VolSld2, Mlk_Prod)
+    else:
+        VolSlds_Milk = 0
+        VolSlds_Milk2 = 0
     Man_Nout_g = manure.calculate_Man_Nout_g(Ur_Nout_g, Fe_N_g, Scrf_N_g)
     Man_Nout2_g = manure.calculate_Man_Nout2_g(An_data['An_NIn_g'], An_Nprod_g)
     ManN_Milk = manure.calculate_ManN_Milk(Man_Nout_g, Mlk_Prod)
@@ -1900,6 +1907,10 @@ def execute_model(user_diet: pd.DataFrame,
         An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
         WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
         ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
+    else:
+        An_Wa_Insens = 0
+        WaIn_Milk = 0
+        ManWa_Milk = 0
     del (An_IdAAIn)
     del (Dt_IdAARUPIn)
     del (Mlk_AA_TP)
