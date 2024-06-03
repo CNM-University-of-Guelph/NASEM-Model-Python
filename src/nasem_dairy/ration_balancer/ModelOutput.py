@@ -590,7 +590,8 @@ class ModelOutput:
         # Return None if not found
         return None
 
-    def search(self, search_string, dictionaries_to_search=None):
+    def search(self, search_string, dictionaries_to_search=None,
+               case_sensitive: bool = False):
         # Define the dictionaries to search within, by default all dictionaries 
         # where outputs are stored
         if dictionaries_to_search is None:
@@ -603,10 +604,13 @@ class ModelOutput:
         visited_keys = set()
         table_rows = []
 
+        user_flags = 0 if case_sensitive else re.IGNORECASE
+
         def recursive_search(d, path=''):
             for key, value in d.items():
                 full_key = path + key
-                if ((re.search(search_string, str(full_key))) and 
+                if ((re.search(search_string, str(full_key), 
+                               flags=user_flags)) and 
                     full_key not in visited_keys
                     ):
                     result[full_key] = [value, full_key]
@@ -616,7 +620,7 @@ class ModelOutput:
                 elif isinstance(value, pd.DataFrame):
                     matching_columns = [
                         col for col in value.columns
-                        if re.search(search_string, col)
+                        if re.search(search_string, col, flags=user_flags)
                     ]
                     if matching_columns:
                         columns_key = full_key + '_columns'
