@@ -773,7 +773,8 @@ from nasem_dairy.NASEM_equations.protein_requirement_equations import (
     calculate_Rsrv_MPUse_g_Trg,
     calculate_Body_MPUse_g_Trg,
     calculate_An_MPuse_g_Trg,
-    calculate_Trg_MPIn_req
+    calculate_Trg_MPIn_req,
+    calculate_Km_MP_NP_Trg
 )
 
 from nasem_dairy.NASEM_equations.micronutrient_requirement_equations import (

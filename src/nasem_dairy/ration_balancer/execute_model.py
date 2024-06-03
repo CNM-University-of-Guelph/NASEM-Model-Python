@@ -617,8 +617,11 @@ def execute_model(user_diet: pd.DataFrame,
     Fe_Nend = fecal.calculate_Fe_Nend(Fe_CPend)
     Fe_NPend = fecal.calculate_Fe_NPend(Fe_CPend)
     Fe_NPend_g = fecal.calculate_Fe_NPend_g(Fe_NPend)
+    Km_MP_NP_Trg = protein_req.calculate_Km_MP_NP_Trg(
+        animal_input['An_StatePhys'], coeff_dict
+        )
     Fe_MPendUse_g_Trg = fecal.calculate_Fe_MPendUse_g_Trg(
-        animal_input['An_StatePhys'], Fe_CPend_g, Fe_NPend_g, coeff_dict
+        animal_input['An_StatePhys'], Fe_CPend_g, Fe_NPend_g, Km_MP_NP_Trg
         )
     Fe_RDPend = fecal.calculate_Fe_RDPend(
         Fe_CPend, An_data_initial['An_RDPIn'], An_data_initial['An_CPIn']
@@ -1054,7 +1057,7 @@ def execute_model(user_diet: pd.DataFrame,
     # Maintenance Requirement
     Scrf_NP_g = protein.calculate_Scrf_NP_g(Scrf_CP_g, coeff_dict)
     Scrf_MPUse_g_Trg = protein.calculate_Scrf_MPUse_g_Trg(
-        animal_input['An_StatePhys'], Scrf_CP_g, Scrf_NP_g, coeff_dict
+        animal_input['An_StatePhys'], Scrf_CP_g, Scrf_NP_g, Km_MP_NP_Trg
         )
     Scrf_NP = protein.calculate_Scrf_NP(Scrf_NP_g)
     Scrf_N_g = protein.calculate_Scrf_N_g(Scrf_CP_g)

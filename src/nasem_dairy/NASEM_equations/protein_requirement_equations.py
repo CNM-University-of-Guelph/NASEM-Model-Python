@@ -243,3 +243,15 @@ def calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg: float,
                     Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Trg_Mlk_NP_g / 
                     coeff_dict['Kl_MP_NP_Trg'])  # Line 2710
     return Trg_MPIn_req
+
+
+def calculate_Km_MP_NP_Trg(An_StatePhys: str, coeff_dict: dict) -> float:
+    # Maintenance assumed to be equal to target efficiency for export plus 
+    # gain protein
+    req_coeff = ['Kx_MP_NP_Trg']
+    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if An_StatePhys in ["Calf", "Heifer"]:
+        Km_MP_NP_Trg = 0.66
+    else:
+        Km_MP_NP_Trg = coeff_dict['Kx_MP_NP_Trg']
+    return Km_MP_NP_Trg 

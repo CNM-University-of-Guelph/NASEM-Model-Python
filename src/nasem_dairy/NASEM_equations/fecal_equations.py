@@ -103,17 +103,15 @@ def calculate_Fe_NPend_g(Fe_NPend: float) -> float:
 def calculate_Fe_MPendUse_g_Trg(An_StatePhys: str, 
                                 Fe_CPend_g: float,
                                 Fe_NPend_g: float, 
-                                coeff_dict: dict
+                                Km_MP_NP_Trg: float
 ) -> float:
     """
     Fe_MPendUse_g_Trg: Fecal MP from endogenous secretions and urea captured by microbes, g
     """
-    req_coeff = ['Km_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     if An_StatePhys == "Calf" or An_StatePhys == "Heifer":
-        Fe_MPendUse_g_Trg = Fe_CPend_g / coeff_dict['Km_MP_NP_Trg']  # Line 2669
+        Fe_MPendUse_g_Trg = Fe_CPend_g / Km_MP_NP_Trg  # Line 2669
     else:
-        Fe_MPendUse_g_Trg = Fe_NPend_g / coeff_dict['Km_MP_NP_Trg']  # Line 2668
+        Fe_MPendUse_g_Trg = Fe_NPend_g / Km_MP_NP_Trg  # Line 2668
     return Fe_MPendUse_g_Trg
 
 

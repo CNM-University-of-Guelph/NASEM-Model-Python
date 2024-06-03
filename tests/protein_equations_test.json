@@ -41,18 +41,18 @@
     },
     {
       "Name": "calculate_Scrf_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Calf", "Scrf_CP_g": 4.9, "Scrf_NP_g": 3.4, "coeff_dict": null},
-      "Output": 7.10144927536232
+      "Input": {"An_StatePhys": "Calf", "Scrf_CP_g": 4.9, "Scrf_NP_g": 3.4, "Km_MP_NP_Trg": 0.66},
+      "Output": 7.424242424242425
     },
     {
       "Name": "calculate_Scrf_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Heifer", "Scrf_CP_g": 8.1, "Scrf_NP_g": 5.1, "coeff_dict": null},
-      "Output": 11.73913043478261
+      "Input": {"An_StatePhys": "Heifer", "Scrf_CP_g": 8.1, "Scrf_NP_g": 5.1, "Km_MP_NP_Trg": 0.66},
+      "Output": 12.272727272727272
     },
     {
       "Name": "calculate_Scrf_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Lactating Cow", "Scrf_CP_g": 5.1, "Scrf_NP_g": 8.9, "coeff_dict": null},
-      "Output": 12.898550724637683
+      "Input": {"An_StatePhys": "Lactating Cow", "Scrf_CP_g": 5.1, "Scrf_NP_g": 8.9, "Km_MP_NP_Trg": 0.66},
+      "Output": 13.484848484848484
     },
     {
       "Name": "calculate_Scrf_NP",
