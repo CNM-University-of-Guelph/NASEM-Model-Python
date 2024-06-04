@@ -1903,12 +1903,15 @@ def execute_model(user_diet: pd.DataFrame,
     Man_Wa_out = manure.calculate_Man_Wa_out(
         animal_input['An_StatePhys'], Man_out, Fe_OM, Ur_Nout_g, Man_Min_out_g
         )
-    if animal_input['An_StatePhys'] == "Lactating Cow":
+    if animal_input['An_StatePhys'] != "Calf":
         An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
+    else:
+        An_Wa_Insens = 0
+        
+    if animal_input['An_StatePhys'] == "Lactating Cow":
         WaIn_Milk = water.calculate_WaIn_Milk(An_WaIn, Mlk_Prod)
         ManWa_Milk = manure.calculate_ManWa_Milk(Man_Wa_out, Mlk_Prod)
     else:
-        An_Wa_Insens = 0
         WaIn_Milk = 0
         ManWa_Milk = 0
     del (An_IdAAIn)

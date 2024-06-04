@@ -23,7 +23,8 @@ def calculate_An_WaIn(An_StatePhys: str,
         # Low DMI, CP, and Na results in too low of WaIn of 10 kg/d.
         # Consider trapping values below 22 which is the min from observed 
         # data. MDH from RM.
-    elif An_StatePhys == "Heifer":  # Line 967
+    # elif An_StatePhys == "Heifer":  # Line 967
+    elif An_StatePhys in ["Heifer", "Dry Cow"]:
         An_WaIn = (1.16 * Dt_DMIn + 0.23 * Dt_DM + 0.44 * Env_TempCurr + 
                    0.061 * (Env_TempCurr - 16.4)**2) # Line 965
     else:  # Line 968
