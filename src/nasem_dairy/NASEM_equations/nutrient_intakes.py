@@ -478,8 +478,8 @@ def calculate_Fd_PorgIn(Fd_PIn, Fd_Porg_P):
 
 
 def calculate_Fd_MgIn_min(Fd_Category, Fd_MgIn):
-    Fd_MgIn_min = np.where(Fd_Category == "Vitamin/Mineral", 
-                           Fd_MgIn, 0) # Line 735
+    Fd_MgIn_min = Fd_MgIn.copy()
+    Fd_MgIn_min[Fd_Category != "Vitamin/Mineral"] = 0
     return Fd_MgIn_min
 
 
@@ -2039,7 +2039,7 @@ def calculate_diet_info(DMI,
         complete_diet_info['Fd_PIn'], complete_diet_info['Fd_Porg_P']
         )
     complete_diet_info['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
-        diet_info['Fd_Category'], diet_info['Fd_Mg']
+        diet_info['Fd_Category'], complete_diet_info['Fd_MgIn']
         )
 
     micro_nutrient_intakes = [
