@@ -1066,7 +1066,10 @@ def calculate_Body_NEgain_BWgain(An_REgain: float, Body_Gain: float) -> float:
     """
     Body_NEgain_BWgain: Mcal of NE per kg bodyweight gain 
     """
-    Body_NEgain_BWgain = An_REgain / Body_Gain  # mcal NE/kg BW gain, Line 2871
+    if Body_Gain == 0:
+        Body_NEgain_BWgain = 0
+    else:    
+        Body_NEgain_BWgain = An_REgain / Body_Gain  # mcal NE/kg BW gain, Line 2871
     return Body_NEgain_BWgain
 
 
@@ -1074,7 +1077,10 @@ def calculate_An_ME_NEg(An_REgain: float, An_MEgain: float) -> float:
     """
     An_ME_NEg: Retained energy as a proportion on ME for gain
     """
-    An_ME_NEg = An_REgain / An_MEgain  
+    if An_MEgain == 0:
+        An_ME_NEg = 0
+    else:    
+        An_ME_NEg = An_REgain / An_MEgain  
     # A weighted average efficiency based on user entered or prediction frame
     # and reserves gains. Cows only at this time, Line 2875
     return An_ME_NEg

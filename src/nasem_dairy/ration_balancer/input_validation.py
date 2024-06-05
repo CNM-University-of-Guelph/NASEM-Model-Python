@@ -15,7 +15,7 @@ def validate_animal_input(animal_input):
             'An_GestLength': int,
             'Trg_RsrvGain': float,
             'Fet_BWbrth': float,
-            'An_AgeDay': int,
+            'An_AgeDay': float,
             'An_305RHA_MlkTP': float,
             'An_StatePhys': str,
             'An_Breed': str,
