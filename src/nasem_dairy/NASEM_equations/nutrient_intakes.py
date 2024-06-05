@@ -1403,7 +1403,7 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
         Dt_GasEOut = 0  
     # No observations on calves.
     # Would not be 0 once the calf starts eating dry feed.
-    elif Monensin_eqn == 1:
+    if Monensin_eqn == 1:
         Dt_GasEOut = Dt_GasEOut * 0.95
     return Dt_GasEOut
 
