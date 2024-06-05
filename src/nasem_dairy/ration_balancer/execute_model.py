@@ -24,6 +24,7 @@ import nasem_dairy.NASEM_equations.urine_equations as urine
 import nasem_dairy.NASEM_equations.water_equations as water
 
 import nasem_dairy.ration_balancer.default_values_dictionaries as constants
+import nasem_dairy.ration_balancer.input_validation as validate
 import nasem_dairy.ration_balancer.ModelOutput as output
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
@@ -88,7 +89,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # prevent mutable changes outside of expected scope (especially for Shiny):
     user_diet = user_diet.copy()
-    animal_input = animal_input.copy()
+    animal_input = validate.validate_animal_input(animal_input.copy())
     mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
