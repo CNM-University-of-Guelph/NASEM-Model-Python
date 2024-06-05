@@ -1179,11 +1179,11 @@ def calculate_Abs_MgIn(Dt_acMg: float, Dt_MgIn: float) -> float:
     return Abs_MgIn
 
 
-def calculate_Dt_DigWSCIn(Fd_DigWSCIn: float) -> float:
+def calculate_Dt_DigWSCIn(Fd_DigWSCIn: pd.Series) -> float:
     """
     Dt_DigWSCIn: Digestable water soluble carbohydrate intake, kg/d
     """
-    Dt_DigWSCIn = sum(Fd_DigWSCIn)  
+    Dt_DigWSCIn = Fd_DigWSCIn.sum()  
     # This is not used as it isn't additive with St, MDH. Line 1019
     return Dt_DigWSCIn
 
