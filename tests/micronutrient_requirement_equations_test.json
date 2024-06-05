@@ -741,8 +741,8 @@
     },
     {
         "Name": "calculate_An_VitE_req",
-        "Input": {"Trg_MilkProd": 20, "An_Parity_rl": 1, "An_StatePhys": "Calf", "An_BW": 704, "An_GestDay": 287, "An_Preg": 1, "Dt_PastIn": 1.2},
-        "Output": 1348
+        "Input": {"Trg_MilkProd": 20, "An_Parity_rl": 1, "An_StatePhys": "Dry Cow", "An_BW": 704, "An_GestDay": 287, "An_Preg": 1, "Dt_PastIn": 1.2},
+        "Output": 2052
     },
     {
         "Name": "calculate_An_VitE_bal",
