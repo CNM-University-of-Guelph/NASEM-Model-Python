@@ -597,6 +597,7 @@ def calculate_Fd_acMn(An_StatePhys, Fd_acMn, Dt_DMIn_ClfLiq):
 
 
 def calculate_Fd_acZn(An_StatePhys, Fd_acZn, Dt_DMIn_ClfLiq):
+    Fd_acZn = Fd_acZn.copy()
     if An_StatePhys == "Calf":
         Fd_acZn[:] = 1.0
     if An_StatePhys == "Calf" and Dt_DMIn_ClfLiq == 0.0:
