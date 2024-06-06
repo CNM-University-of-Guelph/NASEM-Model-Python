@@ -24,6 +24,7 @@ import nasem_dairy.NASEM_equations.urine_equations as urine
 import nasem_dairy.NASEM_equations.water_equations as water
 
 import nasem_dairy.ration_balancer.default_values_dictionaries as constants
+import nasem_dairy.ration_balancer.input_validation as validate
 import nasem_dairy.ration_balancer.ModelOutput as output
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
@@ -88,7 +89,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # prevent mutable changes outside of expected scope (especially for Shiny):
     user_diet = user_diet.copy()
-    animal_input = animal_input.copy()
+    animal_input = validate.validate_animal_input(animal_input.copy())
     mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
@@ -1102,7 +1103,7 @@ def execute_model(user_diet: pd.DataFrame,
     Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
         animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
         animal_input['An_BW'], An_data['An_BW_empty'],
-        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
+        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input, 
         coeff_dict
         )
     Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg_initial(
@@ -1139,6 +1140,10 @@ def execute_model(user_diet: pd.DataFrame,
     Frm_NPgain_g = protein_req.calculate_Frm_NPgain_g(Frm_NPgain)
     Frm_MPUse_g_Trg = protein_req.calculate_Frm_MPUse_g_Trg(
         animal_input['An_StatePhys'], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
+        )
+    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg_heifer_adjustment(
+        animal_input['An_StatePhys'], Diff_MPuse_g, Frm_NPgain_g, 
+        Frm_MPUse_g_Trg, Kg_MP_NP_Trg
         )
     Rsrv_NPgain_g = protein_req.calculate_Rsrv_NPgain_g(Rsrv_NPgain)
     Rsrv_MPUse_g_Trg = protein_req.calculate_Rsrv_MPUse_g_Trg(

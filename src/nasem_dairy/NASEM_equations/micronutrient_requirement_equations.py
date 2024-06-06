@@ -1096,10 +1096,11 @@ def calculate_An_VitE_req(Trg_MilkProd: float,
         or An_StatePhys == "Calf"
         ):  # Line 3108-3109
         An_VitE_req = 2 * An_BW
-    elif An_GestDay >= 259 and An_Preg == 1:  # Line 3110
-        An_VitE_req = 3 * An_BW
     else:
         An_VitE_req = 0.8 * An_BW
+
+    if An_GestDay >= 259 and An_Preg == 1:  # Line 3110
+        An_VitE_req = 3 * An_BW
 
     An_VitE_req = An_VitE_req - Dt_PastIn * 50  
     # 50 IU provided per kg of pasture DM, Line 3111

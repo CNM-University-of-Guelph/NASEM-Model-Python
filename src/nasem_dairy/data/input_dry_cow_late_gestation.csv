@@ -1,0 +1,53 @@
+﻿Location,Variable,Value,Expected Value
+equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
+equation_selection,DMIn_eqn,0,int (0-17)
+equation_selection,mProd_eqn,1,int
+equation_selection,MiN_eqn,1,"int (1, 2 or 3)"
+equation_selection,use_infusions,0,"0 for no infusion, 1 to use infusions; Not used after refactor"
+equation_selection,NonMilkCP_ClfLiq,0,"0 for no non milk protein sorce, 1 for non milk protein"
+equation_selection,Monensin_eqn,1,"int Is Monensin in diet? 0=No, 1=Yes"
+equation_selection,mPrt_eqn,0,"int 0 for NRC, 1 for VT1, 2 for VT2"
+equation_selection,mFat_eqn,1,"Milk Fat prediction equation (0 = use Trg_MilkFatp, 1 = use predicted milk fat production)"
+equation_selection,RumDevDisc_Clf,0,0=No dry feed discount for ME due to undeveloped rumen. 1=a 10% discount on dry feed if Liq>1.5% of BW
+diet_info,"Calcium carbonate",0.10000500000000001,float
+diet_info,"Calcium chloride",0.10000500000000001,float
+diet_info,"Canola meal",1.9999983000000003,float
+diet_info,"Cobalt sulfate (7H2O)",0.10000500000000001,float
+diet_info,"Copper sulfate (5H2O)",0.10000500000000001,float
+diet_info,"Corn grain HM, coarse grind",1.9999983000000003,float
+diet_info,"Corn silage, typical",3.9999966000000007,float
+diet_info,"Magnesium oxide",0.10000500000000001,float
+diet_info,"Magnesium sulfate (7H2O)",0.10000500000000001,float
+diet_info,"Manganese sulfate (H2O)",0.10000500000000001,float
+diet_info,"Selenate, sodium (10 H2O)",0.10000500000000001,float
+diet_info,"Sodium chloride (salt)",0.10000500000000001,float
+diet_info,"Soybean hulls",1.0000048000000001,float
+diet_info,"Vit A premix",0.10000500000000001,float
+diet_info,"Vit D premix",0.10000500000000001,float
+diet_info,"Vit E premix",0.10000500000000001,float
+diet_info,"Wheat straw",1.0000048000000001,float
+diet_info,"Zinc sulfate (H2O)",0.10000500000000001,float
+animal_input,An_Parity_rl,2,int
+animal_input,Trg_MilkProd,0,float
+animal_input,An_BW,725,float
+animal_input,An_BCS,3,float
+animal_input,An_LactDay,0,int
+animal_input,Trg_MilkFatp,0,float
+animal_input,Trg_MilkTPp,0,float
+animal_input,Trg_MilkLacp,0,float
+animal_input,DMI,11.3,float aka. Trg_Dt_DMIn
+animal_input,An_BW_mature,700,float
+animal_input,Trg_FrmGain,0.0,float
+animal_input,An_GestDay,265,int
+animal_input,An_GestLength,280,int
+animal_input,Trg_RsrvGain,0,float
+animal_input,Fet_BWbrth,44.1,float
+animal_input,An_AgeDay,1763.2,int
+animal_input,An_305RHA_MlkTP,280,float
+animal_input,An_StatePhys,Dry Cow,str
+animal_input,An_Breed,Holstein,str (Holstein or Jersey)
+animal_input,An_AgeDryFdStart,14,Day starter feed is first offered
+animal_input,Env_TempCurr,22,current mean daily temperature in degrees C
+animal_input,Env_DistParlor,0,distance from the barn or paddock to the parlor in meters
+animal_input,Env_TripsParlor,0,number of daily trips to and from the parlor; generally 2 trips per milking times number of milkings
+animal_input,Env_Topo,0,the positive elevation change per day in meters

@@ -266,6 +266,8 @@ def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl,
          and (An_Parity_rl > 0)
     ):
         An_GutFill_BW = coeff_dict['An_GutFill_BWmature']  # Line 2410, cow
+    elif An_StatePhys == "Heifer":
+        An_GutFill_BW = 0.15    # Line 2408 
     else:
         An_GutFill_BW = An_GutFill_BW
     return An_GutFill_BW

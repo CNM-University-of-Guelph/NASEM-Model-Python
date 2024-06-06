@@ -1,0 +1,13 @@
+Coverage reports require pytest-cov package. Install by running:
+pip install pytest-cov
+
+To run a coverage report, use --cov
+pytest --cov
+
+To produce a html report use --cov --cov-report=html
+pytest --cov --cov-report=html
+
+To do the same, but ignore integration tests:
+pytest --cov --cov-config=.coveragerc --cov-report=html --ignore=tests/integration
+
+NOTE: the .covereagrc is in the root dir of package but is not used unless requested.

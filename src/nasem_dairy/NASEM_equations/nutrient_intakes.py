@@ -478,8 +478,8 @@ def calculate_Fd_PorgIn(Fd_PIn, Fd_Porg_P):
 
 
 def calculate_Fd_MgIn_min(Fd_Category, Fd_MgIn):
-    Fd_MgIn_min = np.where(Fd_Category == "Vitamin/Mineral", 
-                           Fd_MgIn, 0) # Line 735
+    Fd_MgIn_min = Fd_MgIn.copy()
+    Fd_MgIn_min[Fd_Category != "Vitamin/Mineral"] = 0
     return Fd_MgIn_min
 
 
@@ -1180,11 +1180,11 @@ def calculate_Abs_MgIn(Dt_acMg: float, Dt_MgIn: float) -> float:
     return Abs_MgIn
 
 
-def calculate_Dt_DigWSCIn(Fd_DigWSCIn: float) -> float:
+def calculate_Dt_DigWSCIn(Fd_DigWSCIn: pd.Series) -> float:
     """
     Dt_DigWSCIn: Digestable water soluble carbohydrate intake, kg/d
     """
-    Dt_DigWSCIn = sum(Fd_DigWSCIn)  
+    Dt_DigWSCIn = Fd_DigWSCIn.sum()  
     # This is not used as it isn't additive with St, MDH. Line 1019
     return Dt_DigWSCIn
 
@@ -1404,7 +1404,7 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
         Dt_GasEOut = 0  
     # No observations on calves.
     # Would not be 0 once the calf starts eating dry feed.
-    elif Monensin_eqn == 1:
+    if Monensin_eqn == 1:
         Dt_GasEOut = Dt_GasEOut * 0.95
     return Dt_GasEOut
 
@@ -2040,7 +2040,7 @@ def calculate_diet_info(DMI,
         complete_diet_info['Fd_PIn'], complete_diet_info['Fd_Porg_P']
         )
     complete_diet_info['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
-        diet_info['Fd_Category'], diet_info['Fd_Mg']
+        diet_info['Fd_Category'], complete_diet_info['Fd_MgIn']
         )
 
     micro_nutrient_intakes = [

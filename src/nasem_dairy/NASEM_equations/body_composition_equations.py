@@ -1,6 +1,7 @@
 # Body composition equations
 # Calculations for body reseves gain/loss, frame gain, energy reserves
 # import nasem_dairy.NASEM_equations.body_composition_equations as body_comp
+import math
 
 import numpy as np
 
@@ -113,12 +114,11 @@ def calculate_FatGain_FrmGain(An_StatePhys: str,
     This is why it is scaled to a proportion of mature BW (An_BW / An_BW_mature)
     Also in equation 20-253
     """
-    FatGain_FrmGain = np.where(
-        An_StatePhys == "Calf",  # Line 2446
-        0.0786 + 0.0370 * An_REgain_Calf,  # Calves, ..., g/g EBW
-        (0.067 + 0.375 * An_BW / An_BW_mature))  
-    # Heifers and cows, g/g EBW p. 258 Equation 11-5a
-    if np.isnan(FatGain_FrmGain):  # trap NA when no Body_Gain, Line 2449
+    if An_StatePhys == "Calf":
+        FatGain_FrmGain = 0.0786 + 0.0370 * An_REgain_Calf # Calves,..., g/g EBW
+    else:
+        FatGain_FrmGain = (0.067 + 0.375 * An_BW / An_BW_mature)
+    if math.isnan(FatGain_FrmGain):
         FatGain_FrmGain = 0
     return FatGain_FrmGain
 
@@ -556,10 +556,13 @@ def calculate_Kg_ME_NE(Frm_NEgain: float,
     """
     Kg_ME_NE: ME to NE for NE allowable gain?
     """
+    if Frm_NEgain + Rsrv_NEgain == 0:
+        Kg_ME_NE = 0
+    else:
     #Use a weighted average of Kf and Kr to predict allowable gain at that mix of Frm and Rsrv gain.
-    Kg_ME_NE = (Kf_ME_RE * Frm_NEgain / 
-                (Frm_NEgain + Rsrv_NEgain) + Kr_ME_RE * Rsrv_NEgain / 
-                (Frm_NEgain + Rsrv_NEgain))
+        Kg_ME_NE = (Kf_ME_RE * Frm_NEgain / 
+                    (Frm_NEgain + Rsrv_NEgain) + Kr_ME_RE * Rsrv_NEgain / 
+                    (Frm_NEgain + Rsrv_NEgain))
     return Kg_ME_NE
 
 
