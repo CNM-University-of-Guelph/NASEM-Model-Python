@@ -170,6 +170,17 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
     return Kg_MP_NP_Trg
 
 
+def calculate_Kg_MP_NP_Trg_heifer_adjustment(An_StatePhys: str, 
+                                             Diff_MPuse_g: float, 
+                                             Frm_NPgain_g: float, 
+                                             Frm_MPUse_g_Trg: float,
+                                             Kg_MP_NP_Trg: float
+) -> float:
+    if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
+        Kg_MP_NP_Trg = Frm_NPgain_g / Frm_MPUse_g_Trg
+    return Kg_MP_NP_Trg
+
+
 def calculate_Rsrv_NPgain_g(Rsrv_NPgain: float) -> float:
     """
     Rsrv_MPUse_g_Trg: MP requirement for body reserves

@@ -1103,7 +1103,7 @@ def execute_model(user_diet: pd.DataFrame,
     Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
         animal_input['An_StatePhys'], animal_input['An_Parity_rl'],
         animal_input['An_BW'], An_data['An_BW_empty'],
-        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input,
+        animal_input['An_BW_mature'], An_BWmature_empty, MP_NP_efficiency_input, 
         coeff_dict
         )
     Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg_initial(
@@ -1140,6 +1140,10 @@ def execute_model(user_diet: pd.DataFrame,
     Frm_NPgain_g = protein_req.calculate_Frm_NPgain_g(Frm_NPgain)
     Frm_MPUse_g_Trg = protein_req.calculate_Frm_MPUse_g_Trg(
         animal_input['An_StatePhys'], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
+        )
+    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg_heifer_adjustment(
+        animal_input['An_StatePhys'], Diff_MPuse_g, Frm_NPgain_g, 
+        Frm_MPUse_g_Trg, Kg_MP_NP_Trg
         )
     Rsrv_NPgain_g = protein_req.calculate_Rsrv_NPgain_g(Rsrv_NPgain)
     Rsrv_MPUse_g_Trg = protein_req.calculate_Rsrv_MPUse_g_Trg(
