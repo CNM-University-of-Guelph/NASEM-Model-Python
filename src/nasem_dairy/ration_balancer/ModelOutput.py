@@ -613,7 +613,7 @@ class ModelOutput:
                                flags=user_flags)) and 
                     full_key not in visited_keys
                     ):
-                    result[full_key] = [value, full_key]
+                    result[full_key] = value
                     visited_keys.add(full_key)
                 if isinstance(value, dict):
                     recursive_search(value, full_key + '.')
@@ -625,14 +625,18 @@ class ModelOutput:
                     if matching_columns:
                         columns_key = full_key + '_columns'
                         if columns_key not in visited_keys:
-                            result[columns_key] = [matching_columns, columns_key]
+                            result[columns_key] = matching_columns
                             visited_keys.add(columns_key)
 
         def extract_dataframe_and_column(key, value):
             parts = key.split('.')[-1].rsplit('_', 1)
             # variable_name = parts[0]
             dataframe_name, column_name = parts[-1], "column"
-            return {'Name': value, 'Value': f'{parts[0]}[{column_name}]'}
+            return {'Name': value, 
+                    'Value': f'{parts[0]}[{column_name}]', 
+                    'Path': '.'.join(key.rsplit('.', 1)[:-1] + 
+                                     [key.rsplit('.', 1)[-1][:-8]])
+                    }
 
         # Iterate over specified dictionaries
         for dictionary_name in dictionaries_to_search:
@@ -643,23 +647,23 @@ class ModelOutput:
         # Create output dataframe
         for key, value in result.items():
             variable_name = key.split('.')[-1]
-            if isinstance(value[0], dict):
+            if isinstance(value, dict):
                 value_display = 'dict'
-            elif isinstance(value[0], pd.DataFrame):
+            elif isinstance(value, pd.DataFrame):
                 value_display = 'Dataframe'
-            elif isinstance(value[0], list) and key.endswith('_columns'):
+            elif isinstance(value, list) and key.endswith('_columns'):
                 table_rows.extend(
                     [extract_dataframe_and_column(key, col) for col in value])
-            elif isinstance(value[0], list):
+            elif isinstance(value, list):
                 value_display = 'list'
             else:
-                value_display = value[0]
+                value_display = value
             # Add the current row to the list
-            if not (isinstance(value[0], list) and key.endswith('_columns')):
+            if not (isinstance(value, list) and key.endswith('_columns')):
                 table_rows.append({
                     'Name': variable_name,
                     'Value': value_display,
-                    'Path': value[1]
+                    'Path': key
                 })
 
         output_table = pd.DataFrame(table_rows)
