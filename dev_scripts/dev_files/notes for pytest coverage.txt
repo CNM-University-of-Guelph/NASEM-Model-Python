@@ -1,3 +1,6 @@
+Coverage reports require pytest-cov package. Install by running:
+pip install pytest-cov
+
 To run a coverage report, use --cov
 pytest --cov
 
