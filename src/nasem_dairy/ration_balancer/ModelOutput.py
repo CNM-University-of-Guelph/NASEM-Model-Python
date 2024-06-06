@@ -647,6 +647,7 @@ class ModelOutput:
         # Create output dataframe
         for key, value in result.items():
             variable_name = key.split('.')[-1]
+            path = '.'.join(key.rsplit('.', 1)[:-1])
             if isinstance(value, dict):
                 value_display = 'dict'
             elif isinstance(value, pd.DataFrame):
@@ -663,7 +664,7 @@ class ModelOutput:
                 table_rows.append({
                     'Name': variable_name,
                     'Value': value_display,
-                    'Path': key
+                    'Path': path
                 })
 
         output_table = pd.DataFrame(table_rows)
