@@ -629,13 +629,18 @@ class ModelOutput:
                             visited_keys.add(columns_key)
 
         def extract_dataframe_and_column(key, value):
-            parts = key.split('.')[-1].rsplit('_', 1)
-            # variable_name = parts[0]
-            dataframe_name, column_name = parts[-1], "column"
+            '''
+            Only used when key endswith('_columns')
+            '''
+            cat_and_group = key.split('.')
+            df_name = cat_and_group[-1].rsplit('_', 1)[0]
+
+            cat_and_group = key.rsplit('.',2)#[:-1]
+            subset_path = f"{cat_and_group[0]}['{df_name}']"
+
             return {'Name': value, 
-                    'Value': f'{parts[0]}[{column_name}]', 
-                    'Path': '.'.join(key.rsplit('.', 1)[:-1] + 
-                                     [key.rsplit('.', 1)[-1][:-8]])
+                    'Value': f"{df_name}['{value}']", 
+                    'Path': subset_path
                     }
 
         # Iterate over specified dictionaries
@@ -647,7 +652,13 @@ class ModelOutput:
         # Create output dataframe
         for key, value in result.items():
             variable_name = key.split('.')[-1]
-            path = '.'.join(key.rsplit('.', 1)[:-1])
+            parts = key.split('.')
+            # Category
+            path = parts[0]
+            # Add all intermediate parts in square brackets
+            for group in parts[1:-1]:
+                path += f"['{group}']"
+            
             if isinstance(value, dict):
                 value_display = 'dict'
             elif isinstance(value, pd.DataFrame):
