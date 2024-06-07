@@ -556,11 +556,11 @@ class ModelOutput:
         This will add all to Miscellaneous category under 'post_execute_calcs'
         """
         getattr(self, 'Miscellaneous')['post_execute_calcs'] = {}
-        
-        An_MPuse_kg_Trg = self.get_value('An_MPuse_g_Trg') / 1000
-
+                
         new_var = {
-            'An_MPuse_kg_Trg': An_MPuse_kg_Trg
+            'An_MPuse_kg_Trg': self.get_value('An_MPuse_g_Trg') / 1000,
+            'Dt_ForNDFIn_percNDF': (self.get_value('Dt_ForNDFIn') / 
+                                    self.get_value('Dt_NDFIn') * 100),
         }
 
         for key, value in new_var.items():
