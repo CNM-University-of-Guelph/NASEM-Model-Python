@@ -47,6 +47,7 @@ class ModelOutput:
         self.__sort_Efficiencies()
         self.__sort_Miscellaneous()
         self.__populate_uncategorized()
+        self.__calculate_additional_variables()
 
     def _repr_html_(self):
         #This is the HTML display when the ModelOutput object is called directly
@@ -546,6 +547,26 @@ class ModelOutput:
         ]
         # Store variables
         self.__populate_category('Miscellaneous', group_names, misc_variables)   
+
+    def __calculate_additional_variables(self):
+        """
+        This method calculates additional values that are useful for reporting but not used by model.
+        E.g. Some values are normally reported with different units to what are calculated.
+
+        This will add all to Miscellaneous category under 'post_execute_calcs'
+        """
+        getattr(self, 'Miscellaneous')['post_execute_calcs'] = {}
+        
+        An_MPuse_kg_Trg = self.get_value('An_MPuse_g_Trg') / 1000
+
+        new_var = {
+            'An_MPuse_kg_Trg': An_MPuse_kg_Trg
+        }
+
+        for key, value in new_var.items():
+            getattr(self, 'Miscellaneous')['post_execute_calcs'][key] = value
+
+
 
     def get_value(self, name):
         """
