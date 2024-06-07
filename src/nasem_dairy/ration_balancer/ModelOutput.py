@@ -23,6 +23,12 @@ class ModelOutput:
 
         get_value(name):
             Retrieves a value, dictionary or dataframe with a given name from the ModelOutput instance.
+        
+        search(search_string, dictionaries_to_search=None, case_sensitive: bool = False)
+            Recursive search through all outputs and return a dataframe with name, value and path of parent object. 
+            The search is not case_sensitive by default, but can be by setting case_sensitive to True. The default of None for
+            dictionaries_to_search will search all outputs.
+
 
     Example:
         # Create an instance of ModelOutput
@@ -65,7 +71,7 @@ class ModelOutput:
             <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
             <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
             <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
-            <p>The following list shows which dictionaries are within each category:</p>
+            <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>
         """
 
@@ -77,9 +83,11 @@ class ModelOutput:
         accordion_html += """
             </ul>
             <div>
-                <p>These outputs can be accessed by name, e.g., <code>output.Production['milk']['Mlk_Prod']</code>.</p>
-                <p>There is also a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (case insensitive), e.g., <code>output.search('Mlk')</code>.</p>
-                <p>An individual output can be retrieved directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Prod')</code>.</p>
+                <p>There is a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (default is not case-sensitive), e.g., <code>output.search('Mlk', case_sensitive=False)</code>.</p>
+                <p>The Path that is returned by the <code>.search()</code> method can be used to access the parent object of the value in that row. 
+                For example, the Path for <code>Mlk_Fat_g</code> is <code>Production['milk']</code> which means that calling 
+                <code>output.Production['milk']</code> would show the dict that contains <code>Mlk_Fat_g</code>.</p>
+                <p>However, the safest way to retrieve an individual output is to do so directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Fat_g')</code>.</p>
             </div>
         </details>
         """
