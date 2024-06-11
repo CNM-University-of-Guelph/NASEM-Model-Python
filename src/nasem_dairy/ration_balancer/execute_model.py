@@ -805,6 +805,22 @@ def execute_model(user_diet: pd.DataFrame,
         An_data['An_DENDFIn'], coeff_dict
         )
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
+
+    #######
+    # mPrt_eqn == 0 : 'Target milk protein'
+    # moved here due to using it in following eqn
+    Trg_Mlk_NP_g = protein_req.calculate_Trg_Mlk_NP_g(
+        animal_input['Trg_MilkProd'], animal_input['Trg_MilkTPp']
+        )
+
+    #adding this selection here, assuming code in similar order to R code:
+    # NOTE: Overriding the Mlk_NP_g here is not ideal
+    # Mlk_NP_g = milk.select_Mlk_NP_g(
+    #     equation_selection['mPrt_eqn'], 
+    #     Trg_Mlk_NP_g,
+    #     Mlk_NP_g 
+    #     )
+
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
     Mlk_CP = milk.calculate_Mlk_CP(Mlk_CP_g)
     AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(

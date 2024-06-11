@@ -114,6 +114,23 @@ def calculate_Mlk_NP_g(An_StatePhys,
                     (An_BW - 612) * coeff_dict['mPrt_k_BW'])
     return Mlk_NP_g
 
+def select_Mlk_NP_g(mPrt_eqn: int, 
+                    Trg_Mlk_NP_g: float,
+                   Mlk_NP_g: float
+) -> float:
+    """
+    This is added to allow over-riding Mlk_NP_g as in line 2209 R code: 
+    `if(mPrt_eqn==0) {Mlk_NP_g <- Trg_Mlk_NP_g} #Select Trg_MilkTP or predicted Mlk_NP for remaining calcs.`
+
+    This is potentially dangerous and further work is needed to confirm correct 
+    implementation of case when mPrt_eqn == 0 (which is avoided in R code simulations)
+    """
+    if mPrt_eqn == 0:
+        Mlk_NP_g_selected = Trg_Mlk_NP_g
+    else:
+        Mlk_NP_g_selected = Mlk_NP_g
+    return Mlk_NP_g_selected
+
 
 def calculate_Mlk_CP_g(Mlk_NP_g):
     Mlk_CP_g = Mlk_NP_g / 0.95  # Line 2213
