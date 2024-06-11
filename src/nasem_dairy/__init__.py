@@ -19,6 +19,7 @@ from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Dt_DMIn_Heif_HJ1,
     calculate_Dt_DMIn_Heif_HJ2,
     calculate_Dt_DMIn_Lact1,
+    calculate_Dt_DMIn_Lact2,
     calculate_Dt_DMIn_BW_LateGest_i,
     calculate_Dt_DMIn_BW_LateGest_p,
     calculate_Dt_DMIn_DryCow1_FarOff,
