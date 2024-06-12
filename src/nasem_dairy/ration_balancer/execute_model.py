@@ -101,8 +101,8 @@ def execute_model(user_diet: pd.DataFrame,
         case 3: # VT2
             mPrt_parmset = 2
         case _:
-            raise KeyError(f"Unexpected value for mPrt_eqn: 
-                           {equation_selection['mPrt_eqn']}")
+            raise KeyError("Unexpected value for mPrt_eqn:",
+                           f"{equation_selection['mPrt_eqn']}")
 
     mPrt_coeff = mPrt_coeff_list[int(mPrt_parmset)]
     
