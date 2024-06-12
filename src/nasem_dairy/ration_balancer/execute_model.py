@@ -90,7 +90,23 @@ def execute_model(user_diet: pd.DataFrame,
     # prevent mutable changes outside of expected scope (especially for Shiny):
     user_diet = user_diet.copy()
     animal_input = validate.validate_animal_input(animal_input.copy())
-    mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
+
+    # select AA coefficents to use. Both 0 (Target) and 1 (NRC prediction) 
+    # should use the NRC coefficients
+    match equation_selection['mPrt_eqn']:
+        case 0 | 1: # User target OR NRC pred
+            mPrt_parmset = 0
+        case 2: # VT 1
+            mPrt_parmset = 1
+        case 3: # VT2
+            mPrt_parmset = 2
+        case _:
+            raise KeyError(f"Unexpected value for mPrt_eqn: 
+                           {equation_selection['mPrt_eqn']}")
+
+    mPrt_coeff = mPrt_coeff_list[int(mPrt_parmset)]
+    
+    
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
