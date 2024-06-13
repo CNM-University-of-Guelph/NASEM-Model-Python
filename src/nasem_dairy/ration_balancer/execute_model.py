@@ -90,7 +90,23 @@ def execute_model(user_diet: pd.DataFrame,
     # prevent mutable changes outside of expected scope (especially for Shiny):
     user_diet = user_diet.copy()
     animal_input = validate.validate_animal_input(animal_input.copy())
-    mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
+
+    # select AA coefficents to use. Both 0 (Target) and 1 (NRC prediction) 
+    # should use the NRC coefficients
+    match equation_selection['mPrt_eqn']:
+        case 0 | 1: # User target OR NRC pred
+            mPrt_parmset = 0
+        case 2: # VT 1
+            mPrt_parmset = 1
+        case 3: # VT2
+            mPrt_parmset = 2
+        case _:
+            raise KeyError("Unexpected value for mPrt_eqn:",
+                           f"{equation_selection['mPrt_eqn']}")
+
+    mPrt_coeff = mPrt_coeff_list[int(mPrt_parmset)]
+    
+    
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
@@ -802,9 +818,25 @@ def execute_model(user_diet: pd.DataFrame,
         AA_values['Abs_AA_g'], AA_values['mPrt_k_AA'], Abs_neAA_g, Abs_OthAA_g,
         Abs_EAA2b_g, mPrt_k_EAA2, An_data['An_DigNDF'], An_data['An_DEInp'],
         An_data['An_DEStIn'], An_data['An_DEFAIn'], An_data['An_DErOMIn'],
-        An_data['An_DENDFIn'], coeff_dict
+        An_data['An_DENDFIn'], coeff_dict, mPrt_coeff
         )
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
+
+    #######
+    # mPrt_eqn == 0 : 'Target milk protein'
+    # moved here due to using it in following eqn
+    Trg_Mlk_NP_g = protein_req.calculate_Trg_Mlk_NP_g(
+        animal_input['Trg_MilkProd'], animal_input['Trg_MilkTPp']
+        )
+
+    #adding this selection here, assuming code in similar order to R code:
+    # NOTE: Overriding the Mlk_NP_g here is not ideal
+    # Mlk_NP_g = milk.select_Mlk_NP_g(
+    #     equation_selection['mPrt_eqn'], 
+    #     Trg_Mlk_NP_g,
+    #     Mlk_NP_g 
+    #     )
+
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
     Mlk_CP = milk.calculate_Mlk_CP(Mlk_CP_g)
     AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(
@@ -1722,7 +1754,7 @@ def execute_model(user_diet: pd.DataFrame,
     Trg_MlkEAA_AbsEAA = AA.calculate_Trg_MlkEAA_AbsEAA(
         Mlk_EAA_g, AA_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
         )
-    MlkNP_Int = milk.calculate_MlkNP_Int(animal_input['An_BW'], coeff_dict)
+    MlkNP_Int = milk.calculate_MlkNP_Int(animal_input['An_BW'], coeff_dict, mPrt_coeff)
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], coeff_dict)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], coeff_dict)
     AA_values['MlkNP_AbsAA'] = milk.calculate_MlkNP_AbsAA(

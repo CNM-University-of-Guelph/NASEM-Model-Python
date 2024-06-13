@@ -46,8 +46,7 @@ coeff_dict = {
     'KrdStxrOM_MiN_VT': 5.637,  # Line 1141
     'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
 
-    # From calculate_Mlk_NP_g
-    'mPrt_Int': -97,  # Line 2097, 2078
+
     # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
     'fMiTP_MiCP': 0.824,
     # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
@@ -382,7 +381,7 @@ MP_NP_efficiency_dict = {
 }
 
 mPrt_coeff_list = [
-    {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
+    {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0 or 1 (mPrt_parmset == 0)
         "mPrt_Int_src": -97.0,
         "mPrt_k_BW_src": -0.4201,
         "mPrt_k_DEInp_src": 10.79,
@@ -403,7 +402,7 @@ mPrt_coeff_list = [
         "mPrt_k_OthAA_src": 0.0773,
         "mPrt_k_EAA2_src": -0.00215
     },
-    {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
+    {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 2, (mPrt_parmset == 1)
         "mPrt_Int_src": -141,
         "mPrt_k_BW_src": -0.4146,
         "mPrt_k_DEInp_src": 10.65,
@@ -424,7 +423,7 @@ mPrt_coeff_list = [
         "mPrt_k_OthAA_src": 0,
         "mPrt_k_EAA2_src": -0.002451
     },
-    {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
+    {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 3 (mPrt_parmset == 2)
         "mPrt_Int_src": -73.7,
         "mPrt_k_BW_src": -0.3663,
         "mPrt_k_DEInp_src": 0,

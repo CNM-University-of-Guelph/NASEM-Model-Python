@@ -114,8 +114,6 @@ def get_equation_selection(r_data: dict) -> Union[Dict, Dict]:
     equation_selection_in = {}
     for key in equation_selection_variables:
         equation_selection_in[key] = r_data.pop(key)
-    # Indexing in R starts at 1, need to subtract 1 to match Python indexing
-    equation_selection_in["mPrt_eqn"] -= 1
     return equation_selection_in, r_data
 
 
