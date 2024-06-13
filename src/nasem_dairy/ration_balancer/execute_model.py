@@ -818,7 +818,7 @@ def execute_model(user_diet: pd.DataFrame,
         AA_values['Abs_AA_g'], AA_values['mPrt_k_AA'], Abs_neAA_g, Abs_OthAA_g,
         Abs_EAA2b_g, mPrt_k_EAA2, An_data['An_DigNDF'], An_data['An_DEInp'],
         An_data['An_DEStIn'], An_data['An_DEFAIn'], An_data['An_DErOMIn'],
-        An_data['An_DENDFIn'], coeff_dict
+        An_data['An_DENDFIn'], coeff_dict, mPrt_coeff
         )
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
 
@@ -1754,7 +1754,7 @@ def execute_model(user_diet: pd.DataFrame,
     Trg_MlkEAA_AbsEAA = AA.calculate_Trg_MlkEAA_AbsEAA(
         Mlk_EAA_g, AA_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
         )
-    MlkNP_Int = milk.calculate_MlkNP_Int(animal_input['An_BW'], coeff_dict)
+    MlkNP_Int = milk.calculate_MlkNP_Int(animal_input['An_BW'], coeff_dict, mPrt_coeff)
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], coeff_dict)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], coeff_dict)
     AA_values['MlkNP_AbsAA'] = milk.calculate_MlkNP_AbsAA(

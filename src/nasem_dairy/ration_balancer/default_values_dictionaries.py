@@ -46,8 +46,7 @@ coeff_dict = {
     'KrdStxrOM_MiN_VT': 5.637,  # Line 1141
     'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
 
-    # From calculate_Mlk_NP_g
-    'mPrt_Int': -97,  # Line 2097, 2078
+
     # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
     'fMiTP_MiCP': 0.824,
     # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
