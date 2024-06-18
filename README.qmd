@@ -62,6 +62,9 @@ feed_library_in = pd.read_csv(path_to_package_data.joinpath("NASEM_feed_library.
 ### Execute Model
 
 ```{python}
+#| warning: false
+
+
 ## RUN MODEL ###
 output = nd.execute_model(
     user_diet = user_diet_in, 

@@ -79,10 +79,6 @@ output = nd.execute_model(
 output
 ```
 
-    /Users/dave/Library/CloudStorage/OneDrive-UniversityofGuelph/UoG/UoG Python/NASEM-Model-Python/src/nasem_dairy/NASEM_equations/micronutrient_requirement_equations.py:1173: RuntimeWarning:
-
-    invalid value encountered in scalar divide
-
         <div>
             <h2>Model Output Snapshot</h2>
             &#10;
