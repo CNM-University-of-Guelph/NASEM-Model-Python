@@ -72,6 +72,6 @@ output = nd.execute_model(
     equation_selection = equation_selection_in, 
     feed_library_df = feed_library_in)
 
-output
+print(output)
 ```
 
