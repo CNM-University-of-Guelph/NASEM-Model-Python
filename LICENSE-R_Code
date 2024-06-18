@@ -1,0 +1,36 @@
+Source: 'NRC Dairy 2020 Model Fn - 2022_09_02.R' distributed with NASEM software via [https://nap.nationalacademies.org/resource/25806/Installation_Instructions_NASEM_Dairy8.pdf]
+
+################################################################################################
+This function represents a derivation of code written in support of USDA and Canadian Dairy Research
+Cluster projects and for use by the NRC Dairy 8th revised edition committee.
+
+The work was completed in part with funding from the National Institute of Food and Agriculture, 
+U.S. Department of Agriculture via Comp. Grant #2017-67015-26539, the National Animal Nutrition 
+Program (NRSP-9), and the Virginia Agricultural Experiment Station.  Additional general support was provided
+by the Virginia State Dairymen Association, The Canadian Dairy Research Cluster, The Virginia 
+Agricultural Council, the Pratt Foundation at Virginia Tech, and Papillon Corp.  Intellectual property rights
+reside with VT, USDA, CDRC, and NASEM.  Academic use of the code is encouraged with appropriate acknowledgments.
+Commercial use of this code requires a copyright release from NASEM.
+
+The original data handling and model code and this function were written by Mark D. Hanigan 
+with help from Adelyn Fleming (MS student,VT), Meng Li (PhD student at VT), and Veridiana Daley 
+(postdoc, NANP/NRSP-9, Univ. Ky and VT). The data handling code and general approach 
+originated with Dr. Larry Reutzel, Purina Mills/Land O' Lakes with subsequent updates by M. Hanigan, 
+T. McGill, R. Garnett, and R.R. White. It was subsequently rewritten by M. D. Hanigan and A. Fleming. 
+
+#This function represents a single animal or a group of animals fed a single diet. Required inputs
+to the function are breed, physiological state, BW (kg), DIM, days pregnant, temperature, distance from 
+the pen to the parlor (m), climb/elevation change walking to the parlor (m), DMI (kg/d), a feed 
+ingredient composition dataframe (f, Nutrient composition, % of DM), a row vector of the 
+DM proportions of each ingredient in the diet (length=# of Ingredients), and an infusion dataframe (i).
+These inputs should represent the animal or group over the course of the feeding period being evaluated.
+This is typically best represented by the mean of the group.
+
+The function returns a list containing dataframes with dietary nutrient intakes and 
+concentrations (dt); vitamin and mineral intakes, concentrations, requirements, and
+balances (MV); AA intakes, concentrations duodenal flows, intestinal digested flows,
+absorbed flows and balance (AA); gross, digestible, metabolizable, and net energy flows, 
+use for body functions, and balance (en); body growth and gestational (gest), milk (mlk), 
+fecal (fe), urinary (ur), and breathe outputs of nutrients; and feed cost and product 
+value (ec); and efficiencies of use of nutrients (eff).
+###################################################################################################
