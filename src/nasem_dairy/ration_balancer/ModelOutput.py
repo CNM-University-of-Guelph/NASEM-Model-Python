@@ -761,7 +761,169 @@ class ModelOutput:
 
 
 
-    
+
+    def report_animal_characteristics(self):
+        '''
+        Format animal characteristic data into a table.
+        Similar to table Tbl1_1 in R.
+        '''
+        data = {
+            'Animal Type': self.get_value('An_StatePhys'),
+            'Animal Breed': self.get_value('An_Breed'),
+            'Body Weight, kg': self.get_value('An_BW'),
+            'Empty BW, kg': self.get_value('An_BW_empty'),
+            'Birth Weight, kg': self.get_value('Fet_BWbrth'),
+            'Mature Weight, kg': self.get_value('An_BW_mature'),
+            'Mature Empty BW, kg': self.get_value('An_BWmature_empty'),
+            'Age, d': self.get_value('An_AgeDay'),
+            'Condition Score, 1 to 5': self.get_value('An_BCS'),
+            'Percent First Parity': (2 - self.get_value('An_Parity_rl')) * 100,
+            'Days in Milk': self.get_value('An_LactDay'),
+            # 'Age At First Calving, d': self.get_value('An_AgeConcept1st') + 280,
+            'Days Pregnant': self.get_value('An_GestDay'),
+            'Temperature, C': self.get_value('Env_TempCurr'),
+            'Use In vitro NDF digest': self.get_value('Use_DNDF_IV'),
+            'Feeding Monensin, 0=No, 1=Yes': self.get_value('Monensin_eqn'),
+            'Grazing': self.get_value('An_Grazing'),
+            'Topography': self.get_value('Env_Topo'),
+            'Dist. (Pasture to Parlor, m)': self.get_value('Env_DistParlor'),
+            'One-Way Trips to the Parlor, m': self.get_value('Env_TripsParlor')
+        }
+
+        # Create DataFrame
+        animal_characteristics = pd.DataFrame(data, index=[0])
+        
+        # Transpose the DataFrame
+        animal_characteristics = animal_characteristics.T
+        
+        # Optionally, rename the index if required
+        animal_characteristics.columns = ['Value']
+        
+        return animal_characteristics
+
+
+    def report_target_performance(self):
+        '''
+        Format target performance data into a table.
+        Similar to table Tbl1_2 in R.
+        '''
+        # Collecting values and calculating necessary operations
+        data = {
+            'Milk Production': self.get_value('Trg_MilkProd'),
+            'Energy/Protein Corrected Milk, kg/d': self.get_value('Trg_MilkProd_EPcor'),
+            'Milk Fat, %': self.get_value('Trg_MilkFatp'),
+            'Milk True Protein': self.get_value('Trg_MilkTPp'),
+            'Milk Lactose, %': self.get_value('Trg_MilkLacp'),
+            'Milk Fat, kg/d': self.get_value('Trg_Mlk_Fat'),
+            'Milk True Protein, kg/d': self.get_value('Trg_Mlk_NP'),
+            'Milk Lactose, kg/d': self.get_value('Trg_MilkProd') * self.get_value('Trg_MilkLacp') / 100,
+            'Frame Gain, kg/d': self.get_value('Trg_FrmGain'),
+            'Body Reserves Gain, kg/d': self.get_value('Trg_RsrvGain'),
+            'Gravid Uterine Gain, kg/d': self.get_value('GrUter_BWgain'),
+            'Total Gain, kg/d': self.get_value('An_BodConcgain')
+        }
+
+        # Create DataFrame
+        target_performance = pd.DataFrame(data, index=[0])
+        
+        # Transpose the DataFrame
+        target_performance = target_performance.T
+        
+        # Rename the column for clarity
+        target_performance.columns = ['Target Performance:']
+        
+        return target_performance
+
+    # def report_AA(self):
+    #     def create_aa_flows_dataframe(self):
+    #                 # Data for Tbl6_4
+    #         data = {
+    #             'Arg': [self.get_value('Ur_ArgEnd_g'), self.get_value('Fe_ArgMet_g'), self.get_value('Scrf_Arg_g'), 
+    #                     self.get_value('Gest_Arg_g'), self.get_value('Body_ArgGain_g'), self.get_value('Mlk_Arg_g'), 
+    #                     self.get_value('Trg_Mlk_Arg_g'), self.get_value('An_ArgUse_g'), self.get_value('Trg_ArgUse_g'), None, 
+    #                     self.get_value('AnNPxArg_AbsArg'), self.get_value('AnNPxArgUser_AbsArg')],
+    #             'His': [self.get_value('Ur_HisEnd_g'), self.get_value('Fe_HisMet_g'), self.get_value('Scrf_His_g'), 
+    #                     self.get_value('Gest_His_g'), self.get_value('Body_HisGain_g'), self.get_value('Mlk_His_g'), 
+    #                     self.get_value('Trg_Mlk_His_g'), self.get_value('An_HisUse_g'), self.get_value('Trg_HisUse_g'), 
+    #                     self.get_value('Trg_AbsHis_NPxprtHis'), self.get_value('AnNPxHis_AbsHis'), self.get_value('AnNPxHisUser_AbsHis')],
+    #             'Ile': [self.get_value('Ur_IleEnd_g'), self.get_value('Fe_IleMet_g'), self.get_value('Scrf_Ile_g'), 
+    #                     self.get_value('Gest_Ile_g'), self.get_value('Body_IleGain_g'), self.get_value('Mlk_Ile_g'), 
+    #                     self.get_value('Trg_Mlk_Ile_g'), self.get_value('An_IleUse_g'), self.get_value('Trg_IleUse_g'), 
+    #                     self.get_value('Trg_AbsIle_NPxprtIle'), self.get_value('AnNPxIle_AbsIle'), self.get_value('AnNPxIleUser_AbsIle')],
+    #             'Leu': [self.get_value('Ur_LeuEnd_g'), self.get_value('Fe_LeuMet_g'), self.get_value('Scrf_Leu_g'), 
+    #                     self.get_value('Gest_Leu_g'), self.get_value('Body_LeuGain_g'), self.get_value('Mlk_Leu_g'), 
+    #                     self.get_value('Trg_Mlk_Leu_g'), self.get_value('An_LeuUse_g'), self.get_value('Trg_LeuUse_g'), 
+    #                     self.get_value('Trg_AbsLeu_NPxprtLeu'), self.get_value('AnNPxLeu_AbsLeu'), self.get_value('AnNPxLeuUser_AbsLeu')],
+    #             'Lys': [self.get_value('Ur_LysEnd_g'), self.get_value('Fe_LysMet_g'), self.get_value('Scrf_Lys_g'), 
+    #                     self.get_value('Gest_Lys_g'), self.get_value('Body_LysGain_g'), self.get_value('Mlk_Lys_g'), 
+    #                     self.get_value('Trg_Mlk_Lys_g'), self.get_value('An_LysUse_g'), self.get_value('Trg_LysUse_g'), 
+    #                     self.get_value('Trg_AbsLys_NPxprtLys'), self.get_value('AnNPxLys_AbsLys'), self.get_value('AnNPxLysUser_AbsLys')],
+    #             'Met': [self.get_value('Ur_MetEnd_g'), self.get_value('Fe_MetMet_g'), self.get_value('Scrf_Met_g'), 
+    #                     self.get_value('Gest_Met_g'), self.get_value('Body_MetGain_g'), self.get_value('Mlk_Met_g'), 
+    #                     self.get_value('Trg_Mlk_Met_g'), self.get_value('An_MetUse_g'), self.get_value('Trg_MetUse_g'), 
+    #                     self.get_value('Trg_AbsMet_NPxprtMet'), self.get_value('AnNPxMet_AbsMet'), self.get_value('AnNPxMetUser_AbsMet')],
+    #             'Phe': [self.get_value('Ur_PheEnd_g'), self.get_value('Fe_PheMet_g'), self.get_value('Scrf_Phe_g'), 
+    #                     self.get_value('Gest_Phe_g'), self.get_value('Body_PheGain_g'), self.get_value('Mlk_Phe_g'), 
+    #                     self.get_value('Trg_Mlk_Phe_g'), self.get_value('An_PheUse_g'), self.get_value('Trg_PheUse_g'), 
+    #                     self.get_value('Trg_AbsPhe_NPxprtPhe'), self.get_value('AnNPxPhe_AbsPhe'), self.get_value('AnNPxPheUser_AbsPhe')],
+    #             'Thr': [self.get_value('Ur_ThrEnd_g'), self.get_value('Fe_ThrMet_g'), self.get_value('Scrf_Thr_g'), 
+    #                     self.get_value('Gest_Thr_g'), self.get_value('Body_ThrGain_g'), self.get_value('Mlk_Thr_g'), 
+    #                     self.get_value('Trg_Mlk_Thr_g'), self.get_value('An_ThrUse_g'), self.get_value('Trg_ThrUse_g'), 
+    #                     self.get_value('Trg_AbsThr_NPxprtThr'), self.get_value('AnNPxThr_AbsThr'), self.get_value('AnNPxThrUser_AbsThr')],
+    #             'Trp': [self.get_value('Ur_TrpEnd_g'), self.get_value('Fe_TrpMet_g'), self.get_value('Scrf_Trp_g'), 
+    #                     self.get_value('Gest_Trp_g'), self.get_value('Body_TrpGain_g'), self.get_value('Mlk_Trp_g'), 
+    #                     self.get_value('Trg_Mlk_Trp_g'), self.get_value('An_TrpUse_g'), self.get_value('Trg_TrpUse_g'), 
+    #                     self.get_value('Trg_AbsTrp_NPxprtTrp'), self.get_value('AnNPxTrp_AbsTrp'), self.get_value('AnNPxTrpUser_AbsTrp')],
+    #             'Val': [self.get_value('Ur_ValEnd_g'), self.get_value('Fe_ValMet_g'), self.get_value('Scrf_Val_g'), 
+    #                     self.get_value('Gest_Val_g'), self.get_value('Body_ValGain_g'), self.get_value('Mlk_Val_g'), 
+    #                     self.get_value('Trg_Mlk_Val_g'), self.get_value('An_ValUse_g'), self.get_value('Trg_ValUse_g'), 
+    #                     self.get_value('Trg_AbsVal_NPxprtVal'), self.get_value('AnNPxVal_AbsVal'), self.get_value('AnNPxValUser_AbsVal')]
+    #         }
+
+    #         index_names = ["Diet (a)", "Duod RUP (b)", "Duod Micr (b)", "Duod Endog (b)", "Duod Tot, True (b)", 
+    #                     "Duod Tot, 24h Hydr (a)", "Met RUP (b,c)", "Met Micr (b,c)", "Met Total (b,c)", 
+    #                     "Targ Supp at User Enter (b,d)"]
+    #         df_aa_flows = pd.DataFrame(data, index=index_names).T
+
+    #         # Footnotes for Tbl6_4
+    #         footnotes = {
+    #             'a': ["not corrected for incomplete recovery of AA during a 24-h acid hydrolysis"],
+    #             'b': ["corrected for incomplete recovery of AA during a 24-h acid hydrolysis."],
+    #             'c': ["mEAA: metabolized EAA."],
+    #             'd': ["Calculated using target efficiencies and net use pre Table 6.5 and user entered milk protein production"]
+    #         }
+    #         df_footnotes = pd.DataFrame(footnotes).T
+
+    #         return df_aa_flows, df_footnotes
+
+    #     def create_aa_partitioning_dataframe(self):
+    #         # Data for Tbl6_5
+    #         data = {
+    #             'Arg': [self.get_value('Ur_ArgEnd_g'), self.get_value('Fe_ArgMet_g'), self.get_value('Scrf_Arg_g'), 
+    #                     self.get_value('Gest_Arg_g'), self.get_value('Body_ArgGain_g'), self.get_value('Mlk_Arg_g'), 
+    #                     self.get_value('Trg_Mlk_Arg_g'), self.get_value('An_ArgUse_g'), self.get_value('Trg_ArgUse_g'), None, 
+    #                     self.get_value('AnNPxArg_AbsArg'), self.get_value('AnNPxArgUser_AbsArg')],
+    #             # Add other amino acids similarly
+    #         }
+    #         index_names = ["Uri. Endo.", "Metab. Fecal", "Scurf", "Gestation", "Body Gain", "Milk, Nutr. Allow.", 
+    #                     "Milk, User Enter.", "Total, Nutr. Allow.", "Total, User Enter.", "Target Eff (b)", 
+    #                     "Nutr Allow Eff (b)", "User Enter Eff (b)"]
+    #         df_aa_partitioning = pd.DataFrame(data, index=index_names).T
+
+    #         # Footnotes for Tbl6_5
+    #         footnote_text = "Corrected for incomplete recovery of AA during a 24-h hydrolysis. Efficiencies for Uri. Endo. and gestation are 1 and 0.33. Combined efficiencies calculated from MP supply for other functions. A target efficiency was not estimated for Arg due to semi-essentiality."
+    #         df_partitioning_footnotes = pd.DataFrame([footnote_text], columns=['b']).T
+
+    #         return df_aa_partitioning, df_partitioning_footnotes
+
+    #     # Usage
+    #     df_aa_flows, df_footnotes = create_aa_flows_dataframe(self)
+    #     df_aa_partitioning, df_partitioning_footnotes = create_aa_partitioning_dataframe(self)
+
+    #     return {'AA_flow': df_aa_flows, 'AA_partitioning': df_aa_partitioning }
+
+
+
     def export_to_dict(self):
         data_dict = {}
         special_keys = {
