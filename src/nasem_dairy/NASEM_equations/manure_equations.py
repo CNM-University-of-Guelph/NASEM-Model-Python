@@ -232,3 +232,8 @@ def calculate_ManWa_Milk(Man_Wa_out: float, Mlk_Prod: float) -> float:
     """
     ManWa_Milk = Man_Wa_out / Mlk_Prod  # L/kg, Line 3335
     return ManWa_Milk
+
+
+def calculate_VolSlds2_Milk(Man_VolSld2: float, Mlk_Prod: float) -> float:
+    VolSlds2_Milk = Man_VolSld2 / Mlk_Prod  # kg/kg; mass balance derived
+    return VolSlds2_Milk

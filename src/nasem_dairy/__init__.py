@@ -76,7 +76,8 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkNP_AbsAA,
     calculate_MlkNP_AbsEAA,
     calculate_MlkNP_AbsNEAA,
-    calculate_MlkNP_AbsOthAA
+    calculate_MlkNP_AbsOthAA,
+    calculate_Trg_Mlk_NP
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -535,7 +536,9 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_RUPIn_g,
     calculate_An_MEIn_ClfDry,
     calculate_An_ME_ClfDry,
-    calculate_An_NE_ClfDry
+    calculate_An_NE_ClfDry,
+    calculate_An_Grazing,
+    calculate_En_OM
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -665,7 +668,8 @@ from nasem_dairy.NASEM_equations.body_composition_equations import (
     calculate_An_BodConcgain_NEalow,
     calculate_Body_Fatgain_NEalow,
     calculate_Body_NPgain_NEalow,
-    calculate_An_Days_BCSdelta1
+    calculate_An_Days_BCSdelta1,
+    calculate_Rsrv_AshGain
 )
 
 from nasem_dairy.NASEM_equations.urine_equations import (
@@ -975,5 +979,6 @@ from nasem_dairy.NASEM_equations.manure_equations import (
     calculate_Man_MicMin_out,
     calculate_Man_Min_out_g,
     calculate_Man_Wa_out,
-    calculate_ManWa_Milk
+    calculate_ManWa_Milk,
+    calculate_VolSlds2_Milk
 )

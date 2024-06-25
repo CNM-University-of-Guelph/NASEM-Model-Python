@@ -427,7 +427,7 @@ class ModelOutput:
             'Mlk_EPcorNEalow_DMIn', 'MlkNP_Milk_p', 'MlkFat_Milk_p',
             'Mlk_NE_DE', 'Trg_Mlk_EAA_g', 'Trg_MlkEAA_AbsEAA', 'MlkNP_Int',
             'MlkNP_DEInp', 'MlkNP_NDF', 'MlkNP_AbsEAA', 'MlkNP_AbsNEAA',
-            'MlkNP_AbsOthAA'
+            'MlkNP_AbsOthAA', "Trg_Mlk_NP"
         ]
         composition_variables = [
             'CPGain_FrmGain', 'NPGain_FrmGain', 'Frm_Gain', 'Rsrv_Gain',
@@ -444,7 +444,8 @@ class ModelOutput:
             'Body_EAAGain_g', 'Body_NPgain_MPalowTrg_g',
             'Body_CPgain_MPalowTrg_g', 'Body_Gain_MPalowTrg_g',
             'Body_Gain_MPalowTrg', 'Body_Gain_NEalow', 'An_BodConcgain_NEalow',
-            'Body_Fatgain_NEalow', 'Body_NPgain_NEalow', 'An_Days_BCSdelta1'
+            'Body_Fatgain_NEalow', 'Body_NPgain_NEalow', 'An_Days_BCSdelta1',
+            "Rsrv_AshGain"
         ]
         gestation_variables = [
             'Uter_Wtpart', 'Uter_Wt', 'GrUter_Wtpart', 'GrUter_Wt',
@@ -483,7 +484,7 @@ class ModelOutput:
             'ManN_Milk', 'Man_Ca_out', 'Man_P_out', 'Man_Mg_out', 'Man_K_out',
             'Man_Na_out', 'Man_Cl_out', 'Man_MacMin_out', 'Man_Cu_out',
             'Man_Fe_out', 'Man_Mn_out', 'Man_Zn_out', 'Man_MicMin_out',
-            'Man_Min_out_g', 'Man_Wa_out', 'ManWa_Milk'
+            'Man_Min_out_g', 'Man_Wa_out', 'ManWa_Milk', "VolSlds2_Milk"
         ]
         urinary_variables = [
             'Ur_Nout_g', 'Ur_DEout', 'Ur_Nend_g', 'Ur_NPend_g', 'Ur_MPendUse_g',
@@ -525,7 +526,8 @@ class ModelOutput:
         # Lists of variables to store
         energy_variables = ['Kr_ME_RE']
         protein_variables = [
-            'Kg_MP_NP_Trg', 'AnNPxEAA_AbsEAA', 'AnNPxEAAUser_AbsEAA'
+            'Kg_MP_NP_Trg', 'AnNPxEAA_AbsEAA', 'AnNPxEAAUser_AbsEAA', 
+            "Km_MP_NP_Trg"
         ]
         mineral_variables = [
             'Dt_acCa', 'Dt_acP', 'Dt_acNa', 'Dt_acMg', 'Dt_acK', 'Dt_acCl',
@@ -551,7 +553,7 @@ class ModelOutput:
             'Kb_LateGest_DMIn', 'An_PrePartWklim', 'An_PrePartWkDurat',
             'An_DMIn_BW', 'f_mPrt_max', 'mPrt_k_EAA2', 'An_REgain_Calf',
             'An_LactDay_MlkPred', 'An_DCADmeq', 'Dt_DMIn_BW', 'Dt_DMIn_MBW',
-            'An_RDPbal_g', 'Trg_EAAUse_g', 'Trg_AbsEAA_g'
+            'An_RDPbal_g', 'Trg_EAAUse_g', 'Trg_AbsEAA_g', "An_Grazing", "En_OM"
         ]
         # Store variables
         self.__populate_category('Miscellaneous', group_names, misc_variables)   

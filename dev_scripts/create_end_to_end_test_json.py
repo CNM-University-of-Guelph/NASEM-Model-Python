@@ -176,7 +176,7 @@ def remove_constants(r_data: dict) -> dict:
 
 def remove_untested_values(r_data: dict) -> dict:
     # Removed due to differences in Python implementation. R code calculates
-    # everythin then picks a value. In our code we select the equation and
+    # everything then picks a value. In our code we select the equation and
     # only calculate required values. Also inlcudes variables that have no
     # use, such as equations selections
     values_to_remove = [
@@ -201,15 +201,15 @@ def remove_untested_values(r_data: dict) -> dict:
         "RUP_eqn", "SIDigArgRUPf", "SIDigHisRUPf", "SIDigIleRUPf",
         "SIDigLeuRUPf", "SIDigLysRUPf", "SIDigMetRUPf", "SIDigPheRUPf",
         "SIDigThrRUPf", "SIDigTrpRUPf", "SIDigValRUPf", "Trg_MP_NPxprt",
-        "Trg_NEmilkOut"
+        "Trg_NEmilkOut", "Kf_ME_RE_Clf", "Kf_ME_RE_ClfDry", "Kf_ME_RE_ClfLiq", 
+        "Km_ME_NE_Clf", "Km_ME_NE_Cow", "Km_ME_NE_Heif"
     ]
     # Variables are missing or have issues with naming/feed library (DNDF48)
+    # TODO Recreate integration tests once these values are added
     values_not_calculated = [
-        "An_Grazing", "An_ME_ClfDry", "An_MEIn_ClfDry", "An_NE_ClfDry",
+        "An_ME_ClfDry", "An_MEIn_ClfDry", "An_NE_ClfDry",
         "Dt_DE_ClfLiq", "Dt_ME_ClfLiq", "Dt_ForDNDF48", "Dt_ForDNDF48_ForNDF", # Need to fix Fd_DNDF48 in feed library as affecting calculation
-        "Dt_RUPIn.dt", "En_OM", "Kf_ME_RE_Clf", "Kf_ME_RE_ClfDry", 
-        "Kf_ME_RE_ClfLiq", "Km_ME_NE_Clf", "Km_ME_NE_Cow", "Km_ME_NE_Heif", 
-        "Rsrv_AshGain", "Trg_Mlk_NP", "VolSlds2_Milk"
+        "Dt_RUPIn.dt"
     ]
     for name in values_to_remove:
         r_data.pop(name, np.nan)

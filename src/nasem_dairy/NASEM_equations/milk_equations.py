@@ -670,3 +670,8 @@ def calculate_MlkNP_AbsOthAA(Abs_OthAA_g: float, coeff_dict: dict) -> float:
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     MlkNP_AbsOthAA = Abs_OthAA_g * coeff_dict['mPrt_k_OthAA']
     return MlkNP_AbsOthAA
+
+
+def calculate_Trg_Mlk_NP(Trg_Mlk_NP_g: float):
+    Trg_Mlk_NP = Trg_Mlk_NP_g / 1000    # Line 2205
+    return Trg_Mlk_NP
