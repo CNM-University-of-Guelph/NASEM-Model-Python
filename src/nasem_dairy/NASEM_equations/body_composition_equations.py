@@ -613,3 +613,12 @@ def calculate_An_Days_BCSdelta1(BW_BCS: float,
     An_Days_BCSdelta1 = BW_BCS / Body_Gain_NEalow  
     # days to gain or lose 1 BCS (9.4% of BW), 5 pt scale., Line 2958
     return An_Days_BCSdelta1
+
+
+def calculate_Rsrv_AshGain(Rsrv_Gain_empty: float,
+                           coeff_dict: dict
+) -> float:
+    req_coeff = ["AshGain_RsrvGain"]
+    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    Rsrv_AshGain = coeff_dict["AshGain_RsrvGain"] * Rsrv_Gain_empty   # Line 2481
+    return Rsrv_AshGain

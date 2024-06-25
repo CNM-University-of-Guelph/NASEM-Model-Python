@@ -28,8 +28,6 @@ import nasem_dairy.ration_balancer.input_validation as validate
 import nasem_dairy.ration_balancer.ModelOutput as output
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
-
-
 def execute_model(user_diet: pd.DataFrame,
                   animal_input: dict,
                   equation_selection: dict,
@@ -1923,9 +1921,21 @@ def execute_model(user_diet: pd.DataFrame,
     del (Dt_IdAARUPIn)
     del (Mlk_AA_TP)
 
+    # Add missing values
+    An_Grazing = animal.calculate_An_Grazing(
+        diet_data["Dt_PastIn"], animal_input["DMI"]
+        )
+    En_OM = animal.calculate_En_OM(An_data["An_DEIn"], An_data["An_DigOMtIn"])
+    Rsrv_AshGain = body_comp.calculate_Rsrv_AshGain(
+        Rsrv_Gain_empty, coeff_dict
+        )
+    Trg_Mlk_NP = milk.calculate_Trg_Mlk_NP(Trg_Mlk_NP_g)
+    VolSlds2_Milk = manure.calculate_VolSlds2_Milk(Man_VolSld2, Mlk_Prod)
+
     ########################################
     # Capture Outputs
     ########################################
     locals_dict = locals()
     model_output = output.ModelOutput(locals_input=locals_dict)
     return model_output
+    

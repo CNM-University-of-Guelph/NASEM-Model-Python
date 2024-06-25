@@ -1640,3 +1640,15 @@ def calculate_An_RUPIn_g(An_RUPIn: float) -> float:
     """
     An_RUPIn_g = An_RUPIn * 1000  # Line 3132
     return An_RUPIn_g
+
+
+def calculate_An_Grazing(Dt_PastIn: float, Dt_DMIn: float) -> float:
+    if Dt_PastIn / Dt_DMIn < 0.005:
+        An_Grazing = 0
+        return An_Grazing
+    return 1
+
+
+def calculate_En_OM(An_DEIn: float, An_DigOMtIn: float) -> float:
+    En_OM = An_DEIn / An_DigOMtIn   # Line 1375
+    return En_OM
