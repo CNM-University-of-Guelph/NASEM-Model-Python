@@ -640,15 +640,13 @@ class ModelOutput:
             '''
             Only used when key endswith('_columns')
             '''
-            cat_and_group = key.split('.')
-            df_name = cat_and_group[-1].rsplit('_', 1)[0]
-
-            cat_and_group = key.rsplit('.',2)#[:-1]
-            subset_path = f"{cat_and_group[0]}['{df_name}']"
+            df_name = key.split('.')[-1].rsplit('_', 1)[0]
 
             return {'Name': value, 
-                    'Value': f"{df_name}['{value}']", 
-                    'Path': subset_path
+                    "Value": "pd.Series",
+                    'Category': key.split(".")[0],
+                    "Level 1": df_name,
+                    "Level 2": value
                     }
 
         # Iterate over specified dictionaries
@@ -661,32 +659,35 @@ class ModelOutput:
         for key, value in result.items():
             variable_name = key.split('.')[-1]
             parts = key.split('.')
-            # Category
-            path = parts[0]
-            # Add all intermediate parts in square brackets
-            for group in parts[1:-1]:
-                path += f"['{group}']"
+            
+            category = parts.pop(0)
             
             if isinstance(value, dict):
-                value_display = 'dict'
+                value_display = 'Dictionary'
             elif isinstance(value, pd.DataFrame):
-                value_display = 'Dataframe'
+                value_display = 'DataFrame'
             elif isinstance(value, list) and key.endswith('_columns'):
                 table_rows.extend(
                     [extract_dataframe_and_column(key, col) for col in value])
             elif isinstance(value, list):
-                value_display = 'list'
+                value_display = 'List'
             else:
                 value_display = value
             # Add the current row to the list
             if not (isinstance(value, list) and key.endswith('_columns')):
-                table_rows.append({
+                row = {
                     'Name': variable_name,
                     'Value': value_display,
-                    'Path': path
-                })
-
+                    'Category': category
+                }
+                for index, value in enumerate(parts):
+                    row[f"Level {index + 1}"] = value
+                table_rows.append(row)
         output_table = pd.DataFrame(table_rows)
+        output_table = (output_table
+                        .fillna('')
+                        .sort_values(by="Name")
+                        .reset_index(drop=True))
         return output_table
 
     def export_to_dict(self):
