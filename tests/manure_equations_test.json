@@ -123,5 +123,10 @@
         "Name": "calculate_ManWa_Milk",
         "Input": {"Man_Wa_out": 301, "Mlk_Prod": 491},
         "Output": 0.6130346232179226
+    },
+    {
+        "Name": "calculate_VolSlds2_Milk",
+        "Input": {"Man_VolSld2": 2.6, "Mlk_Prod": 45.8},
+        "Output": 0.05676855895
     }
 ]

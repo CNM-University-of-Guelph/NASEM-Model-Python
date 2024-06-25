@@ -373,7 +373,11 @@
     "Name": "calculate_An_Days_BCSdelta1",
     "Input": {"BW_BCS": 0.83, "Body_Gain_NEalow": 409},
     "Output": 0.0020293398533007333
+},
+{
+  "Name": "calculate_Rsrv_AshGain",
+  "Input": {"Rsrv_Gain_empty": 14, "coeff_dict": null},
+  "Output": 0.28
 }
-
 ]
   

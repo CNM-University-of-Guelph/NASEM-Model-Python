@@ -649,5 +649,20 @@
   "Name": "caclulate_An_NE_ClfDry",
   "Input": {"An_ME_ClfDry": 40.2},
   "Output": 313.25364800000006
+},
+{
+  "Name": "calculate_An_Grazing",
+  "Input": {"Dt_PastIn": 0.1, "Dt_DMIn": 24},
+  "Output": 0
+},
+{
+  "Name": "calculate_An_Grazing",
+  "Input": {"Dt_PastIn": 30, "Dt_DMIn": 7},
+  "Output": 1
+},
+{
+  "Name": "calculate_En_OM",
+  "Input": {"An_DEIn": 124, "An_DigOMtIn": 18.3},
+  "Output": 6.775956284
 }
 ]

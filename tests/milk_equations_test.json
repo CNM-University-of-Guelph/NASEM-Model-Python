@@ -264,5 +264,10 @@
     "Name": "calculate_MlkNP_AbsOthAA",
     "Input": {"Abs_OthAA_g": 1312, "coeff_dict": null},
     "Output": 101.4176
+  },
+  {
+    "Name": "calculate_Trg_Mlk_NP",
+    "Input": {"Trg_Mlk_NP_g": 1492},
+    "Output": 1.492
   }
 ]
