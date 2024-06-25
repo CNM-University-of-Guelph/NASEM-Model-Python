@@ -23,6 +23,12 @@ class ModelOutput:
 
         get_value(name):
             Retrieves a value, dictionary or dataframe with a given name from the ModelOutput instance.
+        
+        search(search_string, dictionaries_to_search=None, case_sensitive: bool = False)
+            Recursive search through all outputs and return a dataframe with name, value and path of parent object. 
+            The search is not case_sensitive by default, but can be by setting case_sensitive to True. The default of None for
+            dictionaries_to_search will search all outputs.
+
 
     Example:
         # Create an instance of ModelOutput
@@ -66,7 +72,7 @@ class ModelOutput:
             <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
             <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
             <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
-            <p>The following list shows which dictionaries are within each category:</p>
+            <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>
         """
 
@@ -78,9 +84,11 @@ class ModelOutput:
         accordion_html += """
             </ul>
             <div>
-                <p>These outputs can be accessed by name, e.g., <code>output.Production['milk']['Mlk_Prod']</code>.</p>
-                <p>There is also a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (case insensitive), e.g., <code>output.search('Mlk')</code>.</p>
-                <p>An individual output can be retrieved directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Prod')</code>.</p>
+                <p>There is a <code>.search()</code> method which takes a string and will return a dataframe of all outputs with that string (default is not case-sensitive), e.g., <code>output.search('Mlk', case_sensitive=False)</code>.</p>
+                <p>The Path that is returned by the <code>.search()</code> method can be used to access the parent object of the value in that row. 
+                For example, the Path for <code>Mlk_Fat_g</code> is <code>Production['milk']</code> which means that calling 
+                <code>output.Production['milk']</code> would show the dict that contains <code>Mlk_Fat_g</code>.</p>
+                <p>However, the safest way to retrieve an individual output is to do so directly by providing its exact name to the <code>.get_value()</code> method, e.g., <code>output.get_value('Mlk_Fat_g')</code>.</p>
             </div>
         </details>
         """
@@ -610,7 +618,8 @@ class ModelOutput:
         # Return None if not found
         return None
 
-    def search(self, search_string, dictionaries_to_search=None):
+    def search(self, search_string, dictionaries_to_search=None,
+               case_sensitive: bool = False):
         # Define the dictionaries to search within, by default all dictionaries 
         # where outputs are stored
         if dictionaries_to_search is None:
@@ -623,11 +632,13 @@ class ModelOutput:
         visited_keys = set()
         table_rows = []
 
+        user_flags = 0 if case_sensitive else re.IGNORECASE
+
         def recursive_search(d, path=''):
             for key, value in d.items():
                 full_key = path + key
                 if ((re.search(search_string, str(full_key), 
-                               flags=re.IGNORECASE)) and 
+                               flags=user_flags)) and 
                     full_key not in visited_keys
                     ):
                     result[full_key] = value
@@ -637,7 +648,7 @@ class ModelOutput:
                 elif isinstance(value, pd.DataFrame):
                     matching_columns = [
                         col for col in value.columns
-                        if re.search(search_string, col, flags=re.IGNORECASE)
+                        if re.search(search_string, col, flags=user_flags)
                     ]
                     if matching_columns:
                         columns_key = full_key + '_columns'
@@ -646,10 +657,17 @@ class ModelOutput:
                             visited_keys.add(columns_key)
 
         def extract_dataframe_and_column(key, value):
-            parts = key.split('.')[-1].rsplit('_', 1)
-            # variable_name = parts[0]
-            dataframe_name, column_name = parts[-1], "column"
-            return {'Name': value, 'Value': f'{parts[0]}[{column_name}]'}
+            '''
+            Only used when key endswith('_columns')
+            '''
+            df_name = key.split('.')[-1].rsplit('_', 1)[0]
+
+            return {'Name': value, 
+                    "Value": "pd.Series",
+                    'Category': key.split(".")[0],
+                    "Level 1": df_name,
+                    "Level 2": value
+                    }
 
         # Iterate over specified dictionaries
         for dictionary_name in dictionaries_to_search:
@@ -660,25 +678,36 @@ class ModelOutput:
         # Create output dataframe
         for key, value in result.items():
             variable_name = key.split('.')[-1]
+            parts = key.split('.')
+            
+            category = parts.pop(0)
+            
             if isinstance(value, dict):
-                value_display = 'dict'
+                value_display = 'Dictionary'
             elif isinstance(value, pd.DataFrame):
-                value_display = 'Dataframe'
+                value_display = 'DataFrame'
             elif isinstance(value, list) and key.endswith('_columns'):
                 table_rows.extend(
                     [extract_dataframe_and_column(key, col) for col in value])
             elif isinstance(value, list):
-                value_display = 'list'
+                value_display = 'List'
             else:
                 value_display = value
             # Add the current row to the list
             if not (isinstance(value, list) and key.endswith('_columns')):
-                table_rows.append({
+                row = {
                     'Name': variable_name,
-                    'Value': value_display
-                })
-
+                    'Value': value_display,
+                    'Category': category
+                }
+                for index, value in enumerate(parts):
+                    row[f"Level {index + 1}"] = value
+                table_rows.append(row)
         output_table = pd.DataFrame(table_rows)
+        output_table = (output_table
+                        .fillna('')
+                        .sort_values(by="Name")
+                        .reset_index(drop=True))
         return output_table
     
     def report_minerals(self):
