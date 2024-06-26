@@ -26,6 +26,8 @@ def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
 
 
 def validate_animal_input(animal_input):
+    if not isinstance(animal_input, dict):
+        raise TypeError("animal_input must be a dictionary")
     type_mapping = {
             'An_Parity_rl': float,
             'Trg_MilkProd': float,
@@ -52,20 +54,27 @@ def validate_animal_input(animal_input):
             'Env_TripsParlor': int,
             'Env_Topo': float
     }
+    an_statephys_values = ["Calf", "Heifer", "Dry Cow", "Lactating Cow", "Other"]
+    an_breed_values = ["Holstein", "Jersey", "Other"]
     corrected_input = {}
-    for key, value in animal_input.items():
-        if key in type_mapping:
-            try:
-                corrected_input[key] = type_mapping[key](value)
-            except ValueError as e:
-                raise ValueError(f"Error converting {key}: {value} to {type_mapping[key].__name__}") from e
-        else:
-            corrected_input[key] = value
-# - An_StatePhys and An_Breed are valid strings
-# 
 
+    for key in type_mapping.keys():
+        if key not in animal_input:
+            raise KeyError(f"Missing required key: {key}")
+        value = animal_input[key]
+        expected_type = type_mapping[key]
+        try:
+            corrected_value = expected_type(value)
+        except ValueError as e:
+            raise ValueError(f"Error converting {key}: {value} to {expected_type.__name__}") from e
+        
+        if key == "An_StatePhys" and corrected_value not in an_statephys_values:
+            raise ValueError(f"An_StatePhys must be one of {an_statephys_values}")
+        
+        if key == "An_Breed" and corrected_value not in an_breed_values:
+            raise ValueError(f"An_Breed must be one of {an_breed_values}")
 
-
+        corrected_input[key] = corrected_value
     return corrected_input
 
 
