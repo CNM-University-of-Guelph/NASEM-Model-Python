@@ -25,7 +25,7 @@ def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
     return user_diet
 
 
-def validate_animal_input(animal_input):
+def validate_animal_input(animal_input: dict) -> dict:
     if not isinstance(animal_input, dict):
         raise TypeError("animal_input must be a dictionary")
     type_mapping = {
@@ -66,7 +66,9 @@ def validate_animal_input(animal_input):
         try:
             corrected_value = expected_type(value)
         except ValueError as e:
-            raise ValueError(f"Error converting {key}: {value} to {expected_type.__name__}") from e
+            raise ValueError(
+                f"Error converting {key}: {value} to {expected_type.__name__}"
+                ) from e
         
         if key == "An_StatePhys" and corrected_value not in an_statephys_values:
             raise ValueError(f"An_StatePhys must be one of {an_statephys_values}")
@@ -78,8 +80,37 @@ def validate_animal_input(animal_input):
     return corrected_input
 
 
-def validate_equation_selection(equation_selection):
-    pass
+def validate_equation_selection(equation_selection: dict) -> dict:
+    if not isinstance(equation_selection, dict):
+        raise TypeError("equation_selection must be a dictionary")
+    input_mapping = {
+        "Use_DNDF_IV": (0, 1, 2),
+        "DMIn_eqn": tuple(range(0, 18)),
+        "mProd_eqn": (0, 1, 2, 3, 4),
+        "MiN_eqn": (1, 2, 3),
+        "use_infusions": (0, 1),
+        "NonMilkCP_ClfLiq": (0, 1),
+        "Monensin_eqn": (0, 1),
+        "mPrt_eqn": (0, 1, 2, 3),
+        "mFat_eqn": (0, 1),
+        "RumDevDisc_Clf": (0, 1)
+    }
+    corrected_input = {}
+    for key in input_mapping.keys():
+        if key not in equation_selection:
+            raise KeyError(f"Missing required key: {key}")
+        value = equation_selection[key]
+        try:
+            corrected_value = int(value)
+        except ValueError as e:
+            raise ValueError(f"Error converting {key}: {value} to int") from e
+        if corrected_value not in input_mapping[key]:
+            raise ValueError(
+                f"{corrected_value} is not a valid input for {key}, select from"
+                f" {input_mapping[key]}"
+                )
+        corrected_input[key] = corrected_value
+    return corrected_input
 
 
 def validate_feed_library_df(feed_library_df):

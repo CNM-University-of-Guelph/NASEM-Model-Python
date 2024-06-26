@@ -1,0 +1,68 @@
+import pytest
+
+from nasem_dairy.ration_balancer.input_validation import validate_equation_selection
+
+def test_not_a_dictionary():
+    with pytest.raises(TypeError, match="equation_selection must be a dictionary"):
+        validate_equation_selection(["not", "a", "dict"])
+
+
+def test_missing_key_raises_key_error():
+    equation_selection = {
+        "Use_DNDF_IV": 1,
+        "DMIn_eqn": 5,
+    }
+    with pytest.raises(KeyError, match="Missing required key"):
+        validate_equation_selection(equation_selection)
+
+
+def test_invalid_value_type():
+    equation_selection = {
+        "Use_DNDF_IV": 1,
+        "DMIn_eqn": 5,
+        "mProd_eqn": "invalid",
+        "MiN_eqn": 2,
+        "use_infusions": 1,
+        "NonMilkCP_ClfLiq": 1,
+        "Monensin_eqn": 0,
+        "mPrt_eqn": 2,
+        "mFat_eqn": 1,
+        "RumDevDisc_Clf": 0
+    }
+    with pytest.raises(ValueError, match="Error converting mProd_eqn"):
+        validate_equation_selection(equation_selection)
+
+
+def test_invalid_value_range():
+    equation_selection = {
+        "Use_DNDF_IV": 1,
+        "DMIn_eqn": 20,
+        "mProd_eqn": 3,
+        "MiN_eqn": 2,
+        "use_infusions": 1,
+        "NonMilkCP_ClfLiq": 1,
+        "Monensin_eqn": 0,
+        "mPrt_eqn": 2,
+        "mFat_eqn": 1,
+        "RumDevDisc_Clf": 0
+    }
+    with pytest.raises(ValueError, match="20 is not a valid input for DMIn_eqn"):
+        validate_equation_selection(equation_selection)
+
+
+def test_valid_input():
+    equation_selection = {
+        "Use_DNDF_IV": 1,
+        "DMIn_eqn": 5,
+        "mProd_eqn": 3,
+        "MiN_eqn": 2,
+        "use_infusions": 1,
+        "NonMilkCP_ClfLiq": 1,
+        "Monensin_eqn": 0,
+        "mPrt_eqn": 2,
+        "mFat_eqn": 1,
+        "RumDevDisc_Clf": 0
+    }
+    result = validate_equation_selection(equation_selection)
+    assert result == equation_selection
+    
