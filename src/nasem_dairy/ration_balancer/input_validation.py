@@ -113,8 +113,41 @@ def validate_equation_selection(equation_selection: dict) -> dict:
     return corrected_input
 
 
-def validate_feed_library_df(feed_library_df):
-    pass
+def validate_feed_library_df(feed_library_df: pd.DataFrame, 
+                             user_diet: pd.DataFrame
+) -> pd.DataFrame:
+    # NOTE Should also check types of columns but should make decision about
+    # empty cells in feed library first
+    if not isinstance(feed_library_df, pd.DataFrame):
+        raise TypeError("feed_library_df must be a pandas DataFrame")
+    expected_columns = [
+        "Fd_Libr", "UID", "Fd_Index", "Fd_Name", "Fd_Category", "Fd_Type", 
+        "Fd_DM", "Fd_Conc", "Fd_Locked", "Fd_DE_Base", "Fd_ADF", "Fd_NDF", 
+        "Fd_DNDF48", "Fd_DNDF48_NDF", "Fd_Lg", "Fd_CP", "Fd_St", "Fd_dcSt", 
+        "Fd_WSC", "Fd_CPARU", "Fd_CPBRU", "Fd_CPCRU", "Fd_dcRUP", "Fd_CPs_CP", 
+        "Fd_KdRUP", "Fd_RUP_base", "Fd_NPN_CP", "Fd_NDFIP", "Fd_ADFIP", 
+        "Fd_Arg_CP", "Fd_His_CP", "Fd_Ile_CP", "Fd_Leu_CP", "Fd_Lys_CP", 
+        "Fd_Met_CP", "Fd_Phe_CP", "Fd_Thr_CP", "Fd_Trp_CP", "Fd_Val_CP", 
+        "Fd_CFat", "Fd_FA", "Fd_dcFA", "Fd_Ash", "Fd_C120_FA", "Fd_C140_FA", 
+        "Fd_C160_FA", "Fd_C161_FA", "Fd_C180_FA", "Fd_C181t_FA", "Fd_C181c_FA", 
+        "Fd_C182_FA", "Fd_C183_FA", "Fd_OtherFA_FA", "Fd_Ca", "Fd_P", 
+        "Fd_Pinorg_P", "Fd_Porg_P", "Fd_Na", "Fd_Cl", "Fd_K", "Fd_Mg", "Fd_S", 
+        "Fd_Cr", "Fd_Co", "Fd_Cu", "Fd_Fe", "Fd_I", "Fd_Mn", "Fd_Mo", "Fd_Se", 
+        "Fd_Zn", "Fd_B_Carotene", "Fd_Biotin", "Fd_Choline", "Fd_Niacin", 
+        "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa", "Fd_acPtot", "Fd_acNa", 
+        "Fd_acCl", "Fd_acK", "Fd_acCu", "Fd_acFe", "Fd_acMg", "Fd_acMn", 
+        "Fd_acZn"
+        ]
+    if list(feed_library_df.columns) != expected_columns:
+        raise ValueError(
+            f"feed_library_df must have the columns {expected_columns}"
+            )
+    missing_feeds = set(user_diet["Feedstuff"]) - set(feed_library_df["Fd_Name"])
+    if missing_feeds:
+        raise ValueError(
+            f"The following feeds are missing in the feed library: {missing_feeds}"
+            )
+    return feed_library_df
 
 
 def validate_coeff_dict(coeff_dict):
