@@ -1,4 +1,4 @@
-from typing import Any, Type, Union
+from typing import Any, Type, Union, List, Dict
 
 import pandas as pd
 import nasem_dairy as nd
@@ -213,7 +213,7 @@ def validate_infusion_input(infusion_input: dict) -> dict:
     return corrected_input
 
 
-def validate_MP_NP_efficiency_input(MP_NP_efficiency_input):
+def validate_MP_NP_efficiency_input(MP_NP_efficiency_input: dict) -> dict:
     default_MP_NP_efficiency = nd.MP_NP_efficiency_dict
     check_input_type(MP_NP_efficiency_input, dict, "MP_NP_efficiency_input")
     check_keys_presence(
@@ -226,8 +226,20 @@ def validate_MP_NP_efficiency_input(MP_NP_efficiency_input):
     return corrected_values
 
 
-def validate_mPrt_coeff_list(mPrt_coeff_list):
-    pass
+def validate_mPrt_coeff_list(mPrt_coeff_list: List[Dict[str, Any]]
+) -> List[Dict[str, Any]]:
+    default_keys = nd.mPrt_coeff_list[0].keys()
+    check_input_type(mPrt_coeff_list, list, "mPrt_coeff_list")
+    for index, coeffs in enumerate(mPrt_coeff_list):
+        check_input_type(coeffs, dict, f"mPrt_coeff_list[{index}]")
+        check_keys_presence(coeffs, default_keys)
+        for key, value in coeffs.items():
+            if not isinstance(value, (int, float)):
+                raise TypeError(
+                    f"Value for {key} in mPrt_coeff_list[{index}] must be int "
+                    f"or float. Got {type(value).__name__} instead."
+                )
+    return mPrt_coeff_list
 
 
 def validate_f_Imb(f_Imb):
