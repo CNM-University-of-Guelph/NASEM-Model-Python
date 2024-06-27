@@ -242,5 +242,13 @@ def validate_mPrt_coeff_list(mPrt_coeff_list: List[Dict[str, Any]]
     return mPrt_coeff_list
 
 
-def validate_f_Imb(f_Imb):
-    pass
+def validate_f_Imb(f_Imb: pd.Series) -> pd.Series:
+    required_index = [
+        'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
+    ]
+    check_input_type(f_Imb, pd.Series, "f_Imb")
+    check_keys_presence(f_Imb.index, required_index)
+    if not f_Imb.apply(lambda x: isinstance(x, (int, float))).all():
+        raise TypeError("All values in f_Imb must be int or float")
+    return f_Imb
+    
