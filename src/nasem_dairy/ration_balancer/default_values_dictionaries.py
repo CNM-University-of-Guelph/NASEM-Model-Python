@@ -365,7 +365,7 @@ infusion_dict = {
     'Inf_ttdcSt': 0,
     'Inf_Val_g': 0,
     'Inf_VFA_g': 0,
-    'Inf_Location': 0
+    'Inf_Location': "Blood"
 }
 
 MP_NP_efficiency_dict = {
