@@ -7,11 +7,18 @@ def check_input_type(input_value: Any,
                      expected_type: Type, 
                      var_name: str
 ) -> None:
+    """
+    Check the input data has the expected type
+    """
     if not isinstance(input_value, expected_type):
         raise TypeError(f"{var_name} must be a {expected_type.__name__}")
 
 
 def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
+    """
+    For each value in a dictionary check that the type is correct. Atttempt to
+    convert to the correct type and raise a TypeError if this fails.
+    """
     corrected_input = {}
     for key, expected_type in type_mapping.items():
         if key in input_dict:
@@ -43,6 +50,9 @@ def check_value_is_valid(input_value: Union[str, int],
                          valid_values: list, 
                          value_name: str
 ) -> None:
+    """
+    Check that the input value is included in a list of valid values.
+    """
     if input_value not in valid_values:
         raise ValueError(f"{value_name} must be one of {valid_values}, "
                          f"{input_value} was given")
