@@ -214,7 +214,16 @@ def validate_infusion_input(infusion_input: dict) -> dict:
 
 
 def validate_MP_NP_efficiency_input(MP_NP_efficiency_input):
-    pass
+    default_MP_NP_efficiency = nd.MP_NP_efficiency_dict
+    check_input_type(MP_NP_efficiency_input, dict, "MP_NP_efficiency_input")
+    check_keys_presence(
+        MP_NP_efficiency_input.keys(), default_MP_NP_efficiency.keys()
+        )
+    corrected_values = check_and_convert_type(
+        MP_NP_efficiency_input, 
+        {key: type(value) for key, value in default_MP_NP_efficiency.items()}
+        )
+    return corrected_values
 
 
 def validate_mPrt_coeff_list(mPrt_coeff_list):
