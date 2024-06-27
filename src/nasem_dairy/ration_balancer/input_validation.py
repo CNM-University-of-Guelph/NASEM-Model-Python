@@ -1,4 +1,5 @@
 import pandas as pd
+import nasem_dairy as nd
 
 def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
     """
@@ -150,8 +151,35 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
     return feed_library_df
 
 
-def validate_coeff_dict(coeff_dict):
-    pass
+def validate_coeff_dict(coeff_dict: dict) -> dict:
+    default_coeff_dict = nd.coeff_dict
+    if not isinstance(coeff_dict, dict):
+        raise TypeError("coeff_dict must be a dictionary")
+    
+    missing_keys = set(default_coeff_dict) - set(coeff_dict)
+    if missing_keys:
+        raise KeyError("The following keys are missing from the user entered " 
+                       f"coeff_dict: {missing_keys}")
+    
+    differing_keys = []
+    for key, default_value in default_coeff_dict.items():
+        user_value = coeff_dict[key]
+        if not isinstance(user_value, type(default_value)):
+            raise TypeError(
+                f"Value for {key} must be of type {type(default_value).__name__}."
+                f" Got {type(user_value).__name__} instead"
+                )
+        if user_value != default_value:
+            differing_keys.append(key)
+    
+    if differing_keys:
+        print("The following keys differ from their default values: ")
+        for key in differing_keys:
+            print(f"{key}: User: {coeff_dict[key]}, "
+                  f"Default: {default_coeff_dict[key]}")
+    else:
+        print("All values match the default coefficients.")
+    return coeff_dict
 
 
 def validate_infusion_input(infusion_input):
