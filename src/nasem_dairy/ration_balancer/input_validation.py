@@ -1,4 +1,4 @@
-from typing import Any, Type
+from typing import Any, Type, Union
 
 import pandas as pd
 import nasem_dairy as nd
@@ -37,6 +37,15 @@ def check_keys_presence(input_keys: list, required_keys: list) -> None:
     missing_keys = set(required_keys) - set(input_keys)
     if missing_keys:
         raise KeyError(f"The following keys are missing: {missing_keys}")
+
+
+def check_value_is_valid(input_value: Union[str, int], 
+                         valid_values: list, 
+                         value_name: str
+) -> None:
+    if input_value not in valid_values:
+        raise ValueError(f"{value_name} must be one of {valid_values}, "
+                         f"{input_value} was given")
 
 
 def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
@@ -92,18 +101,14 @@ def validate_animal_input(animal_input: dict) -> dict:
     
     check_keys_presence(animal_input, type_mapping.keys())
     corrected_input = check_and_convert_type(animal_input, type_mapping)
-    
-    an_statephys_values = ["Calf", "Heifer", "Dry Cow", 
-                           "Lactating Cow", "Other"]
-    an_breed_values = ["Holstein", "Jersey", "Other"]
-
-    for key, value in corrected_input.items():
-        if key == "An_StatePhys" and value not in an_statephys_values:
-            raise ValueError(f"An_StatePhys must be one of {an_statephys_values}")
-        if key == "An_Breed" and value not in an_breed_values:
-            raise ValueError(f"An_Breed must be one of {an_breed_values}")
-        corrected_input[key] = value
-    
+    check_value_is_valid(animal_input["An_StatePhys"],
+                         ["Calf", "Heifer", "Dry Cow", "Lactating Cow", "Other"],
+                         "An_StatePhys"
+                         )
+    check_value_is_valid(animal_input["An_Breed"],
+                         ["Holstein", "Jersey", "Other"],
+                         "An_Breed"
+                         )
     return corrected_input
 
 
@@ -174,26 +179,38 @@ def validate_coeff_dict(coeff_dict: dict) -> dict:
     default_coeff_dict = nd.coeff_dict
     check_input_type(coeff_dict, dict, "coeff_dict")
     check_keys_presence(coeff_dict, default_coeff_dict.keys())
-    check_and_convert_type(
+    corrected_dict = check_and_convert_type(
         coeff_dict, 
         {key: type(value) for key, value in default_coeff_dict.items()}
         )
     differing_keys = [
         key for key in default_coeff_dict 
-        if coeff_dict[key] != default_coeff_dict[key]
+        if corrected_dict[key] != default_coeff_dict[key]
         ]
     if differing_keys:
         print("The following keys differ from their default values: ")
         for key in differing_keys:
-            print(f"{key}: User: {coeff_dict[key]}, "
+            print(f"{key}: User: {corrected_dict[key]}, "
                   f"Default: {default_coeff_dict[key]}")
     else:
         print("All values match the default coefficients.")
-    return coeff_dict
+    return corrected_dict
 
 
-def validate_infusion_input(infusion_input):
-    pass
+def validate_infusion_input(infusion_input: dict) -> dict:
+    default_infusion_dict = nd.infusion_dict
+    check_input_type(infusion_input, dict, "infusion_input")
+    check_keys_presence(infusion_input, default_infusion_dict.keys())
+    corrected_input = check_and_convert_type(
+        infusion_input,
+        {key: type(value) for key, value in default_infusion_dict.items()}
+    )
+    check_value_is_valid(infusion_input["Inf_Location"],
+                         ["Rumen", "Abomasum", "Duodenum", "Jugular",
+                          "Arterial", "Iliac Artery" , "Blood"],
+                          "Inf_Location"
+                          )
+    return corrected_input
 
 
 def validate_MP_NP_efficiency_input(MP_NP_efficiency_input):
