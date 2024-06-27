@@ -30,7 +30,7 @@ type_mapping = {
 }
 
 def test_not_a_dictionary():
-    with pytest.raises(TypeError, match="animal_input must be a dictionary"):
+    with pytest.raises(TypeError, match="must be a dict"):
         validate_animal_input(["not", "a", "dict"])
 
 
@@ -38,7 +38,7 @@ def test_missing_key_raises_key_error():
     animal_input = {
         "An_Parity_rl": 2.0,
     }
-    with pytest.raises(KeyError, match="Missing required key"):
+    with pytest.raises(KeyError, match="The following keys are missing: "):
         validate_animal_input(animal_input)
 
 
@@ -163,7 +163,11 @@ def test_invalid_conversion():
         "Env_TripsParlor": "3",
         "Env_Topo": "0.2"
     }
-    with pytest.raises(ValueError, match="Error converting An_Parity_rl"):
+    with pytest.raises(
+        TypeError, 
+        match="Value for An_Parity_rl must be of type float. Got str instead "
+              "and failed to convert."
+         ):
         validate_animal_input(animal_input)
 
 

@@ -9,7 +9,7 @@ def test_wrong_column_names():
         "WrongName2": [10, 5]
     }
     df = pd.DataFrame(data)
-    with pytest.raises(ValueError, match="user_diet must have the columns"):
+    with pytest.raises(KeyError, match="The following keys are missing: "):
         validate_user_diet(df)
 
 

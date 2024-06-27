@@ -19,14 +19,14 @@ def create_minimal_valid_user_diet():
 
 
 def test_not_a_dataframe():
-    with pytest.raises(TypeError, match="feed_library_df must be a pandas DataFrame"):
+    with pytest.raises(TypeError, match="feed_library_df must be a DataFrame"):
         validate_feed_library_df(["not", "a", "dataframe"], pd.DataFrame())
 
 
 def test_wrong_columns():
     feed_library_df = pd.DataFrame(columns=["Wrong", "Columns"])
     user_diet = create_minimal_valid_user_diet()
-    with pytest.raises(ValueError, match="feed_library_df must have the columns"):
+    with pytest.raises(KeyError, match="The following keys are missing: "):
         validate_feed_library_df(feed_library_df, user_diet)
 
 

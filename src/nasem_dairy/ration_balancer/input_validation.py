@@ -1,16 +1,50 @@
+from typing import Any, Type
+
 import pandas as pd
 import nasem_dairy as nd
 
+def check_input_type(input_value: Any, 
+                     expected_type: Type, 
+                     var_name: str
+) -> None:
+    if not isinstance(input_value, expected_type):
+        raise TypeError(f"{var_name} must be a {expected_type.__name__}")
+
+
+def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
+    corrected_input = {}
+    for key, expected_type in type_mapping.items():
+        if key in input_dict:
+            value = input_dict[key]
+            if not isinstance(value, expected_type):
+                try:
+                    corrected_value = expected_type(value)
+                except (ValueError, TypeError) as e:
+                    raise TypeError(
+                        f"Value for {key} must be of type {expected_type.__name__}. "
+                        f"Got {type(value).__name__} instead and failed to convert."
+                    ) from e
+                corrected_input[key] = corrected_value
+            else:
+                corrected_input[key] = value
+    return corrected_input
+
+
+def check_keys_presence(input_keys: list, required_keys: list) -> None:
+    """
+    Checks that required keys are present in a given iterable.
+    """
+    missing_keys = set(required_keys) - set(input_keys)
+    if missing_keys:
+        raise KeyError(f"The following keys are missing: {missing_keys}")
+
+
 def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
-    """
-    Check that the use_diet DataFrame is formatted properly and contains the
-    required data for execute_model.
-    """
-    if not isinstance(user_diet, pd.DataFrame):
-        raise TypeError("user_diet must be a pandas DataFrame")
+    check_input_type(user_diet, pd.DataFrame, "user_diet")
+    
     expected_columns = ["Feedstuff", "kg_user"]
-    if list(user_diet.columns) != expected_columns:
-        raise ValueError(f"user_diet must have the columns {expected_columns}")
+    check_keys_presence(user_diet.columns, expected_columns)
+    
     user_diet["kg_user"] = pd.to_numeric(user_diet["kg_user"], errors="coerce")
     if user_diet["kg_user"].isna().any():
         raise ValueError("kg_user column must contain only numeric values")
@@ -27,63 +61,55 @@ def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
 
 
 def validate_animal_input(animal_input: dict) -> dict:
-    if not isinstance(animal_input, dict):
-        raise TypeError("animal_input must be a dictionary")
+    check_input_type(animal_input, dict, "animal_input")
+    
     type_mapping = {
-            'An_Parity_rl': float,
-            'Trg_MilkProd': float,
-            'An_BW': float,
-            'An_BCS': float,
-            'An_LactDay': int,
-            'Trg_MilkFatp': float,
-            'Trg_MilkTPp': float,
-            'Trg_MilkLacp': float,
-            'DMI': float,  # aka. Trg_Dt_DMIn
-            'An_BW_mature': float,
-            'Trg_FrmGain': float,
-            'An_GestDay': int,
-            'An_GestLength': int,
-            'Trg_RsrvGain': float,
-            'Fet_BWbrth': float,
-            'An_AgeDay': float,
-            'An_305RHA_MlkTP': float,
-            'An_StatePhys': str,
-            'An_Breed': str,
-            'An_AgeDryFdStart': int,
-            'Env_TempCurr': float,
-            'Env_DistParlor': float,
-            'Env_TripsParlor': int,
-            'Env_Topo': float
+        'An_Parity_rl': float,
+        'Trg_MilkProd': float,
+        'An_BW': float,
+        'An_BCS': float,
+        'An_LactDay': int,
+        'Trg_MilkFatp': float,
+        'Trg_MilkTPp': float,
+        'Trg_MilkLacp': float,
+        'DMI': float,  # aka. Trg_Dt_DMIn
+        'An_BW_mature': float,
+        'Trg_FrmGain': float,
+        'An_GestDay': int,
+        'An_GestLength': int,
+        'Trg_RsrvGain': float,
+        'Fet_BWbrth': float,
+        'An_AgeDay': float,
+        'An_305RHA_MlkTP': float,
+        'An_StatePhys': str,
+        'An_Breed': str,
+        'An_AgeDryFdStart': int,
+        'Env_TempCurr': float,
+        'Env_DistParlor': float,
+        'Env_TripsParlor': int,
+        'Env_Topo': float
     }
-    an_statephys_values = ["Calf", "Heifer", "Dry Cow", "Lactating Cow", "Other"]
+    
+    check_keys_presence(animal_input, type_mapping.keys())
+    corrected_input = check_and_convert_type(animal_input, type_mapping)
+    
+    an_statephys_values = ["Calf", "Heifer", "Dry Cow", 
+                           "Lactating Cow", "Other"]
     an_breed_values = ["Holstein", "Jersey", "Other"]
-    corrected_input = {}
 
-    for key in type_mapping.keys():
-        if key not in animal_input:
-            raise KeyError(f"Missing required key: {key}")
-        value = animal_input[key]
-        expected_type = type_mapping[key]
-        try:
-            corrected_value = expected_type(value)
-        except ValueError as e:
-            raise ValueError(
-                f"Error converting {key}: {value} to {expected_type.__name__}"
-                ) from e
-        
-        if key == "An_StatePhys" and corrected_value not in an_statephys_values:
+    for key, value in corrected_input.items():
+        if key == "An_StatePhys" and value not in an_statephys_values:
             raise ValueError(f"An_StatePhys must be one of {an_statephys_values}")
-        
-        if key == "An_Breed" and corrected_value not in an_breed_values:
+        if key == "An_Breed" and value not in an_breed_values:
             raise ValueError(f"An_Breed must be one of {an_breed_values}")
-
-        corrected_input[key] = corrected_value
+        corrected_input[key] = value
+    
     return corrected_input
 
 
 def validate_equation_selection(equation_selection: dict) -> dict:
-    if not isinstance(equation_selection, dict):
-        raise TypeError("equation_selection must be a dictionary")
+    check_input_type(equation_selection, dict, "equation_selection")
+    
     input_mapping = {
         "Use_DNDF_IV": (0, 1, 2),
         "DMIn_eqn": tuple(range(0, 18)),
@@ -96,31 +122,26 @@ def validate_equation_selection(equation_selection: dict) -> dict:
         "mFat_eqn": (0, 1),
         "RumDevDisc_Clf": (0, 1)
     }
-    corrected_input = {}
-    for key in input_mapping.keys():
-        if key not in equation_selection:
-            raise KeyError(f"Missing required key: {key}")
-        value = equation_selection[key]
-        try:
-            corrected_value = int(value)
-        except ValueError as e:
-            raise ValueError(f"Error converting {key}: {value} to int") from e
-        if corrected_value not in input_mapping[key]:
+    
+    check_keys_presence(equation_selection, input_mapping.keys())
+    corrected_input = check_and_convert_type(
+        equation_selection, {key: int for key in input_mapping.keys()}
+        )
+    for key, value in corrected_input.items():
+        if value not in input_mapping[key]:
             raise ValueError(
-                f"{corrected_value} is not a valid input for {key}, select from"
-                f" {input_mapping[key]}"
+                f"{value} is not a valid input for {key}, "
+                f"select from {input_mapping[key]}"
                 )
-        corrected_input[key] = corrected_value
     return corrected_input
 
 
 def validate_feed_library_df(feed_library_df: pd.DataFrame, 
                              user_diet: pd.DataFrame
 ) -> pd.DataFrame:
-    # NOTE Should also check types of columns but should make decision about
-    # empty cells in feed library first
-    if not isinstance(feed_library_df, pd.DataFrame):
-        raise TypeError("feed_library_df must be a pandas DataFrame")
+    check_input_type(feed_library_df, pd.DataFrame, "feed_library_df")
+    check_input_type(user_diet, pd.DataFrame, "user_diet")
+    
     expected_columns = [
         "Fd_Libr", "UID", "Fd_Index", "Fd_Name", "Fd_Category", "Fd_Type", 
         "Fd_DM", "Fd_Conc", "Fd_Locked", "Fd_DE_Base", "Fd_ADF", "Fd_NDF", 
@@ -138,11 +159,9 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
         "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa", "Fd_acPtot", "Fd_acNa", 
         "Fd_acCl", "Fd_acK", "Fd_acCu", "Fd_acFe", "Fd_acMg", "Fd_acMn", 
         "Fd_acZn"
-        ]
-    if list(feed_library_df.columns) != expected_columns:
-        raise ValueError(
-            f"feed_library_df must have the columns {expected_columns}"
-            )
+    ]
+    
+    check_keys_presence(feed_library_df.columns, expected_columns)
     missing_feeds = set(user_diet["Feedstuff"]) - set(feed_library_df["Fd_Name"])
     if missing_feeds:
         raise ValueError(
@@ -153,25 +172,16 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
 
 def validate_coeff_dict(coeff_dict: dict) -> dict:
     default_coeff_dict = nd.coeff_dict
-    if not isinstance(coeff_dict, dict):
-        raise TypeError("coeff_dict must be a dictionary")
-    
-    missing_keys = set(default_coeff_dict) - set(coeff_dict)
-    if missing_keys:
-        raise KeyError("The following keys are missing from the user entered " 
-                       f"coeff_dict: {missing_keys}")
-    
-    differing_keys = []
-    for key, default_value in default_coeff_dict.items():
-        user_value = coeff_dict[key]
-        if not isinstance(user_value, type(default_value)):
-            raise TypeError(
-                f"Value for {key} must be of type {type(default_value).__name__}."
-                f" Got {type(user_value).__name__} instead"
-                )
-        if user_value != default_value:
-            differing_keys.append(key)
-    
+    check_input_type(coeff_dict, dict, "coeff_dict")
+    check_keys_presence(coeff_dict, default_coeff_dict.keys())
+    check_and_convert_type(
+        coeff_dict, 
+        {key: type(value) for key, value in default_coeff_dict.items()}
+        )
+    differing_keys = [
+        key for key in default_coeff_dict 
+        if coeff_dict[key] != default_coeff_dict[key]
+        ]
     if differing_keys:
         print("The following keys differ from their default values: ")
         for key in differing_keys:

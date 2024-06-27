@@ -3,7 +3,7 @@ import pytest
 from nasem_dairy.ration_balancer.input_validation import validate_equation_selection
 
 def test_not_a_dictionary():
-    with pytest.raises(TypeError, match="equation_selection must be a dictionary"):
+    with pytest.raises(TypeError, match="equation_selection must be a dict"):
         validate_equation_selection(["not", "a", "dict"])
 
 
@@ -12,7 +12,7 @@ def test_missing_key_raises_key_error():
         "Use_DNDF_IV": 1,
         "DMIn_eqn": 5,
     }
-    with pytest.raises(KeyError, match="Missing required key"):
+    with pytest.raises(KeyError, match="The following keys are missing: "):
         validate_equation_selection(equation_selection)
 
 
@@ -29,7 +29,9 @@ def test_invalid_value_type():
         "mFat_eqn": 1,
         "RumDevDisc_Clf": 0
     }
-    with pytest.raises(ValueError, match="Error converting mProd_eqn"):
+    with pytest.raises(
+        TypeError, match="Value for mProd_eqn must be of type int."
+                         " Got str instead and failed to convert."):
         validate_equation_selection(equation_selection)
 
 
