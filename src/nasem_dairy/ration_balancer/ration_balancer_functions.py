@@ -241,7 +241,7 @@ def read_infusion_input(path_to_file='infusion_input.csv'):
 
     infusions = {}
     input_data = pd.read_csv(path_to_file)
-    input_data['Value'] = pd.to_numeric(input_data['Value'], errors='coerce')
+
     # Read in user data
     for index, row in input_data.iterrows():
         # Iterate over CSV, convert to a dictionary
