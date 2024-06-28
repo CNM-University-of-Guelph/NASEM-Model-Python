@@ -15,26 +15,29 @@ def calculate_Inf_OMIn(Inf_DMIn, Inf_AshIn):
     return Inf_OMIn
 
 
-def calculate_Inf_Rum(Inf_Location):
-    Inf_Rum = np.where(Inf_Location == "Rumen", 1, 0)  # Line 874
+def calculate_Inf_Rum(Inf_Location: str) -> int:
+    if Inf_Location == "Rumen": # Line 874
+        Inf_Rum = 1
+        return Inf_Rum
+    Inf_Rum = 0
     return Inf_Rum
 
 
-def calculate_Inf_SI(Inf_Location):
-    condition = ((Inf_Location == "Abomasum") | 
-                 (Inf_Location == "Duodenum") | 
-                 (Inf_Location == "Duodenal"))
-    Inf_SI = np.where(condition, 1, 0)  # Line 875
+def calculate_Inf_SI(Inf_Location: str) -> int:
+    if Inf_Location in ["Abomasum", "Duodenum", "Duodenal"]: # Line 875
+        Inf_SI = 1
+        return Inf_SI
+    Inf_SI = 0 
     return Inf_SI
 
 
-def calculate_Inf_Art(Inf_Location):
-    condition = ((Inf_Location == "Jugular") | 
-                 (Inf_Location == "Arterial") | 
-                 (Inf_Location == "Iliac Artery") | 
-                 (Inf_Location == "Blood"))
-    Inf_Art = np.where(condition, 1, 0)  # Line 876
-    return Inf_Art
+def calculate_Inf_Art(Inf_Location: str) -> int:
+    if Inf_Location in ["Jugular", "Arterial", "Iliac Artery", "Blood"]:
+        Inf_Art = 1 # Line 876
+        return Inf_Art
+    else:
+        Inf_Art = 0
+        return Inf_Art 
 
 
 def calculate_InfRum_TPIn(InfRum_CPIn, InfRum_NPNCPIn):

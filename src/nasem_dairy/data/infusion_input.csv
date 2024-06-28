@@ -30,4 +30,4 @@ infusions,Inf_Trp_g,30000,Tryptophan (g)
 infusions,Inf_ttdcSt,31000,Starch Digestibility (% of Starch)
 infusions,Inf_Val_g,32000,Valine (g)
 infusions,Inf_VFA_g,33000,Volatile Fatty Acids (g)
-infusions,Inf_Location,Rumen,Infusion Site
+infusions,Inf_Location,Rumen,Infusion Site - one of: "Rumen" "Abomasum"  "Duodenum"  "Duodenal"  "Jugular" "Arterial" "Iliac Artery" "Blood" 
