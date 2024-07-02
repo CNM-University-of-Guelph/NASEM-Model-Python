@@ -759,6 +759,9 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 8: Amino Acid Calculations
     ########################################
     # Create array from of coefficients for the AA calculations
+    
+    # TODO Why is there an array with same name as a dataframe column???
+    # Should be renamed mPrt_k_AA_src
     mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
     AA_values['Abs_AA_g'] = AA.calculate_Abs_AA_g(
         AA_list, An_data, infusion_data, infusion_data['Inf_Art']
@@ -1739,7 +1742,7 @@ def execute_model(user_diet: pd.DataFrame,
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], coeff_dict)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], coeff_dict)
     AA_values['MlkNP_AbsAA'] = milk.calculate_MlkNP_AbsAA(
-        AA_values['Abs_AA_g'], mPrt_k_AA
+        AA_values['Abs_AA_g'], AA_values["mPrt_k_AA"]
         )
     MlkNP_AbsEAA = milk.calculate_MlkNP_AbsEAA(Abs_EAA2b_g, mPrt_k_EAA2)
     MlkNP_AbsNEAA = milk.calculate_MlkNP_AbsNEAA(Abs_neAA_g, coeff_dict)
