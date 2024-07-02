@@ -130,7 +130,6 @@ def validate_equation_selection(equation_selection: dict) -> dict:
         "DMIn_eqn": tuple(range(0, 18)),
         "mProd_eqn": (0, 1, 2, 3, 4),
         "MiN_eqn": (1, 2, 3),
-        "use_infusions": (0, 1),
         "NonMilkCP_ClfLiq": (0, 1),
         "Monensin_eqn": (0, 1),
         "mPrt_eqn": (0, 1, 2, 3),
