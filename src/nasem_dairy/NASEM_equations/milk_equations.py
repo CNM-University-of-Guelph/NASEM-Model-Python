@@ -69,6 +69,8 @@ def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float,
 
 
 def calculate_Mlk_NP_g(An_StatePhys, 
+                       mPrt_eqn,
+                       Trg_Mlk_NP_g,
                        An_BW, 
                        Abs_AA_g, 
                        mPrt_k_AA, 
@@ -91,6 +93,8 @@ def calculate_Mlk_NP_g(An_StatePhys,
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     if An_StatePhys != "Lactating Cow":  # Line 2204
         Mlk_NP_g = 0
+    elif mPrt_eqn == 0:
+        Mlk_NP_g = Trg_Mlk_NP_g
     else:
         Mlk_NP_g = (coeff_dict['mPrt_Int'] + 
                     Abs_AA_g['Arg'] * mPrt_k_AA['Arg'] + 
