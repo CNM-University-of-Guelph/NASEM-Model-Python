@@ -805,12 +805,17 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 11: Milk Production Prediciton
     ########################################
+    # Milk Requirement
+    Trg_Mlk_NP_g = protein_req.calculate_Trg_Mlk_NP_g(
+        animal_input['Trg_MilkProd'], animal_input['Trg_MilkTPp']
+        )
     Mlk_NPmx = milk.calculate_Mlk_NPmx(
         AA_values['mPrtmx_AA2'], An_data['An_DEInp'], An_data['An_DigNDF'], 
         animal_input['An_BW'], Abs_neAA_g, Abs_OthAA_g, mPrt_coeff
         )
     Mlk_NP_g = milk.calculate_Mlk_NP_g(
-        animal_input['An_StatePhys'], animal_input['An_BW'],
+        animal_input['An_StatePhys'], equation_selection["mPrt_eqn"],
+        Trg_Mlk_NP_g, animal_input['An_BW'],
         AA_values['Abs_AA_g'], AA_values['mPrt_k_AA'], Abs_neAA_g, Abs_OthAA_g,
         Abs_EAA2b_g, mPrt_k_EAA2, An_data['An_DigNDF'], An_data['An_DEInp'],
         An_data['An_DEStIn'], An_data['An_DEFAIn'], An_data['An_DErOMIn'],
@@ -1124,10 +1129,6 @@ def execute_model(user_diet: pd.DataFrame,
     # Gestation Requirement
     Gest_MPUse_g_Trg = protein_req.calculate_Gest_MPUse_g_Trg(
         Gest_NPuse_g, coeff_dict
-        )
-    # Milk Requirement
-    Trg_Mlk_NP_g = protein_req.calculate_Trg_Mlk_NP_g(
-        animal_input['Trg_MilkProd'], animal_input['Trg_MilkTPp']
         )
     Mlk_MPUse_g_Trg = protein_req.calculate_Mlk_MPUse_g_Trg(Trg_Mlk_NP_g, coeff_dict)
     # Total Protein Requirement
