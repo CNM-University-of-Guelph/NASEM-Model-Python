@@ -3,7 +3,6 @@ equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
 equation_selection,DMIn_eqn,0,int (0-17)
 equation_selection,mProd_eqn,1,int
 equation_selection,MiN_eqn,1,"int (1, 2 or 3)"
-equation_selection,use_infusions,0,"0 for no infusion, 1 to use infusions; Not used after refactor"
 equation_selection,NonMilkCP_ClfLiq,0,"0 for no non milk protein sorce, 1 for non milk protein"
 equation_selection,Monensin_eqn,1,"int Is Monensin in diet? 0=No, 1=Yes"
 equation_selection,mPrt_eqn,0,"int 0 for NRC, 1 for VT1, 2 for VT2"

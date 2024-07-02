@@ -86,8 +86,20 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 1: Read User Input
     ########################################
     # prevent mutable changes outside of expected scope (especially for Shiny):
-    user_diet = user_diet.copy()
+    user_diet = validate.validate_user_diet(user_diet.copy())
     animal_input = validate.validate_animal_input(animal_input.copy())
+    equation_selection = validate.validate_equation_selection(
+        equation_selection.copy()
+        )
+    feed_library_df = validate.validate_feed_library_df(feed_library_df.copy(),
+                                                        user_diet.copy())
+    coeff_dict = validate.validate_coeff_dict(coeff_dict.copy())
+    infusion_input = validate.validate_infusion_input(infusion_input.copy())
+    MP_NP_efficiency_input = validate.validate_MP_NP_efficiency_input(
+        MP_NP_efficiency_input.copy()
+        )
+    mPrt_coeff_list = validate.validate_mPrt_coeff_list(mPrt_coeff_list.copy())
+    f_Imb = validate.validate_f_Imb(f_Imb.copy())
     mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
