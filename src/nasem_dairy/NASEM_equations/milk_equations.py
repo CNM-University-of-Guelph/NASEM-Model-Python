@@ -87,8 +87,8 @@ def calculate_Mlk_NP_g(An_StatePhys,
                        mPrt_coeff
 ) -> float:
     req_coeff = [
-        'mPrt_Int', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp',
-        'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW'
+        'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF',
+        'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW'
     ]
     ration_funcs.check_coeffs_in_coeff_dict(mPrt_coeff, req_coeff)
     if An_StatePhys != "Lactating Cow":  # Line 2204
