@@ -759,23 +759,20 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 8: Amino Acid Calculations
     ########################################
     # Create array from of coefficients for the AA calculations
-    
-    # TODO Why is there an array with same name as a dataframe column???
-    # Should be renamed mPrt_k_AA_src
-    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
+    mPrt_k_AA_src = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
     AA_values['Abs_AA_g'] = AA.calculate_Abs_AA_g(
         AA_list, An_data, infusion_data, infusion_data['Inf_Art']
         )
-    AA_values['mPrtmx_AA'] = AA.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
+    AA_values['mPrtmx_AA'] = AA.calculate_mPrtmx_AA(mPrt_k_AA_src, mPrt_coeff)
     f_mPrt_max = protein.calculate_f_mPrt_max(
         animal_input['An_305RHA_MlkTP'], coeff_dict
         )
     AA_values['mPrtmx_AA2'] = AA.calculate_mPrtmx_AA2(
         AA_values['mPrtmx_AA'], f_mPrt_max
         )
-    AA_values['AA_mPrtmx'] = AA.calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
+    AA_values['AA_mPrtmx'] = AA.calculate_AA_mPrtmx(mPrt_k_AA_src, mPrt_coeff)
     AA_values['mPrt_AA_01'] = AA.calculate_mPrt_AA_01(
-        AA_values['AA_mPrtmx'], mPrt_k_AA, mPrt_coeff
+        AA_values['AA_mPrtmx'], mPrt_k_AA_src, mPrt_coeff
         )
     AA_values['mPrt_k_AA'] = AA.calculate_mPrt_k_AA(
         AA_values['mPrtmx_AA2'], AA_values['mPrt_AA_01'], AA_values['AA_mPrtmx']
