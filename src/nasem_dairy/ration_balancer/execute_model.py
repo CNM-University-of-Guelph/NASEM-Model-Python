@@ -100,7 +100,9 @@ def execute_model(user_diet: pd.DataFrame,
         )
     mPrt_coeff_list = validate.validate_mPrt_coeff_list(mPrt_coeff_list.copy())
     f_Imb = validate.validate_f_Imb(f_Imb.copy())
-    mPrt_coeff = mPrt_coeff_list[int(equation_selection['mPrt_eqn'])]
+    # Adjust value of mPrt_eqn when used to index mPrt_coeff_list as the indexing 
+    # in R and Python use different starting values. Use max to prevent negatives
+    mPrt_coeff = mPrt_coeff_list[max(0, equation_selection["mPrt_eqn"] - 1)]  
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
