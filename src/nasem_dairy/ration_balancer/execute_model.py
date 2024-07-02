@@ -1739,7 +1739,7 @@ def execute_model(user_diet: pd.DataFrame,
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], mPrt_coeff)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], mPrt_coeff)
     AA_values['MlkNP_AbsAA'] = milk.calculate_MlkNP_AbsAA(
-        AA_values['Abs_AA_g'], mPrt_k_AA
+        AA_values['Abs_AA_g'], AA_values["mPrt_k_AA"]
         )
     MlkNP_AbsEAA = milk.calculate_MlkNP_AbsEAA(Abs_EAA2b_g, mPrt_k_EAA2)
     MlkNP_AbsNEAA = milk.calculate_MlkNP_AbsNEAA(Abs_neAA_g, mPrt_coeff)
