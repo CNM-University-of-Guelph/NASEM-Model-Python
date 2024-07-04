@@ -573,7 +573,14 @@ def calculate_Body_Gain_NEalow(An_MEavail_Grw: float,
     """
     Body_Gain_NEalow: NE allowable body gain
     """
-    Body_Gain_NEalow = An_MEavail_Grw * Kg_ME_NE / Body_NEgain_BWgain # Line 2950
+    if (Body_NEgain_BWgain != 0 # Line 2950
+        and not np.isnan(An_MEavail_Grw) 
+        and not np.isnan(Kg_ME_NE) 
+        and not np.isnan(Body_NEgain_BWgain)
+        ):
+        Body_Gain_NEalow = An_MEavail_Grw * Kg_ME_NE / Body_NEgain_BWgain 
+    else:
+        Body_Gain_NEalow = np.nan
     return Body_Gain_NEalow
 
 
