@@ -1,6 +1,8 @@
 # Manure equations
 # import nasem_dairy.NASEM_equations.manure_equations as manure
 
+import numpy as np
+
 def calculate_Man_out(An_StatePhys: str, An_DMIn: float, Dt_K: float) -> float:
     """
     Man_out: kg wet manure production
@@ -86,7 +88,10 @@ def calculate_ManN_Milk(Man_Nout_g: float, Mlk_Prod: float) -> float:
     """
     ManN_Milk: g manure N / kg milk production (g/kg)
     """
-    ManN_Milk = Man_Nout_g / Mlk_Prod  # g N / kg of milk, Line 3259
+    if Mlk_Prod != 0 and not np.isnan(Mlk_Prod):
+        ManN_Milk = Man_Nout_g / Mlk_Prod # g N / kg of milk, Line 3259
+    else:
+        ManN_Milk = None
     return ManN_Milk
 
 
@@ -235,5 +240,8 @@ def calculate_ManWa_Milk(Man_Wa_out: float, Mlk_Prod: float) -> float:
 
 
 def calculate_VolSlds2_Milk(Man_VolSld2: float, Mlk_Prod: float) -> float:
-    VolSlds2_Milk = Man_VolSld2 / Mlk_Prod  # kg/kg; mass balance derived
+    if Mlk_Prod != 0 and not np.isnan(Mlk_Prod):
+        VolSlds2_Milk = Man_VolSld2 / Mlk_Prod # kg/kg; mass balance derived
+    else:
+        VolSlds2_Milk = np.nan 
     return VolSlds2_Milk

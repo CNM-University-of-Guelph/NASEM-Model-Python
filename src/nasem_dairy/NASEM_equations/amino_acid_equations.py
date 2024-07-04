@@ -75,12 +75,16 @@ def calculate_mPrt_AA_01(AA_mPrtmx: np.array, mPrt_k_AA: np.array,
 
 
 def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
-    condition = (mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2 <= 0) | (AA_mPrtmx == 0)
-    # Check for sqrt of 0 or divide by 0 errors and set value to 0 if encountered
-    mPrt_k_AA = np.where(
-        condition, 0,
-        -(2 * np.sqrt(mPrtmx_AA2**2 - mPrt_AA_01 * mPrtmx_AA2) - 2 * mPrtmx_AA2)
-        / (AA_mPrtmx * 0.1))
+    mPrt_k_AA = np.zeros_like(mPrtmx_AA2)
+    for i in range(len(mPrtmx_AA2)):
+        inner_value = (
+            mPrtmx_AA2.iloc[i]**2 - mPrt_AA_01.iloc[i] * mPrtmx_AA2.iloc[i]
+            )
+        if inner_value <= 0 or AA_mPrtmx.iloc[i] == 0:
+            mPrt_k_AA[i] = 0
+        else:
+            mPrt_k_AA[i] = (-(2 * np.sqrt(inner_value) - 2 * mPrtmx_AA2.iloc[i]) 
+                            / (AA_mPrtmx.iloc[i] * 0.1))
     return mPrt_k_AA
 
 

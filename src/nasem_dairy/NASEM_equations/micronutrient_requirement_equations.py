@@ -3,6 +3,7 @@
 
 import math
 
+import numpy as np
 
 ### CALCIUM ###
 def calculate_Ca_Mlk(An_Breed: str) -> float:
@@ -1170,7 +1171,10 @@ def calculate_Dt_acCo(Abs_CoIn: float, Dt_CoIn: float) -> float:
     """
     Dt_acCo: Diet level absorption coefficient cobalt (g/g)
     """
-    Dt_acCo = Abs_CoIn / Dt_CoIn  # Line 3230
+    if Dt_CoIn != 0 and not np.isnan(Abs_CoIn) and not np.isnan(Dt_CoIn):
+        Dt_acCo = Abs_CoIn / Dt_CoIn # Line 3230
+    else:
+        Dt_acCo = None
     return Dt_acCo
 
 

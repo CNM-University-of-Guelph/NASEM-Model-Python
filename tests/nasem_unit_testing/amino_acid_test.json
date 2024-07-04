@@ -61,17 +61,17 @@
     },
     {
       "Name": "calculate_mPrt_k_AA",
-      "Input": {"mPrtmx_AA2": 15, "mPrt_AA_01": 50, "AA_mPrtmx": 5},
-      "Output": 0
+      "Input": {"mPrtmx_AA2": [15], "mPrt_AA_01": [50], "AA_mPrtmx": [5]},
+      "Output": [0]
     },
     {
       "Name": "calculate_mPrt_k_AA",
-      "Input": {"mPrtmx_AA2": 10, "mPrt_AA_01": 10, "AA_mPrtmx": 0},
-      "Output": 0
+      "Input": {"mPrtmx_AA2": [10], "mPrt_AA_01": [10], "AA_mPrtmx": [0]},
+      "Output": [0]
     },
     {
       "Name": "calculate_mPrt_k_AA",
-      "Input": {"mPrtmx_AA2": 1, "mPrt_AA_01": 0.5, "AA_mPrtmx": 0.1},
-      "Output": 58.57864376
+      "Input": {"mPrtmx_AA2": [1], "mPrt_AA_01": [0.5], "AA_mPrtmx": [0.1]},
+      "Output": [58.57864376]
     }
   ]
