@@ -29,7 +29,7 @@ def load_R_json(R_json_path: str) -> Tuple[Dict, Dict]:
     with open(R_json_path, "r") as file:
         data = json.load(file)
 
-    variables_to_extract = ["efficiency_input", "f", "i"]
+    variables_to_extract = ["efficiency_input", "f", "i", "f_Imb"]    
     dictionaries = {}
     r_data = {}
 
@@ -163,15 +163,32 @@ def create_arrays(r_data: dict) -> Union[Dict, Dict]:
     return arrays, r_data
 
 
-def remove_constants(r_data: dict) -> dict:
-    for key in constants.coeff_dict.keys():
-        r_data.pop(key, None)
-    for key in constants.MP_NP_efficiency_dict.keys():
-        r_data.pop(key, None)
-    mPrt_coeff_dict = constants.mPrt_coeff_list[0]
-    for key in mPrt_coeff_dict.keys():
-        r_data.pop(key, None)
-    return r_data
+def get_constants(r_data: dict, mPrt_eqn: int, dictionaries: dict) -> dict:
+    input_coeff_dict = {
+        key: r_data.pop(key, None) for key in constants.coeff_dict.keys()
+        }
+    
+    r_MP_NP_efficiency = dictionaries["efficiency_input"][0]
+    input_MP_NP_efficiency_dict = {
+        key: r_MP_NP_efficiency.pop(key, None) 
+        for key in constants.MP_NP_efficiency_dict.keys()
+        }
+    
+    input_mPrt_coeff_list = constants.mPrt_coeff_list
+    selected_dict = input_mPrt_coeff_list[int(mPrt_eqn)]
+    for key in selected_dict.keys():
+        updated_key = key.removesuffix("_src")
+        selected_dict[key] = r_data[updated_key]
+
+    r_infusions = dictionaries["i"][0]
+    input_infusion_dict = {
+        key: r_infusions.pop(key, None) for key in constants.infusion_dict.keys()
+        }
+    
+    input_f_Imb = dictionaries.pop("f_Imb", None)
+    
+    return (r_data, input_coeff_dict, input_MP_NP_efficiency_dict, 
+            input_mPrt_coeff_list, input_infusion_dict, input_f_Imb)
 
 
 def remove_untested_values(r_data: dict) -> dict:
@@ -224,6 +241,11 @@ def remove_untested_values(r_data: dict) -> dict:
 def create_test_json(user_diet_in: dict, 
                      animal_input_in: dict, 
                      equation_selection_in: dict,
+                     coeff_dict: dict,
+                     infusion_input: dict,
+                     MP_NP_efficiency_input: dict,
+                     mPrt_coeff_list: list,
+                     f_Imb: list,
                      r_data: dict, 
                      AA_values: dict, 
                      arrays: dict, 
@@ -233,7 +255,12 @@ def create_test_json(user_diet_in: dict,
         "input": {
             "user_diet_in": user_diet_in,
             "animal_input_in": animal_input_in,
-            "equation_selection_in": equation_selection_in
+            "equation_selection_in": equation_selection_in,
+            "coeff_dict": coeff_dict,
+            "infusion_input": infusion_input,
+            "MP_NP_efficiency_input": MP_NP_efficiency_input,
+            "mPrt_coeff_list": mPrt_coeff_list,
+            "f_Imb": f_Imb
         },
         "output": {
             "output_data": r_data,
@@ -288,11 +315,15 @@ if __name__ == "__main__":
         user_diet_in = get_user_diet(dictionaries, r_data)
         animal_input_in, r_data = get_animal_input(r_data)
         equation_selection_in, r_data = get_equation_selection(r_data)
+        (
+            r_data, input_coeff_dict, input_MP_NP_efficiency_dict, 
+            input_mPrt_coeff_list, input_infusion_dict, input_f_Imb
+        ) = get_constants(r_data, equation_selection_in["mPrt_eqn"], dictionaries)
         AA_values, r_data = create_AA_values(r_data)
         arrays, r_data = create_arrays(r_data)
-        r_data = remove_constants(r_data)
         r_data = remove_untested_values(r_data)
         create_test_json(
-            user_diet_in, animal_input_in, equation_selection_in, r_data, 
-            AA_values, arrays, name
+            user_diet_in, animal_input_in, equation_selection_in, 
+            input_coeff_dict, input_infusion_dict, input_MP_NP_efficiency_dict,
+            input_mPrt_coeff_list, input_f_Imb, r_data, AA_values, arrays, name
             )

@@ -46,19 +46,17 @@ coeff_dict = {
     'KrdStxrOM_MiN_VT': 5.637,  # Line 1141
     'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
 
-    # From calculate_Mlk_NP_g
-    'mPrt_Int': -97,  # Line 2097, 2078
     # Line 1120, Fraction of MiCP that is True Protein; from Lapierre or Firkins
     'fMiTP_MiCP': 0.824,
     # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
     'SI_dcMiCP': 80,
-    'mPrt_k_NEAA': 0,  # Line 2103, 2094
-    'mPrt_k_OthAA': 0.0773,  # Line 2014, 2095
-    'mPrt_k_DEInp': 10.79,  # Line 2099, 2080
-    'mPrt_k_DigNDF': -4.595,  # Line 2100, 2081
-    'mPrt_k_DEIn_StFA': 0,  # Line 2101, 2082
-    'mPrt_k_DEIn_NDF': 0,  # Line 2102, 2083
-    'mPrt_k_BW': -0.4201,  # Line 2098, 2079
+    # 'mPrt_k_NEAA': 0,  # Line 2103, 2094
+    # 'mPrt_k_OthAA': 0.0773,  # Line 2014, 2095
+    # 'mPrt_k_DEInp': 10.79,  # Line 2099, 2080
+    # 'mPrt_k_DigNDF': -4.595,  # Line 2100, 2081
+    # 'mPrt_k_DEIn_StFA': 0,  # Line 2101, 2082
+    # 'mPrt_k_DEIn_NDF': 0,  # Line 2102, 2083
+    # 'mPrt_k_BW': -0.4201,  # Line 2098, 2079
 
     # From calculate_Mlk_Prod_MPalow
     'Kx_MP_NP_Trg': 0.69,  # Line 2651, 2596
