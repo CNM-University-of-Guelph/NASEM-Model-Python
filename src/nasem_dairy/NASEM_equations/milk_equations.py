@@ -82,17 +82,17 @@ def calculate_Mlk_NP_g(An_StatePhys,
                        An_DEFAIn, 
                        An_DErOMIn, 
                        An_DENDFIn,
-                       coeff_dict
+                       mPrt_coeff
 ) -> float:
     req_coeff = [
         'mPrt_Int', 'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp',
         'mPrt_k_DigNDF', 'mPrt_k_DEIn_StFA', 'mPrt_k_DEIn_NDF', 'mPrt_k_BW'
     ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    ration_funcs.check_coeffs_in_coeff_dict(mPrt_coeff, req_coeff)
     if An_StatePhys != "Lactating Cow":  # Line 2204
         Mlk_NP_g = 0
     else:
-        Mlk_NP_g = (coeff_dict['mPrt_Int'] + 
+        Mlk_NP_g = (mPrt_coeff['mPrt_Int'] + 
                     Abs_AA_g['Arg'] * mPrt_k_AA['Arg'] + 
                     Abs_AA_g['His'] * mPrt_k_AA['His'] + 
                     Abs_AA_g['Ile'] * mPrt_k_AA['Ile'] + 
@@ -103,15 +103,15 @@ def calculate_Mlk_NP_g(An_StatePhys,
                     Abs_AA_g['Thr'] * mPrt_k_AA['Thr'] + 
                     Abs_AA_g['Trp'] * mPrt_k_AA['Trp'] + 
                     Abs_AA_g['Val'] * mPrt_k_AA['Val'] + 
-                    Abs_neAA_g * coeff_dict['mPrt_k_NEAA'] + 
-                    Abs_OthAA_g * coeff_dict['mPrt_k_OthAA'] + 
+                    Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
+                    Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA'] + 
                     Abs_EAA2b_g * mPrt_k_EAA2 + 
-                    An_DEInp * coeff_dict['mPrt_k_DEInp'] + 
-                    (An_DigNDF - 17.06) * coeff_dict['mPrt_k_DigNDF'] + 
+                    An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
+                    (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
                     (An_DEStIn + An_DEFAIn + 
-                     An_DErOMIn) * coeff_dict['mPrt_k_DEIn_StFA'] + 
-                    An_DENDFIn * coeff_dict['mPrt_k_DEIn_NDF'] + 
-                    (An_BW - 612) * coeff_dict['mPrt_k_BW'])
+                     An_DErOMIn) * mPrt_coeff['mPrt_k_DEIn_StFA'] + 
+                    An_DENDFIn * mPrt_coeff['mPrt_k_DEIn_NDF'] + 
+                    (An_BW - 612) * mPrt_coeff['mPrt_k_BW'])
     return Mlk_NP_g
 
 
@@ -413,16 +413,16 @@ def calculate_Mlk_NPmx(mPrtmx_AA2: pd.Series,
     Mlk_NPmx: Maximal milk protein output at the entered DE, DigNDF, and BW
     """
     # Calculate the maximal milk protein output at the entered DE, DigNDF, and BW
-    Mlk_NPmx = (mPrt_coeff['mPrt_Int_src'] + mPrtmx_AA2['Arg'] + 
+    Mlk_NPmx = (mPrt_coeff['mPrt_Int'] + mPrtmx_AA2['Arg'] + 
                 mPrtmx_AA2['His'] + mPrtmx_AA2['Ile'] + 
                 mPrtmx_AA2['Leu'] + mPrtmx_AA2['Lys'] + 
                 mPrtmx_AA2['Met'] + mPrtmx_AA2['Thr'] + 
                 mPrtmx_AA2['Val'] + 
-                An_DEInp * mPrt_coeff['mPrt_k_DEInp_src'] + 
-                (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF_src'] + 
-                (An_BW - 612) * mPrt_coeff['mPrt_k_BW_src'] + 
-                Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA_src'] + 
-                Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA_src']) # Line 2195-2197
+                An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
+                (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
+                (An_BW - 612) * mPrt_coeff['mPrt_k_BW'] + 
+                Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
+                Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA']) # Line 2195-2197
     return Mlk_NPmx
 
 
@@ -603,34 +603,34 @@ def calculate_Mlk_NE_DE(Mlk_NEout: float, An_DEIn: float) -> float:
     return Mlk_NE_DE
 
 
-def calculate_MlkNP_Int(An_BW: float, coeff_dict: dict) -> float:
+def calculate_MlkNP_Int(An_BW: float, mPrt_coeff: dict) -> float:
     """
     MlkNP_Int: ?
     """
-    req_coeff = ['mPrt_Int', 'mPrt_k_BW']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    MlkNP_Int = coeff_dict['mPrt_Int'] + (An_BW - 612) * coeff_dict['mPrt_k_BW']
+    # req_coeff = ['mPrt_Int', 'mPrt_k_BW']
+    # ration_funcs.check_coeffs_in_coeff_dict(mPrt_coeff, req_coeff)
+    MlkNP_Int = mPrt_coeff['mPrt_Int'] + (An_BW - 612) * mPrt_coeff['mPrt_k_BW']
     # Line 3179
     return MlkNP_Int
 
 
-def calculate_MlkNP_DEInp(An_DEInp: float, coeff_dict: dict) -> float:
+def calculate_MlkNP_DEInp(An_DEInp: float, mPrt_coeff: dict) -> float:
     """
     MlkNP_DEInp: ?
     """
-    req_coeff = ['mPrt_k_DEInp']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    MlkNP_DEInp = An_DEInp * coeff_dict['mPrt_k_DEInp']  # Line 3180
+    # req_coeff = ['mPrt_k_DEInp']
+    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_DEInp = An_DEInp * mPrt_coeff['mPrt_k_DEInp']  # Line 3180
     return MlkNP_DEInp
 
 
-def calculate_MlkNP_NDF(An_DigNDF: float, coeff_dict: dict) -> float:
+def calculate_MlkNP_NDF(An_DigNDF: float, mPrt_coeff: dict) -> float:
     """
     MlkNP_NDF: ?
     """
-    req_coeff = ['mPrt_k_DigNDF']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    MlkNP_NDF = (An_DigNDF - 17.06) * coeff_dict['mPrt_k_DigNDF']
+    # req_coeff = ['mPrt_k_DigNDF']
+    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_NDF = (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF']
     return MlkNP_NDF
 
 
@@ -652,23 +652,23 @@ def calculate_MlkNP_AbsEAA(Abs_EAA2b_g: float, mPrt_k_EAA2: float) -> float:
     return MlkNP_AbsEAA
 
 
-def calculate_MlkNP_AbsNEAA(Abs_neAA_g: float, coeff_dict: dict) -> float:
+def calculate_MlkNP_AbsNEAA(Abs_neAA_g: float, mPrt_coeff: dict) -> float:
     """
     MlkNP_AbsNEAA: ? 
     """
-    req_coeff = ['mPrt_k_NEAA']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    MlkNP_AbsNEAA = Abs_neAA_g * coeff_dict['mPrt_k_NEAA']  # Line 3193
+    # req_coeff = ['mPrt_k_NEAA']
+    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_AbsNEAA = Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA']  # Line 3193
     return MlkNP_AbsNEAA
 
 
-def calculate_MlkNP_AbsOthAA(Abs_OthAA_g: float, coeff_dict: dict) -> float:
+def calculate_MlkNP_AbsOthAA(Abs_OthAA_g: float, mPrt_coeff: dict) -> float:
     """
     MlkNP_AbsOthAA: ?
     """
-    req_coeff = ['mPrt_k_OthAA']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    MlkNP_AbsOthAA = Abs_OthAA_g * coeff_dict['mPrt_k_OthAA']
+    # req_coeff = ['mPrt_k_OthAA']
+    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    MlkNP_AbsOthAA = Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA']
     return MlkNP_AbsOthAA
 
 
