@@ -757,7 +757,7 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 8: Amino Acid Calculations
     ########################################
     # Create array from of coefficients for the AA calculations
-    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
+    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}"] for AA in AA_list])
     AA_values['Abs_AA_g'] = AA.calculate_Abs_AA_g(
         AA_list, An_data, infusion_data, infusion_data['Inf_Art']
         )
