@@ -167,6 +167,7 @@ def get_constants(r_data: dict, mPrt_eqn: int, dictionaries: dict) -> dict:
     input_coeff_dict = {
         key: r_data.pop(key, None) for key in constants.coeff_dict.keys()
         }
+    input_coeff_dict["Fd_dcrOM"] = 96 # This constant gets added to feed array in R
     
     r_MP_NP_efficiency = dictionaries["efficiency_input"][0]
     input_MP_NP_efficiency_dict = {
