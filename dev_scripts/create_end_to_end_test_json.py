@@ -30,6 +30,7 @@ def load_R_json(R_json_path: str) -> Tuple[Dict, Dict]:
         data = json.load(file)
 
     variables_to_extract = ["efficiency_input", "f", "i", "f_Imb"]    
+    variables_to_extract = ["efficiency_input", "f", "i", "f_Imb"]    
     dictionaries = {}
     r_data = {}
 
