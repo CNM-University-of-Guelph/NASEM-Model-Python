@@ -33,9 +33,11 @@ jobs:
 
     - name: Add Poetry to PATH on Windows
       if: runner.os == 'Windows'
+      shell: pwsh
       run: |
         $env:Path += ";$env:USERPROFILE\.poetry\bin"
-        echo "$env:Path" # For debugging
+        [System.Environment]::SetEnvironmentVariable("PATH", $env:Path, [System.EnvironmentVariableTarget]::Process)
+        echo "Updated PATH: $env:Path"
 
     - name: Install dependencies
       run: |
