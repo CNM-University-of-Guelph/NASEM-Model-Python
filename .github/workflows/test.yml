@@ -31,15 +31,19 @@ jobs:
       run: |
         (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
 
-    - name: Install dependencies
+    - name: Install dependencies on Linux and macOS
+      if: runner.os != 'Windows'
       run: |
-        if [ "$RUNNER_OS" == "Windows" ]; then
-          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
-          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry add importlib_resources
-        else
-          poetry install
-          poetry add importlib_resources
-        fi
+        poetry install
+        poetry add importlib_resources
+      env:
+        POETRY_VIRTUALENVS_CREATE: false
+
+    - name: Install dependencies on Windows
+      if: runner.os == 'Windows'
+      run: |
+        C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
+        C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry add importlib_resources
       env:
         POETRY_VIRTUALENVS_CREATE: false
 
