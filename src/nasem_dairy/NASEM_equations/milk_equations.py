@@ -287,7 +287,10 @@ def calculate_Mlk_Prod_MPalow(Mlk_NP_MPalow_Trg_g: float,
     """
     Mlk_Prod_MPalow: Metabolizable protein allowable milk production, kg/d
     """
-    Mlk_Prod_MPalow = Mlk_NP_MPalow_Trg_g / (Trg_MilkTPp / 100) / 1000
+    if Trg_MilkTPp != 0:
+        Mlk_Prod_MPalow = Mlk_NP_MPalow_Trg_g / (Trg_MilkTPp / 100) / 1000
+    else:
+        Mlk_Prod_MPalow = None
     # Line 2708, kg milk/d using Trg milk protein % to predict volume
     return Mlk_Prod_MPalow
 
@@ -313,8 +316,11 @@ def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float,
     """
     req_coeff = ['Kl_ME_NE']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    if Trg_NEmilk_Milk != 0 and not np.isnan(Trg_NEmilk_Milk):
+        Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk
+    else:
+        Mlk_Prod_NEalow = np.nan 
     # Line 2898, Energy allowable Milk Production, kg/d
-    Mlk_Prod_NEalow = An_MEavail_Milk * coeff_dict['Kl_ME_NE'] / Trg_NEmilk_Milk
     return Mlk_Prod_NEalow
 
 
@@ -567,10 +573,16 @@ def calculate_Mlk_Prod_NEalow_EPcor(Mlk_Prod_NEalow: float,
     """
     Mlk_Prod_NEalow_EPcor: NE allowable energy and protein corrected milk production (kg/d)
     """
-    Mlk_Prod_NEalow_EPcor = 0.327 * Mlk_Prod_NEalow + (
-        12.97 * Trg_MilkFatp / 100 * Mlk_Prod_NEalow) + (
-            7.65 * Trg_MilkTPp / 100 * Mlk_Prod_NEalow
-        )  # energy and protein corrected milk, Line 2901-2902
+    if (np.isnan(Mlk_Prod_NEalow) or np.isnan(Trg_MilkFatp) or 
+        np.isnan(Trg_MilkTPp) or Mlk_Prod_NEalow <= 0 or 
+        Trg_MilkFatp <= 0 or Trg_MilkTPp <= 0
+        ):
+        Mlk_Prod_NEalow_EPcor = np.nan
+    else:
+        Mlk_Prod_NEalow_EPcor = 0.327 * Mlk_Prod_NEalow + (
+            12.97 * Trg_MilkFatp / 100 * Mlk_Prod_NEalow) + (
+                7.65 * Trg_MilkTPp / 100 * Mlk_Prod_NEalow
+            )  # energy and protein corrected milk, Line 2901-2902
     return Mlk_Prod_NEalow_EPcor
 
 

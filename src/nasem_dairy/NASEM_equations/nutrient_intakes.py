@@ -848,7 +848,10 @@ def calculate_Dt_ForDNDF48(Fd_DMInp, Fd_Conc, Fd_NDF, Fd_DNDF48):
 
 
 def calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48, Dt_ForNDF):
-    Dt_ForDNDF48_ForNDF = Dt_ForDNDF48 / Dt_ForNDF * 100  # Line 260
+    if Dt_ForNDF != 0 and not np.isnan(Dt_ForNDF):
+        Dt_ForDNDF48_ForNDF = Dt_ForDNDF48 / Dt_ForNDF * 100 # Line 260
+    else:
+        Dt_ForDNDF48_ForNDF = None
     return Dt_ForDNDF48_ForNDF
 
 
