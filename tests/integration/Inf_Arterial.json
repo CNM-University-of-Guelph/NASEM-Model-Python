@@ -37,7 +37,7 @@
             "MiN_eqn": 1.0,
             "NonMilkCP_ClfLiq": 0.0,
             "Monensin_eqn": 0.0,
-            "mPrt_eqn": 0.0,
+            "mPrt_eqn": 1.0,
             "mFat_eqn": 1.0,
             "RumDevDisc_Clf": 0.0
         },
