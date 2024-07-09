@@ -227,7 +227,7 @@ class ModelOutput:
         variables_to_remove = [
             'key', 'value', 'num_value', 'feed_library_df', 'feed_data',
             'diet_info_initial', 'diet_data_initial', 'AA_list',
-            'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA_src'
+            'An_data_initial', 'mPrt_coeff_list', 'mPrt_k_AA'
         ]
         for key in variables_to_remove:
             # Add to the dev Category
