@@ -31,18 +31,15 @@ jobs:
       run: |
         (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
 
-    - name: Add Poetry to PATH on Windows
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: |
-        $env:Path += ";$env:USERPROFILE\.poetry\bin"
-        [System.Environment]::SetEnvironmentVariable("PATH", $env:Path, [System.EnvironmentVariableTarget]::Process)
-        echo "Updated PATH: $env:Path"
-
     - name: Install dependencies
       run: |
-        poetry install
-        poetry add importlib_resources
+        if [ "$RUNNER_OS" == "Windows" ]; then
+          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
+          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry add importlib_resources
+        else
+          poetry install
+          poetry add importlib_resources
+        fi
       env:
         POETRY_VIRTUALENVS_CREATE: false
 
