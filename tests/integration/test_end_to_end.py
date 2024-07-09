@@ -10,8 +10,7 @@ import pandas as pd
 import pytest
 
 from nasem_dairy.ration_balancer.execute_model import execute_model
-
-
+ 
 ####################
 # Define Functions
 ####################
@@ -30,6 +29,15 @@ def read_test_json(file_path: str
                                 columns=['Feedstuff', 'kg_user'])
     animal_input_in = input_data['animal_input_in']
     equation_selection_in = input_data['equation_selection_in']
+    coeff_dict_in = input_data["coeff_dict"]
+    infusion_input_in = input_data["infusion_input"]
+    MP_NP_efficiency_input_in = input_data["MP_NP_efficiency_input"]
+    mPrt_coeff_list_in = input_data["mPrt_coeff_list"]
+    f_Imb_in = pd.Series(input_data["f_Imb"],
+                         index=[
+                             'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 
+                             'Thr', 'Trp', 'Val'
+                             ])
     output_data = output['output_data']
     AA_values = pd.DataFrame(output['AA_values'], index=AA_list)
     AA_values = AA_values.rename(columns={"mPrt_AA_0.1": "mPrt_AA_01"})
@@ -37,8 +45,9 @@ def read_test_json(file_path: str
     for key in arrays.keys():
         arrays[key] = np.array(arrays[key])
     return (
-        user_diet_in, animal_input_in, equation_selection_in, output_data, 
-        AA_values, arrays
+        user_diet_in, animal_input_in, equation_selection_in, coeff_dict_in, 
+        infusion_input_in, MP_NP_efficiency_input_in, mPrt_coeff_list_in, 
+        f_Imb_in, output_data, AA_values, arrays
     )
 
 
@@ -69,8 +78,9 @@ def assert_values(expected_output: dict,
 @pytest.mark.parametrize("json_file", glob.glob("tests/integration/*.json"))
 def test_end_to_end(json_file: str) -> None:
     (
-        user_diet_in, animal_input_in, equation_selection_in, 
-        output_data, AA_values, arrays
+        user_diet_in, animal_input_in, equation_selection_in, coeff_dict_in, 
+        infusion_input_in, MP_NP_efficiency_input_in, mPrt_coeff_list_in, 
+        f_Imb_in, output_data, AA_values, arrays
     ) = read_test_json(json_file)
     path_to_package_data = importlib_resources.files("nasem_dairy.data")
     feed_library_in = pd.read_csv(
@@ -78,6 +88,12 @@ def test_end_to_end(json_file: str) -> None:
     output = execute_model(user_diet=user_diet_in,
                            animal_input=animal_input_in,
                            equation_selection=equation_selection_in,
-                           feed_library_df=feed_library_in)
+                           feed_library_df=feed_library_in,
+                           coeff_dict=coeff_dict_in,
+                           infusion_input=infusion_input_in,
+                           MP_NP_efficiency_input=MP_NP_efficiency_input_in,
+                           mPrt_coeff_list=mPrt_coeff_list_in,
+                           f_Imb=f_Imb_in
+                           )
     model_output = output.export_to_dict()
     assert_values(output_data, AA_values, arrays, model_output)

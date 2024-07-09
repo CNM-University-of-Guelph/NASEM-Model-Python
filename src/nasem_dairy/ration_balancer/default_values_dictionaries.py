@@ -50,13 +50,13 @@ coeff_dict = {
     'fMiTP_MiCP': 0.824,
     # Line 1122, Digestibility coefficient for Microbial Protein (%) from NRC 2001
     'SI_dcMiCP': 80,
-    'mPrt_k_NEAA': 0,  # Line 2103, 2094
-    'mPrt_k_OthAA': 0.0773,  # Line 2014, 2095
-    'mPrt_k_DEInp': 10.79,  # Line 2099, 2080
-    'mPrt_k_DigNDF': -4.595,  # Line 2100, 2081
-    'mPrt_k_DEIn_StFA': 0,  # Line 2101, 2082
-    'mPrt_k_DEIn_NDF': 0,  # Line 2102, 2083
-    'mPrt_k_BW': -0.4201,  # Line 2098, 2079
+    # 'mPrt_k_NEAA': 0,  # Line 2103, 2094
+    # 'mPrt_k_OthAA': 0.0773,  # Line 2014, 2095
+    # 'mPrt_k_DEInp': 10.79,  # Line 2099, 2080
+    # 'mPrt_k_DigNDF': -4.595,  # Line 2100, 2081
+    # 'mPrt_k_DEIn_StFA': 0,  # Line 2101, 2082
+    # 'mPrt_k_DEIn_NDF': 0,  # Line 2102, 2083
+    # 'mPrt_k_BW': -0.4201,  # Line 2098, 2079
 
     # From calculate_Mlk_Prod_MPalow
     'Kx_MP_NP_Trg': 0.69,  # Line 2651, 2596
@@ -381,67 +381,67 @@ MP_NP_efficiency_dict = {
 
 mPrt_coeff_list = [
     {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
-        "mPrt_Int_src": -97.0,
-        "mPrt_k_BW_src": -0.4201,
-        "mPrt_k_DEInp_src": 10.79,
-        "mPrt_k_DigNDF_src": -4.595,
-        "mPrt_k_DEIn_StFA_src": 0,
-        "mPrt_k_DEIn_NDF_src": 0,
-        "mPrt_k_Arg_src": 0,
-        "mPrt_k_His_src": 1.675,
-        "mPrt_k_Ile_src": 0.885,
-        "mPrt_k_Leu_src": 0.466,
-        "mPrt_k_Lys_src": 1.153,
-        "mPrt_k_Met_src": 1.839,
-        "mPrt_k_Phe_src": 0,
-        "mPrt_k_Thr_src": 0,
-        "mPrt_k_Trp_src": 0.0,
-        "mPrt_k_Val_src": 0,
-        "mPrt_k_NEAA_src": 0,
-        "mPrt_k_OthAA_src": 0.0773,
-        "mPrt_k_EAA2_src": -0.00215
+        "mPrt_Int": -97.0,
+        "mPrt_k_BW": -0.4201,
+        "mPrt_k_DEInp": 10.79,
+        "mPrt_k_DigNDF": -4.595,
+        "mPrt_k_DEIn_StFA": 0,
+        "mPrt_k_DEIn_NDF": 0,
+        "mPrt_k_Arg": 0,
+        "mPrt_k_His": 1.675,
+        "mPrt_k_Ile": 0.885,
+        "mPrt_k_Leu": 0.466,
+        "mPrt_k_Lys": 1.153,
+        "mPrt_k_Met": 1.839,
+        "mPrt_k_Phe": 0,
+        "mPrt_k_Thr": 0,
+        "mPrt_k_Trp": 0.0,
+        "mPrt_k_Val": 0,
+        "mPrt_k_NEAA": 0,
+        "mPrt_k_OthAA": 0.0773,
+        "mPrt_k_EAA2": -0.00215
     },
     {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
-        "mPrt_Int_src": -141,
-        "mPrt_k_BW_src": -0.4146,
-        "mPrt_k_DEInp_src": 10.65,
-        "mPrt_k_DigNDF_src": -4.62,
-        "mPrt_k_DEIn_StFA_src": 0,
-        "mPrt_k_DEIn_NDF_src": 0,
-        "mPrt_k_Arg_src": 0.8175,
-        "mPrt_k_His_src": 1.641,
-        "mPrt_k_Ile_src": 0.837,
-        "mPrt_k_Leu_src": 0.623,
-        "mPrt_k_Lys_src": 1.235,
-        "mPrt_k_Met_src": 1.846,
-        "mPrt_k_Phe_src": 0,
-        "mPrt_k_Thr_src": 0,
-        "mPrt_k_Trp_src": 0,
-        "mPrt_k_Val_src": 0,
-        "mPrt_k_NEAA_src": 0.0925,
-        "mPrt_k_OthAA_src": 0,
-        "mPrt_k_EAA2_src": -0.002451
+        "mPrt_Int": -141,
+        "mPrt_k_BW": -0.4146,
+        "mPrt_k_DEInp": 10.65,
+        "mPrt_k_DigNDF": -4.62,
+        "mPrt_k_DEIn_StFA": 0,
+        "mPrt_k_DEIn_NDF": 0,
+        "mPrt_k_Arg": 0.8175,
+        "mPrt_k_His": 1.641,
+        "mPrt_k_Ile": 0.837,
+        "mPrt_k_Leu": 0.623,
+        "mPrt_k_Lys": 1.235,
+        "mPrt_k_Met": 1.846,
+        "mPrt_k_Phe": 0,
+        "mPrt_k_Thr": 0,
+        "mPrt_k_Trp": 0,
+        "mPrt_k_Val": 0,
+        "mPrt_k_NEAA": 0.0925,
+        "mPrt_k_OthAA": 0,
+        "mPrt_k_EAA2": -0.002451
     },
     {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
-        "mPrt_Int_src": -73.7,
-        "mPrt_k_BW_src": -0.3663,
-        "mPrt_k_DEInp_src": 0,
-        "mPrt_k_DigNDF_src": 0,
-        "mPrt_k_DEIn_StFA_src": 10.87,
-        "mPrt_k_DEIn_NDF_src": 5.43,
-        "mPrt_k_Arg_src": 0,
-        "mPrt_k_His_src": 1.19,
-        "mPrt_k_Ile_src": 1.08,
-        "mPrt_k_Leu_src": 0.238,
-        "mPrt_k_Lys_src": 1.08,
-        "mPrt_k_Met_src": 1.91,
-        "mPrt_k_Phe_src": 0,
-        "mPrt_k_Thr_src": 1.36,
-        "mPrt_k_Trp_src": 0,
-        "mPrt_k_Val_src": 0,
-        "mPrt_k_NEAA_src": 0.075,
-        "mPrt_k_OthAA_src": 0,
-        "mPrt_k_EAA2_src": -0.00175
+        "mPrt_Int": -73.7,
+        "mPrt_k_BW": -0.3663,
+        "mPrt_k_DEInp": 0,
+        "mPrt_k_DigNDF": 0,
+        "mPrt_k_DEIn_StFA": 10.87,
+        "mPrt_k_DEIn_NDF": 5.43,
+        "mPrt_k_Arg": 0,
+        "mPrt_k_His": 1.19,
+        "mPrt_k_Ile": 1.08,
+        "mPrt_k_Leu": 0.238,
+        "mPrt_k_Lys": 1.08,
+        "mPrt_k_Met": 1.91,
+        "mPrt_k_Phe": 0,
+        "mPrt_k_Thr": 1.36,
+        "mPrt_k_Trp": 0,
+        "mPrt_k_Val": 0,
+        "mPrt_k_NEAA": 0.075,
+        "mPrt_k_OthAA": 0,
+        "mPrt_k_EAA2": -0.00175
     }
 ]
 

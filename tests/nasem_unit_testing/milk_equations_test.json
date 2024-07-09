@@ -237,17 +237,17 @@
   },
   {
     "Name": "calculate_MlkNP_Int",
-    "Input": {"An_BW": 791, "coeff_dict": null, "mPrt_Int_src": -97},
+    "Input": {"An_BW": 791, "mPrt_coeff": null},
     "Output": -172.1979
   },
   {
     "Name": "calculate_MlkNP_DEInp",
-    "Input": {"An_DEInp": 41, "coeff_dict": null},
+    "Input": {"An_DEInp": 41, "mPrt_coeff": null},
     "Output": 442.39
   },
   {
     "Name": "calculate_MlkNP_NDF",
-    "Input": {"An_DigNDF": 25.9, "coeff_dict": null},
+    "Input": {"An_DigNDF": 25.9, "mPrt_coeff": null},
     "Output": -40.6198
   },
   {
@@ -257,12 +257,12 @@
   },
   {
     "Name": "calculate_MlkNP_AbsNEAA",
-    "Input": {"Abs_neAA_g": 3101, "coeff_dict": null},
+    "Input": {"Abs_neAA_g": 3101, "mPrt_coeff": null},
     "Output": 0
   },
   {
     "Name": "calculate_MlkNP_AbsOthAA",
-    "Input": {"Abs_OthAA_g": 1312, "coeff_dict": null},
+    "Input": {"Abs_OthAA_g": 1312, "mPrt_coeff": null},
     "Output": 101.4176
   },
   {

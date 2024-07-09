@@ -759,20 +759,20 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 8: Amino Acid Calculations
     ########################################
     # Create array from of coefficients for the AA calculations
-    mPrt_k_AA_src = np.array([mPrt_coeff[f"mPrt_k_{AA}_src"] for AA in AA_list])
+    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}"] for AA in AA_list])
     AA_values['Abs_AA_g'] = AA.calculate_Abs_AA_g(
         AA_list, An_data, infusion_data, infusion_data['Inf_Art']
         )
-    AA_values['mPrtmx_AA'] = AA.calculate_mPrtmx_AA(mPrt_k_AA_src, mPrt_coeff)
+    AA_values['mPrtmx_AA'] = AA.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
     f_mPrt_max = protein.calculate_f_mPrt_max(
         animal_input['An_305RHA_MlkTP'], coeff_dict
         )
     AA_values['mPrtmx_AA2'] = AA.calculate_mPrtmx_AA2(
         AA_values['mPrtmx_AA'], f_mPrt_max
         )
-    AA_values['AA_mPrtmx'] = AA.calculate_AA_mPrtmx(mPrt_k_AA_src, mPrt_coeff)
+    AA_values['AA_mPrtmx'] = AA.calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
     AA_values['mPrt_AA_01'] = AA.calculate_mPrt_AA_01(
-        AA_values['AA_mPrtmx'], mPrt_k_AA_src, mPrt_coeff
+        AA_values['AA_mPrtmx'], mPrt_k_AA, mPrt_coeff
         )
     AA_values['mPrt_k_AA'] = AA.calculate_mPrt_k_AA(
         AA_values['mPrtmx_AA2'], AA_values['mPrt_AA_01'], AA_values['AA_mPrtmx']
@@ -819,7 +819,7 @@ def execute_model(user_diet: pd.DataFrame,
         AA_values['Abs_AA_g'], AA_values['mPrt_k_AA'], Abs_neAA_g, Abs_OthAA_g,
         Abs_EAA2b_g, mPrt_k_EAA2, An_data['An_DigNDF'], An_data['An_DEInp'],
         An_data['An_DEStIn'], An_data['An_DEFAIn'], An_data['An_DErOMIn'],
-        An_data['An_DENDFIn'], coeff_dict, mPrt_coeff
+        An_data['An_DENDFIn'], mPrt_coeff
         )
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
@@ -1735,17 +1735,15 @@ def execute_model(user_diet: pd.DataFrame,
     Trg_MlkEAA_AbsEAA = AA.calculate_Trg_MlkEAA_AbsEAA(
         Mlk_EAA_g, AA_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
         )
-    MlkNP_Int = milk.calculate_MlkNP_Int(
-        animal_input['An_BW'], coeff_dict, mPrt_coeff["mPrt_Int_src"]
-        )
-    MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], coeff_dict)
-    MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], coeff_dict)
+    MlkNP_Int = milk.calculate_MlkNP_Int(animal_input['An_BW'], mPrt_coeff)
+    MlkNP_DEInp = milk.calculate_MlkNP_DEInp(An_data['An_DEInp'], mPrt_coeff)
+    MlkNP_NDF = milk.calculate_MlkNP_NDF(An_data['An_DigNDF'], mPrt_coeff)
     AA_values['MlkNP_AbsAA'] = milk.calculate_MlkNP_AbsAA(
         AA_values['Abs_AA_g'], AA_values["mPrt_k_AA"]
         )
     MlkNP_AbsEAA = milk.calculate_MlkNP_AbsEAA(Abs_EAA2b_g, mPrt_k_EAA2)
-    MlkNP_AbsNEAA = milk.calculate_MlkNP_AbsNEAA(Abs_neAA_g, coeff_dict)
-    MlkNP_AbsOthAA = milk.calculate_MlkNP_AbsOthAA(Abs_OthAA_g, coeff_dict)
+    MlkNP_AbsNEAA = milk.calculate_MlkNP_AbsNEAA(Abs_neAA_g, mPrt_coeff)
+    MlkNP_AbsOthAA = milk.calculate_MlkNP_AbsOthAA(Abs_OthAA_g, mPrt_coeff)
     AA_values['AnNPxAA_AbsAA'] = AA.calculate_AnNPxAA_AbsAA(
         AA_values['An_AAUse_g'], AA_values['Gest_AA_g'], Ur_AAEnd_g,
         AA_values['Abs_AA_g'], coeff_dict

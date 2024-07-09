@@ -196,7 +196,7 @@ def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
         'Acet', 'Prop', 'Butr', 'Ash'
     ]
     for name in infused_Art:
-        infusion_data[f"InfArt_{name}In"] = (infusion_data['Inf_Art'] + 
+        infusion_data[f"InfArt_{name}In"] = (infusion_data['Inf_Art'] * 
                                              infusion_data[f"Inf_{name}In"])
     # Line 917-931
 

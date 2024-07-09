@@ -44,7 +44,7 @@ def calculate_mPrtmx_AA(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
     """
     mPrtmx_AA: Maximum milk protein responses from each AA
     """
-    mPrtmx_AA = -(mPrt_k_AA**2) / (4 * mPrt_coeff['mPrt_k_EAA2_src'])
+    mPrtmx_AA = -(mPrt_k_AA**2) / (4 * mPrt_coeff['mPrt_k_EAA2'])
     # maximum milk protein responses from each AA, Line 2117-2126
     return mPrtmx_AA
 
@@ -58,7 +58,7 @@ def calculate_AA_mPrtmx(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
     """
     AA_mPrtmx: AA input at maximum milk protein response for each AA
     """
-    AA_mPrtmx = -mPrt_k_AA / (2 * mPrt_coeff['mPrt_k_EAA2_src'])  
+    AA_mPrtmx = -mPrt_k_AA / (2 * mPrt_coeff['mPrt_k_EAA2'])  
     # AA input at maximum milk protein response for each AA, Line 2127-2136
     return AA_mPrtmx
 
@@ -69,7 +69,7 @@ def calculate_mPrt_AA_01(AA_mPrtmx: np.array, mPrt_k_AA: np.array,
     mPrt_AA_01: Milk protein from each EAA at 10% of max response
     """
     mPrt_AA_01 = (AA_mPrtmx * 0.1 * mPrt_k_AA + 
-                  (AA_mPrtmx * 0.1)**2 * mPrt_coeff['mPrt_k_EAA2_src'])  
+                  (AA_mPrtmx * 0.1)**2 * mPrt_coeff['mPrt_k_EAA2'])  
     # Milk prt from each EAA at 10% of Max response, Line 2138-2147
     return mPrt_AA_01
 
