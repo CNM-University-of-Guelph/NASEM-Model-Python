@@ -8,7 +8,7 @@ def check_coeffs_in_coeff_dict(input_coeff_dict: dict,
 ) -> None:
     '''
     Internal function that is used by other functions that require certain model coefficients from a coefficient dictionary. Typically this 
-    will be the built-in dictionary in [](`~nasem_dairy.ration_balancer.default_values_dictionaries`). 
+    will be the built-in dictionary in [](`~nasem_dairy.ration_balancer.constants`). 
     This function will check if the required coeffs are in the dictionary provided to the function, and if not it will return a useful error.
 
     Parameters
