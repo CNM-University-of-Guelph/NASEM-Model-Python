@@ -21,12 +21,14 @@ def calculate_Frm_Gain_empty(Frm_Gain: float,
     return Frm_Gain_empty
 
 
-def calculate_Body_Gain_empty(Frm_Gain_empty, Rsrv_Gain_empty):
+def calculate_Body_Gain_empty(Frm_Gain_empty: float, 
+                              Rsrv_Gain_empty: float
+) -> float:
     Body_Gain_empty = Frm_Gain_empty + Rsrv_Gain_empty  # Line 2442
     return Body_Gain_empty
 
 
-def calculate_NPGain_RsrvGain(coeff_dict):
+def calculate_NPGain_RsrvGain(coeff_dict: dict) -> float:
     req_coeff = ['CPGain_RsrvGain', 'Body_NP_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     NPGain_RsrvGain = coeff_dict['CPGain_RsrvGain'] * coeff_dict['Body_NP_CP']  
@@ -34,24 +36,26 @@ def calculate_NPGain_RsrvGain(coeff_dict):
     return NPGain_RsrvGain
 
 
-def calculate_Rsrv_NPgain(NPGain_RsrvGain, Rsrv_Gain_empty):
+def calculate_Rsrv_NPgain(NPGain_RsrvGain: float, 
+                          Rsrv_Gain_empty: float
+) -> float:
     Rsrv_NPgain = NPGain_RsrvGain * Rsrv_Gain_empty  # Line 2468
     return Rsrv_NPgain
 
 
-def calculate_Body_NPgain(Frm_NPgain, Rsrv_NPgain):
+def calculate_Body_NPgain(Frm_NPgain: float, Rsrv_NPgain: float) -> float:
     Body_NPgain = Frm_NPgain + Rsrv_NPgain  # Line 2473
     return Body_NPgain
 
 
-def calculate_Body_CPgain(Body_NPgain, coeff_dict):
+def calculate_Body_CPgain(Body_NPgain: float, coeff_dict: dict) -> float:
     req_coeff = ['Body_NP_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Body_CPgain = Body_NPgain / coeff_dict['Body_NP_CP']  # Line 2475
     return Body_CPgain
 
 
-def calculate_Body_CPgain_g(Body_CPgain):
+def calculate_Body_CPgain_g(Body_CPgain: float) -> float:
     Body_CPgain_g = Body_CPgain * 1000  # Line 2477
     return Body_CPgain_g
 
@@ -192,7 +196,9 @@ def calculate_Body_NPgain_g(Body_NPgain: float) -> float:
     return Body_NPgain_g
 
 
-def calculate_An_BWmature_empty(An_BW_mature, coeff_dict):
+def calculate_An_BWmature_empty(An_BW_mature: float, 
+                                coeff_dict: dict
+) -> float:
     """
     An_BWmature_empty: kg bodyweight with no gut fill 
     """
