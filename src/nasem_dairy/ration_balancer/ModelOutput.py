@@ -172,10 +172,10 @@ class ModelOutput:
             # Check if the value is numeric
             if isinstance(raw_value, (float, int)):
                 value = round(raw_value, 3)
-            elif isinstance(raw_value, (np.ndarray)) and raw_value.size == 1:
-                # This is required for any numbers handled by np.where() that 
-                # return arrays instead of floats - needs cleaning up
-                value = round(float(raw_value), 3)
+            # elif isinstance(raw_value, (np.ndarray)) and raw_value.size == 1:
+            #     # This is required for any numbers handled by np.where() that 
+            #     # return arrays instead of floats - needs cleaning up
+            #     value = round(float(raw_value), 3)
             else:
                 value = raw_value
 
