@@ -44,8 +44,7 @@ def calculate_Fe_CPend_g(An_StatePhys: str,
         # Originally K_FeCPend_ClfLiq is set to 11.9 in book; but can be either 11.9 or 34.4
         # (An_DMIn - Dt_DMIn_ClfLiq) represents solid feed DM intake
         # should only be called if calf:
-        K_FeCPend_ClfLiq = np.where(NonMilkCP_ClfLiq > 0, 34.4, 11.9)
-
+        K_FeCPend_ClfLiq = 34.4 if NonMilkCP_ClfLiq > 0 else 11.9
         Fe_CPend_g = (K_FeCPend_ClfLiq * Dt_DMIn_ClfLiq + 
                       20.6 * (An_DMIn - Dt_DMIn_ClfLiq))
     else:
@@ -75,12 +74,10 @@ def calculate_Fe_CP(An_StatePhys,
     # Line 1202, Double counting portion of RumMiCP derived from End CP. Needs to be fixed. MDH
     Fe_CP = (Fe_RUP + Fe_RumMiCP + Fe_CPend + 
              InfSI_NPNCPIn * (1 - coeff_dict['dcNPNCP'] / 100))
-    Fe_CP = np.where(
-        An_StatePhys == "Calf",
-        (1 - coeff_dict['Dt_dcCP_ClfLiq']) * Dt_CPIn_ClfLiq +
-        (1 - Dt_dcCP_ClfDry) * (An_CPIn - Dt_CPIn_ClfLiq) + Fe_CPend, 
-        Fe_CP
-    ) # CP based for calves. Ignores RDP, RUP, Fe_NPend, etc.  Needs refinement.
+    # CP based for calves. Ignores RDP, RUP, Fe_NPend, etc.  Needs refinement.
+    if An_StatePhys == "Calf": 
+        Fe_CP = ((1 - coeff_dict['Dt_dcCP_ClfLiq']) * Dt_CPIn_ClfLiq 
+                 + (1 - Dt_dcCP_ClfDry) * (An_CPIn - Dt_CPIn_ClfLiq) + Fe_CPend)    
     return Fe_CP
 
 

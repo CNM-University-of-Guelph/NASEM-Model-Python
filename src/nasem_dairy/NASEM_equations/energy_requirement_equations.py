@@ -772,7 +772,7 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
     nd.calculate_Gest_MEuse(Gest_REgain)
     ```
     """
-    Ky_ME_NE = np.where(Gest_REgain >= 0, 0.14, 0.89)
+    Ky_ME_NE = 0.14 if Gest_REgain >= 0 else 0.89
     # Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss, Line 2860
     Gest_MEuse = Gest_REgain / Ky_ME_NE
     return Gest_MEuse
