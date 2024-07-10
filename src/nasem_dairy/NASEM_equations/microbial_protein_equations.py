@@ -4,7 +4,10 @@
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_RDPIn_MiNmax(Dt_DMIn, An_RDP, An_RDPIn):
+def calculate_RDPIn_MiNmax(Dt_DMIn: float, 
+                           An_RDP: float, 
+                           An_RDPIn: float
+) -> float:
     if An_RDP <= 12:  # Line 1124
         RDPIn_MiNmax = An_RDPIn
     else:
@@ -12,7 +15,7 @@ def calculate_RDPIn_MiNmax(Dt_DMIn, An_RDP, An_RDPIn):
     return RDPIn_MiNmax
 
 
-def calculate_MiN_Vm(RDPIn_MiNmax, coeff_dict):
+def calculate_MiN_Vm(RDPIn_MiNmax: float, coeff_dict: dict) -> float:
     req_coeffs = ['VmMiNInt', 'VmMiNRDPSlp']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     MiN_Vm = coeff_dict['VmMiNInt'] + coeff_dict['VmMiNRDPSlp'] * RDPIn_MiNmax     
@@ -20,11 +23,11 @@ def calculate_MiN_Vm(RDPIn_MiNmax, coeff_dict):
     return MiN_Vm
 
 
-def calculate_Du_MiN_NRC2021_g(MiN_Vm, 
-                               Rum_DigNDFIn, 
-                               Rum_DigStIn, 
-                               An_RDPIn_g,
-                               coeff_dict
+def calculate_Du_MiN_NRC2021_g(MiN_Vm: float, 
+                               Rum_DigNDFIn: float, 
+                               Rum_DigStIn: float, 
+                               An_RDPIn_g: float,
+                               coeff_dict: dict
 ) -> float:
     req_coeffs = ['KmMiNRDNDF', 'KmMiNRDSt']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
@@ -37,12 +40,12 @@ def calculate_Du_MiN_NRC2021_g(MiN_Vm,
     return Du_MiN_NRC2021_g
 
 
-def calculate_Du_MiN_VTln_g(Dt_rOMIn, 
-                            Dt_ForNDFIn, 
-                            An_RDPIn, 
-                            Rum_DigStIn,
-                            Rum_DigNDFIn, 
-                            coeff_dict
+def calculate_Du_MiN_VTln_g(Dt_rOMIn: float, 
+                            Dt_ForNDFIn: float, 
+                            An_RDPIn: float, 
+                            Rum_DigStIn: float,
+                            Rum_DigNDFIn: float, 
+                            coeff_dict: dict
 ) -> float:
     req_coeffs = [
         'Int_MiN_VT', 'KrdSt_MiN_VT', 'KrdNDF_MiN_VT', 'KRDP_MiN_VT',
@@ -64,37 +67,40 @@ def calculate_Du_MiN_VTln_g(Dt_rOMIn,
     return Du_MiN_VTln_g
 
 
-def calculate_Du_MiN_VTnln_g(An_RDPIn, Rum_DigNDFIn, Rum_DigStIn):
+def calculate_Du_MiN_VTnln_g(An_RDPIn: float, 
+                             Rum_DigNDFIn: float, 
+                             Rum_DigStIn: float
+) -> float:
     Du_MiN_VTnln_g = (7.47 + 0.574 * An_RDPIn * 1000 / 
                       (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)) # Line 1147
     return Du_MiN_VTnln_g
 
 
-def calculate_Du_MiCP(Du_MiCP_g):
+def calculate_Du_MiCP(Du_MiCP_g: float) -> float:
     Du_MiCP = Du_MiCP_g / 1000  # Line 1166
     return Du_MiCP
 
 
-def calculate_Du_idMiCP_g(Du_MiCP_g, coeff_dict):
+def calculate_Du_idMiCP_g(Du_MiCP_g: float, coeff_dict: dict) -> float:
     req_coeff = ['SI_dcMiCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Du_idMiCP_g = coeff_dict['SI_dcMiCP'] / 100 * Du_MiCP_g  # Line 1180
     return Du_idMiCP_g
 
 
-def calculate_Du_idMiCP(Du_idMiCP_g):
+def calculate_Du_idMiCP(Du_idMiCP_g: float) -> float:
     Du_idMiCP = Du_idMiCP_g / 1000
     return Du_idMiCP
 
 
-def calculate_Du_idMiTP_g(Du_idMiCP_g, coeff_dict):
+def calculate_Du_idMiTP_g(Du_idMiCP_g: float, coeff_dict: dict) -> float:
     req_coeff = ['fMiTP_MiCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Du_idMiTP_g = coeff_dict['fMiTP_MiCP'] * Du_idMiCP_g  # Line 1182
     return Du_idMiTP_g
 
 
-def calculate_Du_idMiTP(Du_idMiTP_g):
+def calculate_Du_idMiTP(Du_idMiTP_g: float) -> float:
     Du_idMiTP = Du_idMiTP_g / 1000
     return Du_idMiTP
 
@@ -115,7 +121,7 @@ def calculate_Du_EndCP_g(Dt_DMIn: float, InfRum_DMIn: float) -> float:
     return Du_EndCP_g
 
 
-def calculate_Du_EndN_g(Dt_DMIn, InfRum_DMIn) -> float:
+def calculate_Du_EndN_g(Dt_DMIn: float, InfRum_DMIn: float) -> float:
     """
     Du_EndN_g: Duodenal endogenous flow of nitrogen, g/d 
     """
