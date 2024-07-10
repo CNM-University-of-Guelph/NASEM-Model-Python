@@ -5,12 +5,12 @@ import numpy as np
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
-def calculate_Inf_TPIn(Inf_CPIn, Inf_NPNCPIn):
+def calculate_Inf_TPIn(Inf_CPIn: float, Inf_NPNCPIn: float) -> float:
     Inf_TPIn = Inf_CPIn - Inf_NPNCPIn  # Line 848
     return Inf_TPIn
 
 
-def calculate_Inf_OMIn(Inf_DMIn, Inf_AshIn):
+def calculate_Inf_OMIn(Inf_DMIn: float, Inf_AshIn: float) -> float:
     Inf_OMIn = Inf_DMIn - Inf_AshIn  # Line 853
     return Inf_OMIn
 
@@ -40,22 +40,22 @@ def calculate_Inf_Art(Inf_Location: str) -> int:
         return Inf_Art 
 
 
-def calculate_InfRum_TPIn(InfRum_CPIn, InfRum_NPNCPIn):
+def calculate_InfRum_TPIn(InfRum_CPIn: float, InfRum_NPNCPIn: float) -> float:
     InfRum_TPIn = InfRum_CPIn - InfRum_NPNCPIn  # Line 884
     return InfRum_TPIn
 
 
-def calculate_InfSI_TPIn(InfSI_CPIn, InfSI_NPNCPIn):
+def calculate_InfSI_TPIn(InfSI_CPIn: float, InfSI_NPNCPIn: float) -> float:
     InfSI_TPIn = InfSI_CPIn - InfSI_NPNCPIn
     return InfSI_TPIn
 
 
-def calculate_InfRum_RUPIn(InfRum_CPAIn, 
-                           InfRum_CPBIn, 
-                           InfRum_CPCIn,
-                           InfRum_NPNCPIn, 
-                           Inf_KdCPB, 
-                           coeff_dict
+def calculate_InfRum_RUPIn(InfRum_CPAIn: float, 
+                           InfRum_CPBIn: float, 
+                           InfRum_CPCIn: float,
+                           InfRum_NPNCPIn: float, 
+                           Inf_KdCPB: float, 
+                           coeff_dict: dict
 ) -> float:
     req_coeff = ['fCPAdu', 'KpConc']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
@@ -65,7 +65,7 @@ def calculate_InfRum_RUPIn(InfRum_CPAIn,
     return InfRum_RUPIn
 
 
-def calculate_InfRum_RUP_CP(InfRum_CPIn, InfRum_RUPIn):
+def calculate_InfRum_RUP_CP(InfRum_CPIn: float, InfRum_RUPIn: float) -> float:
     if InfRum_CPIn == 0:
         InfRum_RUP_CP = 0
     else:
@@ -73,17 +73,20 @@ def calculate_InfRum_RUP_CP(InfRum_CPIn, InfRum_RUPIn):
     return InfRum_RUP_CP
 
 
-def calculate_InfRum_idRUPIn(InfRum_RUPIn, Inf_dcRUP):
+def calculate_InfRum_idRUPIn(InfRum_RUPIn: float, Inf_dcRUP: float) -> float:
     InfRum_idRUPIn = InfRum_RUPIn * Inf_dcRUP / 100  # RUP, Line 1089
     return InfRum_idRUPIn
 
 
-def calculate_InfSI_idTPIn(InfSI_TPIn, Inf_dcRUP):
+def calculate_InfSI_idTPIn(InfSI_TPIn: float, Inf_dcRUP: float) -> float:
     InfSI_idTPIn = InfSI_TPIn * Inf_dcRUP / 100 # intestinally infused, Line 1090
     return InfSI_idTPIn
 
 
-def calculate_InfSI_idCPIn(InfSI_idTPIn, InfSI_NPNCPIn, coeff_dict):
+def calculate_InfSI_idCPIn(InfSI_idTPIn: float, 
+                           InfSI_NPNCPIn: float, 
+                           coeff_dict: dict
+) -> float:
     req_coeff = ['dcNPNCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # SI infused idTP + urea or ammonia, Line 1092
@@ -91,18 +94,18 @@ def calculate_InfSI_idCPIn(InfSI_idTPIn, InfSI_NPNCPIn, coeff_dict):
     return InfSI_idCPIn
 
 
-def calculate_Inf_idCPIn(InfRum_idRUPIn, InfSI_idCPIn):
+def calculate_Inf_idCPIn(InfRum_idRUPIn: float, InfSI_idCPIn: float) -> float:
     # RUP + intestinally infused, Line 1093
     Inf_idCPIn = InfRum_idRUPIn + InfSI_idCPIn
     return Inf_idCPIn
 
 
-def calculate_InfRum_RDPIn(InfRum_CPIn, InfRum_RUPIn):
+def calculate_InfRum_RDPIn(InfRum_CPIn: float, InfRum_RUPIn: float) -> float:
     InfRum_RDPIn = InfRum_CPIn - InfRum_RUPIn  # Line 1105
     return InfRum_RDPIn
 
 
-def calculate_Inf_DigFAIn(Inf_FAIn, coeff_dict):
+def calculate_Inf_DigFAIn(Inf_FAIn: float, coeff_dict: dict) -> float:
     req_coeff = ['TT_dcFA_Base']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1306, used dcFA which is similar to oil, but should define for each infusate
@@ -110,28 +113,31 @@ def calculate_Inf_DigFAIn(Inf_FAIn, coeff_dict):
     return Inf_DigFAIn
 
 
-def calculate_Inf_DEAcetIn(Inf_AcetIn, coeff_dict):
+def calculate_Inf_DEAcetIn(Inf_AcetIn: float, coeff_dict: dict) -> float:
     req_coeffs = ['En_Acet']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Inf_DEAcetIn = Inf_AcetIn * coeff_dict['En_Acet']
     return Inf_DEAcetIn
 
 
-def calculate_Inf_DEPropIn(Inf_PropIn, coeff_dict):
+def calculate_Inf_DEPropIn(Inf_PropIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_Prop']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Inf_DEPropIn = Inf_PropIn * coeff_dict['En_Prop']  # Line 1363
     return Inf_DEPropIn
 
 
-def calculate_Inf_DEButrIn(Inf_ButrIn, coeff_dict):
+def calculate_Inf_DEButrIn(Inf_ButrIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_Butr']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Inf_DEButrIn = Inf_ButrIn * coeff_dict['En_Butr']
     return Inf_DEButrIn
 
 
-def calculate_infusion_data(infusion_input, Dt_DMIn, coeff_dict):
+def calculate_infusion_data(infusion_input: dict, 
+                            Dt_DMIn: float, 
+                            coeff_dict: dict
+) -> dict:
     '''
     Infusion input is a dictionary
     '''
