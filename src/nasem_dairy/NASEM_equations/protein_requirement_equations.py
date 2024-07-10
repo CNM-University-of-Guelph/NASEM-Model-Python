@@ -142,31 +142,27 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
     """
     req_coeff = ['Body_NP_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Kg_MP_NP_Trg = 0.60 * coeff_dict['Body_NP_CP']  
     # Default value for Growth MP to TP.  Shouldn't be used for any., Line 2659
-    condition = (An_Parity_rl == 0) and (An_BW_empty / An_BWmature_empty > 0.12)
-    Kg_MP_NP_Trg = np.where(
-        condition,  # Line 2660-2662
-        (0.64 - 0.3 * An_BW_empty / An_BWmature_empty) *
-        coeff_dict['Body_NP_CP'],  # for heifers from 12% until 83% of BW_mature
-        Kg_MP_NP_Trg)
-    
-    Kg_MP_NP_Trg = np.where(
-        Kg_MP_NP_Trg < 0.394 * coeff_dict['Body_NP_CP'],
-        0.394 * coeff_dict['Body_NP_CP'] * coeff_dict['Body_NP_CP'],  
+    Kg_MP_NP_Trg = 0.60 * coeff_dict['Body_NP_CP']  
+
+    if (An_Parity_rl == 0) and (An_BW_empty / An_BWmature_empty > 0.12):
+        # for heifers from 12% until 83% of BW_mature
+        Kg_MP_NP_Trg = ((0.64 - 0.3 * An_BW_empty / An_BWmature_empty) 
+                        * coeff_dict['Body_NP_CP'])
+        
+    if Kg_MP_NP_Trg < 0.394 * coeff_dict['Body_NP_CP']:
         # Trap heifer values less than 0.39 MP to CP, Line 2663
-        Kg_MP_NP_Trg)
+        Kg_MP_NP_Trg = (0.394 * coeff_dict['Body_NP_CP'] 
+                        * coeff_dict['Body_NP_CP'])
     
-    Kg_MP_NP_Trg = np.where(
-        An_StatePhys == "Calf",
-        (0.70 - 0.532 * (An_BW / An_BW_mature)) * coeff_dict['Body_NP_CP'],  
+    if An_StatePhys == "Calf":
         # calves, Line 2664
-        Kg_MP_NP_Trg)
-    
-    Kg_MP_NP_Trg = np.where(
-        An_Parity_rl > 0,
-        MP_NP_efficiency_dict['Trg_MP_NP'],  # Cows, Line 2665
-        Kg_MP_NP_Trg)
+        Kg_MP_NP_Trg = ((0.70 - 0.532 * (An_BW / An_BW_mature)) 
+                        * coeff_dict['Body_NP_CP'])
+        
+    if An_Parity_rl > 0:
+        # Cows, Line 2665
+        Kg_MP_NP_Trg = MP_NP_efficiency_dict['Trg_MP_NP']
     return Kg_MP_NP_Trg
 
 

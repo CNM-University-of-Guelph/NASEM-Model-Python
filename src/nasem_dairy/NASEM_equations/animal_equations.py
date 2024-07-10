@@ -219,10 +219,10 @@ def calculate_An_DEIn(An_StatePhys, An_DENDFIn, An_DEStIn, An_DErOMIn,
                       Monensin_eqn):
     An_DEIn = (An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn +
                An_DEFAIn + Inf_DEAcetIn + Inf_DEPropIn + Inf_DEButrIn)
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)
     # Infusion DE not considered for milk-fed calves
-    An_DEIn = np.where(condition, Dt_DEIn, An_DEIn)
-    An_DEIn = np.where(Monensin_eqn == 1, An_DEIn * 1.02, An_DEIn)
+    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)   
+    An_DEIn = Dt_DEIn if condition else An_DEIn     
+    An_DEIn = An_DEIn * 1.02 if Monensin_eqn == 1 else An_DEIn
     return An_DEIn
 
 
@@ -323,15 +323,12 @@ def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout,
     condition = ((An_StatePhys == "Calf") 
                  and (Dt_DMIn_CflLiq > 0.015 * An_BW) 
                  and (RumDevDisc_Clf > 0))
-    K_DE_ME_ClfDry = np.where(condition, 0.93 * 0.9, 0.93) # Line 2755
-    An_MEIn = An_DEIn - An_GasEOut - Ur_DEout  # Line 2753
+    K_DE_ME_ClfDry = 0.93 * 0.9 if condition else 0.93 # Line 2755   
     
-    condition2 = (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0)
-    An_MEIn = np.where(
-        condition2,
-        Dt_DEIn_base_ClfLiq * 0.96 + Dt_DEIn_base_ClfDry * K_DE_ME_ClfDry,  
-        # Line 2757, no consideration of infusions for calves.
-        An_MEIn)
+    An_MEIn = An_DEIn - An_GasEOut - Ur_DEout  # Line 2753
+    An_MEIn = (Dt_DEIn_base_ClfLiq * 0.96 + Dt_DEIn_base_ClfDry * K_DE_ME_ClfDry
+               if (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0) 
+               else An_MEIn) 
     return An_MEIn
 
 
