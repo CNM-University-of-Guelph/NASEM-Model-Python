@@ -1,5 +1,7 @@
 # This file contains all of the functions used to execute the NASEM model in python
 # import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+from typing import Dict, Tuple, Union
+
 import pandas as pd
 
 
@@ -119,7 +121,8 @@ def get_feed_rows_feedlibrary(feeds_to_get: list,
     return selected_feed_data
 
 
-def read_csv_input(path_to_file="input.csv"):
+def read_csv_input(path_to_file: str = "input.csv"
+) -> Tuple[pd.DataFrame, Dict[str, float], Dict[str, Union[str, float]]]:
     """
     Read input data from a CSV file and organize it into dictionaries and a DataFrame.
     This is a convenience function for preparing the required inputs for the run_NASEM() function from a csv file that follows a particular structure, described below.
@@ -198,7 +201,8 @@ def read_csv_input(path_to_file="input.csv"):
     return user_diet, animal_input, equation_selection
 
 
-def read_infusion_input(path_to_file='infusion_input.csv'):
+def read_infusion_input(path_to_file: str = 'infusion_input.csv'
+) -> Dict[str, Union[float, str]]:
     """
     Read infusion input data from a CSV file and return it as a dictionary. 
 
