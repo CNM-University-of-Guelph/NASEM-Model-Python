@@ -7,7 +7,7 @@ import pandas as pd
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_f_mPrt_max(An_305RHA_MlkTP, coeff_dict):
+def calculate_f_mPrt_max(An_305RHA_MlkTP: float, coeff_dict: dict) -> float:
     req_coeffs = ['K_305RHA_MlkTP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     # Line 2116, 280kg RHA ~ 930 g mlk NP/d herd average
@@ -15,12 +15,12 @@ def calculate_f_mPrt_max(An_305RHA_MlkTP, coeff_dict):
     return f_mPrt_max
 
 
-def calculate_Du_MiCP_g(Du_MiN_g):
+def calculate_Du_MiCP_g(Du_MiN_g: float) -> float:
     Du_MiCP_g = Du_MiN_g * 6.25  # Line 1163
     return Du_MiCP_g
 
 
-def calculate_Du_MiTP_g(Du_MiCP_g, coeff_dict):
+def calculate_Du_MiTP_g(Du_MiCP_g: float, coeff_dict: dict) -> float:
     req_coeffs = ['fMiTP_MiCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Du_MiTP_g = coeff_dict['fMiTP_MiCP'] * Du_MiCP_g  # Line 1166
