@@ -1,4 +1,5 @@
 import re
+from typing import Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
@@ -38,7 +39,7 @@ class ModelOutput:
         requirements_group = model_output.get_value('Requirements')
     """
 
-    def __init__(self, locals_input):
+    def __init__(self, locals_input: dict) -> None:
         # Dictionary with all variables from execute_model
         self.locals_input = locals_input
         self.dev_out = {}
@@ -55,7 +56,7 @@ class ModelOutput:
         self.__populate_uncategorized()
         self.__calculate_additional_variables()
 
-    def _repr_html_(self):
+    def _repr_html_(self) -> str:
         #This is the HTML display when the ModelOutput object is called directly
         # in a IPython setting (e.g. juptyer notebook, VSCode interactive)
         # summary_sentence = f"Outputs for a {self.get_value('An_StatePhys')}, weighing {self.get_value('An_BW')} kg, eating {self.get_value('DMI')} kg with {self.get_value('An_LactDay')} days in milk."
@@ -107,7 +108,7 @@ class ModelOutput:
         # you might want to use 'display(HTML(final_html))' instead of 'return final_html' for direct rendering.
         return final_html
 
-    def __str__(self):
+    def __str__(self) -> str:
         summary = "=====================\n"
         summary += "Model Output Snapshot\n"
         summary += "=====================\n"
@@ -121,7 +122,7 @@ class ModelOutput:
 
         return summary
 
-    def __categories_dict(self):
+    def __categories_dict(self) -> Dict[str, Any]:
         """
         Return dictionary of categories from this object for _refr_html_ and __str__
         """
@@ -137,7 +138,7 @@ class ModelOutput:
         }
         return categories_dict
 
-    def __snapshot_data(self):
+    def __snapshot_data(self) -> List[Dict[str, Any]]:
         """
         Return a list of dictionaries of snapshot variables for _refr_html_ and __str__
         """
@@ -183,7 +184,11 @@ class ModelOutput:
 
         return snapshot_data
 
-    def __populate_category(self, category_name, group_names, *variable_lists):
+    def __populate_category(self, 
+                            category_name: str, 
+                            group_names: List[str], 
+                            *variable_lists: List[str]
+) -> None:
         """
         Creates and populates nested dictionaries using lists of variable names.
 
@@ -210,7 +215,7 @@ class ModelOutput:
                         self,
                         category_name)[name][var] = self.locals_input.pop(var)
 
-    def __populate_uncategorized(self):
+    def __populate_uncategorized(self) -> None:
         """
         Store all remaining values in the Uncategorized category and pop them from locals_input.
         """
@@ -218,7 +223,7 @@ class ModelOutput:
         self.Uncategorized.update(self.locals_input)
         self.locals_input.clear()
 
-    def __filter_locals_input(self):
+    def __filter_locals_input(self) -> None:
         """
         Remove specified variables from locals_input.
         Add to dev output for easier development. Not included in search or get_value methods.
@@ -235,7 +240,7 @@ class ModelOutput:
             # Remove values that should be excluded from output
             self.locals_input.pop(key, None)
 
-    def __sort_Input(self):
+    def __sort_Input(self) -> None:
         """
         Sort and store specific variables related to model inputs in the Inputs category.
         """
@@ -250,7 +255,7 @@ class ModelOutput:
             # Remove so that values are only stored in one place
             self.locals_input.pop(key, None)
 
-    def __sort_Intakes(self):
+    def __sort_Intakes(self) -> None:
         """
         Sort and store specific variables related to nutrient intakes in the Intakes category.
         """
@@ -292,7 +297,7 @@ class ModelOutput:
                                  protein_variables, AA_variables, FA_variables,
                                  rumen_digestable_variables, water_variables)
 
-    def __sort_Requirements(self):
+    def __sort_Requirements(self) -> None:
         """
         Sort and store specific variables related to required intakes in the Requirements category.
         """
@@ -408,7 +413,7 @@ class ModelOutput:
                         variable] = self.locals_input.pop(variable)
         self.Requirements['mineral_requirements'] = mineral_requirements
 
-    def __sort_Production(self):
+    def __sort_Production(self) -> None:
         """
         Sort and store specific variables related to production, including body composition changes and gestation, in the Production category.
         """
@@ -465,7 +470,7 @@ class ModelOutput:
                                  composition_variables, gestation_variables,
                                  MiCP_variables)
 
-    def __sort_Excretion(self):
+    def __sort_Excretion(self) -> None:
         """
         Sort and store specific variables related to excreted nutrients in the Excretion category.
         """
@@ -504,7 +509,7 @@ class ModelOutput:
                                  urinary_variables, gaseous_variables,
                                  scurf_variables)
 
-    def __sort_Digestibility(self):
+    def __sort_Digestibility(self) -> None:
         """
         Sort and store specific variables related to digestability in the Digestability category.
         """
@@ -517,7 +522,7 @@ class ModelOutput:
         self.__populate_category('Digestibility', group_names, rumen_variables,
                                  TT_variables)
 
-    def __sort_Efficiencies(self):
+    def __sort_Efficiencies(self) -> None:
         """
         Sort and store specific variables related to conversion efficiencies in the Efficiencies category.
         """
@@ -542,7 +547,7 @@ class ModelOutput:
         self.__populate_category('Efficiencies', group_names, energy_variables,
                                  protein_variables, mineral_variables)
 
-    def __sort_Miscellaneous(self):
+    def __sort_Miscellaneous(self) -> None:
         """
         Sort and store specific miscellaneous variables that need a final location in the Miscellaneous category.
         """
@@ -558,7 +563,7 @@ class ModelOutput:
         # Store variables
         self.__populate_category('Miscellaneous', group_names, misc_variables)   
 
-    def __calculate_additional_variables(self):
+    def __calculate_additional_variables(self) -> None:
         """
         This method calculates additional values that are useful for reporting but not used by model.
         E.g. Some values are normally reported with different units to what are calculated.
@@ -576,9 +581,9 @@ class ModelOutput:
         for key, value in new_var.items():
             getattr(self, 'Miscellaneous')['post_execute_calcs'][key] = value
 
-
-
-    def get_value(self, name):
+    def get_value(self, 
+                  name: str
+    ) -> Union[str, int, float, dict, pd.DataFrame, None]:
         """
         Retrieve a value, dictionary or dataframe with a given name from the ModelOutput instance.
 
@@ -588,9 +593,10 @@ class ModelOutput:
         Returns:
         str or int or float or dict or pd.DataFrame or None: The object with the given name, or None if not found.
         """
-
-        # Helper function to recursively search for a group in a nested dictionary
         def recursive_search(dictionary, target_name):
+            """
+            Helper function to recursively search for a group in a nested dictionary
+            """
             if target_name in dictionary:
                 return dictionary[target_name]
             for key, value in dictionary.items():
@@ -616,27 +622,15 @@ class ModelOutput:
                     result = recursive_search(category, name)
                     if result is not None:
                         return result
-
-        # Return None if not found
         return None
 
-    def search(self, search_string, dictionaries_to_search=None,
-               case_sensitive: bool = False):
-        # Define the dictionaries to search within, by default all dictionaries 
-        # where outputs are stored
-        if dictionaries_to_search is None:
-            dictionaries_to_search = [
-                'Inputs', 'Intakes', 'Requirements', 'Production', 'Excretion',
-                'Digestibility', 'Efficiencies', 'Miscellaneous',
-                'Uncategorized'
-            ]
-        result = {}
-        visited_keys = set()
-        table_rows = []
-
-        user_flags = 0 if case_sensitive else re.IGNORECASE
-
-        def recursive_search(d, path=''):
+    def search(self, 
+               search_string: str, 
+               dictionaries_to_search: Union[None, List[str]] = None,
+               case_sensitive: bool = False
+    ) -> pd.DataFrame:
+        
+        def recursive_search(d: Dict[str, Any], path: str = '') -> None:
             for key, value in d.items():
                 full_key = path + key
                 if ((re.search(search_string, str(full_key), 
@@ -658,7 +652,10 @@ class ModelOutput:
                             result[columns_key] = matching_columns
                             visited_keys.add(columns_key)
 
-        def extract_dataframe_and_column(key, value):
+
+        def extract_dataframe_and_column(key: str, 
+                                         value: Any
+        ) -> Dict[str, Union[str, List[str]]]:
             '''
             Only used when key endswith('_columns')
             '''
@@ -670,6 +667,21 @@ class ModelOutput:
                     "Level 1": df_name,
                     "Level 2": value
                     }
+    
+
+        # Define the dictionaries to search within, by default all dictionaries 
+        # where outputs are stored
+        if dictionaries_to_search is None:
+            dictionaries_to_search = [
+                'Inputs', 'Intakes', 'Requirements', 'Production', 'Excretion',
+                'Digestibility', 'Efficiencies', 'Miscellaneous',
+                'Uncategorized'
+            ]
+        result = {}
+        visited_keys = set()
+        table_rows = []
+
+        user_flags = 0 if case_sensitive else re.IGNORECASE
 
         # Iterate over specified dictionaries
         for dictionary_name in dictionaries_to_search:
@@ -712,11 +724,15 @@ class ModelOutput:
                         .reset_index(drop=True))
         return output_table
     
-    def report_minerals(self):
+    def report_minerals(self) -> Dict[str, pd.DataFrame]:
         '''
         Format mineral data with inputs, requirements and balance. 
         Similar to tables 7_1 and 7_2 in R.
         '''       
+        def get_mineral_values(keys: List[str]) -> List[Any]:
+            return [self.get_value(key) for key in keys]
+
+
         # Table 7_1 in R
         keys_list_macro = {
             'Ca': ['Dt_Ca', 'Dt_CaReq_DMI', 'Dt_acCa', 'An_Ca_req', 'Dt_CaIn', 
@@ -765,9 +781,6 @@ class ModelOutput:
                    'An_Zn_g']
         }
         
-        def get_mineral_values(keys):
-            return [self.get_value(key) for key in keys]
-        
         macro_data = {mineral: get_mineral_values(keys) 
                        for mineral, keys in keys_list_macro.items()}
 
@@ -790,10 +803,7 @@ class ModelOutput:
         return {'macro_minerals': macro_minerals.reset_index(names = 'Mineral'), 
                 'micro_minerals': micro_minerals.reset_index(names = 'Mineral')}
 
-
-
-
-    def report_animal_characteristics(self):
+    def report_animal_characteristics(self) -> pd.DataFrame:
         '''
         Format animal characteristic data into a table.
         Similar to table Tbl1_1 in R.
@@ -832,8 +842,7 @@ class ModelOutput:
         
         return animal_characteristics
 
-
-    def report_target_performance(self):
+    def report_target_performance(self) -> pd.DataFrame:
         '''
         Format target performance data into a table.
         Similar to table Tbl1_2 in R.
@@ -864,6 +873,61 @@ class ModelOutput:
         target_performance.columns = ['Target Performance:']
         
         return target_performance
+
+    def export_to_dict(self) -> Dict[str, Any]:
+        def recursive_extract(value: Any, parent_key: str = '') -> None:
+            if isinstance(value, dict):
+                for k, v in value.items():
+                    full_key = f"{parent_key}.{k}" if parent_key else k
+                    if isinstance(v, dict):
+                        recursive_extract(v, full_key)
+                    else:
+                        final_key = full_key.split('.')[-1]
+                        data_dict[final_key] = v
+                        categorize_key(final_key, v)
+            elif isinstance(value, list):
+                for i, item in enumerate(value):
+                    full_key = f"{parent_key}[{i}]"
+                    recursive_extract(item, full_key)
+            else:
+                final_key = parent_key.split('.')[-1]
+                data_dict[final_key] = value
+                categorize_key(parent_key, value)
+
+
+        def categorize_key(key: str, value: Any) -> None:
+            if isinstance(value, pd.DataFrame):
+                special_keys['dataframe'].append(key)
+            elif isinstance(value, pd.Series):
+                special_keys['series'].append(key)
+            elif isinstance(value, np.ndarray):
+                special_keys['ndarray'].append(key)
+            elif isinstance(value, dict):
+                special_keys['dict'].append(key)
+            elif isinstance(value, list):
+                special_keys['list'].append(key)
+
+
+        data_dict = {}
+        special_keys = {
+            'dataframe': [],
+            'series': [],
+            'ndarray': [],
+            'dict': [],
+            'list': []
+        }
+
+        for attr_name in dir(self):
+            attr = getattr(self, attr_name, None)
+            if attr is not None and not attr_name.startswith('__'):
+                recursive_extract(attr, attr_name)
+
+        print("DataFrame keys:", special_keys['dataframe'])
+        print("Series keys:", special_keys['series'])
+        print("Numpy array keys:", special_keys['ndarray'])
+        print("Dict keys:", special_keys['dict'])
+        print("List keys:", special_keys['list'])
+        return data_dict
 
     # def report_AA(self):
     #     def create_aa_flows_dataframe(self):
@@ -952,59 +1016,4 @@ class ModelOutput:
     #     df_aa_partitioning, df_partitioning_footnotes = create_aa_partitioning_dataframe(self)
 
     #     return {'AA_flow': df_aa_flows, 'AA_partitioning': df_aa_partitioning }
-
-
-
-    def export_to_dict(self):
-        data_dict = {}
-        special_keys = {
-            'dataframe': [],
-            'series': [],
-            'ndarray': [],
-            'dict': [],
-            'list': []
-        }
-
-        def recursive_extract(value, parent_key=''):
-            if isinstance(value, dict):
-                for k, v in value.items():
-                    full_key = f"{parent_key}.{k}" if parent_key else k
-                    if isinstance(v, dict):
-                        recursive_extract(v, full_key)
-                    else:
-                        final_key = full_key.split('.')[-1]
-                        data_dict[final_key] = v
-                        categorize_key(final_key, v)
-            elif isinstance(value, list):
-                for i, item in enumerate(value):
-                    full_key = f"{parent_key}[{i}]"
-                    recursive_extract(item, full_key)
-            else:
-                final_key = parent_key.split('.')[-1]
-                data_dict[final_key] = value
-                categorize_key(parent_key, value)
-
-        def categorize_key(key, value):
-            if isinstance(value, pd.DataFrame):
-                special_keys['dataframe'].append(key)
-            elif isinstance(value, pd.Series):
-                special_keys['series'].append(key)
-            elif isinstance(value, np.ndarray):
-                special_keys['ndarray'].append(key)
-            elif isinstance(value, dict):
-                special_keys['dict'].append(key)
-            elif isinstance(value, list):
-                special_keys['list'].append(key)
-
-        for attr_name in dir(self):
-            attr = getattr(self, attr_name, None)
-            if attr is not None and not attr_name.startswith('__'):
-                recursive_extract(attr, attr_name)
-
-        print("DataFrame keys:", special_keys['dataframe'])
-        print("Series keys:", special_keys['series'])
-        print("Numpy array keys:", special_keys['ndarray'])
-        print("Dict keys:", special_keys['dict'])
-        print("List keys:", special_keys['list'])
-
-        return data_dict
+    

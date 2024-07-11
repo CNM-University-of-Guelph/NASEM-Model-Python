@@ -8,7 +8,7 @@ import pandas as pd
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_Fe_rOMend(Dt_DMIn, coeff_dict):
+def calculate_Fe_rOMend(Dt_DMIn: float, coeff_dict: dict) -> float:
     req_coeff = ['Fe_rOMend_DMI']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1007, From Tebbe et al., 2017. Negative interecept represents endogenous rOM
@@ -16,12 +16,15 @@ def calculate_Fe_rOMend(Dt_DMIn, coeff_dict):
     return Fe_rOMend
 
 
-def calculate_Fe_RUP(An_RUPIn, InfSI_TPIn, An_idRUPIn):
+def calculate_Fe_RUP(An_RUPIn: float, 
+                     InfSI_TPIn: float, 
+                     An_idRUPIn: float
+) -> float:
     Fe_RUP = An_RUPIn + InfSI_TPIn - An_idRUPIn  # SI infusions not considered
     return Fe_RUP
 
 
-def calculate_Fe_RumMiCP(Du_MiCP, Du_idMiCP):
+def calculate_Fe_RumMiCP(Du_MiCP: float, Du_idMiCP: float) -> float:
     Fe_RumMiCP = Du_MiCP - Du_idMiCP  # Line 1196
     return Fe_RumMiCP
 
@@ -54,20 +57,20 @@ def calculate_Fe_CPend_g(An_StatePhys: str,
     return Fe_CPend_g
 
 
-def calculate_Fe_CPend(Fe_CPend_g):
+def calculate_Fe_CPend(Fe_CPend_g: float) -> float:
     Fe_CPend = Fe_CPend_g / 1000  # Line 1190
     return Fe_CPend
 
 
-def calculate_Fe_CP(An_StatePhys, 
-                    Dt_CPIn_ClfLiq, 
-                    Dt_dcCP_ClfDry, 
-                    An_CPIn,
-                    Fe_RUP, 
-                    Fe_RumMiCP, 
-                    Fe_CPend, 
-                    InfSI_NPNCPIn, 
-                    coeff_dict
+def calculate_Fe_CP(An_StatePhys: str, 
+                    Dt_CPIn_ClfLiq: float, 
+                    Dt_dcCP_ClfDry: float, 
+                    An_CPIn: float,
+                    Fe_RUP: float, 
+                    Fe_RumMiCP: float, 
+                    Fe_CPend: float, 
+                    InfSI_NPNCPIn: float, 
+                    coeff_dict: dict
 ) -> float:
     req_coeff = ['dcNPNCP', 'Dt_dcCP_ClfLiq']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)

@@ -1,12 +1,12 @@
 # rumen_equations
 # import nasem_dairy.NASEM_equations.rumen_equations as rumen
 
-def calculate_Rum_dcNDF(Dt_DMIn, 
-                        Dt_NDFIn, 
-                        Dt_StIn, 
-                        Dt_CPIn, 
-                        Dt_ADFIn,
-                        Dt_ForWet
+def calculate_Rum_dcNDF(Dt_DMIn: float, 
+                        Dt_NDFIn: float, 
+                        Dt_StIn: float, 
+                        Dt_CPIn: float, 
+                        Dt_ADFIn: float,
+                        Dt_ForWet: float
 ) -> float:
     Rum_dcNDF = (-31.9 + 0.721 * Dt_NDFIn / 
                  Dt_DMIn * 100 - 0.247 * Dt_StIn / 
@@ -20,7 +20,11 @@ def calculate_Rum_dcNDF(Dt_DMIn,
     return Rum_dcNDF
 
 
-def calculate_Rum_dcSt(Dt_DMIn, Dt_ForNDF, Dt_StIn, Dt_ForWet):
+def calculate_Rum_dcSt(Dt_DMIn: float, 
+                       Dt_ForNDF: float, 
+                       Dt_StIn: float, 
+                       Dt_ForWet: float
+) -> float:
     Rum_dcSt = (70.6 - 1.45 * Dt_DMIn + 0.424 * Dt_ForNDF + 1.39 * Dt_StIn / 
                 Dt_DMIn * 100 - 0.0219 * (Dt_StIn / Dt_DMIn * 100)**2 - 
                 0.154 * Dt_ForWet)
@@ -31,12 +35,12 @@ def calculate_Rum_dcSt(Dt_DMIn, Dt_ForNDF, Dt_StIn, Dt_ForWet):
     return Rum_dcSt
 
 
-def calculate_Rum_DigNDFIn(Rum_dcNDF, Dt_NDFIn):
+def calculate_Rum_DigNDFIn(Rum_dcNDF: float, Dt_NDFIn: float) -> float:
     Rum_DigNDFIn = Rum_dcNDF / 100 * Dt_NDFIn
     return Rum_DigNDFIn
 
 
-def calculate_Rum_DigStIn(Rum_dcSt, Dt_StIn):
+def calculate_Rum_DigStIn(Rum_dcSt: float, Dt_StIn: float) -> float:
     Rum_DigStIn = Rum_dcSt / 100 * Dt_StIn # Line 998
     return Rum_DigStIn
 

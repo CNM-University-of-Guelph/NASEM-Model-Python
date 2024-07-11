@@ -2,6 +2,7 @@
 # import nasem_dairy.NASEM_equations.animal_equations as animal
 
 import numpy as np
+import pandas as pd
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
@@ -11,109 +12,147 @@ import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 # An_DMIn_BW is calculated seperately after DMI selection to use in calculate_diet_data
 
 
-def calculate_An_DMIn_BW(An_BW, Dt_DMIn):
+def calculate_An_DMIn_BW(An_BW: float, Dt_DMIn: float) -> float:
     An_DMIn_BW = Dt_DMIn / An_BW  # Line 935
     return An_DMIn_BW
 
 
-def calculate_An_RDPIn(Dt_RDPIn, InfRum_RDPIn):
+def calculate_An_RDPIn(Dt_RDPIn: float, InfRum_RDPIn: float) -> float:
     An_RDPIn = Dt_RDPIn + InfRum_RDPIn
     return An_RDPIn
 
 
-def calculate_An_RDP(An_RDPIn, Dt_DMIn, InfRum_DMIn):
+def calculate_An_RDP(An_RDPIn: float, 
+                     Dt_DMIn: float, 
+                     InfRum_DMIn: float
+) -> float:
     An_RDP = An_RDPIn / (Dt_DMIn + InfRum_DMIn) * 100
     return An_RDP
 
 
-def calculate_An_RDPIn_g(An_RDPIn):
+def calculate_An_RDPIn_g(An_RDPIn: float) -> float:
     An_RDPIn_g = An_RDPIn * 1000
     return An_RDPIn_g
 
 
-def calculate_An_NDFIn(Dt_NDFIn, InfRum_NDFIn, InfSI_NDFIn):
+def calculate_An_NDFIn(Dt_NDFIn: float, 
+                       InfRum_NDFIn: float, 
+                       InfSI_NDFIn: float
+) -> float:
     An_NDFIn = Dt_NDFIn + InfRum_NDFIn + InfSI_NDFIn  # Line 942
     return An_NDFIn
 
 
-def calculate_An_NDF(An_NDFIn, Dt_DMIn, InfRum_DMIn, InfSI_DMIn):
+def calculate_An_NDF(An_NDFIn: float, 
+                     Dt_DMIn: float, 
+                     InfRum_DMIn: float, 
+                     InfSI_DMIn: float
+) -> float:
     An_NDF = An_NDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 944
     return An_NDF
 
 
-def calculate_An_DigNDFIn(Dt_DigNDFIn, InfRum_NDFIn, TT_dcNDF):
+def calculate_An_DigNDFIn(Dt_DigNDFIn: float, 
+                          InfRum_NDFIn: float, 
+                          TT_dcNDF: float
+) -> float:
     # Line 1063, should consider SI and LI infusions as well, but no predictions
     # of LI NDF digestion available.
     An_DigNDFIn = Dt_DigNDFIn + InfRum_NDFIn * TT_dcNDF / 100
     return An_DigNDFIn
 
 
-def calculate_An_DENDFIn(An_DigNDFIn, coeff_dict):
+def calculate_An_DENDFIn(An_DigNDFIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_NDF']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DENDFIn = An_DigNDFIn * coeff_dict['En_NDF']  # Line 1353
     return An_DENDFIn
 
 
-def calculate_An_DigStIn(Dt_DigStIn, Inf_StIn, Inf_ttdcSt):
+def calculate_An_DigStIn(Dt_DigStIn: float, 
+                         Inf_StIn: float, 
+                         Inf_ttdcSt: float
+) -> float:
     # Line 1033, Glc considered as WSC and thus with rOM
     An_DigStIn = Dt_DigStIn + Inf_StIn * Inf_ttdcSt / 100
     return An_DigStIn
 
 
-def calculate_An_DEStIn(An_DigStIn, coeff_dict):
+def calculate_An_DEStIn(An_DigStIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_St']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DEStIn = An_DigStIn * coeff_dict['En_St']  # Line 1351
     return An_DEStIn
 
 
-def calculate_An_DigrOMaIn(Dt_DigrOMaIn, InfRum_GlcIn, InfRum_AcetIn,
-                           InfRum_PropIn, InfRum_ButrIn, InfSI_GlcIn,
-                           InfSI_AcetIn, InfSI_PropIn, InfSI_ButrIn):
+def calculate_An_DigrOMaIn(Dt_DigrOMaIn: float, 
+                           InfRum_GlcIn: float, 
+                           InfRum_AcetIn: float,
+                           InfRum_PropIn: float, 
+                           InfRum_ButrIn: float, 
+                           InfSI_GlcIn: float,
+                           InfSI_AcetIn: float, 
+                           InfSI_PropIn: float, 
+                           InfSI_ButrIn: float
+) -> float:
     An_DigrOMaIn = (Dt_DigrOMaIn + InfRum_GlcIn + InfRum_AcetIn +
                     InfRum_PropIn + InfRum_ButrIn + InfSI_GlcIn + 
                     InfSI_AcetIn + InfSI_PropIn + InfSI_ButrIn) # Line 1023-1024
     return An_DigrOMaIn
 
 
-def calculate_An_DErOMIn(An_DigrOMaIn, coeff_dict):
+def calculate_An_DErOMIn(An_DigrOMaIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_rOM']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DErOMIn = An_DigrOMaIn * coeff_dict['En_rOM']  # Line 1351
     return An_DErOMIn
 
 
-def calculate_An_idRUPIn(Dt_idRUPIn, InfRum_idRUPIn, InfSI_idTPIn):
+def calculate_An_idRUPIn(Dt_idRUPIn: float, 
+                         InfRum_idRUPIn: float, 
+                         InfSI_idTPIn: float
+) -> float:
     # Line 1099, SI infusions considered here
     An_idRUPIn = Dt_idRUPIn + InfRum_idRUPIn + InfSI_idTPIn
     return An_idRUPIn
 
 
-def calculate_An_RUPIn(Dt_RUPIn, InfRum_RUPIn):
+def calculate_An_RUPIn(Dt_RUPIn: float, InfRum_RUPIn: float) -> float:
     An_RUPIn = Dt_RUPIn + InfRum_RUPIn
     return An_RUPIn
 
 
-def calculate_An_DMIn(Dt_DMIn, Inf_DMIn):
+def calculate_An_DMIn(Dt_DMIn: float, Inf_DMIn: float) -> float:
     An_DMIn = Dt_DMIn + Inf_DMIn
     return An_DMIn
 
 
-def calculate_An_CPIn(Dt_CPIn, Inf_CPIn):
+def calculate_An_CPIn(Dt_CPIn: float, Inf_CPIn: float) -> float:
     An_CPIn = Dt_CPIn + Inf_CPIn  # Line 947
     return An_CPIn
 
 
-def calculate_An_DigNDF(An_DigNDFIn, Dt_DMIn, InfRum_DMIn, InfSI_DMIn):
+def calculate_An_DigNDF(An_DigNDFIn: float, 
+                        Dt_DMIn: float, 
+                        InfRum_DMIn: float, 
+                        InfSI_DMIn: float
+) -> float:
     # Line 1066, should add LI infusions
     An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
     return An_DigNDF
 
 
-def calculate_An_GEIn(Dt_GEIn, Inf_NDFIn, Inf_StIn, Inf_FAIn, Inf_TPIn,
-                      Inf_NPNCPIn, Inf_AcetIn, Inf_PropIn, Inf_ButrIn,
-                      coeff_dict):
+def calculate_An_GEIn(Dt_GEIn: float, 
+                      Inf_NDFIn: float, 
+                      Inf_StIn: float, 
+                      Inf_FAIn: float, 
+                      Inf_TPIn: float,
+                      Inf_NPNCPIn: float, 
+                      Inf_AcetIn: float, 
+                      Inf_PropIn: float, 
+                      Inf_ButrIn: float,
+                      coeff_dict: dict
+) -> float:
     req_coeff = [
         'En_NDF', 'En_St', 'En_FA', 'En_CP', 'En_NPNCP', 'En_Acet', 'En_Prop',
         'En_Butr'
@@ -130,15 +169,23 @@ def calculate_An_GEIn(Dt_GEIn, Inf_NDFIn, Inf_StIn, Inf_FAIn, Inf_TPIn,
     return An_GEIn
 
 
-def calculate_An_GasEOut_Dry(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn,
-                             An_GEIn):
+def calculate_An_GasEOut_Dry(Dt_DMIn: float, 
+                             Dt_FAIn: float, 
+                             InfRum_FAIn: float, 
+                             InfRum_DMIn: float,
+                             An_GEIn: float
+) -> float:
     An_GasEOut_Dry = (0.69 + 0.053 * An_GEIn - 0.07 * (Dt_FAIn + InfRum_FAIn) / 
                       (Dt_DMIn + InfRum_DMIn) * 100)   # Line 1407, Dry Cows
     return An_GasEOut_Dry
 
 
-def calculate_An_GasEOut_Lact(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn,
-                              An_DigNDF):
+def calculate_An_GasEOut_Lact(Dt_DMIn: float, 
+                              Dt_FAIn: float, 
+                              InfRum_FAIn: float, 
+                              InfRum_DMIn: float,
+                              An_DigNDF: float
+) -> float:
     An_GasEOut_Lact = (0.294 * (Dt_DMIn + InfRum_DMIn) - 
                        (0.347 * (Dt_FAIn + InfRum_FAIn) / 
                         (Dt_DMIn + InfRum_DMIn)) * 100 + 0.0409 * An_DigNDF)
@@ -146,14 +193,18 @@ def calculate_An_GasEOut_Lact(Dt_DMIn, Dt_FAIn, InfRum_FAIn, InfRum_DMIn,
     return An_GasEOut_Lact
 
 
-def calculate_An_GasEOut_Heif(An_GEIn, An_NDF):
+def calculate_An_GasEOut_Heif(An_GEIn: float, An_NDF: float) -> float:
     An_GasEOut_Heif = -0.038 + 0.051 * An_GEIn + 0.0091 * An_NDF  
     # Line 1406, Heifers/Bulls
     return An_GasEOut_Heif
 
 
-def calculate_An_GasEOut(An_StatePhys, Monensin_eqn, An_GasEOut_Dry,
-                         An_GasEOut_Lact, An_GasEOut_Heif):
+def calculate_An_GasEOut(An_StatePhys: str, 
+                         Monensin_eqn: int, 
+                         An_GasEOut_Dry: float,
+                         An_GasEOut_Lact: float, 
+                         An_GasEOut_Heif: float
+) -> float:
     if An_StatePhys == 'Dry Cow':
         An_GasEOut = An_GasEOut_Dry
     elif An_StatePhys == 'Calf':
@@ -171,19 +222,22 @@ def calculate_An_GasEOut(An_StatePhys, Monensin_eqn, An_GasEOut_Dry,
     return An_GasEOut
 
 
-def calculate_An_DigCPaIn(An_CPIn, InfArt_CPIn, Fe_CP):
+def calculate_An_DigCPaIn(An_CPIn: float, 
+                          InfArt_CPIn: float, 
+                          Fe_CP: float
+) -> float:
     An_DigCPaIn = An_CPIn - InfArt_CPIn - Fe_CP  # apparent total tract
     return An_DigCPaIn
 
 
-def calculate_An_DECPIn(An_DigCPaIn, coeff_dict):
+def calculate_An_DECPIn(An_DigCPaIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DECPIn = An_DigCPaIn * coeff_dict['En_CP']
     return An_DECPIn
 
 
-def calculate_An_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
+def calculate_An_DENPNCPIn(Dt_NPNCPIn: float, coeff_dict: dict) -> float:
     req_coeff = ['dcNPNCP', 'En_NPNCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DENPNCPIn = (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 
@@ -191,7 +245,10 @@ def calculate_An_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
     return An_DENPNCPIn
 
 
-def calculate_An_DETPIn(An_DECPIn, An_DENPNCPIn, coeff_dict):
+def calculate_An_DETPIn(An_DECPIn: float, 
+                        An_DENPNCPIn: float, 
+                        coeff_dict: dict
+) -> float:
     req_coeff = ['En_NPNCP', 'En_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1355, Caution! DigTPaIn not clean so subtracted DE for CP equiv of
@@ -201,22 +258,32 @@ def calculate_An_DETPIn(An_DECPIn, An_DENPNCPIn, coeff_dict):
     return An_DETPIn
 
 
-def calculate_An_DigFAIn(Dt_DigFAIn, Inf_DigFAIn):
+def calculate_An_DigFAIn(Dt_DigFAIn: float, Inf_DigFAIn: float) -> float:
     An_DigFAIn = Dt_DigFAIn + Inf_DigFAIn  # Line 1308
     return An_DigFAIn
 
 
-def calculate_An_DEFAIn(An_DigFAIn, coeff_dict):
+def calculate_An_DEFAIn(An_DigFAIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_FA']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DEFAIn = An_DigFAIn * coeff_dict['En_FA']  # Line 1361
     return An_DEFAIn
 
 
-def calculate_An_DEIn(An_StatePhys, An_DENDFIn, An_DEStIn, An_DErOMIn,
-                      An_DETPIn, An_DENPNCPIn, An_DEFAIn, Inf_DEAcetIn,
-                      Inf_DEPropIn, Inf_DEButrIn, Dt_DMIn_ClfLiq, Dt_DEIn,
-                      Monensin_eqn):
+def calculate_An_DEIn(An_StatePhys: str, 
+                      An_DENDFIn: float, 
+                      An_DEStIn: float, 
+                      An_DErOMIn: float,
+                      An_DETPIn: float, 
+                      An_DENPNCPIn: float, 
+                      An_DEFAIn: float, 
+                      Inf_DEAcetIn: float,
+                      Inf_DEPropIn: float, 
+                      Inf_DEButrIn: float, 
+                      Dt_DMIn_ClfLiq: float, 
+                      Dt_DEIn: float,
+                      Monensin_eqn: int
+) -> float:
     An_DEIn = (An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn +
                An_DEFAIn + Inf_DEAcetIn + Inf_DEPropIn + Inf_DEButrIn)
     # Infusion DE not considered for milk-fed calves
@@ -226,14 +293,23 @@ def calculate_An_DEIn(An_StatePhys, An_DENDFIn, An_DEStIn, An_DErOMIn,
     return An_DEIn
 
 
-def calculate_An_DEInp(An_DEIn, An_DETPIn, An_DENPNCPIn):
+def calculate_An_DEInp(An_DEIn: float, 
+                       An_DETPIn: float, 
+                       An_DENPNCPIn: float
+) -> float:
     # Line 1385, Create a nonprotein DEIn for milk protein predictions.
     An_DEInp = An_DEIn - An_DETPIn - An_DENPNCPIn
     return An_DEInp
 
 
-def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl,
-                            Dt_DMIn_ClfLiq, Dt_DMIn_ClfStrt, coeff_dict):
+def calculate_An_GutFill_BW(An_BW: float, 
+                            An_BW_mature: float, 
+                            An_StatePhys: str, 
+                            An_Parity_rl: int,
+                            Dt_DMIn_ClfLiq: float, 
+                            Dt_DMIn_ClfStrt: float, 
+                            coeff_dict: dict
+) -> float:
     """
     see page 34 for comments, gut fill is default 0.18 for cows
     Weaned calf == heifer, which is based on equations 11-1a/b using 85% (inverse of 0.15)
@@ -273,7 +349,7 @@ def calculate_An_GutFill_BW(An_BW, An_BW_mature, An_StatePhys, An_Parity_rl,
     return An_GutFill_BW
 
 
-def calculate_An_BWnp(An_BW, GrUter_Wt):
+def calculate_An_BWnp(An_BW: float, GrUter_Wt: float) -> float:
     '''
     Equation 20-230
     '''
@@ -281,12 +357,12 @@ def calculate_An_BWnp(An_BW, GrUter_Wt):
     return An_BWnp
 
 
-def calculate_An_GutFill_Wt(An_GutFill_BW, An_BWnp):
+def calculate_An_GutFill_Wt(An_GutFill_BW: float, An_BWnp: float) -> float:
     An_GutFill_Wt = An_GutFill_BW * An_BWnp  # Line 2413
     return An_GutFill_Wt
 
 
-def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
+def calculate_An_BW_empty(An_BW: float, An_GutFill_Wt: float) -> float:
     '''
     Equation 20-242
     '''
@@ -294,15 +370,20 @@ def calculate_An_BW_empty(An_BW, An_GutFill_Wt):
     return An_BW_empty
 
 
-def calculate_An_REgain_Calf(Body_Gain_empty, An_BW_empty):
+def calculate_An_REgain_Calf(Body_Gain_empty: float, 
+                             An_BW_empty: float
+) -> float:
     An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205  
     # Line 2445, calf RE gain needed here for fat gain, mcal/d
     return An_REgain_Calf
 
 
-def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float,
-                             An_DigTPaIn: float, Body_NPgain: float,
-                             An_GasEOut: float, coeff_dict: dict
+def calculate_An_MEIn_approx(An_DEInp: float, 
+                             An_DENPNCPIn: float,
+                             An_DigTPaIn: float, 
+                             Body_NPgain: float,
+                             An_GasEOut: float, 
+                             coeff_dict: dict
 ) -> float:
     """
     An_MEIn_approx: Approximate ME intake, see note:
@@ -317,9 +398,16 @@ def calculate_An_MEIn_approx(An_DEInp: float, An_DENPNCPIn: float,
     return An_MEIn_approx
 
 
-def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout,
-                      Dt_DMIn_CflLiq, Dt_DEIn_base_ClfLiq, Dt_DEIn_base_ClfDry,
-                      RumDevDisc_Clf):
+def calculate_An_MEIn(An_StatePhys: str, 
+                      An_BW: float, 
+                      An_DEIn: float, 
+                      An_GasEOut: float, 
+                      Ur_DEout: float,
+                      Dt_DMIn_CflLiq: float, 
+                      Dt_DEIn_base_ClfLiq: float, 
+                      Dt_DEIn_base_ClfDry: float,
+                      RumDevDisc_Clf: float
+) -> float:
     condition = ((An_StatePhys == "Calf") 
                  and (Dt_DMIn_CflLiq > 0.015 * An_BW) 
                  and (RumDevDisc_Clf > 0))
@@ -332,12 +420,12 @@ def calculate_An_MEIn(An_StatePhys, An_BW, An_DEIn, An_GasEOut, Ur_DEout,
     return An_MEIn
 
 
-def calculate_An_NEIn(An_MEIn):
+def calculate_An_NEIn(An_MEIn: float) -> float:
     An_NEIn = An_MEIn * 0.66  # Line 2762
     return An_NEIn
 
 
-def calculate_An_NE(An_NEIn, An_DMIn):
+def calculate_An_NE(An_NEIn: float, An_DMIn: float) -> float:
     An_NE = An_NEIn / An_DMIn  # Line 2763
     return An_NE
 
@@ -403,10 +491,14 @@ def calculate_An_St(An_StIn: float,
     return An_St
 
 
-def calculate_An_rOMIn(Dt_rOMIn: float, InfRum_GlcIn: float,
-                       InfRum_AcetIn: float, InfRum_PropIn: float,
-                       InfRum_ButrIn: float, InfSI_AcetIn: float,
-                       InfSI_PropIn: float, InfSI_ButrIn: float
+def calculate_An_rOMIn(Dt_rOMIn: float, 
+                       InfRum_GlcIn: float,
+                       InfRum_AcetIn: float, 
+                       InfRum_PropIn: float,
+                       InfRum_ButrIn: float, 
+                       InfSI_AcetIn: float,
+                       InfSI_PropIn: float, 
+                       InfSI_ButrIn: float
 ) -> float:
     """
     An_rOMIn: Residual organic matter intake from diet + infusions, kg
@@ -576,10 +668,14 @@ def calculate_An_DigWSCIn(Dt_DigWSCIn: float,
     return An_DigWSCIn
 
 
-def calculate_An_DigrOMtIn(Dt_DigrOMtIn: float, InfRum_GlcIn: float,
-                           InfRum_AcetIn: float, InfRum_PropIn: float,
-                           InfRum_ButrIn: float, InfSI_GlcIn: float,
-                           InfSI_AcetIn: float, InfSI_PropIn: float,
+def calculate_An_DigrOMtIn(Dt_DigrOMtIn: float, 
+                           InfRum_GlcIn: float,
+                           InfRum_AcetIn: float, 
+                           InfRum_PropIn: float,
+                           InfRum_ButrIn: float, 
+                           InfSI_GlcIn: float,
+                           InfSI_AcetIn: float, 
+                           InfSI_PropIn: float,
                            InfSI_ButrIn: float
 ) -> float:
     """
@@ -758,8 +854,10 @@ def calculate_TT_dcAnCPa(An_DigCPaIn: float,
     return TT_dcAnCPa
 
 
-def calculate_An_DigCPtIn(An_StatePhys: str, Dt_DigCPtIn: float,
-                          Inf_idCPIn: float, An_RDPIn: float,
+def calculate_An_DigCPtIn(An_StatePhys: str, 
+                          Dt_DigCPtIn: float,
+                          Inf_idCPIn: float, 
+                          An_RDPIn: float,
                           An_idRUPIn: float
 ) -> float:
     """
@@ -827,8 +925,10 @@ def calculate_TT_dcAnCPt(An_DigCPtIn: float,
     return TT_dcAnCPt
 
 
-def calculate_TT_dcAnTPt(An_DigTPtIn: float, An_TPIn: float, 
-                         InfArt_CPIn: float, InfRum_NPNCPIn: float, 
+def calculate_TT_dcAnTPt(An_DigTPtIn: float, 
+                         An_TPIn: float, 
+                         InfArt_CPIn: float, 
+                         InfRum_NPNCPIn: float, 
                          InfSI_NPNCPIn: float
 ) -> float:
     """
@@ -891,8 +991,10 @@ def calculate_An_OMIn(Dt_OMIn: float, Inf_OMIn: float) -> float:
     return An_OMIn
 
 
-def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float,
-                               An_DigFAIn: float, An_DigrOMaIn: float,
+def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float, 
+                               An_DigStIn_Base: float,
+                               An_DigFAIn: float, 
+                               An_DigrOMaIn: float,
                                An_DigCPaIn: float
 ) -> float:
     """
@@ -903,8 +1005,10 @@ def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float,
     return An_DigOMaIn_Base
 
 
-def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float,
-                               An_DigFAIn: float, An_DigrOMtIn: float,
+def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float, 
+                               An_DigStIn_Base: float,
+                               An_DigFAIn: float, 
+                               An_DigrOMtIn: float,
                                An_DigCPtIn: float
 ) -> float:
     """
@@ -915,8 +1019,10 @@ def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float, An_DigStIn_Base: float,
     return An_DigOMtIn_Base
 
 
-def calculate_An_DigOMaIn(An_DigNDFIn: float, An_DigStIn: float,
-                          An_DigFAIn: float, An_DigrOMaIn: float,
+def calculate_An_DigOMaIn(An_DigNDFIn: float, 
+                          An_DigStIn: float,
+                          An_DigFAIn: float, 
+                          An_DigrOMaIn: float,
                           An_DigCPaIn: float
 ) -> float:
     """
@@ -927,8 +1033,10 @@ def calculate_An_DigOMaIn(An_DigNDFIn: float, An_DigStIn: float,
     return An_DigOMaIn
 
 
-def calculate_An_DigOMtIn(An_DigNDFIn: float, An_DigStIn: float,
-                          An_DigFAIn: float, An_DigrOMtIn: float,
+def calculate_An_DigOMtIn(An_DigNDFIn: float, 
+                          An_DigStIn: float,
+                          An_DigFAIn: float, 
+                          An_DigrOMtIn: float,
                           An_DigCPtIn: float
 ) -> float:
     """
@@ -989,9 +1097,15 @@ def calculate_An_DigOMt(An_DigOMtIn: float,
     return An_DigOMt
 
 
-def calculate_An_GEIn(Dt_GEIn: float, Inf_NDFIn: float, Inf_StIn: float,
-                      Inf_FAIn: float, Inf_TPIn: float, Inf_NPNCPIn: float,
-                      Inf_AcetIn: float, Inf_PropIn: float, Inf_ButrIn: float,
+def calculate_An_GEIn(Dt_GEIn: float, 
+                      Inf_NDFIn: float, 
+                      Inf_StIn: float,
+                      Inf_FAIn: float, 
+                      Inf_TPIn: float, 
+                      Inf_NPNCPIn: float,
+                      Inf_AcetIn: float, 
+                      Inf_PropIn: float, 
+                      Inf_ButrIn: float,
                       coeff_dict: dict
 ) -> float:
     """
@@ -1153,8 +1267,13 @@ def calculate_An_XIn(diet_data: dict,
 ####################
 
 
-def calculate_An_data_initial(animal_input, diet_data, infusion_data,
-                              Monensin_eqn, GrUter_Wt, coeff_dict):
+def calculate_An_data_initial(animal_input: dict, 
+                              diet_data: pd.DataFrame, 
+                              infusion_data: dict,
+                              Monensin_eqn: int, 
+                              GrUter_Wt: float, 
+                              coeff_dict: dict
+) -> dict:
     # Could use a better name, An_data for now
     An_data = {}
     An_data['An_RDPIn'] = calculate_An_RDPIn(diet_data['Dt_RDPIn'],
@@ -1263,22 +1382,22 @@ def calculate_An_data_initial(animal_input, diet_data, infusion_data,
     return An_data
 
 
-def calculate_An_data_complete(
-        An_data_initial: dict,
-        diet_data: dict,
-        An_StatePhys: str,
-        An_BW: float,
-        DMI: float,
-        Fe_CP: float,
-        Fe_MiTP: float,
-        Fe_NPend: float,
-        Fe_DEMiCPend: float,
-        Fe_DERDPend: float,
-        Fe_DERUPend: float,
-        Du_idMiCP: float,
-        infusion_data: dict,
-        Monensin_eqn: int,  #equation_selection['Monensin_eqn']
-        coeff_dict: dict):
+def calculate_An_data_complete(An_data_initial: dict,
+                               diet_data: dict,
+                               An_StatePhys: str,
+                               An_BW: float,
+                               DMI: float,
+                               Fe_CP: float,
+                               Fe_MiTP: float,
+                               Fe_NPend: float,
+                               Fe_DEMiCPend: float,
+                               Fe_DERDPend: float,
+                               Fe_DERUPend: float,
+                               Du_idMiCP: float,
+                               infusion_data: dict,
+                               Monensin_eqn: int,
+                               coeff_dict: dict
+) -> dict:
     complete_An_data = An_data_initial.copy()
 
     complete_An_data['An_DigCPaIn'] = calculate_An_DigCPaIn(
@@ -1515,7 +1634,7 @@ def calculate_An_MPIn(An_StatePhys: str,
     return An_MPIn
 
 
-def calculate_An_MPIn_g(An_MPIn):
+def calculate_An_MPIn_g(An_MPIn: float) -> float:
     An_MPIn_g = An_MPIn * 1000  # Line 1238
     return An_MPIn_g
 

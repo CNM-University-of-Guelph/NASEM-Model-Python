@@ -14,7 +14,7 @@ import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 ####################
 
 
-def calculate_TT_dcFdNDF_Lg(Fd_NDF, Fd_Lg):
+def calculate_TT_dcFdNDF_Lg(Fd_NDF: pd.Series, Fd_Lg: pd.Series) -> pd.Series:
     Fd_NFD_check = np.where(Fd_NDF == 0, 1e-6, Fd_NDF)
     TT_dcFdNDF_Lg = (0.75 * (Fd_NDF - Fd_Lg) * 
                      (1 - (Fd_Lg / Fd_NFD_check)**0.667) / Fd_NFD_check * 100)  
@@ -22,7 +22,7 @@ def calculate_TT_dcFdNDF_Lg(Fd_NDF, Fd_Lg):
     return TT_dcFdNDF_Lg
 
 
-def calculate_Fd_DNDF48(Fd_Conc, Fd_DNDF48):
+def calculate_Fd_DNDF48(Fd_Conc: pd.Series, Fd_DNDF48: pd.Series) -> pd.Series:
     # I can't find Fd_DNDF48 in any of the feed libraries, 
     # including the feed library in the NASEM software,
     # For now all the Fd_DNDF48 values are being calculated
@@ -36,16 +36,16 @@ def calculate_Fd_DNDF48(Fd_Conc, Fd_DNDF48):
     return Fd_DNDF48
 
 
-def calculate_TT_dcFdNDF_48h(Fd_DNDF48):
+def calculate_TT_dcFdNDF_48h(Fd_DNDF48: pd.Series) -> pd.Series:
     TT_dcFdNDF_48h = 12 + 0.61 * Fd_DNDF48  # Line 245
     return TT_dcFdNDF_48h
 
 
-def calculate_TT_dcFdNDF_Base(Use_DNDF_IV, 
-                              Fd_Conc, 
-                              TT_dcFdNDF_Lg,
-                              TT_dcFdNDF_48h
-):
+def calculate_TT_dcFdNDF_Base(Use_DNDF_IV: int, 
+                              Fd_Conc: pd.Series, 
+                              TT_dcFdNDF_Lg: pd.Series,
+                              TT_dcFdNDF_48h: pd.Series
+) -> pd.Series:
     condition1 = (Use_DNDF_IV == 1) & (Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna()  
     # Line 249, Forages only
     condition2 = (Use_DNDF_IV == 2) & ~TT_dcFdNDF_48h.isna()  
@@ -57,15 +57,15 @@ def calculate_TT_dcFdNDF_Base(Use_DNDF_IV,
     return TT_dcFdNDF_Base
 
 
-def calculate_Fd_GE(An_StatePhys, 
-                    Fd_Category, 
-                    Fd_CP, 
-                    Fd_FA, 
-                    Fd_Ash, 
-                    Fd_St,
-                    Fd_NDF, 
-                    coeff_dict
-):
+def calculate_Fd_GE(An_StatePhys: str, 
+                    Fd_Category: pd.Series, 
+                    Fd_CP: pd.Series, 
+                    Fd_FA: pd.Series, 
+                    Fd_Ash: pd.Series, 
+                    Fd_St: pd.Series,
+                    Fd_NDF: pd.Series, 
+                    coeff_dict: dict
+) -> pd.Series:
     req_coeffs = ['En_CP', 'En_FA', 'En_rOM', 'En_St', 'En_NDF']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
@@ -88,167 +88,190 @@ def calculate_Fd_GE(An_StatePhys,
     return Fd_GE
 
 
-def calculate_Fd_DMIn(DMI, Fd_DMInp):
+def calculate_Fd_DMIn(DMI: pd.Series, Fd_DMInp: pd.Series) -> pd.Series:
     Fd_DMIn = Fd_DMInp * DMI  # Line 441
     return Fd_DMIn
 
 
-def calculate_Fd_AFIn(Fd_DM, Fd_DMIn):
+def calculate_Fd_AFIn(Fd_DM: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     Fd_AFIn = np.where(Fd_DM == 0, 0, Fd_DMIn / (Fd_DM / 100))  # Line 442
     return Fd_AFIn
 
 
-def calculate_Fd_For(Fd_Conc):
+def calculate_Fd_For(Fd_Conc: pd.Series):
     Fd_For = 100 - Fd_Conc  # Line 446
     return Fd_For
 
 
-def calculate_Fd_ForWet(Fd_DM, Fd_For):
+def calculate_Fd_ForWet(Fd_DM: pd.Series, Fd_For: pd.Series) -> pd.Series:
     condition = (Fd_For > 50) & (Fd_DM < 71)
     Fd_ForWet = np.where(condition, Fd_For, 0)  # Line 447
     return Fd_ForWet
 
 
-def calculate_Fd_ForDry(Fd_DM, Fd_For):
+def calculate_Fd_ForDry(Fd_DM: pd.Series, Fd_For: pd.Series) -> pd.Series:
     condition = (Fd_For > 50) & (Fd_DM >= 71)
     Fd_ForDry = np.where(condition, Fd_For, 0)  # Line 448
     return Fd_ForDry
 
 
-def calculate_Fd_Past(Fd_Category):
+def calculate_Fd_Past(Fd_Category: pd.Series) -> pd.Series:
     Fd_Past = np.where(Fd_Category == 'Pasture', 100, 0)  # Line 449
     return Fd_Past
 
 
-def calculate_Fd_LiqClf(Fd_Category):
+def calculate_Fd_LiqClf(Fd_Category: pd.Series) -> pd.Series:
     Fd_LiqClf = np.where(Fd_Category == 'Calf Liquid Feed', 100, 0)  # Line 450
     return Fd_LiqClf
 
 
-def calculate_Fd_ForNDF(Fd_NDF, Fd_Conc):
+def calculate_Fd_ForNDF(Fd_NDF: pd.Series, Fd_Conc: pd.Series) -> pd.Series:
     Fd_ForNDF = (1 - Fd_Conc / 100) * Fd_NDF  # Line 452
     return Fd_ForNDF
 
 
-def calculate_Fd_NDFnf(Fd_NDF, Fd_NDFIP):
+def calculate_Fd_NDFnf(Fd_NDF: pd.Series, Fd_NDFIP: pd.Series) -> pd.Series:
     Fd_NDFnf = Fd_NDF - Fd_NDFIP  # Line 453
     return Fd_NDFnf
 
 
-def calculate_Fd_NPNCP(Fd_CP, Fd_NPN_CP):
+def calculate_Fd_NPNCP(Fd_CP: pd.Series, Fd_NPN_CP: pd.Series) -> pd.Series:
     Fd_NPNCP = Fd_CP * Fd_NPN_CP / 100  # Line 455
     return Fd_NPNCP
 
 
-def calculate_Fd_NPN(Fd_NPNCP):
+def calculate_Fd_NPN(Fd_NPNCP: pd.Series) -> pd.Series:
     Fd_NPN = Fd_NPNCP / 6.25  # Line 457
     return Fd_NPN
 
 
-def calculate_Fd_NPNDM(Fd_NPNCP):
+def calculate_Fd_NPNDM(Fd_NPNCP: pd.Series) -> pd.Series:
     Fd_NPNDM = Fd_NPNCP / 2.81  # Line 458
     return Fd_NPNDM
 
 
-def calculate_Fd_TP(Fd_CP, Fd_NPNCP):
+def calculate_Fd_TP(Fd_CP: pd.Series, Fd_NPNCP: pd.Series) -> pd.Series:
     Fd_TP = Fd_CP - Fd_NPNCP  # Line 459
     return Fd_TP
 
 
-def calculate_Fd_fHydr_FA(Fd_Category):
+def calculate_Fd_fHydr_FA(Fd_Category: pd.Series) -> pd.Series:
     Fd_fHydr_FA = np.where(Fd_Category == 'Fatty Acid Supplement', 1, 1 / 1.06)  
     # Line 461
     return Fd_fHydr_FA
 
 
-def calculate_Fd_FAhydr(Fd_FA, Fd_fHydr_FA):
+def calculate_Fd_FAhydr(Fd_FA: pd.Series, Fd_fHydr_FA: pd.Series) -> pd.Series:
     Fd_FAhydr = Fd_FA * Fd_fHydr_FA  # Line 463
     return Fd_FAhydr
 
 
-def calculate_Fd_NFC(Fd_NDF, Fd_TP, Fd_Ash, Fd_FAhydr, Fd_NPNDM):
+def calculate_Fd_NFC(Fd_NDF: pd.Series, 
+                     Fd_TP: pd.Series, 
+                     Fd_Ash: pd.Series, 
+                     Fd_FAhydr: pd.Series, 
+                     Fd_NPNDM: pd.Series
+) -> pd.Series:
     Fd_NFC = 100 - Fd_Ash - Fd_NDF - Fd_TP - Fd_NPNDM - Fd_FAhydr  # Line 465
     # Forces any values below 0 to =0           # Line 466
     Fd_NFC.clip(lower=0)
     return Fd_NFC
 
 
-def calculate_Fd_rOM(Fd_NDF, 
-                     Fd_St, 
-                     Fd_TP, 
-                     Fd_FA, 
-                     Fd_fHydr_FA, 
-                     Fd_Ash,
-                     Fd_NPNDM
-):
+def calculate_Fd_rOM(Fd_NDF: pd.Series, 
+                     Fd_St: pd.Series, 
+                     Fd_TP: pd.Series, 
+                     Fd_FA: pd.Series, 
+                     Fd_fHydr_FA: pd.Series, 
+                     Fd_Ash: pd.Series,
+                     Fd_NPNDM: pd.Series
+) -> pd.Series:
     Fd_rOM = (100 - Fd_Ash - Fd_NDF - Fd_St - 
               (Fd_FA*Fd_fHydr_FA) - Fd_TP - Fd_NPNDM) # Line 468
     return Fd_rOM
 
 
-def calculate_Fd_GEIn(Fd_GE, Fd_DMIn):
+def calculate_Fd_GEIn(Fd_GE: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     Fd_GEIn = Fd_GE * Fd_DMIn  # Line 544
     return Fd_GEIn
 
 
-def calculate_Fd_DigNDFIn_Base(Fd_NDFIn, TT_dcFdNDF_Base):
+def calculate_Fd_DigNDFIn_Base(Fd_NDFIn: pd.Series, 
+                               TT_dcFdNDF_Base: pd.Series
+) -> pd.Series:
     Fd_DigNDFIn_Base = TT_dcFdNDF_Base / 100 * Fd_NDFIn  # Line 481
     return Fd_DigNDFIn_Base
 
 
-def calculate_Fd_NPNCPIn(Fd_CPIn, Fd_NPN_CP):
+def calculate_Fd_NPNCPIn(Fd_CPIn: pd.Series, Fd_NPN_CP: pd.Series) -> pd.Series:
     Fd_NPNCPIn = Fd_CPIn * Fd_NPN_CP / 100  # Line 491
     return Fd_NPNCPIn
 
 
-def calculate_Fd_NPNIn(Fd_NPNCPIn):
+def calculate_Fd_NPNIn(Fd_NPNCPIn: pd.Series) -> pd.Series:
     Fd_NPNIn = Fd_NPNCPIn * 0.16  # Line 492
     return Fd_NPNIn
 
 
-def calculate_Fd_NPNDMIn(Fd_NPNCPIn):
+def calculate_Fd_NPNDMIn(Fd_NPNCPIn: pd.Series) -> pd.Series:
     Fd_NPNDMIn = Fd_NPNCPIn / 2.81  # Line 493
     return Fd_NPNDMIn
 
 
-def calculate_Fd_CPAIn(Fd_CPIn, Fd_CPARU):
+def calculate_Fd_CPAIn(Fd_CPIn: pd.Series, Fd_CPARU: pd.Series) -> pd.Series:
     Fd_CPAIn = Fd_CPIn * Fd_CPARU / 100  # Line 494
     return Fd_CPAIn
 
 
-def calculate_Fd_CPBIn(Fd_CPIn, Fd_CPBRU):
+def calculate_Fd_CPBIn(Fd_CPIn: pd.Series, Fd_CPBRU: pd.Series) -> pd.Series:
     Fd_CPBIn = Fd_CPIn * Fd_CPBRU / 100  # Line 495
     return Fd_CPBIn
 
 
-def calculate_Fd_CPBIn_For(Fd_CPIn, Fd_CPBRU, Fd_For):
+def calculate_Fd_CPBIn_For(Fd_CPIn: pd.Series, 
+                           Fd_CPBRU: pd.Series, 
+                           Fd_For: pd.Series
+) -> pd.Series:
     Fd_CPBIn_For = Fd_CPIn * Fd_CPBRU / 100 * Fd_For / 100  # Line 496
     return Fd_CPBIn_For
 
 
-def calculate_Fd_CPBIn_Conc(Fd_CPIn, Fd_CPBRU, Fd_Conc):
+def calculate_Fd_CPBIn_Conc(Fd_CPIn: pd.Series, 
+                            Fd_CPBRU: pd.Series, 
+                            Fd_Conc: pd.Series
+) -> pd.Series:
     Fd_CPBIn_Conc = Fd_CPIn * Fd_CPBRU / 100 * Fd_Conc / 100  # Line 497
     return Fd_CPBIn_Conc
 
 
-def calculate_Fd_CPCIn(Fd_CPIn, Fd_CPCRU):
+def calculate_Fd_CPCIn(Fd_CPIn: pd.Series, Fd_CPCRU: pd.Series) -> pd.Series:
     Fd_CPCIn = Fd_CPIn * Fd_CPCRU / 100  # Line 498
     return Fd_CPCIn
 
 
-def calculate_Fd_CPIn_ClfLiq(Fd_Category, Fd_DMIn, Fd_CP):
+def calculate_Fd_CPIn_ClfLiq(Fd_Category: pd.Series, 
+                             Fd_DMIn: pd.Series, 
+                             Fd_CP: pd.Series
+) -> pd.Series:
     Fd_CPIn_ClfLiq = np.where(Fd_Category == "Calf Liquid Feed",
                               Fd_DMIn * Fd_CP / 100, 0)  # Line 499
     return Fd_CPIn_ClfLiq
 
 
-def calculate_Fd_CPIn_ClfDry(Fd_Category, Fd_DMIn, Fd_CP):
+def calculate_Fd_CPIn_ClfDry(Fd_Category: pd.Series, 
+                             Fd_DMIn: pd.Series, 
+                             Fd_CP: pd.Series
+) -> pd.Series:
     Fd_CPIn_ClfDry = np.where(Fd_Category == "Calf Liquid Feed", 
                               0, Fd_DMIn * Fd_CP / 100)  # Line 500
     return Fd_CPIn_ClfDry
 
 
-def calculate_Fd_rdcRUPB(Fd_For, Fd_Conc, Fd_KdRUP, coeff_dict):
+def calculate_Fd_rdcRUPB(Fd_For: pd.Series, 
+                         Fd_Conc: pd.Series, 
+                         Fd_KdRUP: pd.Series, 
+                         coeff_dict: dict
+) -> pd.Series:
     req_coeffs = ['KpFor', 'KpConc']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Fd_rdcRUPB = 100 - (
@@ -258,7 +281,12 @@ def calculate_Fd_rdcRUPB(Fd_For, Fd_Conc, Fd_KdRUP, coeff_dict):
     return Fd_rdcRUPB
 
 
-def calculate_Fd_RUPBIn(Fd_For, Fd_Conc, Fd_KdRUP, Fd_CPBIn, coeff_dict):
+def calculate_Fd_RUPBIn(Fd_For: pd.Series, 
+                        Fd_Conc: pd.Series, 
+                        Fd_KdRUP: pd.Series, 
+                        Fd_CPBIn: pd.Series, 
+                        coeff_dict: dict
+) -> pd.Series:
     req_coeffs = ['KpFor', 'KpConc']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Fd_RUPBIn = (Fd_CPBIn * Fd_For / 
@@ -269,13 +297,13 @@ def calculate_Fd_RUPBIn(Fd_For, Fd_Conc, Fd_KdRUP, Fd_CPBIn, coeff_dict):
     return Fd_RUPBIn
 
 
-def calculate_Fd_RUPIn(Fd_CPIn, 
-                       Fd_CPAIn, 
-                       Fd_CPCIn, 
-                       Fd_NPNCPIn, 
-                       Fd_RUPBIn,
-                       coeff_dict
-):
+def calculate_Fd_RUPIn(Fd_CPIn: pd.Series, 
+                       Fd_CPAIn: pd.Series, 
+                       Fd_CPCIn: pd.Series, 
+                       Fd_NPNCPIn: pd.Series, 
+                       Fd_RUPBIn: pd.Series,
+                       coeff_dict: dict
+) -> pd.Series:
     req_coeffs = ['refCPIn', 'fCPAdu', 'IntRUP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Fd_RUPIn = ((Fd_CPAIn - Fd_NPNCPIn) * coeff_dict['fCPAdu'] + 
@@ -284,38 +312,44 @@ def calculate_Fd_RUPIn(Fd_CPIn,
     return Fd_RUPIn
 
 
-def calculate_Fd_RUP_CP(Fd_CPIn, Fd_RUPIn):
+def calculate_Fd_RUP_CP(Fd_CPIn: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
     Fd_RUP_CP = np.where(Fd_CPIn > 0, Fd_RUPIn / Fd_CPIn * 100, 0)
     return Fd_RUP_CP
 
 
-def calculate_Fd_RUP(Fd_CPIn, Fd_RUPIn, Fd_DMIn):
+def calculate_Fd_RUP(Fd_CPIn: pd.Series, 
+                     Fd_RUPIn: pd.Series, 
+                     Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_RUP = np.where(Fd_CPIn > 0, Fd_RUPIn / Fd_DMIn * 100, 0)  # Line 522
     return Fd_RUP
 
 
-def calculate_Fd_RDP(Fd_CPIn, Fd_CP, Fd_RUP):
+def calculate_Fd_RDP(Fd_CPIn: pd.Series, 
+                     Fd_CP: pd.Series, 
+                     Fd_RUP: pd.Series
+) -> pd.Series:
     Fd_RDP = np.where(Fd_CPIn > 0, Fd_CP - Fd_RUP, 0)  # Line 523
     return Fd_RDP
 
 
-def calculate_Fd_OMIn(Fd_DMIn, Fd_AshIn):
+def calculate_Fd_OMIn(Fd_DMIn: pd.Series, Fd_AshIn: pd.Series) -> pd.Series:
     Fd_OMIn = Fd_DMIn - Fd_AshIn  # Line 543
     return Fd_OMIn
 
 
-def calculate_Fd_DE_base_1(Fd_NDF, 
-                           Fd_Lg, 
-                           Fd_St, 
-                           Fd_dcSt, 
-                           Fd_FA, 
-                           Fd_dcFA,
-                           Fd_Ash, 
-                           Fd_CP, 
-                           Fd_NPNCP, 
-                           Fd_RUP, 
-                           Fd_dcRUP
-):
+def calculate_Fd_DE_base_1(Fd_NDF: pd.Series, 
+                           Fd_Lg: pd.Series, 
+                           Fd_St: pd.Series, 
+                           Fd_dcSt: pd.Series, 
+                           Fd_FA: pd.Series, 
+                           Fd_dcFA: pd.Series,
+                           Fd_Ash: pd.Series, 
+                           Fd_CP: pd.Series, 
+                           Fd_NPNCP: pd.Series, 
+                           Fd_RUP: pd.Series, 
+                           Fd_dcRUP: pd.Series
+) -> pd.Series:
     adjusted_NDF = np.where(Fd_NDF == 0, 1e-9, Fd_NDF)
     # if Fd_NDF == 0:
     #     adjusted_NDF = 1e-9
@@ -339,18 +373,18 @@ def calculate_Fd_DE_base_1(Fd_NDF,
     return Fd_DE_base_1
 
 
-def calculate_Fd_DE_base_2(Fd_NDF, 
-                           Fd_St, 
-                           Fd_dcSt, 
-                           Fd_FA, 
-                           Fd_dcFA, 
-                           Fd_Ash,
-                           Fd_CP, 
-                           Fd_NPNCP, 
-                           Fd_RUP, 
-                           Fd_dcRUP, 
-                           Fd_DNDF48_NDF
-):
+def calculate_Fd_DE_base_2(Fd_NDF: pd.Series, 
+                           Fd_St: pd.Series, 
+                           Fd_dcSt: pd.Series, 
+                           Fd_FA: pd.Series, 
+                           Fd_dcFA: pd.Series, 
+                           Fd_Ash: pd.Series,
+                           Fd_CP: pd.Series, 
+                           Fd_NPNCP: pd.Series, 
+                           Fd_RUP: pd.Series, 
+                           Fd_dcRUP: pd.Series, 
+                           Fd_DNDF48_NDF: pd.Series
+) -> pd.Series:
     # Standard equation 2 - based on setting of IVNDF use switch
     Fd_DE_base_2 = (
     (0.12 + 0.0061 * Fd_DNDF48_NDF) * Fd_NDF * 0.042
@@ -366,20 +400,20 @@ def calculate_Fd_DE_base_2(Fd_NDF,
     return Fd_DE_base_2
 
 
-def calculate_Fd_DE_base(Use_DNDF_IV, 
-                         Fd_DE_base_1, 
-                         Fd_DE_base_2, 
-                         Fd_For, 
-                         Fd_FA,
-                         Fd_RDP, 
-                         Fd_RUP, 
-                         Fd_dcRUP, 
-                         Fd_CP, 
-                         Fd_Ash, 
-                         Fd_dcFA,
-                         Fd_NPN, 
-                         Fd_Category
-):
+def calculate_Fd_DE_base(Use_DNDF_IV: int, 
+                         Fd_DE_base_1: pd.Series, 
+                         Fd_DE_base_2: pd.Series, 
+                         Fd_For: pd.Series, 
+                         Fd_FA: pd.Series,
+                         Fd_RDP: pd.Series, 
+                         Fd_RUP: pd.Series, 
+                         Fd_dcRUP: pd.Series, 
+                         Fd_CP: pd.Series, 
+                         Fd_Ash: pd.Series, 
+                         Fd_dcFA: pd.Series,
+                         Fd_NPN: pd.Series, 
+                         Fd_Category: pd.Series
+) -> pd.Series:
     Fd_DE_base = np.where(Use_DNDF_IV == 0, 
                           Fd_DE_base_1, Fd_DE_base_2) # Line 559
 
@@ -422,37 +456,52 @@ def calculate_Fd_DE_base(Use_DNDF_IV,
     return Fd_DE_base
 
 
-def calculate_Fd_DEIn_base(Fd_DE_base, Fd_DMIn):
+def calculate_Fd_DEIn_base(Fd_DE_base: pd.Series, 
+                           Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DEIn_base = Fd_DE_base * Fd_DMIn  # Line 574
     return Fd_DEIn_base
 
 
-def calculate_Fd_DEIn_base_ClfLiq(Fd_Category, Fd_DEIn_base):
+def calculate_Fd_DEIn_base_ClfLiq(Fd_Category: pd.Series, 
+                                  Fd_DEIn_base: pd.Series
+) -> pd.Series:
     Fd_DEIn_base_ClfLiq = np.where(Fd_Category == "Calf Liquid Feed", 
                                    Fd_DEIn_base, 0) # Line 575
     return Fd_DEIn_base_ClfLiq
 
 
-def calculate_Fd_DEIn_base_ClfDry(Fd_Category, Fd_DEIn_base):
+def calculate_Fd_DEIn_base_ClfDry(Fd_Category: pd.Series, 
+                                  Fd_DEIn_base: pd.Series
+) -> pd.Series:
     Fd_DEIn_base_ClfDry = np.where(Fd_Category == "Calf Liquid Feed", 
                                    0, Fd_DEIn_base) # Line 576
     return Fd_DEIn_base_ClfDry
 
 
-def calculate_Fd_DMIn_ClfLiq(An_StatePhys, Fd_DMIn, Fd_Category):
+def calculate_Fd_DMIn_ClfLiq(An_StatePhys: str, 
+                             Fd_DMIn: pd.Series, 
+                             Fd_Category: pd.Series
+) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")  
     Fd_DMIn_ClfLiq = np.where(condition, Fd_DMIn, 0)  # milk intake, Line 283
     return Fd_DMIn_ClfLiq
 
 
-def calculate_Fd_DE_ClfLiq(An_StatePhys, Fd_Category, Fd_GE):
+def calculate_Fd_DE_ClfLiq(An_StatePhys: str, 
+                           Fd_Category: pd.Series, 
+                           Fd_GE: pd.Series
+) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")
     # prelim estimate for DMI only, mcal/kg, nutrients are in %, Line 284
     Fd_DE_ClfLiq = np.where(condition, 0.95 * Fd_GE, 0)
     return Fd_DE_ClfLiq
 
 
-def calculate_Fd_ME_ClfLiq(An_StatePhys, Fd_Category, Fd_DE_ClfLiq):
+def calculate_Fd_ME_ClfLiq(An_StatePhys: str, 
+                           Fd_Category: pd.Series, 
+                           Fd_DE_ClfLiq: pd.Series
+) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")
     Fd_ME_ClfLiq = np.where(condition, 
                             Fd_DE_ClfLiq * 0.96,
@@ -460,30 +509,40 @@ def calculate_Fd_ME_ClfLiq(An_StatePhys, Fd_Category, Fd_DE_ClfLiq):
     return Fd_ME_ClfLiq
 
 
-def calculate_Fd_DMIn_ClfFor(DMI, Fd_Conc, Fd_DMInp):
+def calculate_Fd_DMIn_ClfFor(DMI: float, 
+                             Fd_Conc: pd.Series, 
+                             Fd_DMInp: pd.Series
+) -> pd.Series:
     Fd_DMIn_ClfFor = (1 - Fd_Conc / 100) * DMI * Fd_DMInp  # Line 296
     return Fd_DMIn_ClfFor
 
 
-def calculate_Fd_PinorgIn(Fd_PIn, Fd_Pinorg_P):
+def calculate_Fd_PinorgIn(Fd_PIn: pd.Series, 
+                          Fd_Pinorg_P: pd.Series
+) -> pd.Series:
     Fd_PinorgIn = Fd_PIn * Fd_Pinorg_P / 100  # Line 731, ??Check Bill's text
     return Fd_PinorgIn
 
 
-def calculate_Fd_PorgIn(Fd_PIn, Fd_Porg_P):
+def calculate_Fd_PorgIn(Fd_PIn: pd.Series, Fd_Porg_P: pd.Series) -> pd.Series:
     # Line 732 Fd_PphytIn = Fd_PIn*Fd_Pphyt_P/100, Depracated by Bill. 
     # Reduced to inorganic and organic.
     Fd_PorgIn = Fd_PIn * Fd_Porg_P / 100
     return Fd_PorgIn
 
 
-def calculate_Fd_MgIn_min(Fd_Category, Fd_MgIn):
+def calculate_Fd_MgIn_min(Fd_Category: pd.Series, 
+                          Fd_MgIn: pd.Series
+) -> pd.Series:
     Fd_MgIn_min = Fd_MgIn.copy()
     Fd_MgIn_min[Fd_Category != "Vitamin/Mineral"] = 0
     return Fd_MgIn_min
 
 
-def calculate_Fd_acCa(An_StatePhys, Fd_acCa, Dt_DMIn_ClfLiq):
+def calculate_Fd_acCa(An_StatePhys: str, 
+                      Fd_acCa: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1839
     Fd_acCa = np.where(condition, 1, Fd_acCa)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # Line 1840
@@ -491,13 +550,13 @@ def calculate_Fd_acCa(An_StatePhys, Fd_acCa, Dt_DMIn_ClfLiq):
     return Fd_acCa
 
 
-def calculate_Fd_acPtot(An_StatePhys, 
-                        Fd_Category, 
-                        Fd_Pinorg_P, 
-                        Fd_Porg_P,
-                        Fd_acPtot, 
-                        Dt_DMIn_ClfLiq
-):
+def calculate_Fd_acPtot(An_StatePhys: str, 
+                        Fd_Category: pd.Series, 
+                        Fd_Pinorg_P: pd.Series, 
+                        Fd_Porg_P: pd.Series,
+                        Fd_acPtot: pd.Series, 
+                        Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     Fd_acPtot = np.where(Fd_Category == "Vitamin/Mineral", 
                          Fd_acPtot, 
                          Fd_Pinorg_P * 0.0084 + Fd_Porg_P * 0.0068) # Line 1841
@@ -508,7 +567,10 @@ def calculate_Fd_acPtot(An_StatePhys,
     return Fd_acPtot
 
 
-def calculate_Fd_acMg(An_StatePhys, Fd_acMg, Dt_DMIn_ClfLiq):
+def calculate_Fd_acMg(An_StatePhys: str, 
+                      Fd_acMg: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1844
     Fd_acMg = np.where(condition, 1, Fd_acMg)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # line 1845
@@ -516,17 +578,20 @@ def calculate_Fd_acMg(An_StatePhys, Fd_acMg, Dt_DMIn_ClfLiq):
     return Fd_acMg
 
 
-def calculate_Fd_acNa(An_StatePhys, Fd_acNa):
+def calculate_Fd_acNa(An_StatePhys: str, Fd_acNa: pd.Series) -> np.ndarray:
     Fd_acNa = np.where(An_StatePhys == "Calf", 1.0, Fd_acNa) # Line 1846
     return Fd_acNa
 
 
-def calculate_Fd_acK(An_StatePhys, Fd_acK):
+def calculate_Fd_acK(An_StatePhys: str, Fd_acK: pd.Series) -> np.ndarray:
     Fd_acK = np.where(An_StatePhys == "Calf", 1.0, Fd_acK) # Line 1847
     return Fd_acK
 
 
-def calculate_Fd_acCl(An_StatePhys, Fd_acCl, Dt_DMIn_ClfLiq):
+def calculate_Fd_acCl(An_StatePhys: str, 
+                      Fd_acCl: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1848
     Fd_acCl = np.where(condition, 1, Fd_acCl)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # line 1849
@@ -534,56 +599,67 @@ def calculate_Fd_acCl(An_StatePhys, Fd_acCl, Dt_DMIn_ClfLiq):
     return Fd_acCl
 
 
-def calculate_Fd_absCaIn(Fd_CaIn, Fd_acCa):
+def calculate_Fd_absCaIn(Fd_CaIn: pd.Series, Fd_acCa: pd.Series) -> pd.Series:
     Fd_absCaIn = Fd_CaIn * Fd_acCa  # line 1851
     return Fd_absCaIn
 
 
-def calculate_Fd_absPIn(Fd_PIn, Fd_acPtot):
+def calculate_Fd_absPIn(Fd_PIn: pd.Series, Fd_acPtot: pd.Series) -> pd.Series:
     Fd_absPIn = Fd_PIn * Fd_acPtot  # line 1852
     return Fd_absPIn
 
 
-def calculate_Fd_absMgIn_base(Fd_MgIn, Fd_acMg):
+def calculate_Fd_absMgIn_base(Fd_MgIn: pd.Series, 
+                              Fd_acMg: pd.Series
+) -> pd.Series:
     Fd_absMgIn_base = Fd_MgIn * Fd_acMg  # line 1853
     return Fd_absMgIn_base
 
 
-def calculate_Fd_absNaIn(Fd_NaIn, Fd_acNa):
+def calculate_Fd_absNaIn(Fd_NaIn: pd.Series, Fd_acNa: pd.Series) -> pd.Series:
     Fd_absNaIn = Fd_NaIn * Fd_acNa  # line 1854
     return Fd_absNaIn
 
 
-def calculate_Fd_absKIn(Fd_KIn, Fd_acK):
+def calculate_Fd_absKIn(Fd_KIn: pd.Series, Fd_acK: pd.Series) -> pd.Series:
     Fd_absKIn = Fd_KIn * Fd_acK  # line 1855
     return Fd_absKIn
 
 
-def calculate_Fd_absClIn(Fd_ClIn, Fd_acCl):
+def calculate_Fd_absClIn(Fd_ClIn: pd.Series, Fd_acCl: pd.Series) -> pd.Series:
     Fd_absClIn = Fd_ClIn * Fd_acCl  # line 1856
     return Fd_absClIn
 
 
-def calculate_Fd_acCo(An_StatePhys):
+def calculate_Fd_acCo(An_StatePhys: str) -> np.ndarray:
     Fd_acCo = np.where(An_StatePhys == "Calf", 0, 1.0) # Line 1860
     return Fd_acCo
 
 
-def calculate_Fd_acCu(An_StatePhys, Fd_acCu, Dt_DMIn_ClfLiq):
+def calculate_Fd_acCu(An_StatePhys: str, 
+                      Fd_acCu: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     Fd_acCu = np.where(An_StatePhys == "Calf", 1.0, Fd_acCu) # Line 1861
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
     Fd_acCu = np.where(condition, 0.10, Fd_acCu) # Line 1862
     return Fd_acCu
 
 
-def calculate_Fd_acFe(An_StatePhys, Fd_acFe, Dt_DMIn_ClfLiq):
+def calculate_Fd_acFe(An_StatePhys: str, 
+                      Fd_acFe: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     Fd_acFe = np.where(An_StatePhys == "Calf", 1.0, Fd_acFe) # Line 1863
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
     Fd_acFe = np.where(condition, 0.10, Fd_acFe) # Line 1864
     return Fd_acFe
 
 
-def calculate_Fd_acMn(An_StatePhys, Fd_acMn, Dt_DMIn_ClfLiq):
+def calculate_Fd_acMn(An_StatePhys: str, 
+                      Fd_acMn: pd.Series, 
+                      Dt_DMIn_ClfLiq: float
+) -> np.ndarray:
     Fd_acMn = np.where(
         An_StatePhys == "Calf",  # Line 1865
         1.0,
@@ -596,7 +672,10 @@ def calculate_Fd_acMn(An_StatePhys, Fd_acMn, Dt_DMIn_ClfLiq):
     return Fd_acMn
 
 
-def calculate_Fd_acZn(An_StatePhys, Fd_acZn: pd.Series , Dt_DMIn_ClfLiq):
+def calculate_Fd_acZn(An_StatePhys: str, 
+                      Fd_acZn: pd.Series , 
+                      Dt_DMIn_ClfLiq: float
+) -> pd.Series:
     Fd_acZn = Fd_acZn.copy()
     if An_StatePhys == "Calf":
         Fd_acZn[:] = 1.0
@@ -605,17 +684,19 @@ def calculate_Fd_acZn(An_StatePhys, Fd_acZn: pd.Series , Dt_DMIn_ClfLiq):
     return Fd_acZn
 
 
-def calculate_Fd_DigSt(Fd_St, Fd_dcSt):
+def calculate_Fd_DigSt(Fd_St: pd.Series, Fd_dcSt: pd.Series) -> pd.Series:
     Fd_DigSt = Fd_St * Fd_dcSt / 100  # Line 1014
     return Fd_DigSt
 
 
-def calculate_Fd_DigStIn_Base(Fd_DigSt, Fd_DMIn):
+def calculate_Fd_DigStIn_Base(Fd_DigSt: pd.Series, 
+                              Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigStIn_Base = Fd_DigSt / 100 * Fd_DMIn  # Line 1015
     return Fd_DigStIn_Base
 
 
-def calculate_Fd_DigrOMt(Fd_rOM, coeff_dict):
+def calculate_Fd_DigrOMt(Fd_rOM: pd.Series, coeff_dict: dict) -> pd.Series:
     req_coeff = ['Fd_dcrOM']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Truly digested rOM in each feed, % of DM
@@ -623,23 +704,25 @@ def calculate_Fd_DigrOMt(Fd_rOM, coeff_dict):
     return Fd_DigrOMt
 
 
-def calculate_Fd_DigrOMtIn(Fd_DigrOMt, Fd_DMIn):
+def calculate_Fd_DigrOMtIn(Fd_DigrOMt: pd.Series, 
+                           Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigrOMtIn = Fd_DigrOMt / 100 * Fd_DMIn  # Line 1010, kg/d
     return Fd_DigrOMtIn
 
 
-def calculate_Fd_idRUPIn(Fd_dcRUP, Fd_RUPIn):
+def calculate_Fd_idRUPIn(Fd_dcRUP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
     # Line 1072, dcRUP is the RUP DC by feed read in from the Feed Matrix.
     Fd_idRUPIn = (Fd_dcRUP / 100) * Fd_RUPIn
     return Fd_idRUPIn
 
 
-def calculate_TT_dcFdFA(An_StatePhys, 
-                        Fd_Category, 
-                        Fd_Type, 
-                        Fd_dcFA,
-                        coeff_dict
-):
+def calculate_TT_dcFdFA(An_StatePhys: str, 
+                        Fd_Category: pd.Series, 
+                        Fd_Type: pd.Series, 
+                        Fd_dcFA: pd.Series,
+                        coeff_dict: dict
+) -> pd.Series:
     req_coeff = [
         'TT_dcFA_Base', 'TT_dcFat_Base', 'TT_dcFA_ClfDryFd', 'TT_dcFA_ClfLiqFd'
     ]
@@ -679,7 +762,10 @@ def calculate_TT_dcFdFA(An_StatePhys,
     return TT_dcFdFA
 
 
-def calculate_Fd_DigFAIn(TT_dcFdFA, Fd_FA, Fd_DMIn):
+def calculate_Fd_DigFAIn(TT_dcFdFA: pd.Series, 
+                         Fd_FA: pd.Series, 
+                         Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigFAIn = TT_dcFdFA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigFAIn
 
@@ -841,13 +927,19 @@ def calculate_Fd_AAIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
 ####################
 
 
-def calculate_Dt_ForDNDF48(Fd_DMInp, Fd_Conc, Fd_NDF, Fd_DNDF48):
+def calculate_Dt_ForDNDF48(Fd_DMInp: pd.Series, 
+                           Fd_Conc: pd.Series, 
+                           Fd_NDF: pd.Series, 
+                           Fd_DNDF48: pd.Series
+) -> float:
     Dt_ForDNDF48 = ((1 - Fd_Conc / 100) * Fd_NDF * Fd_DNDF48 / 100 *
                     Fd_DMInp).sum()  # Line 259
     return Dt_ForDNDF48
 
 
-def calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48, Dt_ForNDF):
+def calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48: float, 
+                                  Dt_ForNDF: float
+) -> float:
     if Dt_ForNDF != 0 and not np.isnan(Dt_ForNDF):
         Dt_ForDNDF48_ForNDF = Dt_ForDNDF48 / Dt_ForNDF * 100 # Line 260
     else:
@@ -855,63 +947,69 @@ def calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48, Dt_ForNDF):
     return Dt_ForDNDF48_ForNDF
 
 
-def calculate_Dt_ADF_NDF(Dt_ADF, Dt_NDF):
+def calculate_Dt_ADF_NDF(Dt_ADF: float, Dt_NDF: float) -> float:
     Dt_ADF_NDF = Dt_ADF / Dt_NDF  # Line 261
     return Dt_ADF_NDF
 
 
-def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq, Dt_DMIn_ClfLiq):
+def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq: float, 
+                           Dt_DMIn_ClfLiq: float
+) -> float:
     # Line 289, DE content of the liquid feed
     Dt_DE_ClfLiq = Dt_DEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_DE_ClfLiq = np.where(Dt_DE_ClfLiq.isnan(), 0, Dt_DE_ClfLiq)  # Line 290
+    Dt_DE_ClfLiq = 0 if Dt_DE_ClfLiq.isnan() else Dt_DE_ClfLiq # Line 290
     return Dt_DE_ClfLiq
 
 
-def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq):
+def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq: float, 
+                           Dt_DMIn_ClfLiq: float
+) -> float:
     # Line 291, ME content of the liquid feed
     Dt_ME_ClfLiq = Dt_MEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_ME_ClfLiq = np.where(Dt_ME_ClfLiq.isnan())  # Line 292
+    Dt_ME_ClfLiq = 0 if Dt_ME_ClfLiq.isnan() else Dt_ME_ClfLiq # Line 292
+    
     return Dt_ME_ClfLiq
 
 
-def calculate_Dt_NDFnfIn(Fd_DMIn, Fd_NDFnf):
+def calculate_Dt_NDFnfIn(Fd_DMIn: pd.Series, Fd_NDFnf: pd.Series) -> float:
     Dt_NDFnfIn = (Fd_NDFnf / 100 * Fd_DMIn).sum()  # Line 588
     return Dt_NDFnfIn
 
 
-def calculate_Dt_Lg_NDF(Dt_LgIn, Dt_NDFIn):
+def calculate_Dt_Lg_NDF(Dt_LgIn: float, Dt_NDFIn: float) -> float:
     Dt_Lg_NDF = Dt_LgIn / Dt_NDFIn * 100  # Line 591
     return Dt_Lg_NDF
 
 
-def calculate_Dt_ForNDFIn(Fd_DMIn, Fd_ForNDF):
+def calculate_Dt_ForNDFIn(Fd_DMIn: pd.Series, Fd_ForNDF: pd.Series) -> float:
     Dt_ForNDFIn = (Fd_ForNDF / 100 * Fd_DMIn).sum()  # Line 592
     return Dt_ForNDFIn
 
 
-def calculate_Dt_PastSupplIn(Dt_DMInSum, Dt_PastIn):
+def calculate_Dt_PastSupplIn(Dt_DMInSum: float, Dt_PastIn: float) -> float:
     # Line 597, Could be supplemental concentrate or forage
     Dt_PastSupplIn = Dt_DMInSum - Dt_PastIn
     return Dt_PastSupplIn
 
 
-def calculate_Dt_NIn(Dt_CPIn):
+def calculate_Dt_NIn(Dt_CPIn: float) -> float:
     Dt_NIn = Dt_CPIn / 6.25  # Line 614
     return Dt_NIn
 
 
-def calculate_Dt_RUPIn(Dt_CPAIn,
-                       Dt_NPNIn,
-                       Dt_RUPBIn,
-                       Dt_CPCIn,
-                       coeff_dict,
-                       Fd_RUPIn=None
+def calculate_Dt_RUPIn(Dt_CPAIn: float,
+                       Dt_NPNIn: float,
+                       Dt_RUPBIn: float,
+                       Dt_CPCIn: float,
+                       coeff_dict: dict,
+                       Fd_RUPIn: pd.Series=None
 ) -> float:
     req_coeffs = ['fCPAdu', 'IntRUP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     # The feed summation is not as accurate as the equation below
     Dt_RUPIn = Fd_RUPIn.sum()  # Line 616
-    Dt_RUPIn = np.where(Dt_RUPIn < 0, 0, Dt_RUPIn)  # Line 617
+    Dt_RUPIn = 0 if Dt_RUPIn < 0 else Dt_RUPIn # Line 617
+
     # The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
     # if concerned about intercept, switch to using this eqn for RUP
     # this is called Dt_RUPIn.dt in the R code line 618
@@ -919,157 +1017,174 @@ def calculate_Dt_RUPIn(Dt_CPAIn,
     return Dt_RUPIn
 
 
-def calculate_Dt_RUP_CP(Dt_CPIn, Dt_RUPIn):
+def calculate_Dt_RUP_CP(Dt_CPIn: float, Dt_RUPIn: float) -> float:
     Dt_RUP_CP = Dt_RUPIn / Dt_CPIn * 100  # Line 621
     return Dt_RUP_CP
 
 
-def calculate_Dt_fCPBdu(Dt_RUPBIn, Dt_CPBIn):
+def calculate_Dt_fCPBdu(Dt_RUPBIn: float, Dt_CPBIn: float) -> float:
     Dt_fCPBdu = Dt_RUPBIn / Dt_CPBIn  # Line 622
     return Dt_fCPBdu
 
 
-def calculate_Dt_UFAIn(Dt_C161In, Dt_C181tIn, Dt_C181cIn, Dt_C182In, Dt_C183In):
+def calculate_Dt_UFAIn(Dt_C161In: float, 
+                       Dt_C181tIn: float, 
+                       Dt_C181cIn: float, 
+                       Dt_C182In: float, 
+                       Dt_C183In: float
+) -> float:
     Dt_UFAIn = Dt_C161In + Dt_C181tIn + Dt_C181cIn + Dt_C182In + Dt_C183In
     # Line 639
     return Dt_UFAIn
 
 
-def calculate_Dt_MUFAIn(Dt_C161In, Dt_C181tIn, Dt_C181cIn):
+def calculate_Dt_MUFAIn(Dt_C161In: float, 
+                        Dt_C181tIn: float, 
+                        Dt_C181cIn: float
+) -> float:
     Dt_MUFAIn = Dt_C161In + Dt_C181tIn + Dt_C181cIn  # Line 640
     return Dt_MUFAIn
 
 
-def calculate_Dt_PUFAIn(Dt_UFAIn, Dt_C161In, Dt_C181tIn, Dt_C181cIn):
+def calculate_Dt_PUFAIn(Dt_UFAIn: float, 
+                        Dt_C161In: float, 
+                        Dt_C181tIn: float, 
+                        Dt_C181cIn: float
+) -> float:
     Dt_PUFAIn = Dt_UFAIn - (Dt_C161In + Dt_C181tIn + Dt_C181cIn)  # Line 641
     return Dt_PUFAIn
 
 
-def calculate_Dt_SatFAIn(Dt_FAIn, Dt_UFAIn):
+def calculate_Dt_SatFAIn(Dt_FAIn: float, Dt_UFAIn: float) -> float:
     Dt_SatFAIn = Dt_FAIn - Dt_UFAIn  # Line 642
     return Dt_SatFAIn
 
 
-def calculate_Dt_OMIn(DMI, Dt_AshIn):
+def calculate_Dt_OMIn(DMI: float, Dt_AshIn: float) -> float:
     Dt_OMIn = DMI - Dt_AshIn  # Line 645
     return Dt_OMIn
 
 
-def calculate_Dt_rOMIn(DMI, 
-                       Dt_AshIn, 
-                       Dt_NDFIn, 
-                       Dt_StIn, 
-                       Dt_FAhydrIn, 
-                       Dt_TPIn,
-                       Dt_NPNDMIn
+def calculate_Dt_rOMIn(DMI: float, 
+                       Dt_AshIn: float, 
+                       Dt_NDFIn: float, 
+                       Dt_StIn: float, 
+                       Dt_FAhydrIn: float, 
+                       Dt_TPIn: float,
+                       Dt_NPNDMIn: float
 ) -> float:
     Dt_rOMIn = (DMI - Dt_AshIn - Dt_NDFIn - Dt_StIn - 
                 Dt_FAhydrIn - Dt_TPIn - Dt_NPNDMIn) # Line 646
     # Is negative on some diets. Some Ash and CP in NDF, and water from FAhydr 
     # in TAG contributes. Trap negative Dt values. More likely due to entry 
     # errors or bad analyses of other nutrients
-    Dt_rOMIn = np.where(Dt_rOMIn < 0, 0, Dt_rOMIn)  # Line 647
+    Dt_rOMIn = 0 if Dt_rOMIn < 0  else Dt_rOMIn # Lines 647
     return Dt_rOMIn
 
 
-def calculate_Dt_DM(DMI, Dt_AFIn):
+def calculate_Dt_DM(DMI: float, Dt_AFIn: float) -> float:
     Dt_DM = DMI / Dt_AFIn * 100  # Line 655
     return Dt_DM
 
 
-def calculate_Dt_NDFIn_BW(An_BW, Dt_NDFIn):
+def calculate_Dt_NDFIn_BW(An_BW: float, Dt_NDFIn: float) -> float:
     Dt_NDFIn_BW = Dt_NDFIn / An_BW * 100  # Line 658
     return Dt_NDFIn_BW
 
 
-def calculate_Dt_ForNDF_NDF(Dt_ForNDF, Dt_NDF):
+def calculate_Dt_ForNDF_NDF(Dt_ForNDF: float, Dt_NDF: float) -> float:
     Dt_ForNDF_NDF = Dt_ForNDF / Dt_NDF * 100  # Line 663
     return Dt_ForNDF_NDF
 
 
-def calculate_Dt_ForNDFIn_BW(An_BW, Dt_ForNDFIn):
+def calculate_Dt_ForNDFIn_BW(An_BW: float, Dt_ForNDFIn: float) -> float:
     Dt_ForNDFIn_BW = Dt_ForNDFIn / An_BW * 100  # Line 664
     return Dt_ForNDFIn_BW
 
 
-def calculate_Dt_DMInSum(Fd_DMIn):
+def calculate_Dt_DMInSum(Fd_DMIn: pd.Series) -> float:
     Dt_DMInSum = Fd_DMIn.sum()  # Line 579
     return Dt_DMInSum
 
 
-def calculate_Dt_DEIn_ClfLiq(Fd_DE_ClfLiq, Fd_DMIn_ClfLiq):
+def calculate_Dt_DEIn_ClfLiq(Fd_DE_ClfLiq: pd.Series, 
+                             Fd_DMIn_ClfLiq: pd.Series
+) -> float:
     Dt_DEIn_ClfLiq = (Fd_DE_ClfLiq * Fd_DMIn_ClfLiq).sum()  # Line 287
     return Dt_DEIn_ClfLiq
 
 
-def calculate_Dt_MEIn_ClfLiq(Fd_ME_ClfLiq, Fd_DMIn_ClfLiq):
+def calculate_Dt_MEIn_ClfLiq(Fd_ME_ClfLiq: pd.Series, 
+                             Fd_DMIn_ClfLiq: pd.Series
+) -> float:
     Dt_MEIn_ClfLiq = (Fd_ME_ClfLiq * Fd_DMIn_ClfLiq).sum()  # Line 288
     return Dt_MEIn_ClfLiq
 
 
-def calculate_Dt_CPA_CP(Dt_CPAIn, Dt_CPIn):
+def calculate_Dt_CPA_CP(Dt_CPAIn: float, Dt_CPIn: float) -> float:
     Dt_CPA_CP = Dt_CPAIn / Dt_CPIn * 100  # Line 684
     return Dt_CPA_CP
 
 
-def calculate_Dt_CPB_CP(Dt_CPBIn, Dt_CPIn):
+def calculate_Dt_CPB_CP(Dt_CPBIn: float, Dt_CPIn: float) -> float:
     Dt_CPB_CP = Dt_CPBIn / Dt_CPIn * 100  # Line 685
     return Dt_CPB_CP
 
 
-def calculate_Dt_CPC_CP(Dt_CPCIn, Dt_CPIn):
+def calculate_Dt_CPC_CP(Dt_CPCIn: float, Dt_CPIn: float) -> float:
     Dt_CPC_CP = Dt_CPCIn / Dt_CPIn * 100  # Line 686
     return Dt_CPC_CP
 
 
-def calculate_Dt_RDPIn(Dt_CPIn, Dt_RUPIn):
+def calculate_Dt_RDPIn(Dt_CPIn: float, Dt_RUPIn: float) -> float:
     Dt_RDPIn = Dt_CPIn - Dt_RUPIn  # Line 1101
     return Dt_RDPIn
 
 
-def calculate_Dt_DigNDFIn(TT_dcNDF, Dt_NDFIn):
+def calculate_Dt_DigNDFIn(TT_dcNDF: float, Dt_NDFIn: float) -> float:
     Dt_DigNDFIn = TT_dcNDF / 100 * Dt_NDFIn
     return Dt_DigNDFIn
 
 
-def calculate_Dt_DigStIn(Dt_StIn, TT_dcSt):
+def calculate_Dt_DigStIn(Dt_StIn: float, TT_dcSt: float) -> float:
     Dt_DigStIn = Dt_StIn * TT_dcSt / 100  # Line 1032
     return Dt_DigStIn
 
 
-def calculate_Dt_DigrOMaIn(Dt_DigrOMtIn, Fe_rOMend):
+def calculate_Dt_DigrOMaIn(Dt_DigrOMtIn: float, Fe_rOMend: float) -> float:
     Dt_DigrOMaIn = Dt_DigrOMtIn - Fe_rOMend
     return Dt_DigrOMaIn
 
 
-def calculate_Dt_dcCP_ClfDry(An_StatePhys, Dt_DMIn_ClfLiq):
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq < 0.01)
-    Dt_dcCP_ClfDry = np.where(condition, 0.70, 0.75)  # Line 1199
+def calculate_Dt_dcCP_ClfDry(An_StatePhys: str, Dt_DMIn_ClfLiq: float) -> float:
+    Dt_dcCP_ClfDry = (0.70 
+                      if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq < 0.01)
+                      else 0.75) # Line 1199
     return Dt_dcCP_ClfDry
 
 
-def calculate_Dt_DENDFIn(Dt_DigNDFIn, coeff_dict):
+def calculate_Dt_DENDFIn(Dt_DigNDFIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_NDF']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DENDFIn = Dt_DigNDFIn * coeff_dict['En_NDF']
     return Dt_DENDFIn
 
 
-def calculate_Dt_DEStIn(Dt_DigStIn, coeff_dict):
+def calculate_Dt_DEStIn(Dt_DigStIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_St']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DEStIn = Dt_DigStIn * coeff_dict['En_St']
     return Dt_DEStIn
 
 
-def calculate_Dt_DErOMIn(Dt_DigrOMaIn, coeff_dict):
+def calculate_Dt_DErOMIn(Dt_DigrOMaIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_rOM']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DErOMIn = Dt_DigrOMaIn * coeff_dict['En_rOM']  # Line 1344
     return Dt_DErOMIn
 
 
-def calculate_Dt_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
+def calculate_Dt_DENPNCPIn(Dt_NPNCPIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_NPNCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DENPNCPIn = (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 
@@ -1077,7 +1192,7 @@ def calculate_Dt_DENPNCPIn(Dt_NPNCPIn, coeff_dict):
     return Dt_DENPNCPIn
 
 
-def calculate_Dt_DEFAIn(Dt_DigFAIn, coeff_dict):
+def calculate_Dt_DEFAIn(Dt_DigFAIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_FA']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DEFAIn = Dt_DigFAIn * coeff_dict['En_FA']
@@ -1086,15 +1201,15 @@ def calculate_Dt_DEFAIn(Dt_DigFAIn, coeff_dict):
 
 # This function is invovled in the calf DMIn prediction. In the future we will liekly need to pull a few of the calf intake calculations
 # out of the wrappers to run DMI prediciton properly. It all depends on how we handle the calf calculations which hasn't been decided yet
-def calculate_Dt_DMIn_ClfStrt(An_BW, 
-                              Dt_MEIn_ClfLiq, 
-                              Dt_DMIn_ClfLiq,
-                              Dt_DMIn_ClfFor, 
-                              An_AgeDryFdStart, 
-                              Env_TempCurr,
-                              DMIn_eqn, 
-                              Trg_Dt_DMIn, 
-                              coeff_dict
+def calculate_Dt_DMIn_ClfStrt(An_BW: float, 
+                              Dt_MEIn_ClfLiq: float, 
+                              Dt_DMIn_ClfLiq: float,
+                              Dt_DMIn_ClfFor: float, 
+                              An_AgeDryFdStart: int, 
+                              Env_TempCurr: float,
+                              DMIn_eqn: int, 
+                              Trg_Dt_DMIn: float, 
+                              coeff_dict: dict
 ) -> float:
     req_coeff = ['UCT']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
@@ -1105,36 +1220,38 @@ def calculate_Dt_DMIn_ClfStrt(An_BW,
                        73.3 * An_AgeDryFdStart / 7 + 
                        13.496 * (An_AgeDryFdStart / 7)**2 - 
                        29.614 * An_AgeDryFdStart / 7 * Dt_MEIn_ClfLiq) / 1000
+    
     # Tropical Environment Predicted Starter Intake, TempCurr > UCT+10 degrees C
-    Dt_DMIn_ClfStrt = np.where(
-        Env_TempCurr > (coeff_dict['UCT'] + 10),  # Line 305
-        (600.1 * (1 + 14863.7 * np.exp(-1.553 * An_AgeDryFdStart / 7))**-1 +
-         9.951 * An_BW - 130.434 * Dt_MEIn_ClfLiq) / 1000,
-        Dt_DMIn_ClfStrt)
+    if Env_TempCurr > coeff_dict['UCT'] + 10: # Line 305
+        Dt_DMIn_ClfStrt = ( 
+            600.1 * (1 + 14863.7 * np.exp(-1.553 * An_AgeDryFdStart / 7))**-1 + 
+            9.951 * An_BW - 
+            130.434 * Dt_MEIn_ClfLiq) / 1000
+        
+    # Adjust Starter Intake based on target intake if DMIeqn=0. Line 311
     clf_dmi_sum = Dt_DMIn_ClfLiq + Dt_DMIn_ClfStrt + Dt_DMIn_ClfFor
-    condition = ((DMIn_eqn == 0) and 
-                 (clf_dmi_sum != Trg_Dt_DMIn))
-    Dt_DMIn_ClfStrt = np.where(
-        condition,  # Line 311
-        Trg_Dt_DMIn - Dt_DMIn_ClfLiq - Dt_DMIn_ClfFor,
-        Dt_DMIn_ClfStrt
-    )  # Adjust Starter Intake based on target intake if DMIeqn=0.
+    Dt_DMIn_ClfStrt = (Trg_Dt_DMIn - Dt_DMIn_ClfLiq - Dt_DMIn_ClfFor
+                       if (DMIn_eqn == 0) and (clf_dmi_sum != Trg_Dt_DMIn)
+                       else Dt_DMIn_ClfStrt)
     return Dt_DMIn_ClfStrt
 
 
-def calculate_Dt_DigCPaIn(Dt_CPIn, Fe_CP):
+def calculate_Dt_DigCPaIn(Dt_CPIn: float, Fe_CP: float) -> float:
     Dt_DigCPaIn = Dt_CPIn - Fe_CP  # kg CP/d, apparent total tract digested CP
     return Dt_DigCPaIn
 
 
-def calculate_Dt_DECPIn(Dt_DigCPaIn, coeff_dict):
+def calculate_Dt_DECPIn(Dt_DigCPaIn: float, coeff_dict: dict) -> float:
     req_coeff = ['En_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_DECPIn = Dt_DigCPaIn * coeff_dict['En_CP']
     return Dt_DECPIn
 
 
-def calculate_Dt_DETPIn(Dt_DECPIn, Dt_DENPNCPIn, coeff_dict):
+def calculate_Dt_DETPIn(Dt_DECPIn: float, 
+                        Dt_DENPNCPIn: float, 
+                        coeff_dict: dict
+) -> float:
     req_coeff = ['En_NPNCP', 'En_CP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Line 1348, Caution! DigTPaIn not clean so subtracted DE for CP equiv of 
@@ -1144,24 +1261,24 @@ def calculate_Dt_DETPIn(Dt_DECPIn, Dt_DENPNCPIn, coeff_dict):
     return Dt_DETPIn
 
 
-def calculate_Dt_DEIn(An_StatePhys, 
-                      Dt_DENDFIn, 
-                      Dt_DEStIn, 
-                      Dt_DErOMIn,
-                      Dt_DETPIn, 
-                      Dt_DENPNCPIn, 
-                      Dt_DEFAIn, 
-                      Dt_DMIn_ClfLiq,
-                      Dt_DEIn_base_ClfLiq, 
-                      Dt_DEIn_base_ClfDry, 
-                      Monensin_eqn
+def calculate_Dt_DEIn(An_StatePhys: str, 
+                      Dt_DENDFIn: float, 
+                      Dt_DEStIn: float, 
+                      Dt_DErOMIn: float,
+                      Dt_DETPIn: float, 
+                      Dt_DENPNCPIn: float, 
+                      Dt_DEFAIn: float, 
+                      Dt_DMIn_ClfLiq: float,
+                      Dt_DEIn_base_ClfLiq: float, 
+                      Dt_DEIn_base_ClfDry: float, 
+                      Monensin_eqn: int
 ) -> float:
     Dt_DEIn = (Dt_DENDFIn + Dt_DEStIn + Dt_DErOMIn + 
                Dt_DETPIn + Dt_DENPNCPIn + Dt_DEFAIn) # Line 1365
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)
-    Dt_DEIn = np.where(condition, Dt_DEIn_base_ClfLiq + Dt_DEIn_base_ClfDry,
-                       Dt_DEIn)  # Line 1371
-    Dt_DEIn = np.where(Monensin_eqn == 1, Dt_DEIn * 1.02, Dt_DEIn)  # Line 1374
+    Dt_DEIn = (Dt_DEIn_base_ClfLiq + Dt_DEIn_base_ClfDry
+               if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)
+               else Dt_DEIn) # Line 1371
+    Dt_DEIn = Dt_DEIn * 1.02 if Monensin_eqn == 1 else Dt_DEIn # Line 1374  
     return Dt_DEIn
 
 
@@ -1170,11 +1287,11 @@ def calculate_Dt_acMg(An_StatePhys: str,
                       Dt_MgIn_min: float,
                       Dt_MgIn: float
 ) -> float:
-    Dt_acMg = np.where(
-        An_StatePhys == "Calf",  # Line 1880
-        1,
-        (44.1 - 5.42 * math.log(Dt_K * 10) - 0.08 * Dt_MgIn_min / Dt_MgIn * 100)
-        / 100)
+    if An_StatePhys == "Calf": # Line 1880
+        Dt_acMg = 1
+    else:
+        Dt_acMg = (44.1 - 5.42 * math.log(Dt_K * 10) - 
+                   0.08 * Dt_MgIn_min / Dt_MgIn * 100) / 100
     return Dt_acMg
 
 
@@ -1524,31 +1641,38 @@ def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series,
 # mean diet_data is calculated in two steps
 
 
-def calculate_TT_dcNDF_Base(Dt_DigNDFIn_Base, Dt_NDFIn):
+def calculate_TT_dcNDF_Base(Dt_DigNDFIn_Base: float, Dt_NDFIn: float) -> float:
     TT_dcNDF_Base = Dt_DigNDFIn_Base / Dt_NDFIn * 100  # Line 1056
     if math.isnan(TT_dcNDF_Base):
         TT_dcNDF_Base = 0
     return TT_dcNDF_Base
 
 
-def calculate_TT_dcNDF(TT_dcNDF_Base, Dt_StIn, Dt_DMIn, An_DMIn_BW):
-    TT_dcNDF = np.where(TT_dcNDF_Base == 0, 0,
-                        (TT_dcNDF_Base / 100 - 
-                         0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
-                         1.1 * (An_DMIn_BW - 0.035)) * 100) # Line 1060
+def calculate_TT_dcNDF(TT_dcNDF_Base: float, 
+                       Dt_StIn: float, 
+                       Dt_DMIn: float, 
+                       An_DMIn_BW: float
+) -> float:
+    if TT_dcNDF_Base == 0: 
+        TT_dcNDF = 0
+    else:
+        TT_dcNDF = (TT_dcNDF_Base / 100 - 
+                    0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
+                    1.1 * (An_DMIn_BW - 0.035)) * 100
     return TT_dcNDF
 
 
-def calculate_TT_dcSt_Base(Dt_DigStIn_Base, Dt_StIn):
+def calculate_TT_dcSt_Base(Dt_DigStIn_Base: float, Dt_StIn: float) -> float:
     TT_dcSt_Base = Dt_DigStIn_Base / Dt_StIn * 100  # Line 1030
     if math.isnan(TT_dcSt_Base):
         TT_dcSt_Base = 0
     return TT_dcSt_Base
 
 
-def calculate_TT_dcSt(TT_dcSt_Base, An_DMIn_BW):
-    TT_dcSt = np.where(TT_dcSt_Base == 0, 0,
-                       TT_dcSt_Base - (1.0 * (An_DMIn_BW - 0.035)) * 100)
+def calculate_TT_dcSt(TT_dcSt_Base: float, An_DMIn_BW: float) -> float:
+    TT_dcSt = (0 
+               if TT_dcSt_Base == 0 
+               else TT_dcSt_Base - (1.0 * (An_DMIn_BW - 0.035)) * 100)
     return TT_dcSt
 
 
@@ -1820,11 +1944,11 @@ def calculate_TT_dcDtFA(Dt_DigFAIn: float, Dt_FAIn: float) -> float:
 ####################
 
 
-def calculate_diet_info(DMI, 
-                        An_StatePhys, 
-                        Use_DNDF_IV, 
-                        diet_info, 
-                        coeff_dict
+def calculate_diet_info(DMI: float, 
+                        An_StatePhys: str, 
+                        Use_DNDF_IV: int, 
+                        diet_info: pd.DataFrame, 
+                        coeff_dict: dict
 ) -> pd.DataFrame:
     # Start with copy of diet_info
     complete_diet_info = diet_info.copy()
@@ -2214,17 +2338,17 @@ def calculate_diet_info(DMI,
 
 
 def calculate_diet_data_initial(diet_info: pd.DataFrame, 
-                                DMI, 
-                                An_BW, 
-                                An_StatePhys, 
-                                An_DMIn_BW,
-                                An_AgeDryFdStart, 
-                                Env_TempCurr, 
-                                DMIn_eqn,
-                                Monensin_eqn, 
-                                Fe_rOMend, 
-                                coeff_dict
-):
+                                DMI: float, 
+                                An_BW: float, 
+                                An_StatePhys: str, 
+                                An_DMIn_BW: float,
+                                An_AgeDryFdStart: int, 
+                                Env_TempCurr: float, 
+                                DMIn_eqn: int,
+                                Monensin_eqn: int, 
+                                Fe_rOMend: float, 
+                                coeff_dict: dict
+) -> dict:
     '''
     diet_info is a pd.DataFrame of the user selected diet with columns from feed
     library.
@@ -2525,7 +2649,7 @@ def calculate_diet_data_complete(
         Du_IdAAMic: pd.Series,
         Du_idMiTP: float,
         coeff_dict: dict
-) -> pd.DataFrame:
+) -> dict:
     """
     Du_IdAAMic is a series passed from the AA_values dataframe, used to calculate Dt_IdAAIn
     """

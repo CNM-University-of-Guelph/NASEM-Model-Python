@@ -21,11 +21,12 @@ Example of how to use this module:
 
 
 import math
+from typing import Union
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 # Precalculation for heifer DMI predicitons
-def calculate_Kb_LateGest_DMIn(Dt_NDF):
+def calculate_Kb_LateGest_DMIn(Dt_NDF: float) -> float:
     """
     Calculate the ______________ for predicting dry matter intake (DMI) in late gestation for heifers.
 
@@ -65,7 +66,7 @@ def calculate_Kb_LateGest_DMIn(Dt_NDF):
 
 
 # Precalculation for heifer DMI predicitons
-def calculate_An_PrePartWklim(An_PrePartWk):
+def calculate_An_PrePartWklim(An_PrePartWk: float) -> Union[int, float]:
     # Late Gestation eqn. from Hayirli et al., 2003) for dry cows and heifers
     if An_PrePartWk < -3:  # constrain to the interval 0 to -3.
         An_PrePartWklim = -3
@@ -77,9 +78,9 @@ def calculate_An_PrePartWklim(An_PrePartWk):
 
 
 # Need when DMIn_eqn == 2,3,4,5,6,7,10
-def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim, 
-                                    Kb_LateGest_DMIn,
-                                    coeff_dict
+def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim: Union[int, float], 
+                                    Kb_LateGest_DMIn: float,
+                                    coeff_dict: dict
 ) -> float:
     req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
@@ -92,9 +93,9 @@ def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim,
 
 
 # Need when DMIn_eqn == 10,12,13,14,15,16,17
-def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat, 
-                                    Kb_LateGest_DMIn,
-                                    coeff_dict
+def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat: Union[int, float], 
+                                    Kb_LateGest_DMIn: float,
+                                    coeff_dict: dict
 ) -> float:
     req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
@@ -108,7 +109,9 @@ def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat,
 
 
 # Need when DMIn_eqn == 2,3,4,5,6,7
-def calculate_Dt_DMIn_Heif_LateGestInd(An_BW, Dt_DMIn_BW_LateGest_i):
+def calculate_Dt_DMIn_Heif_LateGestInd(An_BW: float, 
+                                       Dt_DMIn_BW_LateGest_i: float
+) -> float:
     # Individual intake for the specified day prepart or the pen mean intake 
     # for the interval, 0 to PrePart_WkDurat
     Dt_DMIn_Heif_LateGestInd = 0.88 * An_BW * Dt_DMIn_BW_LateGest_i / 100 
@@ -117,21 +120,23 @@ def calculate_Dt_DMIn_Heif_LateGestInd(An_BW, Dt_DMIn_BW_LateGest_i):
 
 
 # Need when DMIn_eqn == 12,13,14,15,16,17
-def calculate_Dt_DMIn_Heif_LateGestPen(An_BW, Dt_DMIn_BW_LateGest_p):
+def calculate_Dt_DMIn_Heif_LateGestPen(An_BW: float, 
+                                       Dt_DMIn_BW_LateGest_p: float
+) -> float:
     Dt_DMIn_Heif_LateGestPen = 0.88 * An_BW * Dt_DMIn_BW_LateGest_p / 100  
     # Pen mean
     return Dt_DMIn_Heif_LateGestPen
 
 
 # Need when DMIn_eqn == 5,7,15,17
-def calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF):
+def calculate_Dt_NDFdev_DMI(An_BW: float, Dt_NDF: float) -> float:
     # NRC 2020 Heifer Eqns. from the Transition Ch., Line 316
     Dt_NDFdev_DMI = Dt_NDF - (23.11 + 0.07968 * An_BW - 0.00006252 * An_BW**2)
     return Dt_NDFdev_DMI
 
 
 # DMIn_eqn == 2, 12
-def calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature):
+def calculate_Dt_DMIn_Heif_NRCa(An_BW: float, An_BW_mature: float) -> float:
     '''
     Test docs for calcualte_Dt_DMIn_Heif_NRCa
     '''
@@ -142,7 +147,10 @@ def calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature):
 
 
 # DMIn_eqn == 3, 13
-def calculate_Dt_DMIn_Heif_NRCad(An_BW, An_BW_mature, Dt_NDF):
+def calculate_Dt_DMIn_Heif_NRCad(An_BW: float, 
+                                 An_BW_mature: float, 
+                                 Dt_NDF: float
+) -> float:
     # Anim & diet factors, eqn 2-4 NRC
     Dt_DMIn_Heif_NRCad = ((0.0226 * An_BW_mature * 
                            (1 - math.exp(-1.47 * An_BW / An_BW_mature))) - 
@@ -152,14 +160,14 @@ def calculate_Dt_DMIn_Heif_NRCad(An_BW, An_BW_mature, Dt_NDF):
 
 
 # DMIn_eqn == 4, 14
-def calculate_Dt_DMIn_Heif_H1(An_BW):
+def calculate_Dt_DMIn_Heif_H1(An_BW: float) -> float:
     # Holstein, animal factors only
     Dt_DMIn_Heif_H1 = 15.36 * (1 - math.exp(-0.0022 * An_BW))
     return Dt_DMIn_Heif_H1
 
 
 # DMIn_eqn == 5, 15
-def calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI):
+def calculate_Dt_DMIn_Heif_H2(An_BW: float, Dt_NDFdev_DMI: float) -> float:
     # Holstein, animal factors and NDF
     Dt_DMIn_Heif_H2 = (15.79 * (1 - math.exp(-0.0021 * An_BW)) - 
                        (0.082 * Dt_NDFdev_DMI))
@@ -167,7 +175,7 @@ def calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI):
 
 
 # DMIn_eqn == 6, 16
-def calculate_Dt_DMIn_Heif_HJ1(An_BW):
+def calculate_Dt_DMIn_Heif_HJ1(An_BW: float) -> float:
     """
     _summary_
 
@@ -187,7 +195,7 @@ def calculate_Dt_DMIn_Heif_HJ1(An_BW):
 
 
 # DMIn_eqn == 7, 17
-def calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI):
+def calculate_Dt_DMIn_Heif_HJ2(An_BW:float, Dt_NDFdev_DMI: float) -> float:
     """
     Calculate the predicted dry matter intake (DMI) for Holstein x Jersey crossbred heifers
     considering animal factors and neutral detergent fiber (NDF).
@@ -230,8 +238,13 @@ def calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI):
 
 
 # DMIn_eqn == 8
-def calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay,
-                            An_Parity_rl, Trg_NEmilk_Milk):
+def calculate_Dt_DMIn_Lact1(Trg_MilkProd: float, 
+                            An_BW: float, 
+                            An_BCS: float, 
+                            An_LactDay: int,
+                            An_Parity_rl: int, 
+                            Trg_NEmilk_Milk: float
+) -> float:
     """
     Calculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.
 
@@ -293,11 +306,11 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd, An_BW, An_BCS, An_LactDay,
     return Dt_DMIn_Lact1
 
 # DMIn_eqn == 9 
-def calculate_Dt_DMIn_Lact2(Dt_ForNDF, 
-                            Dt_ADF, 
-                            Dt_NDF, 
-                            Dt_ForDNDF48_ForNDF,
-                            Trg_MilkProd
+def calculate_Dt_DMIn_Lact2(Dt_ForNDF: float, 
+                            Dt_ADF: float, 
+                            Dt_NDF: float, 
+                            Dt_ForDNDF48_ForNDF: float,
+                            Trg_MilkProd: float
 ) -> float:
     Dt_DMIn_Lact2 = (12.0 - 0.107 * Dt_ForNDF + 8.17 * Dt_ADF / Dt_NDF + 
                      0.0253 * Dt_ForDNDF48_ForNDF - 
@@ -308,19 +321,26 @@ def calculate_Dt_DMIn_Lact2(Dt_ForNDF,
     return Dt_DMIn_Lact2
 
 # DMIn_eqn == 10
-def calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i):
+def calculate_Dt_DMIn_DryCow1_FarOff(An_BW: float, 
+                                     Dt_DMIn_BW_LateGest_i: float
+) -> float:
     Dt_DMIn_DryCow1_FarOff = An_BW * Dt_DMIn_BW_LateGest_i / 100
     return Dt_DMIn_DryCow1_FarOff
 
 
 # DMIn_eqn == 10
-def calculate_Dt_DMIn_DryCow1_Close(An_BW, Dt_DMIn_BW_LateGest_p):
+def calculate_Dt_DMIn_DryCow1_Close(An_BW: float, 
+                                    Dt_DMIn_BW_LateGest_p: float
+) -> float:
     Dt_DMIn_DryCow1_Close = An_BW * Dt_DMIn_BW_LateGest_p / 100
     return Dt_DMIn_DryCow1_Close
 
 
 # DMIn_eqn == 11
-def calculate_Dt_DMIn_DryCow2(An_BW, An_GestDay, An_GestLength):
+def calculate_Dt_DMIn_DryCow2(An_BW: float, 
+                              An_GestDay: int, 
+                              An_GestLength: int
+) -> float:
     # from Hayirli et al., 2003 JDS
     if (An_GestDay - An_GestLength) < -21:
         Dt_DMIn_DryCow_AdjGest = 0

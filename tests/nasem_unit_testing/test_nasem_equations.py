@@ -67,9 +67,9 @@ def test_from_json(json_file: str) -> None:
             if isinstance(row.Output, dict):
                 compare_dicts_with_tolerance(func(**input_params), row.Output)
             else:
-                assert (func(**input_params) == pytest.approx(row.Output), 
-                        f"{row.Name} failed: {func(**input_params)}" 
-                        f"does not equal {row.Output}")
-        
+                assert func(**input_params) == pytest.approx(row.Output), (
+                    f"{row.Name} failed: {func(**input_params)}" 
+                    f"does not equal {row.Output}"
+                )
         except AttributeError:
             print(f"Function {row.Name} not found in module.")

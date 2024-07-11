@@ -68,23 +68,23 @@ def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float,
     return Trg_NEmilk_Milk
 
 
-def calculate_Mlk_NP_g(An_StatePhys, 
-                       mPrt_eqn,
-                       Trg_Mlk_NP_g,
-                       An_BW, 
-                       Abs_AA_g, 
-                       mPrt_k_AA, 
-                       Abs_neAA_g,
-                       Abs_OthAA_g, 
-                       Abs_EAA2b_g, 
-                       mPrt_k_EAA2, 
-                       An_DigNDF,
-                       An_DEInp, 
-                       An_DEStIn, 
-                       An_DEFAIn, 
-                       An_DErOMIn, 
-                       An_DENDFIn,
-                       mPrt_coeff
+def calculate_Mlk_NP_g(An_StatePhys: str, 
+                       mPrt_eqn: int,
+                       Trg_Mlk_NP_g: float,
+                       An_BW: float, 
+                       Abs_AA_g: pd.Series, 
+                       mPrt_k_AA: pd.Series, 
+                       Abs_neAA_g: pd.Series,
+                       Abs_OthAA_g: pd.Series, 
+                       Abs_EAA2b_g: pd.Series, 
+                       mPrt_k_EAA2: pd.Series, 
+                       An_DigNDF: float,
+                       An_DEInp: float, 
+                       An_DEStIn: float, 
+                       An_DEFAIn: float, 
+                       An_DErOMIn: float, 
+                       An_DENDFIn: float,
+                       mPrt_coeff: dict
 ) -> float:
     req_coeff = [
         'mPrt_k_NEAA', 'mPrt_k_OthAA', 'mPrt_k_DEInp', 'mPrt_k_DigNDF',
@@ -119,7 +119,7 @@ def calculate_Mlk_NP_g(An_StatePhys,
     return Mlk_NP_g
 
 
-def calculate_Mlk_CP_g(Mlk_NP_g):
+def calculate_Mlk_CP_g(Mlk_NP_g: float) -> float:
     Mlk_CP_g = Mlk_NP_g / 0.95  # Line 2213
     return Mlk_CP_g
 
@@ -688,6 +688,6 @@ def calculate_MlkNP_AbsOthAA(Abs_OthAA_g: float, mPrt_coeff: dict) -> float:
     return MlkNP_AbsOthAA
 
 
-def calculate_Trg_Mlk_NP(Trg_Mlk_NP_g: float):
+def calculate_Trg_Mlk_NP(Trg_Mlk_NP_g: float) -> float:
     Trg_Mlk_NP = Trg_Mlk_NP_g / 1000    # Line 2205
     return Trg_Mlk_NP

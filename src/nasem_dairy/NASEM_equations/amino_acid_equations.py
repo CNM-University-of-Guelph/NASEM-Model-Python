@@ -9,7 +9,10 @@ import pandas as pd
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 
-def calculate_Du_AAMic(Du_MiTP_g, AA_list, coeff_dict):
+def calculate_Du_AAMic(Du_MiTP_g: float, 
+                       AA_list: list, 
+                       coeff_dict: dict
+) -> float:
     req_coeffs = [
         'MiTPArgProf', 'MiTPHisProf', 'MiTPIleProf', 'MiTPLeuProf',
         'MiTPLysProf', 'MiTPMetProf', 'MiTPPheProf', 'MiTPThrProf',
@@ -21,17 +24,18 @@ def calculate_Du_AAMic(Du_MiTP_g, AA_list, coeff_dict):
     return Du_AAMic
 
 
-def calculate_Du_IdAAMic(Du_AAMic, coeff_dict):
+def calculate_Du_IdAAMic(Du_AAMic: float, coeff_dict: dict) -> float:
     req_coeffs = ['SI_dcMiCP']
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     Du_IdAAMic = Du_AAMic * coeff_dict['SI_dcMiCP'] / 100
     return Du_IdAAMic
 
 
-def calculate_Abs_AA_g(AA_list, An_data, infusion_data, Inf_Art):
-    # An_data and infusion_data are dictionaries, convert to Series so that 
-    # Abs_AA_g can be added to AA_values dataframe
-    # Entire dictionaries are arguments as need to extract 10 values from each
+def calculate_Abs_AA_g(AA_list: list, 
+                       An_data: dict, 
+                       infusion_data: dict, 
+                       Inf_Art: float
+) -> pd.Series:
     An_IdAAIn = pd.Series([An_data[f'An_Id{AA}In'] for AA in AA_list],
                           index=AA_list)
     Inf_AA_g = pd.Series([infusion_data[f'Inf_{AA}_g'] for AA in AA_list],
@@ -49,7 +53,7 @@ def calculate_mPrtmx_AA(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
     return mPrtmx_AA
 
 
-def calculate_mPrtmx_AA2(mPrtmx_AA, f_mPrt_max):
+def calculate_mPrtmx_AA2(mPrtmx_AA: pd.Series, f_mPrt_max: float) -> pd.Series:
     mPrtmx_AA2 = mPrtmx_AA * f_mPrt_max  # Line 2149-2158
     return mPrtmx_AA2
 
@@ -63,8 +67,10 @@ def calculate_AA_mPrtmx(mPrt_k_AA: np.array, mPrt_coeff: dict) -> np.array:
     return AA_mPrtmx
 
 
-def calculate_mPrt_AA_01(AA_mPrtmx: np.array, mPrt_k_AA: np.array,
-                         mPrt_coeff: dict) -> np.array:
+def calculate_mPrt_AA_01(AA_mPrtmx: np.array, 
+                         mPrt_k_AA: np.array,
+                         mPrt_coeff: dict
+) -> np.array:
     """
     mPrt_AA_01: Milk protein from each EAA at 10% of max response
     """
@@ -74,7 +80,10 @@ def calculate_mPrt_AA_01(AA_mPrtmx: np.array, mPrt_k_AA: np.array,
     return mPrt_AA_01
 
 
-def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
+def calculate_mPrt_k_AA(mPrtmx_AA2: pd.Series, 
+                        mPrt_AA_01: pd.Series, 
+                        AA_mPrtmx: pd.Series
+) -> pd.Series:
     mPrt_k_AA = np.zeros_like(mPrtmx_AA2)
     for i in range(len(mPrtmx_AA2)):
         inner_value = (
@@ -88,18 +97,18 @@ def calculate_mPrt_k_AA(mPrtmx_AA2, mPrt_AA_01, AA_mPrtmx):
     return mPrt_k_AA
 
 
-def calculate_Abs_EAA_g(Abs_AA_g):
+def calculate_Abs_EAA_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA_g = Abs_AA_g.sum()  # Line 1769
     return Abs_EAA_g
 
 
-def calculate_Abs_neAA_g(An_MPIn_g, Abs_EAA_g):
+def calculate_Abs_neAA_g(An_MPIn_g: float, Abs_EAA_g: float) -> float:
     # Line 1771, Absorbed NEAA (Equation 20-150 p. 433)
     Abs_neAA_g = An_MPIn_g * 1.15 - Abs_EAA_g
     return Abs_neAA_g
 
 
-def calculate_Abs_OthAA_g(Abs_neAA_g, Abs_AA_g):
+def calculate_Abs_OthAA_g(Abs_neAA_g: float, Abs_AA_g: pd.Series) -> float:
     Abs_OthAA_g = (Abs_neAA_g + Abs_AA_g['Arg'] + Abs_AA_g['Phe'] + 
                    Abs_AA_g['Thr'] + Abs_AA_g['Trp'] + Abs_AA_g['Val'])  
     # Line 2110, NRC eqn only, Equation 20-186a, p. 436
@@ -117,7 +126,7 @@ def calculate_Abs_EAA2_g(Abs_AA_g: pd.Series) -> float:
     return Abs_EAA2_g
 
 
-def calculate_Abs_EAA2_HILKM_g(Abs_AA_g):
+def calculate_Abs_EAA2_HILKM_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_HILKM_g = (Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + 
                         Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + 
                         Abs_AA_g['Met']**2)  
@@ -125,7 +134,7 @@ def calculate_Abs_EAA2_HILKM_g(Abs_AA_g):
     return Abs_EAA2_HILKM_g
 
 
-def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g):
+def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_RHILKM_g = (Abs_AA_g['Arg']**2 + Abs_AA_g['His']**2 + 
                          Abs_AA_g['Ile']**2 + Abs_AA_g['Leu']**2 + 
                          Abs_AA_g['Lys']**2 + Abs_AA_g['Met']**2)  
@@ -133,14 +142,14 @@ def calculate_Abs_EAA2_RHILKM_g(Abs_AA_g):
     return Abs_EAA2_RHILKM_g
 
 
-def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g):
+def calculate_Abs_EAA2_HILKMT_g(Abs_AA_g: pd.Series) -> float:
     Abs_EAA2_HILKMT_g = (Abs_AA_g['His']**2 + Abs_AA_g['Ile']**2 + 
                          Abs_AA_g['Leu']**2 + Abs_AA_g['Lys']**2 + 
                          Abs_AA_g['Met']**2 + Abs_AA_g['Thr']**2)
     return Abs_EAA2_HILKMT_g
 
 
-def calculate_Abs_EAA2b_g(mPrt_eqn, Abs_AA_g):
+def calculate_Abs_EAA2b_g(mPrt_eqn: int, Abs_AA_g: pd.Series) -> float:
     if mPrt_eqn == 2:
         Abs_EAA2b_g = calculate_Abs_EAA2_RHILKM_g(Abs_AA_g) # Line 2108, VT1 eqn.
     elif mPrt_eqn == 3:
@@ -150,7 +159,10 @@ def calculate_Abs_EAA2b_g(mPrt_eqn, Abs_AA_g):
     return Abs_EAA2b_g
 
 
-def calculate_mPrt_k_EAA2(mPrtmx_Met2, mPrt_Met_0_1, Met_mPrtmx):
+def calculate_mPrt_k_EAA2(mPrtmx_Met2: float, 
+                          mPrt_Met_0_1: float, 
+                          Met_mPrtmx: float
+) -> float:
     # Scale the quadratic; can be calculated from any of the AA included in the 
     # squared term. All give the same answer. Line 2184
     # Methionine used to be consistent with R code
@@ -194,7 +206,10 @@ def calculate_Du_AA(diet_data: dict,
     return Du_AA
 
 
-def calculate_DuAA_AArg(Du_AA, diet_data, AA_list) -> pd.Series:
+def calculate_DuAA_AArg(Du_AA: pd.Series, 
+                        diet_data: dict, 
+                        AA_list: list
+) -> pd.Series:
     """
     DuAA_DtAA: Duodenal AA flow expressed as a fraction of dietary AA
     """
@@ -205,7 +220,10 @@ def calculate_DuAA_AArg(Du_AA, diet_data, AA_list) -> pd.Series:
     return DuAA_DtAA
 
 
-def calculate_Du_AA24h(Du_AA, AA_list, coeff_dict) -> pd.Series:
+def calculate_Du_AA24h(Du_AA: pd.Series, 
+                       AA_list: list, 
+                       coeff_dict: dict
+) -> pd.Series:
     """
     Du_AA24h: g hydrat 24h recovered AA/d
     """
@@ -255,8 +273,10 @@ def calculate_Abs_AA_DEI(Abs_AA_g: pd.Series, An_DEIn: float) -> pd.Series:
     return Abs_AA_DEI
 
 
-def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, coeff_dict: dict,
-                         AA_list: list) -> np.array:
+def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, 
+                         coeff_dict: dict,
+                         AA_list: list
+) -> np.array:
     """
     Abs_AA_mol: moles of absorbed AA (mol/d)
     """
@@ -366,7 +386,7 @@ def calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA: np.array) -> np.array:
     return Trg_AbsEAA_NPxprtEAA
 
 
-def calculate_Trg_AbsArg_NPxprtArg(Trg_AbsEAA_NPxprtEAA) -> float:
+def calculate_Trg_AbsArg_NPxprtArg(Trg_AbsEAA_NPxprtEAA: float) -> float:
     """
     Trg_AbsArg_NPxprtArg: Target postabsorptive efficiencies based on maximum obsreved efficiencies from Martineau and LaPiere as listed in NRC, Ch. 6.
     """
@@ -416,7 +436,7 @@ def calculate_Imb_AA(An_AAEff_EAAEff: pd.Series,
     return Imb_AA
 
 
-def calculate_Imb_EAA(Imb_AA) -> float:
+def calculate_Imb_EAA(Imb_AA: pd.Series) -> float:
     """
     Imb_EAA: Sum the penalty to get a relative imbalance value for the optimizer 
     """
@@ -536,8 +556,10 @@ def calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g: float,
     return Trg_MlkEAA_AbsEAA
 
 
-def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series, Gest_AA_g: pd.Series,
-                            Ur_AAEnd_g: pd.Series, Abs_AA_g: pd.Series,
+def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series, 
+                            Gest_AA_g: pd.Series,
+                            Ur_AAEnd_g: pd.Series, 
+                            Abs_AA_g: pd.Series,
                             coeff_dict: dict
 ) -> pd.Series:
     """
@@ -554,8 +576,10 @@ def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series, Gest_AA_g: pd.Series,
     return AnNPxAA_AbsAA
 
 
-def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float, Gest_EAA_g: float,
-                              Ur_EAAEnd_g: float, Abs_EAA_g: float,
+def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float, 
+                              Gest_EAA_g: float,
+                              Ur_EAAEnd_g: float, 
+                              Abs_EAA_g: float,
                               coeff_dict: dict
 ) -> float:
     """
@@ -569,8 +593,10 @@ def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float, Gest_EAA_g: float,
     return AnNPxEAA_AbsEAA
 
 
-def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series, Gest_AA_g: pd.Series,
-                                Ur_AAEnd_g: pd.Series, Abs_AA_g: pd.Series,
+def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series, 
+                                Gest_AA_g: pd.Series,
+                                Ur_AAEnd_g: pd.Series, 
+                                Abs_AA_g: pd.Series,
                                 coeff_dict: dict
 ) -> pd.Series:
     """
@@ -586,8 +612,10 @@ def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series, Gest_AA_g: pd.Series,
     return AnNPxAAUser_AbsAA
 
 
-def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float, Gest_EAA_g: float,
-                                  Ur_EAAEnd_g: float, Abs_EAA_g: float,
+def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float, 
+                                  Gest_EAA_g: float,
+                                  Ur_EAAEnd_g: float, 
+                                  Abs_EAA_g: float,
                                   coeff_dict: dict
 ) -> float:
     """

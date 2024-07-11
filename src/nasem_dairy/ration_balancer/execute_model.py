@@ -36,7 +36,8 @@ def execute_model(user_diet: pd.DataFrame,
                   infusion_input: dict = constants.infusion_dict,
                   MP_NP_efficiency_input: dict = constants.MP_NP_efficiency_dict,
                   mPrt_coeff_list: list = constants.mPrt_coeff_list,
-                  f_Imb: np.array = constants.f_Imb):
+                  f_Imb: np.array = constants.f_Imb
+) -> output.ModelOutput:
     """
     Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
 
