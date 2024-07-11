@@ -122,7 +122,7 @@ class ModelOutput:
 
         return summary
 
-    def __categories_dict(self) -> Dict[str: Any]:
+    def __categories_dict(self) -> Dict[str, Any]:
         """
         Return dictionary of categories from this object for _refr_html_ and __str__
         """
