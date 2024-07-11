@@ -957,7 +957,7 @@ def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq: float,
 ) -> float:
     # Line 289, DE content of the liquid feed
     Dt_DE_ClfLiq = Dt_DEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_DE_ClfLiq = np.where(Dt_DE_ClfLiq.isnan(), 0, Dt_DE_ClfLiq)  # Line 290
+    Dt_DE_ClfLiq = 0 if Dt_DE_ClfLiq.isnan() else Dt_DE_ClfLiq # Line 290
     return Dt_DE_ClfLiq
 
 
@@ -966,7 +966,8 @@ def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq: float,
 ) -> float:
     # Line 291, ME content of the liquid feed
     Dt_ME_ClfLiq = Dt_MEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_ME_ClfLiq = np.where(Dt_ME_ClfLiq.isnan())  # Line 292
+    Dt_ME_ClfLiq = 0 if Dt_ME_ClfLiq.isnan() else Dt_ME_ClfLiq # Line 292
+    
     return Dt_ME_ClfLiq
 
 
@@ -1007,7 +1008,8 @@ def calculate_Dt_RUPIn(Dt_CPAIn: float,
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     # The feed summation is not as accurate as the equation below
     Dt_RUPIn = Fd_RUPIn.sum()  # Line 616
-    Dt_RUPIn = np.where(Dt_RUPIn < 0, 0, Dt_RUPIn)  # Line 617
+    Dt_RUPIn = 0 if Dt_RUPIn < 0 else Dt_RUPIn # Line 617
+
     # The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
     # if concerned about intercept, switch to using this eqn for RUP
     # this is called Dt_RUPIn.dt in the R code line 618
@@ -1076,7 +1078,7 @@ def calculate_Dt_rOMIn(DMI: float,
     # Is negative on some diets. Some Ash and CP in NDF, and water from FAhydr 
     # in TAG contributes. Trap negative Dt values. More likely due to entry 
     # errors or bad analyses of other nutrients
-    Dt_rOMIn = np.where(Dt_rOMIn < 0, 0, Dt_rOMIn)  # Line 647
+    Dt_rOMIn = 0 if Dt_rOMIn < 0  else Dt_rOMIn # Lines 647
     return Dt_rOMIn
 
 
@@ -1155,8 +1157,9 @@ def calculate_Dt_DigrOMaIn(Dt_DigrOMtIn: float, Fe_rOMend: float) -> float:
 
 
 def calculate_Dt_dcCP_ClfDry(An_StatePhys: str, Dt_DMIn_ClfLiq: float) -> float:
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq < 0.01)
-    Dt_dcCP_ClfDry = np.where(condition, 0.70, 0.75)  # Line 1199
+    Dt_dcCP_ClfDry = (0.70 
+                      if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq < 0.01)
+                      else 0.75) # Line 1199
     return Dt_dcCP_ClfDry
 
 
@@ -1217,20 +1220,19 @@ def calculate_Dt_DMIn_ClfStrt(An_BW: float,
                        73.3 * An_AgeDryFdStart / 7 + 
                        13.496 * (An_AgeDryFdStart / 7)**2 - 
                        29.614 * An_AgeDryFdStart / 7 * Dt_MEIn_ClfLiq) / 1000
+    
     # Tropical Environment Predicted Starter Intake, TempCurr > UCT+10 degrees C
-    Dt_DMIn_ClfStrt = np.where(
-        Env_TempCurr > (coeff_dict['UCT'] + 10),  # Line 305
-        (600.1 * (1 + 14863.7 * np.exp(-1.553 * An_AgeDryFdStart / 7))**-1 +
-         9.951 * An_BW - 130.434 * Dt_MEIn_ClfLiq) / 1000,
-        Dt_DMIn_ClfStrt)
+    if Env_TempCurr > coeff_dict['UCT'] + 10: # Line 305
+        Dt_DMIn_ClfStrt = ( 
+            600.1 * (1 + 14863.7 * np.exp(-1.553 * An_AgeDryFdStart / 7))**-1 + 
+            9.951 * An_BW - 
+            130.434 * Dt_MEIn_ClfLiq) / 1000
+        
+    # Adjust Starter Intake based on target intake if DMIeqn=0. Line 311
     clf_dmi_sum = Dt_DMIn_ClfLiq + Dt_DMIn_ClfStrt + Dt_DMIn_ClfFor
-    condition = ((DMIn_eqn == 0) and 
-                 (clf_dmi_sum != Trg_Dt_DMIn))
-    Dt_DMIn_ClfStrt = np.where(
-        condition,  # Line 311
-        Trg_Dt_DMIn - Dt_DMIn_ClfLiq - Dt_DMIn_ClfFor,
-        Dt_DMIn_ClfStrt
-    )  # Adjust Starter Intake based on target intake if DMIeqn=0.
+    Dt_DMIn_ClfStrt = (Trg_Dt_DMIn - Dt_DMIn_ClfLiq - Dt_DMIn_ClfFor
+                       if (DMIn_eqn == 0) and (clf_dmi_sum != Trg_Dt_DMIn)
+                       else Dt_DMIn_ClfStrt)
     return Dt_DMIn_ClfStrt
 
 
@@ -1273,10 +1275,10 @@ def calculate_Dt_DEIn(An_StatePhys: str,
 ) -> float:
     Dt_DEIn = (Dt_DENDFIn + Dt_DEStIn + Dt_DErOMIn + 
                Dt_DETPIn + Dt_DENPNCPIn + Dt_DEFAIn) # Line 1365
-    condition = (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)
-    Dt_DEIn = np.where(condition, Dt_DEIn_base_ClfLiq + Dt_DEIn_base_ClfDry,
-                       Dt_DEIn)  # Line 1371
-    Dt_DEIn = np.where(Monensin_eqn == 1, Dt_DEIn * 1.02, Dt_DEIn)  # Line 1374
+    Dt_DEIn = (Dt_DEIn_base_ClfLiq + Dt_DEIn_base_ClfDry
+               if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0)
+               else Dt_DEIn) # Line 1371
+    Dt_DEIn = Dt_DEIn * 1.02 if Monensin_eqn == 1 else Dt_DEIn # Line 1374  
     return Dt_DEIn
 
 
@@ -1285,11 +1287,11 @@ def calculate_Dt_acMg(An_StatePhys: str,
                       Dt_MgIn_min: float,
                       Dt_MgIn: float
 ) -> float:
-    Dt_acMg = np.where(
-        An_StatePhys == "Calf",  # Line 1880
-        1,
-        (44.1 - 5.42 * math.log(Dt_K * 10) - 0.08 * Dt_MgIn_min / Dt_MgIn * 100)
-        / 100)
+    if An_StatePhys == "Calf": # Line 1880
+        Dt_acMg = 1
+    else:
+        Dt_acMg = (44.1 - 5.42 * math.log(Dt_K * 10) - 
+                   0.08 * Dt_MgIn_min / Dt_MgIn * 100) / 100
     return Dt_acMg
 
 
@@ -1651,11 +1653,12 @@ def calculate_TT_dcNDF(TT_dcNDF_Base: float,
                        Dt_DMIn: float, 
                        An_DMIn_BW: float
 ) -> float:
-    # TODO refactor the np.where
-    TT_dcNDF = np.where(TT_dcNDF_Base == 0, 0,
-                        (TT_dcNDF_Base / 100 - 
-                         0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
-                         1.1 * (An_DMIn_BW - 0.035)) * 100) # Line 1060
+    if TT_dcNDF_Base == 0: 
+        TT_dcNDF = 0
+    else:
+        TT_dcNDF = (TT_dcNDF_Base / 100 - 
+                    0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
+                    1.1 * (An_DMIn_BW - 0.035)) * 100
     return TT_dcNDF
 
 
@@ -1667,9 +1670,9 @@ def calculate_TT_dcSt_Base(Dt_DigStIn_Base: float, Dt_StIn: float) -> float:
 
 
 def calculate_TT_dcSt(TT_dcSt_Base: float, An_DMIn_BW: float) -> float:
-    # TODO refactor
-    TT_dcSt = np.where(TT_dcSt_Base == 0, 0,
-                       TT_dcSt_Base - (1.0 * (An_DMIn_BW - 0.035)) * 100)
+    TT_dcSt = (0 
+               if TT_dcSt_Base == 0 
+               else TT_dcSt_Base - (1.0 * (An_DMIn_BW - 0.035)) * 100)
     return TT_dcSt
 
 
