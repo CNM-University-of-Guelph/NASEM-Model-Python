@@ -956,8 +956,8 @@ def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq: float,
                            Dt_DMIn_ClfLiq: float
 ) -> float:
     # Line 289, DE content of the liquid feed
-    Dt_DE_ClfLiq = Dt_DEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_DE_ClfLiq = 0 if Dt_DE_ClfLiq.isnan() else Dt_DE_ClfLiq # Line 290
+    Dt_DE_ClfLiq = 0 if Dt_DEIn_ClfLiq == 0 else Dt_DEIn_ClfLiq / Dt_DMIn_ClfLiq
+    Dt_DE_ClfLiq = 0 if np.isnan(Dt_DE_ClfLiq) else Dt_DE_ClfLiq # Line 290
     return Dt_DE_ClfLiq
 
 
@@ -966,8 +966,7 @@ def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq: float,
 ) -> float:
     # Line 291, ME content of the liquid feed
     Dt_ME_ClfLiq = Dt_MEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_ME_ClfLiq = 0 if Dt_ME_ClfLiq.isnan() else Dt_ME_ClfLiq # Line 292
-    
+    Dt_ME_ClfLiq = 0 if Dt_ME_ClfLiq.isnan() else Dt_ME_ClfLiq # Line 292    
     return Dt_ME_ClfLiq
 
 
@@ -2634,6 +2633,9 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         diet_data['Dt_DigNDF'], diet_data['Dt_GEIn'], diet_data['Dt_NDF']
         )
     diet_data = calculate_DtAARUP_DtAA(AA_list, diet_data)
+    diet_data["Dt_DE_ClfLiq"] = calculate_Dt_DE_ClfLiq(
+        diet_data["Dt_DEIn_ClfLiq"], diet_data["Dt_DMIn_ClfLiq"]
+        )
     return diet_data
 
 
