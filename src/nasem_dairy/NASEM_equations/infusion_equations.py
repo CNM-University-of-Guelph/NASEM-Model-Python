@@ -134,6 +134,75 @@ def calculate_Inf_DEButrIn(Inf_ButrIn: float, coeff_dict: dict) -> float:
     return Inf_DEButrIn
 
 
+def calculate_XIn(infusion_data: dict, variables: list) -> dict:
+    # Line 838-857
+    # Inf_NPNCP_g is expressed as g CP/d and should only be urea and Amm
+    for name in variables:
+        infusion_data[f"{name}In"] = infusion_data[f"{name}_g"] / 1000
+    return infusion_data
+
+
+def calculate_CPXIn(infusion_data: dict, variables: list) -> dict:
+    for name in variables:
+        infusion_data[f"{name}In"] = (infusion_data['Inf_CP_g'] / 1000 * 
+                                      infusion_data[f"{name}Rum_CP"] / 100)
+    return infusion_data
+
+
+def calculate_DMXIn(infusion_data: dict, 
+                    variables: list, 
+                    Dt_DMIn: float
+) -> dict:
+    # Line 860-871
+    for name in variables:
+        infusion_data[f"{name}"] = (infusion_data[f"{name}In"] / 
+                                    (Dt_DMIn + infusion_data['Inf_DMIn']) * 100)
+    return infusion_data
+
+
+def calculate_InfRum_X(infusion_data: dict, variables: list) -> dict:
+    # Line 880-897
+    for name in variables:
+        infusion_data[f"InfRum_{name}In"] = (infusion_data['Inf_Rum'] * 
+                                             infusion_data[f"Inf_{name}In"])         
+    return infusion_data
+
+
+def calculate_InfSI_X(infusion_data: dict, variables: list) -> dict:
+    # Line 900-914
+    for name in variables:
+        infusion_data[f"InfSI_{name}In"] = (infusion_data['Inf_SI'] * 
+                                            infusion_data[f"Inf_{name}In"])
+    return infusion_data
+
+
+def calculate_InfArt_X(infusion_data: dict, variables: list) -> dict:
+    # Line 917-931
+    for name in variables:
+        infusion_data[f"InfArt_{name}In"] = (infusion_data['Inf_Art'] * 
+                                             infusion_data[f"Inf_{name}In"])
+    return infusion_data
+
+
+def calculate_Inf_IdAARUPIn(infusion_data: dict, AA_list: list) -> dict:
+    # Line 1561-1570
+    for AA in AA_list:
+        infusion_data[f"Inf_{AA}RUPIn"] = (infusion_data['Inf_Rum'] * 
+                                           infusion_data[f"Inf_{AA}_g"] * 
+                                           infusion_data['InfRum_RUP_CP'] / 100) 
+    return infusion_data
+
+
+def calculate_Inf_IdAAIn(infusion_data: dict, AA_list: list) -> dict:
+    # Line 1678-1687
+    for AA in AA_list:
+        infusion_data[f"Inf_Id{AA}In"] = ((infusion_data[f"Inf_{AA}_g"] * 
+                                           infusion_data['Inf_SI'] + 
+                                           infusion_data[f"Inf_{AA}RUPIn"]) * 
+                                           infusion_data['Inf_dcRUP'] / 100) 
+    return infusion_data
+
+
 def calculate_infusion_data(infusion_input: dict, 
                             Dt_DMIn: float, 
                             coeff_dict: dict
@@ -148,15 +217,10 @@ def calculate_infusion_data(infusion_input: dict,
         'Inf_NPNCP', 'Inf_FA', 'Inf_Ash', 'Inf_VFA', 'Inf_Acet', 'Inf_Prop',
         'Inf_Butr'
     ]
-    for name in infused_nutrient_list:
-        infusion_data[f"{name}In"] = infusion_input[f"{name}_g"] / 1000
-    # Line 838-857
-    # Inf_NPNCP_g is expressed as g CP/d and should only be urea and Amm
+    infusion_data = calculate_XIn(infusion_data, infused_nutrient_list)
 
     infused_CP_fraction = ['Inf_CPA', 'Inf_CPB', 'Inf_CPC']
-    for name in infused_CP_fraction:
-        infusion_data[f"{name}In"] = (infusion_input['Inf_CP_g'] / 1000 * 
-                                      infusion_input[f"{name}Rum_CP"] / 100)
+    infusion_data = calculate_CPXIn(infusion_data, infused_CP_fraction)
 
     infusion_data['Inf_TPIn'] = calculate_Inf_TPIn(infusion_data['Inf_CPIn'],
                                                    infusion_data['Inf_NPNCPIn'])
@@ -166,10 +230,7 @@ def calculate_infusion_data(infusion_input: dict,
         'Inf_DM', 'Inf_OM', 'Inf_St', 'Inf_NDF', 'Inf_ADF', 'Inf_Glc', 'Inf_CP',
         'Inf_FA', 'Inf_VFA', 'Inf_Acet', 'Inf_Prop', 'Inf_Butr'
     ]
-    for name in infused_DM_list:
-        infusion_data[f"{name}"] = (infusion_data[f"{name}In"] / 
-                                    (Dt_DMIn + infusion_data['Inf_DMIn']) * 100)
-    # Line 860-871
+    infusion_data = calculate_DMXIn(infusion_data, infused_DM_list, Dt_DMIn)
 
     infusion_data['Inf_Rum'] = calculate_Inf_Rum(infusion_input['Inf_Location'])
     infusion_data['Inf_SI'] = calculate_Inf_SI(infusion_input['Inf_Location'])
@@ -179,10 +240,7 @@ def calculate_infusion_data(infusion_input: dict,
         'DM', 'OM', 'CP', 'NPNCP', 'CPA', 'CPB', 'CPC', 'St', 'NDF', 'ADF',
         'FA', 'Glc', 'VFA', 'Acet', 'Prop', 'Butr', 'Ash'
     ]
-    for name in infused_Rum:
-        infusion_data[f"InfRum_{name}In"] = (infusion_data['Inf_Rum'] * 
-                                             infusion_data[f"Inf_{name}In"])   
-    # Line 880-897
+    infusion_data = calculate_InfRum_X(infusion_data, infused_Rum)  
 
     infusion_data['InfRum_TPIn'] = calculate_InfRum_TPIn(
         infusion_data['InfRum_CPIn'], infusion_data['InfRum_NPNCPIn'])
@@ -190,10 +248,7 @@ def calculate_infusion_data(infusion_input: dict,
         'DM', 'OM', 'CP', 'NPNCP', 'St', 'Glc', 'NDF', 'ADF', 'FA', 'VFA',
         'Acet', 'Prop', 'Butr', 'Ash'
     ]
-    for name in infused_SI:
-        infusion_data[f"InfSI_{name}In"] = (infusion_data['Inf_SI'] * 
-                                            infusion_data[f"Inf_{name}In"])  
-    # Line 900-914
+    infusion_data = calculate_InfSI_X(infusion_data, infused_SI)
 
     infusion_data['InfSI_TPIn'] = calculate_InfSI_TPIn(
         infusion_data['InfSI_CPIn'], infusion_data['InfSI_NPNCPIn'])
@@ -201,10 +256,7 @@ def calculate_infusion_data(infusion_input: dict,
         'DM', 'OM', 'CP', 'NPNCP', 'TP', 'St', 'Glc', 'NDF', 'ADF', 'FA', 'VFA',
         'Acet', 'Prop', 'Butr', 'Ash'
     ]
-    for name in infused_Art:
-        infusion_data[f"InfArt_{name}In"] = (infusion_data['Inf_Art'] * 
-                                             infusion_data[f"Inf_{name}In"])
-    # Line 917-931
+    infusion_data = calculate_InfArt_X(infusion_data, infused_Art)
 
     # RUP does not include CP infused into the SI
     # In general, CPB for infused proteins, which are generally soluble, has been set to 0.
@@ -240,15 +292,7 @@ def calculate_infusion_data(infusion_input: dict,
     infusion_AA = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    for AA in infusion_AA:
-        infusion_data[f"Inf_{AA}RUPIn"] = (infusion_data['Inf_Rum'] * 
-                                           infusion_input[f"Inf_{AA}_g"] * 
-                                           infusion_data['InfRum_RUP_CP'] / 100)   
-        # Line 1561-1570
-        infusion_data[f"Inf_Id{AA}In"] = ((infusion_input[f"Inf_{AA}_g"] * 
-                                           infusion_data['Inf_SI'] + 
-                                           infusion_data[f"Inf_{AA}RUPIn"]) * 
-                                           infusion_input['Inf_dcRUP'] / 100) 
-        # Line 1678-1687
+    infusion_data = calculate_Inf_IdAARUPIn(infusion_data, infusion_AA)
+    infusion_data = calculate_Inf_IdAAIn(infusion_data, infusion_AA)
     infusion_data['Inf_ttdcSt'] = infusion_input['Inf_ttdcSt']
     return infusion_data
