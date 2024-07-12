@@ -225,7 +225,7 @@ def remove_untested_values(r_data: dict) -> dict:
     # TODO Recreate integration tests once these values are added
     values_not_calculated = [
         "An_ME_ClfDry", "An_MEIn_ClfDry", "An_NE_ClfDry",
-        "Dt_DE_ClfLiq", "Dt_ME_ClfLiq", "Dt_ForDNDF48", "Dt_ForDNDF48_ForNDF", # Need to fix Fd_DNDF48 in feed library as affecting calculation
+        "Dt_ME_ClfLiq", "Dt_ForDNDF48", "Dt_ForDNDF48_ForNDF", # Need to fix Fd_DNDF48 in feed library as affecting calculation
         "Dt_RUPIn.dt"
     ]
     for name in values_to_remove:
