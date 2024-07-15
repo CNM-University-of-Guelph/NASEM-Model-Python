@@ -996,15 +996,9 @@ def calculate_Dt_NIn(Dt_CPIn: float) -> float:
     return Dt_NIn
 
 
-def calculate_Dt_RUPIn(Dt_CPAIn: float,
-                       Dt_NPNIn: float,
-                       Dt_RUPBIn: float,
-                       Dt_CPCIn: float,
-                       coeff_dict: dict,
+def calculate_Dt_RUPIn(coeff_dict: dict,
                        Fd_RUPIn: pd.Series=None
 ) -> float:
-    req_coeffs = ['fCPAdu', 'IntRUP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
     # The feed summation is not as accurate as the equation below
     Dt_RUPIn = Fd_RUPIn.sum()  # Line 616
     Dt_RUPIn = 0 if Dt_RUPIn < 0 else Dt_RUPIn # Line 617
@@ -2407,8 +2401,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         )
     diet_data['Dt_NIn'] = calculate_Dt_NIn(diet_data['Dt_CPIn'])
     diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(
-        diet_data['Dt_CPAIn'], diet_data['Dt_NPNIn'], diet_data['Dt_RUPBIn'], 
-        diet_data['Dt_CPCIn'], coeff_dict, Fd_RUPIn=diet_info['Fd_RUPIn']
+        coeff_dict, Fd_RUPIn=diet_info['Fd_RUPIn']
         )
     diet_data['Dt_RUP_CP'] = calculate_Dt_RUP_CP(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
