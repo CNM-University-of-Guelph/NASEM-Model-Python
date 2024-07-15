@@ -456,19 +456,17 @@ def calculate_Mlk_CP(Mlk_CP_g: float) -> float:
     return Mlk_CP
 
 
-def calculate_Mlk_AA_g(Mlk_NP_g: float, 
-                       coeff_dict: dict,
-                       AA_list: list
+def calculate_Mlk_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Mlk_AA_TP = np.array([coeff_dict[f"Mlk_{AA}_TP"] for AA in AA_list])
+    return Mlk_AA_TP
+
+
+def calculate_Mlk_AA_g(Mlk_NP_g: float,
+                       Mlk_AA_TP: float
 ) -> pd.Series:
     """
     Mlk_AA_g: AA output in milk protein 
     """
-    req_coeff = [
-        'Mlk_Arg_TP', 'Mlk_His_TP', 'Mlk_Ile_TP', 'Mlk_Leu_TP', 'Mlk_Lys_TP',
-        'Mlk_Met_TP', 'Mlk_Phe_TP', 'Mlk_Thr_TP', 'Mlk_Trp_TP', 'Mlk_Val_TP'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    Mlk_AA_TP = np.array([coeff_dict[f"Mlk_{AA}_TP"] for AA in AA_list])
     Mlk_AA_g = Mlk_NP_g * Mlk_AA_TP / 100  # Line 2216-2225
     return Mlk_AA_g
 
@@ -515,14 +513,17 @@ def calculate_MlkNP_AnCP(Mlk_NP_g: float, An_CPIn: float) -> float:
     return MlkNP_AnCP
 
 
-def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series, 
-                         diet_data: pd.DataFrame,
-                         AA_list: list
+def calculate_Dt_AAIn(AA_list: list, diet_data: dict) -> np.ndarray:
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    return Dt_AAIn
+
+
+def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series,
+                         Dt_AAIn: np.ndarray
 ) -> float:
     """
     MlkAA_DtAA: Milk AA as a fraction of diet AA intake (g/g)
     """
-    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
     MlkAA_DtAA = Mlk_AA_g / Dt_AAIn  # Line 2243-2252
     return MlkAA_DtAA
 
