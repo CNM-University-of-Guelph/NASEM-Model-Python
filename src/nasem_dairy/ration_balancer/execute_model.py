@@ -1065,7 +1065,8 @@ def execute_model(user_diet: pd.DataFrame,
     
     # Gestation Requirement
     Gest_REgain = energy.calculate_Gest_REgain(GrUter_BWgain, coeff_dict)
-    Gest_MEuse = energy.calculate_Gest_MEuse(Gest_REgain)
+    Ky_ME_NE = energy.calculate_Ky_ME_NE(Gest_REgain)
+    Gest_MEuse = energy.calculate_Gest_MEuse(Gest_REgain, Ky_ME_NE)
 
     # Milk Production Requirement
     Trg_NEmilk_Milk = milk.calculate_Trg_NEmilk_Milk(
