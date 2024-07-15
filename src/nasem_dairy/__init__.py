@@ -406,7 +406,18 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_AnNPxAA_AbsAA,
     calculate_AnNPxEAA_AbsEAA,
     calculate_AnNPxAAUser_AbsAA,
-    calculate_AnNPxEAAUser_AbsEAA
+    calculate_AnNPxEAAUser_AbsEAA,
+    calculate_MiTPAAProf,
+    calculate_mPrt_k_AA_array,
+    calculate_An_IdAAIn,
+    calculate_Inf_AA_g,
+    calculate_EndAAProf,
+    calculate_Dt_AARUPIn,
+    calculate_Inf_AARUPIn,
+    calculate_Dt_AAIn,
+    calculate_RecAA,
+    calculate_MWAA,
+    calculate_Body_AA_TP
 )
 
 

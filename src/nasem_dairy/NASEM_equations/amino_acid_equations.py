@@ -8,19 +8,19 @@ import pandas as pd
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
-
-def calculate_Du_AAMic(Du_MiTP_g: float, 
-                       AA_list: list, 
-                       coeff_dict: dict
-) -> float:
+def calculate_MiTPAAProf(AA_list: list, coeff_dict: dict) -> np.ndarray:
     req_coeffs = [
         'MiTPArgProf', 'MiTPHisProf', 'MiTPIleProf', 'MiTPLeuProf',
         'MiTPLysProf', 'MiTPMetProf', 'MiTPPheProf', 'MiTPThrProf',
         'MiTPTrpProf', 'MiTPValProf'
     ]
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    AA_coeffs = np.array([coeff_dict[f"MiTP{AA}Prof"] for AA in AA_list])
-    Du_AAMic = Du_MiTP_g * AA_coeffs / 100  # Line 1573-1582
+    MiTPAAProf = np.array([coeff_dict[f"MiTP{AA}Prof"] for AA in AA_list])
+    return MiTPAAProf
+
+
+def calculate_Du_AAMic(Du_MiTP_g: float, MiTPAAProf: np.ndarray) -> np.ndarray:
+    Du_AAMic = Du_MiTP_g * MiTPAAProf / 100  # Line 1573-1582
     return Du_AAMic
 
 
@@ -31,15 +31,27 @@ def calculate_Du_IdAAMic(Du_AAMic: float, coeff_dict: dict) -> float:
     return Du_IdAAMic
 
 
-def calculate_Abs_AA_g(AA_list: list, 
-                       An_data: dict, 
-                       infusion_data: dict, 
+def calculate_mPrt_k_AA_array(mPrt_coeff: dict, AA_list: list) -> np.ndarray:
+    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}"] for AA in AA_list])
+    return mPrt_k_AA
+
+
+def calculate_An_IdAAIn(An_data: dict, AA_list: list) -> np.ndarray:
+    An_IdAAIn = pd.Series([An_data[f"An_Id{AA}In"] for AA in AA_list],
+                          index=AA_list)
+    return An_IdAAIn
+
+
+def calculate_Inf_AA_g(infusion_data: dict, AA_list: list) -> np.ndarray:
+    Inf_AA_g = pd.Series([infusion_data[f"Inf_{AA}_g"] for AA in AA_list],
+                         index=AA_list)
+    return Inf_AA_g
+
+
+def calculate_Abs_AA_g(An_IdAAIn: np.ndarray,
+                       Inf_AA_g: np.ndarray, 
                        Inf_Art: float
 ) -> pd.Series:
-    An_IdAAIn = pd.Series([An_data[f'An_Id{AA}In'] for AA in AA_list],
-                          index=AA_list)
-    Inf_AA_g = pd.Series([infusion_data[f'Inf_{AA}_g'] for AA in AA_list],
-                         index=AA_list)
     Abs_AA_g = An_IdAAIn + Inf_AA_g * Inf_Art
     return Abs_AA_g
 
@@ -171,80 +183,91 @@ def calculate_mPrt_k_EAA2(mPrtmx_Met2: float,
     return mPrt_k_EAA2
 
 
-def calculate_Du_AAEndP(Du_EndCP_g: float,
-                        AA_list: list,
-                        coeff_dict: dict
-) -> pd.Series:
-    """
-    Du_AAEndP: Duodenal EndPAA, g hydrated true AA/d 
-    """
-    # Duodenal EndPAA, g hydrated true AA/d
+def calculate_EndAAProf(AA_list: list, coeff_dict: dict) -> np.ndarray:
     req_coeffs = [
         'EndArgProf', 'EndHisProf', 'EndIleProf', 'EndLeuProf', 'EndLysProf',
         'EndMetProf', 'EndPheProf', 'EndThrProf', 'EndTrpProf', 'EndValProf'
     ]
     ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
-    AA_coeffs = np.array([coeff_dict[f"End{AA}Prof"] for AA in AA_list])
-    Du_AAEndP = Du_EndCP_g * AA_coeffs / 100  # Lines 1585-1594
+    EndAAProf = np.array([coeff_dict[f"End{AA}Prof"] for AA in AA_list])
+    return EndAAProf
+
+
+def calculate_Du_AAEndP(Du_EndCP_g: float,
+                        EndAAProf: np.ndarray
+) -> pd.Series:
+    """
+    Du_AAEndP: Duodenal EndPAA, g hydrated true AA/d 
+    """
+    # Duodenal EndPAA, g hydrated true AA/d
+    Du_AAEndP = Du_EndCP_g * EndAAProf / 100  # Lines 1585-1594
     return Du_AAEndP
 
 
-def calculate_Du_AA(diet_data: dict,
-                    infusion_data: dict, 
+def calculate_Dt_AARUPIn(AA_list: list, diet_data: dict) -> np.ndarray:
+    Dt_AARUPIn = np.array([diet_data[f"Dt_{AA}RUPIn"] for AA in AA_list])
+    return Dt_AARUPIn
+
+
+def calculate_Inf_AARUPIn(AA_list: list, infusion_data: dict) -> np.ndarray:
+    Inf_AARUPIn = np.array([infusion_data[f"Inf_{AA}RUPIn"] for AA in AA_list])
+    return Inf_AARUPIn
+
+
+def calculate_Du_AA(Dt_AARUPIn: np.ndarray,
+                    Inf_AARUPIn: np.ndarray,
                     Du_AAMic: float,
-                    Du_AAEndP: float,
-                    AA_list: list
+                    Du_AAEndP: float
 ) -> pd.Series:
     """
     Du_AA: Total ruminal AA outflows, g hydr, fully recovered AA/d (true protein bound AA flows)
     """
     # Total ruminal AA outflows, g hydr, fully recovered AA/d (true protein bound AA flows)
     # These should have _g at the end of each
-    Dt_AARUPIn = np.array([diet_data[f"Dt_{AA}RUPIn"] for AA in AA_list])
-    Inf_AARUPIn = np.array([infusion_data[f"Inf_{AA}RUPIn"] for AA in AA_list])
     Du_AA = Dt_AARUPIn + Inf_AARUPIn + Du_AAMic + Du_AAEndP  # Line 1597-1606
     return Du_AA
 
 
+def calculate_Dt_AAIn(AA_list: list, diet_data: dict) -> np.ndarray:
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    return Dt_AAIn
+
+
 def calculate_DuAA_AArg(Du_AA: pd.Series, 
-                        diet_data: dict, 
-                        AA_list: list
+                        Dt_AAIn: np.ndarray
 ) -> pd.Series:
     """
     DuAA_DtAA: Duodenal AA flow expressed as a fraction of dietary AA
     """
     # Duodenal AA flow expressed as a fraction of dietary AA, 
     # ruminally infused included in Du but not Dt
-    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
     DuAA_DtAA = Du_AA / Dt_AAIn  # Line 1610-1619
     return DuAA_DtAA
 
 
+def calculate_RecAA(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    RecAA = np.array([coeff_dict[f"Rec{AA}"] for AA in AA_list])
+    return RecAA
+
+
 def calculate_Du_AA24h(Du_AA: pd.Series, 
-                       AA_list: list, 
-                       coeff_dict: dict
+                       RecAA: np.ndarray
 ) -> pd.Series:
     """
     Du_AA24h: g hydrat 24h recovered AA/d
     """
     # The following predicted AA flows are for comparison to observed 
     # Duod AA flows, g hydrat 24h recovered AA/d
-    RecAA = np.array([coeff_dict[f"Rec{AA}"] for AA in AA_list])
     Du_AA24h = Du_AA * RecAA  # Line 1622-1631
     return Du_AA24h
 
 
-def calculate_IdAA_DtAA(diet_data: dict, 
-                        An_data: dict,
-                        AA_list: list
-) -> np.array:
+def calculate_IdAA_DtAA(Dt_AAIn: np.ndarray, An_IdAAIn: np.ndarray) -> np.array:
     """
     IdAA_DtAA: Intestinally Digested AA flow expressed as a fraction of dietary AA
     """
     # Intestinally Digested AA flow expressed as a fraction of dietary AA
     # ruminally and intesntinally infused included in id but not Dt
-    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
-    An_IdAAIn = np.array([An_data[f'An_Id{AA}In'] for AA in AA_list])
     IdAA_DtAA = An_IdAAIn / Dt_AAIn  # Lines 1728-1737
     return IdAA_DtAA
 
@@ -273,26 +296,30 @@ def calculate_Abs_AA_DEI(Abs_AA_g: pd.Series, An_DEIn: float) -> pd.Series:
     return Abs_AA_DEI
 
 
-def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, 
-                         coeff_dict: dict,
-                         AA_list: list
-) -> np.array:
+def calculate_MWAA(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    MWAA = np.array([coeff_dict[f"MW{AA}"] for AA in AA_list])
+    return MWAA
+
+
+def calculate_Abs_AA_mol(Abs_AA_g: pd.Series, MWAA: np.ndarray) -> np.array:
     """
     Abs_AA_mol: moles of absorbed AA (mol/d)
     """
-    MWAA = np.array([coeff_dict[f"MW{AA}"] for AA in AA_list])
     Abs_AA_mol = Abs_AA_g / MWAA  # Line 1823-1832
     return Abs_AA_mol
 
 
+def calculate_Body_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
+    return Body_AA_TP
+
+
 def calculate_Body_AAGain_g(Body_NPgain_g: float,
-                            coeff_dict: dict,
-                            AA_list: list
+                            Body_AA_TP: np.ndarray
 ) -> np.array:
     """
     Body_AAGain_g: Body AA gain (g/d)
     """
-    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
     Body_AAGain_g = Body_NPgain_g * Body_AA_TP / 100  # Line 2497-2506
     return Body_AAGain_g
 
