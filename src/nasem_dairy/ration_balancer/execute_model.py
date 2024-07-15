@@ -848,6 +848,7 @@ def execute_model(user_diet: pd.DataFrame,
         )
     MlkEAA_AbsEAA = milk.calculate_MlkEAA_AbsEAA(Mlk_EAA_g, Abs_EAA_g)
     MlkNP_AnCP = milk.calculate_MlkNP_AnCP(Mlk_NP_g, An_data['An_CPIn'])
+    Dt_AAIn = milk.calculate_Dt_AAIn(AA_list, diet_data)
     AA_values['MlkAA_DtAA'] = milk.calculate_MlkAA_DtAA(
         AA_values['Mlk_AA_g'], Dt_AAIn
         )

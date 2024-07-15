@@ -513,6 +513,11 @@ def calculate_MlkNP_AnCP(Mlk_NP_g: float, An_CPIn: float) -> float:
     return MlkNP_AnCP
 
 
+def calculate_Dt_AAIn(AA_list: list, diet_data: dict) -> np.ndarray:
+    Dt_AAIn = np.array([diet_data[f"Dt_{AA}In"] for AA in AA_list])
+    return Dt_AAIn
+
+
 def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series,
                          Dt_AAIn: np.ndarray
 ) -> float:
