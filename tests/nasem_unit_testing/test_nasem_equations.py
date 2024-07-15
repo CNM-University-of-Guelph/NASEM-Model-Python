@@ -68,6 +68,11 @@ def test_from_json(json_file: str) -> None:
                 ):
                 input_params["mPrt_coeff"] = nd.mPrt_coeff_list[0]  # NOTE Is there a way to select dynamically for unit tests?
 
+            if (("f_Imb" in input_params) and
+                input_params["f_Imb"] == None
+                ):
+                input_params["f_Imb"] = nd.f_Imb
+
             # Convert data types
             if "df" in input_params:
                 input_params["df"] = pd.DataFrame(input_params["df"])           
