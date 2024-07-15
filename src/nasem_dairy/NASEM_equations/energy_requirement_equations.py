@@ -730,7 +730,12 @@ def calculate_Gest_REgain(GrUter_BWgain: float, coeff_dict: dict) -> float:
     return Gest_REgain
 
 
-def calculate_Gest_MEuse(Gest_REgain: float) -> float:
+def calculate_Ky_ME_NE(Gest_REgain: float) -> float:
+    Ky_ME_NE = 0.14 if Gest_REgain >= 0 else 0.89
+    return Ky_ME_NE
+
+
+def calculate_Gest_MEuse(Gest_REgain: float, Ky_ME_NE: float) -> float:
     """
     *Calculate Gestation (Gest) Metabolizable Energy (ME) Use*
 
@@ -772,7 +777,6 @@ def calculate_Gest_MEuse(Gest_REgain: float) -> float:
     nd.calculate_Gest_MEuse(Gest_REgain)
     ```
     """
-    Ky_ME_NE = 0.14 if Gest_REgain >= 0 else 0.89
     # Gain from Ferrell et al, 1976, and loss assumed = Rsrv loss, Line 2860
     Gest_MEuse = Gest_REgain / Ky_ME_NE
     return Gest_MEuse

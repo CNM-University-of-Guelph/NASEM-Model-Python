@@ -101,12 +101,12 @@
     },
     {
       "Name": "calculate_Gest_MEuse",
-      "Input": {"Gest_REgain": -3},
+      "Input": {"Gest_REgain": -3, "Ky_ME_NE": 0.89},
       "Output": -3.3707865168539324
     },
     {
       "Name": "calculate_Gest_MEuse",
-      "Input": {"Gest_REgain": 2},
+      "Input": {"Gest_REgain": 2, "Ky_ME_NE": 0.14},
       "Output": 14.285714285714285
     },
     {
