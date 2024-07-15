@@ -25,7 +25,8 @@ from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Dt_DMIn_DryCow1_FarOff,
     calculate_Dt_DMIn_DryCow1_Close,
     calculate_Dt_DMIn_DryCow2,
-    calculate_Dt_DMIn_Calf1
+    calculate_Dt_DMIn_Calf1,
+    calculate_Dt_DMIn_DryCow_AdjGest
 )
 
 from nasem_dairy.NASEM_equations.milk_equations import (
@@ -77,7 +78,9 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkNP_AbsEAA,
     calculate_MlkNP_AbsNEAA,
     calculate_MlkNP_AbsOthAA,
-    calculate_Trg_Mlk_NP
+    calculate_Trg_Mlk_NP,
+    calculate_Mlk_AA_TP,
+    calculate_Dt_AAIn
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -349,7 +352,8 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_An_NPxprt_MP,
     calculate_An_CP_NP,
     calculate_An_NPBal_g,
-    calculate_An_NPBal
+    calculate_An_NPBal,
+    calculate_Scrf_AA_TP
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (
@@ -406,7 +410,18 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_AnNPxAA_AbsAA,
     calculate_AnNPxEAA_AbsEAA,
     calculate_AnNPxAAUser_AbsAA,
-    calculate_AnNPxEAAUser_AbsEAA
+    calculate_AnNPxEAAUser_AbsEAA,
+    calculate_MiTPAAProf,
+    calculate_mPrt_k_AA_array,
+    calculate_An_IdAAIn,
+    calculate_Inf_AA_g,
+    calculate_EndAAProf,
+    calculate_Dt_AARUPIn,
+    calculate_Inf_AARUPIn,
+    calculate_Dt_AAIn,
+    calculate_RecAA,
+    calculate_MWAA,
+    calculate_Body_AA_TP
 )
 
 
@@ -558,7 +573,8 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Fet_BWgain,
     calculate_Gest_AA_g,
     calculate_Gest_EAA_g,
-    calculate_GestAA_AbsAA
+    calculate_GestAA_AbsAA,
+    calculate_Body_AA_TP
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
@@ -594,7 +610,9 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DE,
     calculate_Fe_AAMet_g,
     calculate_Fe_AAMet_AbsAA,
-    calculate_Fe_MPendUse_g
+    calculate_Fe_MPendUse_g,
+    calculate_K_FeCPend_ClfLiq,
+    calculate_Fe_AAMetab_TP
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
@@ -696,7 +714,8 @@ from nasem_dairy.NASEM_equations.urine_equations import (
     calculate_Ur_Nout_CPcatab,
     calculate_UrDE_DMIn,
     calculate_UrDE_GEIn,
-    calculate_UrDE_DEIn
+    calculate_UrDE_DEIn,
+    calculate_Ur_AAEnd_TP
 )
 
 from nasem_dairy.NASEM_equations.energy_requirement_equations import (
@@ -759,7 +778,9 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_An_MPuse_MEuse,
     calculate_Trg_MPuse_MEuse,
     calculate_Km_ME_NE_Clf,
-    calculate_Km_ME_NE
+    calculate_Km_ME_NE,
+    calculate_Trg_NEmilkOut,
+    calculate_Ky_ME_NE
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (

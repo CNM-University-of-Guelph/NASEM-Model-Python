@@ -226,6 +226,9 @@ def execute_model(user_diet: pd.DataFrame,
         animal_input['An_PrePartWk']
         )
     An_PrePartWkDurat = An_PrePartWklim * 2
+    Trg_NEmilkOut = energy.calculate_Trg_NEmilkOut(
+        Trg_NEmilk_Milk, animal_input['Trg_MilkProd']
+        )
 
     ####################
     # Equation selection
@@ -239,9 +242,9 @@ def execute_model(user_diet: pd.DataFrame,
     elif equation_selection['DMIn_eqn'] == 8:
         # print("using DMIn_eqn: 8")
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_Lact1(
-            animal_input['Trg_MilkProd'], animal_input['An_BW'],
-            animal_input['An_BCS'], animal_input['An_LactDay'],
-            animal_input['An_Parity_rl'], Trg_NEmilk_Milk
+            animal_input['An_BW'], animal_input['An_BCS'], 
+            animal_input['An_LactDay'], animal_input['An_Parity_rl'], 
+            Trg_NEmilkOut
             )
     elif equation_selection['DMIn_eqn'] == 9:
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_Lact2(
@@ -420,9 +423,12 @@ def execute_model(user_diet: pd.DataFrame,
                 animal_input['An_BW'], Dt_DMIn_BW_LateGest_i
                 )
     elif equation_selection['DMIn_eqn'] == 11:
+        Dt_DMIn_DryCow_AdjGest = DMI.calculate_Dt_DMIn_DryCow_AdjGest(
+            animal_input["An_GestDay"], animal_input["An_GestLength"],
+            animal_input["An_BW"]
+        )
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_DryCow2(
-            animal_input['An_BW'], animal_input['An_GestDay'], 
-            animal_input['An_GestLength']
+            animal_input['An_BW'], Dt_DMIn_DryCow_AdjGest
             )
     else:
         # It needs to catch all possible solutions, otherwise it's possible that
@@ -616,11 +622,13 @@ def execute_model(user_diet: pd.DataFrame,
         An_data_initial['An_idRUPIn']
         )
     Fe_RumMiCP = fecal.calculate_Fe_RumMiCP(Du_MiCP, Du_idMiCP)
+    K_FeCPend_ClfLiq = fecal.calculate_K_FeCPend_ClfLiq(
+        equation_selection["NonMilkCP_ClfLiq"]
+        )
     Fe_CPend_g = fecal.calculate_Fe_CPend_g(
         animal_input['An_StatePhys'], An_data_initial['An_DMIn'], 
         An_data_initial['An_NDF'], animal_input['DMI'], 
-        diet_data_initial['Dt_DMIn_ClfLiq'], 
-        equation_selection["NonMilkCP_ClfLiq"]
+        diet_data_initial['Dt_DMIn_ClfLiq'], K_FeCPend_ClfLiq
         )
     Fe_CPend = fecal.calculate_Fe_CPend(Fe_CPend_g)
     Fe_CP = fecal.calculate_Fe_CP(
@@ -664,30 +672,32 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Step 7.2: Microbial Amino Acid Calculations
     ########################################
+    MiTPAAProf = AA.calculate_MiTPAAProf(AA_list, coeff_dict)
+    EndAAProf = AA.calculate_EndAAProf(AA_list, coeff_dict)
+    Dt_AARUPIn = AA.calculate_Dt_AARUPIn(AA_list, diet_data_initial)
+    Inf_AARUPIn = AA.calculate_Inf_AARUPIn(AA_list, infusion_data)
+    Dt_AAIn = AA.calculate_Dt_AAIn(AA_list, diet_data_initial)
+    RecAA = AA.calculate_RecAA(AA_list, coeff_dict)
     # Dataframe for storing all individual amino acid values
     AA_values = pd.DataFrame(index=AA_list)
-    AA_values['Du_AAMic'] = AA.calculate_Du_AAMic(
-        Du_MiTP_g, AA_list, coeff_dict
-        )
+    AA_values["Du_AAMic"] = AA.calculate_Du_AAMic(Du_MiTP_g, MiTPAAProf)
     AA_values['Du_IdAAMic'] = AA.calculate_Du_IdAAMic(
         AA_values['Du_AAMic'], coeff_dict
         )
     AA_values['Du_AAEndP'] = AA.calculate_Du_AAEndP(
-        Du_EndCP_g, AA_list, coeff_dict
+        Du_EndCP_g, EndAAProf
         )
     AA_values['Du_AA'] = AA.calculate_Du_AA(
-        diet_data_initial, infusion_data, AA_values['Du_AAMic'], 
-        AA_values['Du_AAEndP'], AA_list
+        Dt_AARUPIn, Inf_AARUPIn, AA_values['Du_AAMic'], AA_values['Du_AAEndP']
         )
     Du_EAA_g = AA_values['Du_AA'].sum()
     AA_values['DuAA_DtAA'] = AA.calculate_DuAA_AArg(
-        AA_values['Du_AA'], diet_data_initial, AA_list
+        AA_values['Du_AA'], Dt_AAIn
         )
     AA_values['Du_AA24h'] = AA.calculate_Du_AA24h(
-        AA_values['Du_AA'], AA_list, coeff_dict
+        AA_values['Du_AA'], RecAA
         )
-    # AA_values['IdAA_DtAA'] = calculate_IdAA_DtAA(diet_data_initial, An_data_initial, AA_list)
-
+    
     ########################################
     # Step 7.3: Complete diet_data and An_data
     ########################################
@@ -760,9 +770,13 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 8: Amino Acid Calculations
     ########################################
     # Create array from of coefficients for the AA calculations
-    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{AA}"] for AA in AA_list])
+    mPrt_k_AA = AA.calculate_mPrt_k_AA_array(mPrt_coeff, AA_list)
+    An_IdAAIn = AA.calculate_An_IdAAIn(An_data, AA_list)
+    Inf_AA_g = AA.calculate_Inf_AA_g(infusion_data, AA_list)
+    MWAA = AA.calculate_MWAA(AA_list, coeff_dict)
+    Body_AA_TP = AA.calculate_Body_AA_TP(AA_list, coeff_dict)
     AA_values['Abs_AA_g'] = AA.calculate_Abs_AA_g(
-        AA_list, An_data, infusion_data, infusion_data['Inf_Art']
+        An_IdAAIn, Inf_AA_g, infusion_data['Inf_Art']
         )
     AA_values['mPrtmx_AA'] = AA.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
     f_mPrt_max = protein.calculate_f_mPrt_max(
@@ -778,7 +792,7 @@ def execute_model(user_diet: pd.DataFrame,
     AA_values['mPrt_k_AA'] = AA.calculate_mPrt_k_AA(
         AA_values['mPrtmx_AA2'], AA_values['mPrt_AA_01'], AA_values['AA_mPrtmx']
         )
-    AA_values['IdAA_DtAA'] = AA.calculate_IdAA_DtAA(diet_data, An_data, AA_list)
+    AA_values['IdAA_DtAA'] = AA.calculate_IdAA_DtAA(Dt_AAIn, An_IdAAIn)
 
     Abs_EAA_g = AA.calculate_Abs_EAA_g(AA_values['Abs_AA_g'])
     Abs_neAA_g = AA.calculate_Abs_neAA_g(An_MPIn_g, Abs_EAA_g)
@@ -801,7 +815,7 @@ def execute_model(user_diet: pd.DataFrame,
         AA_values['Abs_AA_g'], An_data['An_DEIn']
         )
     AA_values['Abs_AA_mol'] = AA.calculate_Abs_AA_mol(
-        AA_values['Abs_AA_g'], coeff_dict, AA_list
+        AA_values['Abs_AA_g'], MWAA
         )
     ########################################
     # Step 11: Milk Production Prediciton
@@ -825,9 +839,8 @@ def execute_model(user_diet: pd.DataFrame,
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
     Mlk_CP = milk.calculate_Mlk_CP(Mlk_CP_g)
-    AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(
-        Mlk_NP_g, coeff_dict, AA_list
-        )
+    Mlk_AA_TP = milk.calculate_Mlk_AA_TP(AA_list, coeff_dict)
+    AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
     Mlk_EAA_g = milk.calculate_Mlk_EAA_g(AA_values['Mlk_AA_g'])
     MlkNP_AnMP = milk.calculate_MlkNP_AnMP(Mlk_NP_g, An_MPIn_g)
     AA_values['MlkAA_AbsAA'] = milk.calculate_MlkAA_AbsAA(
@@ -835,11 +848,13 @@ def execute_model(user_diet: pd.DataFrame,
         )
     MlkEAA_AbsEAA = milk.calculate_MlkEAA_AbsEAA(Mlk_EAA_g, Abs_EAA_g)
     MlkNP_AnCP = milk.calculate_MlkNP_AnCP(Mlk_NP_g, An_data['An_CPIn'])
+    Dt_AAIn = milk.calculate_Dt_AAIn(AA_list, diet_data)
     AA_values['MlkAA_DtAA'] = milk.calculate_MlkAA_DtAA(
-        AA_values['Mlk_AA_g'], diet_data, AA_list
+        AA_values['Mlk_AA_g'], Dt_AAIn
         )
     # Fecal AA loss
-    Fe_AAMet_g = fecal.calculate_Fe_AAMet_g(Fe_NPend_g, coeff_dict, AA_list)
+    Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(AA_list, coeff_dict)   
+    Fe_AAMet_g = fecal.calculate_Fe_AAMet_g(Fe_NPend_g, Fe_AAMetab_TP)
     Fe_AAMet_AbsAA = fecal.calculate_Fe_AAMet_AbsAA(
         Fe_AAMet_g, AA_values['Abs_AA_g']
         )
@@ -925,8 +940,9 @@ def execute_model(user_diet: pd.DataFrame,
         Gest_NPgain_g, coeff_dict
         )
     Gest_CPuse_g = gestation.calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict)
+    Body_AA_TP = gestation.calculate_Body_AA_TP(AA_list, coeff_dict)
     AA_values['Gest_AA_g'] = gestation.calculate_Gest_AA_g(
-        Gest_NPuse_g, coeff_dict, AA_list
+        Gest_NPuse_g, Body_AA_TP
         )
     Gest_EAA_g = gestation.calculate_Gest_EAA_g(AA_values['Gest_AA_g'])
     AA_values['GestAA_AbsAA'] = gestation.calculate_GestAA_AbsAA(
@@ -1053,7 +1069,8 @@ def execute_model(user_diet: pd.DataFrame,
     
     # Gestation Requirement
     Gest_REgain = energy.calculate_Gest_REgain(GrUter_BWgain, coeff_dict)
-    Gest_MEuse = energy.calculate_Gest_MEuse(Gest_REgain)
+    Ky_ME_NE = energy.calculate_Ky_ME_NE(Gest_REgain)
+    Gest_MEuse = energy.calculate_Gest_MEuse(Gest_REgain, Ky_ME_NE)
 
     # Milk Production Requirement
     Trg_NEmilk_Milk = milk.calculate_Trg_NEmilk_Milk(
@@ -1080,7 +1097,8 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Scrf_NP = protein.calculate_Scrf_NP(Scrf_NP_g)
     Scrf_N_g = protein.calculate_Scrf_N_g(Scrf_CP_g)
-    Scrf_AA_g = protein.calculate_Scrf_AA_g(Scrf_NP_g, coeff_dict, AA_list)
+    Scrf_AA_TP = protein.calculate_Scrf_AA_TP(AA_list, coeff_dict)
+    Scrf_AA_g = protein.calculate_Scrf_AA_g(Scrf_NP_g, Scrf_AA_TP)
     ScrfAA_AbsAA = protein.calculate_ScrfAA_AbsAA(
         Scrf_AA_g, AA_values['Abs_AA_g']
         )
@@ -1103,8 +1121,9 @@ def execute_model(user_diet: pd.DataFrame,
     Ur_NPend = urine.calculate_Ur_NPend(Ur_NPend_g)
     Ur_MPend = urine.calculate_Ur_MPend(Ur_NPend)
     Ur_EAAend_g = urine.calculate_Ur_EAAend_g(animal_input['An_BW'])
+    Ur_AAEnd_TP = urine.calculate_Ur_AAEnd_TP(AA_list, coeff_dict)
     Ur_AAEnd_g = urine.calculate_Ur_AAEnd_g(
-        Ur_EAAend_g, Ur_NPend_3MH_g, coeff_dict, AA_list
+        Ur_EAAend_g, Ur_NPend_3MH_g, Ur_AAEnd_TP
         )
     Ur_AAEnd_AbsAA = urine.calculate_Ur_AAEnd_AbsAA(
         Ur_AAEnd_g, AA_values['Abs_AA_g']
@@ -1177,7 +1196,7 @@ def execute_model(user_diet: pd.DataFrame,
     An_CPm_Use = animal.calculate_An_CPm_Use(Scrf_CP_g, Fe_CPend_g, Ur_NPend_g)
     # AA for Body Gain
     AA_values['Body_AAGain_g'] = AA.calculate_Body_AAGain_g(
-        Body_NPgain_g, coeff_dict, AA_list
+        Body_NPgain_g, Body_AA_TP
         )
     Body_EAAGain_g = AA.calculate_Body_EAAGain_g(AA_values['Body_AAGain_g'])
     AA_values['BodyAA_AbsAA'] = AA.calculate_BodyAA_AbsAA(
@@ -1708,8 +1727,6 @@ def execute_model(user_diet: pd.DataFrame,
     Rum_MiCP_DigCHO = micp.calculate_Rum_MiCP_DigCHO(
         Du_MiCP, Rum_DigNDFIn, Rum_DigStIn
         )
-    An_IdAAIn = pd.Series([An_data[f'An_Id{AA}In'] for AA in AA_list],
-                          index=AA_list)
     Dt_IdAARUPIn = pd.Series([diet_data[f'Dt_Id{AA}RUPIn'] for AA in AA_list],
                              index=AA_list)
     Mlk_AA_TP = pd.Series([coeff_dict[f"Mlk_{AA}_TP"] for AA in AA_list],
