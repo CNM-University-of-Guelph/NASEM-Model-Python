@@ -6,6 +6,8 @@ import pytest
 
 import nasem_dairy as nd
 
+rtol = 1e-3
+atol = 1e-2
 
 def find_json_files() -> list:
     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -20,9 +22,7 @@ def load_json(file_path: str) -> pd.DataFrame:
 
 
 def compare_dicts_with_tolerance(input: dict, 
-                                 output: dict, 
-                                 rtol: float = 1e-3,
-                                 atol: float = 1e-2
+                                 output: dict
 ) -> None:
     for key in (key for key in input if key in output):
         try:
@@ -38,6 +38,12 @@ def compare_dicts_with_tolerance(input: dict,
         raise KeyError(f"Keys {missing_keys} not found in the output dictionary")
 
 
+def compare_series_with_tolerance(input: pd.Series,
+                                  output: pd.Series
+) -> bool:
+    return np.allclose(input, output, rtol=rtol, atol=atol)
+
+
 @pytest.mark.parametrize("json_file", find_json_files())
 def test_from_json(json_file: str) -> None:
     input_data = load_json(json_file)
@@ -46,6 +52,7 @@ def test_from_json(json_file: str) -> None:
             func = getattr(nd, row.Name)
             input_params = row.Input.copy()
             
+            # Load constants
             if (("coeff_dict" in input_params) and
                 input_params["coeff_dict"] == None
                 ):
@@ -61,11 +68,24 @@ def test_from_json(json_file: str) -> None:
                 ):
                 input_params["mPrt_coeff"] = nd.mPrt_coeff_list[0]  # NOTE Is there a way to select dynamically for unit tests?
 
+            # Convert data types
             if "df" in input_params:
                 input_params["df"] = pd.DataFrame(input_params["df"])           
-           
-            if isinstance(row.Output, dict):
+            
+            convert_to_series = [key for key in input_params.keys() 
+                                 if key.endswith('_series')]
+            for key in convert_to_series:
+                input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
+
+            # Run test
+            if isinstance(row.Output, list):
+                output_series = pd.Series(row.Output)
+                input_series = func(**input_params)
+                assert compare_series_with_tolerance(input_series, output_series)
+
+            elif isinstance(row.Output, dict):
                 compare_dicts_with_tolerance(func(**input_params), row.Output)
+
             else:
                 assert func(**input_params) == pytest.approx(row.Output), (
                     f"{row.Name} failed: {func(**input_params)}" 
