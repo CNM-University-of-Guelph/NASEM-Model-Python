@@ -570,7 +570,8 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Fet_BWgain,
     calculate_Gest_AA_g,
     calculate_Gest_EAA_g,
-    calculate_GestAA_AbsAA
+    calculate_GestAA_AbsAA,
+    calculate_Body_AA_TP
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (

@@ -210,14 +210,17 @@ def calculate_Fet_BWgain(An_GestDay: int,
     return Fet_BWgain
 
 
+def calculate_Body_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
+    return Body_AA_TP
+
+
 def calculate_Gest_AA_g(Gest_NPuse_g: float, 
-                        coeff_dict: dict,
-                        AA_list: list
-) -> np.array:
+                        Body_AA_TP: np.ndarray
+) -> np.ndarray:
     """
     Gest_AA_g: AA deposited in gravid uterus (g/d)
     """
-    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
     Gest_AA_g = Gest_NPuse_g * Body_AA_TP / 100  # Line 2367-2376
     return Gest_AA_g
 
