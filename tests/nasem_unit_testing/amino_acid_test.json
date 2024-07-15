@@ -281,5 +281,70 @@
     "Name": "calculate_AnNPxEAAUser_AbsEAA",
     "Input": {"Trg_EAAUse_g": 4302, "Gest_EAA_g": 329, "Ur_EAAEnd_g": 630, "Abs_EAA_g": 2014, "coeff_dict": null},
     "Output": 8.637566551832132
+  },
+  {
+    "Name": "calculate_Du_AAMic",
+    "Input": {"Du_MiTP_g": 1293, "MiTPAAProf_series": [4.1, 5.9, 3.2]},
+    "Output": [53.01299999999999, 76.287, 41.376000000000005]
+  },
+  {
+    "Name": "calculate_MiTPAAProf",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [5.47, 2.21, 6.99, 9.23, 9.44, 2.63, 6.3, 6.23, 1.37, 6.88]
+  },
+  {
+    "Name": "calculate_mPrt_k_AA_array",
+    "Input": {"mPrt_coeff": null, "AA_list": null},
+    "Output": [0.0, 1.675, 0.885, 0.466, 1.153, 1.839, 0.0, 0.0, 0.0, 0.0]
+  },
+  {
+    "Name": "calculate_Abs_EAA2_g",
+    "Input": {"Abs_AA_g_series": {"Arg": 3.4, "His": 1.2, "Ile": 2.4, "Leu": 4.3, "Lys": 2.9, "Met": 5.2, "Phe": 2.3, "Thr": 1.9, "Trp": 4.1, "Val": 8.5}},
+    "Output": 170.66000000000003
+  },
+  {
+    "Name": "calculate_EndAAProf",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [4.61, 2.9, 4.09, 7.67, 6.23, 1.26, 3.98, 5.18, 1.29, 5.29]
+  },
+  {
+    "Name": "calculate_Du_AA",
+    "Input": {"Dt_AARUPIn": 43.9, "Inf_AARUPIn": 129.1, "Du_AAMic_series": [2.4, 5.1, 6.3], "Du_AAEndP": [3.9, 5.1, 2.4]},
+    "Output": [179.3, 183.2, 181.7]
+  },
+  {
+    "Name": "calculate_DuAA_AArg",
+    "Input": {"Du_AA_series": [3.5, 5.9, 8.2], "Dt_AAIn_series": [4.2, 6.4, 1.9]},
+    "Output": [0.833333, 0.921875, 4.315789]
+  },
+  {
+    "Name": "calculate_RecAA",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [0.94250707, 0.93196645, 0.89285714, 0.93896714, 0.9380863,  0.95238095, 0.94250707, 0.93720712, 0.94339623, 0.90744102]
+  },
+  {
+    "Name": "calculate_Du_AA24h",
+    "Input": {"Du_AA_series": [4.1, 3.5, 6.7], "RecAA_series": [8.4, 9.1, 4.5]},
+    "Output": [34.44, 31.85, 30.15]
+  },
+  {
+    "Name": "calculate_IdAA_DtAA",
+    "Input": {"Dt_AAIn_series": [5.2, 6.2, 1.3], "An_IdAAIn_series": [5.7, 7.3, 9.4]},
+    "Output": [1.096154, 1.177419, 7.230769]
+  },
+  {
+    "Name": "calculate_MWAA",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [174.2, 155.2, 131.2, 131.2, 146.2, 149.2, 165.2, 119.1, 204.2, 117.2]
+  },
+  {
+    "Name": "calculate_Abs_AA_mol",
+    "Input": {"Abs_AA_g_series": [6.4, 7.3, 1.9], "MWAA_series": [7.4, 2.8, 5.3]},
+    "Output": [0.864865, 2.607143, 0.358491]
+  },
+  {
+    "Name": "calculate_Body_AA_TP",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
   }
 ]

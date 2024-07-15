@@ -73,6 +73,12 @@ def test_from_json(json_file: str) -> None:
                 ):
                 input_params["f_Imb"] = nd.f_Imb
 
+            if (("AA_list" in input_params) and
+                input_params["AA_list"] == None
+                ):
+                input_params["AA_list"] = ["Arg", "His", "Ile", "Leu", "Lys", 
+                                           "Met", "Phe", "Thr", "Trp", "Val"]
+
             # Convert data types
             if "df" in input_params:
                 input_params["df"] = pd.DataFrame(input_params["df"])           
