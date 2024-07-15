@@ -78,7 +78,9 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkNP_AbsEAA,
     calculate_MlkNP_AbsNEAA,
     calculate_MlkNP_AbsOthAA,
-    calculate_Trg_Mlk_NP
+    calculate_Trg_Mlk_NP,
+    calculate_Mlk_AA_TP,
+    calculate_Dt_AAIn
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (

@@ -839,9 +839,8 @@ def execute_model(user_diet: pd.DataFrame,
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
     Mlk_CP = milk.calculate_Mlk_CP(Mlk_CP_g)
-    AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(
-        Mlk_NP_g, coeff_dict, AA_list
-        )
+    Mlk_AA_TP = milk.calculate_Mlk_AA_TP(AA_list, coeff_dict)
+    AA_values['Mlk_AA_g'] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
     Mlk_EAA_g = milk.calculate_Mlk_EAA_g(AA_values['Mlk_AA_g'])
     MlkNP_AnMP = milk.calculate_MlkNP_AnMP(Mlk_NP_g, An_MPIn_g)
     AA_values['MlkAA_AbsAA'] = milk.calculate_MlkAA_AbsAA(
@@ -849,8 +848,9 @@ def execute_model(user_diet: pd.DataFrame,
         )
     MlkEAA_AbsEAA = milk.calculate_MlkEAA_AbsEAA(Mlk_EAA_g, Abs_EAA_g)
     MlkNP_AnCP = milk.calculate_MlkNP_AnCP(Mlk_NP_g, An_data['An_CPIn'])
+    Dt_AAIn = milk.calculate_Dt_AAIn(AA_list, diet_data)
     AA_values['MlkAA_DtAA'] = milk.calculate_MlkAA_DtAA(
-        AA_values['Mlk_AA_g'], diet_data, AA_list
+        AA_values['Mlk_AA_g'], Dt_AAIn
         )
     # Fecal AA loss
     Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(AA_list, coeff_dict)   
