@@ -16,22 +16,22 @@
     },
     {
       "Name": "calculate_Fe_CPend_g",
-      "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": -1},
+      "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "K_FeCPend_ClfLiq": 11.9},
       "Output": 338.92
     },
     {
         "Name": "calculate_Fe_CPend_g",
-        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": 0},
+        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "K_FeCPend_ClfLiq": 11.9},
         "Output": 338.92
     },
     {
         "Name": "calculate_Fe_CPend_g",
-        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "NonMilkCP_ClfLiq": 5},
+        "Input": {"An_StatePhys": "Calf", "An_DMIn": 20, "An_NDF": 15, "Dt_DMIn": 12.4, "Dt_DMIn_ClfLiq": 8.4, "K_FeCPend_ClfLiq": 34.4},
         "Output": 527.92
     },
     {
         "Name": "calculate_Fe_CPend_g",
-        "Input": {"An_StatePhys": "Heifer", "An_DMIn": 10, "An_NDF": 5, "Dt_DMIn": 4.67, "Dt_DMIn_ClfLiq": 0, "NonMilkCP_ClfLiq": 0},
+        "Input": {"An_StatePhys": "Heifer", "An_DMIn": 10, "An_NDF": 5, "Dt_DMIn": 4.67, "Dt_DMIn_ClfLiq": 0, "K_FeCPend_ClfLiq": 11.9},
         "Output": 58.842
     },
     {

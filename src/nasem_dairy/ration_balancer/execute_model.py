@@ -622,11 +622,13 @@ def execute_model(user_diet: pd.DataFrame,
         An_data_initial['An_idRUPIn']
         )
     Fe_RumMiCP = fecal.calculate_Fe_RumMiCP(Du_MiCP, Du_idMiCP)
+    K_FeCPend_ClfLiq = fecal.calculate_K_FeCPend_ClfLiq(
+        equation_selection["NonMilkCP_ClfLiq"]
+        )
     Fe_CPend_g = fecal.calculate_Fe_CPend_g(
         animal_input['An_StatePhys'], An_data_initial['An_DMIn'], 
         An_data_initial['An_NDF'], animal_input['DMI'], 
-        diet_data_initial['Dt_DMIn_ClfLiq'], 
-        equation_selection["NonMilkCP_ClfLiq"]
+        diet_data_initial['Dt_DMIn_ClfLiq'], K_FeCPend_ClfLiq
         )
     Fe_CPend = fecal.calculate_Fe_CPend(Fe_CPend_g)
     Fe_CP = fecal.calculate_Fe_CP(
@@ -851,7 +853,8 @@ def execute_model(user_diet: pd.DataFrame,
         AA_values['Mlk_AA_g'], diet_data, AA_list
         )
     # Fecal AA loss
-    Fe_AAMet_g = fecal.calculate_Fe_AAMet_g(Fe_NPend_g, coeff_dict, AA_list)
+    Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(AA_list, coeff_dict)   
+    Fe_AAMet_g = fecal.calculate_Fe_AAMet_g(Fe_NPend_g, Fe_AAMetab_TP)
     Fe_AAMet_AbsAA = fecal.calculate_Fe_AAMet_AbsAA(
         Fe_AAMet_g, AA_values['Abs_AA_g']
         )

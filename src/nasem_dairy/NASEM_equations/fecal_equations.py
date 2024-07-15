@@ -29,12 +29,17 @@ def calculate_Fe_RumMiCP(Du_MiCP: float, Du_idMiCP: float) -> float:
     return Fe_RumMiCP
 
 
+def calculate_K_FeCPend_ClfLiq(NonMilkCP_ClfLiq: int):
+    K_FeCPend_ClfLiq = 34.4 if NonMilkCP_ClfLiq > 0 else 11.9
+    return K_FeCPend_ClfLiq
+
+
 def calculate_Fe_CPend_g(An_StatePhys: str, 
                          An_DMIn: float,
                          An_NDF: float, 
                          Dt_DMIn: float, 
                          Dt_DMIn_ClfLiq: float, 
-                         NonMilkCP_ClfLiq: int
+                         K_FeCPend_ClfLiq: float
 ) -> float:
     '''
     An_DMIn = DMI + Infusion from calculate_An_DMIn()
@@ -47,7 +52,6 @@ def calculate_Fe_CPend_g(An_StatePhys: str,
         # Originally K_FeCPend_ClfLiq is set to 11.9 in book; but can be either 11.9 or 34.4
         # (An_DMIn - Dt_DMIn_ClfLiq) represents solid feed DM intake
         # should only be called if calf:
-        K_FeCPend_ClfLiq = 34.4 if NonMilkCP_ClfLiq > 0 else 11.9
         Fe_CPend_g = (K_FeCPend_ClfLiq * Dt_DMIn_ClfLiq + 
                       20.6 * (An_DMIn - Dt_DMIn_ClfLiq))
     else:
@@ -319,14 +323,17 @@ def calculate_Fe_DE(Fe_DEout: float, An_DMIn: float) -> float:
     return Fe_DE
 
 
+def calculate_Fe_AAMetab_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Fe_AAMetab_TP = np.array([coeff_dict[f"Fe_{AA}Metab_TP"] for AA in AA_list])
+    return Fe_AAMetab_TP
+
+
 def calculate_Fe_AAMet_g(Fe_NPend_g: float, 
-                         coeff_dict: dict,
-                         AA_list: list
-) -> np.array:
+                         Fe_AAMetab_TP: np.ndarray
+) -> np.ndarray:
     """
     Fe_AAMet_g: Metabolic fecal AA (g/d)
     """
-    Fe_AAMetab_TP = np.array([coeff_dict[f"Fe_{AA}Metab_TP"] for AA in AA_list])
     Fe_AAMet_g = Fe_NPend_g * Fe_AAMetab_TP / 100  # Lines 1994-2003
     return Fe_AAMet_g
 

@@ -606,7 +606,9 @@ from nasem_dairy.NASEM_equations.fecal_equations import (
     calculate_Fe_DE,
     calculate_Fe_AAMet_g,
     calculate_Fe_AAMet_AbsAA,
-    calculate_Fe_MPendUse_g
+    calculate_Fe_MPendUse_g,
+    calculate_K_FeCPend_ClfLiq,
+    calculate_Fe_AAMetab_TP
 )   
 
 from nasem_dairy.NASEM_equations.body_composition_equations import (
