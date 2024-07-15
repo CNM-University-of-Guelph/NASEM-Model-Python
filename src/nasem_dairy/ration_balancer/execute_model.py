@@ -1097,7 +1097,8 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Scrf_NP = protein.calculate_Scrf_NP(Scrf_NP_g)
     Scrf_N_g = protein.calculate_Scrf_N_g(Scrf_CP_g)
-    Scrf_AA_g = protein.calculate_Scrf_AA_g(Scrf_NP_g, coeff_dict, AA_list)
+    Scrf_AA_TP = protein.calculate_Scrf_AA_TP(AA_list, coeff_dict)
+    Scrf_AA_g = protein.calculate_Scrf_AA_g(Scrf_NP_g, Scrf_AA_TP)
     ScrfAA_AbsAA = protein.calculate_ScrfAA_AbsAA(
         Scrf_AA_g, AA_values['Abs_AA_g']
         )
