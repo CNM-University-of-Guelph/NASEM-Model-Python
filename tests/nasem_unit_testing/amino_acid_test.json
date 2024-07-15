@@ -27,12 +27,11 @@
     {
       "Name": "calculate_Abs_AA_g",
       "Input": {
-          "AA_list": ["Arg", "Met"],
-          "An_data": {"An_IdArgIn": 2.6, "An_IdMetIn": 3.1},
-          "infusion_data": {"Inf_Arg_g": 0.7, "Inf_Met_g": 0.3},
+          "An_IdAAIn_series": [3.5, 8.5, 2.9],
+          "Inf_AA_g_series": [1.2, 4.1, 7.3], 
           "Inf_Art": 0.03
       },
-      "Output": [2.621, 3.109]
+      "Output": [3.536, 8.623, 3.119]
     },
     {
       "Name": "calculate_mPrtmx_AA",
@@ -113,7 +112,7 @@
   },
   {
       "Name": "calculate_Du_AAEndP",
-      "Input": {"Du_EndCP_g": 15.8, "AA_list": ["Arg", "His", "Met"], "coeff_dict": null},
+      "Input": {"Du_EndCP_g": 15.8, "EndAAProf_series": [4.61, 2.90, 1.26]},
       "Output": [0.72838, 0.4582, 0.19908]
   },
   {
@@ -133,7 +132,7 @@
   },
   {
       "Name": "calculate_Body_AAGain_g",
-      "Input": {"Body_NPgain_g": 719, "coeff_dict": null, "AA_list": ["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]},
+      "Input": {"Body_NPgain_g": 719, "Body_AA_TP_series": [8.20, 3.04, 3.69, 8.27, 7.90, 2.37, 4.41, 4.84, 1.05, 5.15]},
       "Output": [58.958, 21.8576, 26.5311, 59.4613, 56.801, 17.0403, 31.7079, 34.7996, 7.5495, 37.0285]
   },
   {
