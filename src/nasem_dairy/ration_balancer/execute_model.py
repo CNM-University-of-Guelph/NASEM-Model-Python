@@ -1121,8 +1121,9 @@ def execute_model(user_diet: pd.DataFrame,
     Ur_NPend = urine.calculate_Ur_NPend(Ur_NPend_g)
     Ur_MPend = urine.calculate_Ur_MPend(Ur_NPend)
     Ur_EAAend_g = urine.calculate_Ur_EAAend_g(animal_input['An_BW'])
+    Ur_AAEnd_TP = urine.calculate_Ur_AAEnd_TP(AA_list, coeff_dict)
     Ur_AAEnd_g = urine.calculate_Ur_AAEnd_g(
-        Ur_EAAend_g, Ur_NPend_3MH_g, coeff_dict, AA_list
+        Ur_EAAend_g, Ur_NPend_3MH_g, Ur_AAEnd_TP
         )
     Ur_AAEnd_AbsAA = urine.calculate_Ur_AAEnd_AbsAA(
         Ur_AAEnd_g, AA_values['Abs_AA_g']

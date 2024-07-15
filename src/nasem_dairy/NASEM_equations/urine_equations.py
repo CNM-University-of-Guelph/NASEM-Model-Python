@@ -156,15 +156,18 @@ def calculate_Ur_EAAend_g(An_BW: float) -> float:
     return Ur_EAAend_g
 
 
+def calculate_Ur_AAEnd_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Ur_AAEnd_TP = np.array([coeff_dict[f"Ur_{AA}End_TP"] for AA in AA_list])
+    return Ur_AAEnd_TP
+
+
 def calculate_Ur_AAEnd_g(Ur_EAAend_g: float, 
                          Ur_NPend_3MH_g: float,
-                         coeff_dict: dict, 
-                         AA_list: list
+                         Ur_AAEnd_TP: np.ndarray
 ) -> pd.Series:
     """
     Ur_AAEnd_g: Endogenous AA in urine (g/d)
     """
-    Ur_AAEnd_TP = np.array([coeff_dict[f"Ur_{AA}End_TP"] for AA in AA_list])
     Ur_AAEnd_g = Ur_EAAend_g * Ur_AAEnd_TP / 100  # Line 2036-2045
     Ur_AAEnd_g[1] += Ur_NPend_3MH_g  # Urea plus 3-MHis, Line 2037
     return Ur_AAEnd_g
