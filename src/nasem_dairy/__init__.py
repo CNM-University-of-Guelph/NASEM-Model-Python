@@ -25,7 +25,8 @@ from nasem_dairy.NASEM_equations.DMI_equations import (
     calculate_Dt_DMIn_DryCow1_FarOff,
     calculate_Dt_DMIn_DryCow1_Close,
     calculate_Dt_DMIn_DryCow2,
-    calculate_Dt_DMIn_Calf1
+    calculate_Dt_DMIn_Calf1,
+    calculate_Dt_DMIn_DryCow_AdjGest
 )
 
 from nasem_dairy.NASEM_equations.milk_equations import (
@@ -770,7 +771,8 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_An_MPuse_MEuse,
     calculate_Trg_MPuse_MEuse,
     calculate_Km_ME_NE_Clf,
-    calculate_Km_ME_NE
+    calculate_Km_ME_NE,
+    calculate_Trg_NEmilkOut
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (

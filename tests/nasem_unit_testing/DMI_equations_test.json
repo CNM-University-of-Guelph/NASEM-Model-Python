@@ -106,7 +106,7 @@
     },
     {
       "Name": "calculate_Dt_DMIn_Lact1",
-      "Input": {"Trg_MilkProd": 30, "An_BW": 700, "An_BCS": 3, "An_LactDay": 160, "An_Parity_rl": 1, "Trg_NEmilk_Milk": 0.75},
+      "Input": {"An_BW": 700, "An_BCS": 3, "An_LactDay": 160, "An_Parity_rl": 1, "Trg_NEmilkOut": 22.5},
       "Output": 23.894448
     },
     {
@@ -121,7 +121,7 @@
     },
     {
       "Name": "calculate_Dt_DMIn_DryCow2",
-      "Input": {"An_BW": 675, "An_GestDay": 105, "An_GestLength": 280},
+      "Input": {"An_BW": 675, "Dt_DMIn_DryCow_AdjGest": 0},
       "Output": 13.35825
     },
     {

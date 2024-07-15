@@ -1324,3 +1324,10 @@ def calculate_Km_ME_NE(An_StatePhys: str) -> float:
     else:
         Km_ME_NE = 0.63 # Km_ME_NE_Heif
     return Km_ME_NE
+
+
+def calculate_Trg_NEmilkOut(Trg_NEmilk_Milk: float, 
+                            Trg_MilkProd: float
+) -> float:
+    Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd  # Line 387
+    return Trg_NEmilkOut
