@@ -940,8 +940,9 @@ def execute_model(user_diet: pd.DataFrame,
         Gest_NPgain_g, coeff_dict
         )
     Gest_CPuse_g = gestation.calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict)
+    Body_AA_TP = gestation.calculate_Body_AA_TP(AA_list, coeff_dict)
     AA_values['Gest_AA_g'] = gestation.calculate_Gest_AA_g(
-        Gest_NPuse_g, coeff_dict, AA_list
+        Gest_NPuse_g, Body_AA_TP
         )
     Gest_EAA_g = gestation.calculate_Gest_EAA_g(AA_values['Gest_AA_g'])
     AA_values['GestAA_AbsAA'] = gestation.calculate_GestAA_AbsAA(
