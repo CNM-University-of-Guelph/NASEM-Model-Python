@@ -238,20 +238,17 @@ def calculate_Dt_DMIn_Heif_HJ2(An_BW:float, Dt_NDFdev_DMI: float) -> float:
 
 
 # DMIn_eqn == 8
-def calculate_Dt_DMIn_Lact1(Trg_MilkProd: float, 
-                            An_BW: float, 
+def calculate_Dt_DMIn_Lact1(An_BW: float, 
                             An_BCS: float, 
                             An_LactDay: int,
                             An_Parity_rl: int, 
-                            Trg_NEmilk_Milk: float
+                            Trg_NEmilkOut: float
 ) -> float:
     """
     Calculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.
 
     Parameters
     ----------
-    Trg_MilkProd : float
-        Target milk production in kg per day.
     An_BW : float
         The body weight of the lactating cow in kg.
     An_BCS : float
@@ -260,8 +257,8 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd: float,
         The lactation day of the cow.
     An_Parity_rl : int
         The parity of the cow (number of times calved).
-    Trg_NEmilk_Milk : float
-        Net energy of milk production in Mcal per kg of milk.
+    Trg_NEmilkOut : float
+        Net energy of milk production in Mcal.
 
     Returns
     -------
@@ -282,12 +279,11 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd: float,
     ```python
     import nasem_dairy as nd
     nd.calculate_Dt_DMIn_Lact1(
-        Trg_MilkProd=30,
         An_BW=600,
         An_BCS=3.5,
         An_LactDay=120,
         An_Parity_rl=2,
-        Trg_NEmilk_Milk=0.65
+        Trg_NEmilkOut=0.65
     )
     ```
 
@@ -296,8 +292,6 @@ def calculate_Dt_DMIn_Lact1(Trg_MilkProd: float,
     float
         The predicted dry matter intake (DMI) for the given parameters.
     """
-    Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd  # Line 387
-    # Trg_NEmilkOut is only used for this DMI calculation
     Dt_DMIn_Lact1 = ((3.7 + 5.7 * (An_Parity_rl - 1) + 0.305 * Trg_NEmilkOut + 
                       0.022 * An_BW + 
                       (-0.689 - 1.87 * (An_Parity_rl - 1)) * An_BCS) * 
@@ -336,10 +330,9 @@ def calculate_Dt_DMIn_DryCow1_Close(An_BW: float,
     return Dt_DMIn_DryCow1_Close
 
 
-# DMIn_eqn == 11
-def calculate_Dt_DMIn_DryCow2(An_BW: float, 
-                              An_GestDay: int, 
-                              An_GestLength: int
+def calculate_Dt_DMIn_DryCow_AdjGest(An_GestDay: int,
+                                     An_GestLength: int,
+                                     An_BW: float
 ) -> float:
     # from Hayirli et al., 2003 JDS
     if (An_GestDay - An_GestLength) < -21:
@@ -349,6 +342,13 @@ def calculate_Dt_DMIn_DryCow2(An_BW: float,
             An_BW * (-0.756 * math.exp(0.154 * (An_GestDay - An_GestLength))) 
             / 100
             )
+    return Dt_DMIn_DryCow_AdjGest
+
+
+# DMIn_eqn == 11
+def calculate_Dt_DMIn_DryCow2(An_BW: float, 
+                              Dt_DMIn_DryCow_AdjGest: float
+) -> float:
     Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest
     return Dt_DMIn_DryCow2
 

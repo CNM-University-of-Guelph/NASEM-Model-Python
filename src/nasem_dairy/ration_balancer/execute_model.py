@@ -226,6 +226,9 @@ def execute_model(user_diet: pd.DataFrame,
         animal_input['An_PrePartWk']
         )
     An_PrePartWkDurat = An_PrePartWklim * 2
+    Trg_NEmilkOut = energy.calculate_Trg_NEmilkOut(
+        Trg_NEmilk_Milk, animal_input['Trg_MilkProd']
+        )
 
     ####################
     # Equation selection
@@ -239,9 +242,9 @@ def execute_model(user_diet: pd.DataFrame,
     elif equation_selection['DMIn_eqn'] == 8:
         # print("using DMIn_eqn: 8")
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_Lact1(
-            animal_input['Trg_MilkProd'], animal_input['An_BW'],
-            animal_input['An_BCS'], animal_input['An_LactDay'],
-            animal_input['An_Parity_rl'], Trg_NEmilk_Milk
+            animal_input['An_BW'], animal_input['An_BCS'], 
+            animal_input['An_LactDay'], animal_input['An_Parity_rl'], 
+            Trg_NEmilkOut
             )
     elif equation_selection['DMIn_eqn'] == 9:
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_Lact2(
@@ -420,9 +423,12 @@ def execute_model(user_diet: pd.DataFrame,
                 animal_input['An_BW'], Dt_DMIn_BW_LateGest_i
                 )
     elif equation_selection['DMIn_eqn'] == 11:
+        Dt_DMIn_DryCow_AdjGest = DMI.calculate_Dt_DMIn_DryCow_AdjGest(
+            animal_input["An_GestDay"], animal_input["An_GestLength"],
+            animal_input["An_BW"]
+        )
         animal_input['DMI'] = DMI.calculate_Dt_DMIn_DryCow2(
-            animal_input['An_BW'], animal_input['An_GestDay'], 
-            animal_input['An_GestLength']
+            animal_input['An_BW'], Dt_DMIn_DryCow_AdjGest
             )
     else:
         # It needs to catch all possible solutions, otherwise it's possible that
