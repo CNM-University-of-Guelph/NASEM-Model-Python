@@ -352,7 +352,8 @@ from nasem_dairy.NASEM_equations.protein_equations import (
     calculate_An_NPxprt_MP,
     calculate_An_CP_NP,
     calculate_An_NPBal_g,
-    calculate_An_NPBal
+    calculate_An_NPBal,
+    calculate_Scrf_AA_TP
 )
 
 from nasem_dairy.NASEM_equations.amino_acid_equations import (

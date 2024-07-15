@@ -80,14 +80,15 @@ def calculate_Scrf_N_g(Scrf_CP_g: float) -> float:
     return Scrf_N_g
 
 
-def calculate_Scrf_AA_g(Scrf_NP_g: float, 
-                        coeff_dict: dict,
-                        AA_list: list
-) -> np.array:
+def calculate_Scrf_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
+    Scrf_AA_TP = np.array([coeff_dict[f"Scrf_{AA}_TP"] for AA in AA_list])
+    return Scrf_AA_TP
+
+
+def calculate_Scrf_AA_g(Scrf_NP_g: float, Scrf_AA_TP: np.ndarray) -> np.ndarray:
     """
     Scrf_AA_g: AA in scurf (g/d)
     """
-    Scrf_AA_TP = np.array([coeff_dict[f"Scrf_{AA}_TP"] for AA in AA_list])
     Scrf_AA_g = Scrf_NP_g * Scrf_AA_TP / 100  # Lines 1969-1978
     return Scrf_AA_g
 
