@@ -73,5 +73,264 @@
       "Name": "calculate_mPrt_k_AA",
       "Input": {"mPrtmx_AA2": [1], "mPrt_AA_01": [0.5], "AA_mPrtmx": [0.1]},
       "Output": [58.57864376]
-    }
-  ]
+    },
+    {
+      "Name": "calculate_Abs_AA_g",
+      "Input": {
+          "AA_list": ["Arg", "Met"],
+          "An_data": {"An_IdArgIn": 2.6, "An_IdMetIn": 3.1},
+          "infusion_data": {"Inf_Arg_g": 0.7, "Inf_Met_g": 0.3},
+          "Inf_Art": 0.03
+      },
+      "Output": [2.621, 3.109]
+    },
+    {
+      "Name": "calculate_mPrtmx_AA",
+      "Input": {"mPrt_k_AA": 0.4, "mPrt_coeff": null},
+      "Output": [18.604651162790702]
+    },
+    {
+      "Name": "calculate_AA_mPrtmx",
+      "Input": {"mPrt_k_AA": 1.3, "mPrt_coeff": null},
+      "Output": [302.3255813953488]
+  },
+  {
+      "Name": "calculate_mPrt_AA_01",
+      "Input": {"AA_mPrtmx": 0.5, "mPrt_k_AA": 0.9, "mPrt_coeff": null},
+      "Output": [0.044994625]
+  },
+  {
+      "Name": "calculate_mPrt_k_AA",
+      "Input": {"mPrtmx_AA2_series": [0.1, 3.2], 
+                "mPrt_AA_01_series": [1.3, 1.2], 
+                "AA_mPrtmx_series": [0.5, 0.1]},
+      "Output": [0, 134.03557437]
+  },
+  {
+      "Name": "calculate_Abs_EAA_g",
+      "Input": {"Abs_AA_g_series": [0.4, 1.6, 5.3]},
+      "Output": [7.3]
+  },
+  {
+      "Name": "calculate_Abs_neAA_g",
+      "Input": {"An_MPIn_g": 4319, "Abs_EAA_g": 132.7},
+      "Output": 4834.15
+  },
+  {
+      "Name": "calculate_Abs_OthAA_g",
+      "Input": {"Abs_neAA_g": 12.7, "Abs_AA_g_series": {"Arg": 1.6, "Phe": 2.7, "Thr": 4.9, "Trp": 1.3, "Val": 0.6}},
+      "Output": 23.8
+  },
+  {
+      "Name": "calculate_Abs_EAA2_g",
+      "Input": {"Abs_AA_g_series": {"Arg": 2.7, "His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1, "Phe": 1.6, "Thr": 5.1, "Trp": 8.6, "Val": 9.3}},
+      "Output": 244.54000000000002
+  },
+  {
+      "Name": "calculate_Abs_EAA2_HILKM_g",
+      "Input": {"Abs_AA_g_series": {"His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1}},
+      "Output": 48.230000000000004
+  },
+  {
+      "Name": "calculate_Abs_EAA2_RHILKM_g",
+      "Input": {"Abs_AA_g_series": {"Arg": 2.7, "His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1}},
+      "Output": 55.519999999999996
+  },
+  {
+      "Name": "calculate_Abs_EAA2_HILKMT_g",
+      "Input": {"Abs_AA_g_series": {"His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1, "Thr": 5.1}},
+      "Output": 74.24000000000001
+  },
+  {
+      "Name": "calculate_Abs_EAA2b_g",
+      "Input": {"mPrt_eqn": 1, "Abs_AA_g_series": {"Arg": 2.7, "His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1, "Phe": 1.6, "Thr": 5.1, "Trp": 8.6, "Val": 9.3}},
+      "Output": 48.230000000000004
+  },
+  {
+    "Name": "calculate_Abs_EAA2b_g",
+    "Input": {"mPrt_eqn": 2, "Abs_AA_g_series": {"Arg": 2.7, "His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1, "Phe": 1.6, "Thr": 5.1, "Trp": 8.6, "Val": 9.3}},
+    "Output": 55.519999999999996
+  },
+  {
+    "Name": "calculate_Abs_EAA2b_g",
+    "Input": {"mPrt_eqn": 3, "Abs_AA_g_series": {"Arg": 2.7, "His": 3.9, "Ile": 5.1, "Leu": 1.4, "Lys": 0.8, "Met": 2.1, "Phe": 1.6, "Thr": 5.1, "Trp": 8.6, "Val": 9.3}},
+    "Output": 74.24000000000001
+  },  
+  {
+      "Name": "calculate_mPrt_k_EAA2",
+      "Input": {"mPrtmx_Met2": 3.1, "mPrt_Met_0_1": 2.4, "Met_mPrtmx": 2.9},
+      "Output": -10.152390338510724
+  },
+  {
+      "Name": "calculate_Du_AAEndP",
+      "Input": {"Du_EndCP_g": 15.8, "AA_list": ["Arg", "His", "Met"], "coeff_dict": null},
+      "Output": [0.72838, 0.4582, 0.19908]
+  },
+  {
+      "Name": "calculate_Abs_AA_MPp",
+      "Input": {"Abs_AA_g_series": [2.8, 9.4, 3.1], "An_MPIn_g": 3012},
+      "Output": [0.092961, 0.312085, 0.102922]
+  },
+  {
+      "Name": "calculate_Abs_AA_p",
+      "Input": {"Abs_AA_g_series": [4.1, 0.6, 8.3], "Abs_EAA_g": 519},
+      "Output": [0.789981, 0.115607, 1.599229]
+  },
+  {
+      "Name": "calculate_Abs_AA_DEI",
+      "Input": {"Abs_AA_g_series": [1.9, 4.2, 6.0], "An_DEIn": 2004},
+      "Output": [0.000948, 0.002096, 0.002994]
+  },
+  {
+      "Name": "calculate_Body_AAGain_g",
+      "Input": {"Body_NPgain_g": 719, "coeff_dict": null, "AA_list": ["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]},
+      "Output": [58.958, 21.8576, 26.5311, 59.4613, 56.801, 17.0403, 31.7079, 34.7996, 7.5495, 37.0285]
+  },
+  {
+      "Name": "calculate_Body_EAAGain_g",
+      "Input": {"Body_AAGain_g_series": [1.4, 4.05, 10.4]},
+      "Output": 15.85
+  },
+  {
+      "Name": "calculate_BodyAA_AbsAA",
+      "Input": {"Body_AAGain_g_series": [5.9, 4.2, 5.1], "Abs_AA_g_series": [2.7, 4.3, 0.6]},
+      "Output": [2.185185, 0.976744, 8.500000]
+  },
+  {
+      "Name": "calculate_An_AAUse_g",
+      "Input": {
+          "Gest_AA_g_series": [2.9, 5.1, 6.3],
+          "Mlk_AA_g_series": [9.8, 3.2, 4.7],
+          "Body_AAGain_g_series": [0.5, 3.1, 2.6],
+          "Scrf_AA_g_series": [1.8, 6.1, 2.7],
+          "Fe_AAMet_g_series": [7.3, 3.4, 9.4],
+          "Ur_AAEnd_g_series": [3.9, 2.9, 4.1]
+      },
+      "Output": [26.2, 23.8, 29.8]
+  },
+  {
+      "Name": "calculate_An_EAAUse_g",
+      "Input": {"An_AAUse_g_series": [4.6, 2.8, 6.1]},
+      "Output": 13.5
+  },
+  {
+      "Name": "calculate_AnAAUse_AbsAA",
+      "Input": {"An_AAUse_g_series": [6.3, 4.9, 5.9], "Abs_AA_g_series": [2.9, 5.1, 1.0]},
+      "Output": [2.172414, 0.960784, 5.900000]
+  },
+  {
+      "Name": "calculate_AnEAAUse_AbsEAA",
+      "Input": {"An_EAAUse_g": 1230, "Abs_EAA_g": 715},
+      "Output": 1.7202797202797202
+  },
+  {
+      "Name": "calculate_An_AABal_g",
+      "Input": {"Abs_AA_g_series": [2.5, 5.8, 6.3], "An_AAUse_g_series": [4.8, 3.1, 4.6]},
+      "Output": [-2.3, 2.7, 1.7]
+  },
+  {
+      "Name": "calculate_An_EAABal_g",
+      "Input": {"Abs_EAA_g": 385, "An_EAAUse_g": 512},
+      "Output": -127
+  },
+  {
+      "Name": "calculate_Trg_AbsEAA_NPxprtEAA",
+      "Input": {"Trg_AbsAA_NPxprtAA_series": [7.4, 5.9, 3.2]},
+      "Output": [1.8333333333333333]
+  },
+  {
+      "Name": "calculate_Trg_AbsArg_NPxprtArg",
+      "Input": {"Trg_AbsEAA_NPxprtEAA": 1061},
+      "Output": 1061
+  },
+  {
+      "Name": "calculate_Trg_AAEff_EAAEff",
+      "Input": {"Trg_AbsAA_NPxprtAA_series": [9.4, 2.5, 6.1], "Trg_AbsEAA_NPxprtEAA": 0.75},
+      "Output": [12.5333333, 3.333333, 8.133333]
+  },
+  {
+      "Name": "calculate_An_AAEff_EAAEff",
+      "Input": {"An_AAUse_AbsAA_series": [8.4, 6.1, 3.9], "AnEAAUse_AbsEAA_series": [6.0, 4.8, 7.2]},
+      "Output": [1.400000, 1.270833, 0.541667]
+  },
+  {
+      "Name": "calculate_Imb_AA",
+      "Input": {"An_AAEff_EAAEff_series": {"Arg": 6.2, "His": 4.6, "Ile": 3.9, "Leu": 6.1, "Lys": 8.4, "Met": 10, "Phe": 5.9, "Thr": 4.7, "Trp": 9.2, "Val": 5.5}, "Trg_AAEff_EAAEff": 0.63, "f_Imb": null},
+      "Output": [31.0249, 15.7609, 10.6929, 29.9209, 60.3729, 87.7969, 27.7729, 16.5649, 73.4449, 23.7169]
+  },
+  {
+      "Name": "calculate_Imb_EAA",
+      "Input": {"Imb_AA_series": [4.9, 3.8, 2.3]},
+      "Output": 11.0
+  },
+  {
+      "Name": "calculate_An_IdEAAIn",
+      "Input": {"An_IdAAIn_series": [6.8, 4.9, 2.8]},
+      "Output": 14.5
+  },
+  {
+      "Name": "calculate_Du_IdEAAMic",
+      "Input": {"Du_IdAAMic": [4.6, 2.9, 3.8]},
+      "Output": 11.3
+  },
+  {
+      "Name": "calculate_Dt_IdEAARUPIn",
+      "Input": {"Dt_IdAARUPIn": [2.9, 4.2, 5.1]},
+      "Output": 12.2
+  },
+  {
+      "Name": "calculate_Trg_Mlk_AA_g",
+      "Input": {"Trg_Mlk_NP_g": 3295,"Mlk_AA_TP_series": [0.5, 1.6, 2.5]},
+      "Output": [16.475, 52.720, 82.375]
+  },
+  {
+      "Name": "calculate_Trg_Mlk_EAA_g",
+      "Input": {"Trg_Mlk_AA_g": {}},
+      "Output": 15.100000000000001
+  },
+  {
+    "Name": "calculate_Trg_AAUse_g",
+    "Input": {"Trg_Mlk_AA_g_series": [2.5, 3.5, 2.9], "Scrf_AA_g_series": [3.8, 9.4, 1.2], "Fe_AAMet_g_series": [2.1, 4.5, 3.7], "Ur_AAEnd_g_series": [3.4, 2.6, 4.8], "Gest_AA_g_series": [1.9, 3.8, 2.8], "Body_AAGain_g_series": [7.2, 3.6, 5.8]},
+    "Output": [20.9, 27.4, 21.2]
+  },
+  {
+    "Name": "calculate_Trg_EAAUse_g",
+    "Input": {"Trg_AAUse_g_series": [2.5, 3.5, 2.9]},
+    "Output": 8.9
+  },
+  {
+    "Name": "calculate_Trg_AbsAA_g",
+    "Input": {"Trg_Mlk_AA_g_series": [2.8, 3.6, 2.0], "Scrf_AA_g_series": [4.7, 6.3, 4.1], "Fe_AAMet_g_series": [2.9, 4.5, 1.0], "Trg_AbsAA_NPxprtAA_series": [1.6, 6.3, 6.8], "Ur_AAEnd_g_series": [7.4, 5.2, 8.9], "Gest_AA_g_series": [3.9, 5.2, 6.4], "Body_AAGain_g_series": [1.8, 2.6, 3.1], "Kg_MP_NP_Trg": 0.4, "coeff_dict": null},
+    "Output": [30.218182, 29.743290, 37.088057]
+  },
+  {
+    "Name": "calculate_Trg_AbsEAA_g",
+    "Input": {"Trg_AbsAA_g_series": [2.8, 3.6, 2.0]},
+    "Output": 8.4
+  },
+  {
+    "Name": "calculate_Trg_MlkEAA_AbsEAA",
+    "Input": {"Mlk_EAA_g": 2396, "Mlk_Arg_g": 302, "Trg_AbsEAA_g": 1279},
+    "Output": 1.63721657544957
+  },
+  {
+    "Name": "calculate_AnNPxAA_AbsAA",
+    "Input": {"An_AAUse_g_series": [4.1, 2.9, 7.1], "Gest_AA_g_series": [3.8, 5.3, 2.7], "Ur_AAEnd_g_series": [1.9, 6.3, 0.9], "Abs_AA_g_series": [1.2, 5.3, 4.6], "coeff_dict": null},
+    "Output": [0.130985, 0.509947, -0.780933]
+  },
+  {
+    "Name": "calculate_AnNPxEAA_AbsEAA",
+    "Input": {"An_EAAUse_g_series": [5.2, 4.8, 3.9], "Gest_EAA_g_series": [1.9, 2.6, 4.3], "Ur_EAAEnd_g_series": [7.8, 4.6, 2.9], "Abs_EAA_g_series": [0.1, 1.8, 3.5], "coeff_dict": null},
+    "Output": [0.334384, 0.224745, 0.265480]
+  },
+  {
+    "Name": "calculate_AnNPxAAUser_AbsAA",
+    "Input": {"Trg_AAUse_g_series": [2.0, 4.2, 3.9], "Gest_AA_g_series": [2.9, 4.5, 1.9], "Ur_AAEnd_g_series": [3.6, 4.1, 2.7], "Abs_AA_g_series": [3.4, 5.2, 2.6], "coeff_dict": null},
+    "Output": [0.500674, 0.350979, 0.119503]
+  },
+  {
+    "Name": "calculate_AnNPxEAAUser_AbsEAA",
+    "Input": {"Trg_EAAUse_g": 4302, "Gest_EAA_g": 329, "Ur_EAAEnd_g": 630, "Abs_EAA_g": 2014, "coeff_dict": null},
+    "Output": 8.637566551832132
+  }
+]
