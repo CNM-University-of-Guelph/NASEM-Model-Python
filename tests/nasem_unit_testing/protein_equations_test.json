@@ -208,5 +208,15 @@
       "Name": "calculate_An_NPBal",
       "Input": {"An_NPBal_g": 3013},
       "Output": 3.013
+    },
+    {
+      "Name": "calculate_Scrf_AA_TP",
+      "Input": { "AA_list": null, "coeff_dict": null},
+      "Output": [9.6, 1.75, 2.96, 6.93, 5.64, 1.4, 3.61, 4.01, 0.73, 4.66]
+    },
+    {
+      "Name": "calculate_Scrf_AA_g",
+      "Input": { "Scrf_NP_g": 543, "Scrf_AA_TP_series": [3.4, 5.8, 12.2]},
+      "Output": [18.462, 31.494, 66.246]
     }
   ]
