@@ -18,7 +18,7 @@ def find_json_files() -> list:
 
 
 def load_json(file_path: str) -> pd.DataFrame:    
-    return pd.read_json(file_path).replace(np.nan, None)
+    return pd.read_json(file_path)
 
 
 def replace_nan_in_input(d):
@@ -101,10 +101,12 @@ def test_from_json(json_file: str) -> None:
                 input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
 
             replace_nan_in_input(input_params)
-            
-            if isinstance(row.Output, list):
-                row.Output = [np.nan if value == "nan" else value 
-                              for value in row.Output]
+
+            if row.Output == "none":
+                row.Output = None
+
+            if row.Output == "nan":
+                row.Output = np.nan
 
             # Run test
             if isinstance(row.Output, list):
@@ -116,9 +118,18 @@ def test_from_json(json_file: str) -> None:
                 compare_dicts_with_tolerance(func(**input_params), row.Output)
 
             else:
-                assert func(**input_params) == pytest.approx(row.Output), (
-                    f"{row.Name} failed: {func(**input_params)}" 
-                    f"does not equal {row.Output}"
-                )
+                result = func(**input_params)
+                if row.Output is None:
+                    assert result is None, (
+                        f"{row.Name} failed: {result} does not equal {row.Output}"
+                    )
+                elif np.isnan(result) and np.isnan(row.Output):
+                    assert True
+                else:
+                    assert result == pytest.approx(row.Output), (
+                        f"{row.Name} failed: {result} does not equal {row.Output}"
+                    )
+
+
         except AttributeError:
             print(f"Function {row.Name} not found in module.")
