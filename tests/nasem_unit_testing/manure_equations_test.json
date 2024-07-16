@@ -45,6 +45,11 @@
         "Output": 96.61728395061728
     },
     {
+        "Name": "calculate_ManN_Milk",
+        "Input": {"Man_Nout_g": 3913, "Mlk_Prod": 0},
+        "Output": "none"
+    },
+    {
         "Name": "calculate_Man_Ca_out",
         "Input": {"Dt_CaIn": 2.4, "An_Ca_prod": 1.9},
         "Output": 0.5
@@ -128,5 +133,10 @@
         "Name": "calculate_VolSlds2_Milk",
         "Input": {"Man_VolSld2": 2.6, "Mlk_Prod": 45.8},
         "Output": 0.05676855895
+    },
+    {
+        "Name": "calculate_VolSlds2_Milk",
+        "Input": {"Man_VolSld2": 2.6, "Mlk_Prod": 0},
+        "Output": "nan"
     }
 ]
