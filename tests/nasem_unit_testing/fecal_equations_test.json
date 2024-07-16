@@ -183,6 +183,31 @@
       "Name": "calculate_Fe_MPendUse_g",
       "Input": {"Fe_NPend_g": 301, "Km_MP_NP": 0.42},
       "Output": 716.6666666666667
+    },
+    {
+      "Name": "calculate_K_FeCPend_ClfLiq",
+      "Input": {"NonMilkCP_ClfLiq": 11},
+      "Output": 34.4
+    },
+    {
+      "Name": "calculate_K_FeCPend_ClfLiq",
+      "Input": {"NonMilkCP_ClfLiq": 0},
+      "Output": 11.9
+    },
+    {
+      "Name": "calculate_Fe_AAMetab_TP",
+      "Input": {"AA_list": null, "coeff_dict": null},
+      "Output": [5.9, 3.54, 5.39, 9.19, 7.61, 1.73, 5.28, 7.36, 1.79, 7.01]
+    },
+    {
+      "Name": "calculate_Fe_AAMet_g",
+      "Input": {"Fe_NPend_g": 12.4, "Fe_AAMetab_TP_series": [6.4, 7.3, 1.9]},
+      "Output": [0.7936000000000001, 0.9052, 0.23559999999999998]
+    },
+    {
+      "Name": "calculate_Fe_AAMet_AbsAA",
+      "Input": {"Fe_AAMet_g_series": [4.5, 3.1, 6.5], "Abs_AA_g_series": [7.4, 2.8, 5.3]},
+      "Output": [0.6081081081081081, 1.1071428571428572, 1.2264150943396226]
     }
   ]
   
