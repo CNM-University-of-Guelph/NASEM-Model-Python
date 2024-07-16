@@ -21,6 +21,18 @@ def load_json(file_path: str) -> pd.DataFrame:
     return pd.read_json(file_path).replace(np.nan, None)
 
 
+def replace_nan_in_input(d):
+    for key, value in d.items():
+        if isinstance(value, dict):
+            replace_nan_in_input(value)
+        elif isinstance(value, pd.DataFrame):
+            d[key] = value.map(lambda x: np.nan if x == "nan" else x)
+        elif isinstance(value, pd.Series):
+            d[key] = value.apply(lambda x: np.nan if x == "nan" else x)
+        else:
+            d[key] = np.nan if value == "nan" else value
+
+
 def compare_dicts_with_tolerance(input: dict, 
                                  output: dict
 ) -> None:
@@ -87,6 +99,12 @@ def test_from_json(json_file: str) -> None:
                                  if key.endswith('_series')]
             for key in convert_to_series:
                 input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
+
+            replace_nan_in_input(input_params)
+            
+            if isinstance(row.Output, list):
+                row.Output = [np.nan if value == "nan" else value 
+                              for value in row.Output]
 
             # Run test
             if isinstance(row.Output, list):
