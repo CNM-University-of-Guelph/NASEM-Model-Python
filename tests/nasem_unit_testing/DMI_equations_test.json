@@ -138,6 +138,16 @@
       "Name": "calculate_Dt_DMIn_Lact2",
       "Input": {"Dt_ForNDF": 33.2, "Dt_ADF": 23.5, "Dt_NDF": 47.7, "Dt_ForDNDF48_ForNDF": 53.6, "Trg_MilkProd": 32},
       "Output": 21.196067766457023
+  },
+  {
+    "Name": "calculate_Dt_DMIn_DryCow_AdjGest",
+    "Input": {"An_GestDay": 200, "An_GestLength": 280, "An_BW": 605},
+    "Output": 0
+  },
+  {
+    "Name": "calculate_Dt_DMIn_DryCow_AdjGest",
+    "Input": {"An_GestDay": 300, "An_GestLength": 280, "An_BW": 605},
+    "Output": -99.5185808797262
   }
 ]
   
