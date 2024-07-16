@@ -785,6 +785,11 @@
         "Output": 0.8429951690821256
     },
     {
+        "Name": "calculate_Dt_acCo",
+        "Input": {"Abs_CoIn": 34.9, "Dt_CoIn": 0},
+        "Output": "none"
+    },
+    {
         "Name": "calculate_Dt_acCu",
         "Input": {"Abs_CuIn": 13.8, "Dt_CuIn": 31.4},
         "Output": 0.4394904458598727
