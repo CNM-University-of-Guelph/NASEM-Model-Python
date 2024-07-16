@@ -1,0 +1,12 @@
+[
+    {
+        "Name": "adjust_LCT",
+        "Input": {"An_AgeDay": 10},
+        "Output": 15
+    },
+    {
+        "Name": "adjust_LCT",
+        "Input": {"An_AgeDay": 1302},
+        "Output": 5
+    }
+]
