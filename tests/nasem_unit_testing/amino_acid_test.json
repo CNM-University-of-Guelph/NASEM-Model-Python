@@ -253,6 +253,11 @@
     "Output": [30.218182, 29.743290, 37.088057]
   },
   {
+    "Name": "calculate_Trg_AbsAA_g",
+    "Input": {"Trg_Mlk_AA_g_series": {"Arg": 7.5}, "Scrf_AA_g_series": {"Arg": 4.5}, "Fe_AAMet_g_series": {"Arg": 2.8}, "Trg_AbsAA_NPxprtAA_series": {"Arg": 0.6}, "Ur_AAEnd_g_series": {"Arg": 7.5}, "Gest_AA_g_series": {"Arg": 3.8}, "Body_AAGain_g_series": {"Arg": 2.9}, "Kg_MP_NP_Trg": 0.4, "coeff_dict": null},
+    "Output": ["nan"]
+  },
+  {
     "Name": "calculate_Trg_AbsEAA_g",
     "Input": {"Trg_AbsAA_g_series": [2.8, 3.6, 2.0]},
     "Output": 8.4
@@ -346,5 +351,30 @@
     "Name": "calculate_Body_AA_TP",
     "Input": {"AA_list": null, "coeff_dict": null},
     "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
+  },
+  {
+    "Name": "calculate_An_IdAAIn",
+    "Input": {"An_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "AA_list": null},
+    "Output": [1.4, 2.4, 4.5, 1.2, 8.4, 7.3, 3.0, 1.1, 2.5, 0.5]
+  },
+  {
+    "Name": "calculate_Inf_AA_g",
+    "Input": {"infusion_data": {"Inf_Arg_g": 2.3, "Inf_His_g": 4.1, "Inf_Ile_g": 0.5, "Inf_Leu_g": 1.7, "Inf_Lys_g": 8.2,"Inf_Met_g": 6.8, "Inf_Phe_g": 8.1, "Inf_Thr_g": 1.2, "Inf_Trp_g": 3.4,"Inf_Val_g": 4.1}, "AA_list": null},
+    "Output": [2.3, 4.1, 0.5, 1.7, 8.2, 6.8, 8.1, 1.2, 3.4, 4.1]
+  },
+  {
+    "Name": "calculate_Dt_AARUPIn",
+    "Input": {"AA_list": null, "diet_data": {"Dt_ArgRUPIn": 4.6, "Dt_HisRUPIn": 4.1, "Dt_IleRUPIn": 5.8, "Dt_LeuRUPIn": 0.4, "Dt_LysRUPIn": 9.1,"Dt_MetRUPIn": 2.5, "Dt_PheRUPIn": 1.7, "Dt_ThrRUPIn": 7.4, "Dt_TrpRUPIn": 6.2,"Dt_ValRUPIn": 0.1}},
+    "Output": [4.6, 4.1, 5.8, 0.4, 9.1, 2.5, 1.7, 7.4, 6.2, 0.1]
+  },
+  {
+    "Name": "calculate_Inf_AARUPIn",
+    "Input": {"AA_list": null, "infusion_data": {"Inf_ArgRUPIn": 0.6, "Inf_HisRUPIn": 9.3, "Inf_IleRUPIn": 5.2, "Inf_LeuRUPIn": 3.8, "Inf_LysRUPIn": 1.3,"Inf_MetRUPIn": 2.8, "Inf_PheRUPIn": 0.4, "Inf_ThrRUPIn": 6.2, "Inf_TrpRUPIn": 1.7,"Inf_ValRUPIn": 2.9}},
+    "Output": [0.6, 9.3, 5.2, 3.8, 1.3, 2.8, 0.4, 6.2, 1.7, 2.9]
+  },
+  {
+    "Name": "calculate_Dt_AAIn",
+    "Input": {"AA_list": null, "diet_data": {"Dt_ArgIn": 7.5, "Dt_HisIn": 4.5, "Dt_IleIn": 2.8, "Dt_LeuIn": 0.6, "Dt_LysIn": 7.5,"Dt_MetIn": 3.8, "Dt_PheIn": 2.9, "Dt_ThrIn": 1.5, "Dt_TrpIn": 4.3,"Dt_ValIn": 2.0}},
+    "Output": [7.5, 4.5, 2.8, 0.6, 7.5, 3.8, 2.9, 1.5, 4.3, 2.0]
   }
 ]
