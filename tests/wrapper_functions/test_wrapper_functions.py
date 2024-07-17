@@ -38,10 +38,3 @@ def test_wrapper_functions(json_file: str) -> None:
 
     except AttributeError:
         print(f"Function {function} not found in module.")
-
-
-# if __name__ == "__main__": 
-#     script_dir = os.path.dirname(os.path.abspath(__file__))
-#     json_files = helper.find_json_files(script_dir)
-#     for json_file in json_files:
-#         test_wrapper_functions(json_file)
