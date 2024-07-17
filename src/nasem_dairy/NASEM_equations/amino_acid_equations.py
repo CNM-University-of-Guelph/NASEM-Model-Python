@@ -36,7 +36,7 @@ def calculate_mPrt_k_AA_array(mPrt_coeff: dict, AA_list: list) -> np.ndarray:
     return mPrt_k_AA
 
 
-def calculate_An_IdAAIn(An_data: dict, AA_list: list) -> np.ndarray:
+def calculate_An_IdAAIn_array(An_data: dict, AA_list: list) -> np.ndarray:
     An_IdAAIn = pd.Series([An_data[f"An_Id{AA}In"] for AA in AA_list],
                           index=AA_list)
     return An_IdAAIn

@@ -353,7 +353,7 @@
     "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
   },
   {
-    "Name": "calculate_An_IdAAIn",
+    "Name": "calculate_An_IdAAIn_array",
     "Input": {"An_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "AA_list": null},
     "Output": [1.4, 2.4, 4.5, 1.2, 8.4, 7.3, 3.0, 1.1, 2.5, 0.5]
   },
