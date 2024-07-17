@@ -53,7 +53,7 @@ def compare_dicts_with_tolerance(input: dict,
 def compare_series_with_tolerance(input: pd.Series,
                                   output: pd.Series
 ) -> bool:
-    return np.allclose(input, output, rtol=rtol, atol=atol)
+    return np.allclose(input, output, rtol=rtol, atol=atol, equal_nan=True)
 
 
 @pytest.mark.parametrize("json_file", find_json_files())
@@ -107,6 +107,9 @@ def test_from_json(json_file: str) -> None:
 
             if row.Output == "nan":
                 row.Output = np.nan
+            elif isinstance(row.Output, list):
+                    row.Output = [np.nan if val == "nan" 
+                                  else val for val in row.Output]                
 
             # Run test
             if isinstance(row.Output, list):
