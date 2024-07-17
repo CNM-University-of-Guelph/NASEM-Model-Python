@@ -1,0 +1,68 @@
+{
+    "name": "calculate_An_data_initial",
+    "input": {
+        "animal_input": {
+            "DMI": 20.0,
+            "An_BW": 650.0,
+            "An_BW_mature": 750.0,
+            "An_StatePhys": "Lactating Cow",
+            "An_Parity_rl": 2        
+        },
+        "diet_data": {
+            "Dt_RDPIn": 16.7,
+            "Dt_NDFIn": 33.8,
+            "Dt_DigNDFIn": 12.5,
+            "Dt_DigStIn": 5.3,
+            "Dt_DigrOMaIn": 2.4,
+            "Dt_idRUPIn": 12.5,
+            "Dt_RUPIn": 7.3,
+            "Dt_DMIn_ClfLiq": 0.1,
+            "Dt_DMIn_ClfStrt": 1.2,
+            "Dt_CPIn": 15.2,
+            "Dt_GEIn": 58.7,
+            "Dt_NPNCPIn": 5.0,
+            "Dt_FAIn": 7.2,
+            "Dt_RDTPIn": 6.7,
+            "TT_dcNDF": 2.9
+        },
+        "infusion_data": {
+            "InfRum_RDPIn": 1.0,
+            "InfRum_DMIn": 0.5,
+            "InfSI_DMIn": 0.2,
+            "InfRum_NDFIn": 1.0,
+            "InfSI_NDFIn": 0.5,
+            "Inf_StIn": 2.0,
+            "Inf_ttdcSt": 0.7,
+            "InfRum_GlcIn": 0.3,
+            "InfRum_AcetIn": 0.4,
+            "InfRum_PropIn": 0.3,
+            "InfRum_ButrIn": 0.2,
+            "InfSI_GlcIn": 0.4,
+            "InfSI_AcetIn": 0.5,
+            "InfSI_PropIn": 0.3,
+            "InfSI_ButrIn": 0.2,
+            "InfRum_idRUPIn": 1.0,
+            "InfRum_RUPIn": 1.5,
+            "Inf_DMIn": 1.0,
+            "Inf_CPIn": 1.5,
+            "Inf_NDFIn": 1.0,
+            "Inf_FAIn": 1.5,
+            "Inf_TPIn": 2.0,
+            "Inf_NPNCPIn": 0.5,
+            "InfSI_idTPIn": 0.7,
+            "InfSI_idCPIn": 0.6,
+            "Inf_AcetIn": 1.8,
+            "Inf_PropIn": 2.3,
+            "Inf_ButrIn": 0.5,
+            "InfRum_FAIn": 1.4,
+            "InfRum_NPNCPIn": 3.2,
+            "InfRum_CPIn": 1.1
+        },
+        "Monensin_eqn": 0,
+        "GrUter_Wt": 24.8,
+        "coeff_dict": null
+    },
+    "output": {
+        "An_RDPIn": 17.7, "An_RDP": 86.34146341463415, "An_RDPIn_g": 17700.0, "An_NDFIn": 35.3, "An_NDF": 170.53140096618358, "An_DigNDFIn": 12.529, "An_DENDFIn": 52.6218, "An_DigStIn": 5.314, "An_DEStIn": 22.478220000000004, "An_DigrOMaIn": 5.0, "An_DErOMIn": 20.0, "An_idRUPIn": 14.2, "An_RUPIn": 8.8, "An_DMIn": 21.0, "An_CPIn": 16.7, "An_DigNDF": 60.52657004830918, "An_GEIn": 117.85199999999999, "An_GasEOut": -6.05453645575586, "An_GutFill_BW": 0.18, "An_BWnp": 625.2, "An_GutFill_Wt": 112.536, "An_BW_empty": 537.4639999999999, "An_MBW": 128.7315556465335, "An_RDNPNCPIn": 8.2, "An_RUP": 42.926829268292686, "An_RUP_CP": 53.987730061349694, "An_idRUCPIn": 14.1, "An_idRUP": 0.6859903381642511, "An_RDTPIn": 4.5, "An_RDP_CP": 108.58895705521472, "An_GasE_IPCC2": 7.66038
+    }
+}
