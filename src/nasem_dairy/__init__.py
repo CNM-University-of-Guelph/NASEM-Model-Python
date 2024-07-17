@@ -465,7 +465,6 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DMIn,
     calculate_An_CPIn,
     calculate_An_DigNDF,
-    calculate_An_GEIn,
     calculate_An_GasEOut_Dry,
     calculate_An_GasEOut_Lact,
     calculate_An_GasEOut_Heif,
