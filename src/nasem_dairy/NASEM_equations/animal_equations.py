@@ -1224,7 +1224,7 @@ def calculate_An_XIn(diet_data: dict,
 
 
 def calculate_An_data_initial(animal_input: dict, 
-                              diet_data: pd.DataFrame, 
+                              diet_data: dict, 
                               infusion_data: dict,
                               Monensin_eqn: int, 
                               GrUter_Wt: float, 
