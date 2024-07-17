@@ -444,7 +444,15 @@ from nasem_dairy.NASEM_equations.infusion_equations import (
     calculate_Inf_DEAcetIn,
     calculate_Inf_DEPropIn,
     calculate_Inf_DEButrIn,
-    calculate_infusion_data
+    calculate_infusion_data,
+    calculate_XIn,
+    calculate_CPXIn,
+    calculate_DMXIn,
+    calculate_InfRum_X,
+    calculate_InfSI_X,
+    calculate_InfArt_X,
+    calculate_Inf_IdAARUPIn,
+    calculate_Inf_IdAAIn
 )
 
 from nasem_dairy.NASEM_equations.animal_equations import (
