@@ -219,12 +219,12 @@
   },
   {
       "Name": "calculate_Du_IdEAAMic",
-      "Input": {"Du_IdAAMic": [4.6, 2.9, 3.8]},
+      "Input": {"Du_IdAAMic_series": [4.6, 2.9, 3.8]},
       "Output": 11.3
   },
   {
       "Name": "calculate_Dt_IdEAARUPIn",
-      "Input": {"Dt_IdAARUPIn": [2.9, 4.2, 5.1]},
+      "Input": {"Dt_IdAARUPIn_series": [2.9, 4.2, 5.1]},
       "Output": 12.2
   },
   {
@@ -234,7 +234,7 @@
   },
   {
       "Name": "calculate_Trg_Mlk_EAA_g",
-      "Input": {"Trg_Mlk_AA_g": {}},
+      "Input": {"Trg_Mlk_AA_g_series": [3.1, 5.9, 6.1]},
       "Output": 15.100000000000001
   },
   {
