@@ -561,7 +561,24 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_ME_ClfDry,
     calculate_An_NE_ClfDry,
     calculate_An_Grazing,
-    calculate_En_OM
+    calculate_En_OM,
+    calculate_An_DMIn_MBW,
+    calculate_An_StIn,
+    calculate_An_St,
+    calculate_An_rOMIn,
+    calculate_An_rOM,
+    calculate_An_NDFIn_BW,
+    calculate_An_ADFIn,
+    calculate_An_ADF,
+    calculate_An_CPIn_g,
+    calculate_An_CP,
+    calculate_An_NIn_g,
+    calculate_An_FAhydrIn,
+    calculate_An_FA,
+    calculate_An_AshIn,
+    calculate_An_Ash,
+    calculate_An_IdAAIn,
+    calculate_An_XIn
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
