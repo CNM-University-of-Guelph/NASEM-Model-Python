@@ -121,13 +121,13 @@
   },
   {
     "Name": "calculate_Ur_AAEnd_g",
-    "Input": { "Ur_EAAend_g": 524, "Ur_NPend_3MH_g": 84.9, "Ur_AAEnd_TP_series": [3.4, 5.8, 12.2]},
+    "Input": {"Ur_EAAend_g": 524, "Ur_NPend_3MH_g": 84.9, "Ur_AAEnd_TP_series": [3.4, 5.8, 12.2]},
     "Output": [17.816, 115.292, 63.92799999999999]
   },
   {
     "Name": "calculate_Ur_EAAEnd_g",
-    "Input": { "Ur_AAEnd_g": [] },
-    "Output": 0.0
+    "Input": {"Ur_AAEnd_g_series": [5.3, 2.5, 0.2]},
+    "Output": 8.0
   }
 ]
   
