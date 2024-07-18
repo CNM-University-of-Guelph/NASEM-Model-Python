@@ -421,7 +421,8 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Dt_AAIn,
     calculate_RecAA,
     calculate_MWAA,
-    calculate_Body_AA_TP
+    calculate_Body_AA_TP,
+    calculate_Abs_EAA2_g
 )
 
 
@@ -580,8 +581,7 @@ from nasem_dairy.NASEM_equations.gestation_equations import (
     calculate_Fet_BWgain,
     calculate_Gest_AA_g,
     calculate_Gest_EAA_g,
-    calculate_GestAA_AbsAA,
-    calculate_Body_AA_TP
+    calculate_GestAA_AbsAA
 )
 
 from nasem_dairy.NASEM_equations.fecal_equations import (
