@@ -393,6 +393,11 @@
       "Name": "calculate_Ky_ME_NE",
       "Input": {"Gest_REgain": -10},
       "Output": 0.89
-  }  
+  },
+  {
+      "Name": "calculate_Trg_NEmilkOut",
+      "Input": {"Trg_NEmilk_Milk": 23.2, "Trg_MilkProd": 15.2},
+      "Output": 352.64
+}  
 ]
   

@@ -804,7 +804,9 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_Km_ME_NE_Clf,
     calculate_Km_ME_NE,
     calculate_Trg_NEmilkOut,
-    calculate_Ky_ME_NE
+    calculate_Ky_ME_NE,
+    calculate_Kf_ME_RE_ClfDry,
+    calculate_Kf_ME_RE
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (
