@@ -75,7 +75,6 @@ def compare_dicts_with_tolerance(input: dict,
         raise KeyError(f"Keys {missing_keys} not found in the output dictionary")
 
 
-
 def compare_series_with_tolerance(input: pd.Series,
                                   output: pd.Series,
                                   rtol: float = rtol,
@@ -96,7 +95,7 @@ def compare_series_with_tolerance(input: pd.Series,
     return np.allclose(input, output, rtol=rtol, atol=atol, equal_nan=True)
 
 
-def replace_nan_in_input(input_dict: dict) -> None:
+def convert_special_input(input_dict: dict) -> None:
     """
     Recursively replaces string "nan" with numpy.nan in a dictionary.
 
@@ -105,7 +104,7 @@ def replace_nan_in_input(input_dict: dict) -> None:
     """
     for key, value in input_dict.items():
         if isinstance(value, dict):
-            replace_nan_in_input(value)
+            convert_special_input(value)
         elif isinstance(value, pd.DataFrame):
             input_dict[key] = value.map(lambda x: np.nan if x == "nan" else x)
         elif isinstance(value, pd.Series):
@@ -136,3 +135,36 @@ def update_constants(input_params: dict) -> dict:
         if key in input_params and input_params[key] is None:
             input_params[key] = default_value
     return input_params
+
+
+def convert_special_output(output_data):
+    if isinstance(output_data, pd.DataFrame):
+        output_data = output_data.map(lambda x: np.nan if x == "nan" else x)
+    else:
+        if output_data == "none":
+            output_data = None
+        if output_data == "nan":
+            output_data = np.nan
+        elif isinstance(output_data, list):
+            output_data = [np.nan if val == "nan" else val 
+                           for val in output_data]
+    return output_data
+
+
+def create_dataframe(json_data: dict) -> dict:
+    """
+    Take a dictionary and convert any keys ending with "_df" to a Dataframe
+
+    Args:
+        json_data (dict): Dictionary with data to check
+
+    Returns:
+        dict: The updated dictionary where input data has been converted to Dataframe
+    """
+    convert_to_df = [key for key in json_data.keys() if key.endswith("_df")]
+    for key in convert_to_df:
+        if key == "output_df":
+            return pd.DataFrame(json_data["output_df"])
+        else:
+            json_data[key.replace("_df", "")] = pd.DataFrame(json_data.pop(key))
+    return json_data

@@ -23,25 +23,18 @@ def test_from_json(json_file: str) -> None:
             input_params = row.Input.copy()            
             input_params = helper.update_constants(input_params)
 
-            # Convert data types
-            if "df" in input_params:
-                input_params["df"] = pd.DataFrame(input_params["df"])           
+            # Convert data types  
+            input_params = helper.create_dataframe(input_params)    
+            if isinstance(row.Output, dict):
+                row.Output = helper.create_dataframe(row.Output)  
             
             convert_to_series = [key for key in input_params.keys() 
                                  if key.endswith('_series')]
             for key in convert_to_series:
                 input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
 
-            helper.replace_nan_in_input(input_params)
-
-            if row.Output == "none":
-                row.Output = None
-
-            if row.Output == "nan":
-                row.Output = np.nan
-            elif isinstance(row.Output, list):
-                    row.Output = [np.nan if val == "nan" 
-                                  else val for val in row.Output]                
+            helper.convert_special_input(input_params)             
+            row.Output = helper.convert_special_output(row.Output)
 
             # Run test
             if isinstance(row.Output, list):
@@ -51,6 +44,11 @@ def test_from_json(json_file: str) -> None:
 
             elif isinstance(row.Output, dict):
                 helper.compare_dicts_with_tolerance(func(**input_params), row.Output)
+
+            elif isinstance(row.Output, pd.DataFrame):
+                pd.testing.assert_frame_equal(
+                    func(**input_params), row.Output, rtol=1e-3, atol=1e-2
+                    )
 
             else:
                 result = func(**input_params)
@@ -64,7 +62,6 @@ def test_from_json(json_file: str) -> None:
                     assert result == pytest.approx(row.Output), (
                         f"{row.Name} failed: {result} does not equal {row.Output}"
                     )
-
 
         except AttributeError:
             print(f"Function {row.Name} not found in module.")
