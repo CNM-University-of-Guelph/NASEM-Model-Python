@@ -826,100 +826,108 @@ def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series,
     return Fd_Fe_RUPout
 
 
-def calculate_Fd_XIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(
+def calculate_Fd_XIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return diet_info.assign(
         **{
-            f"{var}In": (lambda df, var=var: df[var] / 100 * df['Fd_DMIn'])
+            f"{var}In": (lambda diet_info, var=var: 
+                         diet_info[var] / 100 * diet_info['Fd_DMIn'])
             for var in variables
         })
 
 
-def calculate_Fd_FAIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(
+def calculate_Fd_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return diet_info.assign(
         **{
             f"{var}In":
-                lambda df, var=var: df[f"{var}_FA"] / 100 * df['Fd_FA'] / 100 *
-                df['Fd_DMIn'] for var in variables
-        })
-
-
-def calculate_macroIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(
-        **{
-            f"{var}In": lambda df, var=var: df['Fd_DMIn'] * df[var] / 100 * 1000
+                lambda diet_info, var=var: 
+                diet_info[f"{var}_FA"] / 100 * diet_info['Fd_FA'] / 100 *
+                diet_info['Fd_DMIn'] 
             for var in variables
         })
 
 
-def calculate_microIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(**{
-        f"{var}In": lambda df, var=var: df['Fd_DMIn'] * df[var]
+def calculate_macroIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return diet_info.assign(
+        **{
+            f"{var}In": lambda diet_info, var=var: 
+                diet_info['Fd_DMIn'] * diet_info[var] / 100 * 1000
+            for var in variables
+        })
+
+
+def calculate_microIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return diet_info.assign(**{
+            f"{var}In": lambda diet_info, var=var: 
+            diet_info['Fd_DMIn'] * diet_info[var]
         for var in variables
     })
 
 
-def calculate_micro_absorbtion(df: pd.DataFrame,
+def calculate_micro_absorbtion(diet_info: pd.DataFrame,
                                variables: list
 ) -> pd.DataFrame:
-    return df.assign(
+    return diet_info.assign(
         **{
-            f"Fd_abs{var}In":
-                lambda df, var=var: df[f"Fd_{var}In"] * df[f"Fd_ac{var}"]
+            f"Fd_abs{var}In": lambda diet_info, var=var: 
+                diet_info[f"Fd_{var}In"] * diet_info[f"Fd_ac{var}"]
             for var in variables
         })
 
 
-def calculate_Fd_AAt_CP(df: pd.DataFrame, 
+def calculate_Fd_AAt_CP(diet_info: pd.DataFrame, 
                         AA_list: list,
                         coeff_dict: dict
 ) -> pd.DataFrame:
-    return df.assign(
+    return diet_info.assign(
         **{
-            f"Fd_{AA}t_CP":
-                lambda df, AA=AA: df[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
+            f"Fd_{AA}t_CP": lambda diet_info, AA=AA: 
+                diet_info[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
             for AA in AA_list
         })
 
 
-def calculate_Fd_AARUPIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
-    return df.assign(
+def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+    return diet_info.assign(
         **{
-            f"Fd_{AA}RUPIn":
-                lambda df, AA=AA: df[f"Fd_{AA}t_CP"] / 100 * df['Fd_RUPIn'] *
-                1000 for AA in AA_list
+            f"Fd_{AA}RUPIn": lambda diet_info, AA=AA: 
+                diet_info[f"Fd_{AA}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
+            for AA in AA_list
         })
 
 
-def calculate_Fd_IdAARUPIn(df: pd.DataFrame, 
+def calculate_Fd_IdAARUPIn(diet_info: pd.DataFrame, 
                            AA_list: list,
                            SIDig_values: dict
 ) -> pd.DataFrame:
-    return df.assign(
+    return diet_info.assign(
         **{
             f"Fd_Id{AA}RUPIn":
-                lambda df, AA=AA: df['Fd_dcRUP'] / 100 * df[f"Fd_{AA}RUPIn"] *
-                SIDig_values[AA] for AA in AA_list
+                lambda diet_info, AA=AA: 
+                diet_info['Fd_dcRUP'] / 100 * 
+                diet_info[f"Fd_{AA}RUPIn"] * SIDig_values[AA] 
+            for AA in AA_list
         })
 
 
-def calculate_Fd_Dig_FAIn(df: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return df.assign(
+def calculate_Fd_Dig_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return diet_info.assign(
         **{
-            f"Fd_Dig{var}In":
-                lambda df, var=var: df['TT_dcFdFA'] / 100 * df[f"Fd_{var}_FA"] /
-                100 * df['Fd_FA'] / 100 * df['Fd_DMIn'] for var in variables
+            f"Fd_Dig{var}In": lambda diet_info, var=var: 
+                diet_info['TT_dcFdFA'] / 100 * diet_info[f"Fd_{var}_FA"] /
+                100 * diet_info['Fd_FA'] / 100 * diet_info['Fd_DMIn'] 
+            for var in variables
         })
 
 
-def calculate_Fd_AAIn(df: pd.DataFrame, AA_list: list) -> pd.DataFrame:
-    return df.assign(
+def calculate_Fd_AAIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+    return diet_info.assign(
         **{
-            f"Fd_{AA}In":
-                lambda df, AA=AA: np.where(
-                    df['Fd_CPIn'] > 0, 
-                    ((df[f"Fd_{AA}t_CP"] / 100) * (df['Fd_CP'] / 100) * 
-                     (df['Fd_DMIn'] * 1000)), 
-                    0) for AA in AA_list
+            f"Fd_{AA}In": lambda diet_info, AA=AA: np.where(
+                diet_info['Fd_CPIn'] > 0, 
+                    ((diet_info[f"Fd_{AA}t_CP"] / 100) * 
+                     (diet_info['Fd_CP'] / 100) * (diet_info['Fd_DMIn'] * 1000)), 
+                    0)
+            for AA in AA_list
         })
 
 ####################
@@ -1522,16 +1530,22 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
     return Dt_GasEOut
 
 
-def calculate_Dt_X(df: pd.DataFrame, variables: list, diet_data: dict) -> dict:
+def calculate_Dt_X(diet_info: pd.DataFrame, 
+                   variables: list, 
+                   diet_data: dict
+) -> dict:
     for var in variables:  # Line 255-256
         diet_var_name = f"Dt_{var.split('_')[-1]}"
-        diet_data[diet_var_name] = (df['Fd_DMInp'] * df[var]).sum()
+        diet_data[diet_var_name] = (diet_info['Fd_DMInp'] * diet_info[var]).sum()
     return diet_data
 
 
-def calculate_DtIn(df: pd.DataFrame, variables: list, diet_data: dict) -> dict:
+def calculate_DtIn(diet_info: pd.DataFrame, 
+                   variables: list, 
+                   diet_data: dict
+) -> dict:
     for var in variables:
-        diet_data[f'Dt_{var}'] = (df[f'Fd_{var}']).sum()
+        diet_data[f'Dt_{var}'] = (diet_info[f'Fd_{var}']).sum()
     return diet_data
 
 
@@ -1550,13 +1564,13 @@ def calculate_Dt_FA(variables: list, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_Dt_microIn(df: pd.DataFrame, 
+def calculate_Dt_microIn(diet_info: pd.DataFrame, 
                          variables: list,
                          diet_data: dict
 ) -> dict:
     # Lines 762-791
     for var in variables:
-        diet_data[f'Dt_{var}'] = df[f'Fd_{var}'].sum()
+        diet_data[f'Dt_{var}'] = diet_info[f'Fd_{var}'].sum()
     return diet_data
 
 
@@ -1574,30 +1588,30 @@ def calculate_Dt_micro(variables: list, DMI: float, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_Dt_IdAARUPIn(df: pd.DataFrame, 
+def calculate_Dt_IdAARUPIn(diet_info: pd.DataFrame, 
                            AA_list: list,
                            diet_data: dict
 ) -> dict:
     for AA in AA_list:
-        diet_data[f'Dt_Id{AA}RUPIn'] = df[f'Fd_Id{AA}RUPIn'].sum()
+        diet_data[f'Dt_Id{AA}RUPIn'] = diet_info[f'Fd_Id{AA}RUPIn'].sum()
     return diet_data
 
 
-def calculate_Dt_DigFAIn(df: pd.DataFrame, 
+def calculate_Dt_DigFAIn(diet_info: pd.DataFrame, 
                          variables: list,
                          diet_data: dict
 ) -> dict:
     for var in variables:
-        diet_data[f'Dt_Dig{var}In'] = df[f'Fd_Dig{var}In'].sum()
+        diet_data[f'Dt_Dig{var}In'] = diet_info[f'Fd_Dig{var}In'].sum()
     return diet_data
 
 
-def calculate_Abs_micro(df: pd.DataFrame, 
+def calculate_Abs_micro(diet_info: pd.DataFrame, 
                         variables: list,
                         diet_data: dict
 ) -> dict:
     for var in variables:
-        diet_data[f"Abs_{var}"] = df[f"Fd_abs{var}"].sum()
+        diet_data[f"Abs_{var}"] = diet_info[f"Fd_abs{var}"].sum()
     return diet_data
 
 
