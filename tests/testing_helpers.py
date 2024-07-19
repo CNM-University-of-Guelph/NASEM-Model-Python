@@ -47,12 +47,28 @@ def compare_dicts_with_tolerance(input: dict,
     """
     for key in (key for key in input if key in output):
         try:
-            np.testing.assert_allclose(
-                input[key], output[key], rtol=rtol, atol=atol
-                )
+            input_value = input[key]
+            output_value = output[key]
+            
+            # NOTE checking for pd.Series and list to make nutrient_intakes_helpers_test.json pass
+            # These tests may be refactored to compare the input and output as Dataframes
+            # If refactored pd.Series and list should be removed from accepted_types - Braeden
+            accepted_types = (int, float, np.number, pd.Series, list)
+            if (isinstance(input_value, accepted_types) and 
+                isinstance(output_value, accepted_types)):
+                np.testing.assert_allclose(
+                    input_value, output_value, rtol=rtol, atol=atol
+                    )
+            else:
+                if input_value != output_value:
+                    raise AssertionError(
+                        f"Mismatch found for key '{key}': {input_value} "
+                        f"(expected) vs {output_value} (actual)"
+                        )
+
         except AssertionError as e:
-            print(f"Mismatch found for key '{key}': {input[key]} (expected)"
-                    f" vs {output[key]} (actual)")
+            print(f"Mismatch found for key '{key}': {input_value} (expected)"
+                    f" vs {output_value} (actual)")
             raise e
     missing_keys = [key for key in input if key not in output]
     if missing_keys:
