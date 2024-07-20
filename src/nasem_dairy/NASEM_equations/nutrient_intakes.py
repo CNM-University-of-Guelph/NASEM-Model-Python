@@ -1004,9 +1004,7 @@ def calculate_Dt_NIn(Dt_CPIn: float) -> float:
     return Dt_NIn
 
 
-def calculate_Dt_RUPIn(coeff_dict: dict,
-                       Fd_RUPIn: pd.Series=None
-) -> float:
+def calculate_Dt_RUPIn(Fd_RUPIn: pd.Series) -> float:
     # The feed summation is not as accurate as the equation below
     Dt_RUPIn = Fd_RUPIn.sum()  # Line 616
     Dt_RUPIn = 0 if Dt_RUPIn < 0 else Dt_RUPIn # Line 617
@@ -2414,9 +2412,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         diet_data['Dt_DMInSum'], diet_data['Dt_PastIn']
         )
     diet_data['Dt_NIn'] = calculate_Dt_NIn(diet_data['Dt_CPIn'])
-    diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(
-        coeff_dict, Fd_RUPIn=diet_info['Fd_RUPIn']
-        )
+    diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(diet_info['Fd_RUPIn'])
     diet_data['Dt_RUP_CP'] = calculate_Dt_RUP_CP(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
         )
