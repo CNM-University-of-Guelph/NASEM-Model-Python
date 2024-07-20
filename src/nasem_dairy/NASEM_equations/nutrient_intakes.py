@@ -1287,7 +1287,7 @@ def calculate_Dt_acMg(An_StatePhys: str,
                       Dt_MgIn: float
 ) -> float:
     if An_StatePhys == "Calf": # Line 1880
-        Dt_acMg = 1
+        Dt_acMg = 1.0
     else:
         Dt_acMg = (44.1 - 5.42 * math.log(Dt_K * 10) - 
                    0.08 * Dt_MgIn_min / Dt_MgIn * 100) / 100
