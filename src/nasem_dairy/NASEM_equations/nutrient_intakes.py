@@ -974,7 +974,7 @@ def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq: float,
 ) -> float:
     # Line 291, ME content of the liquid feed
     Dt_ME_ClfLiq = Dt_MEIn_ClfLiq / Dt_DMIn_ClfLiq
-    Dt_ME_ClfLiq = 0 if Dt_ME_ClfLiq.isnan() else Dt_ME_ClfLiq # Line 292    
+    Dt_ME_ClfLiq = 0 if np.isnan(Dt_ME_ClfLiq) else Dt_ME_ClfLiq # Line 292    
     return Dt_ME_ClfLiq
 
 
