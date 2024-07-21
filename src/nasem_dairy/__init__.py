@@ -279,7 +279,16 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Abs_micro,
     calculate_Dt_FA_FA,
     calculate_DtAARUP_DtAA,
-    calculate_Dt_IdAAIn
+    calculate_Dt_IdAAIn,
+    calculate_Fd_DigrOMtIn,
+    calculate_Fd_idRUP,
+    calculate_Fd_Fe_RUPout,
+    calculate_Dt_RDPIn,
+    calculate_Dt_idcRUP,
+    calculate_Dt_Fe_RUPout,
+    calculate_Dt_RDTPIn,
+    calculate_Dt_RDP,
+    calculate_Dt_RDP_CP
 )
 
 from nasem_dairy.NASEM_equations.rumen_equations import (
