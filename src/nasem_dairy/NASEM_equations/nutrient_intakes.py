@@ -1649,7 +1649,7 @@ def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series,
 def calculate_TT_dcNDF_Base(Dt_DigNDFIn_Base: float, Dt_NDFIn: float) -> float:
     TT_dcNDF_Base = Dt_DigNDFIn_Base / Dt_NDFIn * 100  # Line 1056
     if math.isnan(TT_dcNDF_Base):
-        TT_dcNDF_Base = 0
+        TT_dcNDF_Base = 0.0
     return TT_dcNDF_Base
 
 
@@ -1659,7 +1659,7 @@ def calculate_TT_dcNDF(TT_dcNDF_Base: float,
                        An_DMIn_BW: float
 ) -> float:
     if TT_dcNDF_Base == 0: 
-        TT_dcNDF = 0
+        TT_dcNDF = 0.0
     else:
         TT_dcNDF = (TT_dcNDF_Base / 100 - 
                     0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
@@ -1670,12 +1670,12 @@ def calculate_TT_dcNDF(TT_dcNDF_Base: float,
 def calculate_TT_dcSt_Base(Dt_DigStIn_Base: float, Dt_StIn: float) -> float:
     TT_dcSt_Base = Dt_DigStIn_Base / Dt_StIn * 100  # Line 1030
     if math.isnan(TT_dcSt_Base):
-        TT_dcSt_Base = 0
+        TT_dcSt_Base = 0.0
     return TT_dcSt_Base
 
 
 def calculate_TT_dcSt(TT_dcSt_Base: float, An_DMIn_BW: float) -> float:
-    TT_dcSt = (0 
+    TT_dcSt = (0.0
                if TT_dcSt_Base == 0 
                else TT_dcSt_Base - (1.0 * (An_DMIn_BW - 0.035)) * 100)
     return TT_dcSt
@@ -1690,7 +1690,7 @@ def calculate_TT_dcAnSt(An_DigStIn: float,
     """
     TT_dcAnSt = An_DigStIn / (Dt_StIn + Inf_StIn) * 100  # Line 1034
     if np.isnan(TT_dcAnSt):  # Line 1035
-        TT_dcAnSt = 0
+        TT_dcAnSt = 0.0
     return TT_dcAnSt
 
 
