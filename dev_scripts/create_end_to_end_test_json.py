@@ -19,7 +19,7 @@ from typing import Tuple, Dict, Union, List
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.ration_balancer.constants as constants
+import nasem_dairy.data.constants as constants
 
 
 ####################

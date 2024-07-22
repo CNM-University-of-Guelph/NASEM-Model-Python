@@ -1,7 +1,7 @@
 import pytest
 
 import nasem_dairy as nd
-from nasem_dairy.ration_balancer.input_validation import validate_coeff_dict
+from nasem_dairy.model.input_validation import validate_coeff_dict
 
 def test_not_a_dictionary():
     with pytest.raises(TypeError, match="coeff_dict must be a dict"):

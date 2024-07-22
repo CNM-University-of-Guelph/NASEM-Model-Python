@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_f_Imb
+from nasem_dairy.model.input_validation import validate_f_Imb
 
 def test_not_a_series():
     with pytest.raises(TypeError, match="f_Imb must be a Series"):

@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_user_diet
+from nasem_dairy.model.input_validation import validate_user_diet
 
 def test_wrong_column_names():
     data = {

@@ -1,0 +1,38 @@
+﻿Location,Variable,Value,Expected Value
+equation_selection,Use_DNDF_IV,0,"int (0, 1 or 2)"
+equation_selection,DMIn_eqn,0,int (0-17)
+equation_selection,mProd_eqn,0,"int (0=Trg_MilkProd, 1=component based predicted, 2=NE Allowable, 3=MP Allowable, 4=min(NE,MPAllow)"
+equation_selection,MiN_eqn,1,"int 1: NRC (2021), 2: Hanigan (2021), 3: White (2017)"
+equation_selection,NonMilkCP_ClfLiq,0,"0 for no non milk protein sorce, 1 for non milk protein"
+equation_selection,Monensin_eqn,0,"int Is Monensin in diet? 0=No, 1=Yes"
+equation_selection,mPrt_eqn,0,"Milk protein prediction equation (0 = use Trg_MilkTPp, 1 = NRC predicted, 2 = VT1, 3 = VT2"
+equation_selection,mFat_eqn,1,"Milk Fat prediction equation (0 = use Trg_MilkFatp, 1 = use predicted milk fat production)"
+equation_selection,RumDevDisc_Clf,0,0=No dry feed discount for ME due to undeveloped rumen. 1=a 10% discount on dry feed if Liq>1.5% of BW
+diet_info,Alfalfa meal,8.2101564407,float
+diet_info,Canola meal,6.7323288918,float
+diet_info,"Corn silage, typical",5.4734377861,float
+diet_info,"Corn grain HM, coarse grind",4.1050782204,float
+animal_input,An_Parity_rl,1,int
+animal_input,Trg_MilkProd,25.062,float
+animal_input,An_BW,624.795,float
+animal_input,An_BCS,3,float
+animal_input,An_LactDay,100,int
+animal_input,Trg_MilkFatp,4.55,float
+animal_input,Trg_MilkTPp,3.66,float
+animal_input,Trg_MilkLacp,4.85,float
+animal_input,DMI,24.521,float aka. Trg_Dt_DMIn
+animal_input,An_BW_mature,700,float
+animal_input,Trg_FrmGain,0.19,float
+animal_input,An_GestDay,46,int
+animal_input,An_GestLength,280,int
+animal_input,Trg_RsrvGain,0,float
+animal_input,Fet_BWbrth,44.1,float
+animal_input,An_AgeDay,820.8,int
+animal_input,An_305RHA_MlkTP,280,float
+animal_input,An_StatePhys,Lactating Cow,str
+animal_input,An_Breed,Holstein,str (Holstein or Jersey)
+animal_input,An_AgeDryFdStart,14,Day starter feed is first offered
+animal_input,Env_TempCurr,22,current mean daily temperature in degrees C
+animal_input,Env_DistParlor,0,distance from the barn or paddock to the parlor in meters
+animal_input,Env_TripsParlor,0,number of daily trips to and from the parlor; generally 2 trips per milking times number of milkings
+animal_input,Env_Topo,0,the positive elevation change per day in meters

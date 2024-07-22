@@ -4,11 +4,11 @@ import pandas as pd
 import pytest
 
 import nasem_dairy as nd
-from nasem_dairy.ration_balancer.input_validation import validate_feed_library_df
+from nasem_dairy.model.input_validation import validate_feed_library_df
 
 path_to_package_data = importlib.resources.files("nasem_dairy.data")
 feed_library_in = pd.read_csv(
-    path_to_package_data.joinpath("NASEM_feed_library.csv")
+    path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv")
 )
 
 def create_minimal_valid_user_diet():
