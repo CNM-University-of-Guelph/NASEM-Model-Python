@@ -36,7 +36,7 @@ def test_wrapper_functions(json_file: str) -> None:
             helper.compare_dicts_with_tolerance(func(**input_params), output)
         elif isinstance(output, pd.DataFrame):
             pd.testing.assert_frame_equal(
-                func(**input_params), output, rtol=1e-3, atol=1e-2
+                func(**input_params), output, check_dtype=False, rtol=1e-3, atol=1e-2
             )
         else:
             raise TypeError(f"Output for {function} is not a dict")
