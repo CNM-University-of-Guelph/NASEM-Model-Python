@@ -25,7 +25,7 @@ import nasem_dairy.nasem_equations.water as water
 
 import nasem_dairy.ration_balancer.constants as constants
 import nasem_dairy.ration_balancer.input_validation as validate
-import nasem_dairy.ration_balancer.ModelOutput as output
+import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 
 def execute_model(user_diet: pd.DataFrame,

@@ -3,7 +3,7 @@ from importlib.metadata import version
 __version__ = version("nasem_dairy")
 
 from nasem_dairy.ration_balancer.ration_balancer_functions import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
-from nasem_dairy.ration_balancer.ModelOutput import ModelOutput
+from nasem_dairy.model_output.ModelOutput import ModelOutput
 from nasem_dairy.ration_balancer.execute_model import execute_model
 from nasem_dairy.ration_balancer.constants import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list, f_Imb
 from nasem_dairy.nasem_equations.dry_matter_intake import (
