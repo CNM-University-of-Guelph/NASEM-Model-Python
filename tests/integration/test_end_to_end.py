@@ -84,7 +84,7 @@ def test_end_to_end(json_file: str) -> None:
     ) = read_test_json(json_file)
     path_to_package_data = importlib_resources.files("nasem_dairy.data")
     feed_library_in = pd.read_csv(
-        path_to_package_data.joinpath("NASEM_feed_library.csv"))
+        path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv"))
     output = execute_model(user_diet=user_diet_in,
                            animal_input=animal_input_in,
                            equation_selection=equation_selection_in,
