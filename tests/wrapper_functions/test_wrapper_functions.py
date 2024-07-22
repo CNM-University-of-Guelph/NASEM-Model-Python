@@ -24,15 +24,16 @@ def test_wrapper_functions(json_file: str) -> None:
     try:
         func = getattr(nd, function)
         input_params = helper.update_constants(input_params)
-
-        convert_to_df = [key for key in input_params.keys() 
-                         if key.endswith("_df")]
-        for key in convert_to_df:
-            input_params[key.replace("_df", "")] = pd.DataFrame(input_params.pop(key))
+        input_params = helper.create_dataframe(input_params)
+        output = helper.create_dataframe(output)
 
         # Run test
         if isinstance(output, dict):
             helper.compare_dicts_with_tolerance(func(**input_params), output)
+        elif isinstance(output, pd.DataFrame):
+            pd.testing.assert_frame_equal(
+                func(**input_params), output, rtol=1e-3, atol=1e-2
+            )
         else:
             raise TypeError(f"Output for {function} is not a dict")
 
