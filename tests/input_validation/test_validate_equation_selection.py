@@ -1,6 +1,6 @@
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_equation_selection
+from nasem_dairy.model.input_validation import validate_equation_selection
 
 def test_not_a_dictionary():
     with pytest.raises(TypeError, match="equation_selection must be a dict"):

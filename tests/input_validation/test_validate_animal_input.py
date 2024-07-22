@@ -1,6 +1,6 @@
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_animal_input
+from nasem_dairy.model.input_validation import validate_animal_input
 
 type_mapping = {
     'An_Parity_rl': float,

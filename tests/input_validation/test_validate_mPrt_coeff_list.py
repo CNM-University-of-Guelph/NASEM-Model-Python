@@ -1,7 +1,7 @@
 import pytest
 
 import nasem_dairy as nd
-from nasem_dairy.ration_balancer.input_validation import validate_mPrt_coeff_list
+from nasem_dairy.model.input_validation import validate_mPrt_coeff_list
 
 def test_not_a_list():
     with pytest.raises(TypeError, match="mPrt_coeff_list must be a list"):

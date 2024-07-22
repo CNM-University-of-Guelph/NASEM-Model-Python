@@ -1,6 +1,6 @@
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_infusion_input
+from nasem_dairy.model.input_validation import validate_infusion_input
 
 type_mapping = {
     "Inf_Acet_g": float,

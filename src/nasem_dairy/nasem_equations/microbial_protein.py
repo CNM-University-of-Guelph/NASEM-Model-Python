@@ -1,6 +1,6 @@
 # import nasem_dairy.nasem_equations.microbial_protein as micp 
 
-import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+import nasem_dairy.model.utilities as ration_funcs
 
 
 def calculate_RDPIn_MiNmax(Dt_DMIn: float, 

@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from nasem_dairy.ration_balancer.execute_model import execute_model
+from nasem_dairy.model.execute_model import execute_model
  
 ####################
 # Define Functions

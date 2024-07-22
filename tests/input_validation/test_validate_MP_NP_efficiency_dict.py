@@ -1,6 +1,6 @@
 import pytest
 
-from nasem_dairy.ration_balancer.input_validation import validate_MP_NP_efficiency_input
+from nasem_dairy.model.input_validation import validate_MP_NP_efficiency_input
 
 def test_not_a_dictionary():
     with pytest.raises(TypeError, match="MP_NP_efficiency_input must be a dict"):

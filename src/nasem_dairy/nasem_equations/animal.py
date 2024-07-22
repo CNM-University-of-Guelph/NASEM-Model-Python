@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+import nasem_dairy.model.utilities as ration_funcs
 
 ####################
 # Functions for Animal Level Intakes in Wrappers

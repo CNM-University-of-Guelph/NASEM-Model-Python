@@ -3,7 +3,7 @@
 
 import numpy as np
 
-import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+import nasem_dairy.model.utilities as ration_funcs
 
 
 def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 

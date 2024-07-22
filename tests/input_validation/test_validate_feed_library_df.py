@@ -4,7 +4,7 @@ import pandas as pd
 import pytest
 
 import nasem_dairy as nd
-from nasem_dairy.ration_balancer.input_validation import validate_feed_library_df
+from nasem_dairy.model.input_validation import validate_feed_library_df
 
 path_to_package_data = importlib.resources.files("nasem_dairy.data")
 feed_library_in = pd.read_csv(

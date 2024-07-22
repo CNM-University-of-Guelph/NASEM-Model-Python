@@ -3,7 +3,7 @@
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+import nasem_dairy.model.utilities as ration_funcs
 
 
 def calculate_f_mPrt_max(An_305RHA_MlkTP: float, coeff_dict: dict) -> float:
