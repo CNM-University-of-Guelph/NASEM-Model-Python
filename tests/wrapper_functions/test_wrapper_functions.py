@@ -25,6 +25,10 @@ def test_wrapper_functions(json_file: str) -> None:
         func = getattr(nd, function)
         input_params = helper.update_constants(input_params)
         input_params = helper.create_dataframe(input_params)
+        convert_to_series = [key for key in input_params.keys() 
+                        if key.endswith('_series')]
+        for key in convert_to_series:
+            input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
         output = helper.create_dataframe(output)
 
         # Run test
