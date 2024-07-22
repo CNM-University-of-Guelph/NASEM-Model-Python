@@ -210,9 +210,19 @@
       "Output": 6.362537764350453
   },
   {
+      "Name": "calculate_Body_NEgain_BWgain",
+      "Input": {"An_REgain": 2106, "Body_Gain": 0},
+      "Output": 0
+  },
+  {
       "Name": "calculate_An_ME_NEg",
       "Input": {"An_REgain": 415, "An_MEgain": 2091},
       "Output": 0.19846963175514107
+  },
+  {
+      "Name": "calculate_An_ME_NEg",
+      "Input": {"An_REgain": 415, "An_MEgain": 0},
+      "Output": 0
   },
   {
       "Name": "calculate_Rsrv_NELgain",
@@ -365,9 +375,29 @@
       "Output": 1.354915254237288
   },
   {
-    "Name": "calculate_Kf_ME_RE",
-    "Input": {"An_StatePhys": "Lactating Cow", "Kf_ME_RE_ClfDry": 1.9, "Dt_DMIn_ClfLiq": 2.4, "Dt_DMIn": 5.9, "coeff_dict": null},
-    "Output": 0.4
-  }
+      "Name": "calculate_Kf_ME_RE",
+      "Input": {"An_StatePhys": "Lactating Cow", "Kf_ME_RE_ClfDry": 1.9, "Dt_DMIn_ClfLiq": 2.4, "Dt_DMIn": 5.9, "coeff_dict": null},
+      "Output": 0.4
+  },
+  {
+      "Name": "calculate_Ky_ME_NE",
+      "Input": {"Gest_REgain": 120},
+      "Output": 0.14
+  },
+  {
+      "Name": "calculate_Ky_ME_NE",
+      "Input": {"Gest_REgain": 0},
+      "Output": 0.14
+  },
+  {
+      "Name": "calculate_Ky_ME_NE",
+      "Input": {"Gest_REgain": -10},
+      "Output": 0.89
+  },
+  {
+      "Name": "calculate_Trg_NEmilkOut",
+      "Input": {"Trg_NEmilk_Milk": 23.2, "Trg_MilkProd": 15.2},
+      "Output": 352.64
+}  
 ]
   

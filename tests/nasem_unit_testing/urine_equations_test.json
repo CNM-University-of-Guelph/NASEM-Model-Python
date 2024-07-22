@@ -20,6 +20,11 @@
       "Output": 1043.75
     },
     {
+      "Name": "calculate_Ur_NPend_g",
+      "Input": {"An_StatePhys": "Calf","An_BW": 140 ,"Ur_Nend_g": 167},
+      "Output": 32.53843880704789
+    },
+    {
       "Name": "calculate_Ur_MPendUse_g",
       "Input": {"Ur_NPend_g": 5},
       "Output": 5
@@ -108,6 +113,21 @@
       "Name": "calculate_UrDE_DEIn",
       "Input": {"Ur_DEout": 16.3, "An_DEIn": 30.3},
       "Output": 0.5379537953795379
+  },
+  {
+    "Name": "calculate_Ur_AAEnd_TP",
+    "Input": {"AA_list": null, "coeff_dict": null},
+    "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
+  },
+  {
+    "Name": "calculate_Ur_AAEnd_g",
+    "Input": {"Ur_EAAend_g": 524, "Ur_NPend_3MH_g": 84.9, "Ur_AAEnd_TP_series": [3.4, 5.8, 12.2]},
+    "Output": [17.816, 115.292, 63.92799999999999]
+  },
+  {
+    "Name": "calculate_Ur_EAAEnd_g",
+    "Input": {"Ur_AAEnd_g_series": [5.3, 2.5, 0.2]},
+    "Output": 8.0
   }
-  ]
+]
   

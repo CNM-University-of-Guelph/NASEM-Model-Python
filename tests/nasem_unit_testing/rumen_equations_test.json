@@ -45,6 +45,11 @@
       "Output": 20.200000000000003
     },
     {
+      "Name": "calculate_Du_StPas",
+      "Input": {"Dt_StIn": 23.5, "InfRum_StIn": 0.6, "Rum_DigStIn": 43.9},
+      "Output": 0
+    },
+    {
       "Name": "calculate_Du_NDFPas",
       "Input": {"Dt_NDFIn": 47.9, "Inf_NDFIn": 2.4, "Rum_DigNDFIn": 6.1},
       "Output": 44.199999999999996

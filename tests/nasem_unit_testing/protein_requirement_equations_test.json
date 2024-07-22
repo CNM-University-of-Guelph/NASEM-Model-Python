@@ -90,6 +90,11 @@
       "Output": 938.7096774
     },
     {
+      "Name": "calculate_Rsrv_MPUse_g_Trg",
+      "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 0, "Rsrv_NPgain_g": 582, "Kg_MP_NP_Trg": 0.62},
+      "Output": 938.7096774
+    },
+    {
       "Name": "calculate_Body_MPUse_g_Trg",
       "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
       "Output": 287.9310345
@@ -108,6 +113,26 @@
       "Name": "calculate_Trg_MPIn_req",
       "Input": {"Fe_MPendUse_g_Trg": 491, "Scrf_MPUse_g_Trg": 310, "Ur_MPendUse_g": 81, "Body_MPUse_g_Trg": 230, "Gest_MPUse_g_Trg": 121, "Trg_Mlk_NP_g": 1022, "coeff_dict": null},
       "Output": 2714.159420289855
+    },
+    {
+      "Name": "calculate_Kg_MP_NP_Trg_heifer_adjustment",
+      "Input": { "An_StatePhys": "Heifer", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg": 0.74 },
+      "Output": 0.9230769230769231
+    },
+    {
+      "Name": "calculate_Kg_MP_NP_Trg_heifer_adjustment",
+      "Input": { "An_StatePhys": "Lactating Cow", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg": 0.74 },
+      "Output": 0.74
+    },
+    {
+      "Name": "calculate_Km_MP_NP_Trg",
+      "Input": { "An_StatePhys": "Heifer", "coeff_dict": null},
+      "Output": 0.66
+    },
+    {
+      "Name": "calculate_Km_MP_NP_Trg",
+      "Input": { "An_StatePhys": "Lactating Cow", "coeff_dict": null},
+      "Output": 0.69
     }
   ]
   

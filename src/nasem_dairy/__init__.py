@@ -79,8 +79,7 @@ from nasem_dairy.NASEM_equations.milk_equations import (
     calculate_MlkNP_AbsNEAA,
     calculate_MlkNP_AbsOthAA,
     calculate_Trg_Mlk_NP,
-    calculate_Mlk_AA_TP,
-    calculate_Dt_AAIn
+    calculate_Mlk_AA_TP
 )
 
 from nasem_dairy.NASEM_equations.nutrient_intakes import (
@@ -280,7 +279,16 @@ from nasem_dairy.NASEM_equations.nutrient_intakes import (
     calculate_Abs_micro,
     calculate_Dt_FA_FA,
     calculate_DtAARUP_DtAA,
-    calculate_Dt_IdAAIn
+    calculate_Dt_IdAAIn,
+    calculate_Fd_DigrOMtIn,
+    calculate_Fd_idRUP,
+    calculate_Fd_Fe_RUPout,
+    calculate_Dt_RDPIn,
+    calculate_Dt_idcRUP,
+    calculate_Dt_Fe_RUPout,
+    calculate_Dt_RDTPIn,
+    calculate_Dt_RDP,
+    calculate_Dt_RDP_CP
 )
 
 from nasem_dairy.NASEM_equations.rumen_equations import (
@@ -413,7 +421,7 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_AnNPxEAAUser_AbsEAA,
     calculate_MiTPAAProf,
     calculate_mPrt_k_AA_array,
-    calculate_An_IdAAIn,
+    calculate_An_IdAAIn_array,
     calculate_Inf_AA_g,
     calculate_EndAAProf,
     calculate_Dt_AARUPIn,
@@ -421,7 +429,8 @@ from nasem_dairy.NASEM_equations.amino_acid_equations import (
     calculate_Dt_AAIn,
     calculate_RecAA,
     calculate_MWAA,
-    calculate_Body_AA_TP
+    calculate_Body_AA_TP,
+    calculate_Abs_EAA2_g
 )
 
 
@@ -444,7 +453,15 @@ from nasem_dairy.NASEM_equations.infusion_equations import (
     calculate_Inf_DEAcetIn,
     calculate_Inf_DEPropIn,
     calculate_Inf_DEButrIn,
-    calculate_infusion_data
+    calculate_infusion_data,
+    calculate_XIn,
+    calculate_CPXIn,
+    calculate_DMXIn,
+    calculate_InfRum_X,
+    calculate_InfSI_X,
+    calculate_InfArt_X,
+    calculate_Inf_IdAARUPIn,
+    calculate_Inf_IdAAIn
 )
 
 from nasem_dairy.NASEM_equations.animal_equations import (
@@ -465,7 +482,6 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_DMIn,
     calculate_An_CPIn,
     calculate_An_DigNDF,
-    calculate_An_GEIn,
     calculate_An_GasEOut_Dry,
     calculate_An_GasEOut_Lact,
     calculate_An_GasEOut_Heif,
@@ -553,7 +569,24 @@ from nasem_dairy.NASEM_equations.animal_equations import (
     calculate_An_ME_ClfDry,
     calculate_An_NE_ClfDry,
     calculate_An_Grazing,
-    calculate_En_OM
+    calculate_En_OM,
+    calculate_An_DMIn_MBW,
+    calculate_An_StIn,
+    calculate_An_St,
+    calculate_An_rOMIn,
+    calculate_An_rOM,
+    calculate_An_NDFIn_BW,
+    calculate_An_ADFIn,
+    calculate_An_ADF,
+    calculate_An_CPIn_g,
+    calculate_An_CP,
+    calculate_An_NIn_g,
+    calculate_An_FAhydrIn,
+    calculate_An_FA,
+    calculate_An_AshIn,
+    calculate_An_Ash,
+    calculate_An_IdAAIn,
+    calculate_An_XIn
 )
 
 from nasem_dairy.NASEM_equations.gestation_equations import (
@@ -780,7 +813,9 @@ from nasem_dairy.NASEM_equations.energy_requirement_equations import (
     calculate_Km_ME_NE_Clf,
     calculate_Km_ME_NE,
     calculate_Trg_NEmilkOut,
-    calculate_Ky_ME_NE
+    calculate_Ky_ME_NE,
+    calculate_Kf_ME_RE_ClfDry,
+    calculate_Kf_ME_RE
 )
 
 from nasem_dairy.NASEM_equations.protein_requirement_equations import (

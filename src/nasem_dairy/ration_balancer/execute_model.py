@@ -771,7 +771,7 @@ def execute_model(user_diet: pd.DataFrame,
     ########################################
     # Create array from of coefficients for the AA calculations
     mPrt_k_AA = AA.calculate_mPrt_k_AA_array(mPrt_coeff, AA_list)
-    An_IdAAIn = AA.calculate_An_IdAAIn(An_data, AA_list)
+    An_IdAAIn = AA.calculate_An_IdAAIn_array(An_data, AA_list)
     Inf_AA_g = AA.calculate_Inf_AA_g(infusion_data, AA_list)
     MWAA = AA.calculate_MWAA(AA_list, coeff_dict)
     Body_AA_TP = AA.calculate_Body_AA_TP(AA_list, coeff_dict)

@@ -115,6 +115,11 @@
       "Output": 0.352
     },
     {
+      "Name": "calculate_FatGain_FrmGain",
+      "Input": {"An_StatePhys": "Calf", "An_REgain_Calf": "nan", "An_BW": 143, "An_BW_mature": 750},
+      "Output": 0.0
+    },
+    {
       "Name": "calculate_Frm_Gain",
       "Input": {"Trg_FrmGain": 7},
       "Output": 7
@@ -350,10 +355,20 @@
     "Output": 0.4867403314917127
 },
 {
+    "Name": "calculate_Kg_ME_NE",
+    "Input": {"Frm_NEgain": 0, "Rsrv_NEgain": 0, "Kr_ME_RE": 0.6, "Kf_ME_RE": 0.4},
+    "Output": 0.0
+},
+{
     "Name": "calculate_Body_Gain_NEalow",
     "Input": {"An_MEavail_Grw": 401, "Kg_ME_NE": 0.9, "Body_NEgain_BWgain": 301},
     "Output": 1.1990033222591363
 },
+{
+    "Name": "calculate_Body_Gain_NEalow",
+    "Input": {"An_MEavail_Grw": "nan", "Kg_ME_NE": 0.9, "Body_NEgain_BWgain": 301},
+    "Output": "nan"
+  },
 {
     "Name": "calculate_An_BodConcgain_NEalow",
     "Input": {"Body_Gain_NEalow": 501, "Conc_BWgain": 391},

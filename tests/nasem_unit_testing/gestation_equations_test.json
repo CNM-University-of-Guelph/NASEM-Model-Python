@@ -173,6 +173,21 @@
       "Name": "calculate_Fet_BWgain",
       "Input": {"An_GestDay": 300, "An_GestLength": 280, "Fet_Wt": 57, "coeff_dict": null},
       "Output": 0
+    },
+    {
+      "Name": "calculate_Gest_AA_g",
+      "Input": {"Gest_NPuse_g": 432, "Body_AA_TP_series": [4.7, 2.5, 0.6]},
+      "Output": [20.304000000000002, 10.8, 2.592]
+    },
+    {
+      "Name": "calculate_Gest_EAA_g",
+      "Input": {"Gest_AA_g_series": [7.4, 2.3, 4.1]},
+      "Output": 13.799999999999999
+    },
+    {
+      "Name": "calculate_GestAA_AbsAA",
+      "Input": {"Gest_AA_g_series": [3.5, 6.7, 2.1], "Abs_AA_g_series": [7.4, 2.6, 1.0]},
+      "Output": [0.47297297297297297, 2.576923076923077, 2.1]
     }
   ]
   

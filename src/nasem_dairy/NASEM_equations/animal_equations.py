@@ -35,23 +35,6 @@ def calculate_An_RDPIn_g(An_RDPIn: float) -> float:
     return An_RDPIn_g
 
 
-def calculate_An_NDFIn(Dt_NDFIn: float, 
-                       InfRum_NDFIn: float, 
-                       InfSI_NDFIn: float
-) -> float:
-    An_NDFIn = Dt_NDFIn + InfRum_NDFIn + InfSI_NDFIn  # Line 942
-    return An_NDFIn
-
-
-def calculate_An_NDF(An_NDFIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float, 
-                     InfSI_DMIn: float
-) -> float:
-    An_NDF = An_NDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100  # Line 944
-    return An_NDF
-
-
 def calculate_An_DigNDFIn(Dt_DigNDFIn: float, 
                           InfRum_NDFIn: float, 
                           TT_dcNDF: float
@@ -140,33 +123,6 @@ def calculate_An_DigNDF(An_DigNDFIn: float,
     # Line 1066, should add LI infusions
     An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
     return An_DigNDF
-
-
-def calculate_An_GEIn(Dt_GEIn: float, 
-                      Inf_NDFIn: float, 
-                      Inf_StIn: float, 
-                      Inf_FAIn: float, 
-                      Inf_TPIn: float,
-                      Inf_NPNCPIn: float, 
-                      Inf_AcetIn: float, 
-                      Inf_PropIn: float, 
-                      Inf_ButrIn: float,
-                      coeff_dict: dict
-) -> float:
-    req_coeff = [
-        'En_NDF', 'En_St', 'En_FA', 'En_CP', 'En_NPNCP', 'En_Acet', 'En_Prop',
-        'En_Butr'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
-    An_GEIn = (Dt_GEIn + Inf_NDFIn * coeff_dict['En_NDF'] + 
-               Inf_StIn * coeff_dict['En_St'] +
-               Inf_FAIn * coeff_dict['En_FA'] +
-               Inf_TPIn * coeff_dict['En_CP'] + 
-               Inf_NPNCPIn * coeff_dict['En_NPNCP'] + 
-               Inf_AcetIn * coeff_dict['En_Acet'] + 
-               Inf_PropIn * coeff_dict['En_Prop'] + 
-               Inf_ButrIn * coeff_dict['En_Butr'])
-    return An_GEIn
 
 
 def calculate_An_GasEOut_Dry(Dt_DMIn: float, 
@@ -1268,7 +1224,7 @@ def calculate_An_XIn(diet_data: dict,
 
 
 def calculate_An_data_initial(animal_input: dict, 
-                              diet_data: pd.DataFrame, 
+                              diet_data: dict, 
                               infusion_data: dict,
                               Monensin_eqn: int, 
                               GrUter_Wt: float, 

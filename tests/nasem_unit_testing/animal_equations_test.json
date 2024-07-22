@@ -246,6 +246,11 @@
     "Output": 0.18
   },
   {
+    "Name": "calculate_An_GutFill_BW",
+    "Input": {"An_BW": 650, "An_BW_mature": 700, "An_StatePhys": "Heifer", "An_Parity_rl": 1, "Dt_DMIn_ClfLiq": 5, "Dt_DMIn_ClfStrt": 6, "coeff_dict": null},
+    "Output": 0.15
+  },
+  {
     "Name": "calculate_An_BWnp",
     "Input": {"An_BW": 750, "GrUter_Wt": 24},
     "Output": 726
@@ -599,70 +604,233 @@
     "Name": "calculate_An_ME",
     "Input": {"An_MEIn": 19.1, "An_DMIn": 31.2},
     "Output": 0.6121794871794872
-},
-{
+  },
+  {
     "Name": "calculate_An_ME_GE",
     "Input": {"An_MEIn": 15.8, "An_GEIn": 32.2},
     "Output": 0.4906832298136646
-},
-{
+  },
+  {
     "Name": "calculate_An_ME_DE",
     "Input": {"An_MEIn": 31, "An_DEIn": 49.2},
     "Output": 0.6300813008130081
-},
-{
+  },
+  {
     "Name": "calculate_An_NE_GE",
     "Input": {"An_NEIn": 21, "An_GEIn": 31.7},
     "Output": 0.6624605678233438
-},
-{
+  },
+  {
     "Name": "calculate_An_NE_DE",
     "Input": {"An_NEIn": 41.9, "An_DEIn": 71.6},
     "Output": 0.585195530726257
-},
-{
+  },
+  {
     "Name": "calculate_An_NE_ME",
     "Input": {"An_NEIn": 13.1, "An_MEIn": 19.4},
     "Output": 0.6752577319587629
-},
-{
+  },
+  {
     "Name": "calculate_An_MPIn_MEIn",
     "Input": {"An_MPIn_g": 3101, "An_MEIn": 51.3},
     "Output": 60.44834307992203
-},
-{
-  "Name": "calculate_An_RUPIn_g",
-  "Input": {"An_RUPIn": 15.8},
-  "Output": 15800
-},
-{
-  "Name": "calculate_An_MEIn_ClfDry",
-  "Input": {"An_MEIn": 650, "Dt_MEIn_ClfLiq": 283},
-  "Output": 367
-},
-{
-  "Name": "calculate_An_ME_ClfDry",
-  "Input": {"An_MEIn_ClfDry": 23, "An_DMIn": 6.3, "Dt_DMIn_ClfLiq": 1.9},
-  "Output": 5.227272727272727
-},
-{
-  "Name": "caclulate_An_NE_ClfDry",
-  "Input": {"An_ME_ClfDry": 40.2},
-  "Output": 313.25364800000006
-},
-{
-  "Name": "calculate_An_Grazing",
-  "Input": {"Dt_PastIn": 0.1, "Dt_DMIn": 24},
-  "Output": 0
-},
-{
-  "Name": "calculate_An_Grazing",
-  "Input": {"Dt_PastIn": 30, "Dt_DMIn": 7},
-  "Output": 1
-},
-{
-  "Name": "calculate_En_OM",
-  "Input": {"An_DEIn": 124, "An_DigOMtIn": 18.3},
-  "Output": 6.775956284
-}
+  },
+  {
+    "Name": "calculate_An_RUPIn_g",
+    "Input": {"An_RUPIn": 15.8},
+    "Output": 15800
+  },
+  {
+    "Name": "calculate_An_MEIn_ClfDry",
+    "Input": {"An_MEIn": 650, "Dt_MEIn_ClfLiq": 283},
+    "Output": 367
+  },
+  {
+    "Name": "calculate_An_ME_ClfDry",
+    "Input": {"An_MEIn_ClfDry": 23, "An_DMIn": 6.3, "Dt_DMIn_ClfLiq": 1.9},
+    "Output": 5.227272727272727
+  },
+  {
+    "Name": "caclulate_An_NE_ClfDry",
+    "Input": {"An_ME_ClfDry": 40.2},
+    "Output": 313.25364800000006
+  },
+  {
+    "Name": "calculate_An_Grazing",
+    "Input": {"Dt_PastIn": 0.1, "Dt_DMIn": 24},
+    "Output": 0
+  },
+  {
+    "Name": "calculate_An_Grazing",
+    "Input": {"Dt_PastIn": 30, "Dt_DMIn": 7},
+    "Output": 1
+  },
+  {
+    "Name": "calculate_En_OM",
+    "Input": {"An_DEIn": 124, "An_DigOMtIn": 18.3},
+    "Output": 6.775956284
+  },
+  {
+    "Name": "calculate_An_NDFIn",
+    "Input": {"Dt_NDFIn": 23.6, "InfRum_NDFIn": 39.1, "InfSI_NDFIn": 1.8},
+    "Output": 64.5
+  },
+  {
+    "Name": "calculate_An_NDF",
+    "Input": {"An_NDFIn": 35.1, "Dt_DMIn": 24.9, "InfRum_DMIn": 3.0, "InfSI_DMIn": 1.2},
+    "Output": 120.61855670103094
+  },
+  {
+    "Name": "calculate_An_DigNDF",
+    "Input": {"An_DigNDFIn": 23.5, "Dt_DMIn": 26.6, "InfRum_DMIn": 3.2, "InfSI_DMIn": 2.9},
+    "Output": 71.86544342507645
+  },
+  {
+    "Name": "calculate_An_GEIn",
+    "Input": {
+        "Dt_GEIn": 3210, "Inf_NDFIn": 1.6, "Inf_StIn": 2.4, "Inf_FAIn": 6.4, 
+        "Inf_TPIn": 0.7, "Inf_NPNCPIn": 1.3, "Inf_AcetIn": 12.2, "Inf_PropIn": 6.4, 
+        "Inf_ButrIn": 3.1, "coeff_dict": null
+    },
+    "Output": 3384.789
+  },
+  {
+    "Name": "calculate_An_DEInp",
+    "Input": {"An_DEIn": 432.8, "An_DETPIn": 13.6, "An_DENPNCPIn": 46.6},
+    "Output": 372.59999999999997
+  },
+  {
+    "Name": "calculate_An_GutFill_Wt",
+    "Input": {"An_GutFill_BW": 285, "An_BWnp": 0.45},
+    "Output": 128.25
+  },
+  {
+    "Name": "calculate_An_DMIn_MBW",
+    "Input": {"An_DMIn": 32.7, "An_MBW": 239},
+    "Output": 0.13682008368200838
+  },
+  {
+    "Name": "calculate_An_StIn",
+    "Input": {"Dt_StIn": 14.2, "InfRum_StIn": 1.9, "InfSI_StIn": 5.2},
+    "Output": 21.299999999999997
+  },
+  {
+    "Name": "calculate_An_St",
+    "Input": {"An_StIn": 15.6, "Dt_DMIn": 28.4, "InfRum_DMIn": 1.9, "InfSI_DMIn": 5.7},
+    "Output": 43.333333333333336
+  },
+  {
+    "Name": "calculate_An_rOMIn",
+    "Input": {"Dt_rOMIn": 22.6, "InfRum_GlcIn": 1.5, "InfRum_AcetIn": 4.8, "InfRum_PropIn": 2.5, "InfRum_ButrIn": 6.1, "InfSI_AcetIn": 2.0, "InfSI_PropIn": 9.5, "InfSI_ButrIn": 6.7},
+    "Output": 55.7
+  },
+  {
+    "Name": "calculate_An_rOM",
+    "Input": {"An_rOMIn": 23.8, "Dt_DMIn": 30.1, "InfRum_DMIn": 1.9, "InfSI_DMIn": 0.4},
+    "Output": 73.4567901234568
+  },
+  {
+    "Name": "calculate_An_NDFIn_BW",
+    "Input": {"An_NDFIn": 36.7, "An_BW": 734},
+    "Output": 5.0
+  },
+  {
+    "Name": "calculate_An_ADFIn",
+    "Input": {"Dt_ADFIn": 35.1, "InfRum_ADFIn": 12.5, "InfSI_ADFIn": 6.4},
+    "Output": 54.0
+  },
+  {
+    "Name": "calculate_An_ADF",
+    "Input": {"An_ADFIn": 27.9, "Dt_DMIn": 20.1, "InfRum_DMIn": 1.4, "InfSI_DMIn": 0.0},
+    "Output": 129.7674418604651
+  },
+  {
+    "Name": "calculate_An_CPIn_g",
+    "Input": {"An_CPIn": 16.8},
+    "Output": 16800.0
+  },
+  {
+    "Name": "calculate_An_CP",
+    "Input": {"An_CPIn": 23.7, "Dt_DMIn": 15.5, "InfRum_DMIn": 0.1, "InfSI_DMIn": 3.6},
+    "Output": 123.4375
+  },
+  {
+    "Name": "calculate_An_NIn_g",
+    "Input": {"An_CPIn": 12.5},
+    "Output": 2000
+  },
+  {
+    "Name": "calculate_An_FAhydrIn",
+    "Input": {"Dt_FAhydrIn": 31.0, "Inf_FAIn": 2.5},
+    "Output": 33.5
+  },
+  {
+    "Name": "calculate_An_FA",
+    "Input": {"An_FAIn": 12.8, "Dt_DMIn": 31.5, "InfRum_DMIn": 0.5, "InfSI_DMIn": 0.4},
+    "Output": 39.50617283950618
+  },
+  {
+    "Name": "calculate_An_AshIn",
+    "Input": {"Dt_AshIn": 9.6, "InfRum_AshIn": 1.2, "InfSI_AshIn": 3.7},
+    "Output": 14.5
+  },
+  {
+    "Name": "calculate_An_Ash",
+    "Input": {"An_AshIn": 12.4, "Dt_DMIn": 25.6, "InfRum_DMIn": 1.3, "InfSI_DMIn": 2.6},
+    "Output": 42.03389830508474
+  },
+  {
+    "Name": "calculate_An_RDNPNCPIn",
+    "Input": {"Dt_NPNCPIn": 16.4, "InfRum_NPNCPIn": 1.5},
+    "Output": 17.9
+  },
+  {
+    "Name": "calculate_An_RUP",
+    "Input": {"An_RUPIn": 8.6, "Dt_DMIn": 27.3, "InfRum_DMIn": 1.4},
+    "Output": 29.965156794425084
+  },
+  {
+    "Name": "calculate_An_RUP_CP",
+    "Input": {"An_RUPIn": 17.4, "Dt_CPIn": 12.9, "InfRum_CPIn": 0.3},
+    "Output": 131.81818181818178
+  },
+  {
+    "Name": "calculate_An_idRUCPIn",
+    "Input": {"Dt_idRUPIn": 14.2, "InfRum_idRUPIn": 0.1, "InfSI_idCPIn": 0.8},
+    "Output": 15.1
+  },
+  {
+    "Name": "calculate_An_idRUP",
+    "Input": {"An_idRUPIn": 6.8, "Dt_DMIn": 23.5, "InfRum_DMIn": 1.1, "InfSI_DMIn": 2.5},
+    "Output": 0.25092250922509224
+  },
+  {
+    "Name": "calculate_An_RDTPIn",
+    "Input": {"Dt_RDTPIn": 25.6, "InfRum_RDPIn": 1.2, "InfRum_NPNCPIn": 0.8, "coeff_dict": null},
+    "Output": 26.0
+  },
+  {
+    "Name": "calculate_An_RDP_CP",
+    "Input": {"An_RDPIn": 24.7, "Dt_CPIn": 19.6, "InfRum_CPIn": 1.0},
+    "Output": 119.90291262135922
+  },
+  {
+    "Name": "calculate_An_NE_ClfDry",
+    "Input": {"An_ME_ClfDry": 1.64},
+    "Output": 0.816990976
+  },
+  {
+    "Name": "calculate_An_IdAAIn",
+    "Input": {"diet_data": {"Dt_IdArgIn": 3.4, "Dt_IdHisIn": 1.2, "Dt_IdIleIn": 2.4, "Dt_IdLeuIn": 4.3, "Dt_IdLysIn": 2.9, "Dt_IdMetIn": 5.2, "Dt_IdPheIn": 2.3, "Dt_IdThrIn": 1.9, "Dt_IdTrpIn": 4.1, "Dt_IdValIn": 8.5}, 
+              "infusion_data": {"Inf_IdArgIn": 5.2, "Inf_IdHisIn": 1.6, "Inf_IdIleIn": 0.2, "Inf_IdLeuIn": 9.1, "Inf_IdLysIn": 1.7, "Inf_IdMetIn": 2.3, "Inf_IdPheIn": 6.3, "Inf_IdThrIn": 4.8, "Inf_IdTrpIn": 7.1, "Inf_IdValIn": 3.4}, 
+              "AA_list": null, "complete_An_data": {}},
+    "Output": {"An_IdArgIn": 8.6, "An_IdHisIn": 2.8, "An_IdIleIn": 2.6, "An_IdLeuIn": 13.399999999999999, "An_IdLysIn": 4.6, "An_IdMetIn": 7.5, "An_IdPheIn": 8.6, "An_IdThrIn": 6.699999999999999, "An_IdTrpIn": 11.2, "An_IdValIn": 11.9}
+  },
+  {
+    "Name": "calculate_An_XIn",
+    "Input": {"diet_data": {"Dt_test1": 1.5, "Dt_test2": 4.6, "Dt_test3": 6.2}, 
+              "infusion_data": {"Inf_test1": 2.4, "Inf_test2": 3.5, "Inf_test3": 4.7}, 
+              "variables": ["test1", "test2", "test3"], "complete_An_data": {}},
+    "Output": {"An_test1": 3.9, "An_test2": 8.1, "An_test3": 10.9}
+  }
 ]
