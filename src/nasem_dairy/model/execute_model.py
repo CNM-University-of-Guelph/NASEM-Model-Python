@@ -23,7 +23,7 @@ import nasem_dairy.nasem_equations.unused as unused
 import nasem_dairy.nasem_equations.urine as urine
 import nasem_dairy.nasem_equations.water as water
 
-import nasem_dairy.model.constants as constants
+import nasem_dairy.data.constants as constants
 import nasem_dairy.model.input_validation as validate
 import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy.model.utilities as ration_funcs
