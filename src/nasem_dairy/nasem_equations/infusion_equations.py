@@ -1,5 +1,5 @@
 # dev_infusion_equations
-# import nasem_dairy.NASEM_equations.infusion_equations as infusion
+# import nasem_dairy.nasem_equations.infusion_equations as infusion
 
 import numpy as np
 

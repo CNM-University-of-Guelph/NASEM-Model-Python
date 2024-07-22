@@ -1,5 +1,5 @@
 # dev_microbial_protein_equations
-# import nasem_dairy.NASEM_equations.microbial_protein_equations as micp 
+# import nasem_dairy.nasem_equations.microbial_protein_equations as micp 
 
 import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 

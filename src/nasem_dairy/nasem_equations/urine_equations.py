@@ -1,6 +1,6 @@
 # Urine Equations
 # Urinary excretion of nutrients
-# import nasem_dairy.NASEM_equations.urine_equations as urine
+# import nasem_dairy.nasem_equations.urine_equations as urine
 import numpy as np
 import pandas as pd
 

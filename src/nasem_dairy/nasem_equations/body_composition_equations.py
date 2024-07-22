@@ -1,6 +1,6 @@
 # Body composition equations
 # Calculations for body reseves gain/loss, frame gain, energy reserves
-# import nasem_dairy.NASEM_equations.body_composition_equations as body_comp
+# import nasem_dairy.nasem_equations.body_composition_equations as body_comp
 import math
 
 import numpy as np

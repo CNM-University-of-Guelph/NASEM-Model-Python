@@ -1,5 +1,5 @@
 # These calculations are part of the NASEM model but never get used anywhere in the model
-# import nasem_dairy.NASEM_equations.unused_equations as unused 
+# import nasem_dairy.nasem_equations.unused_equations as unused 
 
 
 def calculate_Dt_DMIn_BW(Dt_DMIn: float, An_BW: float) -> float:

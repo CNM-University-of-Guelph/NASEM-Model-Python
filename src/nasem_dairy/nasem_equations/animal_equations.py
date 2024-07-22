@@ -1,5 +1,5 @@
 # dev_animal_equations
-# import nasem_dairy.NASEM_equations.animal_equations as animal
+# import nasem_dairy.nasem_equations.animal_equations as animal
 
 import numpy as np
 import pandas as pd

@@ -1,6 +1,6 @@
 # dev_fecal_equations
 # Fecal N Flow; Fecal Outputs should be renamed Fe_xxxOut to avoid confusion with conc, MDH
-# import nasem_dairy.NASEM_equations.fecal_equations as fecal
+# import nasem_dairy.nasem_equations.fecal_equations as fecal
 
 import numpy as np
 import pandas as pd

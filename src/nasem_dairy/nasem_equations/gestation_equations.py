@@ -1,5 +1,5 @@
 # dev_gestation_equations
-# import nasem_dairy.NASEM_equations.gestation_equations as gestation
+# import nasem_dairy.nasem_equations.gestation_equations as gestation
 
 import math
 

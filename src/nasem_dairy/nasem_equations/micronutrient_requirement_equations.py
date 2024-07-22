@@ -1,5 +1,5 @@
 # Micronutrient Requirement Equations
-# import nasem_dairy.NASEM_equations.micronutrient_requirement_equations as micro
+# import nasem_dairy.nasem_equations.micronutrient_requirement_equations as micro
 
 import math
 

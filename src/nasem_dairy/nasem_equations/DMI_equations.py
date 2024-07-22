@@ -1,7 +1,7 @@
 # DMI_equations
 # This file contains all the calculations for dry matter intake (DMI)
 # Calculations are in the order coresponding to their DMIn_eqn value
-# import nasem_dairy.NASEM_equations.DMI_equations as DMI
+# import nasem_dairy.nasem_equations.DMI_equations as DMI
 
 """
 This sub-module includes all equations required to calculate dry matter intake (DMI) 
@@ -13,7 +13,7 @@ Example
 Example of how to use this module:
     
     # Suggested import
-    import nasem_dairy.NASEM_equations.DMI_equations as DMI
+    import nasem_dairy.nasem_equations.DMI_equations as DMI
     
     # Example usage
     DMI.calculate_Kb_LateGest_DMIn()

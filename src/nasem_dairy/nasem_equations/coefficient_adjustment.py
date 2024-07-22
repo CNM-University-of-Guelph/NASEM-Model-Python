@@ -1,5 +1,5 @@
 # Functions that recalculate values in coeff_dict
-# import nasem_dairy.NASEM_equations as coeff_adjust
+# import nasem_dairy.nasem_equations as coeff_adjust
 
 
 def adjust_LCT(An_AgeDay: int) -> int:
