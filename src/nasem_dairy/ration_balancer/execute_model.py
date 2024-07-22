@@ -252,8 +252,42 @@ def execute_model(user_diet: pd.DataFrame,
             animal_input['Trg_MilkProd']
         )
 
-    # elif equation_selection['DMIn_eqn'] == 1:
-
+    elif equation_selection['DMIn_eqn'] == 1:
+        diet_info_for_DMI["Fd_DMIn_ClfLiq"] = diet.calculate_Fd_DMIn_ClfLiq(
+            animal_input["An_StatePhys"], diet_info_for_DMI["Fd_DMIn"], 
+            diet_info_for_DMI["Fd_Category"]
+        )
+        diet_info_for_DMI["Fd_DMIn_ClfFor"] = diet.calculate_Fd_DMIn_ClfFor(
+            animal_input["DMI"], diet_info_for_DMI["Fd_Conc"], 
+            diet_info_for_DMI["Fd_DMInp"]
+        )
+        diet_info_for_DMI["Fd_GE"] = diet.calculate_Fd_GE(
+            animal_input["An_StatePhys"], diet_info_for_DMI["Fd_Category"],
+            diet_info_for_DMI["Fd_CP"], diet_info_for_DMI["Fd_FA"], 
+            diet_info_for_DMI["Fd_Ash"], diet_info_for_DMI["Fd_St"],
+            diet_info_for_DMI["Fd_NDF"], coeff_dict
+        )
+        diet_info_for_DMI["Fd_DE_ClfLiq"] = diet.calculate_Fd_DE_ClfLiq(
+            animal_input["An_StatePhys"], diet_info_for_DMI["Fd_Category"],
+            diet_info_for_DMI["Fd_GE"]
+        )
+        diet_info_for_DMI["Fd_ME_ClfLiq"] = diet.calculate_Fd_ME_ClfLiq(
+            animal_input["An_StatePhys"], diet_info_for_DMI["Fd_Category"],
+            diet_info_for_DMI["Fd_DE_ClfLiq"]
+        )
+        Dt_MEIn_ClfLiq = diet.calculate_Dt_MEIn_ClfLiq(
+            diet_info_for_DMI["Fd_ME_ClfLiq"], diet_info_for_DMI["Fd_DMIn_ClfLiq"]
+        )
+        Dt_DMIn_ClfLiq = diet_info_for_DMI["Fd_DMIn_ClfLiq"].sum()
+        Dt_DMIn_ClfFor = diet_info_for_DMI["Fd_DMIn_ClfFor"].sum()
+        Dt_DMIn_ClfStrt = diet.calculate_Dt_DMIn_ClfStrt(
+            animal_input["An_BW"], Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq, Dt_DMIn_ClfFor,
+            animal_input["An_AgeDryFdStart"], animal_input["Env_TempCurr"], 
+            equation_selection["DMIn_eqn"], animal_input["DMI"], coeff_dict
+        )
+        animal_input["DMI"] = DMI.calculate_Dt_DMIn_Calf1(
+            Dt_DMIn_ClfLiq, Dt_DMIn_ClfStrt, Dt_DMIn_ClfFor)
+        del(Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq, Dt_DMIn_ClfFor, Dt_DMIn_ClfStrt)
 
     # Individual Heifer DMI Predictions
     elif equation_selection['DMIn_eqn'] in [2, 3, 4, 5, 6, 7]:

@@ -353,7 +353,6 @@ def calculate_Dt_DMIn_DryCow2(An_BW: float,
     return Dt_DMIn_DryCow2
 
 
-# Need to implement into execute_model
 def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float, 
                             Dt_DMIn_ClfStrt: float,
                             Dt_DMIn_ClfFor: float
