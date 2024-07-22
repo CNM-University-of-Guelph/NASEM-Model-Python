@@ -1,5 +1,4 @@
-# Protein equations
-# import nasem_dairy.nasem_equations.protein_equations as protein
+# import nasem_dairy.nasem_equations.protein as protein
 
 import numpy as np
 import pandas as pd

@@ -1,5 +1,5 @@
 # Methane equations
-# import nasem_dairy.nasem_equations.methane_equations as methane
+# import nasem_dairy.nasem_equations.methane as methane
 
 def calculate_CH4out_g(An_GasEOut: float, coeff_dict: dict) -> float:
     """

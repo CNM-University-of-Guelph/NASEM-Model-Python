@@ -1,5 +1,5 @@
 # Manure equations
-# import nasem_dairy.nasem_equations.manure_equations as manure
+# import nasem_dairy.nasem_equations.manure as manure
 
 import numpy as np
 

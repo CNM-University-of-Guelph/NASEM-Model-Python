@@ -1,6 +1,5 @@
-# dev_milk_equations
 # All calculations related to milk production, milk components, and milk energy
-# import nasem_dairy.nasem_equations.milk_equations as milk
+# import nasem_dairy.nasem_equations.milk as milk
 
 import numpy as np
 import pandas as pd

@@ -1,5 +1,5 @@
 # Protein Requirement Equations
-# import nasem_dairy.nasem_equations.protein_requirement_equations as protein_req
+# import nasem_dairy.nasem_equations.protein_requirement as protein_req
 
 import numpy as np
 

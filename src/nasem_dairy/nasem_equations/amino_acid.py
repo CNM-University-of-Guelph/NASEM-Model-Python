@@ -1,5 +1,5 @@
 # Amino Acid equations
-# import nasem_dairy.nasem_equations.amino_acid_equations as AA
+# import nasem_dairy.nasem_equations.amino_acid as AA
 
 import math
 

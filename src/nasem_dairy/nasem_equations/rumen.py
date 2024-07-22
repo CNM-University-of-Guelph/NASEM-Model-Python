@@ -1,5 +1,4 @@
-# rumen_equations
-# import nasem_dairy.nasem_equations.rumen_equations as rumen
+# import nasem_dairy.nasem_equations.rumen as rumen
 
 def calculate_Rum_dcNDF(Dt_DMIn: float, 
                         Dt_NDFIn: float, 

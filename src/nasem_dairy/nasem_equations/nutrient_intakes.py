@@ -1,4 +1,3 @@
-# dev_nutrient_intakes
 # All functions for calculating nutrient intakes based on ration formulation
 # import nasem_dairy.nasem_equations.nutrient_intakes as diet
 

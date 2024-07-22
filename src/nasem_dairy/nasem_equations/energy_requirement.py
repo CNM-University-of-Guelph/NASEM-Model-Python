@@ -1,4 +1,4 @@
-# import nasem_dairy.nasem_equations.energy_requirement_equations as energy
+# import nasem_dairy.nasem_equations.energy_requirement as energy
 
 import numpy as np
 
@@ -251,11 +251,11 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float,
     Parameters
     ----------
     An_NEm_Act_Graze : float
-        The net energy used for grazing activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEm_Act_Graze`).
+        The net energy used for grazing activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEm_Act_Graze`).
     An_NEm_Act_Parlor : float
-        The net energy used for walking to and from the parlor, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEm_Act_Parlor`).
+        The net energy used for walking to and from the parlor, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEm_Act_Parlor`).
     An_NEm_Act_Topo : float
-        The net energy used due to topography (positive elevation change), in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEm_Act_Topo`).
+        The net energy used due to topography (positive elevation change), in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEm_Act_Topo`).
 
     Returns
     -------
@@ -299,9 +299,9 @@ def calculate_An_NEmUse(An_NEmUse_NS: float,
     Parameters
     ----------
     An_NEmUse_NS : float
-        The net energy used for non-stressed maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEmUse_NS`).
+        The net energy used for non-stressed maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEmUse_NS`).
     An_NEmUse_Act : float
-        The total net energy used for activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEmUse_Act`).
+        The total net energy used for activity, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEmUse_Act`).
     coeff_dict : dict
         A dictionary containing coefficients required for the calculation, specifically 'An_NEmUse_Env' for environmental energy use.
 
@@ -350,7 +350,7 @@ def calculate_An_MEmUse(An_NEmUse: float, Km_ME_NE: float) -> float:
     Parameters
     ----------
     An_NEmUse : float
-        The total net energy used for maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_NEmUse`).
+        The total net energy used for maintenance, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_NEmUse`).
     coeff_dict : dict
         A dictionary containing the conversion coefficient 'Km_ME_NE' for converting NEm to MEm.
 
@@ -398,9 +398,9 @@ def calculate_Rsrv_NEgain(Rsrv_Fatgain: float, Rsrv_CPgain: float) -> float:
     Parameters
     ----------
     Rsrv_Fatgain : float
-        The amount of body fat gained in kg/day. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition_equations.calculate_Rsrv_Fatgain`).
+        The amount of body fat gained in kg/day. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition.calculate_Rsrv_Fatgain`).
     Rsrv_CPgain : float
-        The amount of crude protein (CP) gained in kg/day. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition_equations.calculate_Rsrv_CPgain`).
+        The amount of crude protein (CP) gained in kg/day. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition.calculate_Rsrv_CPgain`).
 
     Returns
     -------
@@ -503,9 +503,9 @@ def calculate_Rsrv_MEgain(Rsrv_NEgain: float, Kr_ME_RE: float) -> float:
     Parameters
     ----------
     Rsrv_NEgain : float
-        The net energy of body reserve gain, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Rsrv_NEgain`).
+        The net energy of body reserve gain, in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Rsrv_NEgain`).
     Kr_ME_RE : float
-        The efficiency of converting ME to RE for reserves gain. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Kr_ME_RE`).
+        The efficiency of converting ME to RE for reserves gain. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Kr_ME_RE`).
 
     Returns
     -------
@@ -545,9 +545,9 @@ def calculate_Frm_NEgain(Frm_Fatgain: float, Frm_CPgain: float) -> float:
     Parameters
     ----------
     Frm_Fatgain : float
-        The amount of fat gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition_equations.calculate_Frm_Fatgain`).
+        The amount of fat gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition.calculate_Frm_Fatgain`).
     Frm_CPgain : float
-        The amount of crude protein (CP) gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition_equations.calculate_Frm_CPgain`).
+        The amount of crude protein (CP) gained in the frame, in kg/d. Normally calculated by [](`~nasem_dairy.nasem_equations.body_composition.calculate_Frm_CPgain`).
 
     Returns
     -------
@@ -588,7 +588,7 @@ def calculate_Frm_MEgain(Frm_NEgain: float, Kf_ME_RE: float) -> float:
     Parameters
     ----------
     Frm_NEgain : float
-        The net energy gain from frame tissue (should be called retained energy), in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Frm_NEgain`)
+        The net energy gain from frame tissue (should be called retained energy), in Mcal/d. Normally calculated by [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Frm_NEgain`)
     coeff_dict : dict
         A dictionary containing the conversion coefficient 'Kf_ME_RE' for converting RE to ME for frame gains.
 
@@ -655,10 +655,10 @@ def calculate_An_MEgain(Rsrv_MEgain: float, Frm_MEgain: float) -> float:
     ----------
     Rsrv_MEgain : float
         The metabolizable energy of body reserve gain, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Rsrv_MEgain`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Rsrv_MEgain`).
     Frm_MEgain : float
         The metabolizable energy of frame gain, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Frm_MEgain`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Frm_MEgain`).
 
     Returns
     -------
@@ -746,7 +746,7 @@ def calculate_Gest_MEuse(Gest_REgain: float, Ky_ME_NE: float) -> float:
     ----------
     Gest_REgain : float
         The reserve energy gain for gestation, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Gest_REgain`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Gest_REgain`).
 
     Returns
     -------
@@ -837,7 +837,7 @@ def calculate_Trg_Mlk_MEout(Trg_Mlk_NEout: float, coeff_dict: dict) -> float:
     ----------
     Trg_Mlk_NEout : float
         The NE requirement for milk production, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Trg_Mlk_NEout`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Trg_Mlk_NEout`).
     coeff_dict : dict
         A dictionary containing the conversion coefficient 'Kl_ME_NE' for converting NE to ME for lactation. Defaults to 0.66.
 
@@ -887,16 +887,16 @@ def calculate_Trg_MEuse(An_MEmUse: float,
     ----------
     An_MEmUse : float
         The ME required for maintenance, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_MEmUse`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_MEmUse`).
     An_MEgain : float
         The ME associated with body and frame gain, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_An_MEgain`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_An_MEgain`).
     Gest_MEuse : float
         The ME required for gestation, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Gest_MEuse`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Gest_MEuse`).
     Trg_Mlk_MEout : float
         The ME output for milk production, in Mcal/d. Normally calculated by 
-        [](`~nasem_dairy.nasem_equations.energy_requirement_equations.calculate_Trg_Mlk_MEout`).
+        [](`~nasem_dairy.nasem_equations.energy_requirement.calculate_Trg_Mlk_MEout`).
 
     Returns
     -------
