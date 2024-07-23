@@ -45,8 +45,17 @@ def calculate_An_DigNDFIn(Dt_DigNDFIn: float,
 
 
 def calculate_An_DENDFIn(An_DigNDFIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_NDF']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_NDF": 0.45}
+    
+    calculate_An_DENDFIn(
+        An_DigNDFIn = 200.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DENDFIn = An_DigNDFIn * coeff_dict['En_NDF']  # Line 1353
     return An_DENDFIn
 
@@ -61,8 +70,17 @@ def calculate_An_DigStIn(Dt_DigStIn: float,
 
 
 def calculate_An_DEStIn(An_DigStIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_St']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_St": 4.23}
+    
+    calculate_An_DEStIn(
+        An_DigStIn = 250.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DEStIn = An_DigStIn * coeff_dict['En_St']  # Line 1351
     return An_DEStIn
 
@@ -84,8 +102,17 @@ def calculate_An_DigrOMaIn(Dt_DigrOMaIn: float,
 
 
 def calculate_An_DErOMIn(An_DigrOMaIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_rOM']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_rOM": 4.0}
+    
+    calculate_An_DErOMIn(
+        An_DigrOMaIn = 300.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DErOMIn = An_DigrOMaIn * coeff_dict['En_rOM']  # Line 1351
     return An_DErOMIn
 
@@ -186,15 +213,33 @@ def calculate_An_DigCPaIn(An_CPIn: float,
 
 
 def calculate_An_DECPIn(An_DigCPaIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_An_DECPIn(
+        An_DigCPaIn = 100.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DECPIn = An_DigCPaIn * coeff_dict['En_CP']
     return An_DECPIn
 
 
 def calculate_An_DENPNCPIn(Dt_NPNCPIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['dcNPNCP', 'En_NPNCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"dcNPNCP": 100, "En_NPNCP": 0.89}
+    
+    calculate_An_DENPNCPIn(
+        Dt_NPNCPIn = 50.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DENPNCPIn = (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 
                     100 * coeff_dict['En_NPNCP'])
     return An_DENPNCPIn
@@ -204,8 +249,17 @@ def calculate_An_DETPIn(An_DECPIn: float,
                         An_DENPNCPIn: float, 
                         coeff_dict: dict
 ) -> float:
-    req_coeff = ['En_NPNCP', 'En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_NPNCP": 0.89, "En_CP": 5.65}
+    
+    calculate_An_DETPIn(
+        An_DECPIn = 100.0, An_DENPNCPIn = 40.0, coeff_dict = coeff_dict
+    )
+    ```
+    """    
     # Line 1355, Caution! DigTPaIn not clean so subtracted DE for CP equiv of
     # NPN to correct. Not a true DE_TP.
     An_DETPIn = (An_DECPIn - An_DENPNCPIn / 
@@ -219,8 +273,17 @@ def calculate_An_DigFAIn(Dt_DigFAIn: float, Inf_DigFAIn: float) -> float:
 
 
 def calculate_An_DEFAIn(An_DigFAIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_FA']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_FA": 9.4}
+    
+    calculate_An_DEFAIn(
+        An_DigFAIn = 150.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     An_DEFAIn = An_DigFAIn * coeff_dict['En_FA']  # Line 1361
     return An_DEFAIn
 
@@ -268,10 +331,21 @@ def calculate_An_GutFill_BW(An_BW: float,
     """
     see page 34 for comments, gut fill is default 0.18 for cows
     Weaned calf == heifer, which is based on equations 11-1a/b using 85% (inverse of 0.15)
-    Comments in book suggest this is not always a suitable assumption (that gut fill is 15% of BW), consider making this a coeff that can be changed in coeff_dict?
+    Comments in book suggest this is not always a suitable assumption (that gut fill is 15% of BW), 
+    consider making this a coeff that can be changed in coeff_dict?
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"An_GutFill_BWmature": 0.18}
+    
+    calculate_An_GutFill_BW(
+        An_BW = 500.0, An_BW_mature = 600.0, An_StatePhys = "Lactating Cow", 
+        An_Parity_rl = 2, Dt_DMIn_ClfLiq = 0.0, Dt_DMIn_ClfStrt = 0.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['An_GutFill_BWmature']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_GutFill_BW = 0.06  # Line 2402, Milk fed calf, kg/kg BW
     if (
         (An_StatePhys == "Calf") 
@@ -767,9 +841,18 @@ def calculate_An_RDTPIn(Dt_RDTPIn: float,
 ) -> float:
     """
     An_RDTPIn: Rumen degradable true protein intake, kg/d
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"dcNPNCP": 100}
+    
+    calculate_An_RDTPIn(
+        Dt_RDTPIn = 200.0, InfRum_RDPIn = 150.0, InfRum_NPNCPIn = 30.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['dcNPNCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_RDTPIn = (Dt_RDTPIn + 
                  (InfRum_RDPIn - InfRum_NPNCPIn * coeff_dict['dcNPNCP'] / 100))  
     # Line 1107
@@ -1065,12 +1148,22 @@ def calculate_An_GEIn(Dt_GEIn: float,
 ) -> float:
     """
     An_GEIn: Gross energy intake (Mcal/d)
+
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "En_NDF": 0.45, "En_St": 0.50, "En_FA": 0.85, "En_CP": 0.75, 
+        "En_NPNCP": 0.55, "En_Acet": 0.90, "En_Prop": 1.05, "En_Butr": 1.10
+    }
+    
+    calculate_An_GEIn(
+        Dt_GEIn = 100.0, Inf_NDFIn = 20.0, Inf_StIn = 15.0, Inf_FAIn = 10.0, 
+        Inf_TPIn = 25.0, Inf_NPNCPIn = 5.0, Inf_AcetIn = 8.0, Inf_PropIn = 12.0, 
+        Inf_ButrIn = 6.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = [
-        'En_NDF', 'En_St', 'En_FA', 'En_CP', 'En_NPNCP', 'En_Acet', 'En_Prop',
-        'En_Butr'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_GEIn = (Dt_GEIn + 
                Inf_NDFIn * coeff_dict['En_NDF'] + 
                Inf_StIn * coeff_dict['En_St'] + 
@@ -1098,9 +1191,18 @@ def calculate_An_DERDTPIn(An_RDTPIn: float,
 ) -> float:
     """
     An_DERDTPIn: Digestable energy in rumen degradable true protein (Mcal/d)
+
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_An_DERDTPIn(
+        An_RDTPIn = 100.0, Fe_DEMiCPend = 10.0, Fe_DERDPend = 5.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DERDTPIn = An_RDTPIn * coeff_dict['En_CP'] - Fe_DEMiCPend - Fe_DERDPend  
     # Line 1359
     return An_DERDTPIn
@@ -1112,9 +1214,17 @@ def calculate_An_DEidRUPIn(An_idRUPIn: float,
 ) -> float:
     """
     An_DEidRUPIn: Digestable energy in intestinally digested RUP (Mcal/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_An_DEidRUPIn(
+        An_idRUPIn = 80.0, Fe_DERUPend = 15.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_DEidRUPIn = An_idRUPIn * coeff_dict['En_CP'] - Fe_DERUPend  # Line 1360
     return An_DEidRUPIn
 
