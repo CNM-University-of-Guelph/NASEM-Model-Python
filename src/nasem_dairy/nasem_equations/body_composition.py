@@ -29,8 +29,15 @@ def calculate_Body_Gain_empty(Frm_Gain_empty: float,
 
 
 def calculate_NPGain_RsrvGain(coeff_dict: dict) -> float:
-    req_coeff = ['CPGain_RsrvGain', 'Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"CPGain_RsrvGain": 0.068, "Body_NP_CP": 0.86}
+    
+    calculate_NPGain_RsrvGain(coeff_dict = coeff_dict)
+    ```
+    """
     NPGain_RsrvGain = coeff_dict['CPGain_RsrvGain'] * coeff_dict['Body_NP_CP']  
     # Line 2467
     return NPGain_RsrvGain
@@ -49,8 +56,17 @@ def calculate_Body_NPgain(Frm_NPgain: float, Rsrv_NPgain: float) -> float:
 
 
 def calculate_Body_CPgain(Body_NPgain: float, coeff_dict: dict) -> float:
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.86}
+    
+    calculate_Body_CPgain(
+        Body_NPgain = 50.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Body_CPgain = Body_NPgain / coeff_dict['Body_NP_CP']  # Line 2475
     return Body_CPgain
 
@@ -81,9 +97,17 @@ def calculate_Rsrv_Fatgain(Rsrv_Gain_empty: float, coeff_dict: dict) -> float:
     """
     FatGain_RsrvGain: Conversion factor from reserve gain to fat gain
     Rsrv_Fatgain: Body reserve fat gain kg/d
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"FatGain_RsrvGain": 0.622}
+    
+    calculate_Rsrv_Fatgain(
+        Rsrv_Gain_empty = 40.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['FatGain_RsrvGain']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Rsrv_Fatgain = coeff_dict['FatGain_RsrvGain'] * Rsrv_Gain_empty  # Line 2453
     return Rsrv_Fatgain
 
@@ -154,9 +178,17 @@ def calculate_NPGain_FrmGain(CPGain_FrmGain: float, coeff_dict: dict) -> float:
     """
     NPGain_FrmGain: Net protein gain per unit frame gain
     NOTE for these gain per unit gain values I believe they are unitless/have units g/g, not much said in the R code
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.86}
+    
+    calculate_NPGain_FrmGain(
+        CPGain_FrmGain = 60.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Convert to CP to TP gain / gain, Line 2459
     NPGain_FrmGain = CPGain_FrmGain * coeff_dict['Body_NP_CP']
     return NPGain_FrmGain
@@ -181,9 +213,17 @@ def calculate_Frm_NPgain(An_StatePhys: str,
 def calculate_Frm_CPgain(Frm_NPgain: float, coeff_dict: dict) -> float:
     """
     Frm_CPgain: CP portion of frame gain
+
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.86}
+    
+    calculate_Frm_CPgain(
+        Frm_NPgain = 50.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Frm_CPgain = Frm_NPgain / coeff_dict['Body_NP_CP']  # Line 2463
     return Frm_CPgain
 
@@ -201,9 +241,17 @@ def calculate_An_BWmature_empty(An_BW_mature: float,
 ) -> float:
     """
     An_BWmature_empty: kg bodyweight with no gut fill 
+
+    Examples
+    --------
+    ```
+    coeff_dict = {"An_GutFill_BWmature": 0.18}
+    
+    calculate_An_BWmature_empty(
+        An_BW_mature = 600.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['An_GutFill_BWmature']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     An_BWmature_empty = An_BW_mature * (1 - coeff_dict['An_GutFill_BWmature'])
     return An_BWmature_empty
 
@@ -452,9 +500,17 @@ def calculate_WatGain_RsrvGain(NPGain_RsrvGain: float,
 ) -> float:
     """
     WatGain_RsrvGain: Body reserve water gain (g/g)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"FatGain_RsrvGain": 0.622, "AshGain_RsrvGain": 0.02}
+    
+    calculate_WatGain_RsrvGain(
+        NPGain_RsrvGain = 0.20, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['FatGain_RsrvGain', 'AshGain_RsrvGain']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     WatGain_RsrvGain = (100 - coeff_dict['FatGain_RsrvGain'] - NPGain_RsrvGain - 
                         coeff_dict['AshGain_RsrvGain'])  # Line 2489
     return WatGain_RsrvGain
@@ -515,9 +571,18 @@ def calculate_Body_CPgain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float,
 ) -> float:
     """
     Body_CPgain_MPalowTrg_g: MP allowable CP gain (g/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.80}
+    
+    calculate_Body_CPgain_MPalowTrg_g(
+        Body_NPgain_MPalowTrg_g = 40.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Body_CPgain_MPalowTrg_g = Body_NPgain_MPalowTrg_g / coeff_dict['Body_NP_CP']  
     # g CP gain/d, Line 2714
     return Body_CPgain_MPalowTrg_g
@@ -631,7 +696,16 @@ def calculate_An_Days_BCSdelta1(BW_BCS: float,
 def calculate_Rsrv_AshGain(Rsrv_Gain_empty: float,
                            coeff_dict: dict
 ) -> float:
-    req_coeff = ["AshGain_RsrvGain"]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"AshGain_RsrvGain": 0.02}
+    
+    calculate_Rsrv_AshGain(
+        Rsrv_Gain_empty = 40.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Rsrv_AshGain = coeff_dict["AshGain_RsrvGain"] * Rsrv_Gain_empty   # Line 2481
     return Rsrv_AshGain
