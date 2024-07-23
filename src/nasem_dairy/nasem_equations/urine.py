@@ -100,9 +100,17 @@ def calculate_Ur_NPend_3MH_g(An_BW: float) -> float:
 def calculate_Ur_Nend_3MH_g(Ur_NPend_3MH_g: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_3MH_g: endogenous 3-methyl-histidine N (g/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'fN_3MH': 0.249}
+
+    calculate_Ur_Nend_3MH_g(
+        Ur_NPend_3MH_g = 200.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['fN_3MH']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Ur_Nend_3MH_g = Ur_NPend_3MH_g * coeff_dict['fN_3MH']  # Line 2024
     return Ur_Nend_3MH_g
 
