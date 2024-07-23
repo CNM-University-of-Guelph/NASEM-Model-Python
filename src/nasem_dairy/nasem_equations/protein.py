@@ -7,8 +7,17 @@ import nasem_dairy.model.utilities as ration_funcs
 
 
 def calculate_f_mPrt_max(An_305RHA_MlkTP: float, coeff_dict: dict) -> float:
-    req_coeffs = ['K_305RHA_MlkTP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'K_305RHA_MlkTP': 1.0}
+
+    calculate_f_mPrt_max(
+        An_305RHA_MlkTP = 400.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 2116, 280kg RHA ~ 930 g mlk NP/d herd average
     f_mPrt_max = 1 + coeff_dict['K_305RHA_MlkTP'] * (An_305RHA_MlkTP / 280 - 1)
     return f_mPrt_max
@@ -20,8 +29,17 @@ def calculate_Du_MiCP_g(Du_MiN_g: float) -> float:
 
 
 def calculate_Du_MiTP_g(Du_MiCP_g: float, coeff_dict: dict) -> float:
-    req_coeffs = ['fMiTP_MiCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'fMiTP_MiCP': 0.824}
+
+    calculate_Du_MiTP_g(
+        Du_MiCP_g = 100.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Du_MiTP_g = coeff_dict['fMiTP_MiCP'] * Du_MiCP_g  # Line 1166
     return Du_MiTP_g
 
@@ -40,9 +58,17 @@ def calculate_Scrf_CP_g(An_StatePhys: str, An_BW: float) -> float:
 def calculate_Scrf_NP_g(Scrf_CP_g: float, coeff_dict: dict) -> float:
     """
     Scrf_NP_g: Scurf Net Protein, g
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'Body_NP_CP': 0.86}
+
+    calculate_Scrf_NP_g(
+        Scrf_CP_g = 150.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Scrf_NP_g = Scrf_CP_g * coeff_dict['Body_NP_CP']  # Line 1966
     return Scrf_NP_g
 
