@@ -5,12 +5,19 @@ import math
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Uter_Wtpart(Fet_BWbrth: float, coeff_dict: dict) -> float:
-    req_coeff = ['UterWt_FetBWbrth']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"UterWt_FetBWbrth": 1.816}
+    
+    calculate_Uter_Wtpart(
+        Fet_BWbrth = 30.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Uter_Wtpart = Fet_BWbrth * coeff_dict['UterWt_FetBWbrth']
     return Uter_Wtpart
 
@@ -23,8 +30,21 @@ def calculate_Uter_Wt(An_Parity_rl: int,
                       Uter_Wtpart: float, 
                       coeff_dict: dict
 ) -> float:
-    req_coeff = ['Uter_Wt', 'Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "Uter_Wt": 0.204, "Uter_Ksyn": 2.42e-2, "Uter_KsynDecay": 3.53e-5, 
+        "Uter_Kdeg": 0.20
+    }
+    
+    calculate_Uter_Wt(
+        An_Parity_rl = 1, An_AgeDay = 250, An_LactDay = 50, An_GestDay = 150, 
+        An_GestLength = 280, Uter_Wtpart = 45.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Uter_Wt = coeff_dict['Uter_Wt']  # Line 2312
     if An_AgeDay < 240:  # Line 2313
         Uter_Wt = 0
@@ -45,12 +65,20 @@ def calculate_Uter_Wt(An_Parity_rl: int,
 
 
 def calculate_GrUter_Wtpart(Fet_BWbrth: float, coeff_dict: dict) -> float:
-    '''
+    """
     GrUterWt_FetBWbrth default 1.816 based on equation 20-225
     See Equation 3-15a, supposed to be 1.825?
-    '''
-    req_coeff = ['GrUterWt_FetBWbrth']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"GrUterWt_FetBWbrth": 1.816}
+    
+    calculate_GrUter_Wtpart(
+        Fet_BWbrth = 30.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     GrUter_Wtpart = Fet_BWbrth * coeff_dict['GrUterWt_FetBWbrth'] # Line 2322
     return GrUter_Wtpart
 
@@ -61,8 +89,20 @@ def calculate_GrUter_Wt(An_GestDay: int,
                         GrUter_Wtpart: float,
                         coeff_dict: dict
 ) -> float:
-    req_coeff = ['GrUter_Ksyn', 'GrUter_KsynDecay']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "GrUter_Ksyn": 2.43e-2, "GrUter_KsynDecay": 2.45e-5
+    }
+    
+    calculate_GrUter_Wt(
+        An_GestDay = 150, An_GestLength = 280, Uter_Wt = 40.0, 
+        GrUter_Wtpart = 55.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     GrUter_Wt = Uter_Wt
     if An_GestDay > 0 and An_GestDay <= An_GestLength:  # Line 2323-2327
         GrUter_Wt = (GrUter_Wtpart * 
@@ -80,8 +120,21 @@ def calculate_Uter_BWgain(An_LactDay: int,
                           Uter_Wt: float,
                           coeff_dict: dict
 ) -> float:
-    req_coeff = ['Uter_BWgain', 'Uter_Ksyn', 'Uter_KsynDecay', 'Uter_Kdeg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "Uter_BWgain": 0, "Uter_Ksyn": 2.42e-2, "Uter_KsynDecay": 3.53e-5, 
+        "Uter_Kdeg": 0.20
+    }
+    
+    calculate_Uter_BWgain(
+        An_LactDay = 50, An_GestDay = 150, An_GestLength = 280, Uter_Wt = 45.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     Uter_BWgain = coeff_dict['Uter_BWgain']
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         Uter_BWgain = (coeff_dict['Uter_Ksyn'] -
@@ -99,13 +152,22 @@ def calculate_GrUter_BWgain(An_LactDay: int,
                             Uter_BWgain: float, 
                             coeff_dict: dict
 ) -> float:
-    '''
+    """
     Equation 3-17a
-    GrUter_Ksyn = 0.0243
-    GrUter_KsynDecay = 0.00000245
-    '''
-    req_coeff = ['GrUter_BWgain', 'GrUter_Ksyn', 'GrUter_KsynDecay']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "GrUter_BWgain": 0, "GrUter_Ksyn": 2.43e-2, "GrUter_KsynDecay": 2.45e-5
+    }
+    
+    calculate_GrUter_BWgain(
+        An_LactDay = 50, An_GestDay = 150, An_GestLength = 280, 
+        GrUter_Wt = 50.0, Uter_BWgain = 0.5, coeff_dict = coeff_dict
+    )
+    ```
+    """
     GrUter_BWgain = coeff_dict['GrUter_BWgain']  # Line 2341-2345
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         GrUter_BWgain = (
@@ -119,29 +181,65 @@ def calculate_GrUter_BWgain(An_LactDay: int,
 def calculate_Gest_NCPgain_g(GrUter_BWgain: float, 
                              coeff_dict: dict
 ) -> float:
-    req_coeff = ['CP_GrUtWt']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"CP_GrUtWt": 0.123}
+    
+    calculate_Gest_NCPgain_g(
+        GrUter_BWgain = 50.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Gest_NCPgain_g = GrUter_BWgain * coeff_dict['CP_GrUtWt'] * 1000
     return Gest_NCPgain_g
 
 
 def calculate_Gest_NPgain_g(Gest_NCPgain_g: float, coeff_dict: dict) -> float:
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.86}
+    
+    calculate_Gest_NPgain_g(
+        Gest_NCPgain_g = 2.5, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Gest_NPgain_g = Gest_NCPgain_g * coeff_dict['Body_NP_CP']
     return Gest_NPgain_g
 
 
 def calculate_Gest_NPuse_g(Gest_NPgain_g: float, coeff_dict: dict) -> float:
-    req_coeff = ['Gest_NPother_g']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Gest_NPother_g": 0}
+    
+    calculate_Gest_NPuse_g(
+        Gest_NPgain_g = 2.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Gest_NPuse_g = Gest_NPgain_g + coeff_dict['Gest_NPother_g']  # Line 2366
     return Gest_NPuse_g
 
 
 def calculate_Gest_CPuse_g(Gest_NPuse_g: float, coeff_dict: dict) -> float:
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Body_NP_CP": 0.86}
+    
+    calculate_Gest_CPuse_g(
+        Gest_NPuse_g = 2.1, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Gest_CPuse_g = Gest_NPuse_g / coeff_dict['Body_NP_CP']  # Line 2367
     return Gest_CPuse_g
 
@@ -180,9 +278,18 @@ def calculate_Fet_Wt(An_GestDay: int,
 ) -> float:
     """
     Fet_Wt: Fetal weight at any time (kg)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"Fet_Ksyn": 5.16e-2, "Fet_KsynDecay": 7.59e-5}
+    
+    calculate_Fet_Wt(
+        An_GestDay = 150, An_GestLength = 280, Fet_BWbrth = 40.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Fet_Ksyn', 'Fet_KsynDecay']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     if (An_GestDay > 0) & (An_GestDay <= An_GestLength):  # Line 2231-2232
         Fet_Wt = (Fet_BWbrth * 
                   np.exp(-(coeff_dict['Fet_Ksyn'] - 

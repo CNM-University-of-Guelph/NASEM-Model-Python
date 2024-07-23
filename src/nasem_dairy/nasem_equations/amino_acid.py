@@ -6,15 +6,27 @@ import math
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
 
 def calculate_MiTPAAProf(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    req_coeffs = [
-        'MiTPArgProf', 'MiTPHisProf', 'MiTPIleProf', 'MiTPLeuProf',
-        'MiTPLysProf', 'MiTPMetProf', 'MiTPPheProf', 'MiTPThrProf',
-        'MiTPTrpProf', 'MiTPValProf'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+
+    ```
+    coeff_dict = {
+        "MiTPArgProf": 5.47, "MiTPHisProf": 2.21, "MiTPIleProf": 6.99, 
+        "MiTPLeuProf": 9.23, "MiTPLysProf": 9.44, "MiTPMetProf": 2.63, 
+        "MiTPPheProf": 6.30, "MiTPThrProf": 6.23, "MiTPTrpProf": 1.37, 
+        "MiTPValProf": 6.88
+    }
+    
+    calculate_MiTPAAProf(
+        AA_list = ["Arg", "His", "Ile", "Leu", "Lys", 
+                   "Met", "Phe", "Thr", "Trp", "Val"]
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     MiTPAAProf = np.array([coeff_dict[f"MiTP{AA}Prof"] for AA in AA_list])
     return MiTPAAProf
 
@@ -25,8 +37,21 @@ def calculate_Du_AAMic(Du_MiTP_g: float, MiTPAAProf: np.ndarray) -> np.ndarray:
 
 
 def calculate_Du_IdAAMic(Du_AAMic: float, coeff_dict: dict) -> float:
-    req_coeffs = ['SI_dcMiCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+
+    ```
+    coeff_dict = {
+        "SI_dcMiCP": 80
+    }
+    
+    calculate_MiTPAAProf(
+        Du_AAMic = 12.8,
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     Du_IdAAMic = Du_AAMic * coeff_dict['SI_dcMiCP'] / 100
     return Du_IdAAMic
 
@@ -184,11 +209,25 @@ def calculate_mPrt_k_EAA2(mPrtmx_Met2: float,
 
 
 def calculate_EndAAProf(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    req_coeffs = [
-        'EndArgProf', 'EndHisProf', 'EndIleProf', 'EndLeuProf', 'EndLysProf',
-        'EndMetProf', 'EndPheProf', 'EndThrProf', 'EndTrpProf', 'EndValProf'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+
+    ```
+    coeff_dict = {
+        "EndArgProf":" 4.61, "EndHisProf":" 2.90, "EndIleProf":" 4.09, 
+        "EndLeuProf":" 7.67, "EndLysProf":" 6.23"EndMetProf":" 1.26, 
+        "EndPheProf":" 3.98, "EndThrProf":" 5.18, "EndTrpProf":" 1.29, 
+        "EndValProf":" 5.29
+    }
+    
+    calculate_EndAAProf(
+        AA_list = ["Arg", "His", "Ile", "Leu", "Lys", 
+                   "Met", "Phe", "Thr", "Trp", "Val"],
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     EndAAProf = np.array([coeff_dict[f"End{AA}Prof"] for AA in AA_list])
     return EndAAProf
 
@@ -551,9 +590,21 @@ def calculate_Trg_AbsAA_g(Trg_Mlk_AA_g: pd.Series,
 ) -> pd.Series:
     """
     Trg_AbsAA_g: Absorbed AA at user entered production (g/d)
+
+    Examples
+    --------
+
+    ```
+    coeff_dict = {"Ky_MP_NP_Trg": 0.33}
+
+    calculate_Trg_AbsAA_g(
+        Trg_Mlk_AA_g = pd.Series([10, 20, 30]), Scrf_AA_g = pd.Series([1, 2, 3]),
+        Fe_AAMet_g = pd.Series([5, 10, 15]), Trg_AbsAA_NPxprtAA = pd.Series([0.5, 1.0, 1.5])
+        Ur_AAEnd_g = pd.Series([2, 4, 6]), Gest_AA_g = pd.Series([3, 6, 9]),
+        Body_AAGain_g = pd.Series([7, 14, 21]), Kg_MP_NP_Trg = 0.33, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Ky_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Trg_AbsAA_g = ((Trg_Mlk_AA_g + Scrf_AA_g + Fe_AAMet_g) / 
                    Trg_AbsAA_NPxprtAA + Ur_AAEnd_g + Gest_AA_g / 
                    coeff_dict['Ky_MP_NP_Trg'] + Body_AAGain_g / Kg_MP_NP_Trg)  
@@ -591,12 +642,23 @@ def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series,
 ) -> pd.Series:
     """
     AnNPxAA_AbsAA: Predicted Efficiency of AbsAA to export and gain NPAA using Nutrient Allowable milk protein, g NPAA/g absorbed AA
+
+    Examples
+    --------
+
+    ```
+    coeff_dict = {"Ky_MP_NP_Trg": 0.33}
+    
+    calculate_EndAAProf(
+        An_AAUse_g = pd.Series([50, 100, 150]), Gest_AA_g = pd.Series([10, 20, 30]),
+        Ur_AAEnd_g = pd.Series([5, 10, 15]), Abs_AA_g = pd.Series([60, 120, 180]),
+        coeff_dict = coeff_dict
+    )
+    ```
     """
     # Predicted Efficiency of AbsAA to export and gain NPAA using Nutrient Allowable
     # milk protein, g NPAA/g absorbed AA (Ur_AAend use set to an efficiency of 1).
     # These are for comparison to Trg AA Eff.
-    req_coeff = ['Ky_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     AnNPxAA_AbsAA = (An_AAUse_g - Gest_AA_g - Ur_AAEnd_g) / (
         Abs_AA_g - Ur_AAEnd_g - Gest_AA_g / coeff_dict['Ky_MP_NP_Trg']
     )  # Subtract Gest_AA and UrEnd for use and supply, Line 3197-3206
@@ -611,9 +673,19 @@ def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float,
 ) -> float:
     """
     AnNPxEAA_AbsEAA: Predicted Efficiency of AbsEAA to export and gain NPEAA using Nutrient Allowable milk protein, g NPEAA/g absorbed EAA
+       
+    Examples
+    --------
+
+    ```
+    coeff_dict = {"Ky_MP_NP_Trg": 0.33}
+    
+    calculate_AnNPxEAA_AbsEAA(
+        An_EAAUse_g = 150.0, Gest_EAA_g = 30.0, Ur_EAAEnd_g = 15.0, 
+        Abs_EAA_g = 180.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Ky_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     AnNPxEAA_AbsEAA = (An_EAAUse_g - Gest_EAA_g - Ur_EAAEnd_g) / (
         Abs_EAA_g - Ur_EAAEnd_g - Gest_EAA_g / coeff_dict['Ky_MP_NP_Trg']
     )  # Line 3207
@@ -628,11 +700,22 @@ def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series,
 ) -> pd.Series:
     """
     AnNPxAAUser_AbsAA: Efficiency of AbsAA to export and gain NPAA at User Entered milk protein, g NPAA/g absorbed AA
+    
+    Examples
+    --------
+
+    ```
+    coeff_dict = {"Ky_MP_NP_Trg": 0.33}
+    
+    calculate_AnNPxAAUser_AbsAA(
+        Trg_AAUse_g = pd.Series([50, 100, 150]), Gest_AA_g = pd.Series([10, 20, 30]), 
+        Ur_AAEnd_g = pd.Series([5, 10, 15]), Abs_AA_g = pd.Series([60, 120, 180]),
+        coeff_dict = coeff_dict
+    )
+    ```
     """
     # Efficiency of AbsAA to export and gain NPAA at User Entered milk protein, 
     # g NPAA/g absorbed AA (Ur_AAend use set to an efficiency of 1).
-    req_coeff = ['Ky_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     AnNPxAAUser_AbsAA = (Trg_AAUse_g - Gest_AA_g - Ur_AAEnd_g) / (
         Abs_AA_g - Ur_AAEnd_g - Gest_AA_g / coeff_dict['Ky_MP_NP_Trg']
     )  # Subtract Gest_AA and UrEnd for use and supply, Line 3210-3219

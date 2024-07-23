@@ -1,7 +1,5 @@
 # import nasem_dairy.nasem_equations.microbial_protein as micp 
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_RDPIn_MiNmax(Dt_DMIn: float, 
                            An_RDP: float, 
@@ -15,8 +13,17 @@ def calculate_RDPIn_MiNmax(Dt_DMIn: float,
 
 
 def calculate_MiN_Vm(RDPIn_MiNmax: float, coeff_dict: dict) -> float:
-    req_coeffs = ['VmMiNInt', 'VmMiNRDPSlp']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"VmMiNInt": 100.8, "VmMiNRDPSlp": 81.56}
+    
+    calculate_MiN_Vm(
+        RDPIn_MiNmax = 100.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     MiN_Vm = coeff_dict['VmMiNInt'] + coeff_dict['VmMiNRDPSlp'] * RDPIn_MiNmax     
     # Line 1125
     return MiN_Vm
@@ -28,8 +35,18 @@ def calculate_Du_MiN_NRC2021_g(MiN_Vm: float,
                                An_RDPIn_g: float,
                                coeff_dict: dict
 ) -> float:
-    req_coeffs = ['KmMiNRDNDF', 'KmMiNRDSt']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"KmMiNRDNDF": 0.0939, "KmMiNRDSt": 0.0274}
+    
+    calculate_Du_MiN_NRC2021_g(
+        MiN_Vm = 25.0, Rum_DigNDFIn = 200.0, Rum_DigStIn = 150.0, 
+        An_RDPIn_g = 300.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Du_MiN_NRC2021_g = (MiN_Vm / (1 + coeff_dict['KmMiNRDNDF'] / Rum_DigNDFIn + 
                                   coeff_dict['KmMiNRDSt'] / Rum_DigStIn)) # Line 1126
     if Du_MiN_NRC2021_g > 1 * An_RDPIn_g / 6.25:  # Line 1130
@@ -46,12 +63,23 @@ def calculate_Du_MiN_VTln_g(Dt_rOMIn: float,
                             Rum_DigNDFIn: float, 
                             coeff_dict: dict
 ) -> float:
-    req_coeffs = [
-        'Int_MiN_VT', 'KrdSt_MiN_VT', 'KrdNDF_MiN_VT', 'KRDP_MiN_VT',
-        'KrOM_MiN_VT', 'KForNDF_MiN_VT', 'KrOM2_MiN_VT', 'KrdStxrOM_MiN_VT',
-        'KrdNDFxForNDF_MiN_VT'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "Int_MiN_VT": 18.686, "KrdSt_MiN_VT": 10.214, "KrdNDF_MiN_VT": 28.976, 
+        "KRDP_MiN_VT": 43.405, "KrOM_MiN_VT": -11.731, "KForNDF_MiN_VT": 8.895, 
+        "KrOM2_MiN_VT": 2.861, "KrdStxrOM_MiN_VT": 5.637, 
+        "KrdNDFxForNDF_MiN_VT": -2.22
+    }
+    
+    calculate_Du_MiN_VTln_g(
+        Dt_rOMIn = 300.0, Dt_ForNDFIn = 100.0, An_RDPIn = 200.0, 
+        Rum_DigStIn = 150.0, Rum_DigNDFIn = 250.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 1144-1146
     Du_MiN_VTln_g = (coeff_dict['Int_MiN_VT'] + 
                      coeff_dict['KrdSt_MiN_VT'] * Rum_DigStIn + 
@@ -81,8 +109,17 @@ def calculate_Du_MiCP(Du_MiCP_g: float) -> float:
 
 
 def calculate_Du_idMiCP_g(Du_MiCP_g: float, coeff_dict: dict) -> float:
-    req_coeff = ['SI_dcMiCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"SI_dcMiCP": 80}
+    
+    calculate_Du_idMiCP_g(
+        Du_MiCP_g = 200.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Du_idMiCP_g = coeff_dict['SI_dcMiCP'] / 100 * Du_MiCP_g  # Line 1180
     return Du_idMiCP_g
 
@@ -93,8 +130,17 @@ def calculate_Du_idMiCP(Du_idMiCP_g: float) -> float:
 
 
 def calculate_Du_idMiTP_g(Du_idMiCP_g: float, coeff_dict: dict) -> float:
-    req_coeff = ['fMiTP_MiCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"fMiTP_MiCP": 0.824}
+    
+    calculate_Du_idMiTP_g(
+        Du_idMiCP_g = 160.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Du_idMiTP_g = coeff_dict['fMiTP_MiCP'] * Du_idMiCP_g  # Line 1182
     return Du_idMiTP_g
 

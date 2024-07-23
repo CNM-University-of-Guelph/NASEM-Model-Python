@@ -2,7 +2,7 @@
 from importlib.metadata import version
 __version__ = version("nasem_dairy")
 
-from nasem_dairy.model.utilities import get_feed_rows_feedlibrary, check_coeffs_in_coeff_dict, read_csv_input, read_infusion_input
+from nasem_dairy.model.utilities import get_feed_rows_feedlibrary, read_csv_input, read_infusion_input
 from nasem_dairy.model_output.ModelOutput import ModelOutput
 from nasem_dairy.model.execute_model import execute_model
 from nasem_dairy.data.constants import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list, f_Imb

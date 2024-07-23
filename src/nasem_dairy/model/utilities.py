@@ -5,58 +5,6 @@ from typing import Dict, Tuple, Union
 import pandas as pd
 
 
-def check_coeffs_in_coeff_dict(input_coeff_dict: dict, 
-                               required_coeffs: list
-) -> None:
-    '''
-    Internal function that is used by other functions that require certain model coefficients from a coefficient dictionary. Typically this 
-    will be the built-in dictionary in [](`~nasem_dairy.ration_balancer.constants`). 
-    This function will check if the required coeffs are in the dictionary provided to the function, and if not it will return a useful error.
-
-    Parameters
-    ----------
-    input_coeff_dict : dict
-        Coefficient dictionary, normally called as `coeff_dict` by functions
-    required_coeffs : list
-        A list of strings that contain the names of the required coefficients to check for in the dictionary.
-
-    Returns
-    -------
-    None
-
-    Examples
-    --------
-    Filter the NASEM feed library for specific feeds:
-    
-    ```{python}
-    import nasem_dairy as nd
-
-    req_coeffs = ['En_CP', 'En_FA', 'En_rOM', 'En_St', 'En_NDF']
-
-    nd.check_coeffs_in_coeff_dict(
-        input_coeff_dict = nd.coeff_dict, 
-        required_coeffs = req_coeffs)
-
-    ```
-
-    '''
-    # Convert the list to a set for faster lookup
-    req_coef = set(required_coeffs)
-    dict_in = set(input_coeff_dict)
-
-    # Return coeffs that are not in dict_in
-    missing_coeffs = [value for value in req_coef if value not in dict_in]
-
-    # Check if all values are present in the dictionary
-    result = not bool(missing_coeffs)
-
-    # Raise an AssertionError with a custom message containing missing values 
-    # if the condition is False
-    assert result, f"Missing values in coeff_dict: {missing_coeffs}"
-
-    return
-
-
 def get_feed_rows_feedlibrary(feeds_to_get: list,
                               feed_lib_df: pd.DataFrame
 ) -> pd.DataFrame:
