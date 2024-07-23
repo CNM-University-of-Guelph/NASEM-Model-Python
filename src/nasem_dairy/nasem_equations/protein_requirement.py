@@ -3,8 +3,6 @@
 
 import numpy as np
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 
                            Scrf_MPuse_g_Trg: float,

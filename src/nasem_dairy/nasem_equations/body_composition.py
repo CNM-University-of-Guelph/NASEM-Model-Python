@@ -5,8 +5,6 @@ import math
 
 import numpy as np
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Frm_Gain_empty(Frm_Gain: float, 
                              Dt_DMIn_ClfLiq: float, 

@@ -23,7 +23,6 @@ Example of how to use this module:
 import math
 from typing import Union
 
-import nasem_dairy.model.utilities as ration_funcs
 
 # Precalculation for heifer DMI predicitons
 def calculate_Kb_LateGest_DMIn(Dt_NDF: float) -> float:

@@ -4,8 +4,6 @@
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float, 
                               Trg_MilkTPp: float,

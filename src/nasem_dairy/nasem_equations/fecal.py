@@ -4,8 +4,6 @@
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Fe_rOMend(Dt_DMIn: float, coeff_dict: dict) -> float:
     """

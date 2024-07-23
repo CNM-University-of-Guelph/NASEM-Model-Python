@@ -5,8 +5,6 @@ import math
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Uter_Wtpart(Fet_BWbrth: float, coeff_dict: dict) -> float:
     """

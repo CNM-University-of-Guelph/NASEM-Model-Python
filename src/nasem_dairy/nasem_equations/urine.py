@@ -3,8 +3,6 @@
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
-
 
 def calculate_Ur_Nout_g(Dt_CPIn: float, 
                         Fe_CP: float, 

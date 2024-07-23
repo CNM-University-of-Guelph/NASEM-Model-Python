@@ -6,7 +6,6 @@ import math
 import numpy as np
 import pandas as pd
 
-import nasem_dairy.model.utilities as ration_funcs
 
 def calculate_MiTPAAProf(AA_list: list, coeff_dict: dict) -> np.ndarray:
     """

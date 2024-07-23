@@ -2,7 +2,6 @@
 
 import numpy as np
 
-import nasem_dairy.model.utilities as ration_funcs
 
 def calculate_Inf_TPIn(Inf_CPIn: float, Inf_NPNCPIn: float) -> float:
     Inf_TPIn = Inf_CPIn - Inf_NPNCPIn  # Line 848

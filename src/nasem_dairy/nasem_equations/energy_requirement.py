@@ -2,7 +2,6 @@
 
 import numpy as np
 
-import nasem_dairy.model.utilities as ration_funcs
 
 def calculate_An_NEmUse_NS(An_StatePhys: str, 
                            An_BW: float, 
