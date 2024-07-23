@@ -8,8 +8,17 @@ import nasem_dairy.model.utilities as ration_funcs
 
 
 def calculate_Fe_rOMend(Dt_DMIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['Fe_rOMend_DMI']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Fe_rOMend_DMI": 3.43}
+    
+    calculate_Fe_rOMend(
+        Dt_DMIn = 30.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 1007, From Tebbe et al., 2017. Negative interecept represents endogenous rOM
     Fe_rOMend = coeff_dict['Fe_rOMend_DMI'] / 100 * Dt_DMIn
     return Fe_rOMend
@@ -75,8 +84,19 @@ def calculate_Fe_CP(An_StatePhys: str,
                     InfSI_NPNCPIn: float, 
                     coeff_dict: dict
 ) -> float:
-    req_coeff = ['dcNPNCP', 'Dt_dcCP_ClfLiq']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"dcNPNCP": 100, "Dt_dcCP_ClfLiq": 0.95}
+    
+    calculate_Fe_CP(
+        An_StatePhys = "Adult", Dt_CPIn_ClfLiq = 10.0, Dt_dcCP_ClfDry = 0.75, 
+        An_CPIn = 50.0, Fe_RUP = 5.0, Fe_RumMiCP = 3.0, Fe_CPend = 2.0, 
+        InfSI_NPNCPIn = 4.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 1202, Double counting portion of RumMiCP derived from End CP. Needs to be fixed. MDH
     Fe_CP = (Fe_RUP + Fe_RumMiCP + Fe_CPend + 
              InfSI_NPNCPIn * (1 - coeff_dict['dcNPNCP'] / 100))
@@ -269,9 +289,17 @@ def calculate_Fe_OM_end(Fe_rOMend: float, Fe_CPend: float) -> float:
 def calculate_Fe_DEMiCPend(Fe_RumMiCP: float, coeff_dict: dict) -> float:
     """
     Fe_DEMiCPend: Digestable energy in undigested ruminacl MiCP and RDP (Mcal/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_Fe_DEMiCPend(
+        Fe_RumMiCP = 20.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Fe_DEMiCPend = Fe_RumMiCP * coeff_dict['En_CP']
     # DE in undigested ruminal MiCP and RDP portion of Fe_EndCP, Line 1356
     return Fe_DEMiCPend
@@ -280,9 +308,17 @@ def calculate_Fe_DEMiCPend(Fe_RumMiCP: float, coeff_dict: dict) -> float:
 def calculate_Fe_DERDPend(Fe_RDPend: float, coeff_dict: dict) -> float:
     """
     Fe_DERDPend: Digestable energy in fecal RDP, arbitrary value (Mcal/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_Fe_DERDPend(
+        Fe_RDPend = 15.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Fe_DERDPend = Fe_RDPend * coeff_dict['En_CP']
     # Arbitrary DE assignment of Fe_CPend DE to RDP and RUP. Reporting use only, Line 1357
     return Fe_DERDPend
@@ -291,9 +327,17 @@ def calculate_Fe_DERDPend(Fe_RDPend: float, coeff_dict: dict) -> float:
 def calculate_Fe_DERUPend(Fe_RUPend: float, coeff_dict: dict) -> float:
     """
     Fe_DERUPend: Digestable energy in fecal RUP, arbitrary value (Mcal/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_CP": 5.65}
+    
+    calculate_Fe_DERUPend(
+        Fe_RUPend = 10.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Fe_DERUPend = Fe_RUPend * coeff_dict['En_CP']  # Line 1358
     return Fe_DERUPend
 
