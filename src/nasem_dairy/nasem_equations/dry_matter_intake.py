@@ -82,8 +82,17 @@ def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim: Union[int, float],
                                     Kb_LateGest_DMIn: float,
                                     coeff_dict: dict
 ) -> float:
-    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"Ka_LateGest_DMIn": 1.47, "Kc_LateGest_DMIn": -0.035}
+    
+    calculate_Dt_DMIn_BW_LateGest_i(
+        An_PrePartWklim = 6.0, Kb_LateGest_DMIn = 0.05, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Late gestation individual animal prediction, % of BW.  Use to assess for a
     # specific day for a given animal
     Dt_DMIn_BW_LateGest_i = (coeff_dict['Ka_LateGest_DMIn'] + 
@@ -97,8 +106,20 @@ def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat: Union[int, float],
                                     Kb_LateGest_DMIn: float,
                                     coeff_dict: dict
 ) -> float:
-    req_coeffs = ['Ka_LateGest_DMIn', 'Kc_LateGest_DMIn']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        "Ka_LateGest_DMIn": 1.47, "Kc_LateGest_DMIn": -0.035
+    }
+    
+    calculate_Dt_DMIn_BW_LateGest_p(
+        An_PrePartWkDurat = 6.0, Kb_LateGest_DMIn = 0.05, 
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Late gestation Group/Pen mean DMI/BW for an interval of 0 to 
     # PrePart_WkDurat. Assumes pen steady state and PrePart_wk = pen mean
     Dt_DMIn_BW_LateGest_p = (coeff_dict['Ka_LateGest_DMIn'] * An_PrePartWkDurat
