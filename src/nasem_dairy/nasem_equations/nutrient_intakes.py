@@ -65,9 +65,29 @@ def calculate_Fd_GE(An_StatePhys: str,
                     Fd_NDF: pd.Series, 
                     coeff_dict: dict
 ) -> pd.Series:
-    req_coeffs = ['En_CP', 'En_FA', 'En_rOM', 'En_St', 'En_NDF']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'En_CP': 0.75, 'En_FA': 0.90, 'En_rOM': 0.80, 'En_St': 0.70, 'En_NDF': 0.65
+    }
+    Fd_Category = pd.Series(['Calf Liquid Feed', 'Adult Dry Feed'])
+    Fd_CP = pd.Series([20.0, 15.0])
+    Fd_FA = pd.Series([5.0, 6.0])
+    Fd_Ash = pd.Series([10.0, 8.0])
+    Fd_St = pd.Series([12.0, 14.0])
+    Fd_NDF = pd.Series([30.0, 25.0])
 
+    calculate_Fd_GE(
+        An_StatePhys = "Calf", 
+        Fd_Category = pd.Series(['Calf Liquid Feed', 'Adult Dry Feed']), 
+        Fd_CP = pd.Series([20.0, 15.0]), Fd_FA = pd.Series([5.0, 6.0]), 
+        Fd_Ash = pd.Series([10.0, 8.0]), Fd_St = pd.Series([12.0, 14.0]), 
+        Fd_NDF = pd.Series([30.0, 25.0]), coeff_dict = coeff_dict
+    )
+    ```
+    """
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")
     Fd_GE = np.where(condition, 
                      (
@@ -271,8 +291,20 @@ def calculate_Fd_rdcRUPB(Fd_For: pd.Series,
                          Fd_KdRUP: pd.Series, 
                          coeff_dict: dict
 ) -> pd.Series:
-    req_coeffs = ['KpFor', 'KpConc']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'KpFor': 4.87, 'KpConc': 5.28
+    }
+
+    calculate_Fd_rdcRUPB(
+        Fd_For = pd.Series([10.0, 15.0]), Fd_Conc = pd.Series([5.0, 7.0]), 
+        Fd_KdRUP = pd.Series([0.5, 0.6]), coeff_dict = coeff_dict
+    )
+    ```
+    """
     Fd_rdcRUPB = 100 - (
         Fd_For * coeff_dict['KpFor'] /
         (Fd_KdRUP + coeff_dict['KpFor']) + Fd_Conc * coeff_dict['KpConc'] /
@@ -286,8 +318,21 @@ def calculate_Fd_RUPBIn(Fd_For: pd.Series,
                         Fd_CPBIn: pd.Series, 
                         coeff_dict: dict
 ) -> pd.Series:
-    req_coeffs = ['KpFor', 'KpConc']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'KpFor': 4.87, 'KpConc': 5.28
+    }
+
+    calculate_Fd_RUPBIn(
+        Fd_For = pd.Series([10.0, 15.0]), Fd_Conc = pd.Series([5.0, 7.0]),
+        Fd_KdRUP = pd.Series([0.5, 0.6]), Fd_CPBIn = pd.Series([12.0, 18.0]),
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     Fd_RUPBIn = (Fd_CPBIn * Fd_For / 
                  100 * coeff_dict['KpFor'] / 
                  (Fd_KdRUP + coeff_dict['KpFor']) + Fd_CPBIn * Fd_Conc / 
@@ -303,8 +348,21 @@ def calculate_Fd_RUPIn(Fd_CPIn: pd.Series,
                        Fd_RUPBIn: pd.Series,
                        coeff_dict: dict
 ) -> pd.Series:
-    req_coeffs = ['refCPIn', 'fCPAdu', 'IntRUP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'refCPIn': 3.39, 'fCPAdu': 0.064, 'IntRUP': -0.086
+    }
+
+    calculate_Fd_RUPIn(
+        Fd_CPIn = pd.Series([20.0, 25.0]), Fd_CPAIn = pd.Series([5.0, 6.0]), 
+        Fd_CPCIn = pd.Series([1.0, 1.5]), Fd_NPNCPIn = pd.Series([0.5, 0.7]), 
+        Fd_RUPBIn = pd.Series([10.0, 12.0]), coeff_dict = coeff_dict
+    )
+    ```
+    """
     Fd_RUPIn = ((Fd_CPAIn - Fd_NPNCPIn) * coeff_dict['fCPAdu'] + 
                 Fd_RUPBIn + Fd_CPCIn + coeff_dict['IntRUP'] / 
                 coeff_dict['refCPIn'] * Fd_CPIn) # Line 518
@@ -696,8 +754,19 @@ def calculate_Fd_DigStIn_Base(Fd_DigSt: pd.Series,
 
 
 def calculate_Fd_DigrOMt(Fd_rOM: pd.Series, coeff_dict: dict) -> pd.Series:
-    req_coeff = ['Fd_dcrOM']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'Fd_dcrOM': 96
+    }
+
+    calculate_Fd_DigrOMt(
+        Fd_rOM = pd.Series([100.0, 150.0]), coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Truly digested rOM in each feed, % of DM
     Fd_DigrOMt = coeff_dict['Fd_dcrOM'] / 100 * Fd_rOM
     return Fd_DigrOMt
@@ -722,10 +791,23 @@ def calculate_TT_dcFdFA(An_StatePhys: str,
                         Fd_dcFA: pd.Series,
                         coeff_dict: dict
 ) -> pd.Series:
-    req_coeff = [
-        'TT_dcFA_Base', 'TT_dcFat_Base', 'TT_dcFA_ClfDryFd', 'TT_dcFA_ClfLiqFd'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'TT_dcFA_Base':73, 'TT_dcFat_Base': 68, 'TT_dcFA_ClfDryFd': 81, 
+        'TT_dcFA_ClfLiqFd': 81
+    }
+
+    calculate_TT_dcFdFA(
+        An_StatePhys = "Calf", Fd_dcFA = pd.Series([None, 0.70, None, None])
+        Fd_Category = pd.Series(["Fatty Acid Supplement", "Fat Supplement", "Calf Liquid Feed", "Other"])
+        Fd_Type = pd.Series(["Concentrate", "Other", "Concentrate", "Other"])
+        coeff_dict = coeff_dict
+    )
+    ```
+    """
     TT_dcFdFA = Fd_dcFA.copy()  # Line 1251
 
     condition_1 = (
@@ -772,9 +854,17 @@ def calculate_Fd_DigFAIn(TT_dcFdFA: pd.Series,
 def calculate_Fd_DigrOMa(Fd_DigrOMt: float, coeff_dict: dict) -> float:
     """
     Fd_DigrOMa: Apparently digested residual organic matter, % DM
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'Fe_rOMend_DMI': 3.43}
+
+    calculate_Fd_DigrOMa(
+        Fd_DigrOMt = 20.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Fe_rOMend_DMI']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Fd_DigrOMa = Fd_DigrOMt - coeff_dict['Fe_rOMend_DMI']  # Line 1008
     # Apparently digested (% DM). Generates some negative values for minerals and other low rOM feeds.
     return Fd_DigrOMa
@@ -1162,37 +1252,84 @@ def calculate_Dt_dcCP_ClfDry(An_StatePhys: str, Dt_DMIn_ClfLiq: float) -> float:
 
 
 def calculate_Dt_DENDFIn(Dt_DigNDFIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_NDF']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ``
+    coeff_dict = {'En_NDF': 4.2}
+
+    calculate_Dt_DENDFIn(
+        Dt_DigNDFIn = 10.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DENDFIn = Dt_DigNDFIn * coeff_dict['En_NDF']
     return Dt_DENDFIn
 
 
 def calculate_Dt_DEStIn(Dt_DigStIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_St']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'En_St': 4.23}
+    
+    calculate_Dt_DEStIn(
+        Dt_DigStIn = 12.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DEStIn = Dt_DigStIn * coeff_dict['En_St']
     return Dt_DEStIn
 
 
 def calculate_Dt_DErOMIn(Dt_DigrOMaIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_rOM']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'En_rOM': 4.0}
+    
+    calculate_Dt_DErOMIn(
+        Dt_DigrOMaIn = 12.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DErOMIn = Dt_DigrOMaIn * coeff_dict['En_rOM']  # Line 1344
     return Dt_DErOMIn
 
 
 def calculate_Dt_DENPNCPIn(Dt_NPNCPIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_NPNCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'dcNPNCP': 100, 'En_NPNCP': 0.89
+    }
+    
+    calculate_Dt_DENPNCPIn(
+        Dt_NPNCPIn = 15.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DENPNCPIn = (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 
                     100 * coeff_dict['En_NPNCP'])
     return Dt_DENPNCPIn
 
 
 def calculate_Dt_DEFAIn(Dt_DigFAIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_FA']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'En_FA': 9.4}
+    
+    calculate_Dt_DEFAIn(
+        Dt_DigFAIn = 10.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DEFAIn = Dt_DigFAIn * coeff_dict['En_FA']
     return Dt_DEFAIn
 
@@ -1209,8 +1346,19 @@ def calculate_Dt_DMIn_ClfStrt(An_BW: float,
                               Trg_Dt_DMIn: float, 
                               coeff_dict: dict
 ) -> float:
-    req_coeff = ['UCT']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'UCT': 25.0}
+
+    calculate_Dt_DMIn_ClfStrt(
+        An_BW = 100.0, Dt_MEIn_ClfLiq = 15.0, Dt_DMIn_ClfLiq = 2.0, 
+        Dt_DMIn_ClfFor = 3.0, An_AgeDryFdStart = 30, Env_TempCurr = 28.0, 
+        DMIn_eqn = 1, Trg_Dt_DMIn = 10.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Predict Calf Starter Intake, kg/d
     # Temperate Environment Predicted Starter Intake, Line 301
     Dt_DMIn_ClfStrt = (-652.5 + 14.734 * An_BW + 
@@ -1240,8 +1388,17 @@ def calculate_Dt_DigCPaIn(Dt_CPIn: float, Fe_CP: float) -> float:
 
 
 def calculate_Dt_DECPIn(Dt_DigCPaIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'En_CP': 5.65}
+
+    calculate_Dt_DECPIn(
+        Dt_DigCPaIn = 10.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Dt_DECPIn = Dt_DigCPaIn * coeff_dict['En_CP']
     return Dt_DECPIn
 
@@ -1250,8 +1407,19 @@ def calculate_Dt_DETPIn(Dt_DECPIn: float,
                         Dt_DENPNCPIn: float, 
                         coeff_dict: dict
 ) -> float:
-    req_coeff = ['En_NPNCP', 'En_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'En_NPNCP': 0.89, 'En_CP': 5.65
+    }
+
+    calculate_Dt_DETPIn(
+        Dt_DECPIn = 20.0, Dt_DENPNCPIn = 15.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 1348, Caution! DigTPaIn not clean so subtracted DE for CP equiv of 
     # NPN to correct. Not a true DE_TP.
     Dt_DETPIn = (Dt_DECPIn - Dt_DENPNCPIn / 
@@ -1336,9 +1504,17 @@ def calculate_Dt_DigrOMa_Dt(Dt_rOM: float, coeff_dict: dict) -> float:
     Dt_DigrOMa_Dt: Apparently digestable residual organic matter, % DM???
     
     This variable is not used anywhere, used as crosscheck? (see comment)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'Fe_rOMend_DMI': 3.43}
+
+    calculate_Dt_DigrOMa_Dt(
+        Dt_rOM = 25.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Fe_rOMend_DMI']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # In R code variable is Dt_DigrOMa.Dt
     Dt_DigrOMa_Dt = Dt_rOM * 0.96 - coeff_dict['Fe_rOMend_DMI']  
     # Crosscheck the feed level calculation and summation., Line 1041
@@ -1400,9 +1576,17 @@ def calculate_Dt_RDTPIn(Dt_RDPIn: float,
 ) -> float:
     """
     Dt_RDTPIn: Rumed degradable true protein intake, kg/d
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'dcNPNCP':100}
+
+    calculate_Dt_RDTPIn(
+        Dt_RDPIn = 10.0, Dt_NPNCPIn = 2.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['dcNPNCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Dt_RDTPIn = Dt_RDPIn - (Dt_NPNCPIn * coeff_dict['dcNPNCP'] / 100)  
     # assumes all NPN is soluble. Reflects only urea and ammonium salt
     # NPN sources, Line 1102
@@ -2270,12 +2454,6 @@ def calculate_diet_info(DMI: float,
         'Trp': SIDigTrpRUPf,
         'Val': SIDigValRUPf
     }
-
-    req_coeffs = [
-        'RecArg', 'RecHis', 'RecIle', 'RecLeu', 'RecLys', 'RecMet', 'RecPhe',
-        'RecThr', 'RecTrp', 'RecVal'
-    ]
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
 
     AA_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
