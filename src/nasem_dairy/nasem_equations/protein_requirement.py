@@ -24,8 +24,6 @@ def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
     """
-    # req_coeff = ['Kg_MP_NP_Trg']
-    # ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  
     # Line 2675, kg MP/d for NP gain
     return Body_MPUse_g_Trg
@@ -34,9 +32,19 @@ def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
 def calculate_Gest_MPUse_g_Trg(Gest_NPuse_g: float, coeff_dict: dict) -> float:
     """
     Gest_MPUse_g_Trg: Metabolizable protein requirement for gestation (g/d)
+
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'Ky_MP_NP_Trg': 0.33, 'Ky_NP_MP_Trg': 1.0
+    }
+
+    calculate_Gest_MPUse_g_Trg(
+        Gest_NPuse_g = 100.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Ky_MP_NP_Trg', 'Ky_NP_MP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     if Gest_NPuse_g >= 0:  # Line 2676
         Gest_MPUse_g_Trg = Gest_NPuse_g / coeff_dict['Ky_MP_NP_Trg']
     else:
@@ -55,9 +63,17 @@ def calculate_Trg_Mlk_NP_g(Trg_MilkProd: float, Trg_MilkTPp: float) -> float:
 def calculate_Mlk_MPUse_g_Trg(Trg_Mlk_NP_g: float, coeff_dict: dict) -> float:
     """
     Mlk_MPUse_g_Trg: Metabolizable protein requirement for milk production (g/d)
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {'Kl_MP_NP_Trg': 0.69}
+
+    calculate_Mlk_MPUse_g_Trg(
+        Trg_Mlk_NP_g = 150.0, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Kl_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Mlk_MPUse_g_Trg = Trg_Mlk_NP_g / coeff_dict['Kl_MP_NP_Trg']  
     # kg MP/d for target milk protein lactation, Line 2677
     return Mlk_MPUse_g_Trg
@@ -139,9 +155,24 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
 ) -> float:
     """
     Kg_MP_NP_Trg: Conversion of NP to MP for growth
+    
+    Examples
+    --------
+    ```
+    coeff_dict = {
+        'Body_NP_CP': 0.86
+    }
+    MP_NP_efficiency_dict = {
+        'Trg_MP_NP': 0.69
+    }
+
+    calculate_Kg_MP_NP_Trg(
+        An_StatePhys = "Calf", An_Parity_rl = 0, An_BW = 150.0, 
+        An_BW_empty = 40.0, An_BW_mature = 600.0, An_BWmature_empty = 70.0, 
+        MP_NP_efficiency_dict = MP_NP_efficiency_dict, coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Body_NP_CP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     # Default value for Growth MP to TP.  Shouldn't be used for any., Line 2659
     Kg_MP_NP_Trg = 0.60 * coeff_dict['Body_NP_CP']  
 
@@ -243,9 +274,19 @@ def calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg: float,
 ) -> float:
     """
     Trg_MPIn_req: Target MP requirement (g/d)
+
+    Examples
+    --------
+    ```
+    coeff_dict = {'Kl_MP_NP_Trg': 0.69}
+
+    calculate_Trg_MPIn_req(
+        Fe_MPendUse_g_Trg = 50.0, Scrf_MPUse_g_Trg = 30.0, Ur_MPendUse_g = 20.0, 
+        Body_MPUse_g_Trg = 15.0, Gest_MPUse_g_Trg = 40.0, Trg_Mlk_NP_g = 200.0, 
+        coeff_dict = coeff_dict
+    )
+    ```
     """
-    req_coeff = ['Kl_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     Trg_MPIn_req = (Fe_MPendUse_g_Trg + Scrf_MPUse_g_Trg + Ur_MPendUse_g + 
                     Body_MPUse_g_Trg + Gest_MPUse_g_Trg + Trg_Mlk_NP_g / 
                     coeff_dict['Kl_MP_NP_Trg'])  # Line 2710
@@ -253,10 +294,19 @@ def calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg: float,
 
 
 def calculate_Km_MP_NP_Trg(An_StatePhys: str, coeff_dict: dict) -> float:
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {'Kx_MP_NP_Trg': 0.69}
+
+    calculate_Km_MP_NP_Trg(
+        An_StatePhys = "Cow", coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Maintenance assumed to be equal to target efficiency for export plus 
     # gain protein
-    req_coeff = ['Kx_MP_NP_Trg']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
     if An_StatePhys in ["Calf", "Heifer"]:
         Km_MP_NP_Trg = 0.66
     else:
