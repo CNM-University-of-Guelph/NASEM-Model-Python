@@ -56,8 +56,18 @@ def calculate_InfRum_RUPIn(InfRum_CPAIn: float,
                            Inf_KdCPB: float, 
                            coeff_dict: dict
 ) -> float:
-    req_coeff = ['fCPAdu', 'KpConc']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"fCPAdu": 0.064, "KpConc": 5.28}
+    
+    calculate_InfRum_RUPIn(
+        InfRum_CPAIn = 50.0, InfRum_CPBIn = 30.0, InfRum_CPCIn = 20.0, 
+        InfRum_NPNCPIn = 10.0, Inf_KdCPB = 0.05, coeff_dict = coeff_dict
+    )
+    ```
+    """
     InfRum_RUPIn = ((InfRum_CPAIn - InfRum_NPNCPIn) * coeff_dict['fCPAdu'] + 
                     InfRum_CPBIn * coeff_dict['KpConc'] / 
                     (Inf_KdCPB + coeff_dict['KpConc']) + InfRum_CPCIn) # Line 1084
@@ -86,8 +96,17 @@ def calculate_InfSI_idCPIn(InfSI_idTPIn: float,
                            InfSI_NPNCPIn: float, 
                            coeff_dict: dict
 ) -> float:
-    req_coeff = ['dcNPNCP']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"dcNPNCP": 100}
+    
+    calculate_InfSI_idCPIn(
+        InfSI_idTPIn = 40.0, InfSI_NPNCPIn = 20.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # SI infused idTP + urea or ammonia, Line 1092
     InfSI_idCPIn = InfSI_idTPIn + InfSI_NPNCPIn * coeff_dict['dcNPNCP'] / 100
     return InfSI_idCPIn
@@ -105,30 +124,66 @@ def calculate_InfRum_RDPIn(InfRum_CPIn: float, InfRum_RUPIn: float) -> float:
 
 
 def calculate_Inf_DigFAIn(Inf_FAIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['TT_dcFA_Base']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"TT_dcFA_Base": 73}
+    
+    calculate_Inf_DigFAIn(
+        Inf_FAIn = 50.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     # Line 1306, used dcFA which is similar to oil, but should define for each infusate
     Inf_DigFAIn = Inf_FAIn * coeff_dict['TT_dcFA_Base']
     return Inf_DigFAIn
 
 
 def calculate_Inf_DEAcetIn(Inf_AcetIn: float, coeff_dict: dict) -> float:
-    req_coeffs = ['En_Acet']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeffs)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_Acet": 3.48}
+    
+    calculate_Inf_DEAcetIn(
+        Inf_AcetIn = 40.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Inf_DEAcetIn = Inf_AcetIn * coeff_dict['En_Acet']
     return Inf_DEAcetIn
 
 
 def calculate_Inf_DEPropIn(Inf_PropIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_Prop']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_Prop": 4.96}
+    
+    calculate_Inf_DEPropIn(
+        Inf_PropIn = 30.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Inf_DEPropIn = Inf_PropIn * coeff_dict['En_Prop']  # Line 1363
     return Inf_DEPropIn
 
 
 def calculate_Inf_DEButrIn(Inf_ButrIn: float, coeff_dict: dict) -> float:
-    req_coeff = ['En_Butr']
-    ration_funcs.check_coeffs_in_coeff_dict(coeff_dict, req_coeff)
+    """
+    Examples
+    --------
+    ```
+    coeff_dict = {"En_Butr": 5.95}
+    
+    calculate_Inf_DEButrIn(
+        Inf_ButrIn = 20.0, coeff_dict = coeff_dict
+    )
+    ```
+    """
     Inf_DEButrIn = Inf_ButrIn * coeff_dict['En_Butr']
     return Inf_DEButrIn
 
