@@ -6,11 +6,10 @@ import os
 
 if __name__ == "__main__":
     path_to_package_data = importlib.resources.files("nasem_dairy.data")
-    user_diet_in, animal_input_in, equation_selection_in = nd.read_csv_input(
-        path_to_package_data.joinpath("input.csv")
-        )
+    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("input")
+
     feed_library_in = pd.read_csv(
-        path_to_package_data.joinpath("NASEM_feed_library.csv")
+        path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv")
         )
 
     output = nd.execute_model(
@@ -22,4 +21,4 @@ if __name__ == "__main__":
         )
     
     print("Model has finsihed running! \n")
-    print(output.search("Zn"))
+    # print(output.search("Zn"))
