@@ -36,3 +36,35 @@ animal_input,Env_TempCurr,22,current mean daily temperature in degrees C
 animal_input,Env_DistParlor,0,distance from the barn or paddock to the parlor in meters
 animal_input,Env_TripsParlor,0,number of daily trips to and from the parlor; generally 2 trips per milking times number of milkings
 animal_input,Env_Topo,0,the positive elevation change per day in meters
+infusion_input,Inf_Acet_g,0.0,float
+infusion_input,Inf_ADF_g,0.0,float
+infusion_input,Inf_Arg_g,0.0,float
+infusion_input,Inf_Ash_g,0.0,float
+infusion_input,Inf_Butr_g,0.0,float
+infusion_input,Inf_CP_g,0.0,float
+infusion_input,Inf_CPARum_CP,0.0,float
+infusion_input,Inf_CPBRum_CP,0.0,float
+infusion_input,Inf_CPCRum_CP,0.0,float
+infusion_input,Inf_dcFA,0.0,float
+infusion_input,Inf_dcRUP,0.0,float
+infusion_input,Inf_DM_g,0.0,float
+infusion_input,Inf_EE_g,0.0,float
+infusion_input,Inf_FA_g,0.0,float
+infusion_input,Inf_Glc_g,0.0,float
+infusion_input,Inf_His_g,0.0,float
+infusion_input,Inf_Ile_g,0.0,float
+infusion_input,Inf_KdCPB,0.0,float
+infusion_input,Inf_Leu_g,0.0,float
+infusion_input,Inf_Lys_g,0.0,float
+infusion_input,Inf_Met_g,0.0,float
+infusion_input,Inf_NDF_g,0.0,float
+infusion_input,Inf_NPNCP_g,0.0,float
+infusion_input,Inf_Phe_g,0.0,float
+infusion_input,Inf_Prop_g,0.0,float
+infusion_input,Inf_St_g,0.0,float
+infusion_input,Inf_Thr_g,0.0,float
+infusion_input,Inf_Trp_g,0.0,float
+infusion_input,Inf_ttdcSt,0.0,float
+infusion_input,Inf_Val_g,0.0,float
+infusion_input,Inf_VFA_g,0.0,float
+infusion_input,Inf_Location,Rumen,str
