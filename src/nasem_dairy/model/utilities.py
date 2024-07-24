@@ -1,6 +1,7 @@
 # This file contains all of the functions used to execute the NASEM model in python
 # import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
 from typing import Dict, Tuple, Union
+import json
 
 import pandas as pd
 
@@ -154,4 +155,21 @@ def read_csv_input(path_to_file: str = "input.csv"
     user_diet = pd.DataFrame(user_diet_data)
     user_diet['kg_user'] = pd.to_numeric(user_diet['kg_user'])
 
+    return user_diet, animal_input, equation_selection, infusion_input
+
+
+def read_json_input(file_path):
+    with open(file_path, "r") as f:
+        data = json.load(f)
+    
+    diet_info = data["diet_info"]
+    user_diet = pd.DataFrame({
+        "Feedstuff": diet_info["Feedstuff"],
+        "kg_user": diet_info["kg_user"]
+    })
+
+    equation_selection = data["equation_selection"]
+    animal_input = data["animal_input"]
+    infusion_input = data["infusion_input"]
+    
     return user_diet, animal_input, equation_selection, infusion_input
