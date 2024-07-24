@@ -201,8 +201,6 @@ def validate_coeff_dict(coeff_dict: dict) -> dict:
         for key in differing_keys:
             print(f"{key}: User: {corrected_dict[key]}, "
                   f"Default: {default_coeff_dict[key]}")
-    else:
-        print("All values match the default coefficients.")
     return corrected_dict
 
 
