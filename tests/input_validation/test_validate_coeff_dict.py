@@ -38,8 +38,7 @@ def test_differing_values(capfd):
     assert "VmMiNInt: User: 101.0, Default: 100.8" in out
 
 
-def test_all_values_match(capfd):
+def test_all_values_match():
     user_coeff_dict = nd.coeff_dict.copy()   
-    validate_coeff_dict(user_coeff_dict)
-    out, err = capfd.readouterr()
-    assert "All values match the default coefficients." in out
+    corrected_coeff_dict = validate_coeff_dict(user_coeff_dict)
+    assert corrected_coeff_dict == user_coeff_dict
