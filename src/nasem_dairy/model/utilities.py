@@ -1,7 +1,8 @@
 # This file contains all of the functions used to execute the NASEM model in python
 # import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
-from typing import Dict, Tuple, Union
+import importlib
 import json
+from typing import Dict, Tuple, Union
 
 import pandas as pd
 
@@ -158,7 +159,7 @@ def read_csv_input(path_to_file: str = "input.csv"
     return user_diet, animal_input, equation_selection, infusion_input
 
 
-def read_json_input(file_path):
+def read_json_input(file_path: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
     with open(file_path, "r") as f:
         data = json.load(f)
     
@@ -173,3 +174,29 @@ def read_json_input(file_path):
     infusion_input = data["infusion_input"]
     
     return user_diet, animal_input, equation_selection, infusion_input
+
+
+def demo(scenario_name: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
+    """
+    Takes the name of a file in nasem_dairy/data/demo and returns the input data.
+    
+    Parameters:
+    scenario_name (str): The name of the scenario file (without extension) located in the nasem_dairy/data/demo directory.
+    
+    Returns:
+    Tuple[pd.DataFrame, Dict, Dict, Dict, pd.DataFrame]: A tuple containing:
+        - diet_info_df (pd.DataFrame): A DataFrame with Feedstuff and kg_user columns.
+        - equation_selection (Dict): A dictionary of equation selection inputs.
+        - animal_input (Dict): A dictionary of animal input data.
+        - infusion_input (Dict): A dictionary of infusion input data.
+    
+    Example:
+    --------
+    import nasem_dairy as nd
+    
+    user_diet_in, animal_input_in, equation_selection_in, infusion_input, feed_library_in = nd.demo("dry_cow")
+    """
+    path_to_package_data = importlib.resources.files(
+        "nasem_dairy.data.demo"
+        )
+    return read_json_input(path_to_package_data.joinpath(f"{scenario_name}.json"))
