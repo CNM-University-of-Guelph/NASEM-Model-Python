@@ -423,9 +423,13 @@ class ModelOutput:
             'list': []
         }
 
+        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
         for attr_name in dir(self):
+            if attr_name.startswith('__') or attr_name in skip_attrs:
+                continue
+
             attr = getattr(self, attr_name, None)
-            if attr is not None and not attr_name.startswith('__'):
+            if attr is not None:
                 recursive_extract(attr, attr_name)
 
         print("DataFrame keys:", special_keys['dataframe'])
