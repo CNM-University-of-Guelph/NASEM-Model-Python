@@ -340,6 +340,12 @@ class ModelOutput:
                 recursive_search(dictionary, dictionary_name + '.')
 
         # Create output dataframe
+        if not result:
+            print(f"No matches found for '{search_string}'")
+            return pd.DataFrame(
+                columns=['Name', 'Value', 'Category', 'Level 1', 'Level 2']
+                )
+
         for key, value in result.items():
             variable_name = key.split('.')[-1]
             parts = key.split('.')
