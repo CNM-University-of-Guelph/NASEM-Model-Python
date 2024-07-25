@@ -40,7 +40,8 @@
             "Env_TempCurr": 24.0,
             "Env_DistParlor": 0.0,
             "Env_TripsParlor": 0.0,
-            "Env_Topo": 0.0
+            "Env_Topo": 0.0,
+            "An_AgeConcept1st":410
         },
         "equation_selection_in": {
             "Use_DNDF_IV": 0.0,
