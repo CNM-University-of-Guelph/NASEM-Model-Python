@@ -46,7 +46,11 @@
           "Abs_EAA2_RHILKM_g": null,
           "Abs_EAA2_HILKMT_g": null,
           "An_IdEAAIn": null,
-          "Dt_IdEAARUPIn": null
+          "Dt_IdEAARUPIn": null,
+          "Dt_AARUPIn": null,
+          "Inf_AARUPIn": null,
+          "Dt_AAIn": null,
+          "Inf_AA_g": null
         },
         "FA": {},
         "rumen_digestable": {
@@ -208,15 +212,15 @@
         },
         "mineral_requirements": {
             "Ca": {
-            "Ca_Mlk": null,
-            "Fe_Ca_m": null,
-            "An_Ca_g": null,
-            "An_Ca_y": null,
-            "An_Ca_l": null,
-            "An_Ca_Clf": null,
-            "An_Ca_req": null,
-            "An_Ca_bal": null,
-            "An_Ca_prod": null
+                "Ca_Mlk": null,
+                "Fe_Ca_m": null,
+                "An_Ca_g": null,
+                "An_Ca_y": null,
+                "An_Ca_l": null,
+                "An_Ca_Clf": null,
+                "An_Ca_req": null,
+                "An_Ca_bal": null,
+                "An_Ca_prod": null
             },
             "P": {
                 "Ur_P_m": null,
@@ -379,7 +383,8 @@
           "MlkNP_AbsEAA": null,
           "MlkNP_AbsNEAA": null,
           "MlkNP_AbsOthAA": null,
-          "Trg_Mlk_NP": null
+          "Trg_Mlk_NP": null,
+          "Trg_NEmilkOut": null
         },
         "body_composition": {
           "CPGain_FrmGain": null,
@@ -434,7 +439,8 @@
           "Body_Fatgain_NEalow": null,
           "Body_NPgain_NEalow": null,
           "An_Days_BCSdelta1": null,
-          "Rsrv_AshGain": null
+          "Rsrv_AshGain": null,
+          "Body_AA_TP": null
         },
         "gestation": {
           "Uter_Wtpart": null,
@@ -475,7 +481,9 @@
           "Du_NANMN_g": null,
           "Du_MiN_NRC2001_g": null,
           "Rum_MiCP_DigCHO": null,
-          "Du_IdEAAMic": null
+          "Du_IdEAAMic": null,
+          "MiTPAAProf": null,
+          "EndAAProf": null
         }
     },
     "Excretion": {
@@ -537,7 +545,8 @@
           "Man_Min_out_g": null,
           "Man_Wa_out": null,
           "ManWa_Milk": null,
-          "VolSlds2_Milk": null
+          "VolSlds2_Milk": null,
+          "K_FeCPend_ClfLiq": null
         },
         "urinary": {
           "Ur_Nout_g": null,
@@ -591,13 +600,19 @@
     },
     "Efficiencies": {
         "energy": {
-          "Kr_ME_RE": null
+          "Kr_ME_RE": null,
+          "Ky_ME_NE": null
         },
         "protein": {
           "Kg_MP_NP_Trg": null,
           "AnNPxEAA_AbsEAA": null,
           "AnNPxEAAUser_AbsEAA": null,
-          "Km_MP_NP_Trg": null
+          "Km_MP_NP_Trg": null,
+          "RecAA": null,
+          "MWAA": null,
+          "Fe_AAMetab_TP": null,
+          "Scrf_AA_TP": null,
+          "Ur_AAEnd_TP": null
         },
         "mineral": {
           "Dt_acCa": null,
