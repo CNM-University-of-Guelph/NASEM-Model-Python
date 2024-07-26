@@ -22,10 +22,6 @@ class ModelOutput:
         for name, structure in self.categories_structure.items():
             self.__populate_category(name, structure)
         self.__populate_uncategorized()
-        # NOTE We shouldn't be calculating values inside of ModelOutput. Either
-        # add values to the end of execute_model() and store them or calculate 
-        # these dynamically when they are needed using get_value() 
-        self.__calculate_additional_variables()
 
     ### Initalization ###
     def __load_structure(self, config_path: str) -> dict:
@@ -87,24 +83,6 @@ class ModelOutput:
         setattr(self, 'Uncategorized', {})
         self.Uncategorized.update(self.locals_input)
         self.locals_input.clear()
-
-    def __calculate_additional_variables(self) -> None:
-        """
-        This method calculates additional values that are useful for reporting but not used by model.
-        E.g. Some values are normally reported with different units to what are calculated.
-
-        This will add all to Miscellaneous category under 'post_execute_calcs'
-        """
-        getattr(self, 'Miscellaneous')['post_execute_calcs'] = {}
-                
-        new_var = {
-            'An_MPuse_kg_Trg': self.get_value('An_MPuse_g_Trg') / 1000,
-            'Dt_ForNDFIn_percNDF': (self.get_value('Dt_ForNDFIn') / 
-                                    self.get_value('Dt_NDFIn') * 100),
-        }
-
-        for key, value in new_var.items():
-            getattr(self, 'Miscellaneous')['post_execute_calcs'][key] = value
 
     ### Display Methods ###
     def _repr_html_(self) -> str:

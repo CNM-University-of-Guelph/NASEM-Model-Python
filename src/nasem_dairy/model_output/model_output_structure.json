@@ -721,6 +721,8 @@
         "Dt_acCu_per_100g": null,
         "Dt_acFe_per_100g": null,
         "Dt_acMn_per_100g": null,
-        "Dt_acZn_per_100g": null
+        "Dt_acZn_per_100g": null,
+        "An_MPuse_kg_Trg": null,
+        "Dt_ForNDFIn_percNDF": null
     }
 }

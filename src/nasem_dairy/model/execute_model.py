@@ -2057,6 +2057,8 @@ def execute_model(user_diet: pd.DataFrame,
     Dt_acFe_per_100g = Dt_acFe * 100
     Dt_acMn_per_100g = Dt_acMn * 100
     Dt_acZn_per_100g = Dt_acZn * 100
+    An_MPuse_kg_Trg = An_MPuse_g_Trg / 1000
+    Dt_ForNDFIn_percNDF = diet_data["Dt_ForNDFIn"] / diet_data["Dt_NDFIn"] * 100
 
     ########################################
     # Capture Outputs
