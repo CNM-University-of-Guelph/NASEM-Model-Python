@@ -54,24 +54,27 @@ class ModelOutput:
                 self.dev_out[key] = self.locals_input.pop(key)
 
     def __populate_category(self, category_name: str, group_structure: dict) -> None:
-        """Create and populate nested dictionaries using the structure from JSON."""
+        """
+        Create and populate nested dictionaries using the structure from JSON.
+        """
+        def recursive_populate(sub_category, sub_structure):
+            for key, value in sub_structure.items():
+                if isinstance(value, dict):
+                    if key not in sub_category:
+                        sub_category[key] = {}
+                    recursive_populate(sub_category[key], value)
+                    # Remove empty sub-categories
+                    if not sub_category[key]:
+                        del sub_category[key]
+                else:
+                    if key in self.locals_input:
+                        sub_category[key] = self.locals_input.pop(key)
+        
         if not hasattr(self, category_name):
             setattr(self, category_name, {})
         category = getattr(self, category_name)
 
-        for key, value in group_structure.items():
-            if isinstance(value, dict):
-                if key not in category:
-                    category[key] = {}
-                for sub_key in value:
-                    if sub_key in self.locals_input:
-                        category[key][sub_key] = self.locals_input.pop(sub_key)
-                # Remove empty sub-categories
-                if not category[key]:
-                    del category[key]
-            else:
-                if key in self.locals_input:
-                    category[key] = self.locals_input.pop(key)
+        recursive_populate(category, group_structure)
         
         # Remove empty categories
         if not category:
