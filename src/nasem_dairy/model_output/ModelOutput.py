@@ -105,17 +105,11 @@ class ModelOutput:
             <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>
         """
-
-        categories = {
-                'Inputs': self.Inputs,
-                'Intakes': self.Intakes,
-                'Requirements': self.Requirements,
-                'Production': self.Production,
-                'Excretion': self.Excretion,
-                'Digestibility': self.Digestibility,
-                'Efficiencies': self.Efficiencies,
-                'Miscellaneous': self.Miscellaneous
-            }
+        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
+        categories = {attr: getattr(self, attr) for attr in dir(self)
+                      if not attr.startswith("_") and 
+                      attr not in skip_attrs and
+                      isinstance(getattr(self, attr), dict)}
 
         # Adding categories and keys to the accordion content as bullet points
         for category, keys in categories.items():
