@@ -1999,6 +1999,64 @@ def execute_model(user_diet: pd.DataFrame,
     Trg_Mlk_NP = milk.calculate_Trg_Mlk_NP(Trg_Mlk_NP_g)
     VolSlds2_Milk = manure.calculate_VolSlds2_Milk(Man_VolSld2, Mlk_Prod)
 
+    #####################
+    # Values for Reports
+    #####################
+    percent_first_parity = (2 - animal_input["An_Parity_rl"]) * 100
+    if animal_input["An_StatePhys"] == "Heifer":
+        age_first_calving = animal_input["An_AgeConcept1st"] + 280
+    milk_lactose_percent = animal_input["Trg_MilkProd"] * animal_input["Trg_MilkLacp"] / 100
+    dmi_percent_bodyweight = An_DMIn_BW * 100
+    adf_per_ndf = An_data["An_ADF"] / An_data["An_NDF"]
+    digestable_rup = An_data["An_idRUP"] * 100
+    Fd_AFIn_sum = diet_info["Fd_AFInp"].sum()
+    Fd_DMIn_sum = diet_info["Fd_DMInp"].sum()
+    Fe_DE_GE_percent = Fe_DE_GE * 100
+    An_DE_GE_percent = An_data["An_DE_GE"] * 100
+    UrDE_GEIn_percent = UrDE_GEIn * 100
+    GasE_GEIn_percent = An_data["GasE_GEIn"] * 100
+    An_ME_GE_percent = An_ME_GE * 100
+    An_NE_GE_percent = An_NE_GE * 100
+    UrDE_DEIn_percent = UrDE_DEIn * 100
+    GasE_DEIn_percent = An_data["GasE_DEIn"] * 100
+    An_ME_DE_percent = An_ME_DE * 100
+    An_NE_DE_percent = An_NE_DE * 100
+    An_NE_ME_percent = An_NE_ME * 100
+    An_DEIn_percent = An_data["An_DEIn"] / An_data["An_DEIn"] * 100
+    An_MEIn_percent = An_MEIn / An_MEIn * 100
+    Dt_C120In_g = diet_data["Dt_C120In"] * 1000
+    Dt_C140In_g = diet_data["Dt_C140In"] * 1000
+    Dt_C160In_g = diet_data["Dt_C160In"] * 1000
+    Dt_C161In_g = diet_data["Dt_C161In"] * 1000
+    Dt_C180In_g = diet_data["Dt_C180In"] * 1000
+    Dt_C181tIn_g = diet_data["Dt_C181tIn"] * 1000
+    Dt_C181cIn_g = diet_data["Dt_C181cIn"] * 1000
+    Dt_C182In_g = diet_data["Dt_C182In"] * 1000
+    Dt_C183In_g = diet_data["Dt_C183In"] * 1000
+    Dt_OtherFAIn_g = diet_data["Dt_OtherFAIn"] * 1000
+    Dt_FAIn_g = diet_data["Dt_FAIn"] * 1000
+    Dt_SatFAIn_g = diet_data["Dt_SatFAIn"] * 1000
+    Dt_UFAIn_g = diet_data["Dt_UFAIn"] * 1000
+    Dt_MUFAIn_g = diet_data["Dt_MUFAIn"] * 1000
+    Dt_PUFAIn_g = diet_data["Dt_PUFAIn"] * 1000
+    Dt_DigFAIn_g = diet_data["Dt_DigFAIn"] * 1000
+    An_RDPbal_kg = An_RDPbal_g / 1000
+    MP_from_body = -Body_MPUse_g_Trg / 1000 if Body_MPUse_g_Trg < 0 else 0
+    An_BW_centered = animal_input["An_BW"] - 612
+    An_DigNDF_centered = An_data["An_DigNDF"] - 17.06
+    An_BW_protein = (animal_input["An_BW"] - 612) * mPrt_coeff["mPrt_k_BW"]
+    Dt_acCa_per_100g = Dt_acCa * 100
+    Dt_acP_per_100g = Dt_acP * 100
+    Dt_acMg_per_100g = Dt_acMg * 100
+    Dt_acCl_per_100g = Dt_acCl * 100
+    Dt_acK_per_100g = Dt_acK * 100
+    Dt_acNa_per_100g = Dt_acNa * 100
+    Dt_acCo_per_100g = Dt_acCo * 100 if Dt_acCo is not None else 0
+    Dt_acCu_per_100g = Dt_acCu * 100
+    Dt_acFe_per_100g = Dt_acFe * 100
+    Dt_acMn_per_100g = Dt_acMn * 100
+    Dt_acZn_per_100g = Dt_acZn * 100
+
     ########################################
     # Capture Outputs
     ########################################

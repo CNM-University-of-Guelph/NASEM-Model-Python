@@ -10,11 +10,13 @@ import pandas as pd
 class ModelOutput:
     def __init__(self, 
                  locals_input: dict, 
-                 config_path: str = "./model_output_structure.json"
+                 config_path: str = "./model_output_structure.json",
+                 report_config_path: str = "./report_structure.json"
     ) -> None:
         self.locals_input = locals_input
         self.dev_out = {}
-        self.categories_structure = self.__load_category_structure(config_path)
+        self.categories_structure = self.__load_structure(config_path)
+        self.report_structure = self.__load_structure(report_config_path)
 
         self.__filter_locals_input()
         for name, structure in self.categories_structure.items():
@@ -26,7 +28,7 @@ class ModelOutput:
         self.__calculate_additional_variables()
 
     ### Initalization ###
-    def __load_category_structure(self, config_path: str) -> dict:
+    def __load_structure(self, config_path: str) -> dict:
         """Load category structure from a JSON file."""
         base_path = os.path.dirname(__file__)
         full_path = os.path.join(base_path, config_path)
@@ -43,7 +45,7 @@ class ModelOutput:
     def __filter_locals_input(self) -> None:
         """Filter out specified variables from locals_input."""
         variables_to_remove = [
-            "key", "value", "num_value", "feed_library_df", "feed_data",
+            "key", "value", "num_value", "feed_data", "feed_library_df",
             "diet_info_initial", "diet_data_initial", "AA_list",
             "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
         ]
@@ -254,25 +256,26 @@ class ModelOutput:
                     result = recursive_search(value, target_name)
                     if result is not None:
                         return result
+                elif isinstance(value, pd.DataFrame):
+                    if target_name in value.columns:
+                        return value[target_name]
             return None
 
-        # Search in all dictionaries contained in self
+        # Search in all dictionaries contained in self except the ones listed below
+        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
+        
         for category_name in dir(self):
+            if category_name in skip_attrs:
+                continue
             category = getattr(self, category_name, None)
             if category is not None:
-                if (isinstance(category, dict) and 
-                    category_name == name
-                    ):
-                    return category
-                elif (isinstance(category, pd.DataFrame) and 
-                      category_name == name
-                      ):
-                    return category
-                elif isinstance(category, dict):
+                if isinstance(category, dict):
+                    if category_name == name:
+                        return category
                     result = recursive_search(category, name)
                     if result is not None:
                         return result
-        return None
+        return None                   
 
     def search(self, 
                search_string: str, 
@@ -440,6 +443,69 @@ class ModelOutput:
         return data_dict
 
     ### Report Creation ###
+    def get_report(self, report_name: str) -> pd.DataFrame:
+        """
+        Generate a report based on the report structure defined in JSON.
+
+        Parameters:
+            report_name (str): The name of the report to generate.
+
+        Returns:
+            pd.DataFrame: The generated report as a DataFrame.
+        """
+        if report_name not in self.report_structure:
+            raise ValueError(f"Report {report_name} not found in the report structure.")
+
+        report_config = self.report_structure[report_name]
+        columns = list(report_config.keys())
+
+        description_columns = ["Description", "Target Performance"]
+        special_keys = ["Total", "Footnote"]
+
+        data = {col_name: [] for col_name in columns if col_name not in special_keys}
+
+        for col_name, variables in report_config.items():
+            if col_name in special_keys:
+                continue
+            if col_name in description_columns:
+                data[col_name].extend(variables)
+                continue
+            for variable_name in variables:
+                if isinstance(variable_name, (int, float)):
+                    data[col_name].append(variable_name)
+                    continue
+
+                value = self.get_value(variable_name)
+                if isinstance(value, (pd.Series, np.ndarray)):
+                    data[col_name].extend(value.tolist())
+                elif value is not None:
+                    data[col_name].append(value)
+                else:
+                    data[col_name].append("")
+
+        report_df = pd.DataFrame(data)     
+
+        if "Total" in report_config:
+            total_row = ["Total"] + [self.get_value(value) 
+                                     for value in report_config["Total"] 
+                                     if value != "Total"] 
+            report_df.loc[len(report_df)] = total_row
+            
+        # NOTE This works to include footnotes in the table but it's very ugly.
+        # Dataframes aren't really meant to display long strings like this so
+        # they end up getting cut off. I can't find anything about including footnotes
+        # with a Dataframe. I think it's important to include this info but there 
+        # may be a better way to format it. Maybe we edit the footnotes to be shorter?
+        # - Braeden
+        if "Footnote" in report_config:
+            footnotes = report_config["Footnote"]
+            for key, footnote in footnotes.items():
+                # Adjust length of footnote row based on size of Dataframe
+                footnote_row = [key, footnote] + [""]*(len(report_df.columns)-2)
+                report_df.loc[len(report_df)] = footnote_row
+        return report_df
+
+
     def report_minerals(self) -> Dict[str, pd.DataFrame]:
         '''
         Format mineral data with inputs, requirements and balance. 
@@ -589,6 +655,7 @@ class ModelOutput:
         target_performance.columns = ['Target Performance:']
         
         return target_performance
+    
 
     # def report_AA(self):
     #     def create_aa_flows_dataframe(self):
