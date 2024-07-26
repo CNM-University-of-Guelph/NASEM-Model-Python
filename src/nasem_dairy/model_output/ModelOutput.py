@@ -363,10 +363,6 @@ class ModelOutput:
                         final_key = full_key.split('.')[-1]
                         data_dict[final_key] = v
                         categorize_key(final_key, v)
-            elif isinstance(value, list):
-                for i, item in enumerate(value):
-                    full_key = f"{parent_key}[{i}]"
-                    recursive_extract(item, full_key)
             else:
                 final_key = parent_key.split('.')[-1]
                 data_dict[final_key] = value
@@ -401,7 +397,7 @@ class ModelOutput:
                 continue
 
             attr = getattr(self, attr_name, None)
-            if attr is not None:
+            if attr is not None and isinstance(getattr(self, attr_name), dict):
                 recursive_extract(attr, attr_name)
 
         print("DataFrame keys:", special_keys['dataframe'])
