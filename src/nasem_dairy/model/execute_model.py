@@ -19,7 +19,7 @@ import nasem_dairy.nasem_equations.nutrient_intakes as diet
 import nasem_dairy.nasem_equations.protein as protein
 import nasem_dairy.nasem_equations.protein_requirement as protein_req
 import nasem_dairy.nasem_equations.rumen as rumen
-import nasem_dairy.nasem_equations.unused as unused
+import nasem_dairy.nasem_equations.report as report
 import nasem_dairy.nasem_equations.urine as urine
 import nasem_dairy.nasem_equations.water as water
 
@@ -480,10 +480,10 @@ def execute_model(user_diet: pd.DataFrame,
     # Step 3: Feed Based Calculations
     ########################################
     # Calculate An_DMIn_BW with the final DMI value; required for calculating diet_data_initial
-    Dt_DMIn_BW = unused.calculate_Dt_DMIn_BW(
+    Dt_DMIn_BW = report.calculate_Dt_DMIn_BW(
         animal_input["DMI"], animal_input['An_BW']
         )
-    Dt_DMIn_MBW = unused.calculate_Dt_DMIn_MBW(
+    Dt_DMIn_MBW = report.calculate_Dt_DMIn_MBW(
         animal_input['DMI'], animal_input['An_BW']
         )
     An_DMIn_BW = animal.calculate_An_DMIn_BW(
