@@ -12,7 +12,15 @@ class ModelOutput:
                  locals_input: dict, 
                  config_path: str = "./model_output_structure.json",
                  report_config_path: str = "./report_structure.json"
-    ) -> None:
+    ):
+        """
+        Initialize ModelOutput with input data and configuration paths.
+
+        Args:
+            locals_input (dict): Dictionary of local input data.
+            config_path (str): Path to the JSON file containing the model output structure.
+            report_config_path (str): Path to the JSON file containing the report structure.
+        """
         self.locals_input = locals_input
         self.dev_out = {}
         self.categories_structure = self.__load_structure(config_path)
@@ -25,12 +33,26 @@ class ModelOutput:
 
     ### Initalization ###
     def __load_structure(self, config_path: str) -> dict:
-        """Load category structure from a JSON file."""
+        """
+        Load category structure from a JSON file.
+
+         Args:
+            config_path (str): Path to the JSON file containing the structure.
+
+        Returns:
+            dict: The structure loaded from the JSON file.
+
+        Raises:
+            FileNotFoundError: If the JSON file does not exist.
+            ValueError: If there is an error decoding the JSON file.
+        """
         base_path = os.path.dirname(__file__)
         full_path = os.path.join(base_path, config_path)
 
         if not os.path.exists(full_path):
-            raise FileNotFoundError(f"The configuration file {full_path} does not exist.")
+            raise FileNotFoundError(
+                f"The configuration file {full_path} does not exist."
+                )
         
         with open(full_path, 'r') as file:
             try:
@@ -39,7 +61,25 @@ class ModelOutput:
                 raise ValueError(f"Error decoding JSON file {full_path}: {e}")
 
     def __filter_locals_input(self) -> None:
-        """Filter out specified variables from locals_input."""
+        """
+        Filter out specified variables from locals_input and store them in dev_out.
+
+        This method removes certain predefined variables from the locals_input
+        dictionary and stores them in the dev_out dictionary for further use.
+
+        Variables filtered:
+            - key
+            - value
+            - num_value
+            - feed_data
+            - feed_library_df
+            - diet_info_initial
+            - diet_data_initial
+            - AA_list
+            - An_data_initial
+            - mPrt_coeff_list
+            - mPrt_k_AA
+        """
         variables_to_remove = [
             "key", "value", "num_value", "feed_data", "feed_library_df",
             "diet_info_initial", "diet_data_initial", "AA_list",
@@ -49,16 +89,30 @@ class ModelOutput:
             if key in self.locals_input:
                 self.dev_out[key] = self.locals_input.pop(key)
 
-    def __populate_category(self, category_name: str, group_structure: dict) -> None:
+    def __populate_category(self, 
+                            category_name: str, 
+                            group_structure: dict
+    ) -> None:
         """
         Create and populate nested dictionaries using the structure from JSON.
+
+        Args:
+            category_name (str): The name of the category to populate.
+            group_structure (dict): The structure of the group from the JSON file.
         """
-        def recursive_populate(sub_category, sub_structure):
+        def _recursive_populate(sub_category: dict, sub_structure: dict) -> None:
+            """
+            Recursively populate sub-categories based on the provided structure.
+
+            Args:
+                sub_category (dict): The sub-category dictionary to populate.
+                sub_structure (dict): The structure of the sub-category from JSON.
+            """
             for key, value in sub_structure.items():
                 if isinstance(value, dict):
                     if key not in sub_category:
                         sub_category[key] = {}
-                    recursive_populate(sub_category[key], value)
+                    _recursive_populate(sub_category[key], value)
                     # Remove empty sub-categories
                     if not sub_category[key]:
                         del sub_category[key]
@@ -66,19 +120,21 @@ class ModelOutput:
                     if key in self.locals_input:
                         sub_category[key] = self.locals_input.pop(key)
         
+
         if not hasattr(self, category_name):
             setattr(self, category_name, {})
         category = getattr(self, category_name)
 
-        recursive_populate(category, group_structure)
-        
-        # Remove empty categories
+        _recursive_populate(category, group_structure)
         if not category:
             delattr(self, category_name)
 
     def __populate_uncategorized(self) -> None:
         """
-        Store all remaining values in the Uncategorized category and pop them from locals_input.
+        Store all remaining values in the Uncategorized category and clear locals_input.
+
+        This method moves all remaining key-value pairs from the locals_input
+        dictionary to a new Uncategorized dictionary, then clears locals_input.
         """
         setattr(self, 'Uncategorized', {})
         self.Uncategorized.update(self.locals_input)
@@ -86,13 +142,17 @@ class ModelOutput:
 
     ### Display Methods ###
     def _repr_html_(self) -> str:
-        #This is the HTML display when the ModelOutput object is called directly
-        # in a IPython setting (e.g. juptyer notebook, VSCode interactive)
-        # summary_sentence = f"Outputs for a {self.get_value('An_StatePhys')}, weighing {self.get_value('An_BW')} kg, eating {self.get_value('DMI')} kg with {self.get_value('An_LactDay')} days in milk."
-        # df_diet_html = pd.DataFrame(self.get_value('user_diet')).to_html(index=False, escape=False)
+        """
+        Generate an HTML representation of the ModelOutput object for IPython.
 
+        This method is called when the ModelOutput object is displayed directly
+        in an IPython setting (e.g., Jupyter notebook, VSCode interactive).
+
+        Returns:
+            str: An HTML string representing the ModelOutput object.
+        """
+        # Generate snapshot of data and convert to HTML
         snapshot_data = self.__snapshot_data()
-        # snapshot_data = [{'Description': description, 'Value': self.get_value(key)} for description, key in snapshot_vars.items()]
         df_snapshot_html = pd.DataFrame(snapshot_data).to_html(index=False,
                                                                escape=False)
 
@@ -105,7 +165,8 @@ class ModelOutput:
             <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>
         """
-        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
+        skip_attrs = ["categories_structure", "report_structure", 
+                      "locals_input", "dev_out"]
         categories = {attr: getattr(self, attr) for attr in dir(self)
                       if not attr.startswith("_") and 
                       attr not in skip_attrs and
@@ -137,68 +198,67 @@ class ModelOutput:
         </div>
         """
 
-        # Note: This method must return a string containing HTML, so if using in a live Jupyter environment,
-        # you might want to use 'display(HTML(final_html))' instead of 'return final_html' for direct rendering.
+        # NOTE: This method must return a string containing HTML, so if using in
+        # a live Jupyter environment, you might want to use 'display(HTML(final_html))' 
+        # instead of 'return final_html' for direct rendering.
         return final_html
 
     def __str__(self) -> str:
-        summary = "=====================\n"
-        summary += "Model Output Snapshot\n"
-        summary += "=====================\n"
+        """
+        Generate a string representation of the ModelOutput object.
 
+        This method provides a summary of the model outputs, which includes
+        descriptions and values of the snapshot data.
+
+        Returns:
+            str: A string representation of the ModelOutput object.
+        """
+        summary = (
+            "=====================\n"
+            "Model Output Snapshot\n"
+            "=====================\n"
+        )
         lines = [
             f"{entry['Description']}: {entry['Value']}"
             for entry in self.__snapshot_data()
         ]
         summary += "\n".join(lines)
-        summary += "\n\nThis is a `ModelOutput` object with methods to access all model outputs. See help(ModelOutput)."
-
+        summary += (
+            "\n\nThis is a `ModelOutput` object with methods to access all model"
+            " outputs. See help(ModelOutput)."
+        )
         return summary
 
     def __snapshot_data(self) -> List[Dict[str, Any]]:
         """
-        Return a list of dictionaries of snapshot variables for _refr_html_ and __str__
+        Return a list of dictionaries of snapshot variables for _repr_html_ and __str__.
+
+        This method retrieves specific model output values, formats them, and
+        returns them as a list of dictionaries with descriptions.
+
+        Returns:
+            List[Dict[str, Any]]: A list of dictionaries containing snapshot
+            descriptions and their corresponding values.
         """
         snapshot_dict = {
-            'Milk production kg (Mlk_Prod_comp)':
-                'Mlk_Prod_comp',
-            'Milk fat g/g (MlkFat_Milk)':
-                'MlkFat_Milk',
-            'Milk protein g/g (MlkNP_Milk)':
-                'MlkNP_Milk',
-            'Milk Production - MP allowable kg (Mlk_Prod_MPalow)':
-                'Mlk_Prod_MPalow',
-            'Milk Production - NE allowable kg (Mlk_Prod_NEalow)':
-                'Mlk_Prod_NEalow',
-            'Animal ME intake Mcal/d (An_MEIn)':
-                'An_MEIn',
-            'Target ME use Mcal/d (Trg_MEuse)':
-                'Trg_MEuse',
-            'Animal MP intake g/d (An_MPIn_g)':
-                'An_MPIn_g',
-            'Animal MP use g/d (An_MPuse_g_Trg)':
-                'An_MPuse_g_Trg',
-            'Animal RDP intake g/d (An_RDPIn_g)':
-                'An_RDPIn_g',
-            'Diet DCAD meq (An_DCADmeq)':
-                'An_DCADmeq'
+            'Milk production kg (Mlk_Prod_comp)': 'Mlk_Prod_comp',
+            'Milk fat g/g (MlkFat_Milk)': 'MlkFat_Milk',
+            'Milk protein g/g (MlkNP_Milk)': 'MlkNP_Milk',
+            'Milk Production - MP allowable kg (Mlk_Prod_MPalow)': 'Mlk_Prod_MPalow',
+            'Milk Production - NE allowable kg (Mlk_Prod_NEalow)': 'Mlk_Prod_NEalow',
+            'Animal ME intake Mcal/d (An_MEIn)': 'An_MEIn',
+            'Target ME use Mcal/d (Trg_MEuse)': 'Trg_MEuse',
+            'Animal MP intake g/d (An_MPIn_g)': 'An_MPIn_g',
+            'Animal MP use g/d (An_MPuse_g_Trg)': 'An_MPuse_g_Trg',
+            'Animal RDP intake g/d (An_RDPIn_g)': 'An_RDPIn_g',
+            'Diet DCAD meq (An_DCADmeq)': 'An_DCADmeq'
         }
-
         snapshot_data = []
         for description, key in snapshot_dict.items():
-            raw_value = self.get_value(key)
-            # Check if the value is numeric
-            if isinstance(raw_value, (float, int)):
-                value = round(raw_value, 3)
-            # elif isinstance(raw_value, (np.ndarray)) and raw_value.size == 1:
-            #     # This is required for any numbers handled by np.where() that 
-            #     # return arrays instead of floats - needs cleaning up
-            #     value = round(float(raw_value), 3)
-            else:
-                value = raw_value
-
+            value = self.get_value(key)
+            if isinstance(value, (float, int)):
+                value = round(value, 3)
             snapshot_data.append({'Description': description, 'Value': value})
-
         return snapshot_data
 
     ### Data Access ### 
@@ -206,23 +266,36 @@ class ModelOutput:
                   name: str
     ) -> Union[str, int, float, dict, pd.DataFrame, None]:
         """
-        Retrieve a value, dictionary or dataframe with a given name from the ModelOutput instance.
+        Retrieve a value, dictionary, or dataframe with a given name.
 
-        Parameters:
-        name (str): The name of the group to retrieve.
+        This method searches through the ModelOutput instance to find a specific
+        value, dictionary, or dataframe by name.
+
+        Args:
+            name (str): The name of the group to retrieve.
 
         Returns:
-        str or int or float or dict or pd.DataFrame or None: The object with the given name, or None if not found.
+            Union[str, int, float, dict, pd.DataFrame, None]: The object with the
+            given name, or None if not found.
         """
-        def recursive_search(dictionary, target_name):
+        def _recursive_search_get_value(dictionary: dict, 
+                                        target_name: str
+        ) -> Union[Any, None]:
             """
-            Helper function to recursively search for a group in a nested dictionary
+            Recursively search for a group in a nested dictionary.
+
+            Args:
+                dictionary (dict): The dictionary to search within.
+                target_name (str): The name of the target group.
+
+            Returns:
+                Union[Any, None]: The found object or None if not found.
             """
             if target_name in dictionary:
                 return dictionary[target_name]
             for key, value in dictionary.items():
                 if isinstance(value, dict):
-                    result = recursive_search(value, target_name)
+                    result = _recursive_search_get_value(value, target_name)
                     if result is not None:
                         return result
                 elif isinstance(value, pd.DataFrame):
@@ -231,7 +304,8 @@ class ModelOutput:
             return None
 
         # Search in all dictionaries contained in self except the ones listed below
-        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
+        skip_attrs = ["categories_structure", "report_structure", 
+                      "locals_input", "dev_out"]
         
         for category_name in dir(self):
             if category_name in skip_attrs:
@@ -241,7 +315,7 @@ class ModelOutput:
                 if isinstance(category, dict):
                     if category_name == name:
                         return category
-                    result = recursive_search(category, name)
+                    result = _recursive_search_get_value(category, name)
                     if result is not None:
                         return result
         return None                   
@@ -251,9 +325,31 @@ class ModelOutput:
                dictionaries_to_search: Union[None, List[str]] = None,
                case_sensitive: bool = False
     ) -> pd.DataFrame:
-        
-        def recursive_search(d: Dict[str, Any], path: str = '') -> None:
-            for key, value in d.items():
+        """
+        Search for a string in the ModelOutput instance and return matching results.
+
+        This method searches for a given string within the specified dictionaries
+        in the ModelOutput instance and returns the matching results in a DataFrame.
+
+        Args:
+            search_string (str): The string to search for.
+            dictionaries_to_search (Union[None, List[str]]): The list of dictionaries
+                to search within. If None, all relevant dictionaries are searched.
+            case_sensitive (bool): Whether the search should be case-sensitive.
+                Default is False.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the search results.
+        """
+        def _recursive_search_search(dict_to_search: Dict[str, Any], path: str = "") -> None:
+            """
+            Recursively search for a string in a nested dictionary.
+
+            Args:
+                dict_to_search (Dict[str, Any]): The dictionary to search within.
+                path (str): The current search path.
+            """
+            for key, value in dict_to_search.items():
                 full_key = path + key
                 if ((re.search(search_string, str(full_key), 
                                flags=user_flags)) and 
@@ -262,27 +358,34 @@ class ModelOutput:
                     result[full_key] = value
                     visited_keys.add(full_key)
                 if isinstance(value, dict):
-                    recursive_search(value, full_key + '.')
+                    _recursive_search_search(value, full_key + ".")
                 elif isinstance(value, pd.DataFrame):
                     matching_columns = [
                         col for col in value.columns
                         if re.search(search_string, col, flags=user_flags)
                     ]
                     if matching_columns:
-                        columns_key = full_key + '_columns'
+                        columns_key = full_key + "_columns"
                         if columns_key not in visited_keys:
                             result[columns_key] = matching_columns
                             visited_keys.add(columns_key)
 
 
-        def extract_dataframe_and_column(key: str, 
+        def _extract_dataframe_and_column(key: str, 
                                          value: Any
         ) -> Dict[str, Union[str, List[str]]]:
-            '''
-            Only used when key endswith('_columns')
-            '''
-            df_name = key.split('.')[-1].rsplit('_', 1)[0]
+            """
+            Extract information from a DataFrame column.
 
+            Args:
+                key (str): The key of the DataFrame.
+                value (Any): The value associated with the key.
+
+            Returns:
+                Dict[str, Union[str, List[str]]]: A dictionary containing
+                information about the DataFrame column.
+            """
+            df_name = key.split(".")[-1].rsplit("_", 1)[0]
             return {'Name': value, 
                     "Value": "pd.Series",
                     'Category': key.split(".")[0],
@@ -291,120 +394,153 @@ class ModelOutput:
                     }
     
 
-        # Define the dictionaries to search within, by default all dictionaries 
-        # where outputs are stored
+        def _create_output_dataframe(result: dict) -> pd.DataFrame:
+            """
+            Create a DataFrame from the search result.
+
+            Args:
+                result (dict): The dictionary containing search results.
+
+            Returns:
+                pd.DataFrame: A DataFrame containing the search results.
+            """
+            table_rows = []
+            for key, value in result.items():
+                variable_name = key.split('.')[-1]
+                parts = key.split('.')
+                
+                category = parts.pop(0)
+                
+                if isinstance(value, dict):
+                    value_display = 'Dictionary'
+                elif isinstance(value, pd.DataFrame):
+                    value_display = 'DataFrame'
+                elif isinstance(value, list) and key.endswith('_columns'):
+                    table_rows.extend(
+                        [_extract_dataframe_and_column(key, col) for col in value])
+                elif isinstance(value, list):
+                    value_display = 'List'
+                else:
+                    value_display = value
+                # Add the current row to the list
+                if not (isinstance(value, list) and key.endswith('_columns')):
+                    row = {
+                        'Name': variable_name,
+                        'Value': value_display,
+                        'Category': category
+                    }
+                    for index, part in enumerate(parts):
+                        row[f"Level {index + 1}"] = part
+                    table_rows.append(row)
+            output_table = pd.DataFrame(table_rows)
+            output_table = (output_table
+                            .fillna('')
+                            .sort_values(by="Name")
+                            .reset_index(drop=True))
+            return output_table
+
+
+        # Define the dictionaries to search within. NOTE this should be refactored
+        # to dynamically select using by checking attrs in dir(self)
         if dictionaries_to_search is None:
             dictionaries_to_search = [
-                'Inputs', 'Intakes', 'Requirements', 'Production', 'Excretion',
-                'Digestibility', 'Efficiencies', 'Miscellaneous',
-                'Uncategorized'
-            ]
+                "Inputs", "Intakes", "Requirements", "Production", "Excretion",
+                "Digestibility", "Efficiencies", "Miscellaneous", "Uncategorized"
+                ]
+            
         result = {}
         visited_keys = set()
-        table_rows = []
-
         user_flags = 0 if case_sensitive else re.IGNORECASE
 
-        # Iterate over specified dictionaries
         for dictionary_name in dictionaries_to_search:
             dictionary = getattr(self, dictionary_name, None)
             if dictionary is not None and isinstance(dictionary, dict):
-                recursive_search(dictionary, dictionary_name + '.')
+                _recursive_search_search(dictionary, dictionary_name + '.')
 
-        # Create output dataframe
         if not result:
             print(f"No matches found for '{search_string}'")
             return pd.DataFrame(
                 columns=['Name', 'Value', 'Category', 'Level 1', 'Level 2']
                 )
-
-        for key, value in result.items():
-            variable_name = key.split('.')[-1]
-            parts = key.split('.')
-            
-            category = parts.pop(0)
-            
-            if isinstance(value, dict):
-                value_display = 'Dictionary'
-            elif isinstance(value, pd.DataFrame):
-                value_display = 'DataFrame'
-            elif isinstance(value, list) and key.endswith('_columns'):
-                table_rows.extend(
-                    [extract_dataframe_and_column(key, col) for col in value])
-            elif isinstance(value, list):
-                value_display = 'List'
-            else:
-                value_display = value
-            # Add the current row to the list
-            if not (isinstance(value, list) and key.endswith('_columns')):
-                row = {
-                    'Name': variable_name,
-                    'Value': value_display,
-                    'Category': category
-                }
-                for index, value in enumerate(parts):
-                    row[f"Level {index + 1}"] = value
-                table_rows.append(row)
-        output_table = pd.DataFrame(table_rows)
-        output_table = (output_table
-                        .fillna('')
-                        .sort_values(by="Name")
-                        .reset_index(drop=True))
-        return output_table 
+        return _create_output_dataframe(result)
 
     def export_to_dict(self) -> Dict[str, Any]:
-        def recursive_extract(value: Any, parent_key: str = '') -> None:
+        """
+        Export the ModelOutput instance to a dictionary.
+
+        This method extracts all values from the ModelOutput instance and organizes
+        them into a dictionary.
+
+        Returns:
+            Dict[str, Any]: A dictionary containing all the values from the
+            ModelOutput instance.
+        """
+        def _recursive_extract(value: Any, parent_key: str = "") -> None:
+            """
+            Recursively extract values from a nested structure.
+
+            Args:
+                value (Any): The value to extract from.
+                parent_key (str): The parent key for the current value.
+            """
             if isinstance(value, dict):
-                for k, v in value.items():
-                    full_key = f"{parent_key}.{k}" if parent_key else k
-                    if isinstance(v, dict):
-                        recursive_extract(v, full_key)
+                for key, value in value.items():
+                    full_key = f"{parent_key}.{key}" if parent_key else key
+                    if isinstance(value, dict):
+                        _recursive_extract(value, full_key)
                     else:
-                        final_key = full_key.split('.')[-1]
-                        data_dict[final_key] = v
-                        categorize_key(final_key, v)
+                        final_key = full_key.split(".")[-1]
+                        data_dict[final_key] = value
+                        _categorize_key(final_key, value)
             else:
-                final_key = parent_key.split('.')[-1]
+                final_key = parent_key.split(".")[-1]
                 data_dict[final_key] = value
-                categorize_key(parent_key, value)
+                _categorize_key(parent_key, value)
 
 
-        def categorize_key(key: str, value: Any) -> None:
+        def _categorize_key(key: str, value: Any) -> None:
+            """
+            Categorize the key based on the value type.
+
+            Args:
+                key (str): The key to categorize.
+                value (Any): The value associated with the key.
+            """
             if isinstance(value, pd.DataFrame):
-                special_keys['dataframe'].append(key)
+                special_keys["dataframe"].append(key)
             elif isinstance(value, pd.Series):
-                special_keys['series'].append(key)
+                special_keys["series"].append(key)
             elif isinstance(value, np.ndarray):
-                special_keys['ndarray'].append(key)
+                special_keys["ndarray"].append(key)
             elif isinstance(value, dict):
-                special_keys['dict'].append(key)
+                special_keys["dict"].append(key)
             elif isinstance(value, list):
-                special_keys['list'].append(key)
+                special_keys["list"].append(key)
 
 
         data_dict = {}
         special_keys = {
-            'dataframe': [],
-            'series': [],
-            'ndarray': [],
-            'dict': [],
-            'list': []
+            "dataframe": [],
+            "series": [],
+            "ndarray": [],
+            "dict": [],
+            "list": []
         }
-
-        skip_attrs = ['categories_structure', 'report_structure', 'locals_input', 'dev_out']
+        skip_attrs = ["categories_structure", "report_structure", 
+                      "locals_input", "dev_out"]
         for attr_name in dir(self):
-            if attr_name.startswith('__') or attr_name in skip_attrs:
+            if attr_name.startswith("__") or attr_name in skip_attrs:
                 continue
 
             attr = getattr(self, attr_name, None)
             if attr is not None and isinstance(getattr(self, attr_name), dict):
-                recursive_extract(attr, attr_name)
+                _recursive_extract(attr, attr_name)
 
-        print("DataFrame keys:", special_keys['dataframe'])
-        print("Series keys:", special_keys['series'])
-        print("Numpy array keys:", special_keys['ndarray'])
-        print("Dict keys:", special_keys['dict'])
-        print("List keys:", special_keys['list'])
+        print("DataFrame keys:", special_keys["dataframe"])
+        print("Series keys:", special_keys["series"])
+        print("Numpy array keys:", special_keys["ndarray"])
+        print("Dict keys:", special_keys["dict"])
+        print("List keys:", special_keys["list"])
         return data_dict
 
     ### Report Creation ###
@@ -412,14 +548,19 @@ class ModelOutput:
         """
         Generate a report based on the report structure defined in JSON.
 
-        Parameters:
+        Args:
             report_name (str): The name of the report to generate.
 
         Returns:
             pd.DataFrame: The generated report as a DataFrame.
+
+        Raises:
+            ValueError: If the report name is not found in the report structure.
         """
         if report_name not in self.report_structure:
-            raise ValueError(f"Report {report_name} not found in the report structure.")
+            raise ValueError(
+                f"Report {report_name} not found in the report structure."
+                )
 
         report_config = self.report_structure[report_name]
         columns = list(report_config.keys())
@@ -427,7 +568,8 @@ class ModelOutput:
         description_columns = ["Description", "Target Performance"]
         special_keys = ["Total", "Footnote"]
 
-        data = {col_name: [] for col_name in columns if col_name not in special_keys}
+        data = {col_name: [] for col_name in columns 
+                if col_name not in special_keys}
 
         for col_name, variables in report_config.items():
             if col_name in special_keys:
