@@ -106,7 +106,17 @@ class ModelOutput:
             <ul>
         """
 
-        categories = self.__categories_dict()
+        categories = {
+                'Inputs': self.Inputs,
+                'Intakes': self.Intakes,
+                'Requirements': self.Requirements,
+                'Production': self.Production,
+                'Excretion': self.Excretion,
+                'Digestibility': self.Digestibility,
+                'Efficiencies': self.Efficiencies,
+                'Miscellaneous': self.Miscellaneous
+            }
+
         # Adding categories and keys to the accordion content as bullet points
         for category, keys in categories.items():
             accordion_html += f"<li><b>{category}:</b> {', '.join(keys.keys())}</li>"
@@ -150,22 +160,6 @@ class ModelOutput:
         summary += "\n\nThis is a `ModelOutput` object with methods to access all model outputs. See help(ModelOutput)."
 
         return summary
-
-    def __categories_dict(self) -> Dict[str, Any]:
-        """
-        Return dictionary of categories from this object for _refr_html_ and __str__
-        """
-        categories_dict = {
-            'Inputs': self.Inputs,
-            'Intakes': self.Intakes,
-            'Requirements': self.Requirements,
-            'Production': self.Production,
-            'Excretion': self.Excretion,
-            'Digestibility': self.Digestibility,
-            'Efficiencies': self.Efficiencies,
-            'Miscellaneous': self.Miscellaneous
-        }
-        return categories_dict
 
     def __snapshot_data(self) -> List[Dict[str, Any]]:
         """
