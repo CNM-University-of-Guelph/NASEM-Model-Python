@@ -1018,6 +1018,17 @@ def calculate_Fd_AAIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
             for AA in AA_list
         })
 
+
+def calculate_Fd_AFInp(Fd_AFIn: pd.Series) -> pd.Series:
+    Fd_AFInp = Fd_AFIn / Fd_AFIn.sum()
+    return Fd_AFInp
+
+
+def calculate_Fd_RDPIn(Fd_RDP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_RDPIn = Fd_RDP / 100 * Fd_DMIn
+    return Fd_RDPIn
+
+
 ####################
 # Functions for Diet Intakes
 ####################
@@ -2515,6 +2526,12 @@ def calculate_diet_info(DMI: float,
         complete_diet_info['Fd_RUPIn'], complete_diet_info['Fd_dcRUP']
         )
     complete_diet_info = calculate_Fd_AAIn(complete_diet_info, AA_list)
+    complete_diet_info["Fd_AFInp"] = calculate_Fd_AFInp(
+        complete_diet_info["Fd_AFIn"]
+        )
+    complete_diet_info["Fd_RDPIn"] = calculate_Fd_RDPIn(
+        complete_diet_info["Fd_RDP"], complete_diet_info["Fd_DMIn"]
+    )
     return complete_diet_info
 
 

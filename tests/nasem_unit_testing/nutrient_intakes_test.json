@@ -1480,5 +1480,15 @@
         "Name": "calculate_TT_dcDtFA",
         "Input": { "Dt_DigFAIn": 5.2, "Dt_FAIn": 7.3 },
         "Output": 71.23287671232877
+      },
+      {
+        "Name": "calculate_Fd_AFInp",
+        "Input": {"Fd_AFIn_series": [4.5, 3.1, 2.0]},
+        "Output": [0.468750, 0.322917, 0.208333]
+      },
+      {
+        "Name": "calculate_Fd_RDPIn",
+        "Input": {"Fd_RDP_series": [4.6, 0.4, 2.1], "Fd_DMIn_series": [3.1, 9.4, 5.1]},
+        "Output": [0.1426, 0.0376, 0.1071]
       }
 ]

@@ -19,7 +19,7 @@ import nasem_dairy.nasem_equations.nutrient_intakes as diet
 import nasem_dairy.nasem_equations.protein as protein
 import nasem_dairy.nasem_equations.protein_requirement as protein_req
 import nasem_dairy.nasem_equations.rumen as rumen
-import nasem_dairy.nasem_equations.unused as unused
+import nasem_dairy.nasem_equations.report as report
 import nasem_dairy.nasem_equations.urine as urine
 import nasem_dairy.nasem_equations.water as water
 
@@ -473,16 +473,17 @@ def execute_model(user_diet: pd.DataFrame,
 
     # Calculated again as part of diet_data, value may change depending on 
     # DMIn_eqn selections
-    del(Dt_NDF, Dt_ADF, Dt_ForNDF, Fd_DNDF48, Dt_ForDNDF48, Dt_ForDNDF48_ForNDF)
+    del(Dt_NDF, Dt_ADF, Dt_ForNDF, Fd_DNDF48, Dt_ForDNDF48, Dt_ForDNDF48_ForNDF,
+        diet_info_for_DMI)
 
     ########################################
     # Step 3: Feed Based Calculations
     ########################################
     # Calculate An_DMIn_BW with the final DMI value; required for calculating diet_data_initial
-    Dt_DMIn_BW = unused.calculate_Dt_DMIn_BW(
+    Dt_DMIn_BW = report.calculate_Dt_DMIn_BW(
         animal_input["DMI"], animal_input['An_BW']
         )
-    Dt_DMIn_MBW = unused.calculate_Dt_DMIn_MBW(
+    Dt_DMIn_MBW = report.calculate_Dt_DMIn_MBW(
         animal_input['DMI'], animal_input['An_BW']
         )
     An_DMIn_BW = animal.calculate_An_DMIn_BW(
@@ -1998,6 +1999,78 @@ def execute_model(user_diet: pd.DataFrame,
         )
     Trg_Mlk_NP = milk.calculate_Trg_Mlk_NP(Trg_Mlk_NP_g)
     VolSlds2_Milk = manure.calculate_VolSlds2_Milk(Man_VolSld2, Mlk_Prod)
+
+    #####################
+    # Values for Reports
+    #####################
+    percent_first_parity = report.calculate_percent_first_parity(
+        animal_input["An_Parity_rl"]
+        )
+    if animal_input["An_StatePhys"] == "Heifer":
+        age_first_calving = report.calculate_age_first_calving(
+            animal_input["An_AgeConcept1st"]
+            )
+    milk_lactose_percent = report.calculate_milk_lactose_percent(
+        animal_input["Trg_MilkProd"], animal_input["Trg_MilkLacp"]
+        )
+    dmi_percent_bodyweight = report.calculate_dmi_percent_bodyweight(An_DMIn_BW)
+    adf_per_ndf = report.calculate_adf_per_ndf(
+        An_data["An_ADF"], An_data["An_NDF"]
+        )
+    digestable_rup = report.calculate_digestable_rup(An_data["An_idRUP"])
+    Fd_AFIn_sum = report.calculate_Fd_AFIn_sum(diet_info["Fd_AFInp"])
+    Fd_DMIn_sum = report.calculate_Fd_DMIn_sum(diet_info["Fd_DMInp"])
+    Fe_DE_GE_percent = report.calculate_Fe_DE_GE_percent(Fe_DE_GE)
+    An_DE_GE_percent = report.calculate_An_DE_GE_percent(An_data["An_DE_GE"])
+    UrDE_GEIn_percent = report.calculate_UrDE_GEIn_percent(UrDE_GEIn)
+    GasE_GEIn_percent = report.calculate_GasE_GEIn_percent(An_data["GasE_GEIn"])
+    An_ME_GE_percent = report.calculate_An_ME_GE_percent(An_ME_GE)
+    An_NE_GE_percent = report.calculate_An_NE_GE_percent(An_NE_GE)
+    UrDE_DEIn_percent = report.calculate_UrDE_DEIn_percent(UrDE_DEIn)
+    GasE_DEIn_percent = report.calculate_GasE_DEIn_percent(An_data["GasE_DEIn"])
+    An_ME_DE_percent = report.calculate_An_ME_DE_percent(An_ME_DE)
+    An_NE_DE_percent = report.calculate_An_NE_DE_percent(An_NE_DE)
+    An_NE_ME_percent = report.calculate_An_NE_ME_percent(An_NE_ME)
+    An_DEIn_percent = report.calculate_An_DEIn_percent(An_data["An_DEIn"])
+    An_MEIn_percent = report.calculate_An_MEIn_percent(An_MEIn)
+    Dt_C120In_g = report.calculate_Dt_C120In_g(diet_data["Dt_C120In"])
+    Dt_C140In_g = report.calculate_Dt_C140In_g(diet_data["Dt_C140In"])
+    Dt_C160In_g = report.calculate_Dt_C160In_g(diet_data["Dt_C160In"])
+    Dt_C161In_g = report.calculate_Dt_C161In_g(diet_data["Dt_C161In"])
+    Dt_C180In_g = report.calculate_Dt_C180In_g(diet_data["Dt_C180In"])
+    Dt_C181tIn_g = report.calculate_Dt_C181tIn_g(diet_data["Dt_C181tIn"])
+    Dt_C181cIn_g = report.calculate_Dt_C181cIn_g(diet_data["Dt_C181cIn"])
+    Dt_C182In_g = report.calculate_Dt_C182In_g(diet_data["Dt_C182In"])
+    Dt_C183In_g = report.calculate_Dt_C183In_g(diet_data["Dt_C183In"])
+    Dt_OtherFAIn_g = report.calculate_Dt_OtherFAIn_g(diet_data["Dt_OtherFAIn"])
+    Dt_FAIn_g = report.calculate_Dt_FAIn_g(diet_data["Dt_FAIn"])
+    Dt_SatFAIn_g = report.calculate_Dt_SatFAIn_g(diet_data["Dt_SatFAIn"])
+    Dt_UFAIn_g = report.calculate_Dt_UFAIn_g(diet_data["Dt_UFAIn"])
+    Dt_MUFAIn_g = report.calculate_Dt_MUFAIn_g(diet_data["Dt_MUFAIn"])
+    Dt_PUFAIn_g = report.calculate_Dt_PUFAIn_g(diet_data["Dt_PUFAIn"])
+    Dt_DigFAIn_g = report.calculate_Dt_DigFAIn_g(diet_data["Dt_DigFAIn"])
+    An_RDPbal_kg = report.calculate_An_RDPbal_kg(An_RDPbal_g)
+    MP_from_body = report.calculate_MP_from_body(Body_MPUse_g_Trg)
+    An_BW_centered = report.calculate_An_BW_centered(animal_input["An_BW"])
+    An_DigNDF_centered = report.calculate_An_DigNDF_centered(An_data["An_DigNDF"])
+    An_BW_protein = report.calculate_An_BW_protein(
+        animal_input["An_BW"], mPrt_coeff
+        )
+    Dt_acCa_per_100g = report.calculate_Dt_acCa_per_100g(Dt_acCa)
+    Dt_acP_per_100g = report.calculate_Dt_acP_per_100g(Dt_acP)
+    Dt_acMg_per_100g = report.calculate_Dt_acMg_per_100g(Dt_acMg)
+    Dt_acCl_per_100g = report.calculate_Dt_acCl_per_100g(Dt_acCl)
+    Dt_acK_per_100g = report.calculate_Dt_acK_per_100g(Dt_acK)
+    Dt_acNa_per_100g = report.calculate_Dt_acNa_per_100g(Dt_acNa)
+    Dt_acCo_per_100g = report.calculate_Dt_acCo_per_100g(Dt_acCo)
+    Dt_acCu_per_100g = report.calculate_Dt_acCu_per_100g(Dt_acCu)
+    Dt_acFe_per_100g = report.calculate_Dt_acFe_per_100g(Dt_acFe)
+    Dt_acMn_per_100g = report.calculate_Dt_acMn_per_100g(Dt_acMn)
+    Dt_acZn_per_100g = report.calculate_Dt_acZn_per_100g(Dt_acZn)
+    An_MPuse_kg_Trg = report.calculate_An_MPuse_kg_Trg(An_MPuse_g_Trg)
+    Dt_ForNDFIn_percNDF = report.calculate_Dt_ForNDFIn_percNDF(
+        diet_data["Dt_ForNDFIn"], diet_data["Dt_NDFIn"]
+        )
 
     ########################################
     # Capture Outputs

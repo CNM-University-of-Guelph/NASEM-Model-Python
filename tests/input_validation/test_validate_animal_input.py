@@ -36,6 +36,7 @@ def test_not_a_dictionary():
 
 def test_missing_key_raises_key_error():
     animal_input = {
+        "An_StatePhys": "Lactating Cow",
         "An_Parity_rl": 2.0,
     }
     with pytest.raises(KeyError, match="The following keys are missing: "):

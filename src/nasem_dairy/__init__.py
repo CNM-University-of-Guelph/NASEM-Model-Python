@@ -288,7 +288,9 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_Fe_RUPout,
     calculate_Dt_RDTPIn,
     calculate_Dt_RDP,
-    calculate_Dt_RDP_CP
+    calculate_Dt_RDP_CP,
+    calculate_Fd_AFInp,
+    calculate_Fd_RDPIn
 )
 
 from nasem_dairy.nasem_equations.rumen import (
@@ -993,9 +995,64 @@ from nasem_dairy.nasem_equations.micronutrient_requirement import (
 )
 
 from nasem_dairy.nasem_equations.coefficient_adjustment import adjust_LCT
-from nasem_dairy.nasem_equations.unused import (
+from nasem_dairy.nasem_equations.report import (
     calculate_Dt_DMIn_BW,
-    calculate_Dt_DMIn_MBW
+    calculate_Dt_DMIn_MBW,
+    calculate_percent_first_parity,
+    calculate_age_first_calving,
+    calculate_milk_lactose_percent,
+    calculate_dmi_percent_bodyweight,
+    calculate_adf_per_ndf,
+    calculate_digestable_rup,
+    calculate_Fd_AFIn_sum,
+    calculate_Fd_DMIn_sum,
+    calculate_Fe_DE_GE_percent,
+    calculate_An_DE_GE_percent,
+    calculate_UrDE_GEIn_percent,
+    calculate_GasE_GEIn_percent,
+    calculate_An_ME_GE_percent,
+    calculate_An_NE_GE_percent,
+    calculate_UrDE_DEIn_percent,
+    calculate_GasE_DEIn_percent,
+    calculate_An_ME_DE_percent,
+    calculate_An_NE_DE_percent,
+    calculate_An_NE_ME_percent,
+    calculate_An_DEIn_percent,
+    calculate_An_MEIn_percent,
+    calculate_Dt_C120In_g,
+    calculate_Dt_C140In_g,
+    calculate_Dt_C160In_g,
+    calculate_Dt_C161In_g,
+    calculate_Dt_C180In_g,
+    calculate_Dt_C181tIn_g,
+    calculate_Dt_C181cIn_g,
+    calculate_Dt_C182In_g,
+    calculate_Dt_C183In_g,
+    calculate_Dt_OtherFAIn_g,
+    calculate_Dt_FAIn_g,
+    calculate_Dt_SatFAIn_g,
+    calculate_Dt_UFAIn_g,
+    calculate_Dt_MUFAIn_g,
+    calculate_Dt_PUFAIn_g,
+    calculate_Dt_DigFAIn_g,
+    calculate_An_RDPbal_kg,
+    calculate_MP_from_body,
+    calculate_An_BW_centered,
+    calculate_An_DigNDF_centered,
+    calculate_An_BW_protein,
+    calculate_Dt_acCa_per_100g,
+    calculate_Dt_acP_per_100g,
+    calculate_Dt_acMg_per_100g,
+    calculate_Dt_acCl_per_100g,
+    calculate_Dt_acK_per_100g,
+    calculate_Dt_acNa_per_100g,
+    calculate_Dt_acCo_per_100g,
+    calculate_Dt_acCu_per_100g,
+    calculate_Dt_acFe_per_100g,
+    calculate_Dt_acMn_per_100g,
+    calculate_Dt_acZn_per_100g,
+    calculate_An_MPuse_kg_Trg,
+    calculate_Dt_ForNDFIn_percNDF
 )
 
 from nasem_dairy.nasem_equations.water import (

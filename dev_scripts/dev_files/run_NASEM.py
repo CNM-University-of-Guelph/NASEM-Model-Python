@@ -20,5 +20,11 @@ if __name__ == "__main__":
         coeff_dict = nd.coeff_dict
         )
     
+
+    # print(output.get_value("An_VitA_bal"))
+    # print(output.search("Abs_AA_g"))
+
+    # print(output.get_report("table8_2"))
+
     print("Model has finsihed running! \n")
-    # print(output.search("Zn"))
+

@@ -106,9 +106,11 @@ def validate_animal_input(animal_input: dict) -> dict:
         'Env_TempCurr': float,
         'Env_DistParlor': float,
         'Env_TripsParlor': int,
-        'Env_Topo': float
+        'Env_Topo': float,
     }
-    
+    if animal_input["An_StatePhys"] == "Heifer":
+        type_mapping["An_AgeConcept1st"] = int # Heifers have an extra input
+
     check_keys_presence(animal_input, type_mapping.keys())
     corrected_input = check_and_convert_type(animal_input, type_mapping)
     check_value_is_valid(animal_input["An_StatePhys"],
@@ -119,6 +121,11 @@ def validate_animal_input(animal_input: dict) -> dict:
                          ["Holstein", "Jersey", "Other"],
                          "An_Breed"
                          )
+    if corrected_input["An_StatePhys"] == "Heifer":
+        if "An_AgeConcept1st" not in corrected_input.keys():
+            raise KeyError("The An_AgeConcept1st key is missing")        
+        if not isinstance(corrected_input["An_AgeConcept1st"], int):
+            raise TypeError("An_AgeConcept1st must be an int")
     return corrected_input
 
 
