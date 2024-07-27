@@ -27,11 +27,11 @@ class ModelOutput:
         self.dev_out = {}
         self.categories_structure = self.__load_structure(config_path)
         self.report_structure = self.__load_structure(report_config_path)
-
         self.__filter_locals_input()
         for name, structure in self.categories_structure.items():
             self.__populate_category(name, structure)
         self.__populate_uncategorized()
+        self.categories = self.__get_category_list()
 
     ### Initalization ###
     def __load_structure(self, config_path: str) -> dict:
@@ -141,6 +141,25 @@ class ModelOutput:
         setattr(self, 'Uncategorized', {})
         self.Uncategorized.update(self.locals_input)
         self.locals_input.clear()
+
+    def __get_category_list(self) -> List[str]:
+        """
+        Returns a list of category names.
+
+        This method iterates over all attributes of the class instance, filtering out
+        special attributes (those starting with '__') and any attributes listed in
+        skip_attrs. It then checks if the attribute is a dictionary and includes it
+        in the returned list.
+
+        Returns:
+            List[str]: A list of category names.
+        """
+        return [
+            attr_name for attr_name in dir(self)
+            if not attr_name.startswith("__")
+            and attr_name not in self.skip_attrs
+            and isinstance(getattr(self, attr_name, None), dict)
+        ]
 
     ### Display Methods ###
     def _repr_html_(self) -> str:
@@ -304,17 +323,14 @@ class ModelOutput:
             return None
 
         
-        for category_name in dir(self):
-            if category_name in self.skip_attrs:
-                continue
-            category = getattr(self, category_name, None)
-            if category is not None:
-                if isinstance(category, dict):
-                    if category_name == name:
-                        return category
-                    result = _recursive_search_get_value(category, name)
-                    if result is not None:
-                        return result
+        for category_name in self.categories:
+            if category_name == name:
+                return getattr(self, category_name)
+            result = _recursive_search_get_value(
+                getattr(self, category_name), name
+                )
+            if result is not None:
+                return result
         return None                   
 
     def search(self, 
@@ -437,13 +453,8 @@ class ModelOutput:
             return output_table
 
 
-        # Define the dictionaries to search within. NOTE this should be refactored
-        # to dynamically select using by checking attrs in dir(self)
         if dictionaries_to_search is None:
-            dictionaries_to_search = [
-                "Inputs", "Intakes", "Requirements", "Production", "Excretion",
-                "Digestibility", "Efficiencies", "Miscellaneous", "Uncategorized"
-                ]
+            dictionaries_to_search = self.categories
             
         result = {}
         visited_keys = set()
@@ -523,13 +534,8 @@ class ModelOutput:
             "dict": [],
             "list": []
         }
-        for attr_name in dir(self):
-            if attr_name.startswith("__") or attr_name in self.skip_attrs:
-                continue
-
-            attr = getattr(self, attr_name, None)
-            if attr is not None and isinstance(getattr(self, attr_name), dict):
-                _recursive_extract(attr, attr_name)
+        for attr_name in self.categories:
+            _recursive_extract(getattr(self, attr_name), attr_name)
 
         print("DataFrame keys:", special_keys["dataframe"])
         print("Series keys:", special_keys["series"])
