@@ -672,3 +672,14 @@ class TestModelOutput:
         }
         expected_df = pd.DataFrame(expected_data)
         pd.testing.assert_frame_equal(report_df, expected_df)
+
+    def test_get_category_list(self, mock_structure, mock_report_structure, mock_locals_input):
+        model_output = ModelOutput(
+            locals_input=mock_locals_input,
+            config_path=str(mock_structure),
+            report_config_path=str(mock_report_structure)
+        )
+        category_list = model_output.categories
+        expected_categories = ["Inputs", "Intakes", "Uncategorized"]
+        assert category_list == expected_categories
+    
