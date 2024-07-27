@@ -21,6 +21,8 @@ class ModelOutput:
             config_path (str): Path to the JSON file containing the model output structure.
             report_config_path (str): Path to the JSON file containing the report structure.
         """
+        self.skip_attrs = ["categories_structure", "report_structure", 
+                           "locals_input", "dev_out"]
         self.locals_input = locals_input
         self.dev_out = {}
         self.categories_structure = self.__load_structure(config_path)
@@ -165,11 +167,9 @@ class ModelOutput:
             <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>
         """
-        skip_attrs = ["categories_structure", "report_structure", 
-                      "locals_input", "dev_out"]
         categories = {attr: getattr(self, attr) for attr in dir(self)
                       if not attr.startswith("_") and 
-                      attr not in skip_attrs and
+                      attr not in self.skip_attrs and
                       isinstance(getattr(self, attr), dict)}
 
         # Adding categories and keys to the accordion content as bullet points
@@ -303,12 +303,9 @@ class ModelOutput:
                         return value[target_name]
             return None
 
-        # Search in all dictionaries contained in self except the ones listed below
-        skip_attrs = ["categories_structure", "report_structure", 
-                      "locals_input", "dev_out"]
         
         for category_name in dir(self):
-            if category_name in skip_attrs:
+            if category_name in self.skip_attrs:
                 continue
             category = getattr(self, category_name, None)
             if category is not None:
@@ -526,10 +523,8 @@ class ModelOutput:
             "dict": [],
             "list": []
         }
-        skip_attrs = ["categories_structure", "report_structure", 
-                      "locals_input", "dev_out"]
         for attr_name in dir(self):
-            if attr_name.startswith("__") or attr_name in skip_attrs:
+            if attr_name.startswith("__") or attr_name in self.skip_attrs:
                 continue
 
             attr = getattr(self, attr_name, None)
