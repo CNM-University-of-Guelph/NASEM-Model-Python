@@ -16,12 +16,16 @@ Example of how to use this module:
     import nasem_dairy.nasem_equations.DMI_equations as DMI
     
     # Example usage
-    DMI.calculate_Kb_LateGest_DMIn()
+    calculate_Kb_LateGest_DMIn()
 """
 
 
 import math
 from typing import Union
+
+import pandas as pd
+
+import nasem_dairy.nasem_equations.nutrient_intakes as diet
 
 
 # Precalculation for heifer DMI predicitons
@@ -386,4 +390,249 @@ def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float,
     return Dt_DMIn_Calf1
 
 
+def calculate_dmi(DMIn_eqn: int,
+                  Trg_Dt_DMIn: float,
+                  An_StatePhys: str,
+                  An_BW: float,
+                  An_BW_mature: float,
+                  An_BCS: int,
+                  An_LactDay: int,
+                  An_Parity_rl: int, 
+                  Trg_MilkProd: float,
+                  An_GestDay: int,
+                  An_GestLength: int,
+                  An_AgeDryFdStart: int,
+                  Env_TempCurr: float,
+                  An_PrePartWk: float,
+                  Trg_NEmilkOut: float,
+                  An_PrePartWklim: float,
+                  An_PrePartWkDurat: float,
+                  diet_info: pd.DataFrame,
+                  coeff_dict: dict
+) -> float:
+    if DMIn_eqn == 0:
+        return Trg_Dt_DMIn
+    
+    Dt_NDF = (diet_info["Fd_NDF"] * diet_info["Fd_DMInp"]).sum()
+    Dt_ADF = (diet_info["Fd_ADF"] * diet_info["Fd_DMInp"]).sum()
+    Dt_ForNDF = (diet_info["Fd_ForNDF"] * diet_info["Fd_DMInp"]).sum()
+    Fd_DNDF48 = diet.calculate_Fd_DNDF48(
+        diet_info["Fd_Conc"], diet_info["Fd_DNDF48"]
+        )
+    Dt_ForDNDF48 = diet.calculate_Dt_ForDNDF48(
+        diet_info["Fd_DMInp"], diet_info["Fd_Conc"], diet_info["Fd_NDF"], 
+        Fd_DNDF48
+        )
+    Dt_ForDNDF48_ForNDF = diet.calculate_Dt_ForDNDF48_ForNDF(
+        Dt_ForDNDF48, Dt_ForNDF
+        )
+    Kb_LateGest_DMIn = calculate_Kb_LateGest_DMIn(Dt_NDF)
 
+    if DMIn_eqn == 1:
+        Fd_DMIn_ClfLiq = diet.calculate_Fd_DMIn_ClfLiq(
+            An_StatePhys, diet_info["Fd_DMIn"], diet_info["Fd_Category"]
+        )
+        Fd_DMIn_ClfFor = diet.calculate_Fd_DMIn_ClfFor(
+            Trg_Dt_DMIn, diet_info["Fd_Conc"], diet_info["Fd_DMInp"]
+        )
+        Fd_GE = diet.calculate_Fd_GE(
+            An_StatePhys, diet_info["Fd_Category"], diet_info["Fd_CP"], 
+            diet_info["Fd_FA"], diet_info["Fd_Ash"], diet_info["Fd_St"],
+            diet_info["Fd_NDF"], coeff_dict
+        )
+        Fd_DE_ClfLiq = diet.calculate_Fd_DE_ClfLiq(
+            An_StatePhys, diet_info["Fd_Category"], Fd_GE
+        )
+        Fd_ME_ClfLiq = diet.calculate_Fd_ME_ClfLiq(
+            An_StatePhys, diet_info["Fd_Category"], Fd_DE_ClfLiq
+        )
+        Dt_MEIn_ClfLiq = diet.calculate_Dt_MEIn_ClfLiq(
+            Fd_ME_ClfLiq, Fd_DMIn_ClfLiq
+        )
+        Dt_DMIn_ClfLiq = Fd_DMIn_ClfLiq.sum()
+        Dt_DMIn_ClfFor = Fd_DMIn_ClfFor.sum()
+        Dt_DMIn_ClfStrt = diet.calculate_Dt_DMIn_ClfStrt(
+            An_BW, Dt_MEIn_ClfLiq, Dt_DMIn_ClfLiq, Dt_DMIn_ClfFor,
+            An_AgeDryFdStart, Env_TempCurr, DMIn_eqn, Trg_Dt_DMIn, coeff_dict
+        )
+        Trg_Dt_DMIn = calculate_Dt_DMIn_Calf1(
+            Dt_DMIn_ClfLiq, Dt_DMIn_ClfStrt, Dt_DMIn_ClfFor
+            )
+        return Trg_Dt_DMIn
+    
+    # Individual Heifer DMI Predictions
+    elif DMIn_eqn in [2, 3, 4, 5, 6, 7]:
+        Dt_DMIn_BW_LateGest_i = calculate_Dt_DMIn_BW_LateGest_i(
+            An_PrePartWklim, Kb_LateGest_DMIn, coeff_dict
+            )
+        Dt_DMIn_Heif_LateGestInd = calculate_Dt_DMIn_Heif_LateGestInd(
+            An_BW, Dt_DMIn_BW_LateGest_i
+            )
+        
+        if DMIn_eqn == 2:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 3:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_NRCad(An_BW, An_BW_mature, Dt_NDF),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_NRCad(
+                    An_BW, An_BW_mature, Dt_NDF
+                    )
+            return Trg_Dt_DMIn
+
+        if DMIn_eqn == 4:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_H1(An_BW),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_H1(An_BW)
+            return Trg_Dt_DMIn
+
+        if DMIn_eqn == 5:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF)
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI)
+            return Trg_Dt_DMIn
+
+        if DMIn_eqn == 6:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_HJ1(An_BW),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_HJ1(An_BW)
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 7:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF)
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI),
+                    Dt_DMIn_Heif_LateGestInd)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)
+            return Trg_Dt_DMIn
+
+    elif DMIn_eqn == 8:
+        Trg_Dt_DMIn = calculate_Dt_DMIn_Lact1(
+            An_BW, An_BCS, An_LactDay, An_Parity_rl, Trg_NEmilkOut
+            )
+        return Trg_Dt_DMIn
+
+    elif DMIn_eqn == 9:
+        Trg_Dt_DMIn = calculate_Dt_DMIn_Lact2(
+            Dt_ForNDF, Dt_ADF, Dt_NDF, Dt_ForDNDF48_ForNDF, Trg_MilkProd
+        )
+        return Trg_Dt_DMIn
+
+    elif DMIn_eqn == 10:
+        Dt_DMIn_BW_LateGest_i = calculate_Dt_DMIn_BW_LateGest_i(
+            An_PrePartWklim, Kb_LateGest_DMIn, coeff_dict
+            )
+        Dt_DMIn_BW_LateGest_p = calculate_Dt_DMIn_BW_LateGest_p(
+            An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict
+            )
+        if An_PrePartWk > An_PrePartWkDurat:
+            Trg_Dt_DMIn = min(
+                calculate_Dt_DMIn_DryCow1_FarOff(An_BW, Dt_DMIn_BW_LateGest_i),
+                calculate_Dt_DMIn_DryCow1_Close(An_BW, Dt_DMIn_BW_LateGest_p))
+        else:
+            Trg_Dt_DMIn = calculate_Dt_DMIn_DryCow1_FarOff(
+                An_BW, Dt_DMIn_BW_LateGest_i
+                )
+        return Trg_Dt_DMIn
+
+    elif DMIn_eqn == 11:
+        Dt_DMIn_DryCow_AdjGest = calculate_Dt_DMIn_DryCow_AdjGest(
+            An_GestDay, An_GestLength, An_BW
+        )
+        Trg_Dt_DMIn = calculate_Dt_DMIn_DryCow2(
+            An_BW, Dt_DMIn_DryCow_AdjGest
+            )
+        return Trg_Dt_DMIn
+    
+    elif DMIn_eqn in [12, 13, 14, 15, 16, 17]:
+        Dt_DMIn_BW_LateGest_p = calculate_Dt_DMIn_BW_LateGest_p(
+            An_PrePartWkDurat, Kb_LateGest_DMIn, coeff_dict
+            )
+        Dt_DMIn_Heif_LateGestPen = calculate_Dt_DMIn_Heif_LateGestPen(
+            An_BW, Dt_DMIn_BW_LateGest_p
+            )
+        
+        if DMIn_eqn == 12:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_NRCa(An_BW, An_BW_mature)
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 13:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_NRCad(An_BW, An_BW_mature, Dt_NDF),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_NRCad(
+                    An_BW, An_BW_mature, Dt_NDF
+                    )
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 14:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_H1(An_BW),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_H1(An_BW)
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 15:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF)
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_H2(An_BW, Dt_NDFdev_DMI)
+            return Trg_Dt_DMIn
+    
+        if DMIn_eqn == 16:
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_HJ1(An_BW),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_HJ1(An_BW)
+            return Trg_Dt_DMIn
+        
+        if DMIn_eqn == 17:
+            Dt_NDFdev_DMI = calculate_Dt_NDFdev_DMI(An_BW, Dt_NDF)
+            if An_PrePartWk > An_PrePartWkDurat:
+                Trg_Dt_DMIn = min(
+                    calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI),
+                    Dt_DMIn_Heif_LateGestPen)
+            else:
+                Trg_Dt_DMIn = calculate_Dt_DMIn_Heif_HJ2(An_BW, Dt_NDFdev_DMI)
+            return Trg_Dt_DMIn
+  
+    else:
+        raise ValueError(
+            f"Invalid value for DMIn_eqn: {DMIn_eqn}. Must be between 0 and 17."
+            )
+    
