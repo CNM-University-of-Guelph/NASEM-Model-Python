@@ -590,7 +590,8 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_AshIn,
     calculate_An_Ash,
     calculate_An_IdAAIn,
-    calculate_An_XIn
+    calculate_An_XIn,
+    calculate_an_data
 )
 
 from nasem_dairy.nasem_equations.gestation import (
