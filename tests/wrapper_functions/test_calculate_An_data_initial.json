@@ -2,7 +2,6 @@
     "name": "calculate_An_data_initial",
     "input": {
         "animal_input": {
-            "DMI": 20.0,
             "An_BW": 650.0,
             "An_BW_mature": 750.0,
             "An_StatePhys": "Lactating Cow",
@@ -60,6 +59,7 @@
         },
         "Monensin_eqn": 0,
         "GrUter_Wt": 24.8,
+        "Dt_DMIn": 20.0,
         "coeff_dict": null
     },
     "output": {

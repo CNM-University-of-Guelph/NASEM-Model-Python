@@ -348,7 +348,7 @@ class TestModelOutput:
             <hr>
             <details>
                 <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
-                <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
+                <p>This is a <code>ModelOutput</code> object returned by <code>nd.nasem()</code>.</p>
                 <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
                 <p>The following list shows which objects are within each category (most are dictionaries):</p>
                 <ul>

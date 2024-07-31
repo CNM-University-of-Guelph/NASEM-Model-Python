@@ -823,14 +823,14 @@
     "Name": "calculate_An_IdAAIn",
     "Input": {"diet_data": {"Dt_IdArgIn": 3.4, "Dt_IdHisIn": 1.2, "Dt_IdIleIn": 2.4, "Dt_IdLeuIn": 4.3, "Dt_IdLysIn": 2.9, "Dt_IdMetIn": 5.2, "Dt_IdPheIn": 2.3, "Dt_IdThrIn": 1.9, "Dt_IdTrpIn": 4.1, "Dt_IdValIn": 8.5}, 
               "infusion_data": {"Inf_IdArgIn": 5.2, "Inf_IdHisIn": 1.6, "Inf_IdIleIn": 0.2, "Inf_IdLeuIn": 9.1, "Inf_IdLysIn": 1.7, "Inf_IdMetIn": 2.3, "Inf_IdPheIn": 6.3, "Inf_IdThrIn": 4.8, "Inf_IdTrpIn": 7.1, "Inf_IdValIn": 3.4}, 
-              "AA_list": null, "complete_An_data": {}},
+              "AA_list": null, "an_data": {}},
     "Output": {"An_IdArgIn": 8.6, "An_IdHisIn": 2.8, "An_IdIleIn": 2.6, "An_IdLeuIn": 13.399999999999999, "An_IdLysIn": 4.6, "An_IdMetIn": 7.5, "An_IdPheIn": 8.6, "An_IdThrIn": 6.699999999999999, "An_IdTrpIn": 11.2, "An_IdValIn": 11.9}
   },
   {
     "Name": "calculate_An_XIn",
     "Input": {"diet_data": {"Dt_test1": 1.5, "Dt_test2": 4.6, "Dt_test3": 6.2}, 
               "infusion_data": {"Inf_test1": 2.4, "Inf_test2": 3.5, "Inf_test3": 4.7}, 
-              "variables": ["test1", "test2", "test3"], "complete_An_data": {}},
+              "variables": ["test1", "test2", "test3"], "an_data": {}},
     "Output": {"An_test1": 3.9, "An_test2": 8.1, "An_test3": 10.9}
   }
 ]
