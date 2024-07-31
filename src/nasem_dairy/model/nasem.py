@@ -441,10 +441,11 @@ def nasem(user_diet: pd.DataFrame,
         )
     ##### AN_DATA #####
     an_data = animal.calculate_an_data(
-        an_data, animal_input, diet_data, infusion_data,
-        equation_selection["Monensin_eqn"], GrUter_Wt, Dt_DMIn, Fe_CP,
-        animal_input["An_StatePhys"], animal_input["An_BW"], Fe_MiTP, Fe_NPend,
-        Fe_DEMiCPend, Fe_DERDPend, Fe_DERUPend, Du_idMiCP, AA_list, coeff_dict
+        an_data, diet_data, infusion_data, equation_selection["Monensin_eqn"], 
+        GrUter_Wt, Dt_DMIn, Fe_CP, animal_input["An_StatePhys"], 
+        animal_input["An_BW"], animal_input["An_BW_mature"], 
+        animal_input["An_Parity_rl"], Fe_MiTP, Fe_NPend, Fe_DEMiCPend, 
+        Fe_DERDPend, Fe_DERUPend, Du_idMiCP, AA_list, coeff_dict
         )
     # TODO add to wrapper
     An_RUPIn_g = animal.calculate_An_RUPIn_g(an_data["An_RUPIn"])

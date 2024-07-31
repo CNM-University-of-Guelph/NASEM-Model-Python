@@ -1328,7 +1328,6 @@ def calculate_An_XIn(diet_data: dict,
 # Animal Warpper Functions
 ####################
 def calculate_an_data(an_data: dict,
-                      animal_input: dict, 
                       diet_data: dict, 
                       infusion_data: dict,
                       Monensin_eqn: int, 
@@ -1337,6 +1336,8 @@ def calculate_an_data(an_data: dict,
                       Fe_CP: float,
                       An_StatePhys: str,
                       An_BW: float,
+                      An_BW_mature: float,
+                      An_Parity_rl: int,
                       Fe_MiTP: float,
                       Fe_NPend: float,
                       Fe_DEMiCPend: float,
@@ -1423,22 +1424,22 @@ def calculate_an_data(an_data: dict,
         an_data["An_GEIn"], an_data["An_NDF"]
         )
     an_data["An_GasEOut"] = calculate_An_GasEOut(
-        animal_input["An_StatePhys"], Monensin_eqn, An_GasEOut_Dry, 
+        An_StatePhys, Monensin_eqn, An_GasEOut_Dry, 
         An_GasEOut_Lact, An_GasEOut_Heif
         )
     an_data["An_GutFill_BW"] = calculate_An_GutFill_BW(
-        animal_input["An_BW"], animal_input["An_BW_mature"],
-        animal_input["An_StatePhys"], animal_input["An_Parity_rl"],
+        An_BW, An_BW_mature,
+        An_StatePhys, An_Parity_rl,
         diet_data["Dt_DMIn_ClfLiq"], diet_data["Dt_DMIn_ClfStrt"], coeff_dict
         )
-    an_data["An_BWnp"] = calculate_An_BWnp(animal_input["An_BW"], GrUter_Wt)
+    an_data["An_BWnp"] = calculate_An_BWnp(An_BW, GrUter_Wt)
     an_data["An_GutFill_Wt"] = calculate_An_GutFill_Wt(
         an_data["An_GutFill_BW"], an_data["An_BWnp"]
         )
     an_data["An_BW_empty"] = calculate_An_BW_empty(
-        animal_input["An_BW"], an_data["An_GutFill_Wt"]
+        An_BW, an_data["An_GutFill_Wt"]
         )
-    an_data["An_MBW"] = calculate_An_MBW(animal_input["An_BW"])
+    an_data["An_MBW"] = calculate_An_MBW(An_BW)
     an_data["An_RDNPNCPIn"] = calculate_An_RDNPNCPIn(
         diet_data["Dt_NPNCPIn"], infusion_data["InfRum_NPNCPIn"]
         )
