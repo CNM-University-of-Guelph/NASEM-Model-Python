@@ -160,7 +160,6 @@ def nasem(user_diet: pd.DataFrame,
     RecAA = aa.calculate_RecAA(aa_list, coeff_dict)
     Mlk_AA_TP = milk.calculate_Mlk_AA_TP(aa_list, coeff_dict)
     Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(aa_list, coeff_dict)   
-    # Body_AA_TP = gestation.calculate_Body_AA_TP(aa_values, coeff_dict) # TODO remove duplicate 
     Ur_AAEnd_TP = urine.calculate_Ur_AAEnd_TP(aa_list, coeff_dict)
 
     ### COEFFS ONLY ###
