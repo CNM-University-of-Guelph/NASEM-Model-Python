@@ -51,7 +51,8 @@
             "Dt_StIn": 3.5,
             "Dt_DigrOMtIn": 7.2,
             "Dt_DigCPtIn": 5.0,
-            "Dt_OMIn": 1.2
+            "Dt_OMIn": 1.2,
+            "Dt_PastIn": 0.0
         },
         "infusion_data": {
             "InfRum_RDPIn": 1.0,
@@ -164,5 +165,5 @@
         "An_DigOMt": 115.53401162790699, "An_GE": 5.385686274509803, "An_DERDTPIn": -18.375, 
         "An_DEidRUPIn": 34.160000000000004, "An_DE": 4.2387835686274515, "An_DE_GE": 0.7870461353624351, 
         "An_DEnp": 617.4783568627452, "GasE_DMIn": -0.018867139054603577, "GasE_GEIn": -0.003503200538044863, 
-        "GasE_DEIn": -0.004451073934098714}
+        "GasE_DEIn": -0.004451073934098714, "An_RUPIn_g": 7400, "An_Grazing": 0.0}
 }

@@ -1709,6 +1709,10 @@ def calculate_an_data(an_data: dict,
     an_data["GasE_DEIn"] = calculate_GasE_DEIn(
         an_data["An_GasEOut"], an_data["An_DEIn"]
         )
+    an_data["An_RUPIn_g"] = calculate_An_RUPIn_g(an_data["An_RUPIn"])
+    an_data["An_Grazing"] = calculate_An_Grazing(
+        diet_data["Dt_PastIn"], Dt_DMIn
+        )
     return an_data
 
 

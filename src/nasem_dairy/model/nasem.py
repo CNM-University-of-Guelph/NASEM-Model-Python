@@ -426,13 +426,7 @@ def nasem(user_diet: pd.DataFrame,
         animal_input["An_BW"], animal_input["An_BW_mature"], 
         animal_input["An_Parity_rl"], Fe_MiTP, Fe_NPend, Fe_DEMiCPend, 
         Fe_DERDPend, Fe_DERUPend, Du_idMiCP, aa_list, coeff_dict
-        )
-    # TODO add to wrapper
-    An_RUPIn_g = animal.calculate_An_RUPIn_g(an_data["An_RUPIn"])
-    An_Grazing = animal.calculate_An_Grazing(
-        diet_data["Dt_PastIn"], Dt_DMIn
-        )
-    
+        )    
     diet_data["TT_dcAnSt"] = diet.calculate_TT_dcAnSt(
         an_data["An_DigStIn"], diet_data["Dt_StIn"], infusion_data["Inf_StIn"]
         )
