@@ -357,7 +357,7 @@ def nasem(user_diet: pd.DataFrame,
         print("MiN_eqn = 3")
     else:
         raise ValueError(
-            f"Invalid MiN_eqn: {equation_selection["MiN_eqn"]} was entered. "
+            f"Invalid MiN_eqn: {equation_selection['MiN_eqn']} was entered. "
             "Must choose 1, 2 or 3."
             )
     
