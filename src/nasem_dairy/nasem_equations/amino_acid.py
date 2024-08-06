@@ -735,3 +735,14 @@ def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float,
         Abs_EAA_g - Ur_EAAEnd_g - Gest_EAA_g / coeff_dict['Ky_MP_NP_Trg']
     )  # Line 3220
     return AnNPxEAAUser_AbsEAA
+
+
+def calculate_Trg_AbsAA_NPxprtAA_array(MP_NP_efficiency_dict: dict, 
+                                       aa_list: list
+) -> np.ndarray: 
+    Trg_AbsAA_NPxprtAA = np.array([
+        MP_NP_efficiency_dict[f"Trg_Abs{aa}_NP{aa}"]
+        for aa in aa_list
+        if aa != "Arg"
+    ])
+    return Trg_AbsAA_NPxprtAA

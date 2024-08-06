@@ -431,7 +431,8 @@ from nasem_dairy.nasem_equations.amino_acid import (
     calculate_RecAA,
     calculate_MWAA,
     calculate_Body_AA_TP,
-    calculate_Abs_EAA2_g
+    calculate_Abs_EAA2_g,
+    calculate_Trg_AbsAA_NPxprtAA_array
 )
 
 

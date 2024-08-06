@@ -376,5 +376,10 @@
     "Name": "calculate_Dt_AAIn",
     "Input": {"aa_list": null, "diet_data": {"Dt_ArgIn": 7.5, "Dt_HisIn": 4.5, "Dt_IleIn": 2.8, "Dt_LeuIn": 0.6, "Dt_LysIn": 7.5,"Dt_MetIn": 3.8, "Dt_PheIn": 2.9, "Dt_ThrIn": 1.5, "Dt_TrpIn": 4.3,"Dt_ValIn": 2.0}},
     "Output": [7.5, 4.5, 2.8, 0.6, 7.5, 3.8, 2.9, 1.5, 4.3, 2.0]
+  },
+  {
+    "Name": "calculate_Trg_AbsAA_NPxprtAA_array",
+    "Input": {"MP_NP_efficiency_dict": null, "aa_list": null},
+    "Output": [0.75, 0.71, 0.73, 0.72, 0.73, 0.6, 0.64, 0.86, 0.74]
   }
 ]

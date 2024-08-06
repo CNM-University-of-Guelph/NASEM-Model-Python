@@ -149,11 +149,9 @@ def nasem(user_diet: pd.DataFrame,
     # values available as early as possible in model
 
     ### ARRAYS ###
-    Trg_AbsAA_NPxprtAA = np.array([
-        MP_NP_efficiency[f"Trg_Abs{aa}_NP{aa}"]
-        for aa in aa_list
-        if aa != "Arg"
-    ]) # TODO Make this a function
+    Trg_AbsAA_NPxprtAA = aa.calculate_Trg_AbsAA_NPxprtAA_array(
+        MP_NP_efficiency, aa_list
+        )
     mPrt_k_AA = aa.calculate_mPrt_k_AA_array(mPrt_coeff, aa_list)
     MWAA = aa.calculate_MWAA(aa_list, coeff_dict)
     Body_AA_TP = aa.calculate_Body_AA_TP(aa_list, coeff_dict)
