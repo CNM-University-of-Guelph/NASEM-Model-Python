@@ -119,7 +119,7 @@
                 "Fd_Arg_CP": [33.7, 20.3, 24.3, 3.5],
                 "Fd_His_CP": [44.2, 29.0, 40.9, 9.6]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "coeff_dict": {
                 "RecArg": 0.9,
                 "RecHis": 0.8
@@ -144,7 +144,7 @@
                 "Fd_Hist_CP": [2.003291, 2.849888, 1.831611, 3.084875],
                 "Fd_RUPIn": [0.52924598, 0.826063478, 0.128153816, 0.127043368]
             },
-            "AA_list": ["Arg", "His"]
+            "aa_list": ["Arg", "His"]
         },
         "Output": {
             "output_df": {
@@ -166,7 +166,7 @@
                 "Fd_ArgRUPIn": [22.67, 52.01, 3.15, 6.41],
                 "Fd_HisRUPIn": [10.60, 23.53, 2.35, 3.92]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "SIDig_values": {
                 "Arg": 1,
                 "His": 0.95
@@ -217,7 +217,7 @@
                 "Fd_Argt_CP": [4.28, 6.30, 2.46, 5.04],
                 "Fd_Hist_CP": [2.00, 2.85, 1.83, 3.08]
             },
-            "AA_list": ["Arg", "His"]
+            "aa_list": ["Arg", "His"]
         },
         "Output": {
             "output_df": {
@@ -318,7 +318,7 @@
                 "Fd_IdArgRUPIn": [16.99751263, 38.48646892, 2.205316879, 5.76240134],
                 "Fd_IdHisRUPIn": [7.95175281, 17.4209941, 1.643095578, 3.527216198]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {}
         },
         "Output": {"Dt_IdArgRUPIn": 63.451699769, "Dt_IdHisRUPIn": 30.542558686
@@ -361,7 +361,7 @@
     {
         "Name": "calculate_DtAARUP_DtAA",
         "Input": {
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {"Dt_ArgRUPIn": 22.67, "Dt_HisRUPIn": 10.60, "Dt_ArgIn": 6.65, "Dt_HisIn": 3.11}
         },
         "Output": {"Dt_ArgRUPIn": 22.67, "Dt_HisRUPIn": 10.60, "Dt_ArgIn": 6.65, 
@@ -371,7 +371,7 @@
         "Name": "calculate_Dt_IdAAIn",
         "Input": {
             "Du_IdAAMic": {"Arg": 10, "His": 20},
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {"Dt_IdArgRUPIn": 100, "Dt_IdHisRUPIn": 80}
         },
         "Output": {"Dt_IdArgRUPIn": 100, "Dt_IdHisRUPIn": 80, "Dt_IdArgIn": 110, "Dt_IdHisIn": 100}

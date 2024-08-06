@@ -316,8 +316,8 @@ def calculate_Fet_BWgain(An_GestDay: int,
     return Fet_BWgain
 
 
-def calculate_Body_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    Body_AA_TP = np.array([coeff_dict[f"Body_{AA}_TP"] for AA in AA_list])
+def calculate_Body_AA_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
+    Body_AA_TP = np.array([coeff_dict[f"Body_{aa}_TP"] for aa in aa_list])
     return Body_AA_TP
 
 

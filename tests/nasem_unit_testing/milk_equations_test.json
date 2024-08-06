@@ -322,7 +322,7 @@
   },
   {
     "Name": "calculate_Mlk_AA_TP",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [3.74, 2.92, 6.18, 10.56, 8.82, 3.03, 5.26, 4.62, 1.65, 6.9]
   },
   {

@@ -161,8 +161,8 @@ def calculate_Ur_EAAend_g(An_BW: float) -> float:
     return Ur_EAAend_g
 
 
-def calculate_Ur_AAEnd_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    Ur_AAEnd_TP = np.array([coeff_dict[f"Ur_{AA}End_TP"] for AA in AA_list])
+def calculate_Ur_AAEnd_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
+    Ur_AAEnd_TP = np.array([coeff_dict[f"Ur_{aa}End_TP"] for aa in aa_list])
     return Ur_AAEnd_TP
 
 

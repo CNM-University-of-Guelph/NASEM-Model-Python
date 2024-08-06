@@ -166,12 +166,12 @@
     },
     {
       "Name": "calculate_Inf_IdAARUPIn",
-      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_Rum": 2.6, "InfRum_RUP_CP": 0.8}, "AA_list": null},
+      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_Rum": 2.6, "InfRum_RUP_CP": 0.8}, "aa_list": null},
       "Output": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4, "Inf_Rum": 2.6, "InfRum_RUP_CP": 0.8, "Inf_ArgRUPIn": 0.10816000000000002, "Inf_HisRUPIn": 0.033280000000000004, "Inf_IleRUPIn": 0.0041600000000000005, "Inf_LeuRUPIn": 0.18928, "Inf_LysRUPIn": 0.03536, "Inf_MetRUPIn": 0.04784, "Inf_PheRUPIn": 0.13104, "Inf_ThrRUPIn": 0.09984000000000001, "Inf_TrpRUPIn": 0.14768, "Inf_ValRUPIn": 0.07072}
     },
     {
       "Name": "calculate_Inf_IdAAIn",
-      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_SI": 3.1,"Inf_dcRUP": 1.0,"Inf_ArgRUPIn": 3.7,"Inf_HisRUPIn": 8.4,"Inf_IleRUPIn": 2.4,"Inf_LeuRUPIn": 5.3,"Inf_LysRUPIn": 0.7,"Inf_MetRUPIn": 1.1,"Inf_PheRUPIn": 2.5,"Inf_ThrRUPIn": 5.3,"Inf_TrpRUPIn": 7.2, "Inf_ValRUPIn": 0.9}, "AA_list": null},
+      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_SI": 3.1,"Inf_dcRUP": 1.0,"Inf_ArgRUPIn": 3.7,"Inf_HisRUPIn": 8.4,"Inf_IleRUPIn": 2.4,"Inf_LeuRUPIn": 5.3,"Inf_LysRUPIn": 0.7,"Inf_MetRUPIn": 1.1,"Inf_PheRUPIn": 2.5,"Inf_ThrRUPIn": 5.3,"Inf_TrpRUPIn": 7.2, "Inf_ValRUPIn": 0.9}, "aa_list": null},
       "Output": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4, "Inf_SI": 3.1, "Inf_dcRUP": 1.0, "Inf_ArgRUPIn": 3.7, "Inf_HisRUPIn": 8.4, "Inf_IleRUPIn": 2.4, "Inf_LeuRUPIn": 5.3, "Inf_LysRUPIn": 0.7, "Inf_MetRUPIn": 1.1, "Inf_PheRUPIn": 2.5, "Inf_ThrRUPIn": 5.3, "Inf_TrpRUPIn": 7.2, "Inf_ValRUPIn": 0.9, "Inf_IdArgIn": 0.19820000000000002, "Inf_IdHisIn": 0.13360000000000002, "Inf_IdIleIn": 0.0302, "Inf_IdLeuIn": 0.33509999999999995, "Inf_IdLysIn": 0.059699999999999996, "Inf_IdMetIn": 0.0823, "Inf_IdPheIn": 0.22030000000000002, "Inf_IdThrIn": 0.2018, "Inf_IdTrpIn": 0.29209999999999997, "Inf_IdValIn": 0.1144}
     }
   ]

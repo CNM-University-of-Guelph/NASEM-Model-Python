@@ -196,7 +196,7 @@
     },
     {
       "Name": "calculate_Fe_AAMetab_TP",
-      "Input": {"AA_list": null, "coeff_dict": null},
+      "Input": {"aa_list": null, "coeff_dict": null},
       "Output": [5.9, 3.54, 5.39, 9.19, 7.61, 1.73, 5.28, 7.36, 1.79, 7.01]
     },
     {

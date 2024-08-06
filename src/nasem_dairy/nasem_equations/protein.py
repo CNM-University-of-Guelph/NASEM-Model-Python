@@ -103,8 +103,8 @@ def calculate_Scrf_N_g(Scrf_CP_g: float) -> float:
     return Scrf_N_g
 
 
-def calculate_Scrf_AA_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    Scrf_AA_TP = np.array([coeff_dict[f"Scrf_{AA}_TP"] for AA in AA_list])
+def calculate_Scrf_AA_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
+    Scrf_AA_TP = np.array([coeff_dict[f"Scrf_{aa}_TP"] for aa in aa_list])
     return Scrf_AA_TP
 
 
@@ -120,7 +120,7 @@ def calculate_ScrfAA_AbsAA(Scrf_AA_g: pd.Series,
                            Abs_AA_g: pd.Series
 ) -> np.array:
     """
-    ScrfAA_AbsAA: Scurf AA as a fraction of absorbed AA
+    ScrfAA_AbsAA: Scurf aa as a fraction of absorbed aa
     """
     ScrfAA_AbsAA = Scrf_AA_g / Abs_AA_g  # Line 1981-1990
     return ScrfAA_AbsAA

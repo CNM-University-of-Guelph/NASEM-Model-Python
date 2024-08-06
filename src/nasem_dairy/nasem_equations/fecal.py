@@ -364,8 +364,8 @@ def calculate_Fe_DE(Fe_DEout: float, An_DMIn: float) -> float:
     return Fe_DE
 
 
-def calculate_Fe_AAMetab_TP(AA_list: list, coeff_dict: dict) -> np.ndarray:
-    Fe_AAMetab_TP = np.array([coeff_dict[f"Fe_{AA}Metab_TP"] for AA in AA_list])
+def calculate_Fe_AAMetab_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
+    Fe_AAMetab_TP = np.array([coeff_dict[f"Fe_{aa}Metab_TP"] for aa in aa_list])
     return Fe_AAMetab_TP
 
 
@@ -383,7 +383,7 @@ def calculate_Fe_AAMet_AbsAA(Fe_AAMet_g: np.array,
                              Abs_AA_g: pd.Series
 ) -> np.array:
     """
-    Fe_AAMet_AbsAA: Metabolic fecal AA as fraction of absorbed AA 
+    Fe_AAMet_AbsAA: Metabolic fecal AA as fraction of absorbed aa 
     """
     Fe_AAMet_AbsAA = Fe_AAMet_g / Abs_AA_g  # Lines 2006-2015
     return Fe_AAMet_AbsAA

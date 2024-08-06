@@ -1305,12 +1305,12 @@ def calculate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
 
 def calculate_An_IdAAIn(diet_data: dict, 
                         infusion_data: dict, 
-                        AA_list: list, 
+                        aa_list: list, 
                         an_data: dict
 ) -> dict:
-    for AA in AA_list:
-        an_data[f"An_Id{AA}In"] = (diet_data[f"Dt_Id{AA}In"] + 
-                                            infusion_data[f"Inf_Id{AA}In"])
+    for aa in aa_list:
+        an_data[f"An_Id{aa}In"] = (diet_data[f"Dt_Id{aa}In"] + 
+                                            infusion_data[f"Inf_Id{aa}In"])
     return an_data
 
 
@@ -1344,7 +1344,7 @@ def calculate_an_data(an_data: dict,
                       Fe_DERDPend: float,
                       Fe_DERUPend: float,
                       Du_idMiCP: float,
-                      AA_list: list,
+                      aa_list: list,
                       coeff_dict: dict
 ) -> dict:
     # Could use a better name, an_data for now
@@ -1502,7 +1502,7 @@ def calculate_an_data(an_data: dict,
         an_data["An_TPIn"], infusion_data["InfArt_CPIn"], Fe_CP
         )
     an_data = calculate_An_IdAAIn(
-        diet_data, infusion_data, AA_list, an_data
+        diet_data, infusion_data, aa_list, an_data
         )
     nutrient_list = ["CPIn", "NPNCPIn", "TPIn", "FAIn"]
     an_data = calculate_An_XIn(

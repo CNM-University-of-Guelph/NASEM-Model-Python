@@ -211,7 +211,7 @@
     },
     {
       "Name": "calculate_Scrf_AA_TP",
-      "Input": { "AA_list": null, "coeff_dict": null},
+      "Input": { "aa_list": null, "coeff_dict": null},
       "Output": [9.6, 1.75, 2.96, 6.93, 5.64, 1.4, 3.61, 4.01, 0.73, 4.66]
     },
     {

@@ -963,37 +963,37 @@ def calculate_micro_absorbtion(diet_info: pd.DataFrame,
 
 
 def calculate_Fd_AAt_CP(diet_info: pd.DataFrame, 
-                        AA_list: list,
+                        aa_list: list,
                         coeff_dict: dict
 ) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}t_CP": lambda diet_info, AA=AA: 
-                diet_info[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
-            for AA in AA_list
+            f"Fd_{aa}t_CP": lambda diet_info, aa=aa: 
+                diet_info[f"Fd_{aa}_CP"] / coeff_dict[f"Rec{aa}"]
+            for aa in aa_list
         })
 
 
-def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}RUPIn": lambda diet_info, AA=AA: 
-                diet_info[f"Fd_{AA}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
-            for AA in AA_list
+            f"Fd_{aa}RUPIn": lambda diet_info, aa=aa: 
+                diet_info[f"Fd_{aa}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
+            for aa in aa_list
         })
 
 
 def calculate_Fd_IdAARUPIn(diet_info: pd.DataFrame, 
-                           AA_list: list,
+                           aa_list: list,
                            SIDig_values: dict
 ) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_Id{AA}RUPIn":
-                lambda diet_info, AA=AA: 
+            f"Fd_Id{aa}RUPIn":
+                lambda diet_info, aa=aa: 
                 diet_info['Fd_dcRUP'] / 100 * 
-                diet_info[f"Fd_{AA}RUPIn"] * SIDig_values[AA] 
-            for AA in AA_list
+                diet_info[f"Fd_{aa}RUPIn"] * SIDig_values[aa] 
+            for aa in aa_list
         })
 
 
@@ -1007,15 +1007,15 @@ def calculate_Fd_Dig_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFr
         })
 
 
-def calculate_Fd_AAIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+def calculate_Fd_AAIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}In": lambda diet_info, AA=AA: np.where(
+            f"Fd_{aa}In": lambda diet_info, aa=aa: np.where(
                 diet_info['Fd_CPIn'] > 0, 
-                    ((diet_info[f"Fd_{AA}t_CP"] / 100) * 
+                    ((diet_info[f"Fd_{aa}t_CP"] / 100) * 
                      (diet_info['Fd_CP'] / 100) * (diet_info['Fd_DMIn'] * 1000)), 
                     0)
-            for AA in AA_list
+            for aa in aa_list
         })
 
 
@@ -1780,11 +1780,11 @@ def calculate_Dt_micro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict
 
 
 def calculate_Dt_IdAARUPIn(diet_info: pd.DataFrame, 
-                           AA_list: list,
+                           aa_list: list,
                            diet_data: dict
 ) -> dict:
-    for AA in AA_list:
-        diet_data[f'Dt_Id{AA}RUPIn'] = diet_info[f'Fd_Id{AA}RUPIn'].sum()
+    for aa in aa_list:
+        diet_data[f'Dt_Id{aa}RUPIn'] = diet_info[f'Fd_Id{aa}RUPIn'].sum()
     return diet_data
 
 
@@ -1814,20 +1814,20 @@ def calculate_Dt_FA_FA(variables: list, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_DtAARUP_DtAA(AA_list: list, diet_data: dict) -> dict:
-    for AA in AA_list:
-        diet_data[f"Dt{AA}RUP_Dt{AA}"] = (diet_data[f"Dt_{AA}RUPIn"] / 
-                                          diet_data[f"Dt_{AA}In"])
+def calculate_DtAARUP_DtAA(aa_list: list, diet_data: dict) -> dict:
+    for aa in aa_list:
+        diet_data[f"Dt{aa}RUP_Dt{aa}"] = (diet_data[f"Dt_{aa}RUPIn"] / 
+                                          diet_data[f"Dt_{aa}In"])
     return diet_data
 
 
 def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series, 
-                        AA_list: list,
+                        aa_list: list,
                         diet_data: dict
 ) -> dict:
-    for AA in AA_list:
-        diet_data[f'Dt_Id{AA}In'] = (Du_IdAAMic[f'{AA}'] + 
-                                     diet_data[f'Dt_Id{AA}RUPIn'])
+    for aa in aa_list:
+        diet_data[f'Dt_Id{aa}In'] = (Du_IdAAMic[f'{aa}'] + 
+                                     diet_data[f'Dt_Id{aa}RUPIn'])
     return diet_data
 
 
@@ -2435,8 +2435,8 @@ def calculate_diet_info(Dt_DMIn: float,
         complete_diet_info, micro_absorption
         )
 
-    # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
-    # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
+    # Digested endogenous protein is ignored as it is a recycle of previously absorbed aa.
+    # SI Digestibility of aa relative to RUP digestibility ([g dAA / g aa] / [g dRUP / g RUP])
     # All set to 1 due to lack of clear evidence for deviations.
     SIDigArgRUPf = 1
     SIDigHisRUPf = 1
@@ -2463,16 +2463,16 @@ def calculate_diet_info(Dt_DMIn: float,
         'Val': SIDigValRUPf
     }
 
-    AA_list = [
+    aa_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
 
     complete_diet_info = calculate_Fd_AAt_CP(
-        complete_diet_info, AA_list, coeff_dict
+        complete_diet_info, aa_list, coeff_dict
         )
-    complete_diet_info = calculate_Fd_AARUPIn(complete_diet_info, AA_list)
+    complete_diet_info = calculate_Fd_AARUPIn(complete_diet_info, aa_list)
     complete_diet_info = calculate_Fd_IdAARUPIn(
-        complete_diet_info, AA_list, SIDig_values
+        complete_diet_info, aa_list, SIDig_values
         )
     complete_diet_info['Fd_DigSt'] = calculate_Fd_DigSt(
         diet_info['Fd_St'], diet_info['Fd_dcSt']
@@ -2523,7 +2523,7 @@ def calculate_diet_info(Dt_DMIn: float,
     complete_diet_info['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
         complete_diet_info['Fd_RUPIn'], complete_diet_info['Fd_dcRUP']
         )
-    complete_diet_info = calculate_Fd_AAIn(complete_diet_info, AA_list)
+    complete_diet_info = calculate_Fd_AAIn(complete_diet_info, aa_list)
     complete_diet_info["Fd_AFInp"] = calculate_Fd_AFInp(
         complete_diet_info["Fd_AFIn"]
         )
@@ -2684,10 +2684,10 @@ def calculate_diet_data(diet_info: pd.DataFrame,
     ]
     diet_data = calculate_Dt_micro(column_names_micro_vitamin, Dt_DMIn, diet_data)
 
-    AA_list = [
+    aa_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    diet_data = calculate_Dt_IdAARUPIn(diet_info, AA_list, diet_data)
+    diet_data = calculate_Dt_IdAARUPIn(diet_info, aa_list, diet_data)
 
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
@@ -2826,7 +2826,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         An_StatePhys, Monensin_eqn, Dt_DMIn, diet_data['Dt_FA'], 
         diet_data['Dt_DigNDF'], diet_data['Dt_GEIn'], diet_data['Dt_NDF']
         )
-    diet_data = calculate_DtAARUP_DtAA(AA_list, diet_data)
+    diet_data = calculate_DtAARUP_DtAA(aa_list, diet_data)
     diet_data["Dt_DE_ClfLiq"] = calculate_Dt_DE_ClfLiq(
         diet_data["Dt_DEIn_ClfLiq"], diet_data["Dt_DMIn_ClfLiq"]
         )
@@ -2882,7 +2882,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         diet_data['Dt_DEIn_base_ClfDry'], Monensin_eqn
         )
     diet_data = calculate_Dt_IdAAIn(
-        Du_IdAAMic, AA_list, diet_data
+        Du_IdAAMic, aa_list, diet_data
         )
     diet_data['Dt_DigOMaIn'] = calculate_Dt_DigOMaIn(
         diet_data['Dt_DigNDFIn'], diet_data['Dt_DigStIn'],

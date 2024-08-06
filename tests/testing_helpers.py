@@ -128,7 +128,7 @@ def update_constants(input_params: dict) -> dict:
         "MP_NP_efficiency_dict": nd.MP_NP_efficiency_dict,
         "mPrt_coeff": nd.mPrt_coeff_list[0],  # NOTE We could dynamically select if needed
         "f_Imb": nd.f_Imb,
-        "AA_list": ["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]
+        "aa_list": ["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]
     }
     
     for key, default_value in default_values.items():

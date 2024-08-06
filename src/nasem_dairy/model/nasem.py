@@ -61,7 +61,7 @@ def nasem(user_diet: pd.DataFrame,
     Returns
     -------
     Multiple
-        Currently returns animal_input, diet_info, equation_selection, diet_data, AA_values, infusion_data, an_data, model_out_dict
+        Currently returns animal_input, diet_info, equation_selection, diet_data, aa_values, infusion_data, an_data, model_out_dict
         To be updated
 
     Notes
@@ -103,11 +103,10 @@ def nasem(user_diet: pd.DataFrame,
     # Adjust value of mPrt_eqn when used to index mPrt_coeff_list as the indexing 
     # in R and Python use different starting values. Use max to prevent negatives
     mPrt_coeff = mPrt_coeff_list[max(0, equation_selection["mPrt_eqn"] - 1)]  
-    AA_list = [
+    aa_list = [
         "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
     ]
-    # TODO rename aa_values
-    AA_values = pd.DataFrame(index=AA_list)
+    aa_values = pd.DataFrame(index=aa_list)
     diet_data = {}
     an_data = {}
 
@@ -157,20 +156,20 @@ def nasem(user_diet: pd.DataFrame,
 
     ### ARRAYS ###
     Trg_AbsAA_NPxprtAA = np.array([
-        MP_NP_efficiency[f"Trg_Abs{AA}_NP{AA}"]
-        for AA in AA_list
-        if AA != "Arg"
+        MP_NP_efficiency[f"Trg_Abs{aa}_NP{aa}"]
+        for aa in aa_list
+        if aa != "Arg"
     ]) # TODO Make this a function
-    mPrt_k_AA = aa.calculate_mPrt_k_AA_array(mPrt_coeff, AA_list)
-    MWAA = aa.calculate_MWAA(AA_list, coeff_dict)
-    Body_AA_TP = aa.calculate_Body_AA_TP(AA_list, coeff_dict)
-    MiTPAAProf = aa.calculate_MiTPAAProf(AA_list, coeff_dict)
-    EndAAProf = aa.calculate_EndAAProf(AA_list, coeff_dict)
-    RecAA = aa.calculate_RecAA(AA_list, coeff_dict)
-    Mlk_AA_TP = milk.calculate_Mlk_AA_TP(AA_list, coeff_dict)
-    Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(AA_list, coeff_dict)   
-    # Body_AA_TP = gestation.calculate_Body_AA_TP(AA_list, coeff_dict) # TODO remove duplicate 
-    Ur_AAEnd_TP = urine.calculate_Ur_AAEnd_TP(AA_list, coeff_dict)
+    mPrt_k_AA = aa.calculate_mPrt_k_AA_array(mPrt_coeff, aa_list)
+    MWAA = aa.calculate_MWAA(aa_list, coeff_dict)
+    Body_AA_TP = aa.calculate_Body_AA_TP(aa_list, coeff_dict)
+    MiTPAAProf = aa.calculate_MiTPAAProf(aa_list, coeff_dict)
+    EndAAProf = aa.calculate_EndAAProf(aa_list, coeff_dict)
+    RecAA = aa.calculate_RecAA(aa_list, coeff_dict)
+    Mlk_AA_TP = milk.calculate_Mlk_AA_TP(aa_list, coeff_dict)
+    Fe_AAMetab_TP = fecal.calculate_Fe_AAMetab_TP(aa_list, coeff_dict)   
+    # Body_AA_TP = gestation.calculate_Body_AA_TP(aa_values, coeff_dict) # TODO remove duplicate 
+    Ur_AAEnd_TP = urine.calculate_Ur_AAEnd_TP(aa_list, coeff_dict)
 
     ### COEFFS ONLY ###
     NPGain_RsrvGain = body_comp.calculate_NPGain_RsrvGain(coeff_dict)
@@ -413,9 +412,9 @@ def nasem(user_diet: pd.DataFrame,
     Fe_DEMiCPend = fecal.calculate_Fe_DEMiCPend(Fe_RumMiCP, coeff_dict)
     Fe_DERDPend = fecal.calculate_Fe_DERDPend(Fe_RDPend, coeff_dict)
     Fe_DERUPend = fecal.calculate_Fe_DERUPend(Fe_RUPend, coeff_dict)
-    AA_values["Du_AAMic"] = aa.calculate_Du_AAMic(Du_MiTP_g, MiTPAAProf)
-    AA_values["Du_IdAAMic"] = aa.calculate_Du_IdAAMic(
-        AA_values["Du_AAMic"], coeff_dict
+    aa_values["Du_AAMic"] = aa.calculate_Du_AAMic(Du_MiTP_g, MiTPAAProf)
+    aa_values["Du_IdAAMic"] = aa.calculate_Du_IdAAMic(
+        aa_values["Du_AAMic"], coeff_dict
         )
     Uter_Wt = gestation.calculate_Uter_Wt(
         animal_input["An_Parity_rl"], animal_input["An_AgeDay"], 
@@ -433,7 +432,7 @@ def nasem(user_diet: pd.DataFrame,
         animal_input["An_AgeDryFdStart"], animal_input["Env_TempCurr"],
         equation_selection["DMIn_eqn"], equation_selection["Monensin_eqn"],
         Fe_rOMend, Fe_CP, Fe_CPend,  Fe_MiTP,  Fe_NPend, Du_idMiTP, 
-        AA_values["Du_IdAAMic"], coeff_dict
+        aa_values["Du_IdAAMic"], coeff_dict
         )
     ##### AN_DATA #####
     an_data = animal.calculate_an_data(
@@ -441,7 +440,7 @@ def nasem(user_diet: pd.DataFrame,
         GrUter_Wt, Dt_DMIn, Fe_CP, animal_input["An_StatePhys"], 
         animal_input["An_BW"], animal_input["An_BW_mature"], 
         animal_input["An_Parity_rl"], Fe_MiTP, Fe_NPend, Fe_DEMiCPend, 
-        Fe_DERDPend, Fe_DERUPend, Du_idMiCP, AA_list, coeff_dict
+        Fe_DERDPend, Fe_DERUPend, Du_idMiCP, aa_list, coeff_dict
         )
     # TODO add to wrapper
     An_RUPIn_g = animal.calculate_An_RUPIn_g(an_data["An_RUPIn"])
@@ -489,10 +488,10 @@ def nasem(user_diet: pd.DataFrame,
     Gest_NPgain_g = gestation.calculate_Gest_NPgain_g(Gest_NCPgain_g, coeff_dict)
     Gest_NPuse_g = gestation.calculate_Gest_NPuse_g(Gest_NPgain_g, coeff_dict)
     Gest_CPuse_g = gestation.calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict)
-    AA_values["Gest_AA_g"] = gestation.calculate_Gest_AA_g(
+    aa_values["Gest_AA_g"] = gestation.calculate_Gest_AA_g(
         Gest_NPuse_g, Body_AA_TP
         )
-    Gest_EAA_g = gestation.calculate_Gest_EAA_g(AA_values["Gest_AA_g"])
+    Gest_EAA_g = gestation.calculate_Gest_EAA_g(aa_values["Gest_AA_g"])
 
     ####################
     # Digestable Nutrients
@@ -509,10 +508,10 @@ def nasem(user_diet: pd.DataFrame,
     Rum_MiCP_DigCHO = micp.calculate_Rum_MiCP_DigCHO(
         Du_MiCP, Rum_DigNDFIn, Rum_DigStIn
         )
-    Du_IdEAAMic = aa.calculate_Du_IdEAAMic(AA_values["Du_IdAAMic"])
-    # NOTE Why is this series own its own?
-    Dt_IdAARUPIn = pd.Series([diet_data[f"Dt_Id{AA}RUPIn"] for AA in AA_list],
-                             index=AA_list)
+    Du_IdEAAMic = aa.calculate_Du_IdEAAMic(aa_values["Du_IdAAMic"])
+    # NOTE Why is this series on its own?
+    Dt_IdAARUPIn = pd.Series([diet_data[f"Dt_Id{aa}RUPIn"] for aa in aa_list],
+                             index=aa_list)
     Dt_IdEAARUPIn = aa.calculate_Dt_IdEAARUPIn(Dt_IdAARUPIn)
 
     ####################
@@ -542,63 +541,63 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     # Amino Acids
     ####################
-    An_IdAAIn = aa.calculate_An_IdAAIn_array(an_data, AA_list)
+    An_IdAAIn = aa.calculate_An_IdAAIn_array(an_data, aa_list)
     An_IdEAAIn = aa.calculate_An_IdEAAIn(An_IdAAIn)
-    Inf_AA_g = aa.calculate_Inf_AA_g(infusion_data, AA_list)
-    Dt_AARUPIn = aa.calculate_Dt_AARUPIn(AA_list, diet_data)
-    Inf_AARUPIn = aa.calculate_Inf_AARUPIn(AA_list, infusion_data)
+    Inf_AA_g = aa.calculate_Inf_AA_g(infusion_data, aa_list)
+    Dt_AARUPIn = aa.calculate_Dt_AARUPIn(aa_list, diet_data)
+    Inf_AARUPIn = aa.calculate_Inf_AARUPIn(aa_list, infusion_data)
     # TODO this is a duplicate
-    Dt_AAIn = aa.calculate_Dt_AAIn(AA_list, diet_data)
-    AA_values["Du_AAEndP"] = aa.calculate_Du_AAEndP(Du_EndCP_g, EndAAProf)
-    AA_values["Du_AA"] = aa.calculate_Du_AA(
-        Dt_AARUPIn, Inf_AARUPIn, AA_values["Du_AAMic"], AA_values["Du_AAEndP"]
+    Dt_AAIn = aa.calculate_Dt_AAIn(aa_list, diet_data)
+    aa_values["Du_AAEndP"] = aa.calculate_Du_AAEndP(Du_EndCP_g, EndAAProf)
+    aa_values["Du_AA"] = aa.calculate_Du_AA(
+        Dt_AARUPIn, Inf_AARUPIn, aa_values["Du_AAMic"], aa_values["Du_AAEndP"]
         )
     #TODO make this function
-    Du_EAA_g = AA_values["Du_AA"].sum()
-    AA_values["DuAA_DtAA"] = aa.calculate_DuAA_AArg(AA_values["Du_AA"], Dt_AAIn)
-    AA_values["Du_AA24h"] = aa.calculate_Du_AA24h(AA_values["Du_AA"], RecAA)
-    AA_values["Abs_AA_g"] = aa.calculate_Abs_AA_g(
+    Du_EAA_g = aa_values["Du_AA"].sum()
+    aa_values["DuAA_DtAA"] = aa.calculate_DuAA_AArg(aa_values["Du_AA"], Dt_AAIn)
+    aa_values["Du_AA24h"] = aa.calculate_Du_AA24h(aa_values["Du_AA"], RecAA)
+    aa_values["Abs_AA_g"] = aa.calculate_Abs_AA_g(
         An_IdAAIn, Inf_AA_g, infusion_data["Inf_Art"]
         )
-    AA_values["mPrtmx_AA"] = aa.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
-    AA_values["mPrtmx_AA2"] = aa.calculate_mPrtmx_AA2(
-        AA_values["mPrtmx_AA"], f_mPrt_max
+    aa_values["mPrtmx_AA"] = aa.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
+    aa_values["mPrtmx_AA2"] = aa.calculate_mPrtmx_AA2(
+        aa_values["mPrtmx_AA"], f_mPrt_max
         )
-    AA_values["AA_mPrtmx"] = aa.calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
-    AA_values["mPrt_AA_01"] = aa.calculate_mPrt_AA_01(
-        AA_values["AA_mPrtmx"], mPrt_k_AA, mPrt_coeff
+    aa_values["AA_mPrtmx"] = aa.calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
+    aa_values["mPrt_AA_01"] = aa.calculate_mPrt_AA_01(
+        aa_values["AA_mPrtmx"], mPrt_k_AA, mPrt_coeff
         )
-    AA_values["mPrt_k_AA"] = aa.calculate_mPrt_k_AA(
-        AA_values["mPrtmx_AA2"], AA_values["mPrt_AA_01"], AA_values["AA_mPrtmx"]
+    aa_values["mPrt_k_AA"] = aa.calculate_mPrt_k_AA(
+        aa_values["mPrtmx_AA2"], aa_values["mPrt_AA_01"], aa_values["AA_mPrtmx"]
         )
-    AA_values["IdAA_DtAA"] = aa.calculate_IdAA_DtAA(Dt_AAIn, An_IdAAIn)
-    Abs_EAA_g = aa.calculate_Abs_EAA_g(AA_values["Abs_AA_g"])
+    aa_values["IdAA_DtAA"] = aa.calculate_IdAA_DtAA(Dt_AAIn, An_IdAAIn)
+    Abs_EAA_g = aa.calculate_Abs_EAA_g(aa_values["Abs_AA_g"])
     Abs_neAA_g = aa.calculate_Abs_neAA_g(An_MPIn_g, Abs_EAA_g)
-    Abs_OthAA_g = aa.calculate_Abs_OthAA_g(Abs_neAA_g, AA_values["Abs_AA_g"])
+    Abs_OthAA_g = aa.calculate_Abs_OthAA_g(Abs_neAA_g, aa_values["Abs_AA_g"])
     Abs_EAA2b_g = aa.calculate_Abs_EAA2b_g(
-        equation_selection["mPrt_eqn"], AA_values["Abs_AA_g"]
+        equation_selection["mPrt_eqn"], aa_values["Abs_AA_g"]
         )
     mPrt_k_EAA2 = aa.calculate_mPrt_k_EAA2(
-        AA_values.loc["Met", "mPrtmx_AA2"], AA_values.loc["Met", "mPrt_AA_01"], 
-        AA_values.loc["Met", "AA_mPrtmx"]
+        aa_values.loc["Met", "mPrtmx_AA2"], aa_values.loc["Met", "mPrt_AA_01"], 
+        aa_values.loc["Met", "AA_mPrtmx"]
         )
-    Abs_EAA2_g = aa.calculate_Abs_EAA2_g(AA_values["Abs_AA_g"])
-    AA_values["Abs_AA_MPp"] = aa.calculate_Abs_AA_MPp(
-        AA_values["Abs_AA_g"], An_MPIn_g
+    Abs_EAA2_g = aa.calculate_Abs_EAA2_g(aa_values["Abs_AA_g"])
+    aa_values["Abs_AA_MPp"] = aa.calculate_Abs_AA_MPp(
+        aa_values["Abs_AA_g"], An_MPIn_g
         )
-    AA_values["Abs_AA_p"] = aa.calculate_Abs_AA_p(
-        AA_values["Abs_AA_g"], Abs_EAA_g
+    aa_values["Abs_AA_p"] = aa.calculate_Abs_AA_p(
+        aa_values["Abs_AA_g"], Abs_EAA_g
         )
-    AA_values["Abs_AA_DEI"] = aa.calculate_Abs_AA_DEI(
-        AA_values["Abs_AA_g"], an_data["An_DEIn"]
+    aa_values["Abs_AA_DEI"] = aa.calculate_Abs_AA_DEI(
+        aa_values["Abs_AA_g"], an_data["An_DEIn"]
         )
-    AA_values["Abs_AA_mol"] = aa.calculate_Abs_AA_mol(
-        AA_values["Abs_AA_g"], MWAA
+    aa_values["Abs_AA_mol"] = aa.calculate_Abs_AA_mol(
+        aa_values["Abs_AA_g"], MWAA
         )
-    # NOTE should this be in AA_values?
-    Dt_AAIn = milk.calculate_Dt_AAIn(AA_list, diet_data)
-    AA_values["GestAA_AbsAA"] = gestation.calculate_GestAA_AbsAA(
-        AA_values["Gest_AA_g"], AA_values["Abs_AA_g"]
+    # NOTE should this be in aa_values?
+    Dt_AAIn = milk.calculate_Dt_AAIn(aa_list, diet_data)
+    aa_values["GestAA_AbsAA"] = gestation.calculate_GestAA_AbsAA(
+        aa_values["Gest_AA_g"], aa_values["Abs_AA_g"]
         )
 
     ####################
@@ -638,7 +637,7 @@ def nasem(user_diet: pd.DataFrame,
     Fe_DE = fecal.calculate_Fe_DE(Fe_DEout, an_data["An_DMIn"])
     Fe_AAMet_g = fecal.calculate_Fe_AAMet_g(Fe_NPend_g, Fe_AAMetab_TP)
     Fe_AAMet_AbsAA = fecal.calculate_Fe_AAMet_AbsAA(
-        Fe_AAMet_g, AA_values["Abs_AA_g"]
+        Fe_AAMet_g, aa_values["Abs_AA_g"]
         )
     
     ####################
@@ -646,34 +645,34 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     Trg_Mlk_NP = milk.calculate_Trg_Mlk_NP(Trg_Mlk_NP_g)
     Mlk_NPmx = milk.calculate_Mlk_NPmx(
-        AA_values["mPrtmx_AA2"], an_data["An_DEInp"], an_data["An_DigNDF"], 
+        aa_values["mPrtmx_AA2"], an_data["An_DEInp"], an_data["An_DigNDF"], 
         animal_input["An_BW"], Abs_neAA_g, Abs_OthAA_g, mPrt_coeff
         )
     Mlk_NP_g = milk.calculate_Mlk_NP_g(
         animal_input["An_StatePhys"], equation_selection["mPrt_eqn"],
-        Trg_Mlk_NP_g, animal_input["An_BW"], AA_values["Abs_AA_g"], 
-        AA_values["mPrt_k_AA"], Abs_neAA_g, Abs_OthAA_g, Abs_EAA2b_g, 
+        Trg_Mlk_NP_g, animal_input["An_BW"], aa_values["Abs_AA_g"], 
+        aa_values["mPrt_k_AA"], Abs_neAA_g, Abs_OthAA_g, Abs_EAA2b_g, 
         mPrt_k_EAA2, an_data["An_DigNDF"], an_data["An_DEInp"],
         an_data["An_DEStIn"], an_data["An_DEFAIn"], an_data["An_DErOMIn"],
         an_data["An_DENDFIn"], mPrt_coeff
         )
-    AA_values["Mlk_AA_g"] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
-    AA_values["MlkAA_AbsAA"] = milk.calculate_MlkAA_AbsAA(
-        AA_values["Mlk_AA_g"], AA_values["Abs_AA_g"]
+    aa_values["Mlk_AA_g"] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
+    aa_values["MlkAA_AbsAA"] = milk.calculate_MlkAA_AbsAA(
+        aa_values["Mlk_AA_g"], aa_values["Abs_AA_g"]
         )
-    AA_values["MlkAA_DtAA"] = milk.calculate_MlkAA_DtAA(
-        AA_values["Mlk_AA_g"], Dt_AAIn
+    aa_values["MlkAA_DtAA"] = milk.calculate_MlkAA_DtAA(
+        aa_values["Mlk_AA_g"], Dt_AAIn
         )
-    AA_values["Trg_Mlk_AA_g"] = aa.calculate_Trg_Mlk_AA_g(
+    aa_values["Trg_Mlk_AA_g"] = aa.calculate_Trg_Mlk_AA_g(
         Trg_Mlk_NP_g, Mlk_AA_TP
         )
-    Trg_Mlk_EAA_g = aa.calculate_Trg_Mlk_EAA_g(AA_values["Trg_Mlk_AA_g"])
+    Trg_Mlk_EAA_g = aa.calculate_Trg_Mlk_EAA_g(aa_values["Trg_Mlk_AA_g"])
     
     
     MlkNP_MlkNPmx = milk.calculate_MlkNP_MlkNPmx(Mlk_NP_g, Mlk_NPmx)
     Mlk_CP_g = milk.calculate_Mlk_CP_g(Mlk_NP_g)
     Mlk_CP = milk.calculate_Mlk_CP(Mlk_CP_g)
-    Mlk_EAA_g = milk.calculate_Mlk_EAA_g(AA_values["Mlk_AA_g"])
+    Mlk_EAA_g = milk.calculate_Mlk_EAA_g(aa_values["Mlk_AA_g"])
     MlkNP_AnMP = milk.calculate_MlkNP_AnMP(Mlk_NP_g, An_MPIn_g)
     MlkEAA_AbsEAA = milk.calculate_MlkEAA_AbsEAA(Mlk_EAA_g, Abs_EAA_g)
     MlkNP_AnCP = milk.calculate_MlkNP_AnCP(Mlk_NP_g, an_data["An_CPIn"])
@@ -801,7 +800,7 @@ def nasem(user_diet: pd.DataFrame,
         Ur_EAAend_g, Ur_NPend_3MH_g, Ur_AAEnd_TP
         )
     Ur_AAEnd_AbsAA = urine.calculate_Ur_AAEnd_AbsAA(
-        Ur_AAEnd_g, AA_values["Abs_AA_g"]
+        Ur_AAEnd_g, aa_values["Abs_AA_g"]
         )
     Ur_EAAEnd_g = urine.calculate_Ur_EAAEnd_g(Ur_AAEnd_g)
     Ur_Nout_DigNIn = urine.calculate_Ur_Nout_DigNIn(
@@ -928,10 +927,10 @@ def nasem(user_diet: pd.DataFrame,
         )
     Scrf_NP = protein.calculate_Scrf_NP(Scrf_NP_g)
     Scrf_N_g = protein.calculate_Scrf_N_g(Scrf_CP_g)
-    Scrf_AA_TP = protein.calculate_Scrf_AA_TP(AA_list, coeff_dict)
+    Scrf_AA_TP = protein.calculate_Scrf_AA_TP(aa_list, coeff_dict)
     Scrf_AA_g = protein.calculate_Scrf_AA_g(Scrf_NP_g, Scrf_AA_TP)
     ScrfAA_AbsAA = protein.calculate_ScrfAA_AbsAA(
-        Scrf_AA_g, AA_values["Abs_AA_g"]
+        Scrf_AA_g, aa_values["Abs_AA_g"]
         )
     An_MPm_g_Trg = protein_req.calculate_An_MPm_g_Trg(
         Fe_MPendUse_g_Trg, Scrf_MPUse_g_Trg, Ur_MPendUse_g
@@ -1055,8 +1054,8 @@ def nasem(user_diet: pd.DataFrame,
     Mlk_Fatemp_g = milk.calculate_Mlk_Fatemp_g(
         animal_input["An_StatePhys"], An_LactDay_MlkPred, Dt_DMIn,
         diet_data["Dt_FAIn"], diet_data["Dt_DigC160In"],
-        diet_data["Dt_DigC183In"], AA_values.loc["Ile", "Abs_AA_g"],
-        AA_values.loc["Met", "Abs_AA_g"]
+        diet_data["Dt_DigC183In"], aa_values.loc["Ile", "Abs_AA_g"],
+        aa_values.loc["Met", "Abs_AA_g"]
         )
     Mlk_Fat_g = milk.calculate_Mlk_Fat_g(
         equation_selection["mFat_eqn"], Trg_Mlk_Fat_g, Mlk_Fatemp_g
@@ -1176,12 +1175,12 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     An_NPm_Use = animal.calculate_An_NPm_Use(Scrf_NP_g, Fe_NPend_g, Ur_NPend_g)
     An_CPm_Use = animal.calculate_An_CPm_Use(Scrf_CP_g, Fe_CPend_g, Ur_NPend_g)
-    AA_values["Body_AAGain_g"] = aa.calculate_Body_AAGain_g(
+    aa_values["Body_AAGain_g"] = aa.calculate_Body_AAGain_g(
         Body_NPgain_g, Body_AA_TP
         )
-    Body_EAAGain_g = aa.calculate_Body_EAAGain_g(AA_values["Body_AAGain_g"])
-    AA_values["BodyAA_AbsAA"] = aa.calculate_BodyAA_AbsAA(
-        AA_values["Body_AAGain_g"], AA_values["Abs_AA_g"]
+    Body_EAAGain_g = aa.calculate_Body_EAAGain_g(aa_values["Body_AAGain_g"])
+    aa_values["BodyAA_AbsAA"] = aa.calculate_BodyAA_AbsAA(
+        aa_values["Body_AAGain_g"], aa_values["Abs_AA_g"]
         )
     An_CPxprt_g = protein.calculate_An_CPxprt_g(
         Scrf_CP_g, Fe_CPend_g, Mlk_CP_g, Body_CPgain_g
@@ -1219,17 +1218,17 @@ def nasem(user_diet: pd.DataFrame,
     An_Nprod_DigNIn = protein.calculate_An_Nprod_DigNIn(
         An_Nprod_g, an_data["An_DigNtIn_g"]
         )
-    AA_values["An_AAUse_g"] = aa.calculate_An_AAUse_g(
-        AA_values["Gest_AA_g"], AA_values["Mlk_AA_g"], 
-        AA_values["Body_AAGain_g"], Scrf_AA_g, Fe_AAMet_g, Ur_AAEnd_g
+    aa_values["An_AAUse_g"] = aa.calculate_An_AAUse_g(
+        aa_values["Gest_AA_g"], aa_values["Mlk_AA_g"], 
+        aa_values["Body_AAGain_g"], Scrf_AA_g, Fe_AAMet_g, Ur_AAEnd_g
         )
-    An_EAAUse_g = aa.calculate_An_EAAUse_g(AA_values["An_AAUse_g"])
-    AA_values["AnAAUse_AbsAA"] = aa.calculate_AnAAUse_AbsAA(
-        AA_values["An_AAUse_g"], AA_values["Abs_AA_g"]
+    An_EAAUse_g = aa.calculate_An_EAAUse_g(aa_values["An_AAUse_g"])
+    aa_values["AnAAUse_AbsAA"] = aa.calculate_AnAAUse_AbsAA(
+        aa_values["An_AAUse_g"], aa_values["Abs_AA_g"]
         )
     AnEAAUse_AbsEAA = aa.calculate_AnEAAUse_AbsEAA(An_EAAUse_g, Abs_EAA_g)
-    AA_values["An_AABal_g"] = aa.calculate_An_AABal_g(
-        AA_values["Abs_AA_g"], AA_values["An_AAUse_g"]
+    aa_values["An_AABal_g"] = aa.calculate_An_AABal_g(
+        aa_values["Abs_AA_g"], aa_values["An_AAUse_g"]
         )
     An_EAABal_g = aa.calculate_An_EAABal_g(Abs_EAA_g, An_EAAUse_g)
     Trg_AbsEAA_NPxprtEAA = aa.calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA)
@@ -1241,45 +1240,45 @@ def nasem(user_diet: pd.DataFrame,
     Trg_AAEff_EAAEff = aa.calculate_Trg_AAEff_EAAEff(
         Trg_AbsAA_NPxprtAA, Trg_AbsEAA_NPxprtEAA
         )
-    AA_values["An_AAEff_EAAEff"] = aa.calculate_An_AAEff_EAAEff(
-        AA_values["AnAAUse_AbsAA"], AnEAAUse_AbsEAA
+    aa_values["An_AAEff_EAAEff"] = aa.calculate_An_AAEff_EAAEff(
+        aa_values["AnAAUse_AbsAA"], AnEAAUse_AbsEAA
         )
-    AA_values["Imb_AA"] = aa.calculate_Imb_AA(
-        AA_values["An_AAEff_EAAEff"], Trg_AAEff_EAAEff, f_Imb
+    aa_values["Imb_AA"] = aa.calculate_Imb_AA(
+        aa_values["An_AAEff_EAAEff"], Trg_AAEff_EAAEff, f_Imb
      )
-    Imb_EAA = aa.calculate_Imb_EAA(AA_values["Imb_AA"])
-    AA_values["Trg_AAUse_g"] = aa.calculate_Trg_AAUse_g(
-        AA_values["Trg_Mlk_AA_g"], Scrf_AA_g, Fe_AAMet_g, Ur_AAEnd_g, 
-        AA_values["Gest_AA_g"], AA_values["Body_AAGain_g"]
+    Imb_EAA = aa.calculate_Imb_EAA(aa_values["Imb_AA"])
+    aa_values["Trg_AAUse_g"] = aa.calculate_Trg_AAUse_g(
+        aa_values["Trg_Mlk_AA_g"], Scrf_AA_g, Fe_AAMet_g, Ur_AAEnd_g, 
+        aa_values["Gest_AA_g"], aa_values["Body_AAGain_g"]
         )
-    Trg_EAAUse_g = aa.calculate_Trg_EAAUse_g(AA_values["Trg_AAUse_g"])
-    AA_values["Trg_AbsAA_g"] = aa.calculate_Trg_AbsAA_g(
-        AA_values["Trg_Mlk_AA_g"], Scrf_AA_g, Fe_AAMet_g, Trg_AbsAA_NPxprtAA,
-        Ur_AAEnd_g, AA_values["Gest_AA_g"], AA_values["Body_AAGain_g"],
+    Trg_EAAUse_g = aa.calculate_Trg_EAAUse_g(aa_values["Trg_AAUse_g"])
+    aa_values["Trg_AbsAA_g"] = aa.calculate_Trg_AbsAA_g(
+        aa_values["Trg_Mlk_AA_g"], Scrf_AA_g, Fe_AAMet_g, Trg_AbsAA_NPxprtAA,
+        Ur_AAEnd_g, aa_values["Gest_AA_g"], aa_values["Body_AAGain_g"],
         Kg_MP_NP_Trg, coeff_dict
         )
-    Trg_AbsEAA_g = aa.calculate_Trg_AbsEAA_g(AA_values["Trg_AbsAA_g"])
+    Trg_AbsEAA_g = aa.calculate_Trg_AbsEAA_g(aa_values["Trg_AbsAA_g"])
     Trg_MlkEAA_AbsEAA = aa.calculate_Trg_MlkEAA_AbsEAA(
-        Mlk_EAA_g, AA_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
+        Mlk_EAA_g, aa_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
         )
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(an_data["An_DEInp"], mPrt_coeff)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(an_data["An_DigNDF"], mPrt_coeff)
-    AA_values["MlkNP_AbsAA"] = milk.calculate_MlkNP_AbsAA(
-        AA_values["Abs_AA_g"], AA_values["mPrt_k_AA"]
+    aa_values["MlkNP_AbsAA"] = milk.calculate_MlkNP_AbsAA(
+        aa_values["Abs_AA_g"], aa_values["mPrt_k_AA"]
         )
     MlkNP_AbsEAA = milk.calculate_MlkNP_AbsEAA(Abs_EAA2b_g, mPrt_k_EAA2)
     MlkNP_AbsNEAA = milk.calculate_MlkNP_AbsNEAA(Abs_neAA_g, mPrt_coeff)
     MlkNP_AbsOthAA = milk.calculate_MlkNP_AbsOthAA(Abs_OthAA_g, mPrt_coeff)
-    AA_values["AnNPxAA_AbsAA"] = aa.calculate_AnNPxAA_AbsAA(
-        AA_values["An_AAUse_g"], AA_values["Gest_AA_g"], Ur_AAEnd_g,
-        AA_values["Abs_AA_g"], coeff_dict
+    aa_values["AnNPxAA_AbsAA"] = aa.calculate_AnNPxAA_AbsAA(
+        aa_values["An_AAUse_g"], aa_values["Gest_AA_g"], Ur_AAEnd_g,
+        aa_values["Abs_AA_g"], coeff_dict
         )
     AnNPxEAA_AbsEAA = aa.calculate_AnNPxEAA_AbsEAA(
         An_EAAUse_g, Gest_EAA_g, Ur_EAAEnd_g, Abs_EAA_g, coeff_dict
         )
-    AA_values["AnNPxAAUser_AbsAA"] = aa.calculate_AnNPxAAUser_AbsAA(
-        AA_values["Trg_AAUse_g"], AA_values["Gest_AA_g"], Ur_AAEnd_g,
-        AA_values["Abs_AA_g"], coeff_dict
+    aa_values["AnNPxAAUser_AbsAA"] = aa.calculate_AnNPxAAUser_AbsAA(
+        aa_values["Trg_AAUse_g"], aa_values["Gest_AA_g"], Ur_AAEnd_g,
+        aa_values["Abs_AA_g"], coeff_dict
         )
     AnNPxEAAUser_AbsEAA = aa.calculate_AnNPxEAAUser_AbsEAA(
         Trg_EAAUse_g, Gest_EAA_g, Ur_EAAEnd_g, Abs_EAA_g, coeff_dict
