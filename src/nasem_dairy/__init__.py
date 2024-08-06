@@ -586,7 +586,10 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_Ash,
     calculate_An_IdAAIn,
     calculate_An_XIn,
-    calculate_an_data
+    calculate_an_data,
+    calculate_An_PrePartDay,
+    calculate_An_PrePartWk,
+    calculate_An_PrePartWkDurat
 )
 
 from nasem_dairy.nasem_equations.gestation import (

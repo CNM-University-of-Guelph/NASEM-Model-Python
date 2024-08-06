@@ -117,9 +117,10 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     # Dt_DMIn Calculation
     ####################
-    # TODO give next 2 functions
-    An_PrePartDay = (animal_input["An_GestDay"] - animal_input["An_GestLength"])
-    An_PrePartWk = An_PrePartDay / 7
+    An_PrePartDay = animal.calculate_An_PrePartDay(
+        animal_input["An_GestDay"], animal_input["An_GestLength"]
+        )
+    An_PrePartWk = animal.calculate_An_PrePartWk(An_PrePartDay)
     Trg_NEmilk_Milk = milk.calculate_Trg_NEmilk_Milk(
         animal_input["Trg_MilkFatp"], animal_input["Trg_MilkTPp"],
         animal_input["Trg_MilkLacp"]
@@ -128,7 +129,7 @@ def nasem(user_diet: pd.DataFrame,
         Trg_NEmilk_Milk, animal_input["Trg_MilkProd"]
         )
     An_PrePartWklim = dmi.calculate_An_PrePartWklim(An_PrePartWk)
-    An_PrePartWkDurat = An_PrePartWklim * 2 # TODO make function
+    An_PrePartWkDurat = animal.calculate_An_PrePartWkDurat(An_PrePartWklim)
     Dt_DMIn = dmi.calculate_Dt_DMIn(
         equation_selection["DMIn_eqn"], animal_input["Trg_Dt_DMIn"], 
         animal_input["An_StatePhys"], animal_input["An_BW"], 

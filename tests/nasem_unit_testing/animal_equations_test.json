@@ -832,5 +832,20 @@
               "infusion_data": {"Inf_test1": 2.4, "Inf_test2": 3.5, "Inf_test3": 4.7}, 
               "variables": ["test1", "test2", "test3"], "an_data": {}},
     "Output": {"An_test1": 3.9, "An_test2": 8.1, "An_test3": 10.9}
+  },
+  {
+    "Name": "calculate_An_PrePartDay",
+    "Input": {"An_GestDay": 25, "An_GestLength": 280},
+    "Output": -255
+  },
+  {
+    "Name": "calculate_An_PrePartWk",
+    "Input": {"An_PrePartDay": 21},
+    "Output": 3.0
+  },
+  {
+    "Name": "calculate_An_PrePartWkDurat",
+    "Input": {"An_PrePartWklim": 2.1},
+    "Output": 4.2
   }
 ]

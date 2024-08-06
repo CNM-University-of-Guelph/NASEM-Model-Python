@@ -1863,3 +1863,18 @@ def calculate_An_Grazing(Dt_PastIn: float, Dt_DMIn: float) -> float:
 def calculate_En_OM(An_DEIn: float, An_DigOMtIn: float) -> float:
     En_OM = An_DEIn / An_DigOMtIn   # Line 1375
     return En_OM
+
+
+def calculate_An_PrePartDay(An_GestDay: int, An_GestLength: int) -> int:
+    An_PrePartDay = An_GestDay - An_GestLength
+    return An_PrePartDay
+
+    
+def calculate_An_PrePartWk(An_PrePartDay: int) -> float:
+    An_PrePartWk = An_PrePartDay / 7
+    return An_PrePartWk
+
+    
+def calculate_An_PrePartWkDurat(An_PrePartWklim: float) -> float:
+    An_PrePartWkDurat = An_PrePartWklim * 2
+    return An_PrePartWkDurat
