@@ -275,12 +275,6 @@ def nasem(user_diet: pd.DataFrame,
         Dt_DMIn, animal_input["An_StatePhys"], 
         equation_selection["Use_DNDF_IV"], feed_data, coeff_dict
         )
-    # NOTE What is needed to merge calculate_diet_data_initial and calculate_diet_data_complete
-    # into one function
-    # NOTE should the wrappers be made private? 
-    # TODO move some values out of wrappers. Initalize all of the data structures
-    # a the top of the function
-    # TODO remove these from the wrapper (column_names_sum)
     diet_data = diet.calculate_DtIn(
         feed_data, 
         ["CPIn_ClfLiq", "DMIn_ClfLiq", "NDFIn", "StIn", "CPIn", "ADFIn", "ForNDF", 
@@ -537,7 +531,6 @@ def nasem(user_diet: pd.DataFrame,
     Inf_AA_g = aa.calculate_Inf_AA_g(infusion_data, aa_list)
     Dt_AARUPIn = aa.calculate_Dt_AARUPIn(aa_list, diet_data)
     Inf_AARUPIn = aa.calculate_Inf_AARUPIn(aa_list, infusion_data)
-    # TODO this is a duplicate
     Dt_AAIn = aa.calculate_Dt_AAIn(aa_list, diet_data)
     aa_values["Du_AAEndP"] = aa.calculate_Du_AAEndP(Du_EndCP_g, EndAAProf)
     aa_values["Du_AA"] = aa.calculate_Du_AA(
@@ -585,8 +578,6 @@ def nasem(user_diet: pd.DataFrame,
     aa_values["Abs_AA_mol"] = aa.calculate_Abs_AA_mol(
         aa_values["Abs_AA_g"], MWAA
         )
-    # NOTE should this be in aa_values?
-    Dt_AAIn = milk.calculate_Dt_AAIn(aa_list, diet_data)
     aa_values["GestAA_AbsAA"] = gestation.calculate_GestAA_AbsAA(
         aa_values["Gest_AA_g"], aa_values["Abs_AA_g"]
         )
