@@ -530,8 +530,7 @@ def nasem(user_diet: pd.DataFrame,
     aa_values["Du_AA"] = aa.calculate_Du_AA(
         Dt_AARUPIn, Inf_AARUPIn, aa_values["Du_AAMic"], aa_values["Du_AAEndP"]
         )
-    #TODO make this function
-    Du_EAA_g = aa_values["Du_AA"].sum()
+    Du_EAA_g = aa.calculate_Du_EAA_g(aa_values["Du_AA"])
     aa_values["DuAA_DtAA"] = aa.calculate_DuAA_AArg(aa_values["Du_AA"], Dt_AAIn)
     aa_values["Du_AA24h"] = aa.calculate_Du_AA24h(aa_values["Du_AA"], RecAA)
     aa_values["Abs_AA_g"] = aa.calculate_Abs_AA_g(

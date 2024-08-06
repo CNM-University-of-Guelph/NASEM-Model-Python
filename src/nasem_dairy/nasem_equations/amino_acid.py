@@ -746,3 +746,7 @@ def calculate_Trg_AbsAA_NPxprtAA_array(MP_NP_efficiency_dict: dict,
         if aa != "Arg"
     ])
     return Trg_AbsAA_NPxprtAA
+
+def calculate_Du_EAA_g(Du_AA: pd.Series) -> float:
+    Du_EAA_g = Du_AA.sum()
+    return Du_EAA_g

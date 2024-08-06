@@ -381,5 +381,10 @@
     "Name": "calculate_Trg_AbsAA_NPxprtAA_array",
     "Input": {"MP_NP_efficiency_dict": null, "aa_list": null},
     "Output": [0.75, 0.71, 0.73, 0.72, 0.73, 0.6, 0.64, 0.86, 0.74]
+  },
+  {
+    "Name": "calculate_Du_EAA_g",
+    "Input": {"Du_AA_series": [1.2, 4.9, 3.7]},
+    "Output": 9.8
   }
 ]
