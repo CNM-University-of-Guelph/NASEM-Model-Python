@@ -88,9 +88,6 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     user_diet = validate.validate_user_diet(user_diet.copy())
     animal_input = validate.validate_animal_input(animal_input.copy())
-    # NOTE renaming DMI here temporarily. Will switch in input files once we swap
-    # from execute_model to this function
-    animal_input["Trg_Dt_DMIn"] = animal_input.pop("DMI")
     equation_selection = validate.validate_equation_selection(
         equation_selection.copy()
         )
@@ -140,7 +137,6 @@ def nasem(user_diet: pd.DataFrame,
         )
     An_PrePartWklim = dmi.calculate_An_PrePartWklim(An_PrePartWk)
     An_PrePartWkDurat = An_PrePartWklim * 2 # TODO make function
-    # TODO replace all Dt_DMIn with Dt_DMIn
     Dt_DMIn = dmi.calculate_Dt_DMIn(
         equation_selection["DMIn_eqn"], animal_input["Trg_Dt_DMIn"], 
         animal_input["An_StatePhys"], animal_input["An_BW"], 

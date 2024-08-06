@@ -91,7 +91,7 @@ def validate_animal_input(animal_input: dict) -> dict:
         'Trg_MilkFatp': float,
         'Trg_MilkTPp': float,
         'Trg_MilkLacp': float,
-        'DMI': float,  # aka. Trg_Dt_DMIn
+        'Trg_Dt_DMIn': float,
         'An_BW_mature': float,
         'Trg_FrmGain': float,
         'An_GestDay': int,

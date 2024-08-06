@@ -30,7 +30,7 @@
             "Trg_MilkFatp": 4.0,
             "Trg_MilkTPp": 3.0,
             "Trg_MilkLacp": 4.85,
-            "DMI": 22.0,
+            "Trg_Dt_DMIn": 22.0,
             "An_BW_mature": 700.0,
             "Trg_FrmGain": 0.08,
             "An_GestDay": 0.0,
