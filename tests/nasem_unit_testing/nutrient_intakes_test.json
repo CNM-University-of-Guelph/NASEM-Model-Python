@@ -119,7 +119,7 @@
                 "Fd_Arg_CP": [33.7, 20.3, 24.3, 3.5],
                 "Fd_His_CP": [44.2, 29.0, 40.9, 9.6]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "coeff_dict": {
                 "RecArg": 0.9,
                 "RecHis": 0.8
@@ -144,7 +144,7 @@
                 "Fd_Hist_CP": [2.003291, 2.849888, 1.831611, 3.084875],
                 "Fd_RUPIn": [0.52924598, 0.826063478, 0.128153816, 0.127043368]
             },
-            "AA_list": ["Arg", "His"]
+            "aa_list": ["Arg", "His"]
         },
         "Output": {
             "output_df": {
@@ -166,7 +166,7 @@
                 "Fd_ArgRUPIn": [22.67, 52.01, 3.15, 6.41],
                 "Fd_HisRUPIn": [10.60, 23.53, 2.35, 3.92]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "SIDig_values": {
                 "Arg": 1,
                 "His": 0.95
@@ -217,7 +217,7 @@
                 "Fd_Argt_CP": [4.28, 6.30, 2.46, 5.04],
                 "Fd_Hist_CP": [2.00, 2.85, 1.83, 3.08]
             },
-            "AA_list": ["Arg", "His"]
+            "aa_list": ["Arg", "His"]
         },
         "Output": {
             "output_df": {
@@ -265,7 +265,7 @@
         "Name": "calculate_Dt_DMI",
         "Input": {
             "variables": ["RUP", "OM", "NDF"],
-            "DMI": 15.5,
+            "Dt_DMIn": 15.5,
             "diet_data": {"Dt_RUPIn": 1.6, "Dt_OMIn": 22.7, "Dt_NDFIn": 8.1}
         },
         "Output": {"Dt_RUPIn": 1.6, "Dt_OMIn": 22.7, "Dt_NDFIn": 8.1, 
@@ -297,7 +297,7 @@
         "Name": "calculate_Dt_macro",
         "Input": {
             "variables": ["Ca", "P"],
-            "DMI": 15.5,
+            "Dt_DMIn": 15.5,
             "diet_data": {"CaIn": 5.2, "PIn": 4.3}
         },
         "Output": {"CaIn": 5.2, "PIn": 4.3, "Ca": 0.0335, "P": 0.0277}
@@ -306,7 +306,7 @@
         "Name": "calculate_Dt_micro",
         "Input": {
             "variables": ["Zn", "Cu"],
-            "DMI": 15.5,
+            "Dt_DMIn": 15.5,
             "diet_data": {"ZnIn": 3.5, "CuIn": 1.8}
         },
         "Output": {"ZnIn": 3.5, "CuIn": 1.8, "Zn": 0.2258, "Cu": 0.1161}
@@ -318,7 +318,7 @@
                 "Fd_IdArgRUPIn": [16.99751263, 38.48646892, 2.205316879, 5.76240134],
                 "Fd_IdHisRUPIn": [7.95175281, 17.4209941, 1.643095578, 3.527216198]
             },
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {}
         },
         "Output": {"Dt_IdArgRUPIn": 63.451699769, "Dt_IdHisRUPIn": 30.542558686
@@ -361,7 +361,7 @@
     {
         "Name": "calculate_DtAARUP_DtAA",
         "Input": {
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {"Dt_ArgRUPIn": 22.67, "Dt_HisRUPIn": 10.60, "Dt_ArgIn": 6.65, "Dt_HisIn": 3.11}
         },
         "Output": {"Dt_ArgRUPIn": 22.67, "Dt_HisRUPIn": 10.60, "Dt_ArgIn": 6.65, 
@@ -371,7 +371,7 @@
         "Name": "calculate_Dt_IdAAIn",
         "Input": {
             "Du_IdAAMic": {"Arg": 10, "His": 20},
-            "AA_list": ["Arg", "His"],
+            "aa_list": ["Arg", "His"],
             "diet_data": {"Dt_IdArgRUPIn": 100, "Dt_IdHisRUPIn": 80}
         },
         "Output": {"Dt_IdArgRUPIn": 100, "Dt_IdHisRUPIn": 80, "Dt_IdArgIn": 110, "Dt_IdHisIn": 100}
@@ -403,7 +403,7 @@
       },
       {
         "Name": "calculate_Fd_DMIn",
-        "Input": { "DMI_series": [3.5, 2.0, 8.5], "Fd_DMInp_series": [0.3, 0.4, 0.7] },
+        "Input": { "Dt_DMIn_series": [3.5, 2.0, 8.5], "Fd_DMInp_series": [0.3, 0.4, 0.7] },
         "Output": [1.05, 0.8, 5.949999999999999]
       },
       {
@@ -633,7 +633,7 @@
       },
       {
         "Name": "calculate_Fd_DMIn_ClfFor",
-        "Input": { "DMI": 30.2, "Fd_Conc_series": [4.7, 2.0, 9.5], "Fd_DMInp_series": [2.8, 4.5, 3.7] },
+        "Input": { "Dt_DMIn": 30.2, "Fd_Conc_series": [4.7, 2.0, 9.5], "Fd_DMInp_series": [2.8, 4.5, 3.7] },
         "Output": [80.58568, 133.182, 101.1247]
       },
       {
@@ -1008,17 +1008,17 @@
       },
       {
         "Name": "calculate_Dt_OMIn",
-        "Input": { "DMI": 24.5, "Dt_AshIn": 6.5 },
+        "Input": { "Dt_DMIn": 24.5, "Dt_AshIn": 6.5 },
         "Output": 18.0
       },
       {
         "Name": "calculate_Dt_rOMIn",
-        "Input": { "DMI": 30.1, "Dt_AshIn": 2.5, "Dt_NDFIn": 5.3, "Dt_StIn": 4.1, "Dt_FAhydrIn": 1.0, "Dt_TPIn": 5.3, "Dt_NPNDMIn": 2.7 },
+        "Input": { "Dt_DMIn": 30.1, "Dt_AshIn": 2.5, "Dt_NDFIn": 5.3, "Dt_StIn": 4.1, "Dt_FAhydrIn": 1.0, "Dt_TPIn": 5.3, "Dt_NPNDMIn": 2.7 },
         "Output": 9.200000000000003
       },
       {
         "Name": "calculate_Dt_DM",
-        "Input": { "DMI": 19.4, "Dt_AFIn": 24.6 },
+        "Input": { "Dt_DMIn": 19.4, "Dt_AFIn": 24.6 },
         "Output": 78.86178861788616
       },
       {

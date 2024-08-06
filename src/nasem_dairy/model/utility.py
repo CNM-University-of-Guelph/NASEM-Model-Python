@@ -7,68 +7,72 @@ from typing import Dict, Tuple, Union
 import pandas as pd
 
 
-def get_feed_rows_feedlibrary(feeds_to_get: list,
-                              feed_lib_df: pd.DataFrame
+def get_feed_data(Trg_Dt_DMIn: float,
+                  user_diet: pd.DataFrame,
+                  feed_library: pd.DataFrame
 ) -> pd.DataFrame:
-    '''
-    Filter the NASEM feed library DataFrame based on a list of feed names. 
+    """
+    Filter the NASEM feed library DataFrame based on user entered diet. 
 
     Parameters
     ----------
-    feeds_to_get : list
-        List of feed names to filter the feed library.
-    feed_lib_df : pd.DataFrame
+    Trg_Dt_DMIn : float
+        Target dry matter intake (kg) for the diet.
+    user_diet : pd.DataFrame
+        DataFrame containing the user's diet with feed names and their 
+        respective amounts.
+    feed_library : pd.DataFrame
         DataFrame containing the NASEM feed library.
 
     Returns
     -------
     pd.DataFrame
-        DataFrame containing subset of NASEM feed library based on a list of feed names.
+        DataFrame containing the subset of the NASEM feed library based on the 
+        user's diet, with additional calculated columns for dry matter intake.
 
     Notes
     -----
-    - The resulting DataFrame is indexed by feed names after stripping leading and trailing whitespaces.
+    - The resulting DataFrame includes feed names after stripping leading and 
+      trailing whitespaces.
+    - Additional columns 'Fd_DMInp' and 'Fd_DMIn' are added based on user input 
+      and target dry matter intake.
 
     Examples
     --------
-    Filter the NASEM feed library for specific feeds:
+    Calculate the feed data based on user diet and target dry matter intake:
     
     ```{python}
-    # Import default feed library
-    import importlib_resources
     import pandas as pd
-    feed_library_df = pd.read_csv(importlib_resources.files('nasem_dairy.data').joinpath("NASEM_feed_library.csv")) 
-    ```
-
-    ```{python}
-    import nasem_dairy as nd
-    selected_feeds_df = nd.get_feed_rows_feedlibrary(
-        feeds_to_get=['Corn silage, typical', 'Canola meal'],
-        feed_lib_df=feed_library_df)
+    
+    user_diet_df = pd.DataFrame({
+        'Feedstuff': ['Corn silage, typical', 'Canola meal'],
+        'kg_user': [10, 5]
+    })
+        
+    Trg_Dt_DMIn = 15.0
+    
+    selected_feeds_df = get_feed_data(Trg_Dt_DMIn, user_diet_df, feed_library_df)
 
     selected_feeds_df.info()
     ```
-    '''
-
-    # # Filter df using list from user
-    # selected_feed_data = feed_lib_df[feed_lib_df["Fd_Name"].isin(feeds_to_get)]
-
-    # # set names as index for downstream
-    # selected_feed_data = selected_feed_data.set_index('Fd_Name')
-
-    # # Clean names:
-    # selected_feed_data.index = selected_feed_data.index.str.strip()
-
-    selected_feed_data = (
-        feed_lib_df.assign(
-            Fd_Name=lambda df: df["Fd_Name"].str.strip())  # clean whitespace
-        # filter Fd_Name to match feeds_to_get
-        .loc[lambda df: df["Fd_Name"].isin(feeds_to_get)]  
-        .rename(columns={'Fd_Name': 'Feedstuff'})
-        .pipe(lambda df: df[['Feedstuff'] +
-                            [col for col in df.columns if col != 'Feedstuff']])
-    )  #reorder columns
-    return selected_feed_data
+    """
+    feeds = user_diet["Feedstuff"].tolist()
+    # Select required rows from feed library
+    selected_feeds = (
+        feed_library.assign(Fd_Name=lambda df: df["Fd_Name"].str.strip())
+        .loc[lambda df: df["Fd_Name"].isin(feeds)]
+        .rename(columns={"Fd_Name": "Feedstuff"})
+        .pipe(lambda df: df[
+            ["Feedstuff"] + [col for col in df.columns if col != "Feedstuff"]
+            ])
+        )
+    feed_data = (user_diet.assign(
+        Fd_DMInp=lambda df: df["kg_user"] / df["kg_user"].sum(),
+        Fd_DMIn=lambda df: df["Fd_DMInp"] * Trg_Dt_DMIn,
+        )
+        .merge(selected_feeds, how="left", on="Feedstuff")
+    )
+    return feed_data
 
 
 def read_csv_input(path_to_file: str = "input.csv"

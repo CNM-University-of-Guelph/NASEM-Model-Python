@@ -14,7 +14,7 @@
             "Trg_MilkFatp": 0.0,
             "Trg_MilkTPp": 0.0,
             "Trg_MilkLacp": 0.0,
-            "DMI": 2.3,
+            "Trg_Dt_DMIn": 2.3,
             "An_BW_mature": 700.0,
             "Trg_FrmGain": 0.85,
             "An_GestDay": 0.0,
@@ -259,7 +259,7 @@
             "Inf_VFA_g": 0,
             "Inf_Location": "Arterial"
         },
-        "MP_NP_efficiency_input": {
+        "MP_NP_efficiency": {
             "Trg_AbsHis_NPHis": 0.75,
             "Trg_AbsIle_NPIle": 0.71,
             "Trg_AbsLeu_NPLeu": 0.73,
@@ -1424,7 +1424,7 @@
             "ZnProd_ZnIn": 0.1802,
             "Dt_DigrOMa_Dt": 33.4481
         },
-        "AA_values": {
+        "aa_values": {
             "Du_AAMic": [
                 10.6037,
                 4.2841,
@@ -1448,6 +1448,18 @@
                 9.6616,
                 2.1246,
                 10.6697
+            ],
+            "Gest_AA_g": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
             ],
             "Du_AAEndP": [
                 5.2297,
@@ -1629,6 +1641,18 @@
                 0.011,
                 0.0948
             ],
+            "GestAA_AbsAA": [
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+            ],
             "Mlk_AA_g": [
                 0.0,
                 0.0,
@@ -1665,19 +1689,7 @@
                 0.0,
                 0.0
             ],
-            "Gest_AA_g": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
-            ],
-            "GestAA_AbsAA": [
+            "Trg_Mlk_AA_g": [
                 0.0,
                 0.0,
                 0.0,
@@ -1772,18 +1784,6 @@
                 0.0075,
                 0.0546,
                 0.0156
-            ],
-            "Trg_Mlk_AA_g": [
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0,
-                0.0
             ],
             "Trg_AAUse_g": [
                 14.1394,

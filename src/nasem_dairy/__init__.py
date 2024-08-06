@@ -2,9 +2,9 @@
 from importlib.metadata import version
 __version__ = version("nasem_dairy")
 
-from nasem_dairy.model.utilities import get_feed_rows_feedlibrary, read_csv_input, read_json_input, demo
+from nasem_dairy.model.utility import read_csv_input, read_json_input, demo, get_feed_data
 from nasem_dairy.model_output.ModelOutput import ModelOutput
-from nasem_dairy.model.execute_model import execute_model
+from nasem_dairy.model.nasem import nasem
 from nasem_dairy.data.constants import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list, f_Imb
 from nasem_dairy.nasem_equations.dry_matter_intake import (
     calculate_Kb_LateGest_DMIn,
@@ -255,8 +255,6 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_GasEOut_Dry,
     calculate_Dt_GasEOut,
     calculate_diet_info,
-    calculate_diet_data_initial,
-    calculate_diet_data_complete,
     calculate_Fd_XIn,
     calculate_Fd_FAIn,
     calculate_macroIn,
@@ -290,7 +288,8 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_RDP,
     calculate_Dt_RDP_CP,
     calculate_Fd_AFInp,
-    calculate_Fd_RDPIn
+    calculate_Fd_RDPIn,
+    calculate_diet_data
 )
 
 from nasem_dairy.nasem_equations.rumen import (
@@ -432,7 +431,9 @@ from nasem_dairy.nasem_equations.amino_acid import (
     calculate_RecAA,
     calculate_MWAA,
     calculate_Body_AA_TP,
-    calculate_Abs_EAA2_g
+    calculate_Abs_EAA2_g,
+    calculate_Trg_AbsAA_NPxprtAA_array,
+    calculate_Du_EAA_g
 )
 
 
@@ -508,8 +509,6 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_MBW,
     calculate_An_TPIn,
     calculate_An_DigTPaIn,
-    calculate_An_data_initial,
-    calculate_An_data_complete,
     calculate_An_MPIn,
     calculate_An_MPIn_g,
     calculate_An_DigStIn_Base,
@@ -588,7 +587,11 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_AshIn,
     calculate_An_Ash,
     calculate_An_IdAAIn,
-    calculate_An_XIn
+    calculate_An_XIn,
+    calculate_an_data,
+    calculate_An_PrePartDay,
+    calculate_An_PrePartWk,
+    calculate_An_PrePartWkDurat
 )
 
 from nasem_dairy.nasem_equations.gestation import (
@@ -608,8 +611,7 @@ from nasem_dairy.nasem_equations.gestation import (
     calculate_Fet_BWgain,
     calculate_Gest_AA_g,
     calculate_Gest_EAA_g,
-    calculate_GestAA_AbsAA,
-    calculate_Body_AA_TP
+    calculate_GestAA_AbsAA
 )
 
 from nasem_dairy.nasem_equations.fecal import (

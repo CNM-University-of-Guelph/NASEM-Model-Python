@@ -70,7 +70,7 @@ feed_library_in = pd.read_csv(path_to_package_data.joinpath("NASEM_feed_library.
 
 ``` python
 ## RUN MODEL ###
-output = nd.execute_model(
+output = nd.nasem(
     user_diet = user_diet_in, 
     animal_input = animal_input_in, 
     equation_selection = equation_selection_in, 

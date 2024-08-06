@@ -116,7 +116,7 @@
   },
   {
     "Name": "calculate_Ur_AAEnd_TP",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
   },
   {

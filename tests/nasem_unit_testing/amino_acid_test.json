@@ -294,12 +294,12 @@
   },
   {
     "Name": "calculate_MiTPAAProf",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [5.47, 2.21, 6.99, 9.23, 9.44, 2.63, 6.3, 6.23, 1.37, 6.88]
   },
   {
     "Name": "calculate_mPrt_k_AA_array",
-    "Input": {"mPrt_coeff": null, "AA_list": null},
+    "Input": {"mPrt_coeff": null, "aa_list": null},
     "Output": [0.0, 1.675, 0.885, 0.466, 1.153, 1.839, 0.0, 0.0, 0.0, 0.0]
   },
   {
@@ -309,7 +309,7 @@
   },
   {
     "Name": "calculate_EndAAProf",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [4.61, 2.9, 4.09, 7.67, 6.23, 1.26, 3.98, 5.18, 1.29, 5.29]
   },
   {
@@ -324,7 +324,7 @@
   },
   {
     "Name": "calculate_RecAA",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [0.94250707, 0.93196645, 0.89285714, 0.93896714, 0.9380863,  0.95238095, 0.94250707, 0.93720712, 0.94339623, 0.90744102]
   },
   {
@@ -339,7 +339,7 @@
   },
   {
     "Name": "calculate_MWAA",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [174.2, 155.2, 131.2, 131.2, 146.2, 149.2, 165.2, 119.1, 204.2, 117.2]
   },
   {
@@ -349,32 +349,42 @@
   },
   {
     "Name": "calculate_Body_AA_TP",
-    "Input": {"AA_list": null, "coeff_dict": null},
+    "Input": {"aa_list": null, "coeff_dict": null},
     "Output": [8.2, 3.04, 3.69, 8.27, 7.9, 2.37, 4.41, 4.84, 1.05, 5.15]
   },
   {
     "Name": "calculate_An_IdAAIn_array",
-    "Input": {"An_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "AA_list": null},
+    "Input": {"An_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "aa_list": null},
     "Output": [1.4, 2.4, 4.5, 1.2, 8.4, 7.3, 3.0, 1.1, 2.5, 0.5]
   },
   {
     "Name": "calculate_Inf_AA_g",
-    "Input": {"infusion_data": {"Inf_Arg_g": 2.3, "Inf_His_g": 4.1, "Inf_Ile_g": 0.5, "Inf_Leu_g": 1.7, "Inf_Lys_g": 8.2,"Inf_Met_g": 6.8, "Inf_Phe_g": 8.1, "Inf_Thr_g": 1.2, "Inf_Trp_g": 3.4,"Inf_Val_g": 4.1}, "AA_list": null},
+    "Input": {"infusion_data": {"Inf_Arg_g": 2.3, "Inf_His_g": 4.1, "Inf_Ile_g": 0.5, "Inf_Leu_g": 1.7, "Inf_Lys_g": 8.2,"Inf_Met_g": 6.8, "Inf_Phe_g": 8.1, "Inf_Thr_g": 1.2, "Inf_Trp_g": 3.4,"Inf_Val_g": 4.1}, "aa_list": null},
     "Output": [2.3, 4.1, 0.5, 1.7, 8.2, 6.8, 8.1, 1.2, 3.4, 4.1]
   },
   {
     "Name": "calculate_Dt_AARUPIn",
-    "Input": {"AA_list": null, "diet_data": {"Dt_ArgRUPIn": 4.6, "Dt_HisRUPIn": 4.1, "Dt_IleRUPIn": 5.8, "Dt_LeuRUPIn": 0.4, "Dt_LysRUPIn": 9.1,"Dt_MetRUPIn": 2.5, "Dt_PheRUPIn": 1.7, "Dt_ThrRUPIn": 7.4, "Dt_TrpRUPIn": 6.2,"Dt_ValRUPIn": 0.1}},
+    "Input": {"aa_list": null, "diet_data": {"Dt_ArgRUPIn": 4.6, "Dt_HisRUPIn": 4.1, "Dt_IleRUPIn": 5.8, "Dt_LeuRUPIn": 0.4, "Dt_LysRUPIn": 9.1,"Dt_MetRUPIn": 2.5, "Dt_PheRUPIn": 1.7, "Dt_ThrRUPIn": 7.4, "Dt_TrpRUPIn": 6.2,"Dt_ValRUPIn": 0.1}},
     "Output": [4.6, 4.1, 5.8, 0.4, 9.1, 2.5, 1.7, 7.4, 6.2, 0.1]
   },
   {
     "Name": "calculate_Inf_AARUPIn",
-    "Input": {"AA_list": null, "infusion_data": {"Inf_ArgRUPIn": 0.6, "Inf_HisRUPIn": 9.3, "Inf_IleRUPIn": 5.2, "Inf_LeuRUPIn": 3.8, "Inf_LysRUPIn": 1.3,"Inf_MetRUPIn": 2.8, "Inf_PheRUPIn": 0.4, "Inf_ThrRUPIn": 6.2, "Inf_TrpRUPIn": 1.7,"Inf_ValRUPIn": 2.9}},
+    "Input": {"aa_list": null, "infusion_data": {"Inf_ArgRUPIn": 0.6, "Inf_HisRUPIn": 9.3, "Inf_IleRUPIn": 5.2, "Inf_LeuRUPIn": 3.8, "Inf_LysRUPIn": 1.3,"Inf_MetRUPIn": 2.8, "Inf_PheRUPIn": 0.4, "Inf_ThrRUPIn": 6.2, "Inf_TrpRUPIn": 1.7,"Inf_ValRUPIn": 2.9}},
     "Output": [0.6, 9.3, 5.2, 3.8, 1.3, 2.8, 0.4, 6.2, 1.7, 2.9]
   },
   {
     "Name": "calculate_Dt_AAIn",
-    "Input": {"AA_list": null, "diet_data": {"Dt_ArgIn": 7.5, "Dt_HisIn": 4.5, "Dt_IleIn": 2.8, "Dt_LeuIn": 0.6, "Dt_LysIn": 7.5,"Dt_MetIn": 3.8, "Dt_PheIn": 2.9, "Dt_ThrIn": 1.5, "Dt_TrpIn": 4.3,"Dt_ValIn": 2.0}},
+    "Input": {"aa_list": null, "diet_data": {"Dt_ArgIn": 7.5, "Dt_HisIn": 4.5, "Dt_IleIn": 2.8, "Dt_LeuIn": 0.6, "Dt_LysIn": 7.5,"Dt_MetIn": 3.8, "Dt_PheIn": 2.9, "Dt_ThrIn": 1.5, "Dt_TrpIn": 4.3,"Dt_ValIn": 2.0}},
     "Output": [7.5, 4.5, 2.8, 0.6, 7.5, 3.8, 2.9, 1.5, 4.3, 2.0]
+  },
+  {
+    "Name": "calculate_Trg_AbsAA_NPxprtAA_array",
+    "Input": {"MP_NP_efficiency_dict": null, "aa_list": null},
+    "Output": [0.75, 0.71, 0.73, 0.72, 0.73, 0.6, 0.64, 0.86, 0.74]
+  },
+  {
+    "Name": "calculate_Du_EAA_g",
+    "Input": {"Du_AA_series": [1.2, 4.9, 3.7]},
+    "Output": 9.8
   }
 ]

@@ -12,7 +12,7 @@ if __name__ == "__main__":
         path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv")
         )
 
-    output = nd.execute_model(
+    output = nd.nasem(
         user_diet = user_diet_in, 
         animal_input = animal_input_in, 
         equation_selection = equation_selection_in, 

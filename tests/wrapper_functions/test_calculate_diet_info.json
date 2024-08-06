@@ -1,7 +1,7 @@
 {
     "name": "calculate_diet_info",
     "input": {
-        "DMI": 20.1,
+        "Dt_DMIn": 20.1,
         "An_StatePhys": "Lactating Cow", 
         "Use_DNDF_IV": 1,
         "diet_info_df": {

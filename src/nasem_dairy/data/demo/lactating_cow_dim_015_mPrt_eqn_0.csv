@@ -35,7 +35,7 @@ animal_input,An_LactDay,15.0,int
 animal_input,Trg_MilkFatp,4.0,float
 animal_input,Trg_MilkTPp,3.0,float
 animal_input,Trg_MilkLacp,4.85,float
-animal_input,DMI,22.0,float aka. Trg_Dt_DMIn
+animal_input,Trg_Dt_DMIn,22.0,float aka. Trg_Dt_DMIn
 animal_input,An_BW_mature,700.0,float
 animal_input,Trg_FrmGain,0.08,float
 animal_input,An_GestDay,0.0,int

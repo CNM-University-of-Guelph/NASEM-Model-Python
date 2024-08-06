@@ -106,8 +106,8 @@ def calculate_Fd_GE(An_StatePhys: str,
     return Fd_GE
 
 
-def calculate_Fd_DMIn(DMI: pd.Series, Fd_DMInp: pd.Series) -> pd.Series:
-    Fd_DMIn = Fd_DMInp * DMI  # Line 441
+def calculate_Fd_DMIn(Dt_DMIn: pd.Series, Fd_DMInp: pd.Series) -> pd.Series:
+    Fd_DMIn = Fd_DMInp * Dt_DMIn  # Line 441
     return Fd_DMIn
 
 
@@ -565,11 +565,11 @@ def calculate_Fd_ME_ClfLiq(An_StatePhys: str,
     return Fd_ME_ClfLiq
 
 
-def calculate_Fd_DMIn_ClfFor(DMI: float, 
+def calculate_Fd_DMIn_ClfFor(Dt_DMIn: float, 
                              Fd_Conc: pd.Series, 
                              Fd_DMInp: pd.Series
 ) -> pd.Series:
-    Fd_DMIn_ClfFor = (1 - Fd_Conc / 100) * DMI * Fd_DMInp  # Line 296
+    Fd_DMIn_ClfFor = (1 - Fd_Conc / 100) * Dt_DMIn * Fd_DMInp  # Line 296
     return Fd_DMIn_ClfFor
 
 
@@ -963,37 +963,37 @@ def calculate_micro_absorbtion(diet_info: pd.DataFrame,
 
 
 def calculate_Fd_AAt_CP(diet_info: pd.DataFrame, 
-                        AA_list: list,
+                        aa_list: list,
                         coeff_dict: dict
 ) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}t_CP": lambda diet_info, AA=AA: 
-                diet_info[f"Fd_{AA}_CP"] / coeff_dict[f"Rec{AA}"]
-            for AA in AA_list
+            f"Fd_{aa}t_CP": lambda diet_info, aa=aa: 
+                diet_info[f"Fd_{aa}_CP"] / coeff_dict[f"Rec{aa}"]
+            for aa in aa_list
         })
 
 
-def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}RUPIn": lambda diet_info, AA=AA: 
-                diet_info[f"Fd_{AA}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
-            for AA in AA_list
+            f"Fd_{aa}RUPIn": lambda diet_info, aa=aa: 
+                diet_info[f"Fd_{aa}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
+            for aa in aa_list
         })
 
 
 def calculate_Fd_IdAARUPIn(diet_info: pd.DataFrame, 
-                           AA_list: list,
+                           aa_list: list,
                            SIDig_values: dict
 ) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_Id{AA}RUPIn":
-                lambda diet_info, AA=AA: 
+            f"Fd_Id{aa}RUPIn":
+                lambda diet_info, aa=aa: 
                 diet_info['Fd_dcRUP'] / 100 * 
-                diet_info[f"Fd_{AA}RUPIn"] * SIDig_values[AA] 
-            for AA in AA_list
+                diet_info[f"Fd_{aa}RUPIn"] * SIDig_values[aa] 
+            for aa in aa_list
         })
 
 
@@ -1007,15 +1007,15 @@ def calculate_Fd_Dig_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFr
         })
 
 
-def calculate_Fd_AAIn(diet_info: pd.DataFrame, AA_list: list) -> pd.DataFrame:
+def calculate_Fd_AAIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
     return diet_info.assign(
         **{
-            f"Fd_{AA}In": lambda diet_info, AA=AA: np.where(
+            f"Fd_{aa}In": lambda diet_info, aa=aa: np.where(
                 diet_info['Fd_CPIn'] > 0, 
-                    ((diet_info[f"Fd_{AA}t_CP"] / 100) * 
+                    ((diet_info[f"Fd_{aa}t_CP"] / 100) * 
                      (diet_info['Fd_CP'] / 100) * (diet_info['Fd_DMIn'] * 1000)), 
                     0)
-            for AA in AA_list
+            for aa in aa_list
         })
 
 
@@ -1158,12 +1158,12 @@ def calculate_Dt_SatFAIn(Dt_FAIn: float, Dt_UFAIn: float) -> float:
     return Dt_SatFAIn
 
 
-def calculate_Dt_OMIn(DMI: float, Dt_AshIn: float) -> float:
-    Dt_OMIn = DMI - Dt_AshIn  # Line 645
+def calculate_Dt_OMIn(Dt_DMIn: float, Dt_AshIn: float) -> float:
+    Dt_OMIn = Dt_DMIn - Dt_AshIn  # Line 645
     return Dt_OMIn
 
 
-def calculate_Dt_rOMIn(DMI: float, 
+def calculate_Dt_rOMIn(Dt_DMIn: float, 
                        Dt_AshIn: float, 
                        Dt_NDFIn: float, 
                        Dt_StIn: float, 
@@ -1171,7 +1171,7 @@ def calculate_Dt_rOMIn(DMI: float,
                        Dt_TPIn: float,
                        Dt_NPNDMIn: float
 ) -> float:
-    Dt_rOMIn = (DMI - Dt_AshIn - Dt_NDFIn - Dt_StIn - 
+    Dt_rOMIn = (Dt_DMIn - Dt_AshIn - Dt_NDFIn - Dt_StIn - 
                 Dt_FAhydrIn - Dt_TPIn - Dt_NPNDMIn) # Line 646
     # Is negative on some diets. Some Ash and CP in NDF, and water from FAhydr 
     # in TAG contributes. Trap negative Dt values. More likely due to entry 
@@ -1180,8 +1180,8 @@ def calculate_Dt_rOMIn(DMI: float,
     return Dt_rOMIn
 
 
-def calculate_Dt_DM(DMI: float, Dt_AFIn: float) -> float:
-    Dt_DM = DMI / Dt_AFIn * 100  # Line 655
+def calculate_Dt_DM(Dt_DMIn: float, Dt_AFIn: float) -> float:
+    Dt_DM = Dt_DMIn / Dt_AFIn * 100  # Line 655
     return Dt_DM
 
 
@@ -1740,10 +1740,10 @@ def calculate_DtIn(diet_info: pd.DataFrame,
     return diet_data
 
 
-def calculate_Dt_DMI(variables: list, DMI: float, diet_data: dict) -> dict:
+def calculate_Dt_DMI(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
     # Lines 620, 656, 657, 659-662, 666-709
     for var in variables:
-        diet_data[f'Dt_{var}'] = diet_data[f'Dt_{var}In'] / DMI * 100
+        diet_data[f'Dt_{var}'] = diet_data[f'Dt_{var}In'] / Dt_DMIn * 100
     return diet_data
 
 
@@ -1765,26 +1765,26 @@ def calculate_Dt_microIn(diet_info: pd.DataFrame,
     return diet_data
 
 
-def calculate_Dt_macro(variables: list, DMI: float, diet_data: dict) -> dict:
+def calculate_Dt_macro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
     # Line 795-804
     for var in variables:
-        diet_data[f'{var}'] = diet_data[f'{var}In'] / DMI / 1000 * 100
+        diet_data[f'{var}'] = diet_data[f'{var}In'] / Dt_DMIn / 1000 * 100
     return diet_data
 
 
-def calculate_Dt_micro(variables: list, DMI: float, diet_data: dict) -> dict:
+def calculate_Dt_micro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
     # Line 807-825
     for var in variables:
-        diet_data[f'{var}'] = diet_data[f'{var}In'] / DMI
+        diet_data[f'{var}'] = diet_data[f'{var}In'] / Dt_DMIn
     return diet_data
 
 
 def calculate_Dt_IdAARUPIn(diet_info: pd.DataFrame, 
-                           AA_list: list,
+                           aa_list: list,
                            diet_data: dict
 ) -> dict:
-    for AA in AA_list:
-        diet_data[f'Dt_Id{AA}RUPIn'] = diet_info[f'Fd_Id{AA}RUPIn'].sum()
+    for aa in aa_list:
+        diet_data[f'Dt_Id{aa}RUPIn'] = diet_info[f'Fd_Id{aa}RUPIn'].sum()
     return diet_data
 
 
@@ -1814,20 +1814,20 @@ def calculate_Dt_FA_FA(variables: list, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_DtAARUP_DtAA(AA_list: list, diet_data: dict) -> dict:
-    for AA in AA_list:
-        diet_data[f"Dt{AA}RUP_Dt{AA}"] = (diet_data[f"Dt_{AA}RUPIn"] / 
-                                          diet_data[f"Dt_{AA}In"])
+def calculate_DtAARUP_DtAA(aa_list: list, diet_data: dict) -> dict:
+    for aa in aa_list:
+        diet_data[f"Dt{aa}RUP_Dt{aa}"] = (diet_data[f"Dt_{aa}RUPIn"] / 
+                                          diet_data[f"Dt_{aa}In"])
     return diet_data
 
 
 def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series, 
-                        AA_list: list,
+                        aa_list: list,
                         diet_data: dict
 ) -> dict:
-    for AA in AA_list:
-        diet_data[f'Dt_Id{AA}In'] = (Du_IdAAMic[f'{AA}'] + 
-                                     diet_data[f'Dt_Id{AA}RUPIn'])
+    for aa in aa_list:
+        diet_data[f'Dt_Id{aa}In'] = (Du_IdAAMic[f'{aa}'] + 
+                                     diet_data[f'Dt_Id{aa}RUPIn'])
     return diet_data
 
 
@@ -2140,9 +2140,7 @@ def calculate_TT_dcDtFA(Dt_DigFAIn: float, Dt_FAIn: float) -> float:
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
-
-
-def calculate_diet_info(DMI: float, 
+def calculate_diet_info(Dt_DMIn: float, 
                         An_StatePhys: str, 
                         Use_DNDF_IV: int, 
                         diet_info: pd.DataFrame, 
@@ -2153,7 +2151,7 @@ def calculate_diet_info(DMI: float,
 
     # Calculate all aditional feed data columns
     complete_diet_info['Fd_DMIn'] = calculate_Fd_DMIn(
-        DMI, diet_info['Fd_DMInp']
+        Dt_DMIn, diet_info['Fd_DMInp']
         )
     complete_diet_info['Fd_GE'] = calculate_Fd_GE(
         An_StatePhys, diet_info['Fd_Category'], diet_info['Fd_CP'],
@@ -2349,7 +2347,7 @@ def calculate_diet_info(DMI: float,
         complete_diet_info['Fd_DE_ClfLiq']
         )
     complete_diet_info['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
-        DMI, diet_info['Fd_Conc'], complete_diet_info['Fd_DMInp']
+        Dt_DMIn, diet_info['Fd_Conc'], complete_diet_info['Fd_DMInp']
         )
     
     macro_mineral_intakes = [
@@ -2437,8 +2435,8 @@ def calculate_diet_info(DMI: float,
         complete_diet_info, micro_absorption
         )
 
-    # Digested endogenous protein is ignored as it is a recycle of previously absorbed AA.
-    # SI Digestibility of AA relative to RUP digestibility ([g dAA / g AA] / [g dRUP / g RUP])
+    # Digested endogenous protein is ignored as it is a recycle of previously absorbed aa.
+    # SI Digestibility of aa relative to RUP digestibility ([g dAA / g aa] / [g dRUP / g RUP])
     # All set to 1 due to lack of clear evidence for deviations.
     SIDigArgRUPf = 1
     SIDigHisRUPf = 1
@@ -2465,16 +2463,16 @@ def calculate_diet_info(DMI: float,
         'Val': SIDigValRUPf
     }
 
-    AA_list = [
+    aa_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
 
     complete_diet_info = calculate_Fd_AAt_CP(
-        complete_diet_info, AA_list, coeff_dict
+        complete_diet_info, aa_list, coeff_dict
         )
-    complete_diet_info = calculate_Fd_AARUPIn(complete_diet_info, AA_list)
+    complete_diet_info = calculate_Fd_AARUPIn(complete_diet_info, aa_list)
     complete_diet_info = calculate_Fd_IdAARUPIn(
-        complete_diet_info, AA_list, SIDig_values
+        complete_diet_info, aa_list, SIDig_values
         )
     complete_diet_info['Fd_DigSt'] = calculate_Fd_DigSt(
         diet_info['Fd_St'], diet_info['Fd_dcSt']
@@ -2525,7 +2523,7 @@ def calculate_diet_info(DMI: float,
     complete_diet_info['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
         complete_diet_info['Fd_RUPIn'], complete_diet_info['Fd_dcRUP']
         )
-    complete_diet_info = calculate_Fd_AAIn(complete_diet_info, AA_list)
+    complete_diet_info = calculate_Fd_AAIn(complete_diet_info, aa_list)
     complete_diet_info["Fd_AFInp"] = calculate_Fd_AFInp(
         complete_diet_info["Fd_AFIn"]
         )
@@ -2535,28 +2533,25 @@ def calculate_diet_info(DMI: float,
     return complete_diet_info
 
 
-def calculate_diet_data_initial(diet_info: pd.DataFrame, 
-                                DMI: float, 
-                                An_BW: float, 
-                                An_StatePhys: str, 
-                                An_DMIn_BW: float,
-                                An_AgeDryFdStart: int, 
-                                Env_TempCurr: float, 
-                                DMIn_eqn: int,
-                                Monensin_eqn: int, 
-                                Fe_rOMend: float, 
-                                coeff_dict: dict
+def calculate_diet_data(diet_info: pd.DataFrame,
+                        diet_data: dict,
+                        Dt_DMIn: float, 
+                        An_BW: float, 
+                        An_StatePhys: str, 
+                        An_DMIn_BW: float,
+                        An_AgeDryFdStart: int, 
+                        Env_TempCurr: float, 
+                        DMIn_eqn: int,
+                        Monensin_eqn: int, 
+                        Fe_rOMend: float, 
+                        Fe_CP: float,
+                        Fe_CPend: float,
+                        Fe_MiTP: float,
+                        Fe_NPend: float,
+                        Du_idMiTP: float,
+                        Du_IdAAMic: pd.Series,
+                        coeff_dict: dict
 ) -> dict:
-    '''
-    diet_info is a pd.DataFrame of the user selected diet with columns from feed
-    library.
-
-    returns diet_data which is a dict of values that represent the diet as a whole,
-    rather than individual ingredients.
-
-    '''
-    diet_data = {}
-
     # Diet Intakes
     column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
     diet_data = calculate_Dt_X(diet_info, column_names_DMInp, diet_data)
@@ -2627,12 +2622,12 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
     diet_data['Dt_SatFAIn'] = calculate_Dt_SatFAIn(
         diet_data['Dt_FAIn'], diet_data['Dt_UFAIn']
         )
-    diet_data['Dt_OMIn'] = calculate_Dt_OMIn(DMI, diet_data['Dt_AshIn'])
+    diet_data['Dt_OMIn'] = calculate_Dt_OMIn(Dt_DMIn, diet_data['Dt_AshIn'])
     diet_data['Dt_rOMIn'] = calculate_Dt_rOMIn(
-        DMI, diet_data['Dt_AshIn'], diet_data['Dt_NDFIn'], diet_data['Dt_StIn'],
+        Dt_DMIn, diet_data['Dt_AshIn'], diet_data['Dt_NDFIn'], diet_data['Dt_StIn'],
         diet_data['Dt_FAhydrIn'], diet_data['Dt_TPIn'], diet_data['Dt_NPNDMIn']
         )
-    diet_data['Dt_DM'] = calculate_Dt_DM(DMI, diet_data['Dt_AFIn'])
+    diet_data['Dt_DM'] = calculate_Dt_DM(Dt_DMIn, diet_data['Dt_AFIn'])
     diet_data['Dt_NDFIn_BW'] = calculate_Dt_NDFIn_BW(
         An_BW, diet_data['Dt_NDFIn']
         )
@@ -2644,7 +2639,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182', 'C183',
         'OtherFA', 'UFA', 'MUFA', 'PUFA', 'SatFA'
     ]
-    diet_data = calculate_Dt_DMI(column_names_DMI, DMI, diet_data)
+    diet_data = calculate_Dt_DMI(column_names_DMI, Dt_DMIn, diet_data)
 
     column_names_FA = [
         'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
@@ -2680,19 +2675,19 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         'Dt_Ca', 'Dt_P', 'Dt_Pinorg', 'Dt_Porg', 'Dt_Na', 'Dt_Mg', 'Dt_K',
         'Dt_Cl', 'Dt_S'
     ]
-    diet_data = calculate_Dt_macro(column_names_macro, DMI, diet_data)
+    diet_data = calculate_Dt_macro(column_names_macro, Dt_DMIn, diet_data)
 
     column_names_micro_vitamin = [
         'Dt_Co', 'Dt_Cr', 'Dt_Cu', 'Dt_Fe', 'Dt_I', 'Dt_Mn', 'Dt_Mo', 'Dt_Se',
         'Dt_Zn', 'Dt_VitA', 'Dt_VitD', 'Dt_VitE', 'Dt_Choline', 'Dt_Biotin',
         'Dt_Niacin', 'Dt_B_Carotene'
     ]
-    diet_data = calculate_Dt_micro(column_names_micro_vitamin, DMI, diet_data)
+    diet_data = calculate_Dt_micro(column_names_micro_vitamin, Dt_DMIn, diet_data)
 
-    AA_list = [
+    aa_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    diet_data = calculate_Dt_IdAARUPIn(diet_info, AA_list, diet_data)
+    diet_data = calculate_Dt_IdAARUPIn(diet_info, aa_list, diet_data)
 
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
@@ -2705,7 +2700,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         diet_data['Dt_DigNDFIn_Base'], diet_data['Dt_NDFIn']
         )
     diet_data['TT_dcNDF'] = calculate_TT_dcNDF(
-        diet_data['TT_dcNDF_Base'], diet_data['Dt_StIn'], DMI, An_DMIn_BW
+        diet_data['TT_dcNDF_Base'], diet_data['Dt_StIn'], Dt_DMIn, An_DMIn_BW
         )
     diet_data['TT_dcSt_Base'] = calculate_TT_dcSt_Base(
         diet_data['Dt_DigStIn_Base'], diet_data['Dt_StIn']
@@ -2744,9 +2739,8 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
     diet_data['Dt_DMIn_ClfStrt'] = calculate_Dt_DMIn_ClfStrt(
         An_BW, diet_data['Dt_MEIn_ClfLiq'], diet_data['Dt_DMIn_ClfLiq'],
         diet_data['Dt_DMIn_ClfFor'], An_AgeDryFdStart, Env_TempCurr, DMIn_eqn,
-        DMI, coeff_dict
+        Dt_DMIn, coeff_dict
         )
-
     Dig_FA_list = [
         'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
         'C183', 'OtherFA'
@@ -2767,23 +2761,27 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
         diet_data['Dt_acMg'], diet_data['Dt_MgIn']
         )
     diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(diet_info['Fd_DigWSCIn'])
-    diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'], DMI)
-    diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(diet_data['Dt_DigWSCIn'], DMI)
+    diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'], Dt_DMIn)
+    diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(
+        diet_data['Dt_DigWSCIn'], Dt_DMIn
+        )
     diet_data['Dt_DigrOMa'] = calculate_Dt_DigrOMa(
-        diet_data['Dt_DigrOMaIn'], DMI
+        diet_data['Dt_DigrOMaIn'], Dt_DMIn
         )
     diet_data['Dt_DigrOMa_Dt'] = calculate_Dt_DigrOMa_Dt(
         diet_data['Dt_rOM'], coeff_dict
         )
     diet_data['Dt_DigrOMt'] = calculate_Dt_DigrOMt(
-        diet_data['Dt_DigrOMtIn'], DMI
+        diet_data['Dt_DigrOMtIn'], Dt_DMIn
         )
     diet_data['Dt_DigNDFnfIn'] = calculate_Dt_DigNDFnfIn(
         diet_data['TT_dcNDF'], diet_data['Dt_NDFnfIn']
         )
-    diet_data['Dt_DigNDF'] = calculate_Dt_DigNDF(diet_data['Dt_DigNDFIn'], DMI)
+    diet_data['Dt_DigNDF'] = calculate_Dt_DigNDF(
+        diet_data['Dt_DigNDFIn'], Dt_DMIn
+        )
     diet_data['Dt_DigNDFnf'] = calculate_Dt_DigNDFnf(
-        diet_data['Dt_DigNDFnfIn'], DMI
+        diet_data['Dt_DigNDFnfIn'], Dt_DMIn
         )
     diet_data['Dt_idcRUP'] = calculate_Dt_idcRUP(
         diet_data['Dt_idRUPIn'], diet_data['Dt_RUPIn']
@@ -2792,7 +2790,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
     diet_data['Dt_RDTPIn'] = calculate_Dt_RDTPIn(
         diet_data['Dt_RDPIn'], diet_data['Dt_NPNCPIn'], coeff_dict
         )
-    diet_data['Dt_RDP'] = calculate_Dt_RDP(diet_data['Dt_RDPIn'], DMI)
+    diet_data['Dt_RDP'] = calculate_Dt_RDP(diet_data['Dt_RDPIn'], Dt_DMIn)
     diet_data['Dt_RDP_CP'] = calculate_Dt_RDP_CP(
         diet_data['Dt_RDP'], diet_data['Dt_CP']
         )
@@ -2811,7 +2809,7 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
     diet_data['Dt_DigSatFAIn'] = calculate_Dt_DigSatFAIn(
         diet_data['Dt_DigFAIn'], diet_data['Dt_DigUFAIn']
         )
-    diet_data['Dt_DigFA'] = calculate_Dt_DigFA(diet_data['Dt_DigFAIn'], DMI)
+    diet_data['Dt_DigFA'] = calculate_Dt_DigFA(diet_data['Dt_DigFAIn'], Dt_DMIn)
     DigFA_FA_list = [
         'DigFA', 'DigC120', 'DigC140', 'DigC160', 'DigC161', 'DigC180',
         'DigC181t', 'DigC181c', 'DigC182', 'DigC183', 'DigUFA', 'DigMUFA',
@@ -2822,120 +2820,95 @@ def calculate_diet_data_initial(diet_info: pd.DataFrame,
     diet_data['TT_dcDtFA'] = calculate_TT_dcDtFA(
         diet_data['Dt_DigFAIn'], diet_data['Dt_FAIn']
         )
-    diet_data['Dt_GE'] = calculate_Dt_GE(diet_data['Dt_GEIn'], DMI)
+    diet_data['Dt_GE'] = calculate_Dt_GE(diet_data['Dt_GEIn'], Dt_DMIn)
     diet_data['Dt_GasE_IPCC2'] = calculate_Dt_GasE_IPCC2(diet_data['Dt_GEIn'])
     diet_data['Dt_GasEOut'] = calculate_Dt_GasEOut(
-        An_StatePhys, Monensin_eqn, DMI, diet_data['Dt_FA'], 
+        An_StatePhys, Monensin_eqn, Dt_DMIn, diet_data['Dt_FA'], 
         diet_data['Dt_DigNDF'], diet_data['Dt_GEIn'], diet_data['Dt_NDF']
         )
-    diet_data = calculate_DtAARUP_DtAA(AA_list, diet_data)
+    diet_data = calculate_DtAARUP_DtAA(aa_list, diet_data)
     diet_data["Dt_DE_ClfLiq"] = calculate_Dt_DE_ClfLiq(
         diet_data["Dt_DEIn_ClfLiq"], diet_data["Dt_DMIn_ClfLiq"]
         )
-    return diet_data
-
-
-def calculate_diet_data_complete(
-        diet_data_initial: dict,
-        An_StatePhys: str,
-        DMI: float,
-        Fe_CP: float,
-        Fe_CPend: float,
-        Fe_MiTP: float,
-        Fe_NPend: float,
-        Monensin_eqn: int,  #equation_selection['Monensin_eqn'] 
-        Du_IdAAMic: pd.Series,
-        Du_idMiTP: float,
-        coeff_dict: dict
-) -> dict:
-    """
-    Du_IdAAMic is a series passed from the AA_values dataframe, used to calculate Dt_IdAAIn
-    """
-    complete_diet_data = diet_data_initial.copy()
-
-    complete_diet_data['Dt_DigCPaIn'] = calculate_Dt_DigCPaIn(
-        complete_diet_data['Dt_CPIn'], Fe_CP
+    diet_data['Dt_DigCPaIn'] = calculate_Dt_DigCPaIn(
+        diet_data['Dt_CPIn'], Fe_CP
         )
-    complete_diet_data['Dt_DigCPtIn'] = calculate_Dt_DigCPtIn(
-        An_StatePhys, complete_diet_data['Dt_DigCPaIn'], Fe_CPend,
-        complete_diet_data['Dt_RDPIn'], complete_diet_data['Dt_idRUPIn']
+    diet_data['Dt_DigCPtIn'] = calculate_Dt_DigCPtIn(
+        An_StatePhys, diet_data['Dt_DigCPaIn'], Fe_CPend,
+        diet_data['Dt_RDPIn'], diet_data['Dt_idRUPIn']
         )
-    complete_diet_data['Dt_DigTPaIn'] = calculate_Dt_DigTPaIn(
-        complete_diet_data['Dt_RDTPIn'], Fe_MiTP,
-        complete_diet_data['Dt_idRUPIn'], Fe_NPend
+    diet_data['Dt_DigTPaIn'] = calculate_Dt_DigTPaIn(
+        diet_data['Dt_RDTPIn'], Fe_MiTP,
+        diet_data['Dt_idRUPIn'], Fe_NPend
         )
-    complete_diet_data['Dt_DigTPtIn'] = calculate_Dt_DigTPtIn(
-        complete_diet_data['Dt_RDTPIn'], complete_diet_data['Dt_idRUPIn']
+    diet_data['Dt_DigTPtIn'] = calculate_Dt_DigTPtIn(
+        diet_data['Dt_RDTPIn'], diet_data['Dt_idRUPIn']
         )
-    complete_diet_data['Dt_DigCPa'] = calculate_Dt_DigCPa(
-        complete_diet_data['Dt_DigCPaIn'], DMI
+    diet_data['Dt_DigCPa'] = calculate_Dt_DigCPa(
+        diet_data['Dt_DigCPaIn'], Dt_DMIn
         )
-    complete_diet_data['TT_dcDtCPa'] = calculate_TT_dcDtCPa(
-        complete_diet_data['Dt_DigCPaIn'], complete_diet_data['Dt_CPIn']
+    diet_data['TT_dcDtCPa'] = calculate_TT_dcDtCPa(
+        diet_data['Dt_DigCPaIn'], diet_data['Dt_CPIn']
         )
-    complete_diet_data['Dt_DigCPt'] = calculate_Dt_DigCPt(
-        complete_diet_data['Dt_DigCPtIn'], DMI
+    diet_data['Dt_DigCPt'] = calculate_Dt_DigCPt(
+        diet_data['Dt_DigCPtIn'], Dt_DMIn
         )
-    complete_diet_data['Dt_DigTPt'] = calculate_Dt_DigTPt(
-        complete_diet_data['Dt_DigTPtIn'], DMI
+    diet_data['Dt_DigTPt'] = calculate_Dt_DigTPt(
+        diet_data['Dt_DigTPtIn'], Dt_DMIn
         )
-    complete_diet_data['TT_dcDtCPt'] = calculate_TT_dcDtCPt(
-        complete_diet_data['Dt_DigCPtIn'], complete_diet_data['Dt_CPIn']
+    diet_data['TT_dcDtCPt'] = calculate_TT_dcDtCPt(
+        diet_data['Dt_DigCPtIn'], diet_data['Dt_CPIn']
         )
-    complete_diet_data['Dt_MPIn'] = calculate_Dt_MPIn(
-        An_StatePhys, complete_diet_data['Dt_CPIn'], Fe_CP, Fe_CPend,
-        complete_diet_data['Dt_idRUPIn'], Du_idMiTP
+    diet_data['Dt_MPIn'] = calculate_Dt_MPIn(
+        An_StatePhys, diet_data['Dt_CPIn'], Fe_CP, Fe_CPend,
+        diet_data['Dt_idRUPIn'], Du_idMiTP
         )
-    complete_diet_data['Dt_MP'] = calculate_Dt_MP(
-        complete_diet_data['Dt_MPIn'], DMI
+    diet_data['Dt_MP'] = calculate_Dt_MP(
+        diet_data['Dt_MPIn'], Dt_DMIn
         )
-    complete_diet_data['Dt_DECPIn'] = calculate_Dt_DECPIn(
-        complete_diet_data['Dt_DigCPaIn'], coeff_dict
+    diet_data['Dt_DECPIn'] = calculate_Dt_DECPIn(
+        diet_data['Dt_DigCPaIn'], coeff_dict
         )
-    complete_diet_data['Dt_DETPIn'] = calculate_Dt_DETPIn(
-        complete_diet_data['Dt_DECPIn'], complete_diet_data['Dt_DENPNCPIn'],
+    diet_data['Dt_DETPIn'] = calculate_Dt_DETPIn(
+        diet_data['Dt_DECPIn'], diet_data['Dt_DENPNCPIn'],
         coeff_dict
         )
-    complete_diet_data['Dt_DEIn'] = calculate_Dt_DEIn(
-        An_StatePhys, complete_diet_data['Dt_DENDFIn'],
-        complete_diet_data['Dt_DEStIn'], complete_diet_data['Dt_DErOMIn'],
-        complete_diet_data['Dt_DETPIn'], complete_diet_data['Dt_DENPNCPIn'],
-        complete_diet_data['Dt_DEFAIn'], complete_diet_data['Dt_DMIn_ClfLiq'],
-        complete_diet_data['Dt_DEIn_base_ClfLiq'],
-        complete_diet_data['Dt_DEIn_base_ClfDry'], Monensin_eqn
+    diet_data['Dt_DEIn'] = calculate_Dt_DEIn(
+        An_StatePhys, diet_data['Dt_DENDFIn'],
+        diet_data['Dt_DEStIn'], diet_data['Dt_DErOMIn'],
+        diet_data['Dt_DETPIn'], diet_data['Dt_DENPNCPIn'],
+        diet_data['Dt_DEFAIn'], diet_data['Dt_DMIn_ClfLiq'],
+        diet_data['Dt_DEIn_base_ClfLiq'],
+        diet_data['Dt_DEIn_base_ClfDry'], Monensin_eqn
         )
-    
-    AA_list = [
-        'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
-    ]
-    complete_diet_data = calculate_Dt_IdAAIn(
-        Du_IdAAMic, AA_list, complete_diet_data
+    diet_data = calculate_Dt_IdAAIn(
+        Du_IdAAMic, aa_list, diet_data
         )
-    complete_diet_data['Dt_DigOMaIn'] = calculate_Dt_DigOMaIn(
-        complete_diet_data['Dt_DigNDFIn'], complete_diet_data['Dt_DigStIn'],
-        complete_diet_data['Dt_DigFAIn'], complete_diet_data['Dt_DigrOMaIn'],
-        complete_diet_data['Dt_DigCPaIn']
+    diet_data['Dt_DigOMaIn'] = calculate_Dt_DigOMaIn(
+        diet_data['Dt_DigNDFIn'], diet_data['Dt_DigStIn'],
+        diet_data['Dt_DigFAIn'], diet_data['Dt_DigrOMaIn'],
+        diet_data['Dt_DigCPaIn']
         )
-    complete_diet_data['Dt_DigOMtIn'] = calculate_Dt_DigOMtIn(
-        complete_diet_data['Dt_DigNDFIn'], complete_diet_data['Dt_DigStIn'],
-        complete_diet_data['Dt_DigFAIn'], complete_diet_data['Dt_DigrOMtIn'],
-        complete_diet_data['Dt_DigCPtIn']
+    diet_data['Dt_DigOMtIn'] = calculate_Dt_DigOMtIn(
+        diet_data['Dt_DigNDFIn'], diet_data['Dt_DigStIn'],
+        diet_data['Dt_DigFAIn'], diet_data['Dt_DigrOMtIn'],
+        diet_data['Dt_DigCPtIn']
         )
-    complete_diet_data['Dt_DigOMa'] = calculate_Dt_DigOMa(
-        complete_diet_data['Dt_DigOMaIn'], DMI
+    diet_data['Dt_DigOMa'] = calculate_Dt_DigOMa(
+        diet_data['Dt_DigOMaIn'], Dt_DMIn
         )
-    complete_diet_data['Dt_DigOMt'] = calculate_Dt_DigOMt(
-        complete_diet_data['Dt_DigOMtIn'], DMI
+    diet_data['Dt_DigOMt'] = calculate_Dt_DigOMt(
+        diet_data['Dt_DigOMtIn'], Dt_DMIn
         )
-    complete_diet_data['Dt_DE'] = calculate_Dt_DE(
-        complete_diet_data['Dt_DEIn'], DMI
+    diet_data['Dt_DE'] = calculate_Dt_DE(
+        diet_data['Dt_DEIn'], Dt_DMIn
         )
-    complete_diet_data['Dt_TDN'] = calculate_Dt_TDN(
-        complete_diet_data['Dt_DigSt'], complete_diet_data['Dt_DigNDF'],
-        complete_diet_data['Dt_DigrOMa'], complete_diet_data['Dt_DigCPa'],
-        complete_diet_data['Dt_DigFA']
+    diet_data['Dt_TDN'] = calculate_Dt_TDN(
+        diet_data['Dt_DigSt'], diet_data['Dt_DigNDF'],
+        diet_data['Dt_DigrOMa'], diet_data['Dt_DigCPa'],
+        diet_data['Dt_DigFA']
         )
-    complete_diet_data['Dt_TDNIn'] = calculate_Dt_TDNIn(
-        complete_diet_data['Dt_TDN'], DMI
+    diet_data['Dt_TDNIn'] = calculate_Dt_TDNIn(
+        diet_data['Dt_TDN'], Dt_DMIn
         )
-    return complete_diet_data
+    return diet_data

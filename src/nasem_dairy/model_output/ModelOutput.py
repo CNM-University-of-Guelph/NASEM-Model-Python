@@ -77,14 +77,14 @@ class ModelOutput:
             - feed_library_df
             - diet_info_initial
             - diet_data_initial
-            - AA_list
+            - aa_list
             - An_data_initial
             - mPrt_coeff_list
             - mPrt_k_AA
         """
         variables_to_remove = [
             "key", "value", "num_value", "feed_data", "feed_library_df",
-            "diet_info_initial", "diet_data_initial", "AA_list",
+            "diet_info_initial", "diet_data_initial", "aa_list",
             "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
         ]
         for key in variables_to_remove:
@@ -181,7 +181,7 @@ class ModelOutput:
         accordion_html = """
         <details>
             <summary><strong>Click this drop-down for ModelOutput description</strong></summary>
-            <p>This is a <code>ModelOutput</code> object returned by <code>nd.execute_model()</code>.</p>
+            <p>This is a <code>ModelOutput</code> object returned by <code>nd.nasem()</code>.</p>
             <p>Each of the following categories can be called directly as methods, for example, if the name of my object is <code>output</code>, I would call <code>output.Production</code> to see the contents of Production.</p>
             <p>The following list shows which objects are within each category (most are dictionaries):</p>
             <ul>

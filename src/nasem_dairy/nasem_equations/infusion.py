@@ -237,21 +237,21 @@ def calculate_InfArt_X(infusion_data: dict, variables: list) -> dict:
     return infusion_data
 
 
-def calculate_Inf_IdAARUPIn(infusion_data: dict, AA_list: list) -> dict:
+def calculate_Inf_IdAARUPIn(infusion_data: dict, aa_list: list) -> dict:
     # Line 1561-1570
-    for AA in AA_list:
-        infusion_data[f"Inf_{AA}RUPIn"] = (infusion_data['Inf_Rum'] * 
-                                           infusion_data[f"Inf_{AA}_g"] * 
+    for aa in aa_list:
+        infusion_data[f"Inf_{aa}RUPIn"] = (infusion_data['Inf_Rum'] * 
+                                           infusion_data[f"Inf_{aa}_g"] * 
                                            infusion_data['InfRum_RUP_CP'] / 100) 
     return infusion_data
 
 
-def calculate_Inf_IdAAIn(infusion_data: dict, AA_list: list) -> dict:
+def calculate_Inf_IdAAIn(infusion_data: dict, aa_list: list) -> dict:
     # Line 1678-1687
-    for AA in AA_list:
-        infusion_data[f"Inf_Id{AA}In"] = ((infusion_data[f"Inf_{AA}_g"] * 
+    for aa in aa_list:
+        infusion_data[f"Inf_Id{aa}In"] = ((infusion_data[f"Inf_{aa}_g"] * 
                                            infusion_data['Inf_SI'] + 
-                                           infusion_data[f"Inf_{AA}RUPIn"]) * 
+                                           infusion_data[f"Inf_{aa}RUPIn"]) * 
                                            infusion_data['Inf_dcRUP'] / 100) 
     return infusion_data
 
