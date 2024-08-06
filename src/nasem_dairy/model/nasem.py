@@ -110,16 +110,9 @@ def nasem(user_diet: pd.DataFrame,
     diet_data = {}
     an_data = {}
 
-    # TODO this should be one function to return diet_info_initial
-    selected_feeds = utility.get_feed_rows_feedlibrary(
-        user_diet["Feedstuff"].tolist(), feed_library_df
-    )
-    feed_data = (user_diet.assign(
-        Fd_DMInp=lambda df: df["kg_user"] / df["kg_user"].sum(),
-        Fd_DMIn=lambda df: df["Fd_DMInp"] * animal_input["Trg_Dt_DMIn"],
+    feed_data = utility.get_feed_data(
+        animal_input["Trg_Dt_DMIn"], user_diet, feed_library_df
         )
-        .merge(selected_feeds, how="left", on="Feedstuff")
-       )
 
     ####################
     # Dt_DMIn Calculation
