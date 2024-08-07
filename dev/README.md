@@ -6,7 +6,8 @@ This directory contains files that are used for developing tha NASEM-Model-Pytho
 ## Structure
 - `scripts/`: Contains standalone Python scripts used for development.
 - `notebooks/`: Contains Jupyter notebooks for experimenting with model applications.
-- `notes/`: Contains text files and spreadsheets with information about the package and the NASEM model
+- `notes/`: Contains text files and spreadsheets with information about the package and the NASEM model.
+- `data/`: Contains data files used by the scripts or notebooks.
 
 
 ## Scripts
@@ -42,6 +43,11 @@ Steps and guidelines for setting up and using Poetry for package management.
 
 ### `variable_descriptions.csv`
 Descriptions and details of various variables used in the model.
+
+
+## Data
+### `variable_names.csv`
+A list of all variable names in the packgage. Use to create DAG.
 
 
 ## Usage
