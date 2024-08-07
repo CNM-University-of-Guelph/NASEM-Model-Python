@@ -544,6 +544,24 @@ class ModelOutput:
         print("List keys:", special_keys["list"])
         return data_dict
 
+    def export_variable_names(self) -> List[str]: 
+        """
+        Extract a list of variable names stored in the class.
+        If a value is a DataFrame, replace the DataFrame name with its column names.
+
+        Returns:
+            List[str]: A list of variable names including DataFrame column names.
+        """
+        variables_dict = self.export_to_dict()
+        variable_names = []
+
+        for key, value in variables_dict.items():
+            if isinstance(value, pd.DataFrame):
+                variable_names.extend(value.columns.tolist())
+            else:
+                variable_names.append(key)
+        return variable_names
+
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:
         """
