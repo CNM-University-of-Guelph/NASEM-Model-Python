@@ -336,34 +336,15 @@ def nasem(user_diet: pd.DataFrame,
         )
     Rum_DigNDFIn = rumen.calculate_Rum_DigNDFIn(Rum_dcNDF, diet_data["Dt_NDFIn"])
     Rum_DigStIn = rumen.calculate_Rum_DigStIn(Rum_dcSt, diet_data["Dt_StIn"])    
-
-    if equation_selection["MiN_eqn"] == 1:
-        RDPIn_MiNmax = micp.calculate_RDPIn_MiNmax(
-            Dt_DMIn, an_data["An_RDP"], an_data["An_RDPIn"]
-            )
-        MiN_Vm = micp.calculate_MiN_Vm(RDPIn_MiNmax, coeff_dict)
-        Du_MiN_g = micp.calculate_Du_MiN_NRC2021_g(
-            MiN_Vm, Rum_DigNDFIn, Rum_DigStIn, an_data["An_RDPIn_g"], 
-            coeff_dict
-            )
-        print("MiN_eqn = 1")
-    elif equation_selection["MiN_eqn"] == 2:
-        Du_MiN_g = micp.calculate_Du_MiN_VTln_g(
-            diet_data["Dt_rOMIn"], diet_data["Dt_ForNDFIn"], an_data["An_RDPIn"], 
-            Rum_DigStIn, Rum_DigNDFIn, coeff_dict
-            )
-        print("MiN_eqn = 2")
-    elif equation_selection["MiN_eqn"] == 3:
-        Du_MiN_g = micp.calculate_Du_MiN_VTnln_g(
-            an_data["An_RDPIn"], Rum_DigNDFIn, Rum_DigStIn
-            )
-        print("MiN_eqn = 3")
-    else:
-        raise ValueError(
-            f"Invalid MiN_eqn: {equation_selection['MiN_eqn']} was entered. "
-            "Must choose 1, 2 or 3."
-            )
-    
+    RDPIn_MiNmax = micp.calculate_RDPIn_MiNmax(
+        Dt_DMIn, an_data["An_RDP"], an_data["An_RDPIn"]
+        )
+    MiN_Vm = micp.calculate_MiN_Vm(RDPIn_MiNmax, coeff_dict)
+    Du_MiN_g = micp.calculate_Du_MiN_g(
+        equation_selection["MiN_eqn"], MiN_Vm, diet_data["Dt_rOMIn"], 
+        diet_data["Dt_ForNDFIn"], an_data["An_RDPIn"], Rum_DigNDFIn, 
+        Rum_DigStIn, an_data["An_RDPIn_g"], coeff_dict
+    )   
     Fe_RUP = fecal.calculate_Fe_RUP(
         an_data["An_RUPIn"], infusion_data["InfSI_TPIn"], an_data["An_idRUPIn"]
         )

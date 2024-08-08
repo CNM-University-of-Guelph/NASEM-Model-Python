@@ -321,7 +321,8 @@ from nasem_dairy.nasem_equations.microbial_protein import (
     calculate_Du_NAN_g,
     calculate_Du_NANMN_g,
     calculate_Du_MiN_NRC2001_g,
-    calculate_Rum_MiCP_DigCHO
+    calculate_Rum_MiCP_DigCHO,
+    calculate_Du_MiN_g
 )
 
 from nasem_dairy.nasem_equations.protein import (
