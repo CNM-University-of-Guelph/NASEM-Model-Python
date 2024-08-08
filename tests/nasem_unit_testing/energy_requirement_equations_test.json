@@ -1,22 +1,22 @@
 [
     {
       "Name": "calculate_An_NEmUse_NS",
-      "Input": {"An_StatePhys": "Calf", "An_BW": 89, "An_BW_empty": 80, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 4},
+      "Input": {"An_StatePhys": "Calf", "An_BW": 89, "An_BW_empty": 80, "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 4},
       "Output": 2.057045178107474
     },
     {
       "Name": "calculate_An_NEmUse_NS",
-      "Input": {"An_StatePhys": "Calf", "An_BW": 93, "An_BW_empty": 85, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
+      "Input": {"An_StatePhys": "Calf", "An_BW": 93, "An_BW_empty": 85, "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
       "Output": 2.715413223228989
     },
     {
       "Name": "calculate_An_NEmUse_NS",
-      "Input": {"An_StatePhys": "Heifer", "An_BW": 670, "An_BW_empty": 600, "An_parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
+      "Input": {"An_StatePhys": "Heifer", "An_BW": 670, "An_BW_empty": 600, "An_Parity_rl": 0, "Dt_DMIn_ClfLiq": 0},
       "Output": 13.169100197595132
     },
     {
       "Name": "calculate_An_NEmUse_NS",
-      "Input": {"An_StatePhys": "Lactating Cow", "An_BW": 550, "An_BW_empty": 510, "An_parity_rl": 1, "Dt_DMIn_ClfLiq": 0},
+      "Input": {"An_StatePhys": "Lactating Cow", "An_BW": 550, "An_BW_empty": 510, "An_Parity_rl": 1, "Dt_DMIn_ClfLiq": 0},
       "Output": 11.357219439420211
     },
     {
