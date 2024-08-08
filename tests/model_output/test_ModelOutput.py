@@ -94,7 +94,6 @@ class TestModelOutput:
             "key": "value",
             "value": "value",
             "num_value": "value",
-            "feed_data": "value",
             "user_diet": "diet_value",
             "animal_input": "animal_value"
         }
@@ -107,7 +106,6 @@ class TestModelOutput:
             "key": "value",
             "value": "value",
             "num_value": "value",
-            "feed_data": "value"
         }
         assert model_output.locals_input == {}
         assert model_output.Inputs == {

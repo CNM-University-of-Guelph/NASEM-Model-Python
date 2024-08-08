@@ -83,7 +83,7 @@ class ModelOutput:
             - mPrt_k_AA
         """
         variables_to_remove = [
-            "key", "value", "num_value", "feed_data", "feed_library_df",
+            "key", "value", "num_value", "feed_library_df",
             "diet_info_initial", "diet_data_initial", "aa_list",
             "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
         ]
@@ -560,7 +560,7 @@ class ModelOutput:
                 variable_names.extend(value.columns.tolist())
             else:
                 variable_names.append(key)
-        return variable_names
+        return list(set(variable_names))
 
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:
