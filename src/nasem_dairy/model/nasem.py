@@ -113,6 +113,9 @@ def nasem(user_diet: pd.DataFrame,
     feed_data = utility.get_feed_data(
         animal_input["Trg_Dt_DMIn"], user_diet, feed_library_df
         )
+    feed_data["Fd_ForNDF"] = diet.calculate_Fd_ForNDF(
+        feed_data["Fd_NDF"], feed_data["Fd_Conc"]
+    )
 
     ####################
     # Dt_DMIn Calculation
