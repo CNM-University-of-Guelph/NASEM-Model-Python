@@ -121,14 +121,14 @@ def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg: float) -> float:
 
 def calculate_Frm_MPUse_g_Trg(An_StatePhys: str, 
                               Frm_NPgain_g: float,
-                              Kg_MP_NP_Trg: float,
+                              Kg_MP_NP_Trg_initial: float,
                               Diff_MPuse_g: float
 ) -> float:
     """
     Frm_MPUse_g_Trg: kg MP/d for Frame NP gain
     """
     # kg MP/d for Frame NP gain, Line 2674
-    Frm_MPUse_g_Trg = Frm_NPgain_g / Kg_MP_NP_Trg  
+    Frm_MPUse_g_Trg = Frm_NPgain_g / Kg_MP_NP_Trg_initial  
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Frm_MPUse_g_Trg = Frm_MPUse_g_Trg + Diff_MPuse_g  # Line 2691
     return Frm_MPUse_g_Trg
@@ -152,7 +152,7 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
                            coeff_dict: dict
 ) -> float:
     """
-    Kg_MP_NP_Trg: Conversion of NP to MP for growth
+    Kg_MP_NP_Trg_initial: Conversion of NP to MP for growth
     
     Examples
     --------
@@ -172,35 +172,36 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
     ```
     """
     # Default value for Growth MP to TP.  Shouldn't be used for any., Line 2659
-    Kg_MP_NP_Trg = 0.60 * coeff_dict['Body_NP_CP']  
+    Kg_MP_NP_Trg_initial = 0.60 * coeff_dict['Body_NP_CP']  
 
     if (An_Parity_rl == 0) and (An_BW_empty / An_BWmature_empty > 0.12):
         # for heifers from 12% until 83% of BW_mature
-        Kg_MP_NP_Trg = ((0.64 - 0.3 * An_BW_empty / An_BWmature_empty) 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = ((0.64 - 0.3 * An_BW_empty / An_BWmature_empty) 
+                                * coeff_dict['Body_NP_CP'])
         
-    if Kg_MP_NP_Trg < 0.394 * coeff_dict['Body_NP_CP']:
+    if Kg_MP_NP_Trg_initial < 0.394 * coeff_dict['Body_NP_CP']:
         # Trap heifer values less than 0.39 MP to CP, Line 2663
-        Kg_MP_NP_Trg = (0.394 * coeff_dict['Body_NP_CP'] 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = (0.394 * coeff_dict['Body_NP_CP'] 
+                                * coeff_dict['Body_NP_CP'])
     
     if An_StatePhys == "Calf":
         # calves, Line 2664
-        Kg_MP_NP_Trg = ((0.70 - 0.532 * (An_BW / An_BW_mature)) 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = ((0.70 - 0.532 * (An_BW / An_BW_mature)) 
+                                * coeff_dict['Body_NP_CP'])
         
     if An_Parity_rl > 0:
         # Cows, Line 2665
-        Kg_MP_NP_Trg = MP_NP_efficiency_dict['Trg_MP_NP']
-    return Kg_MP_NP_Trg
+        Kg_MP_NP_Trg_initial = MP_NP_efficiency_dict['Trg_MP_NP']
+    return Kg_MP_NP_Trg_initial
 
 
 def calculate_Kg_MP_NP_Trg_heifer_adjustment(An_StatePhys: str, 
                                              Diff_MPuse_g: float, 
                                              Frm_NPgain_g: float, 
                                              Frm_MPUse_g_Trg: float,
-                                             Kg_MP_NP_Trg: float
+                                             Kg_MP_NP_Trg_initial: float
 ) -> float:
+    Kg_MP_NP_Trg = Kg_MP_NP_Trg_initial
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Kg_MP_NP_Trg = Frm_NPgain_g / Frm_MPUse_g_Trg
     return Kg_MP_NP_Trg

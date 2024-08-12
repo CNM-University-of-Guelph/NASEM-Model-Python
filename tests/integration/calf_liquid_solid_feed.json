@@ -107,7 +107,7 @@
             "FatGain_RsrvGain": 0.622,
             "NE_GrUtWt": 0.95,
             "Km_MP_NP_Trg": 0.69,
-            "Kg_MP_NP_Trg": 0.69,
+            "Kg_MP_NP_Trg_coeff": 0.69,
             "Ky_MP_NP_Trg": 0.33,
             "Ky_NP_MP_Trg": 1.0,
             "Kl_MP_NP_Trg": 0.69,

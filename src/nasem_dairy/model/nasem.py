@@ -929,9 +929,9 @@ def nasem(user_diet: pd.DataFrame,
         animal_input["An_StatePhys"], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
         )
     Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg_heifer_adjustment(
-        animal_input["An_StatePhys"], Diff_MPuse_g, Frm_NPgain_g, 
-        Frm_MPUse_g_Trg, Kg_MP_NP_Trg
-        )
+            animal_input["An_StatePhys"], Diff_MPuse_g, Frm_NPgain_g, 
+            Frm_MPUse_g_Trg, Kg_MP_NP_Trg
+            )
     Rsrv_NPgain_g = protein_req.calculate_Rsrv_NPgain_g(Rsrv_NPgain)
     Rsrv_MPUse_g_Trg = protein_req.calculate_Rsrv_MPUse_g_Trg(
         animal_input["An_StatePhys"], Diff_MPuse_g, Rsrv_NPgain_g, Kg_MP_NP_Trg

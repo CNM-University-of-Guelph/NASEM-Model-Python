@@ -119,7 +119,7 @@ coeff_dict = {
     'Ka_LateGest_DMIn': 1.47,
     'Kc_LateGest_DMIn': -0.035,
     'Kf_ME_RE_ClfLiq': 0.56,  # Line 2828
-    'Kg_MP_NP_Trg': 0.69,  # Line 54, 2665
+    'Kg_MP_NP_Trg_coeff': 0.69,  # Line 54, 2665
     'Kl_ME_NE': 0.66,
     'Kl_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2654
     'KmMiNRDNDF': 0.0939,  # Line 1119
