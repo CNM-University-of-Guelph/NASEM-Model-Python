@@ -9,6 +9,21 @@ import pytest
 import nasem_dairy as nd
 import tests.testing_helpers as helper
 
+
+def compare_dataframe_columns(df1: pd.DataFrame, df2: pd.DataFrame):
+    # Get the columns in each DataFrame
+    df1_columns = set(df1.columns)
+    df2_columns = set(df2.columns)
+    
+    # Determine which columns are only in df1
+    only_in_df1 = df1_columns - df2_columns
+    
+    # Determine which columns are only in df2
+    only_in_df2 = df2_columns - df1_columns
+    
+    return only_in_df1, only_in_df2
+
+
 def read_test_json(file_path: str):
     with open(file_path, "r") as json_file:
         data = json.load(json_file)
@@ -30,6 +45,17 @@ def test_wrapper_functions(json_file: str) -> None:
         for key in convert_to_series:
             input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
         output = helper.create_dataframe(output)
+
+
+        input_df = func(**input_params)
+        output_df = output.copy()
+        only_in_left, only_in_right = compare_dataframe_columns(input_df, output_df)
+
+        print("Columns only in the left DataFrame:")
+        print(only_in_left)
+
+        print("\nColumns only in the right DataFrame:")
+        print(only_in_right)
 
         # Run test
         if isinstance(output, dict):

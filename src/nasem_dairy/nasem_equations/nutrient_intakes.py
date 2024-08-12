@@ -596,11 +596,11 @@ def calculate_Fd_MgIn_min(Fd_Category: pd.Series,
 
 
 def calculate_Fd_acCa(An_StatePhys: str, 
-                      Fd_acCa: pd.Series, 
+                      Fd_acCa_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1839
-    Fd_acCa = np.where(condition, 1, Fd_acCa)
+    Fd_acCa = np.where(condition, 1, Fd_acCa_input)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # Line 1840
     Fd_acCa = np.where(condition2, 0.60, Fd_acCa)
     return Fd_acCa
@@ -610,11 +610,11 @@ def calculate_Fd_acPtot(An_StatePhys: str,
                         Fd_Category: pd.Series, 
                         Fd_Pinorg_P: pd.Series, 
                         Fd_Porg_P: pd.Series,
-                        Fd_acPtot: pd.Series, 
+                        Fd_acPtot_input: pd.Series, 
                         Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acPtot = np.where(Fd_Category == "Vitamin/Mineral", 
-                         Fd_acPtot, 
+                         Fd_acPtot_input, 
                          Fd_Pinorg_P * 0.0084 + Fd_Porg_P * 0.0068) # Line 1841
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1842
     Fd_acPtot = np.where(condition, 1, Fd_acPtot)
@@ -624,32 +624,32 @@ def calculate_Fd_acPtot(An_StatePhys: str,
 
 
 def calculate_Fd_acMg(An_StatePhys: str, 
-                      Fd_acMg: pd.Series, 
+                      Fd_acMg_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1844
-    Fd_acMg = np.where(condition, 1, Fd_acMg)
+    Fd_acMg = np.where(condition, 1, Fd_acMg_input)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # line 1845
     Fd_acMg = np.where(condition2, 0.26, Fd_acMg)
     return Fd_acMg
 
 
-def calculate_Fd_acNa(An_StatePhys: str, Fd_acNa: pd.Series) -> np.ndarray:
-    Fd_acNa = np.where(An_StatePhys == "Calf", 1.0, Fd_acNa) # Line 1846
+def calculate_Fd_acNa(An_StatePhys: str, Fd_acNa_input: pd.Series) -> np.ndarray:
+    Fd_acNa = np.where(An_StatePhys == "Calf", 1.0, Fd_acNa_input) # Line 1846
     return Fd_acNa
 
 
-def calculate_Fd_acK(An_StatePhys: str, Fd_acK: pd.Series) -> np.ndarray:
-    Fd_acK = np.where(An_StatePhys == "Calf", 1.0, Fd_acK) # Line 1847
+def calculate_Fd_acK(An_StatePhys: str, Fd_acK_input: pd.Series) -> np.ndarray:
+    Fd_acK = np.where(An_StatePhys == "Calf", 1.0, Fd_acK_input) # Line 1847
     return Fd_acK
 
 
 def calculate_Fd_acCl(An_StatePhys: str, 
-                      Fd_acCl: pd.Series, 
+                      Fd_acCl_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1848
-    Fd_acCl = np.where(condition, 1, Fd_acCl)
+    Fd_acCl = np.where(condition, 1, Fd_acCl_input)
     condition2 = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)  # line 1849
     Fd_acCl = np.where(condition2, 0.92, Fd_acCl)
     return Fd_acCl
@@ -693,33 +693,33 @@ def calculate_Fd_acCo(An_StatePhys: str) -> np.ndarray:
 
 
 def calculate_Fd_acCu(An_StatePhys: str, 
-                      Fd_acCu: pd.Series, 
+                      Fd_acCu_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
-    Fd_acCu = np.where(An_StatePhys == "Calf", 1.0, Fd_acCu) # Line 1861
+    Fd_acCu = np.where(An_StatePhys == "Calf", 1.0, Fd_acCu_input) # Line 1861
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
     Fd_acCu = np.where(condition, 0.10, Fd_acCu) # Line 1862
     return Fd_acCu
 
 
 def calculate_Fd_acFe(An_StatePhys: str, 
-                      Fd_acFe: pd.Series, 
+                      Fd_acFe_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
-    Fd_acFe = np.where(An_StatePhys == "Calf", 1.0, Fd_acFe) # Line 1863
+    Fd_acFe = np.where(An_StatePhys == "Calf", 1.0, Fd_acFe_input) # Line 1863
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
     Fd_acFe = np.where(condition, 0.10, Fd_acFe) # Line 1864
     return Fd_acFe
 
 
 def calculate_Fd_acMn(An_StatePhys: str, 
-                      Fd_acMn: pd.Series, 
+                      Fd_acMn_input: pd.Series, 
                       Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acMn = np.where(
         An_StatePhys == "Calf",  # Line 1865
         1.0,
-        Fd_acMn)
+        Fd_acMn_input)
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
     Fd_acMn = np.where(
         condition,  # Line 1866
@@ -729,10 +729,10 @@ def calculate_Fd_acMn(An_StatePhys: str,
 
 
 def calculate_Fd_acZn(An_StatePhys: str, 
-                      Fd_acZn: pd.Series , 
+                      Fd_acZn_input: pd.Series , 
                       Dt_DMIn_ClfLiq: float
 ) -> pd.Series:
-    Fd_acZn = Fd_acZn.copy()
+    Fd_acZn = Fd_acZn_input.copy()
     if An_StatePhys == "Calf":
         Fd_acZn[:] = 1.0
     if An_StatePhys == "Calf" and Dt_DMIn_ClfLiq == 0.0:
@@ -2378,24 +2378,24 @@ def calculate_diet_info(Dt_DMIn: float,
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
 
     complete_diet_info['Fd_acCa'] = calculate_Fd_acCa(
-        An_StatePhys, complete_diet_info['Fd_acCa'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acCa_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acPtot'] = calculate_Fd_acPtot(
         An_StatePhys, diet_info['Fd_Category'],
         complete_diet_info['Fd_Pinorg_P'], complete_diet_info['Fd_Porg_P'],
-        complete_diet_info['Fd_acPtot'], Dt_DMIn_ClfLiq
+        complete_diet_info['Fd_acPtot_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acMg'] = calculate_Fd_acMg(
-        An_StatePhys, complete_diet_info['Fd_acMg'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acMg_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acNa'] = calculate_Fd_acNa(
-        An_StatePhys, complete_diet_info['Fd_acNa']
+        An_StatePhys, complete_diet_info['Fd_acNa_input']
         )
     complete_diet_info['Fd_acK'] = calculate_Fd_acK(
-        An_StatePhys, complete_diet_info['Fd_acK']
+        An_StatePhys, complete_diet_info['Fd_acK_input']
         )
     complete_diet_info['Fd_acCl'] = calculate_Fd_acCl(
-        An_StatePhys, complete_diet_info['Fd_acCl'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acCl_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_absCaIn'] = calculate_Fd_absCaIn(
         complete_diet_info['Fd_CaIn'], complete_diet_info['Fd_acCa']
@@ -2417,16 +2417,16 @@ def calculate_diet_info(Dt_DMIn: float,
         )
     complete_diet_info['Fd_acCo'] = calculate_Fd_acCo(An_StatePhys)
     complete_diet_info['Fd_acCu'] = calculate_Fd_acCu(
-        An_StatePhys, complete_diet_info['Fd_acCu'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acCu_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acFe'] = calculate_Fd_acFe(
-        An_StatePhys, complete_diet_info['Fd_acFe'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acFe_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acMn'] = calculate_Fd_acMn(
-        An_StatePhys, complete_diet_info['Fd_acMn'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acMn_input'], Dt_DMIn_ClfLiq
         )
     complete_diet_info['Fd_acZn'] = calculate_Fd_acZn(
-        An_StatePhys, complete_diet_info['Fd_acZn'], Dt_DMIn_ClfLiq
+        An_StatePhys, complete_diet_info['Fd_acZn_input'], Dt_DMIn_ClfLiq
         )
 
     micro_absorption = ['Co', 'Cu', 'Fe', 'Mn', 'Zn']

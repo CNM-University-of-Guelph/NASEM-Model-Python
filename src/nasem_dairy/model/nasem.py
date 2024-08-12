@@ -1778,5 +1778,4 @@ def nasem(user_diet: pd.DataFrame,
     del (An_IdAAIn, Dt_IdAARUPIn, Mlk_AA_TP)
     locals_dict = locals()
     model_output = output.ModelOutput(locals_input=locals_dict)
-    print("nasem ran succesfully")
     return model_output

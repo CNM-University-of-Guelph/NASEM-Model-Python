@@ -653,87 +653,87 @@
       },
       {
         "Name": "calculate_Fd_acCa",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCa_series_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCa_input_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acCa",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acCa_series_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acCa_input_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
         "Output": [3.6, 4.9, 6.1]
       },
       {
         "Name": "calculate_Fd_acCa",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCa_series_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCa_input_series": [3.6, 4.9, 6.1], "Dt_DMIn_ClfLiq": 5.6 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acPtot",
-        "Input": { "An_StatePhys": "Calf", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_input_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.75, 0.75, 0.75]
       },
       {
         "Name": "calculate_Fd_acPtot",
-        "Input": { "An_StatePhys": "Calf", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 5},
+        "Input": { "An_StatePhys": "Calf", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_input_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 5},
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acPtot",
-        "Input": { "An_StatePhys": "Lactating Cow", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 0},
+        "Input": { "An_StatePhys": "Lactating Cow", "Fd_Category_series": ["Fat Supplement", "Vitamin/Mineral", "Animal Protein"], "Fd_Pinorg_P_series": [4.6, 5.6, 3.2], "Fd_Porg_P_series": [0.7, 2.4, 5.1], "Fd_acPtot_input_series": [3.5, 7.1, 2.8], "Dt_DMIn_ClfLiq": 0},
         "Output": [0.043399999999999994, 7.1, 0.06156]
       },
       {
         "Name": "calculate_Fd_acMg",
-        "Input": { "An_StatePhys": "Calf", "Fd_acMg_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acMg_input_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.26, 0.26, 0.26]
       },
       {
         "Name": "calculate_Fd_acMg",
-        "Input": { "An_StatePhys": "Calf", "Fd_acMg_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 5},
+        "Input": { "An_StatePhys": "Calf", "Fd_acMg_input_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 5},
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acMg",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acMg_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0},
+        "Input": { "An_StatePhys": "Heifer", "Fd_acMg_input_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0},
         "Output": [4.5, 7.8, 2.3]
       },
       {
         "Name": "calculate_Fd_acMg",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acMg_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0},
+        "Input": { "An_StatePhys": "Heifer", "Fd_acMg_input_series": [4.5, 7.8, 2.3], "Dt_DMIn_ClfLiq": 0},
         "Output": [4.5, 7.8, 2.3]
       },
       {
         "Name": "calculate_Fd_acNa",
-        "Input": { "An_StatePhys": "Calf", "Fd_acNa_series": [1.0, 4.2, 2.1] },
+        "Input": { "An_StatePhys": "Calf", "Fd_acNa_input_series": [1.0, 4.2, 2.1] },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acNa",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acNa_series": [1.0, 4.2, 2.1] },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acNa_input_series": [1.0, 4.2, 2.1] },
         "Output": [1.0, 4.2, 2.1]
       },
       {
         "Name": "calculate_Fd_acK",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acK_series": [4.6, 3.2, 8.1] },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acK_input_series": [4.6, 3.2, 8.1] },
         "Output": [4.6, 3.2, 8.1]
       },
       {
         "Name": "calculate_Fd_acK",
-        "Input": { "An_StatePhys": "Calf", "Fd_acK_series": [4.6, 3.2, 8.1] },
+        "Input": { "An_StatePhys": "Calf", "Fd_acK_input_series": [4.6, 3.2, 8.1] },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acCl",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCl_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCl_input_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.92, 0.92, 0.92]
       },
       {
         "Name": "calculate_Fd_acCl",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCl_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 5 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCl_input_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 5 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acCl",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acCl_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acCl_input_series": [2.4, 5.1, 0.6], "Dt_DMIn_ClfLiq": 0 },
         "Output": [2.4, 5.1, 0.6]
       },
       {
@@ -778,62 +778,62 @@
       },
       {
         "Name": "calculate_Fd_acCu",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCu_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCu_input_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.1, 0.1, 0.1]
       },
       {
         "Name": "calculate_Fd_acCu",
-        "Input": { "An_StatePhys": "Calf", "Fd_acCu_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 2 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acCu_input_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 2 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acCu",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acCu_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acCu_input_series": [2.2, 4.5, 3.1], "Dt_DMIn_ClfLiq": 0 },
         "Output": [2.2, 4.5, 3.1]
       },
       {
         "Name": "calculate_Fd_acFe",
-        "Input": { "An_StatePhys": "Calf", "Fd_acFe_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acFe_input_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.1, 0.1, 0.1]
       },
       {
         "Name": "calculate_Fd_acFe",
-        "Input": { "An_StatePhys": "Calf", "Fd_acFe_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 2 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acFe_input_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 2 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acFe",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acFe_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acFe_input_series": [4.7, 9.1, 0.2], "Dt_DMIn_ClfLiq": 0 },
         "Output": [4.7, 9.1, 0.2]
       },
       {
         "Name": "calculate_Fd_acMn",
-        "Input": { "An_StatePhys": "Calf", "Fd_acMn_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acMn_input_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.005, 0.005, 0.005]
       },
       {
         "Name": "calculate_Fd_acMn",
-        "Input": { "An_StatePhys": "Calf", "Fd_acMn_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 2},
+        "Input": { "An_StatePhys": "Calf", "Fd_acMn_input_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 2},
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acMn",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acMn_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acMn_input_series": [9.5, 6.3, 2.0], "Dt_DMIn_ClfLiq": 0 },
         "Output": [9.5, 6.3, 2.0]
       },
       {
         "Name": "calculate_Fd_acZn",
-        "Input": { "An_StatePhys": "Heifer", "Fd_acZn_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Heifer", "Fd_acZn_input_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 0 },
         "Output": [1.1, 2.3, 6.1]
       },
       {
         "Name": "calculate_Fd_acZn",
-        "Input": { "An_StatePhys": "Calf", "Fd_acZn_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 3 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acZn_input_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 3 },
         "Output": [1.0, 1.0, 1.0]
       },
       {
         "Name": "calculate_Fd_acZn",
-        "Input": { "An_StatePhys": "Calf", "Fd_acZn_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 0 },
+        "Input": { "An_StatePhys": "Calf", "Fd_acZn_input_series": [1.1, 2.3, 6.1], "Dt_DMIn_ClfLiq": 0 },
         "Output": [0.2, 0.2, 0.2]
       },
       {

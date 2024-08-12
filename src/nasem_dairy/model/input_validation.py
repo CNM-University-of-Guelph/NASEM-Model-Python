@@ -177,9 +177,9 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
         "Fd_Pinorg_P", "Fd_Porg_P", "Fd_Na", "Fd_Cl", "Fd_K", "Fd_Mg", "Fd_S", 
         "Fd_Cr", "Fd_Co", "Fd_Cu", "Fd_Fe", "Fd_I", "Fd_Mn", "Fd_Mo", "Fd_Se", 
         "Fd_Zn", "Fd_B_Carotene", "Fd_Biotin", "Fd_Choline", "Fd_Niacin", 
-        "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa", "Fd_acPtot", "Fd_acNa", 
-        "Fd_acCl", "Fd_acK", "Fd_acCu", "Fd_acFe", "Fd_acMg", "Fd_acMn", 
-        "Fd_acZn"
+        "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa_input", "Fd_acPtot_input", 
+        "Fd_acNa_input", "Fd_acCl_input", "Fd_acK_input", "Fd_acCu_input", 
+        "Fd_acFe_input", "Fd_acMg_input", "Fd_acMn_input", "Fd_acZn_input"
     ]
     
     check_keys_presence(feed_library_df.columns, expected_columns)
