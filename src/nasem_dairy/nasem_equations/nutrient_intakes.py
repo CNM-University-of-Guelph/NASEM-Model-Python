@@ -1726,8 +1726,7 @@ def calculate_Dt_X(diet_info: pd.DataFrame,
                    diet_data: dict
 ) -> dict:
     for var in variables:  # Line 255-256
-        diet_var_name = f"Dt_{var.split('_')[-1]}"
-        diet_data[diet_var_name] = (diet_info['Fd_DMInp'] * diet_info[var]).sum()
+        diet_data[f"Dt_{var}"] = (diet_info['Fd_DMInp'] * diet_info[f"Fd_{var}"]).sum()
     return diet_data
 
 
@@ -2553,7 +2552,8 @@ def calculate_diet_data(diet_info: pd.DataFrame,
                         coeff_dict: dict
 ) -> dict:
     # Diet Intakes
-    column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
+    # column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
+    column_names_DMInp = ['ADF', 'NDF', 'For', 'ForNDF']
     diet_data = calculate_Dt_X(diet_info, column_names_DMInp, diet_data)
 
     column_names_sum = [

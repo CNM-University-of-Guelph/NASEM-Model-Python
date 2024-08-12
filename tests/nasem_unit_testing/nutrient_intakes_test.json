@@ -241,7 +241,7 @@
                 "Fd_For": [12.1, 13.5, 14.6, 15.2],
                 "Fd_ForNDF": [11.1, 12.2, 13.3, 14.4]
             },
-            "variables": ["Fd_ADF", "Fd_NDF", "Fd_For", "Fd_ForNDF"],
+            "variables": ["ADF", "NDF", "For", "ForNDF"],
             "diet_data": {}
         },
         "Output": {"Dt_ADF": 560.602, "Dt_NDF": 821.231, "Dt_For": 332.53, "Dt_ForNDF": 305.172}
