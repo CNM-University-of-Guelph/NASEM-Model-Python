@@ -1461,7 +1461,7 @@ def nasem(user_diet: pd.DataFrame,
     Dt_acNa = micro_req.calculate_Dt_acNa(
         diet_data["Abs_NaIn"], diet_data["Dt_NaIn"]
         )
-    Dt_acMg = micro_req.recalculate_Dt_acMg(
+    Dt_acMg = micro_req.calculate_Dt_acMg_final(
         diet_data["Abs_MgIn"], diet_data["Dt_MgIn"]
         )
     Dt_acK = micro_req.calculate_Dt_acK(diet_data["Abs_KIn"], diet_data["Dt_KIn"])

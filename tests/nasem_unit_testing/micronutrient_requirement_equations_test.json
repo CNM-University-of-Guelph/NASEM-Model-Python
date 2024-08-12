@@ -765,7 +765,7 @@
         "Output": 2.4074074074074074
     },
     {
-        "Name": "recalculate_Dt_acMg",
+        "Name": "calculate_Dt_acMg_final",
         "Input": {"Abs_MgIn": 13.8, "Dt_MgIn": 30.3},
         "Output": 0.45544554455445546
     },

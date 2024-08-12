@@ -951,7 +951,7 @@ from nasem_dairy.nasem_equations.micronutrient_requirement import (
     calculate_Dt_acCa,
     calculate_Dt_acP,
     calculate_Dt_acNa,
-    recalculate_Dt_acMg,
+    calculate_Dt_acMg_final,
     calculate_Dt_acK,
     calculate_Dt_acCl,
     calculate_Dt_acCo,
