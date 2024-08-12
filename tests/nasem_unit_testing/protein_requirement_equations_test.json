@@ -96,12 +96,12 @@
     },
     {
       "Name": "calculate_Body_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg_initial": 310, "Kg_MP_NP_Trg": 0.58},
       "Output": 287.9310345
     },
     {
         "Name": "calculate_Body_MPUse_g_Trg",
-        "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+        "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg_initial": 310, "Kg_MP_NP_Trg": 0.58},
         "Output": 310
     },
     {

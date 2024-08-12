@@ -22,9 +22,9 @@ def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
     """
-    Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  
+    Body_MPUse_g_Trg_initial = Body_NPgain_g / Kg_MP_NP_Trg  
     # Line 2675, kg MP/d for NP gain
-    return Body_MPUse_g_Trg
+    return Body_MPUse_g_Trg_initial
 
 
 def calculate_Gest_MPUse_g_Trg(Gest_NPuse_g: float, coeff_dict: dict) -> float:
@@ -235,7 +235,7 @@ def calculate_Rsrv_MPUse_g_Trg(An_StatePhys: str,
 def calculate_Body_MPUse_g_Trg(An_StatePhys: str, 
                                Diff_MPuse_g: float,
                                Body_NPgain_g: float, 
-                               Body_MPUse_g_Trg: float,
+                               Body_MPUse_g_Trg_initial: float,
                                Kg_MP_NP_Trg: float
 ) -> float:
     """
@@ -244,7 +244,7 @@ def calculate_Body_MPUse_g_Trg(An_StatePhys: str,
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  # Line 2696
     else:
-        Body_MPUse_g_Trg = Body_MPUse_g_Trg
+        Body_MPUse_g_Trg = Body_MPUse_g_Trg_initial
     return Body_MPUse_g_Trg
 
 
