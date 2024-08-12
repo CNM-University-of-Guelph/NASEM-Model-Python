@@ -1,0 +1,428 @@
+import ast
+import glob
+import os
+
+import pandas as pd
+
+aa_list = [
+        "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
+    ]
+
+user_inputs = [
+    "Use_DNDF_IV", "DMIn_eqn", "mProd_eqn", "MiN_eqn", "NonMilkCP_ClfLiq", 
+    "Monensin_eqn", "mPrt_eqn", "mFat_eqn", "RumDevDisc_Clf", "An_Parity_rl", 
+    "Trg_MilkProd", "An_BW", "An_BCS", "An_LactDay", "Trg_MilkFatp", "Trg_MilkTPp", 
+    "Trg_MilkLacp", "Trg_Dt_DMIn", "An_BW_mature", "Trg_FrmGain", "An_GestDay", 
+    "An_GestLength", "Trg_RsrvGain", "Fet_BWbrth", "An_AgeDay", "An_305RHA_MlkTP", 
+    "An_StatePhys", "An_Breed", "An_AgeDryFdStart", "Env_TempCurr", "Env_DistParlor", 
+    "Env_TripsParlor", "Env_Topo", "Inf_Acet_g", "Inf_ADF_g", "Inf_Arg_g", "Inf_Ash_g", 
+    "Inf_Butr_g", "Inf_CP_g", "Inf_CPARum_CP", "Inf_CPBRum_CP", "Inf_CPCRum_CP", 
+    "Inf_dcFA", "Inf_dcRUP", "Inf_DM_g", "Inf_EE_g", "Inf_FA_g", "Inf_Glc_g", 
+    "Inf_His_g", "Inf_Ile_g", "Inf_KdCPB", "Inf_Leu_g", "Inf_Lys_g", "Inf_Met_g", 
+    "Inf_NDF_g", "Inf_NPNCP_g", "Inf_Phe_g", "Inf_Prop_g", "Inf_St_g", "Inf_Thr_g", 
+    "Inf_Trp_g", "Inf_ttdcSt", "Inf_Val_g", "Inf_VFA_g", "Inf_Location",
+]
+
+mutator_function_mapping = {
+    "calculate_An_IdAAIn": aa_list,
+    "calculate_An_XIn": ["CPIn", "NPNCPIn", "TPIn", "FAIn"],
+    "calculate_XIn": [
+        "Inf_DM", "Inf_St", "Inf_NDF", "Inf_ADF", "Inf_Glc", "Inf_CP",
+        "Inf_NPNCP", "Inf_FA", "Inf_Ash", "Inf_VFA", "Inf_Acet", "Inf_Prop",
+        "Inf_Butr"
+    ],
+    "calculate_CPXIn": ["Inf_CPA", "Inf_CPB", "Inf_CPC"],
+    "calculate_DMXIn": [
+        "Inf_DM", "Inf_OM", "Inf_St", "Inf_NDF", "Inf_ADF", "Inf_Glc", "Inf_CP",
+        "Inf_FA", "Inf_VFA", "Inf_Acet", "Inf_Prop", "Inf_Butr"
+    ],
+    "calculate_InfRum_X": [
+        "DM", "OM", "CP", "NPNCP", "CPA", "CPB", "CPC", "St", "NDF", "ADF",
+        "FA", "Glc", "VFA", "Acet", "Prop", "Butr", "Ash"
+    ],
+    "calculate_InfSI_X": [
+        "DM", "OM", "CP", "NPNCP", "St", "Glc", "NDF", "ADF", "FA", "VFA",
+        "Acet", "Prop", "Butr", "Ash"
+    ],
+    "calculate_InfArt_X": [
+        "DM", "OM", "CP", "NPNCP", "TP", "St", "Glc", "NDF", "ADF", "FA", "VFA",
+        "Acet", "Prop", "Butr", "Ash"
+    ],
+    "calculate_Inf_IdAARUPIn": aa_list,
+    "calculate_Inf_IdAAIn": aa_list,
+    "calculate_Fd_XIn": [
+        "Fd_ADF", "Fd_NDF", "Fd_St", "Fd_NFC", "Fd_WSC", "Fd_rOM", "Fd_Lg",
+        "Fd_Conc", "Fd_For", "Fd_ForNDF", "Fd_ForWet", "Fd_ForDry", "Fd_Past", 
+        "Fd_CP", "Fd_TP", "Fd_CFat", "Fd_FA", "Fd_FAhydr", "Fd_Ash"
+    ],
+    "calculate_Fd_FAIn": [
+        "Fd_C120", "Fd_C140", "Fd_C160", "Fd_C161", "Fd_C180", "Fd_C181t",
+        "Fd_C181c", "Fd_C182", "Fd_C183", "Fd_OtherFA"
+    ],
+    "calculate_macroIn": [
+        "Fd_Ca", "Fd_P", "Fd_Na", "Fd_Mg", "Fd_K", "Fd_Cl", "Fd_S"
+    ],
+    "calculate_microIn": [
+        "Fd_Co", "Fd_Cr", "Fd_Cu", "Fd_Fe", "Fd_I", "Fd_Mn", "Fd_Mo", "Fd_Se",
+        "Fd_Zn", "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_Choline", "Fd_Biotin",
+        "Fd_Niacin", "Fd_B_Carotene"
+    ],
+    "calculate_micro_absorbtion": ["Co", "Cu", "Fe", "Mn", "Zn"],
+    "calculate_Fd_AAt_CP": aa_list,
+    "calculate_Fd_AARUPIn": aa_list,
+    "calculate_Fd_IdAARUPIn": aa_list,
+    "calculate_Fd_Dig_FAIn": [
+        "C120", "C140", "C160", "C161", "C180", "C181t", "C181c", "C182",
+        "C183", "OtherFA"
+    ],
+    "calculate_Fd_AAIn": aa_list,
+    "calculate_Dt_X": ["ADF", "NDF", "For", "ForNDF"],
+    "calculate_DtIn": [
+        "DMIn_ClfLiq", "DMIn_ClfFor", "AFIn", "NDFIn", "ADFIn", "LgIn",
+        "DigNDFIn_Base", "ForWetIn", "ForDryIn", "PastIn", "ForIn", "ConcIn",
+        "NFCIn", "StIn", "WSCIn", "CPIn", "CPIn_ClfLiq", "TPIn", "NPNCPIn",
+        "NPNIn", "NPNDMIn", "CPAIn", "CPBIn", "CPCIn", "RUPBIn", "CFatIn",
+        "FAIn", "FAhydrIn", "C120In", "C140In", "C160In", "C161In", "C180In",
+        "C181tIn", "C181cIn", "C182In", "C183In", "OtherFAIn", "AshIn", "GEIn",
+        "DEIn_base", "DEIn_base_ClfLiq", "DEIn_base_ClfDry", "DigStIn_Base",
+        "DigrOMtIn", "idRUPIn", "DigFAIn", "DMIn_ClfFor", "ArgIn", "HisIn",
+        "IleIn", "LeuIn", "LysIn", "MetIn", "PheIn", "ThrIn", "TrpIn", "ValIn",
+        "ArgRUPIn", "HisRUPIn", "IleRUPIn", "LeuRUPIn", "LysRUPIn", "MetRUPIn",
+        "PheRUPIn", "ThrRUPIn", "TrpRUPIn", "ValRUPIn"
+    ],
+    "calculate_Dt_DMI": [
+        "RUP", "OM", "NDF", "NDFnf", "ADF", "Lg", "ForNDF", "NFC", "St", "WSC",
+        "rOM", "CFat", "FA", "FAhydr", "CP", "TP", "NPNCP", "NPN", "NPNDM",
+        "CPA", "CPB", "CPC", "Ash", "ForWet", "ForDry", "For", "Conc", "C120",
+        "C140", "C160", "C161", "C180", "C181t", "C181c", "C182", "C183",
+        "OtherFA", "UFA", "MUFA", "PUFA", "SatFA"
+    ],
+    "calculate_Dt_FA": [
+        "C120", "C140", "C160", "C161", "C180", "C181t", "C181c", "C182",
+        "C183", "OtherFA", "UFA", "MUFA", "PUFA", "SatFA"
+    ],
+    "calculate_Dt_microIn": [
+        "CaIn", "PIn", "PinorgIn", "PorgIn", "NaIn", "MgIn", "MgIn_min", "KIn",
+        "ClIn", "SIn", "CoIn", "CrIn", "CuIn", "FeIn", "IIn", "MnIn", "MoIn",
+        "SeIn", "ZnIn", "VitAIn", "VitDIn", "VitEIn", "CholineIn", "BiotinIn",
+        "NiacinIn", "B_CaroteneIn"
+    ],
+    "calculate_Dt_macro": [
+        "Dt_Ca", "Dt_P", "Dt_Pinorg", "Dt_Porg", "Dt_Na", "Dt_Mg", "Dt_K",
+        "Dt_Cl", "Dt_S"
+    ],
+    "calculate_Dt_micro": [
+        "Dt_Co", "Dt_Cr", "Dt_Cu", "Dt_Fe", "Dt_I", "Dt_Mn", "Dt_Mo", "Dt_Se",
+        "Dt_Zn", "Dt_VitA", "Dt_VitD", "Dt_VitE", "Dt_Choline", "Dt_Biotin",
+        "Dt_Niacin", "Dt_B_Carotene"
+    ],
+    "calculate_Dt_IdAARUPIn": aa_list,
+    "calculate_Dt_DigFAIn": [
+        "C120", "C140", "C160", "C161", "C180", "C181t", "C181c", "C182",
+        "C183", "OtherFA"
+    ],
+    "calculate_Abs_micro": [
+        "CaIn", "PIn", "NaIn", "KIn", "ClIn", "CoIn", "CuIn", "FeIn", "MnIn",
+        "ZnIn"
+    ],
+    "calculate_Dt_FA_FA": [
+        "DigFA", "DigC120", "DigC140", "DigC160", "DigC161", "DigC180",
+        "DigC181t", "DigC181c", "DigC182", "DigC183", "DigUFA", "DigMUFA",
+        "DigPUFA", "DigSatFA", "DigOtherFA"
+    ],
+    "calculate_DtAARUP_DtAA": aa_list,
+    "calculate_Dt_IdAAIn": aa_list
+}
+
+
+def get_py_files(path: str) -> list:
+    py_files = glob.glob(os.path.join(path, "*.py"))
+    py_files = [file for file in py_files if os.path.basename(file) != "__init__.py"]
+    return py_files
+
+
+def get_dict_keys(node, id_to_check: str, check_fstring: bool = True) -> list:
+    coeff_keys = []
+    for body_item in node.body:
+        for sub_node in ast.walk(body_item):
+            if isinstance(sub_node, ast.Subscript):
+                if (isinstance(sub_node.value, ast.Name) and
+                    sub_node.value.id == id_to_check):
+                    
+                    # Get key when key is a string: dictionary["key"]
+                    if (isinstance(sub_node.slice, ast.Constant) and 
+                        isinstance(sub_node.slice.value, str)):
+                        coeff_keys.append(sub_node.slice.value)
+
+                    elif check_fstring:
+                        # Create keys when key is an f-string: dictionary[f"text{aa}text]
+                        if isinstance(sub_node.slice, ast.JoinedStr):
+                            f_string = sub_node.slice.values
+                            for section in f_string:
+
+                                # If ast.FormattedValue == "aa" assume iterating aa_list
+                                if (isinstance(section, ast.FormattedValue) and 
+                                    section.value.id == "aa"):
+                                    for aa in aa_list:
+                                        formatted_coeff = ""
+                                        for val in f_string:
+                                            if (isinstance(val, ast.Constant) and 
+                                                isinstance(val.value, str)):
+                                                formatted_coeff += val.value
+
+                                            elif (isinstance(val, ast.FormattedValue) and 
+                                                val.value.id == "aa"):
+                                                formatted_coeff += aa
+
+                                        coeff_keys.append(formatted_coeff)
+
+    return coeff_keys
+
+
+def create_mutator_entry(node, list_values: list, module: str):
+    def recursive_extract_arguments(node):
+        """
+        Recursion to extract f-strings from a ast.BinOp object
+
+        Ignores ast.Constant, searches through nested ast.BinOp objects
+        """
+        arguments = []
+
+        if isinstance(node, ast.BinOp):
+            if not isinstance(node.left, ast.Constant):
+                if isinstance(node.left, ast.BinOp):
+                    arguments.extend(recursive_extract_arguments(node.left))
+                elif isinstance(node.left, ast.Subscript) and hasattr(node.left.slice, "values"):
+                    arguments.append(node.left.slice.values)
+                elif isinstance(node.left, ast.Subscript) and hasattr(node.left.slice, "id"):
+                    arguments.append(node.left.slice.id)
+
+            if not isinstance(node.right, ast.Constant):
+                if isinstance(node.right, ast.BinOp):
+                    arguments.extend(recursive_extract_arguments(node.right))
+                elif isinstance(node.right, ast.Subscript) and hasattr(node.right.slice, "values"):
+                    arguments.append(node.right.slice.values)
+                elif isinstance(node.right, ast.Subscript) and hasattr(node.right.slice, "id"):
+                    arguments.append(node.right.slice.id)
+        
+        return arguments
+
+
+    name_expression = None
+    arguments = []
+
+    # Find the expressions used by mutator functions
+    for body_item in node.body:
+        # Find the for loop
+        if isinstance(body_item, ast.For):
+            # If the target of the assign is a JoinedStr this determines the variable names
+            if isinstance(body_item.body[0].targets[0].slice, ast.JoinedStr):
+                name_expression = body_item.body[0].targets[0].slice.values
+            if isinstance(body_item.body[0].value, ast.BinOp):
+                arguments = recursive_extract_arguments(body_item.body[0].value)
+            elif isinstance(body_item.body[0].value.func.value, ast.BinOp):
+                arguments = recursive_extract_arguments(body_item.body[0].value.func.value)
+            elif isinstance(body_item.body[0].value.func.value.slice, ast.JoinedStr):
+                arguments.append(body_item.body[0].value.func.value.slice.values)
+
+        # Special case for calculate_Fd_AAIn: np.where inside a lambda makes this one a pain
+        elif isinstance(body_item, ast.Return) and node.name == "calculate_Fd_AAIn":
+            if isinstance(body_item.value.keywords[0].value.key, ast.JoinedStr):
+                name_expression = body_item.value.keywords[0].value.key.values
+            if isinstance(body_item.value.keywords[0].value.value.body.args[1], ast.BinOp):
+                arguments = recursive_extract_arguments(body_item.value.keywords[0].value.value.body.args[1])
+
+        # For the Fd_* mutators
+        elif isinstance(body_item, ast.Return) and len(node.body) == 1:
+            if isinstance(body_item.value.keywords[0].value.key, ast.JoinedStr):
+                name_expression = body_item.value.keywords[0].value.key.values
+            if isinstance(body_item.value.keywords[0].value.value.body, ast.BinOp):
+                arguments = recursive_extract_arguments(body_item.value.keywords[0].value.value.body)
+
+    if not name_expression or not arguments:
+        print("ERROR: Did not find all the expressions")
+        return pd.DataFrame()
+    
+    nested_dict = {}
+
+    for val in list_values:
+        name = "".join([part.value if isinstance(part, ast.Constant) else val for part in name_expression])
+        arg_values = []
+        for argument in arguments:
+            if argument == "var":
+                arg_value = val
+            else:
+                arg_value = "".join([part.value if isinstance(part, ast.Constant) else val for part in argument])
+            arg_values.append(arg_value)        
+
+        # Check for non f-string keys
+        function_args = [arg.arg for arg in node.args.args
+                         if arg.arg not in ["aa_list", "variables"]]
+        coeff_keys = []
+        dicts_to_check = [
+            "coeff_dict", "mPrt_coeff", "MP_NP_efficiency_dict"
+            ]
+        for dictionary in dicts_to_check:
+            if dictionary in function_args:
+                keys = get_dict_keys(node, dictionary)
+                coeff_keys.extend(keys)
+                function_args.remove(dictionary)
+
+        # Extract names of keys when dict is passed as arg
+        dicts_to_check = ["infusion_data", "diet_data", "diet_info"]
+        for dictionary in dicts_to_check:
+            if dictionary in function_args:
+                keys = get_dict_keys(node, dictionary, False)
+                arg_values.extend(keys)
+                function_args.remove(dictionary)
+
+        # Check if any args are model inputs    
+        inputs = [arg for arg in arg_values if arg in user_inputs]
+        arg_values.extend(function_args)
+        arg_values = [arg for arg in arg_values if arg not in user_inputs]
+        arg_values = [arg for arg in arg_values if arg not in coeff_keys]
+
+        nested_dict[name] = {
+            "Name": name,
+            "Module": module,
+            "Function": node.name,
+            "Arguments": list(set(arg_values)) if arg_values else arg_values,
+            "Constants": list(set(coeff_keys)) if coeff_keys else coeff_keys,
+            "Inputs": list(set(inputs)) if inputs else inputs
+        }
+
+    df = pd.DataFrame.from_dict(nested_dict, orient="index")
+    return df
+      
+
+def create_function_entry(node):
+    """
+    Collect required data for regular functions
+    """
+    args = [arg.arg for arg in node.args.args 
+            if arg.arg not in ["aa_list"]]
+
+    # Extract names of constants from function definition
+    coeff_keys = []
+    dicts_to_check = [
+        "coeff_dict", "mPrt_coeff", "MP_NP_efficiency_dict"
+        ]
+    for dictionary in dicts_to_check:
+        if dictionary in args:
+            keys = get_dict_keys(node, dictionary)
+            coeff_keys.extend(keys)
+            args.remove(dictionary)
+
+    # Extract names of keys when dict is passed as arg
+    dicts_to_check = ["infusion_data", "diet_data"]
+    for dictionary in dicts_to_check:
+        if dictionary in args:
+            keys = get_dict_keys(node, dictionary)
+            args.extend(keys)
+            args.remove(dictionary)
+
+    # Check if any args are model inputs
+    inputs = [arg for arg in args if arg in user_inputs]
+    args = [arg for arg in args if arg not in user_inputs]
+
+    # Get the return value
+    return_var = None
+    for body_item in node.body:
+        if isinstance(body_item, ast.Return):
+            if isinstance(body_item.value, ast.Name):
+                return_var = body_item.value.id
+
+    return return_var, args ,coeff_keys, inputs
+
+
+def parse_NASEM_equations(py_files: list, variables: pd.DataFrame) -> pd.DataFrame:
+    """
+    Function to parse through NASEM_equations directory and retrieve data used for plotting the DAG. 
+    Returns a DataFrame.  
+
+    This will only include variables in the variables DataFrame
+    """
+    dag_data = variables.copy()
+    dag_data["Module"] = None
+    dag_data["Function"] = None
+    dag_data["Arguments"] = None
+    dag_data["Constants"] = None
+    dag_data["Inputs"] = None
+
+    missing_names = {}
+
+    for py_file in py_files:
+        with open(py_file, "r") as file:
+            tree = ast.parse(file.read())
+            module_name = py_file.split("/")[-1].replace(".py", "")
+
+        for node in ast.walk(tree):
+            if isinstance(node, ast.FunctionDef):
+                function_name = node.name
+                
+                # Mutator Functions
+                if function_name in mutator_function_mapping.keys():
+                    mutator_entry = create_mutator_entry(
+                        node, mutator_function_mapping[function_name], module_name
+                        )
+                    dag_data = pd.concat([dag_data, mutator_entry], ignore_index=True)
+
+                # Regular Functions
+                else:
+                    return_var, args ,coeff_keys, inputs = create_function_entry(
+                        node
+                    )
+                    if return_var and return_var in dag_data["Name"].values:
+                        idx = dag_data[dag_data["Name"] == return_var].index[0]
+                        dag_data.at[idx, "Module"] = module_name
+                        dag_data.at[idx, "Function"] = function_name
+                        dag_data.at[idx, "Arguments"] = list(set(args)) if args else args
+                        dag_data.at[idx, "Constants"] = list(set(coeff_keys)) if coeff_keys else coeff_keys
+                        dag_data.at[idx, "Inputs"] = list(set(inputs)) if inputs else inputs
+                    else:
+                        missing_names[return_var] = [module_name, function_name, args, coeff_keys, inputs]
+            
+    return dag_data, missing_names
+
+
+if __name__ == "__main__":
+    # Initalize DataFrame with a row for each variable name 
+    with open("./dev/data/variable_names.txt", "r") as file:
+        lines = file.readlines()
+    lines = [line.strip() for line in lines]
+    lines.extend([
+        "Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", "Abs_EAA2_HILKMT_g", 
+        "An_GasEOut_Dry", "An_GasEOut_Lact", "An_GasEOut_Heif"
+        ])
+    variables = pd.DataFrame(lines, columns=["Name"])
+
+    modules = get_py_files("./src/nasem_dairy/nasem_equations")
+    # modules = [
+    #     "./src/nasem_dairy/nasem_equations/amino_acid.py",  
+    #     "./src/nasem_dairy/nasem_equations/animal.py",    
+    #     "./src/nasem_dairy/nasem_equations/body_composition.py",    
+    #     "./src/nasem_dairy/nasem_equations/coefficient_adjustment.py", 
+    #     "./src/nasem_dairy/nasem_equations/dry_matter_intake.py",   
+    #     "./src/nasem_dairy/nasem_equations/energy_requirement.py",  
+    #     "./src/nasem_dairy/nasem_equations/fecal.py",     
+    #     "./src/nasem_dairy/nasem_equations/gestation.py",     
+    #     "./src/nasem_dairy/nasem_equations/infusion.py", 
+    #     "./src/nasem_dairy/nasem_equations/manure.py",      
+    #     "./src/nasem_dairy/nasem_equations/methane.py",     
+    #     "./src/nasem_dairy/nasem_equations/microbial_protein.py", 
+    #     "./src/nasem_dairy/nasem_equations/micronutrient_requirement.py",   
+    #     "./src/nasem_dairy/nasem_equations/milk.py",                    
+    #     "./src/nasem_dairy/nasem_equations/nutrient_intakes.py",            
+    #     "./src/nasem_dairy/nasem_equations/protein_requirement.py",
+    #     "./src/nasem_dairy/nasem_equations/protein.py",
+    #     "./src/nasem_dairy/nasem_equations/report.py",
+    #     "./src/nasem_dairy/nasem_equations/rumen.py",
+    #     "./src/nasem_dairy/nasem_equations/urine.py",
+    #     "./src/nasem_dairy/nasem_equations/water.py"
+    #     ]
+    
+    dag_data, missing_names = parse_NASEM_equations(modules, variables)
+    dag_data = dag_data.dropna(axis=0)
+    dag_data.to_csv("./dev/data/DAG_data.csv", index=False)
+
+    print("Finished Running")
