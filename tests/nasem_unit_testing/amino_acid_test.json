@@ -35,17 +35,17 @@
     },
     {
       "Name": "calculate_mPrtmx_AA",
-      "Input": {"mPrt_k_AA": 0.4, "mPrt_coeff": null},
+      "Input": {"mPrt_k_AA_array": 0.4, "mPrt_coeff": null},
       "Output": [18.604651162790702]
     },
     {
       "Name": "calculate_AA_mPrtmx",
-      "Input": {"mPrt_k_AA": 1.3, "mPrt_coeff": null},
+      "Input": {"mPrt_k_AA_array": 1.3, "mPrt_coeff": null},
       "Output": [302.3255813953488]
   },
   {
       "Name": "calculate_mPrt_AA_01",
-      "Input": {"AA_mPrtmx": 0.5, "mPrt_k_AA": 0.9, "mPrt_coeff": null},
+      "Input": {"AA_mPrtmx": 0.5, "mPrt_k_AA_array": 0.9, "mPrt_coeff": null},
       "Output": [0.044994625]
   },
   {

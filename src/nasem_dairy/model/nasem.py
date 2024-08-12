@@ -155,7 +155,7 @@ def nasem(user_diet: pd.DataFrame,
     Trg_AbsAA_NPxprtAA = aa.calculate_Trg_AbsAA_NPxprtAA_array(
         MP_NP_efficiency, aa_list
         )
-    mPrt_k_AA = aa.calculate_mPrt_k_AA_array(mPrt_coeff, aa_list)
+    mPrt_k_AA_array = aa.calculate_mPrt_k_AA_array(mPrt_coeff, aa_list)
     MWAA = aa.calculate_MWAA(aa_list, coeff_dict)
     Body_AA_TP = aa.calculate_Body_AA_TP(aa_list, coeff_dict)
     MiTPAAProf = aa.calculate_MiTPAAProf(aa_list, coeff_dict)
@@ -516,13 +516,13 @@ def nasem(user_diet: pd.DataFrame,
     aa_values["Abs_AA_g"] = aa.calculate_Abs_AA_g(
         An_IdAAIn, Inf_AA_g, infusion_data["Inf_Art"]
         )
-    aa_values["mPrtmx_AA"] = aa.calculate_mPrtmx_AA(mPrt_k_AA, mPrt_coeff)
+    aa_values["mPrtmx_AA"] = aa.calculate_mPrtmx_AA(mPrt_k_AA_array, mPrt_coeff)
     aa_values["mPrtmx_AA2"] = aa.calculate_mPrtmx_AA2(
         aa_values["mPrtmx_AA"], f_mPrt_max
         )
-    aa_values["AA_mPrtmx"] = aa.calculate_AA_mPrtmx(mPrt_k_AA, mPrt_coeff)
+    aa_values["AA_mPrtmx"] = aa.calculate_AA_mPrtmx(mPrt_k_AA_array, mPrt_coeff)
     aa_values["mPrt_AA_01"] = aa.calculate_mPrt_AA_01(
-        aa_values["AA_mPrtmx"], mPrt_k_AA, mPrt_coeff
+        aa_values["AA_mPrtmx"], mPrt_k_AA_array, mPrt_coeff
         )
     aa_values["mPrt_k_AA"] = aa.calculate_mPrt_k_AA(
         aa_values["mPrtmx_AA2"], aa_values["mPrt_AA_01"], aa_values["AA_mPrtmx"]
