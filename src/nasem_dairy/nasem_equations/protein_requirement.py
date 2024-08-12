@@ -88,13 +88,13 @@ def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
             If An_StatePhys == "Heifer" & Diff_MPuse_g > 0 then the value of An_MPuse_g_Trg will change
             To do this in package will need to calculate an inital value (this function) then calcualte the value again
     """
-    An_MPuse_g_Trg = (An_MPm_g_Trg + Body_MPUse_g_Trg + 
+    An_MPuse_g_Trg_initial = (An_MPm_g_Trg + Body_MPUse_g_Trg + 
                       Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg)  # Line 2680
-    return An_MPuse_g_Trg
+    return An_MPuse_g_Trg_initial
 
 
 def calculate_Min_MPuse_g(An_StatePhys: str, 
-                          An_MPuse_g_Trg: float,
+                          An_MPuse_g_Trg_initial: float,
                           An_BW: float, 
                           An_BW_mature: float,
                           An_MEIn_approx: float
@@ -103,19 +103,19 @@ def calculate_Min_MPuse_g(An_StatePhys: str,
     Min_MPuse_g: I think minimum MP use, g/d, but not 100% sure
     """
     if (An_StatePhys == "Heifer" and 
-        An_MPuse_g_Trg < ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
+        An_MPuse_g_Trg_initial < ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
         ): # Line 2686-2687
         Min_MPuse_g = ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
     else:
-        Min_MPuse_g = An_MPuse_g_Trg
+        Min_MPuse_g = An_MPuse_g_Trg_initial
     return Min_MPuse_g
 
 
-def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg: float) -> float:
+def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg_initial: float) -> float:
     """
     Diff_MPuse_g: g/d, I believe this is the difference betweem minimum MP use and MP requirement 
     """
-    Diff_MPuse_g = Min_MPuse_g - An_MPuse_g_Trg  # Line 2688
+    Diff_MPuse_g = Min_MPuse_g - An_MPuse_g_Trg_initial  # Line 2688
     return Diff_MPuse_g
 
 

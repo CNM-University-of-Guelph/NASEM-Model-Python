@@ -36,17 +36,17 @@
     },
     {
       "Name": "calculate_Min_MPuse_g",
-      "Input": {"An_StatePhys": "Heifer", "An_MPuse_g_Trg": 12, "An_BW": 723, "An_BW_mature": 750, "An_MEIn_approx": 105},
+      "Input": {"An_StatePhys": "Heifer", "An_MPuse_g_Trg_initial": 12, "An_BW": 723, "An_BW_mature": 750, "An_MEIn_approx": 105},
       "Output": 3034.5
     },
     {
       "Name": "calculate_Min_MPuse_g",
-      "Input": {"An_StatePhys": "Lactating Cow", "An_MPuse_g_Trg": 140, "An_BW": 430, "An_BW_mature": 750, "An_MEIn_approx": 5},
+      "Input": {"An_StatePhys": "Lactating Cow", "An_MPuse_g_Trg_initial": 140, "An_BW": 430, "An_BW_mature": 750, "An_MEIn_approx": 5},
       "Output": 140
     },
     {
       "Name": "calculate_Diff_MPuse_g",
-      "Input": {"Min_MPuse_g": 351, "An_MPuse_g_Trg": 648},
+      "Input": {"Min_MPuse_g": 351, "An_MPuse_g_Trg_initial": 648},
       "Output": -297
     },
     {
