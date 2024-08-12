@@ -219,7 +219,7 @@ coeff_dict = {
     'Ur_TrpEnd_TP': 1.05,
     'Ur_ValEnd_TP': 5.15,
     'UterWt_FetBWbrth': 0.2311,  # Line 2296
-    'Uter_BWgain': 0,  # Open and nonregressing animal
+    'Uter_BWgain_coeff': 0,  # Open and nonregressing animal
     'Uter_Kdeg': 0.20,  # Line 2308
     'Uter_Ksyn': 2.42e-2,  # Line 2306
     'Uter_KsynDecay': 3.53e-5,  # Line 2307

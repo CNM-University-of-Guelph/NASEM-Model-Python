@@ -135,7 +135,7 @@ def calculate_Uter_BWgain(An_LactDay: int,
     )
     ```
     """
-    Uter_BWgain = coeff_dict['Uter_BWgain']
+    Uter_BWgain = coeff_dict['Uter_BWgain_coeff']
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         Uter_BWgain = (coeff_dict['Uter_Ksyn'] -
                        coeff_dict['Uter_KsynDecay'] * An_GestDay) * Uter_Wt
