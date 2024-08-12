@@ -20,15 +20,15 @@ def calculate_TT_dcFdNDF_Lg(Fd_NDF: pd.Series, Fd_Lg: pd.Series) -> pd.Series:
     return TT_dcFdNDF_Lg
 
 
-def calculate_Fd_DNDF48(Fd_Conc: pd.Series, Fd_DNDF48: pd.Series) -> pd.Series:
+def calculate_Fd_DNDF48(Fd_Conc: pd.Series, Fd_DNDF48_input: pd.Series) -> pd.Series:
     # I can't find Fd_DNDF48 in any of the feed libraries, 
     # including the feed library in the NASEM software,
     # For now all the Fd_DNDF48 values are being calculated
     # I've added a column of 0s as the Fd_DNDF48 column
-    condition = (Fd_Conc < 100) & (Fd_DNDF48.isin([0, np.nan]))
-    condition_conc = (Fd_Conc == 100) & (Fd_DNDF48.isin([0, np.nan]))
+    condition = (Fd_Conc < 100) & (Fd_DNDF48_input.isin([0, np.nan]))
+    condition_conc = (Fd_Conc == 100) & (Fd_DNDF48_input.isin([0, np.nan]))
     # Line 241, mean of Mike Allen database used for DMI equation
-    Fd_DNDF48 = np.where(condition, 48.3, Fd_DNDF48)
+    Fd_DNDF48 = np.where(condition, 48.3, Fd_DNDF48_input)
     # Line 242, mean of concentrates in the feed library
     Fd_DNDF48 = np.where(condition_conc, 65, Fd_DNDF48)
     return Fd_DNDF48
@@ -2220,7 +2220,7 @@ def calculate_diet_info(Dt_DMIn: float,
         diet_info['Fd_NDF'], diet_info['Fd_Lg']
         )
     complete_diet_info['Fd_DNDF48'] = calculate_Fd_DNDF48(
-        diet_info['Fd_Conc'], diet_info['Fd_DNDF48']
+        diet_info['Fd_Conc'], diet_info['Fd_DNDF48_input']
         )
     complete_diet_info['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
         complete_diet_info['Fd_DNDF48']

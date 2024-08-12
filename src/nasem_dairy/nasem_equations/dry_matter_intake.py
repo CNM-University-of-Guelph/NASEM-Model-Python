@@ -414,7 +414,7 @@ def calculate_Dt_DMIn(DMIn_eqn: int,
     Dt_ADF = (diet_info["Fd_ADF"] * diet_info["Fd_DMInp"]).sum()
     Dt_ForNDF = (diet_info["Fd_ForNDF"] * diet_info["Fd_DMInp"]).sum()
     Fd_DNDF48 = diet.calculate_Fd_DNDF48(
-        diet_info["Fd_Conc"], diet_info["Fd_DNDF48"]
+        diet_info["Fd_Conc"], diet_info["Fd_DNDF48_input"]
         )
     Dt_ForDNDF48 = diet.calculate_Dt_ForDNDF48(
         diet_info["Fd_DMInp"], diet_info["Fd_Conc"], diet_info["Fd_NDF"], 

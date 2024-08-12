@@ -383,7 +383,7 @@
       },
       {
         "Name": "calculate_Fd_DNDF48",
-        "Input": { "Fd_Conc_series": [0.8, 5.2, 1.4], "Fd_DNDF48_series": [5.6, 3.4, 0.3] },
+        "Input": { "Fd_Conc_series": [0.8, 5.2, 1.4], "Fd_DNDF48_input_series": [5.6, 3.4, 0.3] },
         "Output": [5.6, 3.4, 0.3]
       },
       {

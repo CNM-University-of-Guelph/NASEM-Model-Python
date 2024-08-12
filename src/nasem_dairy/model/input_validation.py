@@ -166,7 +166,7 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
     expected_columns = [
         "Fd_Libr", "UID", "Fd_Index", "Fd_Name", "Fd_Category", "Fd_Type", 
         "Fd_DM", "Fd_Conc", "Fd_Locked", "Fd_DE_Base", "Fd_ADF", "Fd_NDF", 
-        "Fd_DNDF48", "Fd_DNDF48_NDF", "Fd_Lg", "Fd_CP", "Fd_St", "Fd_dcSt", 
+        "Fd_DNDF48_input", "Fd_DNDF48_NDF", "Fd_Lg", "Fd_CP", "Fd_St", "Fd_dcSt", 
         "Fd_WSC", "Fd_CPARU", "Fd_CPBRU", "Fd_CPCRU", "Fd_dcRUP", "Fd_CPs_CP", 
         "Fd_KdRUP", "Fd_RUP_base", "Fd_NPN_CP", "Fd_NDFIP", "Fd_ADFIP", 
         "Fd_Arg_CP", "Fd_His_CP", "Fd_Ile_CP", "Fd_Leu_CP", "Fd_Lys_CP", 
