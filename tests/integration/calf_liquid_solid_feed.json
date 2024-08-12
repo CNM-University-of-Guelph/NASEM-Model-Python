@@ -83,7 +83,7 @@
             "MiTPValProf": 6.88,
             "Body_NP_CP": 0.86,
             "CPGain_RsrvGain": 0.068,
-            "GrUter_BWgain": 0.0,
+            "GrUter_BWgain_coeff": 0.0,
             "CP_GrUtWt": 0.123,
             "Gest_NPother_g": 0.0,
             "En_NDF": 4.2,

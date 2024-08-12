@@ -99,7 +99,7 @@ coeff_dict = {
                           # growth function such as Dijkstra's mammary growth
                           # equation. MDH.
     'GrUterWt_FetBWbrth': 1.816,  # Line 2295
-    'GrUter_BWgain': 0,  # Line 2341-2345
+    'GrUter_BWgain_coeff': 0,  # Line 2341-2345
     'GrUter_Ksyn': 2.43e-2,  # Line 2302
     'GrUter_KsynDecay': 2.45e-5,  # Line 2303
     'HydrArg': 0.8967,  # AA dehydration factors for mass change during peptide 

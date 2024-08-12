@@ -168,7 +168,7 @@ def calculate_GrUter_BWgain(An_LactDay: int,
     )
     ```
     """
-    GrUter_BWgain = coeff_dict['GrUter_BWgain']  # Line 2341-2345
+    GrUter_BWgain = coeff_dict['GrUter_BWgain_coeff']  # Line 2341-2345
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         GrUter_BWgain = (
             coeff_dict['GrUter_Ksyn'] -
