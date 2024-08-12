@@ -108,7 +108,7 @@
             "Uter_Ksyn": 0.0242,
             "Uter_KsynDecay": 0.0000353,
             "Uter_Kdeg": 0.2,
-            "Uter_Wt": 0.204,
+            "Uter_Wt_coeff": 0.204,
             "GrUterWt_FetBWbrth": 1.816,
             "Uter_BWgain": 0.0,
             "An_NEmUse_Env": 0.0,

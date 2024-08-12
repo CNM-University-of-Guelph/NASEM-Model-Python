@@ -45,7 +45,7 @@ def calculate_Uter_Wt(An_Parity_rl: int,
     )
     ```
     """
-    Uter_Wt = coeff_dict['Uter_Wt']  # Line 2312
+    Uter_Wt = coeff_dict['Uter_Wt_coeff']  # Line 2312
     if An_AgeDay < 240:  # Line 2313
         Uter_Wt = 0
 

@@ -223,7 +223,7 @@ coeff_dict = {
     'Uter_Kdeg': 0.20,  # Line 2308
     'Uter_Ksyn': 2.42e-2,  # Line 2306
     'Uter_KsynDecay': 3.53e-5,  # Line 2307
-    'Uter_Wt': 0.204,  # Line 2312-2318
+    'Uter_Wt_coeff': 0.204,  # Line 2312-2318
     'VmMiNInt': 100.8,  # Line 1117
     'VmMiNRDPSlp': 81.56,  # Line 1118
 }
