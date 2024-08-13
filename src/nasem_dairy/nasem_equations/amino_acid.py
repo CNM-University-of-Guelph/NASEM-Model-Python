@@ -57,12 +57,12 @@ def calculate_Du_IdAAMic(Du_AAMic: float, coeff_dict: dict) -> float:
 
 
 def calculate_mPrt_k_AA_array(mPrt_coeff: dict, aa_list: list) -> np.ndarray:
-    mPrt_k_AA = np.array([mPrt_coeff[f"mPrt_k_{aa}"] for aa in aa_list])
-    return mPrt_k_AA
+    mPrt_k_AA_array = np.array([mPrt_coeff[f"mPrt_k_{aa}"] for aa in aa_list])
+    return mPrt_k_AA_array
 
 
-def calculate_An_IdAAIn_array(An_data: dict, aa_list: list) -> np.ndarray:
-    An_IdAAIn = pd.Series([An_data[f"An_Id{aa}In"] for aa in aa_list],
+def calculate_An_IdAAIn_array(an_data: dict, aa_list: list) -> np.ndarray:
+    An_IdAAIn = pd.Series([an_data[f"An_Id{aa}In"] for aa in aa_list],
                           index=aa_list)
     return An_IdAAIn
 
@@ -85,7 +85,7 @@ def calculate_mPrtmx_AA(mPrt_k_AA_array: np.array, mPrt_coeff: dict) -> np.array
     """
     mPrtmx_AA: Maximum milk protein responses from each aa
     """
-    mPrtmx_AA = -(mPrt_k_AA_array**2) / (4 * mPrt_coeff['mPrt_k_EAA2'])
+    mPrtmx_AA = -(mPrt_k_AA_array**2) / (4 * mPrt_coeff['mPrt_k_EAA2_coeff'])
     # maximum milk protein responses from each aa, Line 2117-2126
     return mPrtmx_AA
 
@@ -99,7 +99,7 @@ def calculate_AA_mPrtmx(mPrt_k_AA_array: np.array, mPrt_coeff: dict) -> np.array
     """
     AA_mPrtmx: aa input at maximum milk protein response for each aa
     """
-    AA_mPrtmx = -mPrt_k_AA_array / (2 * mPrt_coeff['mPrt_k_EAA2'])  
+    AA_mPrtmx = -mPrt_k_AA_array / (2 * mPrt_coeff['mPrt_k_EAA2_coeff'])  
     # aa input at maximum milk protein response for each aa, Line 2127-2136
     return AA_mPrtmx
 
@@ -112,7 +112,7 @@ def calculate_mPrt_AA_01(AA_mPrtmx: np.array,
     mPrt_AA_01: Milk protein from each EAA at 10% of max response
     """
     mPrt_AA_01 = (AA_mPrtmx * 0.1 * mPrt_k_AA_array + 
-                  (AA_mPrtmx * 0.1)**2 * mPrt_coeff['mPrt_k_EAA2'])  
+                  (AA_mPrtmx * 0.1)**2 * mPrt_coeff['mPrt_k_EAA2_coeff'])  
     # Milk prt from each EAA at 10% of Max response, Line 2138-2147
     return mPrt_AA_01
 
@@ -196,15 +196,16 @@ def calculate_Abs_EAA2b_g(mPrt_eqn: int, Abs_AA_g: pd.Series) -> float:
     return Abs_EAA2b_g
 
 
-def calculate_mPrt_k_EAA2(mPrtmx_Met2: float, 
-                          mPrt_Met_0_1: float, 
-                          Met_mPrtmx: float
+def calculate_mPrt_k_EAA2(mPrtmx_AA2: float, 
+                          mPrt_AA_01: float, 
+                          AA_mPrtmx: float
 ) -> float:
     # Scale the quadratic; can be calculated from any of the aa included in the 
     # squared term. All give the same answer. Line 2184
     # Methionine used to be consistent with R code
-    mPrt_k_EAA2 = (2 * math.sqrt(mPrtmx_Met2**2 - mPrt_Met_0_1 * mPrtmx_Met2) -
-                   2 * mPrtmx_Met2 + mPrt_Met_0_1) / (Met_mPrtmx * 0.1)**2
+    mPrt_k_EAA2 = (2 * math.sqrt(mPrtmx_AA2["Met"]**2 - mPrt_AA_01["Met"] * 
+                                 mPrtmx_AA2["Met"]) - 2 * mPrtmx_AA2["Met"] + 
+                                 mPrt_AA_01["Met"]) / (AA_mPrtmx["Met"] * 0.1)**2
     return mPrt_k_EAA2
 
 
@@ -476,7 +477,7 @@ def calculate_Trg_AAEff_EAAEff(Trg_AbsAA_NPxprtAA: pd.Series,
     return Trg_AAEff_EAAEff
 
 
-def calculate_An_AAEff_EAAEff(An_AAUse_AbsAA: pd.Series,
+def calculate_An_AAEff_EAAEff(AnAAUse_AbsAA: pd.Series,
                               AnEAAUse_AbsEAA: pd.Series
 ) -> pd.Series:
     """
@@ -484,7 +485,7 @@ def calculate_An_AAEff_EAAEff(An_AAUse_AbsAA: pd.Series,
     """
     # Calculate the current ratios for the diet.
     # This centers the ratio to the prevailing EAA Efficiency
-    An_AAEff_EAAEff = An_AAUse_AbsAA / AnEAAUse_AbsEAA  # Line 2614-2623
+    An_AAEff_EAAEff = AnAAUse_AbsAA / AnEAAUse_AbsEAA  # Line 2614-2623
     return An_AAEff_EAAEff
 
 
@@ -624,13 +625,13 @@ def calculate_Trg_AbsEAA_g(Trg_AbsAA_g: pd.Series) -> float:
 
 
 def calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g: float, 
-                                Mlk_Arg_g: float,
+                                Mlk_AA_g: pd.Series,
                                 Trg_AbsEAA_g: float
 ) -> float:
     """
     Trg_MlkEAA_AbsEAA: Milk EAA as a fraction of absorbed EAA at user entered production
     """
-    Trg_MlkEAA_AbsEAA = (Mlk_EAA_g - Mlk_Arg_g) / Trg_AbsEAA_g  # Line 3176
+    Trg_MlkEAA_AbsEAA = (Mlk_EAA_g - Mlk_AA_g["Arg"]) / Trg_AbsEAA_g  # Line 3176
     return Trg_MlkEAA_AbsEAA
 
 

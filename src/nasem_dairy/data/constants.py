@@ -297,7 +297,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0,
         "mPrt_k_OthAA": 0.0773,
-        "mPrt_k_EAA2": -0.00215
+        "mPrt_k_EAA2_coeff": -0.00215
     },
     {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
         "mPrt_Int": -141,
@@ -318,7 +318,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0.0925,
         "mPrt_k_OthAA": 0,
-        "mPrt_k_EAA2": -0.002451
+        "mPrt_k_EAA2_coeff": -0.002451
     },
     {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
         "mPrt_Int": -73.7,
@@ -339,7 +339,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0.075,
         "mPrt_k_OthAA": 0,
-        "mPrt_k_EAA2": -0.00175
+        "mPrt_k_EAA2_coeff": -0.00175
     }
 ]
 
