@@ -1,10 +1,10 @@
 {
-    "name": "calculate_diet_info",
+    "name": "calculate_feed_data",
     "input": {
         "Dt_DMIn": 20.1,
         "An_StatePhys": "Lactating Cow", 
         "Use_DNDF_IV": 1,
-        "diet_info_df": {
+        "feed_data_df": {
             "Fd_DMIn": [4.02, 14.07, 2.01],
             "Fd_DMInp": [0.2, 0.7, 0.1],
             "Fd_Category": ["Energy Source", "Grain Crop Forage", "Vitamin/Mineral"],

@@ -2,7 +2,7 @@
     {
         "Name": "calculate_Fd_XIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.2, 6.7, 5.4, 4.1],
                 "Fd_ADF": [33.7, 20.3, 24.3, 3.5],
                 "Fd_NDF": [44.2, 29.0, 40.9, 9.6],
@@ -28,7 +28,7 @@
     {
         "Name": "calculate_Fd_FAIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [100, 200, 300],
                 "Fd_FA": [10, 20, 30],
                 "Fd_C120_FA": [10, 20, 30],
@@ -50,7 +50,7 @@
     {
         "Name": "calculate_macroIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_Ca": [0.85, 0.9, 0.75, 0.8],
                 "Fd_P": [0.45, 0.5, 0.6, 0.7]
@@ -70,7 +70,7 @@
     {
         "Name": "calculate_microIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_Co": [1.0, 2.0, 3.0, 4.0],
                 "Fd_Cu": [2.0, 3.0, 4.0, 5.0]
@@ -90,7 +90,7 @@
     {
         "Name": "calculate_micro_absorbtion",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_CoIn": [8.21, 13.46, 16.41, 16.44],
                 "Fd_CuIn": [16.42, 20.19, 21.88, 20.55],
@@ -114,7 +114,7 @@
     {
         "Name": "calculate_Fd_AAt_CP",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_Arg_CP": [33.7, 20.3, 24.3, 3.5],
                 "Fd_His_CP": [44.2, 29.0, 40.9, 9.6]
@@ -138,7 +138,7 @@
     {
         "Name": "calculate_Fd_AARUPIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_Argt_CP": [4.282196, 6.295974, 2.458337, 5.03975],
                 "Fd_Hist_CP": [2.003291, 2.849888, 1.831611, 3.084875],
@@ -160,7 +160,7 @@
     {
         "Name": "calculate_Fd_IdAARUPIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_dcRUP": [75, 74, 70, 90],
                 "Fd_ArgRUPIn": [22.67, 52.01, 3.15, 6.41],
@@ -186,7 +186,7 @@
     {
         "Name": "calculate_Fd_Dig_FAIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_FA": [10, 20, 30, 40],
                 "Fd_C120_FA": [10, 20, 30, 40],
@@ -210,7 +210,7 @@
     {
         "Name": "calculate_Fd_AAIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_CP": [19.51, 41.49, 7.71, 8.51],
                 "Fd_CPIn": [1.60, 2.79, 0.42, 0.35],
@@ -234,7 +234,7 @@
     {
         "Name": "calculate_Dt_X",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMInp": [8.21, 6.73, 5.47, 4.11],
                 "Fd_ADF": [33.7, 20.3, 24.3, 3.5],
                 "Fd_NDF": [44.2, 29.0, 40.9, 9.6],
@@ -249,7 +249,7 @@
     {
         "Name": "calculate_DtIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_AFIn": [1.2, 2.1, 3.1, 4.1],
                 "Fd_NDFIn": [4.5, 3.2, 2.1, 1.1],
@@ -283,7 +283,7 @@
     {
         "Name": "calculate_Dt_microIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_Co": [0.5, 0.6, 0.7, 0.8],
                 "Fd_Cr": [0.1, 0.2, 0.3, 0.4]
@@ -314,7 +314,7 @@
     {
         "Name": "calculate_Dt_IdAARUPIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_IdArgRUPIn": [16.99751263, 38.48646892, 2.205316879, 5.76240134],
                 "Fd_IdHisRUPIn": [7.95175281, 17.4209941, 1.643095578, 3.527216198]
             },
@@ -327,7 +327,7 @@
     {
         "Name": "calculate_Dt_DigFAIn",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_DigC120In": [0.001124686, 0.012061248, 0.000288509, 0.014135269],
                 "Fd_DigC160In": [0.019367338, 0.012061248, 0.016754172, 0.014135269]
@@ -340,7 +340,7 @@
     {
         "Name": "calculate_Abs_micro",
         "Input": {
-            "diet_info_df": {
+            "feed_data_df": {
                 "Fd_DMIn": [8.21, 6.73, 5.47, 4.11],
                 "Fd_absCo": [1.2, 2.1, 3.1, 4.1],
                 "Fd_absCr": [4.5, 3.2, 2.1, 1.1]

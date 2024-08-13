@@ -1,7 +1,7 @@
 {
     "name": "calculate_diet_data",
     "input": {
-        "diet_info_df": {
+        "complete_feed_data_df": {
             "Fd_DMInp": [0.2, 0.7, 0.1],
             "Fd_DMIn": [4.0200000000000005, 14.07, 2.01],
             "Fd_ADF": [7.332, 34.053, 0.0],

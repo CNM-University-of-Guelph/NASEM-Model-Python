@@ -914,106 +914,106 @@ def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series,
     return Fd_Fe_RUPout
 
 
-def calculate_Fd_XIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_Fd_XIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
-            f"{var}In": (lambda diet_info, var=var: 
-                         diet_info[var] / 100 * diet_info['Fd_DMIn'])
+            f"{var}In": (lambda feed_data, var=var: 
+                         feed_data[var] / 100 * feed_data['Fd_DMIn'])
             for var in variables
         })
 
 
-def calculate_Fd_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_Fd_FAIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
             f"{var}In":
-                lambda diet_info, var=var: 
-                diet_info[f"{var}_FA"] / 100 * diet_info['Fd_FA'] / 100 *
-                diet_info['Fd_DMIn'] 
+                lambda feed_data, var=var: 
+                feed_data[f"{var}_FA"] / 100 * feed_data['Fd_FA'] / 100 *
+                feed_data['Fd_DMIn'] 
             for var in variables
         })
 
 
-def calculate_macroIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_macroIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
-            f"{var}In": lambda diet_info, var=var: 
-                diet_info['Fd_DMIn'] * diet_info[var] / 100 * 1000
+            f"{var}In": lambda feed_data, var=var: 
+                feed_data['Fd_DMIn'] * feed_data[var] / 100 * 1000
             for var in variables
         })
 
 
-def calculate_microIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return diet_info.assign(**{
-            f"{var}In": lambda diet_info, var=var: 
-            diet_info['Fd_DMIn'] * diet_info[var]
+def calculate_microIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return feed_data.assign(**{
+            f"{var}In": lambda feed_data, var=var: 
+            feed_data['Fd_DMIn'] * feed_data[var]
         for var in variables
     })
 
 
-def calculate_micro_absorbtion(diet_info: pd.DataFrame,
+def calculate_micro_absorbtion(feed_data: pd.DataFrame,
                                variables: list
 ) -> pd.DataFrame:
-    return diet_info.assign(
+    return feed_data.assign(
         **{
-            f"Fd_abs{var}In": lambda diet_info, var=var: 
-                diet_info[f"Fd_{var}In"] * diet_info[f"Fd_ac{var}"]
+            f"Fd_abs{var}In": lambda feed_data, var=var: 
+                feed_data[f"Fd_{var}In"] * feed_data[f"Fd_ac{var}"]
             for var in variables
         })
 
 
-def calculate_Fd_AAt_CP(diet_info: pd.DataFrame, 
+def calculate_Fd_AAt_CP(feed_data: pd.DataFrame, 
                         aa_list: list,
                         coeff_dict: dict
 ) -> pd.DataFrame:
-    return diet_info.assign(
+    return feed_data.assign(
         **{
-            f"Fd_{aa}t_CP": lambda diet_info, aa=aa: 
-                diet_info[f"Fd_{aa}_CP"] / coeff_dict[f"Rec{aa}"]
+            f"Fd_{aa}t_CP": lambda feed_data, aa=aa: 
+                feed_data[f"Fd_{aa}_CP"] / coeff_dict[f"Rec{aa}"]
             for aa in aa_list
         })
 
 
-def calculate_Fd_AARUPIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_Fd_AARUPIn(feed_data: pd.DataFrame, aa_list: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
-            f"Fd_{aa}RUPIn": lambda diet_info, aa=aa: 
-                diet_info[f"Fd_{aa}t_CP"] / 100 * diet_info['Fd_RUPIn'] * 1000 
+            f"Fd_{aa}RUPIn": lambda feed_data, aa=aa: 
+                feed_data[f"Fd_{aa}t_CP"] / 100 * feed_data['Fd_RUPIn'] * 1000 
             for aa in aa_list
         })
 
 
-def calculate_Fd_IdAARUPIn(diet_info: pd.DataFrame, 
+def calculate_Fd_IdAARUPIn(feed_data: pd.DataFrame, 
                            aa_list: list,
                            SIDig_values: dict
 ) -> pd.DataFrame:
-    return diet_info.assign(
+    return feed_data.assign(
         **{
             f"Fd_Id{aa}RUPIn":
-                lambda diet_info, aa=aa: 
-                diet_info['Fd_dcRUP'] / 100 * 
-                diet_info[f"Fd_{aa}RUPIn"] * SIDig_values[aa] 
+                lambda feed_data, aa=aa: 
+                feed_data['Fd_dcRUP'] / 100 * 
+                feed_data[f"Fd_{aa}RUPIn"] * SIDig_values[aa] 
             for aa in aa_list
         })
 
 
-def calculate_Fd_Dig_FAIn(diet_info: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_Fd_Dig_FAIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
-            f"Fd_Dig{var}In": lambda diet_info, var=var: 
-                diet_info['TT_dcFdFA'] / 100 * diet_info[f"Fd_{var}_FA"] /
-                100 * diet_info['Fd_FA'] / 100 * diet_info['Fd_DMIn'] 
+            f"Fd_Dig{var}In": lambda feed_data, var=var: 
+                feed_data['TT_dcFdFA'] / 100 * feed_data[f"Fd_{var}_FA"] /
+                100 * feed_data['Fd_FA'] / 100 * feed_data['Fd_DMIn'] 
             for var in variables
         })
 
 
-def calculate_Fd_AAIn(diet_info: pd.DataFrame, aa_list: list) -> pd.DataFrame:
-    return diet_info.assign(
+def calculate_Fd_AAIn(feed_data: pd.DataFrame, aa_list: list) -> pd.DataFrame:
+    return feed_data.assign(
         **{
-            f"Fd_{aa}In": lambda diet_info, aa=aa: np.where(
-                diet_info['Fd_CPIn'] > 0, 
-                    ((diet_info[f"Fd_{aa}t_CP"] / 100) * 
-                     (diet_info['Fd_CP'] / 100) * (diet_info['Fd_DMIn'] * 1000)), 
+            f"Fd_{aa}In": lambda feed_data, aa=aa: np.where(
+                feed_data['Fd_CPIn'] > 0, 
+                    ((feed_data[f"Fd_{aa}t_CP"] / 100) * 
+                     (feed_data['Fd_CP'] / 100) * (feed_data['Fd_DMIn'] * 1000)), 
                     0)
             for aa in aa_list
         })
@@ -1721,21 +1721,21 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
     return Dt_GasEOut
 
 
-def calculate_Dt_X(diet_info: pd.DataFrame, 
+def calculate_Dt_X(feed_data: pd.DataFrame, 
                    variables: list, 
                    diet_data: dict
 ) -> dict:
     for var in variables:  # Line 255-256
-        diet_data[f"Dt_{var}"] = (diet_info['Fd_DMInp'] * diet_info[f"Fd_{var}"]).sum()
+        diet_data[f"Dt_{var}"] = (feed_data['Fd_DMInp'] * feed_data[f"Fd_{var}"]).sum()
     return diet_data
 
 
-def calculate_DtIn(diet_info: pd.DataFrame, 
+def calculate_DtIn(feed_data: pd.DataFrame, 
                    variables: list, 
                    diet_data: dict
 ) -> dict:
     for var in variables:
-        diet_data[f'Dt_{var}'] = (diet_info[f'Fd_{var}']).sum()
+        diet_data[f'Dt_{var}'] = (feed_data[f'Fd_{var}']).sum()
     return diet_data
 
 
@@ -1754,13 +1754,13 @@ def calculate_Dt_FA(variables: list, diet_data: dict) -> dict:
     return diet_data
 
 
-def calculate_Dt_microIn(diet_info: pd.DataFrame, 
+def calculate_Dt_microIn(feed_data: pd.DataFrame, 
                          variables: list,
                          diet_data: dict
 ) -> dict:
     # Lines 762-791
     for var in variables:
-        diet_data[f'Dt_{var}'] = diet_info[f'Fd_{var}'].sum()
+        diet_data[f'Dt_{var}'] = feed_data[f'Fd_{var}'].sum()
     return diet_data
 
 
@@ -1778,30 +1778,30 @@ def calculate_Dt_micro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict
     return diet_data
 
 
-def calculate_Dt_IdAARUPIn(diet_info: pd.DataFrame, 
+def calculate_Dt_IdAARUPIn(feed_data: pd.DataFrame, 
                            aa_list: list,
                            diet_data: dict
 ) -> dict:
     for aa in aa_list:
-        diet_data[f'Dt_Id{aa}RUPIn'] = diet_info[f'Fd_Id{aa}RUPIn'].sum()
+        diet_data[f'Dt_Id{aa}RUPIn'] = feed_data[f'Fd_Id{aa}RUPIn'].sum()
     return diet_data
 
 
-def calculate_Dt_DigFAIn(diet_info: pd.DataFrame, 
+def calculate_Dt_DigFAIn(feed_data: pd.DataFrame, 
                          variables: list,
                          diet_data: dict
 ) -> dict:
     for var in variables:
-        diet_data[f'Dt_Dig{var}In'] = diet_info[f'Fd_Dig{var}In'].sum()
+        diet_data[f'Dt_Dig{var}In'] = feed_data[f'Fd_Dig{var}In'].sum()
     return diet_data
 
 
-def calculate_Abs_micro(diet_info: pd.DataFrame, 
+def calculate_Abs_micro(feed_data: pd.DataFrame, 
                         variables: list,
                         diet_data: dict
 ) -> dict:
     for var in variables:
-        diet_data[f"Abs_{var}"] = diet_info[f"Fd_abs{var}"].sum()
+        diet_data[f"Abs_{var}"] = feed_data[f"Fd_abs{var}"].sum()
     return diet_data
 
 
@@ -1825,7 +1825,7 @@ def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series,
                         diet_data: dict
 ) -> dict:
     for aa in aa_list:
-        diet_data[f'Dt_Id{aa}In'] = (Du_IdAAMic[f'{aa}'] + 
+        diet_data[f'Dt_Id{aa}In'] = (Du_IdAAMic[aa] + 
                                      diet_data[f'Dt_Id{aa}RUPIn'])
     return diet_data
 
@@ -2136,76 +2136,81 @@ def calculate_TT_dcDtFA(Dt_DigFAIn: float, Dt_FAIn: float) -> float:
     return TT_dcDtFA
 
 
+def calculate_Dt_IdAARUPIn_array(diet_data: dict, aa_list: list) -> pd.Series:
+    Dt_IdAARUPIn = pd.Series([diet_data[f"Dt_Id{aa}RUPIn"] for aa in aa_list],
+                             index=aa_list)
+    return Dt_IdAARUPIn
+
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
-def calculate_diet_info(Dt_DMIn: float, 
+def calculate_feed_data(Dt_DMIn: float, 
                         An_StatePhys: str, 
                         Use_DNDF_IV: int, 
-                        diet_info: pd.DataFrame, 
+                        feed_data: pd.DataFrame, 
                         coeff_dict: dict
 ) -> pd.DataFrame:
-    # Start with copy of diet_info
-    complete_diet_info = diet_info.copy()
+    # Start with copy of feed_data
+    complete_feed_data = feed_data.copy()
 
     # Calculate all aditional feed data columns
-    complete_diet_info['Fd_DMIn'] = calculate_Fd_DMIn(
-        Dt_DMIn, diet_info['Fd_DMInp']
+    complete_feed_data['Fd_DMIn'] = calculate_Fd_DMIn(
+        Dt_DMIn, complete_feed_data['Fd_DMInp']
         )
-    complete_diet_info['Fd_GE'] = calculate_Fd_GE(
-        An_StatePhys, diet_info['Fd_Category'], diet_info['Fd_CP'],
-        diet_info['Fd_FA'], diet_info['Fd_Ash'], diet_info['Fd_St'],
-        diet_info['Fd_NDF'], coeff_dict
+    complete_feed_data['Fd_GE'] = calculate_Fd_GE(
+        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_CP'],
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_Ash'], complete_feed_data['Fd_St'],
+        complete_feed_data['Fd_NDF'], coeff_dict
         )
-    complete_diet_info['Fd_AFIn'] = calculate_Fd_AFIn(
-        diet_info['Fd_DM'], diet_info['Fd_DMIn']
+    complete_feed_data['Fd_AFIn'] = calculate_Fd_AFIn(
+        complete_feed_data['Fd_DM'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_For'] = calculate_Fd_For(diet_info['Fd_Conc'])
-    complete_diet_info['Fd_ForWet'] = calculate_Fd_ForWet(
-        diet_info['Fd_DM'], complete_diet_info['Fd_For']
+    complete_feed_data['Fd_For'] = calculate_Fd_For(complete_feed_data['Fd_Conc'])
+    complete_feed_data['Fd_ForWet'] = calculate_Fd_ForWet(
+        complete_feed_data['Fd_DM'], complete_feed_data['Fd_For']
         )
-    complete_diet_info['Fd_ForDry'] = calculate_Fd_ForDry(
-        diet_info['Fd_DM'], complete_diet_info['Fd_For']
+    complete_feed_data['Fd_ForDry'] = calculate_Fd_ForDry(
+        complete_feed_data['Fd_DM'], complete_feed_data['Fd_For']
         )
-    complete_diet_info['Fd_Past'] = calculate_Fd_Past(diet_info['Fd_Category'])
-    complete_diet_info['Fd_LiqClf'] = calculate_Fd_LiqClf(
-        diet_info['Fd_Category']
+    complete_feed_data['Fd_Past'] = calculate_Fd_Past(complete_feed_data['Fd_Category'])
+    complete_feed_data['Fd_LiqClf'] = calculate_Fd_LiqClf(
+        complete_feed_data['Fd_Category']
         )
-    complete_diet_info['Fd_ForNDF'] = calculate_Fd_ForNDF(
-        diet_info['Fd_NDF'], diet_info['Fd_Conc']
+    complete_feed_data['Fd_ForNDF'] = calculate_Fd_ForNDF(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Conc']
         )
-    complete_diet_info['Fd_NDFnf'] = calculate_Fd_NDFnf(
-        diet_info['Fd_NDF'], diet_info['Fd_NDFIP']
+    complete_feed_data['Fd_NDFnf'] = calculate_Fd_NDFnf(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_NDFIP']
         )
-    complete_diet_info['Fd_NPNCP'] = calculate_Fd_NPNCP(
-        diet_info['Fd_CP'], diet_info['Fd_NPN_CP']
+    complete_feed_data['Fd_NPNCP'] = calculate_Fd_NPNCP(
+        complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPN_CP']
         )
-    complete_diet_info['Fd_NPN'] = calculate_Fd_NPN(
-        complete_diet_info['Fd_NPNCP']
+    complete_feed_data['Fd_NPN'] = calculate_Fd_NPN(
+        complete_feed_data['Fd_NPNCP']
         )
-    complete_diet_info['Fd_NPNDM'] = calculate_Fd_NPNDM(
-        complete_diet_info['Fd_NPNCP']
+    complete_feed_data['Fd_NPNDM'] = calculate_Fd_NPNDM(
+        complete_feed_data['Fd_NPNCP']
         )
-    complete_diet_info['Fd_TP'] = calculate_Fd_TP(
-        diet_info['Fd_CP'], complete_diet_info['Fd_NPNCP']
+    complete_feed_data['Fd_TP'] = calculate_Fd_TP(
+        complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP']
         )
-    complete_diet_info['Fd_fHydr_FA'] = calculate_Fd_fHydr_FA(
-        diet_info['Fd_Category']
+    complete_feed_data['Fd_fHydr_FA'] = calculate_Fd_fHydr_FA(
+        complete_feed_data['Fd_Category']
         )
-    complete_diet_info['Fd_FAhydr'] = calculate_Fd_FAhydr(
-        diet_info['Fd_FA'], complete_diet_info['Fd_fHydr_FA']
+    complete_feed_data['Fd_FAhydr'] = calculate_Fd_FAhydr(
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_fHydr_FA']
         )
-    complete_diet_info['Fd_NFC'] = calculate_Fd_NFC(
-        diet_info['Fd_NDF'], complete_diet_info['Fd_TP'], diet_info['Fd_Ash'],
-        complete_diet_info['Fd_FAhydr'], complete_diet_info['Fd_NPNDM']
+    complete_feed_data['Fd_NFC'] = calculate_Fd_NFC(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_TP'], complete_feed_data['Fd_Ash'],
+        complete_feed_data['Fd_FAhydr'], complete_feed_data['Fd_NPNDM']
         )
-    complete_diet_info['Fd_rOM'] = calculate_Fd_rOM(
-        diet_info['Fd_NDF'], diet_info['Fd_St'], complete_diet_info['Fd_TP'],
-        diet_info['Fd_FA'], complete_diet_info['Fd_fHydr_FA'],
-        diet_info['Fd_Ash'], complete_diet_info['Fd_NPNDM']
+    complete_feed_data['Fd_rOM'] = calculate_Fd_rOM(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], complete_feed_data['Fd_TP'],
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_fHydr_FA'],
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_NPNDM']
         )
-    complete_diet_info['Fd_GEIn'] = calculate_Fd_GEIn(
-        complete_diet_info['Fd_GE'], complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_GEIn'] = calculate_Fd_GEIn(
+        complete_feed_data['Fd_GE'], complete_feed_data['Fd_DMIn']
         )
     # Loop through identical calculations
     column_names_XIn = [
@@ -2213,88 +2218,88 @@ def calculate_diet_info(Dt_DMIn: float,
         'Fd_Conc', 'Fd_For', 'Fd_ForNDF', 'Fd_ForWet', 'Fd_ForDry', 'Fd_Past', 
         'Fd_CP', 'Fd_TP', 'Fd_CFat', 'Fd_FA', 'Fd_FAhydr', 'Fd_Ash'
     ]
-    complete_diet_info = calculate_Fd_XIn(complete_diet_info, column_names_XIn)
+    complete_feed_data = calculate_Fd_XIn(complete_feed_data, column_names_XIn)
 
     # Calculate nutrient intakes for each feed
-    complete_diet_info['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
-        diet_info['Fd_NDF'], diet_info['Fd_Lg']
+    complete_feed_data['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg']
         )
-    complete_diet_info['Fd_DNDF48'] = calculate_Fd_DNDF48(
-        diet_info['Fd_Conc'], diet_info['Fd_DNDF48_input']
+    complete_feed_data['Fd_DNDF48'] = calculate_Fd_DNDF48(
+        complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DNDF48_input']
         )
-    complete_diet_info['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
-        complete_diet_info['Fd_DNDF48']
+    complete_feed_data['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
+        complete_feed_data['Fd_DNDF48']
         )
-    complete_diet_info['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
-        Use_DNDF_IV, diet_info['Fd_Conc'], complete_diet_info['TT_dcFdNDF_Lg'],
-        complete_diet_info['TT_dcFdNDF_48h']
+    complete_feed_data['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
+        Use_DNDF_IV, complete_feed_data['Fd_Conc'], complete_feed_data['TT_dcFdNDF_Lg'],
+        complete_feed_data['TT_dcFdNDF_48h']
         )
-    complete_diet_info['Fd_DigNDFIn_Base'] = calculate_Fd_DigNDFIn_Base(
-        complete_diet_info['Fd_NDFIn'], complete_diet_info['TT_dcFdNDF_Base']
+    complete_feed_data['Fd_DigNDFIn_Base'] = calculate_Fd_DigNDFIn_Base(
+        complete_feed_data['Fd_NDFIn'], complete_feed_data['TT_dcFdNDF_Base']
         )
-    complete_diet_info['Fd_NPNCPIn'] = calculate_Fd_NPNCPIn(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_NPN_CP']
+    complete_feed_data['Fd_NPNCPIn'] = calculate_Fd_NPNCPIn(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_NPN_CP']
         )
-    complete_diet_info['Fd_NPNIn'] = calculate_Fd_NPNIn(
-        complete_diet_info['Fd_NPNCPIn']
+    complete_feed_data['Fd_NPNIn'] = calculate_Fd_NPNIn(
+        complete_feed_data['Fd_NPNCPIn']
         )
-    complete_diet_info['Fd_NPNDMIn'] = calculate_Fd_NPNDMIn(
-        complete_diet_info['Fd_NPNCPIn']
+    complete_feed_data['Fd_NPNDMIn'] = calculate_Fd_NPNDMIn(
+        complete_feed_data['Fd_NPNCPIn']
         )
-    complete_diet_info['Fd_CPAIn'] = calculate_Fd_CPAIn(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPARU']
+    complete_feed_data['Fd_CPAIn'] = calculate_Fd_CPAIn(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPARU']
         )
-    complete_diet_info['Fd_CPBIn'] = calculate_Fd_CPBIn(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPBRU']
+    complete_feed_data['Fd_CPBIn'] = calculate_Fd_CPBIn(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU']
         )
-    complete_diet_info['Fd_CPBIn_For'] = calculate_Fd_CPBIn_For(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPBRU'],
-        complete_diet_info['Fd_For']
+    complete_feed_data['Fd_CPBIn_For'] = calculate_Fd_CPBIn_For(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
+        complete_feed_data['Fd_For']
         )
-    complete_diet_info['Fd_CPBIn_Conc'] = calculate_Fd_CPBIn_Conc(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPBRU'],
-        complete_diet_info['Fd_Conc']
+    complete_feed_data['Fd_CPBIn_Conc'] = calculate_Fd_CPBIn_Conc(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
+        complete_feed_data['Fd_Conc']
         )
-    complete_diet_info['Fd_CPCIn'] = calculate_Fd_CPCIn(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPCRU']
+    complete_feed_data['Fd_CPCIn'] = calculate_Fd_CPCIn(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPCRU']
         )
-    complete_diet_info['Fd_CPIn_ClfLiq'] = calculate_Fd_CPIn_ClfLiq(
-        diet_info['Fd_Category'], complete_diet_info['Fd_DMIn'],
-        diet_info['Fd_CP']
+    complete_feed_data['Fd_CPIn_ClfLiq'] = calculate_Fd_CPIn_ClfLiq(
+        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DMIn'],
+        complete_feed_data['Fd_CP']
         )
-    complete_diet_info['Fd_CPIn_ClfDry'] = calculate_Fd_CPIn_ClfDry(
-        diet_info['Fd_Category'], complete_diet_info['Fd_DMIn'],
-        diet_info['Fd_CP']
+    complete_feed_data['Fd_CPIn_ClfDry'] = calculate_Fd_CPIn_ClfDry(
+        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DMIn'],
+        complete_feed_data['Fd_CP']
         )
-    complete_diet_info['Fd_OMIn'] = calculate_Fd_OMIn(
-        complete_diet_info['Fd_DMIn'], complete_diet_info['Fd_AshIn']
+    complete_feed_data['Fd_OMIn'] = calculate_Fd_OMIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_AshIn']
         )
 
     # Rumen Degraded and Undegraded Protein
-    complete_diet_info['Fd_rdcRUPB'] = calculate_Fd_rdcRUPB(
-        complete_diet_info['Fd_For'], complete_diet_info['Fd_Conc'],
-        complete_diet_info['Fd_KdRUP'], coeff_dict
+    complete_feed_data['Fd_rdcRUPB'] = calculate_Fd_rdcRUPB(
+        complete_feed_data['Fd_For'], complete_feed_data['Fd_Conc'],
+        complete_feed_data['Fd_KdRUP'], coeff_dict
         )
-    complete_diet_info['Fd_RUPBIn'] = calculate_Fd_RUPBIn(
-        complete_diet_info['Fd_For'], complete_diet_info['Fd_Conc'],
-        complete_diet_info['Fd_KdRUP'], complete_diet_info['Fd_CPBIn'],
+    complete_feed_data['Fd_RUPBIn'] = calculate_Fd_RUPBIn(
+        complete_feed_data['Fd_For'], complete_feed_data['Fd_Conc'],
+        complete_feed_data['Fd_KdRUP'], complete_feed_data['Fd_CPBIn'],
         coeff_dict
         )
-    complete_diet_info['Fd_RUPIn'] = calculate_Fd_RUPIn(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CPAIn'],
-        complete_diet_info['Fd_CPCIn'], complete_diet_info['Fd_NPNCPIn'],
-        complete_diet_info['Fd_RUPBIn'], coeff_dict
+    complete_feed_data['Fd_RUPIn'] = calculate_Fd_RUPIn(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPAIn'],
+        complete_feed_data['Fd_CPCIn'], complete_feed_data['Fd_NPNCPIn'],
+        complete_feed_data['Fd_RUPBIn'], coeff_dict
         )
-    complete_diet_info['Fd_RUP_CP'] = calculate_Fd_RUP_CP(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_RUPIn']
+    complete_feed_data['Fd_RUP_CP'] = calculate_Fd_RUP_CP(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_RUPIn']
         )
-    complete_diet_info['Fd_RUP'] = calculate_Fd_RUP(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_RUPIn'],
-        complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_RUP'] = calculate_Fd_RUP(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_RUPIn'],
+        complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_RDP'] = calculate_Fd_RDP(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_CP'],
-        complete_diet_info['Fd_RUP']
+    complete_feed_data['Fd_RDP'] = calculate_Fd_RDP(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CP'],
+        complete_feed_data['Fd_RUP']
         )
 
     # FA Intakes
@@ -2302,67 +2307,67 @@ def calculate_diet_info(Dt_DMIn: float,
         'Fd_C120', 'Fd_C140', 'Fd_C160', 'Fd_C161', 'Fd_C180', 'Fd_C181t',
         'Fd_C181c', 'Fd_C182', 'Fd_C183', 'Fd_OtherFA'
     ]
-    complete_diet_info = calculate_Fd_FAIn(
-        complete_diet_info, column_names_FAIn
+    complete_feed_data = calculate_Fd_FAIn(
+        complete_feed_data, column_names_FAIn
         )
-    complete_diet_info['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
-        diet_info['Fd_NDF'], diet_info['Fd_Lg'], diet_info['Fd_St'],
-        diet_info['Fd_dcSt'], diet_info['Fd_FA'], diet_info['Fd_dcFA'],
-        diet_info['Fd_Ash'], diet_info['Fd_CP'], complete_diet_info['Fd_NPNCP'],
-        complete_diet_info['Fd_RUP'], diet_info['Fd_dcRUP']
+    complete_feed_data['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], complete_feed_data['Fd_St'],
+        complete_feed_data['Fd_dcSt'], complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'],
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP'],
+        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP']
         )
-    complete_diet_info['Fd_DE_base_2'] = calculate_Fd_DE_base_2(
-        diet_info['Fd_NDF'], diet_info['Fd_St'], diet_info['Fd_dcSt'],
-        diet_info['Fd_FA'], diet_info['Fd_dcFA'], diet_info['Fd_Ash'],
-        diet_info['Fd_CP'], complete_diet_info['Fd_NPNCP'],
-        complete_diet_info['Fd_RUP'], diet_info['Fd_dcRUP'],
-        diet_info['Fd_DNDF48_NDF']
+    complete_feed_data['Fd_DE_base_2'] = calculate_Fd_DE_base_2(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt'],
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_Ash'],
+        complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP'],
+        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP'],
+        complete_feed_data['Fd_DNDF48_NDF']
         )
-    complete_diet_info['Fd_DE_base'] = calculate_Fd_DE_base(
-        Use_DNDF_IV, complete_diet_info['Fd_DE_base_1'],
-        complete_diet_info['Fd_DE_base_2'], complete_diet_info['Fd_For'],
-        diet_info['Fd_FA'], complete_diet_info['Fd_RDP'],
-        complete_diet_info['Fd_RUP'], diet_info['Fd_dcRUP'], diet_info['Fd_CP'],
-        diet_info['Fd_Ash'], diet_info['Fd_dcFA'], complete_diet_info['Fd_NPN'],
-        diet_info['Fd_Category']
+    complete_feed_data['Fd_DE_base'] = calculate_Fd_DE_base(
+        Use_DNDF_IV, complete_feed_data['Fd_DE_base_1'],
+        complete_feed_data['Fd_DE_base_2'], complete_feed_data['Fd_For'],
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_RDP'],
+        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_CP'],
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_NPN'],
+        complete_feed_data['Fd_Category']
         )
-    complete_diet_info['Fd_DEIn_base'] = calculate_Fd_DEIn_base(
-        complete_diet_info['Fd_DE_base'], complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DEIn_base'] = calculate_Fd_DEIn_base(
+        complete_feed_data['Fd_DE_base'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_DEIn_base_ClfLiq'] = calculate_Fd_DEIn_base_ClfLiq(
-        diet_info['Fd_Category'], complete_diet_info['Fd_DEIn_base']
+    complete_feed_data['Fd_DEIn_base_ClfLiq'] = calculate_Fd_DEIn_base_ClfLiq(
+        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DEIn_base']
         )
-    complete_diet_info['Fd_DEIn_base_ClfDry'] = calculate_Fd_DEIn_base_ClfDry(
-        diet_info['Fd_Category'], complete_diet_info['Fd_DEIn_base']
+    complete_feed_data['Fd_DEIn_base_ClfDry'] = calculate_Fd_DEIn_base_ClfDry(
+        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DEIn_base']
         )
-    complete_diet_info['Fd_DMIn_ClfLiq'] = calculate_Fd_DMIn_ClfLiq(
-        An_StatePhys, diet_info['Fd_DMIn'], diet_info['Fd_Category']
+    complete_feed_data['Fd_DMIn_ClfLiq'] = calculate_Fd_DMIn_ClfLiq(
+        An_StatePhys, complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_Category']
         )
-    complete_diet_info['Fd_DE_ClfLiq'] = calculate_Fd_DE_ClfLiq(
-        An_StatePhys, diet_info['Fd_Category'], complete_diet_info['Fd_GE']
+    complete_feed_data['Fd_DE_ClfLiq'] = calculate_Fd_DE_ClfLiq(
+        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_GE']
         )
-    complete_diet_info['Fd_ME_ClfLiq'] = calculate_Fd_ME_ClfLiq(
-        An_StatePhys, diet_info['Fd_Category'],
-        complete_diet_info['Fd_DE_ClfLiq']
+    complete_feed_data['Fd_ME_ClfLiq'] = calculate_Fd_ME_ClfLiq(
+        An_StatePhys, complete_feed_data['Fd_Category'],
+        complete_feed_data['Fd_DE_ClfLiq']
         )
-    complete_diet_info['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
-        Dt_DMIn, diet_info['Fd_Conc'], complete_diet_info['Fd_DMInp']
+    complete_feed_data['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
+        Dt_DMIn, complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DMInp']
         )
     
     macro_mineral_intakes = [
         'Fd_Ca', 'Fd_P', 'Fd_Na', 'Fd_Mg', 'Fd_K', 'Fd_Cl', 'Fd_S'
     ]
-    complete_diet_info = calculate_macroIn(
-        complete_diet_info, macro_mineral_intakes
+    complete_feed_data = calculate_macroIn(
+        complete_feed_data, macro_mineral_intakes
         )
-    complete_diet_info['Fd_PinorgIn'] = calculate_Fd_PinorgIn(
-        complete_diet_info['Fd_PIn'], complete_diet_info['Fd_Pinorg_P']
+    complete_feed_data['Fd_PinorgIn'] = calculate_Fd_PinorgIn(
+        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_Pinorg_P']
         )
-    complete_diet_info['Fd_PorgIn'] = calculate_Fd_PorgIn(
-        complete_diet_info['Fd_PIn'], complete_diet_info['Fd_Porg_P']
+    complete_feed_data['Fd_PorgIn'] = calculate_Fd_PorgIn(
+        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_Porg_P']
         )
-    complete_diet_info['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
-        diet_info['Fd_Category'], complete_diet_info['Fd_MgIn']
+    complete_feed_data['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
+        complete_feed_data['Fd_Category'], complete_feed_data['Fd_MgIn']
         )
 
     micro_nutrient_intakes = [
@@ -2370,68 +2375,68 @@ def calculate_diet_info(Dt_DMIn: float,
         'Fd_Zn', 'Fd_VitA', 'Fd_VitD', 'Fd_VitE', 'Fd_Choline', 'Fd_Biotin',
         'Fd_Niacin', 'Fd_B_Carotene'
     ]
-    complete_diet_info = calculate_microIn(
-        complete_diet_info, micro_nutrient_intakes
+    complete_feed_data = calculate_microIn(
+        complete_feed_data, micro_nutrient_intakes
         ) # Line 741-749
 
-    Dt_DMIn_ClfLiq = complete_diet_info['Fd_DMIn_ClfLiq'].sum()
+    Dt_DMIn_ClfLiq = complete_feed_data['Fd_DMIn_ClfLiq'].sum()
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
 
-    complete_diet_info['Fd_acCa'] = calculate_Fd_acCa(
-        An_StatePhys, complete_diet_info['Fd_acCa_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acCa'] = calculate_Fd_acCa(
+        An_StatePhys, complete_feed_data['Fd_acCa_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acPtot'] = calculate_Fd_acPtot(
-        An_StatePhys, diet_info['Fd_Category'],
-        complete_diet_info['Fd_Pinorg_P'], complete_diet_info['Fd_Porg_P'],
-        complete_diet_info['Fd_acPtot_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acPtot'] = calculate_Fd_acPtot(
+        An_StatePhys, complete_feed_data['Fd_Category'],
+        complete_feed_data['Fd_Pinorg_P'], complete_feed_data['Fd_Porg_P'],
+        complete_feed_data['Fd_acPtot_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acMg'] = calculate_Fd_acMg(
-        An_StatePhys, complete_diet_info['Fd_acMg_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acMg'] = calculate_Fd_acMg(
+        An_StatePhys, complete_feed_data['Fd_acMg_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acNa'] = calculate_Fd_acNa(
-        An_StatePhys, complete_diet_info['Fd_acNa_input']
+    complete_feed_data['Fd_acNa'] = calculate_Fd_acNa(
+        An_StatePhys, complete_feed_data['Fd_acNa_input']
         )
-    complete_diet_info['Fd_acK'] = calculate_Fd_acK(
-        An_StatePhys, complete_diet_info['Fd_acK_input']
+    complete_feed_data['Fd_acK'] = calculate_Fd_acK(
+        An_StatePhys, complete_feed_data['Fd_acK_input']
         )
-    complete_diet_info['Fd_acCl'] = calculate_Fd_acCl(
-        An_StatePhys, complete_diet_info['Fd_acCl_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acCl'] = calculate_Fd_acCl(
+        An_StatePhys, complete_feed_data['Fd_acCl_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_absCaIn'] = calculate_Fd_absCaIn(
-        complete_diet_info['Fd_CaIn'], complete_diet_info['Fd_acCa']
+    complete_feed_data['Fd_absCaIn'] = calculate_Fd_absCaIn(
+        complete_feed_data['Fd_CaIn'], complete_feed_data['Fd_acCa']
         )
-    complete_diet_info['Fd_absPIn'] = calculate_Fd_absPIn(
-        complete_diet_info['Fd_PIn'], complete_diet_info['Fd_acPtot']
+    complete_feed_data['Fd_absPIn'] = calculate_Fd_absPIn(
+        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_acPtot']
         )
-    complete_diet_info['Fd_absMgIn_base'] = calculate_Fd_absMgIn_base(
-        complete_diet_info['Fd_MgIn'], complete_diet_info['Fd_acMg']
+    complete_feed_data['Fd_absMgIn_base'] = calculate_Fd_absMgIn_base(
+        complete_feed_data['Fd_MgIn'], complete_feed_data['Fd_acMg']
         )
-    complete_diet_info['Fd_absNaIn'] = calculate_Fd_absNaIn(
-        complete_diet_info['Fd_NaIn'], complete_diet_info['Fd_acNa']
+    complete_feed_data['Fd_absNaIn'] = calculate_Fd_absNaIn(
+        complete_feed_data['Fd_NaIn'], complete_feed_data['Fd_acNa']
         )
-    complete_diet_info['Fd_absKIn'] = calculate_Fd_absKIn(
-        complete_diet_info['Fd_KIn'], complete_diet_info['Fd_acK']
+    complete_feed_data['Fd_absKIn'] = calculate_Fd_absKIn(
+        complete_feed_data['Fd_KIn'], complete_feed_data['Fd_acK']
         )
-    complete_diet_info['Fd_absClIn'] = calculate_Fd_absClIn(
-        complete_diet_info['Fd_ClIn'], complete_diet_info['Fd_acCl']
+    complete_feed_data['Fd_absClIn'] = calculate_Fd_absClIn(
+        complete_feed_data['Fd_ClIn'], complete_feed_data['Fd_acCl']
         )
-    complete_diet_info['Fd_acCo'] = calculate_Fd_acCo(An_StatePhys)
-    complete_diet_info['Fd_acCu'] = calculate_Fd_acCu(
-        An_StatePhys, complete_diet_info['Fd_acCu_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acCo'] = calculate_Fd_acCo(An_StatePhys)
+    complete_feed_data['Fd_acCu'] = calculate_Fd_acCu(
+        An_StatePhys, complete_feed_data['Fd_acCu_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acFe'] = calculate_Fd_acFe(
-        An_StatePhys, complete_diet_info['Fd_acFe_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acFe'] = calculate_Fd_acFe(
+        An_StatePhys, complete_feed_data['Fd_acFe_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acMn'] = calculate_Fd_acMn(
-        An_StatePhys, complete_diet_info['Fd_acMn_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acMn'] = calculate_Fd_acMn(
+        An_StatePhys, complete_feed_data['Fd_acMn_input'], Dt_DMIn_ClfLiq
         )
-    complete_diet_info['Fd_acZn'] = calculate_Fd_acZn(
-        An_StatePhys, complete_diet_info['Fd_acZn_input'], Dt_DMIn_ClfLiq
+    complete_feed_data['Fd_acZn'] = calculate_Fd_acZn(
+        An_StatePhys, complete_feed_data['Fd_acZn_input'], Dt_DMIn_ClfLiq
         )
 
     micro_absorption = ['Co', 'Cu', 'Fe', 'Mn', 'Zn']
-    complete_diet_info = calculate_micro_absorbtion(
-        complete_diet_info, micro_absorption
+    complete_feed_data = calculate_micro_absorbtion(
+        complete_feed_data, micro_absorption
         )
 
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed aa.
@@ -2466,73 +2471,73 @@ def calculate_diet_info(Dt_DMIn: float,
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
 
-    complete_diet_info = calculate_Fd_AAt_CP(
-        complete_diet_info, aa_list, coeff_dict
+    complete_feed_data = calculate_Fd_AAt_CP(
+        complete_feed_data, aa_list, coeff_dict
         )
-    complete_diet_info = calculate_Fd_AARUPIn(complete_diet_info, aa_list)
-    complete_diet_info = calculate_Fd_IdAARUPIn(
-        complete_diet_info, aa_list, SIDig_values
+    complete_feed_data = calculate_Fd_AARUPIn(complete_feed_data, aa_list)
+    complete_feed_data = calculate_Fd_IdAARUPIn(
+        complete_feed_data, aa_list, SIDig_values
         )
-    complete_diet_info['Fd_DigSt'] = calculate_Fd_DigSt(
-        diet_info['Fd_St'], diet_info['Fd_dcSt']
+    complete_feed_data['Fd_DigSt'] = calculate_Fd_DigSt(
+        complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt']
         )
-    complete_diet_info['Fd_DigStIn_Base'] = calculate_Fd_DigStIn_Base(
-        complete_diet_info['Fd_DigSt'], diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DigStIn_Base'] = calculate_Fd_DigStIn_Base(
+        complete_feed_data['Fd_DigSt'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_DigrOMt'] = calculate_Fd_DigrOMt(
-        complete_diet_info['Fd_rOM'], coeff_dict
+    complete_feed_data['Fd_DigrOMt'] = calculate_Fd_DigrOMt(
+        complete_feed_data['Fd_rOM'], coeff_dict
         )
-    complete_diet_info['Fd_DigrOMtIn'] = calculate_Fd_DigrOMtIn(
-        complete_diet_info['Fd_DigrOMt'], diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DigrOMtIn'] = calculate_Fd_DigrOMtIn(
+        complete_feed_data['Fd_DigrOMt'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_idRUPIn'] = calculate_Fd_idRUPIn(
-        diet_info['Fd_dcRUP'], complete_diet_info['Fd_RUPIn']
+    complete_feed_data['Fd_idRUPIn'] = calculate_Fd_idRUPIn(
+        complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_RUPIn']
         )
-    complete_diet_info['TT_dcFdFA'] = calculate_TT_dcFdFA(
-        An_StatePhys, diet_info['Fd_Category'], diet_info['Fd_Type'],
-        diet_info['Fd_dcFA'], coeff_dict
+    complete_feed_data['TT_dcFdFA'] = calculate_TT_dcFdFA(
+        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_Type'],
+        complete_feed_data['Fd_dcFA'], coeff_dict
         )
-    complete_diet_info['Fd_DigFAIn'] = calculate_Fd_DigFAIn(
-        complete_diet_info['TT_dcFdFA'], diet_info['Fd_FA'],
-        diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DigFAIn'] = calculate_Fd_DigFAIn(
+        complete_feed_data['TT_dcFdFA'], complete_feed_data['Fd_FA'],
+        complete_feed_data['Fd_DMIn']
         )
 
     Dig_FA_list = [
         'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
         'C183', 'OtherFA'
     ]
-    complete_diet_info = calculate_Fd_Dig_FAIn(complete_diet_info, Dig_FA_list)
+    complete_feed_data = calculate_Fd_Dig_FAIn(complete_feed_data, Dig_FA_list)
 
-    complete_diet_info['Fd_DigrOMa'] = calculate_Fd_DigrOMa(
-        complete_diet_info['Fd_DigrOMt'], coeff_dict
+    complete_feed_data['Fd_DigrOMa'] = calculate_Fd_DigrOMa(
+        complete_feed_data['Fd_DigrOMt'], coeff_dict
         )
-    complete_diet_info['Fd_DigrOMaIn'] = calculate_Fd_DigrOMaIn(
-        complete_diet_info['Fd_DigrOMa'], complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DigrOMaIn'] = calculate_Fd_DigrOMaIn(
+        complete_feed_data['Fd_DigrOMa'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_DigWSC'] = calculate_Fd_DigWSC(
-        complete_diet_info['Fd_WSC']
+    complete_feed_data['Fd_DigWSC'] = calculate_Fd_DigWSC(
+        complete_feed_data['Fd_WSC']
         )
-    complete_diet_info['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(
-        complete_diet_info['Fd_DigWSC'], complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(
+        complete_feed_data['Fd_DigWSC'], complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_idRUP'] = calculate_Fd_idRUP(
-        complete_diet_info['Fd_CPIn'], complete_diet_info['Fd_idRUPIn'],
-        complete_diet_info['Fd_DMIn']
+    complete_feed_data['Fd_idRUP'] = calculate_Fd_idRUP(
+        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_idRUPIn'],
+        complete_feed_data['Fd_DMIn']
         )
-    complete_diet_info['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
-        complete_diet_info['Fd_RUPIn'], complete_diet_info['Fd_dcRUP']
+    complete_feed_data['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
+        complete_feed_data['Fd_RUPIn'], complete_feed_data['Fd_dcRUP']
         )
-    complete_diet_info = calculate_Fd_AAIn(complete_diet_info, aa_list)
-    complete_diet_info["Fd_AFInp"] = calculate_Fd_AFInp(
-        complete_diet_info["Fd_AFIn"]
+    complete_feed_data = calculate_Fd_AAIn(complete_feed_data, aa_list)
+    complete_feed_data["Fd_AFInp"] = calculate_Fd_AFInp(
+        complete_feed_data["Fd_AFIn"]
         )
-    complete_diet_info["Fd_RDPIn"] = calculate_Fd_RDPIn(
-        complete_diet_info["Fd_RDP"], complete_diet_info["Fd_DMIn"]
+    complete_feed_data["Fd_RDPIn"] = calculate_Fd_RDPIn(
+        complete_feed_data["Fd_RDP"], complete_feed_data["Fd_DMIn"]
     )
-    return complete_diet_info
+    return complete_feed_data
 
 
-def calculate_diet_data(diet_info: pd.DataFrame,
+def calculate_diet_data(complete_feed_data: pd.DataFrame,
                         diet_data: dict,
                         Dt_DMIn: float, 
                         An_BW: float, 
@@ -2554,7 +2559,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
     # Diet Intakes
     # column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
     column_names_DMInp = ['ADF', 'NDF', 'For', 'ForNDF']
-    diet_data = calculate_Dt_X(diet_info, column_names_DMInp, diet_data)
+    diet_data = calculate_Dt_X(complete_feed_data, column_names_DMInp, diet_data)
 
     column_names_sum = [
         'DMIn_ClfLiq', 'DMIn_ClfFor', 'AFIn', 'NDFIn', 'ADFIn', 'LgIn',
@@ -2569,17 +2574,17 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         'ArgRUPIn', 'HisRUPIn', 'IleRUPIn', 'LeuRUPIn', 'LysRUPIn', 'MetRUPIn',
         'PheRUPIn', 'ThrRUPIn', 'TrpRUPIn', 'ValRUPIn'
     ]
-    diet_data = calculate_DtIn(diet_info, column_names_sum, diet_data)
+    diet_data = calculate_DtIn(complete_feed_data, column_names_sum, diet_data)
 
-    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(diet_info['Fd_DMIn'])
+    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(complete_feed_data['Fd_DMIn'])
     diet_data['Dt_DEIn_ClfLiq'] = calculate_Dt_DEIn_ClfLiq(
-        diet_info['Fd_DE_ClfLiq'], diet_info['Fd_DMIn_ClfLiq']
+        complete_feed_data['Fd_DE_ClfLiq'], complete_feed_data['Fd_DMIn_ClfLiq']
         )
     diet_data['Dt_MEIn_ClfLiq'] = calculate_Dt_MEIn_ClfLiq(
-        diet_info['Fd_ME_ClfLiq'], diet_info['Fd_DMIn_ClfLiq']
+        complete_feed_data['Fd_ME_ClfLiq'], complete_feed_data['Fd_DMIn_ClfLiq']
         )
     diet_data['Dt_ForDNDF48'] = calculate_Dt_ForDNDF48(
-        diet_info['Fd_DMInp'], diet_info['Fd_Conc'], diet_info['Fd_NDF'], diet_info['Fd_DNDF48']
+        complete_feed_data['Fd_DMInp'], complete_feed_data['Fd_Conc'], complete_feed_data['Fd_NDF'], complete_feed_data['Fd_DNDF48']
         )
     diet_data['Dt_ForDNDF48_ForNDF'] = calculate_Dt_ForDNDF48_ForNDF(
         diet_data['Dt_ForDNDF48'], diet_data['Dt_ForNDF']
@@ -2588,19 +2593,19 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         diet_data['Dt_ADF'], diet_data['Dt_NDF']
         )
     diet_data['Dt_NDFnfIn'] = calculate_Dt_NDFnfIn(
-        diet_info['Fd_DMIn'], diet_info['Fd_NDFnf']
+        complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_NDFnf']
         )
     diet_data['Dt_Lg_NDF'] = calculate_Dt_Lg_NDF(
         diet_data['Dt_LgIn'], diet_data['Dt_NDFIn']
         )
     diet_data['Dt_ForNDFIn'] = calculate_Dt_ForNDFIn(
-        diet_info['Fd_DMIn'], diet_info['Fd_ForNDF']
+        complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_ForNDF']
         )
     diet_data['Dt_PastSupplIn'] = calculate_Dt_PastSupplIn(
         diet_data['Dt_DMInSum'], diet_data['Dt_PastIn']
         )
     diet_data['Dt_NIn'] = calculate_Dt_NIn(diet_data['Dt_CPIn'])
-    diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(diet_info['Fd_RUPIn'])
+    diet_data['Dt_RUPIn'] = calculate_Dt_RUPIn(complete_feed_data['Fd_RUPIn'])
     diet_data['Dt_RUP_CP'] = calculate_Dt_RUP_CP(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
         )
@@ -2633,9 +2638,9 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         )
 
     column_names_DMI = [
-        'RUP', 'OM', 'NDF', 'NDFnf', 'ADF', 'Lg', 'ForNDF', 'NFC', 'St', 'WSC',
+        'RUP', 'OM', 'NDFnf', 'Lg', 'NFC', 'St', 'WSC',
         'rOM', 'CFat', 'FA', 'FAhydr', 'CP', 'TP', 'NPNCP', 'NPN', 'NPNDM',
-        'CPA', 'CPB', 'CPC', 'Ash', 'ForWet', 'ForDry', 'For', 'Conc', 'C120',
+        'CPA', 'CPB', 'CPC', 'Ash', 'ForWet', 'ForDry', 'Conc', 'C120',
         'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182', 'C183',
         'OtherFA', 'UFA', 'MUFA', 'PUFA', 'SatFA'
     ]
@@ -2669,7 +2674,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         'SeIn', 'ZnIn', 'VitAIn', 'VitDIn', 'VitEIn', 'CholineIn', 'BiotinIn',
         'NiacinIn', 'B_CaroteneIn'
     ]
-    diet_data = calculate_Dt_microIn(diet_info, column_names_micronutrients, diet_data)
+    diet_data = calculate_Dt_microIn(complete_feed_data, column_names_micronutrients, diet_data)
 
     column_names_macro = [
         'Dt_Ca', 'Dt_P', 'Dt_Pinorg', 'Dt_Porg', 'Dt_Na', 'Dt_Mg', 'Dt_K',
@@ -2687,7 +2692,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
     aa_list = [
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
-    diet_data = calculate_Dt_IdAARUPIn(diet_info, aa_list, diet_data)
+    diet_data = calculate_Dt_IdAARUPIn(complete_feed_data, aa_list, diet_data)
 
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
@@ -2745,13 +2750,13 @@ def calculate_diet_data(diet_info: pd.DataFrame,
         'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
         'C183', 'OtherFA'
     ]
-    diet_data = calculate_Dt_DigFAIn(diet_info, Dig_FA_list, diet_data)
+    diet_data = calculate_Dt_DigFAIn(complete_feed_data, Dig_FA_list, diet_data)
 
     Abs_micro_list = [
         'CaIn', 'PIn', 'NaIn', 'KIn', 'ClIn', 'CoIn', 'CuIn', 'FeIn', 'MnIn',
         'ZnIn'
     ]
-    diet_data = calculate_Abs_micro(diet_info, Abs_micro_list, diet_data)
+    diet_data = calculate_Abs_micro(complete_feed_data, Abs_micro_list, diet_data)
 
     diet_data['Dt_acMg'] = calculate_Dt_acMg(
         An_StatePhys, diet_data['Dt_K'], diet_data['Dt_MgIn_min'], 
@@ -2760,7 +2765,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
     diet_data['Abs_MgIn'] = calculate_Abs_MgIn(
         diet_data['Dt_acMg'], diet_data['Dt_MgIn']
         )
-    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(diet_info['Fd_DigWSCIn'])
+    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(complete_feed_data['Fd_DigWSCIn'])
     diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'], Dt_DMIn)
     diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(
         diet_data['Dt_DigWSCIn'], Dt_DMIn
@@ -2786,7 +2791,7 @@ def calculate_diet_data(diet_info: pd.DataFrame,
     diet_data['Dt_idcRUP'] = calculate_Dt_idcRUP(
         diet_data['Dt_idRUPIn'], diet_data['Dt_RUPIn']
         )
-    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(diet_info['Fd_Fe_RUPout'])
+    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(complete_feed_data['Fd_Fe_RUPout'])
     diet_data['Dt_RDTPIn'] = calculate_Dt_RDTPIn(
         diet_data['Dt_RDPIn'], diet_data['Dt_NPNCPIn'], coeff_dict
         )
