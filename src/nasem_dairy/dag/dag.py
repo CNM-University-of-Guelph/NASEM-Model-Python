@@ -571,43 +571,66 @@ class nasem_dag:
         Ensure all vertices are connected according to the DAG data.
         Raises an exception if there are missing or extra connections.
         """
-        # TODO After checking for no connections check that each vertex has the 
-        # correct number of incoming and outgoing edges
+        vertex_data = {
+            row["Name"]: {
+                "expected_inputs": row["Arguments"] + row["Constants"] + row["Inputs"],
+                "outgoing_count": 0
+                }
+                for index, row in self.dag_data.iterrows()
+            }
+        # Populate the outgoing_count based on references in other vertices' expected_inputs
+        for name, data in vertex_data.items():
+            for reference in data["expected_inputs"]:
+                if reference in vertex_data:
+                    vertex_data[reference]["outgoing_count"] += 1
+       
+        # Check for isolated vertices
         for name, vertex in self.name_to_vertex.items():
             if vertex.out_degree() == 0 and vertex.in_degree() == 0:
                 raise ValueError(f"Vertex {name} is isolated (no edges).")
 
-        for index, row in self.dag_data.iterrows():
-            name = row["Name"]
+        # Check each vertex has expected number of incoming edges
+        for name, data in vertex_data.items():
             if name in self.name_to_vertex:
                 vertex = self.name_to_vertex[name]
-                expected_incoming_edges = (
-                    len(row["Arguments"]) + 
-                    len(row["Constants"]) + 
-                    len(row["Inputs"])
-                    )
+                expected_incoming_edges = len(data["expected_inputs"])
                 actual_incoming_edges = vertex.in_degree()
 
                 if actual_incoming_edges != expected_incoming_edges:
                     actual_incoming_names = [
                         self.vertex_labels[edge.source()] for edge in vertex.in_edges()
                     ]
-                    expected_incoming_names = row["Arguments"] + row["Constants"] + row["Inputs"]
-                    missing_edges = [edge for edge in expected_incoming_names if edge not in actual_incoming_names]
-                    
+                    missing_edges = [edge for edge in data["expected_inputs"] if edge not in actual_incoming_names]
+
                     # Print debug information
                     print(f"Vertex {name} has an incorrect number of incoming edges.")
-                    print(f"Expected {expected_incoming_edges} incoming edges from: {expected_incoming_names}")
+                    print(f"Expected {expected_incoming_edges} incoming edges from: {data['expected_inputs']}")
                     print(f"Actual {actual_incoming_edges} incoming edges from: {actual_incoming_names}")
                     if missing_edges:
                         print(f"Missing expected edges from: {missing_edges}")
-                    
-                    raise ValueError(
-                    f"Vertex {name} has {actual_incoming_edges} incoming edges, "
-                    f"but {expected_incoming_edges} were expected."
-                    )
 
+                    raise ValueError(
+                        f"Vertex {name} has {actual_incoming_edges} incoming edges, "
+                        f"but {expected_incoming_edges} were expected."
+                    )
             else:
                 print(f"{name} was not found in self.name_to_vertex")
+
+        # Check each vertex has the expected number of outgoing edges
+        for name, data in vertex_data.items():
+            if name in self.name_to_vertex:
+                vertex = self.name_to_vertex[name]
+                expected_outgoing_edges = data["outgoing_count"]
+                actual_outgoing_edges = vertex.out_degree()
+
+                if actual_outgoing_edges != expected_outgoing_edges:
+                    print(f"Vertex {name} has an incorrect number of outgoing edges.")
+                    print(f"Expected {expected_outgoing_edges} outgoing edges.")
+                    print(f"Actual {actual_outgoing_edges} outgoing edges.")
+
+                    raise ValueError(
+                        f"Vertex {name} has {actual_outgoing_edges} outgoing edges, "
+                        f"but {expected_outgoing_edges} were expected."
+                    )
 
         print("Connectivity verification completed.")
