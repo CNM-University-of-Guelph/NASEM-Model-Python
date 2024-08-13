@@ -272,7 +272,7 @@ def nasem(user_diet: pd.DataFrame,
     infusion_data = infusion.calculate_infusion_data(
         infusion_input, Dt_DMIn, coeff_dict
         )   
-    feed_data = diet.calculate_diet_info(
+    feed_data = diet.calculate_feed_data(
         Dt_DMIn, animal_input["An_StatePhys"], 
         equation_selection["Use_DNDF_IV"], feed_data, coeff_dict
         )
@@ -469,8 +469,7 @@ def nasem(user_diet: pd.DataFrame,
         Du_MiCP, Rum_DigNDFIn, Rum_DigStIn
         )
     Du_IdEAAMic = aa.calculate_Du_IdEAAMic(aa_values["Du_IdAAMic"])
-    Dt_IdAARUPIn = pd.Series([diet_data[f"Dt_Id{aa}RUPIn"] for aa in aa_list],
-                             index=aa_list)
+    Dt_IdAARUPIn = diet.calculate_Dt_IdAARUPIn_array(diet_data, aa_list)
     Dt_IdEAARUPIn = aa.calculate_Dt_IdEAARUPIn(Dt_IdAARUPIn)
 
     ####################
@@ -535,8 +534,7 @@ def nasem(user_diet: pd.DataFrame,
         equation_selection["mPrt_eqn"], aa_values["Abs_AA_g"]
         )
     mPrt_k_EAA2 = aa.calculate_mPrt_k_EAA2(
-        aa_values.loc["Met", "mPrtmx_AA2"], aa_values.loc["Met", "mPrt_AA_01"], 
-        aa_values.loc["Met", "AA_mPrtmx"]
+        aa_values["mPrtmx_AA2"], aa_values["mPrt_AA_01"], aa_values["AA_mPrtmx"]
         )
     Abs_EAA2_g = aa.calculate_Abs_EAA2_g(aa_values["Abs_AA_g"])
     aa_values["Abs_AA_MPp"] = aa.calculate_Abs_AA_MPp(
@@ -1009,8 +1007,7 @@ def nasem(user_diet: pd.DataFrame,
     Mlk_Fatemp_g = milk.calculate_Mlk_Fatemp_g(
         animal_input["An_StatePhys"], An_LactDay_MlkPred, Dt_DMIn,
         diet_data["Dt_FAIn"], diet_data["Dt_DigC160In"],
-        diet_data["Dt_DigC183In"], aa_values.loc["Ile", "Abs_AA_g"],
-        aa_values.loc["Met", "Abs_AA_g"]
+        diet_data["Dt_DigC183In"], aa_values["Abs_AA_g"]
         )
     Mlk_Fat_g = milk.calculate_Mlk_Fat_g(
         equation_selection["mFat_eqn"], Trg_Mlk_Fat_g, Mlk_Fatemp_g
@@ -1214,7 +1211,7 @@ def nasem(user_diet: pd.DataFrame,
         )
     Trg_AbsEAA_g = aa.calculate_Trg_AbsEAA_g(aa_values["Trg_AbsAA_g"])
     Trg_MlkEAA_AbsEAA = aa.calculate_Trg_MlkEAA_AbsEAA(
-        Mlk_EAA_g, aa_values.loc["Arg", "Mlk_AA_g"], Trg_AbsEAA_g
+        Mlk_EAA_g, aa_values["Mlk_AA_g"], Trg_AbsEAA_g
         )
     MlkNP_DEInp = milk.calculate_MlkNP_DEInp(an_data["An_DEInp"], mPrt_coeff)
     MlkNP_NDF = milk.calculate_MlkNP_NDF(an_data["An_DigNDF"], mPrt_coeff)

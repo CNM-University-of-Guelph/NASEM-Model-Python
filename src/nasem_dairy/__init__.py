@@ -255,7 +255,7 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_GasEOut_Heif,
     calculate_Dt_GasEOut_Dry,
     calculate_Dt_GasEOut,
-    calculate_diet_info,
+    calculate_feed_data,
     calculate_Fd_XIn,
     calculate_Fd_FAIn,
     calculate_macroIn,
@@ -290,7 +290,8 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_RDP_CP,
     calculate_Fd_AFInp,
     calculate_Fd_RDPIn,
-    calculate_diet_data
+    calculate_diet_data,
+    calculate_Dt_IdAARUPIn_array
 )
 
 from nasem_dairy.nasem_equations.rumen import (

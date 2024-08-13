@@ -68,7 +68,7 @@ def get_feed_data(Trg_Dt_DMIn: float,
         )
     feed_data = (user_diet.assign(
         Fd_DMInp=lambda df: df["kg_user"] / df["kg_user"].sum(),
-        Fd_DMIn=lambda df: df["Fd_DMInp"] * Trg_Dt_DMIn,
+        Trg_Fd_DMIn=lambda df: df["Fd_DMInp"] * Trg_Dt_DMIn,
         )
         .merge(selected_feeds, how="left", on="Feedstuff")
     )
