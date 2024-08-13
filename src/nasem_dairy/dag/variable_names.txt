@@ -1232,7 +1232,6 @@ Dt_IdIleRUPIn
 Rum_dcSt
 An_StIn
 Dt_NaReq_DMI
-f_Imb
 Trg_Mlk_Fat
 Gest_NE_ME
 TT_dcNDF_Base
@@ -1747,3 +1746,10 @@ Dt_IdValIn
 Body_Gain_NEalow
 Dt_IdHisIn
 Fd_Type
+Dt_IdAARUPIn
+An_IdAAIn
+Mlk_AA_TP
+mPrt_k_AA_array
+An_MPuse_g_Trg_initial
+Kg_MP_NP_Trg_initial
+Body_MPUse_g_Trg_initial

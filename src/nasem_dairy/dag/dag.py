@@ -5,7 +5,7 @@ import os
 import graph_tool.all as graph_tool
 import pandas as pd
 
-class nasem_dag():
+class nasem_dag:
     ### Initalization ###
     def __init__(self):
         """
@@ -26,11 +26,25 @@ class nasem_dag():
             "Inf_dcFA", "Inf_dcRUP", "Inf_DM_g", "Inf_EE_g", "Inf_FA_g", "Inf_Glc_g", 
             "Inf_His_g", "Inf_Ile_g", "Inf_KdCPB", "Inf_Leu_g", "Inf_Lys_g", "Inf_Met_g", 
             "Inf_NDF_g", "Inf_NPNCP_g", "Inf_Phe_g", "Inf_Prop_g", "Inf_St_g", "Inf_Thr_g", 
-            "Inf_Trp_g", "Inf_ttdcSt", "Inf_Val_g", "Inf_VFA_g", "Inf_Location"
+            "Inf_Trp_g", "Inf_ttdcSt", "Inf_Val_g", "Inf_VFA_g", "Inf_Location", "Fd_DMInp",
+            "Fd_Name", "Fd_Category", "Fd_Type", "Fd_DM", "Fd_Conc", "Fd_DE_Base", "Fd_ADF",
+            "Fd_NDF", "Fd_DNDF48_input", "Fd_DNDF48_NDF", "Fd_Lg", "Fd_CP", "Fd_St", 
+            "Fd_dcSt", "Fd_WSC", "Fd_CPARU", "Fd_CPBRU", "Fd_CPCRU", "Fd_dcRUP",
+            "Fd_CPs_CP", "Fd_KdRUP", "Fd_RUP_base", "Fd_NPN_CP", "Fd_NDFIP", 
+            "Fd_ADFIP", "Fd_Arg_CP", "Fd_His_CP", "Fd_Ile_CP", "Fd_Leu_CP", "Fd_Lys_CP",
+            "Fd_Met_CP", "Fd_Phe_CP", "Fd_Thr_CP", "Fd_Trp_CP", "Fd_Val_CP", "Fd_CFat",
+            "Fd_FA", "Fd_dcFA", "Fd_Ash", "Fd_C120_FA", "Fd_C140_FA", "Fd_C160_FA",
+            "Fd_C161_FA", "Fd_C180_FA", "Fd_C181t_FA","Fd_C181c_FA", "Fd_C182_FA",
+            "Fd_C183_FA", "Fd_OtherFA_FA", "Fd_Ca", "Fd_P", "Fd_Pinorg_P", "Fd_Porg_P", 
+            "Fd_Na", "Fd_Cl", "Fd_K", "Fd_Mg", "Fd_S", "Fd_Cr", "Fd_Co", "Fd_Cu", "Fd_Fe",
+            "Fd_I", "Fd_Mn", "Fd_Mo", "Fd_Se", "Fd_Zn", "Fd_B_Carotene", "Fd_Biotin",
+            "Fd_Choline", "Fd_Niacin", "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa_input",
+            "Fd_acPtot_input", "Fd_acNa_input", "Fd_acCl_input", "Fd_acK_input", "Fd_acCu_input",
+            "Fd_acFe_input", "Fd_acMg_input", "Fd_acMn_input", "Fd_acZn_input", "Trg_Fd_DMIn"
             ]
         self.mutator_function_mapping = {
             "calculate_An_IdAAIn": self.aa_list,
-            "calculate_An_XIn": ["CPIn", "NPNCPIn", "TPIn", "FAIn"],
+            "calculate_An_XIn": ["NPNCPIn", "FAIn"],
             "calculate_XIn": [
                 "Inf_DM", "Inf_St", "Inf_NDF", "Inf_ADF", "Inf_Glc", "Inf_CP",
                 "Inf_NPNCP", "Inf_FA", "Inf_Ash", "Inf_VFA", "Inf_Acet", "Inf_Prop",
@@ -96,9 +110,9 @@ class nasem_dag():
                 "PheRUPIn", "ThrRUPIn", "TrpRUPIn", "ValRUPIn"
             ],
             "calculate_Dt_DMI": [
-                "RUP", "OM", "NDF", "NDFnf", "ADF", "Lg", "ForNDF", "NFC", "St", "WSC",
+                "RUP", "OM", "NDFnf", "Lg", "NFC", "St", "WSC",
                 "rOM", "CFat", "FA", "FAhydr", "CP", "TP", "NPNCP", "NPN", "NPNDM",
-                "CPA", "CPB", "CPC", "Ash", "ForWet", "ForDry", "For", "Conc", "C120",
+                "CPA", "CPB", "CPC", "Ash", "ForWet", "ForDry", "Conc", "C120",
                 "C140", "C160", "C161", "C180", "C181t", "C181c", "C182", "C183",
                 "OtherFA", "UFA", "MUFA", "PUFA", "SatFA"
             ],
@@ -231,7 +245,7 @@ class nasem_dag():
         Collect required data for regular functions
         """
         args = [arg.arg for arg in node.args.args 
-                if arg.arg not in ["self.aa_list"]]
+                if arg.arg not in ["aa_list"]]
 
         # Extract names of constants from function definition
         coeff_keys = []
@@ -243,9 +257,15 @@ class nasem_dag():
                 keys = self._get_dict_keys(node, dictionary)
                 coeff_keys.extend(keys)
                 args.remove(dictionary)
+        # Check for f_Imb seperatly as not a dictionary
+        constants_series = ["f_Imb", "SIDig_values"]
+        for constant in constants_series:
+            if constant in args:
+                coeff_keys.append(constant)
+                args.remove(constant)
 
         # Extract names of keys when dict is passed as arg
-        dicts_to_check = ["infusion_data", "diet_data"]
+        dicts_to_check = ["infusion_data", "diet_data", "feed_data", "an_data"]
         for dictionary in dicts_to_check:
             if dictionary in args:
                 keys = self._get_dict_keys(node, dictionary)
@@ -336,13 +356,15 @@ class nasem_dag():
             for argument in arguments:
                 if argument == "var":
                     arg_value = val
+                elif argument == "aa":
+                    continue
                 else:
                     arg_value = "".join([part.value if isinstance(part, ast.Constant) else val for part in argument])
                 arg_values.append(arg_value)        
 
             # Check for non f-string keys
             function_args = [arg.arg for arg in node.args.args
-                            if arg.arg not in ["self.aa_list", "variables"]]
+                            if arg.arg not in ["aa_list", "variables"]]
             coeff_keys = []
             dicts_to_check = [
                 "coeff_dict", "mPrt_coeff", "MP_NP_efficiency_dict"
@@ -352,9 +374,15 @@ class nasem_dag():
                     keys = self._get_dict_keys(node, dictionary)
                     coeff_keys.extend(keys)
                     function_args.remove(dictionary)
+            # Check for f_Imb seperatly as not a dictionary
+            constants_series = ["f_Imb", "SIDig_values"]
+            for constant in constants_series:
+                if constant in function_args:
+                    coeff_keys.append(constant)
+                    function_args.remove(constant)
 
             # Extract names of keys when dict is passed as arg
-            dicts_to_check = ["infusion_data", "diet_data", "diet_info"]
+            dicts_to_check = ["infusion_data", "diet_data", "feed_data", "an_data"]
             for dictionary in dicts_to_check:
                 if dictionary in function_args:
                     keys = self._get_dict_keys(node, dictionary, False)
@@ -499,3 +527,87 @@ class nasem_dag():
                               )
         print("Graph has", self.dag.num_vertices(), "vertices and", self.dag.num_edges(), "edges.")
         print(f"Graph image saved to {output_path}")
+
+    ### Validation ###
+    def validate_dag(self):
+        """
+        Validate the DAG structure
+        - Check for cycles
+        - Validate topological sort
+        - Ensure all nodes and edges are correct
+        """
+        self._check_for_cycles()
+        self._validate_topological_order()
+        self._verify_connectivity()
+
+    def _check_for_cycles(self):
+        """
+        Check for cycles in the DAG. Raises an exception if a cycle is found.
+        """
+        if graph_tool.is_DAG(self.dag):
+            print("No cycles detected.")
+        else:
+            cycles = list(graph_tool.all_circuits(self.dag))
+            if cycles:
+                cycle_strs = []
+                for cycle in cycles:
+                    cycle_vertices = [self.vertex_labels[vertex] for vertex in cycle]
+                    cycle_strs.append(" -> ".join(cycle_vertices))
+                raise ValueError(f"Cycles detected in the DAG:\n" + "\n".join(cycle_strs))
+
+    def _validate_topological_order(self):
+        """
+        Attempt a topological sort. Raises an exception if sorting fails, 
+        which indicates a cycle or other inconsistency.
+        """
+        try:
+            order = graph_tool.topological_sort(self.dag)
+            # print(f"Topological sort successful: {list(order)}")
+        except ValueError as e:
+            raise ValueError("Topological sort failed. DAG may contain cycles or other inconsistencies.") from e
+    
+    def _verify_connectivity(self):
+        """
+        Ensure all vertices are connected according to the DAG data.
+        Raises an exception if there are missing or extra connections.
+        """
+        # TODO After checking for no connections check that each vertex has the 
+        # correct number of incoming and outgoing edges
+        for name, vertex in self.name_to_vertex.items():
+            if vertex.out_degree() == 0 and vertex.in_degree() == 0:
+                raise ValueError(f"Vertex {name} is isolated (no edges).")
+
+        for index, row in self.dag_data.iterrows():
+            name = row["Name"]
+            if name in self.name_to_vertex:
+                vertex = self.name_to_vertex[name]
+                expected_incoming_edges = (
+                    len(row["Arguments"]) + 
+                    len(row["Constants"]) + 
+                    len(row["Inputs"])
+                    )
+                actual_incoming_edges = vertex.in_degree()
+
+                if actual_incoming_edges != expected_incoming_edges:
+                    actual_incoming_names = [
+                        self.vertex_labels[edge.source()] for edge in vertex.in_edges()
+                    ]
+                    expected_incoming_names = row["Arguments"] + row["Constants"] + row["Inputs"]
+                    missing_edges = [edge for edge in expected_incoming_names if edge not in actual_incoming_names]
+                    
+                    # Print debug information
+                    print(f"Vertex {name} has an incorrect number of incoming edges.")
+                    print(f"Expected {expected_incoming_edges} incoming edges from: {expected_incoming_names}")
+                    print(f"Actual {actual_incoming_edges} incoming edges from: {actual_incoming_names}")
+                    if missing_edges:
+                        print(f"Missing expected edges from: {missing_edges}")
+                    
+                    raise ValueError(
+                    f"Vertex {name} has {actual_incoming_edges} incoming edges, "
+                    f"but {expected_incoming_edges} were expected."
+                    )
+
+            else:
+                print(f"{name} was not found in self.name_to_vertex")
+
+        print("Connectivity verification completed.")
