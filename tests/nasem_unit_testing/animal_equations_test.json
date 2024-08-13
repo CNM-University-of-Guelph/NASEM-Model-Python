@@ -277,17 +277,17 @@
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
+    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
     "Output": 15.06
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
     "Output": 14.13
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Dry Cow", "An_BW": 600, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+    "Input": {"An_StatePhys": "Dry Cow", "An_BW": 600, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
     "Output": 6.6
   },
   {

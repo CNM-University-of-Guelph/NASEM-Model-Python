@@ -429,19 +429,19 @@ def calculate_An_MEIn(An_StatePhys: str,
                       An_DEIn: float, 
                       An_GasEOut: float, 
                       Ur_DEout: float,
-                      Dt_DMIn_CflLiq: float, 
+                      Dt_DMIn_ClfLiq: float, 
                       Dt_DEIn_base_ClfLiq: float, 
                       Dt_DEIn_base_ClfDry: float,
                       RumDevDisc_Clf: float
 ) -> float:
     condition = ((An_StatePhys == "Calf") 
-                 and (Dt_DMIn_CflLiq > 0.015 * An_BW) 
+                 and (Dt_DMIn_ClfLiq > 0.015 * An_BW) 
                  and (RumDevDisc_Clf > 0))
     K_DE_ME_ClfDry = 0.93 * 0.9 if condition else 0.93 # Line 2755   
     
     An_MEIn = An_DEIn - An_GasEOut - Ur_DEout  # Line 2753
     An_MEIn = (Dt_DEIn_base_ClfLiq * 0.96 + Dt_DEIn_base_ClfDry * K_DE_ME_ClfDry
-               if (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0) 
+               if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0) 
                else An_MEIn) 
     return An_MEIn
 
@@ -1504,7 +1504,7 @@ def calculate_an_data(an_data: dict,
     an_data = calculate_An_IdAAIn(
         diet_data, infusion_data, aa_list, an_data
         )
-    nutrient_list = ["CPIn", "NPNCPIn", "TPIn", "FAIn"]
+    nutrient_list = ["NPNCPIn", "FAIn"]
     an_data = calculate_An_XIn(
         diet_data, infusion_data, nutrient_list, an_data
         )
