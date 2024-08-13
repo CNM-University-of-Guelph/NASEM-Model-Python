@@ -32,10 +32,9 @@ def calculate_Inf_SI(Inf_Location: str) -> int:
 def calculate_Inf_Art(Inf_Location: str) -> int:
     if Inf_Location in ["Jugular", "Arterial", "Iliac Artery", "Blood"]:
         Inf_Art = 1 # Line 876
-        return Inf_Art
     else:
         Inf_Art = 0
-        return Inf_Art 
+    return Inf_Art 
 
 
 def calculate_InfRum_TPIn(InfRum_CPIn: float, InfRum_NPNCPIn: float) -> float:
