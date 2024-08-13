@@ -1,12 +1,12 @@
 [
     {
       "Name": "calculate_An_MPm_g_Trg",
-      "Input": {"Fe_MPendUse_g_Trg": 2.6, "Scrf_MPuse_g_Trg": 7.1, "Ur_MPendUse_g": 1.9},
+      "Input": {"Fe_MPendUse_g_Trg": 2.6, "Scrf_MPUse_g_Trg": 7.1, "Ur_MPendUse_g": 1.9},
       "Output": 11.6
     },
     {
       "Name": "calculate_Body_MPUse_g_Trg_initial",
-      "Input": {"Body_NPgain_g": 827, "Kg_MP_NP_Trg": 0.65},
+      "Input": {"Body_NPgain_g": 827, "Kg_MP_NP_Trg_initial": 0.65},
       "Output": 1272.3076923076924
     },
     {
@@ -31,7 +31,7 @@
     },
     {
       "Name": "calculate_An_MPuse_g_Trg_initial",
-      "Input": {"An_MPm_g_Trg": 164, "Body_MPUse_g_Trg": 223, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g_Trg": 492},
+      "Input": {"An_MPm_g_Trg": 164, "Body_MPUse_g_Trg_initial": 223, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g_Trg": 492},
       "Output": 970
     },
     {

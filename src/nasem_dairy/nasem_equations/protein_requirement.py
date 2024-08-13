@@ -5,24 +5,24 @@ import numpy as np
 
 
 def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 
-                           Scrf_MPuse_g_Trg: float,
+                           Scrf_MPUse_g_Trg: float,
                            Ur_MPendUse_g: float
 ) -> float:
     """
     An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
     """
-    An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPuse_g_Trg + Ur_MPendUse_g  
+    An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPUse_g_Trg + Ur_MPendUse_g  
     # Line 2679
     return An_MPm_g_Trg
 
 
 def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
-                                       Kg_MP_NP_Trg: float
+                                       Kg_MP_NP_Trg_initial: float
 ) -> float:
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
     """
-    Body_MPUse_g_Trg_initial = Body_NPgain_g / Kg_MP_NP_Trg  
+    Body_MPUse_g_Trg_initial = Body_NPgain_g / Kg_MP_NP_Trg_initial 
     # Line 2675, kg MP/d for NP gain
     return Body_MPUse_g_Trg_initial
 
@@ -78,7 +78,7 @@ def calculate_Mlk_MPUse_g_Trg(Trg_Mlk_NP_g: float, coeff_dict: dict) -> float:
 
 
 def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
-                                     Body_MPUse_g_Trg: float,
+                                     Body_MPUse_g_Trg_initial: float,
                                      Gest_MPUse_g_Trg: float,
                                      Mlk_MPUse_g_Trg: float
 ) -> float:
@@ -88,7 +88,7 @@ def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
             If An_StatePhys == "Heifer" & Diff_MPuse_g > 0 then the value of An_MPuse_g_Trg will change
             To do this in package will need to calculate an inital value (this function) then calcualte the value again
     """
-    An_MPuse_g_Trg_initial = (An_MPm_g_Trg + Body_MPUse_g_Trg + 
+    An_MPuse_g_Trg_initial = (An_MPm_g_Trg + Body_MPUse_g_Trg_initial + 
                       Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg)  # Line 2680
     return An_MPuse_g_Trg_initial
 
