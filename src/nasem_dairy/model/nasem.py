@@ -194,7 +194,6 @@ def nasem(user_diet: pd.DataFrame,
     animal_input["Trg_BWgain_g"] = body_comp.calculate_Trg_BWgain_g(
         animal_input["Trg_BWgain"]
         )
-    Rsrv_Gain = body_comp.calculate_Rsrv_Gain(animal_input["Trg_RsrvGain"])
     BW_BCS = body_comp.calculate_BW_BCS(animal_input["An_BW"])
     Body_Fat_EBW = body_comp.calculate_Body_Fat_EBW(
         animal_input["An_BW"], animal_input["An_BW_mature"]
