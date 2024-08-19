@@ -1,10 +1,12 @@
 import ast
 import glob
+import inspect
 import os
 
 import graph_tool.all as graph_tool
 import pandas as pd
 
+import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 
 class nasem_dag:
@@ -759,3 +761,60 @@ class nasem_dag:
             "user_inputs": sorted_user_inputs,
             "constants": sorted_constants
         }
+
+    def create_function(self, target_variable):
+        # Call get_calculation_order to get requirements
+        requirements = self.get_calculation_order(target_variable, report=False)
+        functions_order = requirements["functions_order"]
+        user_inputs = requirements["user_inputs"]
+        constants = requirements["constants"]
+
+        arg_names = list(user_inputs.keys()) + list(constants.keys())
+
+        func_name_to_result_name = {}
+        for func in functions_order:
+            result_name = self.dag_data[self.dag_data['Function'] == func]['Name'].values[0]
+            func_name_to_result_name[func] = result_name
+        
+        # Define the function dynamically using exec
+        func_args = ", ".join(arg_names)
+        generated_func_name = f"wrapper_{target_variable}"
+        generated_func_return = list(func_name_to_result_name.values())[-1]
+        func_body = f"""
+def {generated_func_name}({func_args}):
+    results = {{}}
+
+    # Step 1: Unpack nested values from user inputs and constants
+    for input_dict_name, input_dict in {user_inputs}.items():
+        for key in input_dict:
+            locals()[key] = locals()[input_dict_name].get(key, None)
+    
+    for const_dict_name, const_dict in {constants}.items():
+        for key in const_dict:
+            locals()[key] = locals()[const_dict_name].get(key, None)
+
+    # Step 2: Call each function in order and store the results
+    for function_name in {functions_order}:
+        func = getattr(nd, function_name)
+        func_args = inspect.signature(func).parameters.keys()
+
+        # Resolve arguments for the function call
+        func_call_args = {{arg: locals()[arg] for arg in func_args if arg in locals()}}
+
+        # Call the function and store the result with the correct name
+        result = func(**func_call_args)
+        result_name = {func_name_to_result_name}[function_name]
+        locals()[result_name] = result
+        results[result_name] = result
+   
+    # Step 3: Return the target value
+    return results['{generated_func_return}']
+"""
+        # Execute the dynamic function definition
+        exec_namespace = {}
+        exec(func_body, globals(), exec_namespace)
+
+        # Retrieve the dynamically created function
+        generated_function = exec_namespace[generated_func_name]
+        return generated_function
+    
