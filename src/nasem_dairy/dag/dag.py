@@ -5,6 +5,8 @@ import os
 import graph_tool.all as graph_tool
 import pandas as pd
 
+import nasem_dairy.model.input_definitions as expected
+
 class nasem_dag:
     ### Initalization ###
     def __init__(self):
@@ -177,6 +179,19 @@ class nasem_dag:
             "Constants": [0.6, 0.6, 0.6, 1.0],             # Light Gray
             "Inputs": [0.2, 0.2, 0.2, 1.0]                 # Dark Gray
             }
+        self.possible_user_inputs = {
+            "animal_input": expected.AnimalInput.__annotations__.copy(),
+            "equation_selection": expected.EquationSelection.__annotations__.copy(),
+            "infusion_input": expected.InfusionInput.__annotations__.copy(),
+            "user_diet": [expected.UserDietSchema.copy()]
+        }
+        self.possible_constants = {
+            "coeff_dict": expected.CoeffDict.__annotations__.copy(),
+            "infusion_dict": expected.InfusionDict.__annotations__.copy(),
+            "mpnp_efficiency_dict": expected.MPNPEfficiencyDict.__annotations__.copy(),
+            "mprt_coeff_dict": expected.mPrtCoeffDict.__annotations__.copy(),
+            "f_imb": expected.f_Imb.copy()
+        }
 
         # Initalize DataFrame with a row for each variable name 
         with open("./src/nasem_dairy/dag/variable_names.txt", "r") as file:
@@ -460,15 +475,20 @@ class nasem_dag:
         # Create a dictionary to map variable names to graph vertices
         name_to_vertex = {}
         vertex_labels = dag.new_vertex_property("string")
+        vertex_functions = dag.new_vertex_property("string")
+        vertex_module = dag.new_vertex_property("string")
         vertex_colors = dag.new_vertex_property("vector<double>")
 
         # Add vertices for each unique variable name in the Name column
         for index, row in data.iterrows():
             name = row['Name']
+            function = row["Function"]
             module = row['Module']
             vertex = dag.add_vertex()
             name_to_vertex[name] = vertex
             vertex_labels[vertex] = name
+            vertex_functions[vertex] = function
+            vertex_module[vertex] = module
             vertex_colors[vertex] = self.module_colour_map.get(
                 module, [0, 0, 0, 0]
                 )
@@ -481,6 +501,8 @@ class nasem_dag:
                         vertex = dag.add_vertex()
                         name_to_vertex[value] = vertex
                         vertex_labels[vertex] = value
+                        vertex_functions[vertex] = ""
+                        vertex_module[vertex] = column
                         vertex_colors[vertex] = self.module_colour_map.get(
                             column, [0.5, 0.5, 0.5, 0.5]
                             )
@@ -509,6 +531,8 @@ class nasem_dag:
 
             self.name_to_vertex = name_to_vertex 
             self.vertex_labels = vertex_labels 
+            self.vertex_functions = vertex_functions
+            self.vertex_module = vertex_module
             self.vertex_colors = vertex_colors
         return dag
         
@@ -634,3 +658,104 @@ class nasem_dag:
                     )
 
         print("Connectivity verification completed.")
+
+    ### Tools ###
+    def get_calculation_order(self, target_variable: str, report: bool = True) -> dict:
+        def depth_first_search(vertex):
+            if vertex in visited:
+                return
+            visited.add(vertex)
+
+            # Traverse all incoming edges to find dependencies
+            for edge in vertex.in_edges():
+                source_vertex = edge.source()
+                depth_first_search(source_vertex)
+
+            vertex_name = self.vertex_labels[vertex]
+            vertex_function = self.vertex_functions[vertex]
+            vertex_module = self.vertex_module[vertex]
+
+            if vertex_module == "Inputs":
+                user_inputs.add(vertex_name)
+            elif vertex_module == "Constants":
+                constants.add(vertex_name)
+            elif vertex_function: 
+                functions_order.append(vertex_function)
+
+
+        def print_report(target_variable, 
+                         functions_order, 
+                         sorted_user_inputs, 
+                         sorted_constants
+        ):
+            print(f"\nRequirements for Calculating {target_variable}")
+            print("\nOrder of Functions to Call:")
+            for i, function in enumerate(functions_order, 1):
+                print(f"  {i}. {function}")
+            
+            if sorted_user_inputs:
+                print("\nRequired User Inputs:")
+                for key in sorted_user_inputs:
+                    print(f"  {key}:")
+                    for field in sorted_user_inputs[key]:
+                        print(f"    - {field}")
+            
+            if sorted_constants:
+                print("\nRequired Constants:")
+                for key in sorted_constants:
+                    print(f"  {key}:")
+                    if isinstance(sorted_constants[key], dict):
+                        for field in sorted_constants[key]:
+                            print(f"    - {field}")
+                    else:
+                        print(f"    - {key} (Special structure like f_imb)")
+
+
+        if target_variable not in self.name_to_vertex:
+            raise ValueError(f"Variable '{target_variable}' not found in the DAG.")
+
+        target_vertex = self.name_to_vertex[target_variable]
+        functions_order = []
+        user_inputs = set()
+        constants = set()
+        visited = set()
+
+        depth_first_search(target_vertex)
+
+        # Remove duplicates while preserving order
+        functions_order = list(dict.fromkeys(functions_order))
+
+        # Sort inputs and constants
+        sorted_user_inputs = {}
+        sorted_constants = {}
+
+        # Filter and include only the necessary user inputs
+        for input_var in user_inputs:
+            for key, schema in self.possible_user_inputs.items():
+                if input_var in schema:
+                    if key not in sorted_user_inputs:
+                        sorted_user_inputs[key] = {}
+                    sorted_user_inputs[key][input_var] = None
+
+        # Filter and include only the necessary constants
+        for const_var in constants:
+            for key, schema in self.possible_constants.items():
+                if const_var in schema:
+                    if key not in sorted_constants:
+                        sorted_constants[key] = {}
+                    sorted_constants[key][const_var] = None
+                elif key == "f_imb" and const_var in schema.index:
+                    if key not in sorted_constants:
+                        sorted_constants[key] = schema 
+
+        if report:
+            print_report(
+                target_variable, functions_order, sorted_user_inputs, 
+                sorted_constants
+                )
+
+        return {
+            "functions_order": functions_order,
+            "user_inputs": sorted_user_inputs,
+            "constants": sorted_constants
+        }
