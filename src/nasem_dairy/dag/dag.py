@@ -21,30 +21,6 @@ class nasem_dag:
         self.mutator_function_mapping = {
             "calculate_An_IdAAIn": self.aa_list,
             "calculate_An_XIn": ["NPNCPIn", "FAIn"],
-            "calculate_XIn": [
-                "Inf_DM", "Inf_St", "Inf_NDF", "Inf_ADF", "Inf_Glc", "Inf_CP",
-                "Inf_NPNCP", "Inf_FA", "Inf_Ash", "Inf_VFA", "Inf_Acet", "Inf_Prop",
-                "Inf_Butr"
-            ],
-            "calculate_CPXIn": ["Inf_CPA", "Inf_CPB", "Inf_CPC"],
-            "calculate_DMXIn": [
-                "Inf_DM", "Inf_OM", "Inf_St", "Inf_NDF", "Inf_ADF", "Inf_Glc", "Inf_CP",
-                "Inf_FA", "Inf_VFA", "Inf_Acet", "Inf_Prop", "Inf_Butr"
-            ],
-            "calculate_InfRum_X": [
-                "DM", "OM", "CP", "NPNCP", "CPA", "CPB", "CPC", "St", "NDF", "ADF",
-                "FA", "Glc", "VFA", "Acet", "Prop", "Butr", "Ash"
-            ],
-            "calculate_InfSI_X": [
-                "DM", "OM", "CP", "NPNCP", "St", "Glc", "NDF", "ADF", "FA", "VFA",
-                "Acet", "Prop", "Butr", "Ash"
-            ],
-            "calculate_InfArt_X": [
-                "DM", "OM", "CP", "NPNCP", "TP", "St", "Glc", "NDF", "ADF", "FA", "VFA",
-                "Acet", "Prop", "Butr", "Ash"
-            ],
-            "calculate_Inf_IdAARUPIn": self.aa_list,
-            "calculate_Inf_IdAAIn": self.aa_list,
             "calculate_Fd_XIn": [
                 "Fd_ADF", "Fd_NDF", "Fd_St", "Fd_NFC", "Fd_WSC", "Fd_rOM", "Fd_Lg",
                 "Fd_Conc", "Fd_For", "Fd_ForNDF", "Fd_ForWet", "Fd_ForDry", "Fd_Past", 
