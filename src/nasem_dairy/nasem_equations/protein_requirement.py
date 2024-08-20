@@ -142,14 +142,14 @@ def calculate_Frm_NPgain_g(Frm_NPgain: float) -> float:
     return Frm_NPgain_g
 
 
-def calculate_Kg_MP_NP_Trg(An_StatePhys: str, 
-                           An_Parity_rl: int, 
-                           An_BW: float,
-                           An_BW_empty: float, 
-                           An_BW_mature: float,
-                           An_BWmature_empty: float,
-                           MP_NP_efficiency_dict: dict,
-                           coeff_dict: dict
+def calculate_Kg_MP_NP_Trg_initial(An_StatePhys: str, 
+                                   An_Parity_rl: int, 
+                                   An_BW: float,
+                                   An_BW_empty: float, 
+                                   An_BW_mature: float,
+                                   An_BWmature_empty: float,
+                                   MP_NP_efficiency_dict: dict,
+                                   coeff_dict: dict
 ) -> float:
     """
     Kg_MP_NP_Trg_initial: Conversion of NP to MP for growth

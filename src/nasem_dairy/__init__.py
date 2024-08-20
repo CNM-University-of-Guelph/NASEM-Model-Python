@@ -836,7 +836,7 @@ from nasem_dairy.nasem_equations.protein_requirement import (
     calculate_Diff_MPuse_g,
     calculate_Frm_MPUse_g_Trg,
     calculate_Frm_NPgain_g,
-    calculate_Kg_MP_NP_Trg,
+    calculate_Kg_MP_NP_Trg_initial,
     calculate_Rsrv_NPgain_g,
     calculate_Rsrv_MPUse_g_Trg,
     calculate_Body_MPUse_g_Trg,
