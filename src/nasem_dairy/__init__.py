@@ -675,12 +675,21 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_FA,
     calculate_An_AshIn,
     calculate_An_Ash,
-    calculate_An_IdAAIn,
-    calculate_An_XIn,
     calculate_an_data,
     calculate_An_PrePartDay,
     calculate_An_PrePartWk,
-    calculate_An_PrePartWkDurat
+    calculate_An_PrePartWkDurat,
+    calculate_An_IdArgIn,
+    calculate_An_IdHisIn,
+    calculate_An_IdIleIn,
+    calculate_An_IdLeuIn,
+    calculate_An_IdLysIn,
+    calculate_An_IdMetIn,
+    calculate_An_IdPheIn,
+    calculate_An_IdThrIn,
+    calculate_An_IdTrpIn,
+    calculate_An_IdValIn,
+
 )
 
 from nasem_dairy.nasem_equations.gestation import (
