@@ -30,11 +30,6 @@ import nasem_dairy.model.input_validation as validate
 import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy.model.utility as utility
 
-# path_to_package_data = importlib.resources.files("nasem_dairy.data.feed_library")
-# feed_library = pd.read_csv(
-#     path_to_package_data.joinpath("NASEM_feed_library.csv")
-#     )
-
 def nasem(user_diet: pd.DataFrame,
           animal_input: dict,
           equation_selection: dict,
