@@ -537,11 +537,11 @@ class ModelOutput:
         for attr_name in self.categories:
             _recursive_extract(getattr(self, attr_name), attr_name)
 
-        print("DataFrame keys:", special_keys["dataframe"])
-        print("Series keys:", special_keys["series"])
-        print("Numpy array keys:", special_keys["ndarray"])
-        print("Dict keys:", special_keys["dict"])
-        print("List keys:", special_keys["list"])
+        # print("DataFrame keys:", special_keys["dataframe"])
+        # print("Series keys:", special_keys["series"])
+        # print("Numpy array keys:", special_keys["ndarray"])
+        # print("Dict keys:", special_keys["dict"])
+        # print("List keys:", special_keys["list"])
         return data_dict
 
     def export_variable_names(self) -> List[str]: 
