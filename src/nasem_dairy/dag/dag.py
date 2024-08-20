@@ -167,28 +167,44 @@ class nasem_dag:
             "mprt_coeff_dict": expected.mPrtCoeffDict.__annotations__.copy(),
             "f_imb": expected.f_Imb.copy()
         }
-        self.user_inputs = self._generate_user_inputs_list(self.possible_user_inputs)
+        self.user_inputs = self._generate_user_inputs_list(
+            self.possible_user_inputs
+            )
 
         # Initalize DataFrame with a row for each variable name 
-        with open("./src/nasem_dairy/dag/variable_names.txt", "r") as file:
-            lines = file.readlines()
-        lines = [line.strip() for line in lines]
-        lines.extend([
-            "Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", "Abs_EAA2_HILKMT_g", 
-            "An_GasEOut_Dry", "An_GasEOut_Lact", "An_GasEOut_Heif"
-            ])
-        variables = pd.DataFrame(lines, columns=["Name"])
+        # NOTE variable_names.txt has been deprecated, now use ModelOutput to get
+        # all variable names in the model. The txt file is still in the dag directory
+        # in case there are any issues with creating dag_data
+        varaible_names = self._get_variable_names()
+        variables = pd.DataFrame(varaible_names, columns=["Name"])
 
         # Get list of module files
         modules = self._get_py_files("./src/nasem_dairy/nasem_equations")  
   
         # Create dag_data
-        dag_data = self._parse_NASEM_equations(modules, variables)
-        dag_data = dag_data.dropna(axis=0)
-        self.dag_data = dag_data
+        self.dag_data = self._parse_NASEM_equations(modules, variables)
+        self.dag_data = self.dag_data.dropna(axis=0)
 
         # Create DAG
-        self.dag = self._create_dag(dag_data)
+        self.dag = self._create_dag(self.dag_data)
+
+    def _get_variable_names(self):
+        user_diet, animal_input, eqn_selection, inf_input = nd.demo("input")
+        output = nd.nasem(
+            user_diet = user_diet, 
+            animal_input = animal_input, 
+            equation_selection = eqn_selection, 
+            coeff_dict = nd.coeff_dict,
+            infusion_input=inf_input
+            )
+        variables = output.export_variable_names()
+        # These 6 variables never appear in the nasem() local namespace as they
+        # have been placed behind wrappers that only calculate one of them.
+        # They are needed to build the DAG properly
+        variables = variables + ["Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", 
+                                 "Abs_EAA2_HILKMT_g", "An_GasEOut_Dry", 
+                                 "An_GasEOut_Lact", "An_GasEOut_Heif"]
+        return variables
 
     def _get_py_files(self, path: str) -> list:
         py_files = glob.glob(os.path.join(path, "*.py"))
