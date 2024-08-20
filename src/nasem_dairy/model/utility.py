@@ -204,3 +204,15 @@ def demo(scenario_name: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
         "nasem_dairy.data.demo"
         )
     return read_json_input(path_to_package_data.joinpath(f"{scenario_name}.json"))
+
+
+def select_feeds(names: list) -> pd.DataFrame:
+    path_to_package_data = importlib.resources.files(
+        "nasem_dairy.data.feed_library"
+        )
+    feed_library = pd.read_csv(
+        path_to_package_data.joinpath("NASEM_feed_library.csv")
+        )
+    selected_feeds = feed_library[feed_library["Fd_Name"]
+                                  .isin(names)].reset_index()
+    return selected_feeds
