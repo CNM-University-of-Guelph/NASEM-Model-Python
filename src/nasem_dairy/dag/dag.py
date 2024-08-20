@@ -786,7 +786,7 @@ class nasem_dag:
             func_name_to_result_name[func] = result_name
         
         # Define the function dynamically using exec
-        func_args = ", ".join(arg_names)
+        func_args = ", ".join(arg_names + ["return_all=False"])
         generated_func_name = f"wrapper_{target_variable}"
         generated_func_return = list(func_name_to_result_name.values())[-1]
         docstring = create_docstring(
@@ -821,7 +821,10 @@ def {generated_func_name}({func_args}):
         results[result_name] = result
    
     # Step 3: Return the target value
-    return results['{generated_func_return}']
+    if return_all:
+        return results
+    else:
+        return results['{generated_func_return}']
 """
         # Execute the dynamic function definition
         exec_namespace = {}
