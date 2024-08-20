@@ -1,3 +1,5 @@
+import importlib.resources
+
 import numpy as np
 import pandas as pd
 
@@ -28,10 +30,15 @@ import nasem_dairy.model.input_validation as validate
 import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy.model.utility as utility
 
+# path_to_package_data = importlib.resources.files("nasem_dairy.data.feed_library")
+# feed_library = pd.read_csv(
+#     path_to_package_data.joinpath("NASEM_feed_library.csv")
+#     )
+
 def nasem(user_diet: pd.DataFrame,
           animal_input: dict,
           equation_selection: dict,
-          feed_library_df: pd.DataFrame,
+          feed_library_df: pd.DataFrame = None,
           coeff_dict: dict = constants.coeff_dict,
           infusion_input: dict = constants.infusion_dict,
           MP_NP_efficiency: dict = constants.MP_NP_efficiency_dict,
@@ -86,6 +93,13 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     # Validate Inputs  
     ####################
+    if feed_library_df is None:
+        path_to_package_data = importlib.resources.files(
+            "nasem_dairy.data.feed_library"
+            )
+        feed_library_df = pd.read_csv(
+            path_to_package_data.joinpath("NASEM_feed_library.csv")
+        )
     user_diet = validate.validate_user_diet(user_diet.copy())
     animal_input = validate.validate_animal_input(animal_input.copy())
     equation_selection = validate.validate_equation_selection(
@@ -888,14 +902,14 @@ def nasem(user_diet: pd.DataFrame,
         Fe_MPendUse_g_Trg, Scrf_MPUse_g_Trg, Ur_MPendUse_g
         )
     Body_NPgain_g = body_comp.calculate_Body_NPgain_g(Body_NPgain)
-    Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg(
+    Kg_MP_NP_Trg_initial = protein_req.calculate_Kg_MP_NP_Trg_initial(
         animal_input["An_StatePhys"], animal_input["An_Parity_rl"],
         animal_input["An_BW"], an_data["An_BW_empty"],
         animal_input["An_BW_mature"], An_BWmature_empty, MP_NP_efficiency, 
         coeff_dict
         )
-    Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg_initial(
-        Body_NPgain_g, Kg_MP_NP_Trg
+    Body_MPUse_g_Trg_initial = protein_req.calculate_Body_MPUse_g_Trg_initial(
+        Body_NPgain_g, Kg_MP_NP_Trg_initial
         )
     Gest_MPUse_g_Trg = protein_req.calculate_Gest_MPUse_g_Trg(
         Gest_NPuse_g, coeff_dict
@@ -907,27 +921,28 @@ def nasem(user_diet: pd.DataFrame,
     # There is an adjustment made when An_StatePhys == "Heifer" and 
     # Diff_MPuse_g > 0. Some of the values used to make this adjustment are used
     #  elsewhere so it can"t just be put behind an if statement
-    An_MPuse_g_Trg = protein_req.calculate_An_MPuse_g_Trg_initial(
-        An_MPm_g_Trg, Body_MPUse_g_Trg, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg
+    An_MPuse_g_Trg_initial = protein_req.calculate_An_MPuse_g_Trg_initial(
+        An_MPm_g_Trg, Body_MPUse_g_Trg_initial, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg
         )
     An_MEIn_approx = animal.calculate_An_MEIn_approx(
         an_data["An_DEInp"], an_data["An_DENPNCPIn"], an_data["An_DigTPaIn"], 
         Body_NPgain, an_data["An_GasEOut"], coeff_dict
         )
     Min_MPuse_g = protein_req.calculate_Min_MPuse_g(
-        animal_input["An_StatePhys"], An_MPuse_g_Trg, animal_input["An_BW"], 
+        animal_input["An_StatePhys"], An_MPuse_g_Trg_initial, animal_input["An_BW"], 
         animal_input["An_BW_mature"], An_MEIn_approx
         )
     Diff_MPuse_g = protein_req.calculate_Diff_MPuse_g(
-        Min_MPuse_g, An_MPuse_g_Trg
+        Min_MPuse_g, An_MPuse_g_Trg_initial
         )
     Frm_NPgain_g = protein_req.calculate_Frm_NPgain_g(Frm_NPgain)
     Frm_MPUse_g_Trg = protein_req.calculate_Frm_MPUse_g_Trg(
-        animal_input["An_StatePhys"], Frm_NPgain_g, Kg_MP_NP_Trg, Diff_MPuse_g
+        animal_input["An_StatePhys"], Frm_NPgain_g, Kg_MP_NP_Trg_initial, 
+        Diff_MPuse_g
         )
     Kg_MP_NP_Trg = protein_req.calculate_Kg_MP_NP_Trg_heifer_adjustment(
             animal_input["An_StatePhys"], Diff_MPuse_g, Frm_NPgain_g, 
-            Frm_MPUse_g_Trg, Kg_MP_NP_Trg
+            Frm_MPUse_g_Trg, Kg_MP_NP_Trg_initial
             )
     Rsrv_NPgain_g = protein_req.calculate_Rsrv_NPgain_g(Rsrv_NPgain)
     Rsrv_MPUse_g_Trg = protein_req.calculate_Rsrv_MPUse_g_Trg(
@@ -936,7 +951,7 @@ def nasem(user_diet: pd.DataFrame,
     # Recalculate, NOTE can the recalculation be avoided
     Body_MPUse_g_Trg = protein_req.calculate_Body_MPUse_g_Trg(
         animal_input["An_StatePhys"], Diff_MPuse_g, Body_NPgain_g, 
-        Body_MPUse_g_Trg, Kg_MP_NP_Trg
+        Body_MPUse_g_Trg_initial, Kg_MP_NP_Trg
         )
     # Recalculate
     An_MPuse_g_Trg = protein_req.calculate_An_MPuse_g_Trg(
@@ -1771,7 +1786,6 @@ def nasem(user_diet: pd.DataFrame,
     ####################
     # Capture Outputs
     ####################
-    del (An_IdAAIn, Dt_IdAARUPIn, Mlk_AA_TP)
     locals_dict = locals()
     model_output = output.ModelOutput(locals_input=locals_dict)
     return model_output
