@@ -185,7 +185,8 @@ class nasem_dag:
             "animal_input": expected.AnimalInput.__annotations__.copy(),
             "equation_selection": expected.EquationSelection.__annotations__.copy(),
             "infusion_input": expected.InfusionInput.__annotations__.copy(),
-            "user_diet": [expected.UserDietSchema.copy()]
+            "user_diet": expected.UserDietSchema.copy(),
+            "feed_library": expected.FeedLibrarySchema.copy()
         }
         self.possible_constants = {
             "coeff_dict": expected.CoeffDict.__annotations__.copy(),
@@ -763,6 +764,30 @@ class nasem_dag:
         }
 
     def create_function(self, target_variable):
+        def create_docstring(target_variable, arg_names, user_inputs, constants, functions_order, generated_func_return):
+            docstring = f'"""Dynamically generated function to calculate {target_variable}.\n\n'
+            docstring += 'Arguments:\n'
+            for arg in arg_names:
+                docstring += f'    {arg} (dict): A dictionary containing the following keys:\n'
+                if arg in user_inputs:
+                    # docstring += '        Required keys:\n'
+                    for key in user_inputs[arg].keys():
+                        docstring += f'            - {key}\n'
+                elif arg in constants:
+                    # docstring += '        Required keys:\n'
+                    for key in constants[arg].keys():
+                        docstring += f'            - {key}\n'
+            
+            docstring += '\nOrder of function calls:\n'
+            for i, func in enumerate(functions_order, 1):
+                docstring += f'    {i}. {func}\n'
+
+            docstring += '\nReturns:\n'
+            docstring += f'    {generated_func_return} (float): The calculated value for {target_variable}.\n'
+            docstring += '"""'
+            return docstring
+
+
         # Call get_calculation_order to get requirements
         requirements = self.get_calculation_order(target_variable, report=False)
         functions_order = requirements["functions_order"]
@@ -780,8 +805,13 @@ class nasem_dag:
         func_args = ", ".join(arg_names)
         generated_func_name = f"wrapper_{target_variable}"
         generated_func_return = list(func_name_to_result_name.values())[-1]
+        docstring = create_docstring(
+            target_variable, arg_names, user_inputs, constants, functions_order,
+            generated_func_return
+            )
         func_body = f"""
 def {generated_func_name}({func_args}):
+    {docstring}
     results = {{}}
 
     # Step 1: Unpack nested values from user inputs and constants
@@ -789,9 +819,8 @@ def {generated_func_name}({func_args}):
         for key in input_dict:
             locals()[key] = locals()[input_dict_name].get(key, None)
     
-    for const_dict_name, const_dict in {constants}.items():
-        for key in const_dict:
-            locals()[key] = locals()[const_dict_name].get(key, None)
+    for const_dict_name in {constants}.keys():
+        locals()[const_dict_name] = const_dict_name
 
     # Step 2: Call each function in order and store the results
     for function_name in {functions_order}:
@@ -814,7 +843,7 @@ def {generated_func_name}({func_args}):
         exec_namespace = {}
         exec(func_body, globals(), exec_namespace)
 
-        # Retrieve the dynamically created function
+        # Retrieve the function
         generated_function = exec_namespace[generated_func_name]
         return generated_function
     
