@@ -18,34 +18,6 @@ class nasem_dag:
         self.aa_list = [
             "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
             ]
-        self.user_inputs = [
-            "Use_DNDF_IV", "DMIn_eqn", "mProd_eqn", "MiN_eqn", "NonMilkCP_ClfLiq", 
-            "Monensin_eqn", "mPrt_eqn", "mFat_eqn", "RumDevDisc_Clf", "An_Parity_rl", 
-            "Trg_MilkProd", "An_BW", "An_BCS", "An_LactDay", "Trg_MilkFatp", "Trg_MilkTPp", 
-            "Trg_MilkLacp", "Trg_Dt_DMIn", "An_BW_mature", "Trg_FrmGain", "An_GestDay", 
-            "An_GestLength", "Trg_RsrvGain", "Fet_BWbrth", "An_AgeDay", "An_305RHA_MlkTP", 
-            "An_StatePhys", "An_Breed", "An_AgeDryFdStart", "Env_TempCurr", "Env_DistParlor", 
-            "Env_TripsParlor", "Env_Topo", "Inf_Acet_g", "Inf_ADF_g", "Inf_Arg_g", "Inf_Ash_g", 
-            "Inf_Butr_g", "Inf_CP_g", "Inf_CPARum_CP", "Inf_CPBRum_CP", "Inf_CPCRum_CP", 
-            "Inf_dcFA", "Inf_dcRUP", "Inf_DM_g", "Inf_EE_g", "Inf_FA_g", "Inf_Glc_g", 
-            "Inf_His_g", "Inf_Ile_g", "Inf_KdCPB", "Inf_Leu_g", "Inf_Lys_g", "Inf_Met_g", 
-            "Inf_NDF_g", "Inf_NPNCP_g", "Inf_Phe_g", "Inf_Prop_g", "Inf_St_g", "Inf_Thr_g", 
-            "Inf_Trp_g", "Inf_ttdcSt", "Inf_Val_g", "Inf_VFA_g", "Inf_Location", "Fd_DMInp",
-            "Fd_Name", "Fd_Category", "Fd_Type", "Fd_DM", "Fd_Conc", "Fd_DE_Base", "Fd_ADF",
-            "Fd_NDF", "Fd_DNDF48_input", "Fd_DNDF48_NDF", "Fd_Lg", "Fd_CP", "Fd_St", 
-            "Fd_dcSt", "Fd_WSC", "Fd_CPARU", "Fd_CPBRU", "Fd_CPCRU", "Fd_dcRUP",
-            "Fd_CPs_CP", "Fd_KdRUP", "Fd_RUP_base", "Fd_NPN_CP", "Fd_NDFIP", 
-            "Fd_ADFIP", "Fd_Arg_CP", "Fd_His_CP", "Fd_Ile_CP", "Fd_Leu_CP", "Fd_Lys_CP",
-            "Fd_Met_CP", "Fd_Phe_CP", "Fd_Thr_CP", "Fd_Trp_CP", "Fd_Val_CP", "Fd_CFat",
-            "Fd_FA", "Fd_dcFA", "Fd_Ash", "Fd_C120_FA", "Fd_C140_FA", "Fd_C160_FA",
-            "Fd_C161_FA", "Fd_C180_FA", "Fd_C181t_FA","Fd_C181c_FA", "Fd_C182_FA",
-            "Fd_C183_FA", "Fd_OtherFA_FA", "Fd_Ca", "Fd_P", "Fd_Pinorg_P", "Fd_Porg_P", 
-            "Fd_Na", "Fd_Cl", "Fd_K", "Fd_Mg", "Fd_S", "Fd_Cr", "Fd_Co", "Fd_Cu", "Fd_Fe",
-            "Fd_I", "Fd_Mn", "Fd_Mo", "Fd_Se", "Fd_Zn", "Fd_B_Carotene", "Fd_Biotin",
-            "Fd_Choline", "Fd_Niacin", "Fd_VitA", "Fd_VitD", "Fd_VitE", "Fd_acCa_input",
-            "Fd_acPtot_input", "Fd_acNa_input", "Fd_acCl_input", "Fd_acK_input", "Fd_acCu_input",
-            "Fd_acFe_input", "Fd_acMg_input", "Fd_acMn_input", "Fd_acZn_input", "Trg_Fd_DMIn"
-            ]
         self.mutator_function_mapping = {
             "calculate_An_IdAAIn": self.aa_list,
             "calculate_An_XIn": ["NPNCPIn", "FAIn"],
@@ -195,6 +167,7 @@ class nasem_dag:
             "mprt_coeff_dict": expected.mPrtCoeffDict.__annotations__.copy(),
             "f_imb": expected.f_Imb.copy()
         }
+        self.user_inputs = self._generate_user_inputs_list(self.possible_user_inputs)
 
         # Initalize DataFrame with a row for each variable name 
         with open("./src/nasem_dairy/dag/variable_names.txt", "r") as file:
@@ -257,6 +230,17 @@ class nasem_dag:
 
                                             coeff_keys.append(formatted_coeff)
         return coeff_keys
+
+    def _generate_user_inputs_list(self, possible_user_inputs):
+        user_inputs = []
+
+        for structure_name, structure in possible_user_inputs.items():
+            if isinstance(structure, dict):
+                user_inputs.extend(structure.keys())
+            elif hasattr(structure, '__annotations__'):
+                user_inputs.extend(structure.__annotations__.keys())
+        user_inputs = user_inputs + ["Fd_DMInp", "Trg_Fd_DMIn"]
+        return user_inputs
 
     def _create_function_entry(self, node):
         """
