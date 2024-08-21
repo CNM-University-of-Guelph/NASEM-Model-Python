@@ -3689,6 +3689,17 @@ def calculate_Dt_IdAARUPIn_array(diet_data: dict, aa_list: list) -> pd.Series:
                              index=aa_list)
     return Dt_IdAARUPIn
 
+
+def calculate_Fd_DMInp(kg_user: pd.Series) -> pd.Series:
+    Fd_DMInp = kg_user / kg_user.sum()
+    return Fd_DMInp
+
+
+def calculate_Trg_Fd_DMIn(Fd_DMInp: pd.Series, Trg_Dt_DMIn: float) -> pd.Series:
+    Trg_Fd_DMIn = Fd_DMInp * Trg_Dt_DMIn
+    return Trg_Fd_DMIn
+
+
 ####################
 # Wrapper functions for feed and diet intakes
 ####################

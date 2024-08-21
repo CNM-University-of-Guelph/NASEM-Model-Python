@@ -594,7 +594,9 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_IdPheIn,
     calculate_Dt_IdThrIn,
     calculate_Dt_IdTrpIn,
-    calculate_Dt_IdValIn
+    calculate_Dt_IdValIn,
+    calculate_Fd_DMInp,
+    calculate_Trg_Fd_DMIn
 )
 
 from nasem_dairy.nasem_equations.rumen import (
