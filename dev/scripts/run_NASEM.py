@@ -51,7 +51,7 @@ if __name__ == "__main__":
     expected_output = output.get_value(variable)  
     
 
-    dag = nd.nasem_dag()
+    dag = nd.ModelDAG()
     order = dag.get_calculation_order(variable)
     # print(order)
 

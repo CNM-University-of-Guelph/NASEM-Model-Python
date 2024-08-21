@@ -10,7 +10,7 @@ import pandas as pd
 import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 
-class nasem_dag:
+class ModelDAG:
     ### Initalization ###
     def __init__(self):
         """
