@@ -145,7 +145,6 @@ class nasem_dag:
                 user_inputs.extend(structure.keys())
             elif hasattr(structure, '__annotations__'):
                 user_inputs.extend(structure.__annotations__.keys())
-        user_inputs = user_inputs + ["Fd_DMInp", "Trg_Fd_DMIn"]
         return user_inputs
 
     def _create_function_entry(self, node):
@@ -543,12 +542,29 @@ class nasem_dag:
             return docstring
 
 
+        def check_for_coeff_dict(functions_order, constants):
+            """
+            Check for coeff_dict in arguments.
+
+            There are some edge cases for wrapper functions such as calculate_Dt_DMIn.
+            These function pass coeff_dict to other functions but do not access
+            any keys, so no values are added to the Constants list in dag_data
+            """
+            for function_name in functions_order:
+                func = getattr(nd, function_name)
+                func_args = inspect.signature(func).parameters.keys()
+                if "coeff_dict" in func_args and "coeff_dict" not in constants:
+                    constants["coeff_dict"] = {} #expected.CoeffDict().__annotations__.copy()
+                    break
+
+
         # Call get_calculation_order to get requirements
         requirements = self.get_calculation_order(target_variable, report=False)
         functions_order = requirements["functions_order"]
         user_inputs = requirements["user_inputs"]
         constants = requirements["constants"]
 
+        check_for_coeff_dict(functions_order, constants)
         arg_names = sorted(list(user_inputs.keys()) + list(constants.keys()))
 
         func_name_to_result_name = {}
