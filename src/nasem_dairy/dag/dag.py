@@ -2,6 +2,7 @@ import ast
 import glob
 import inspect
 import os
+from typing import Dict
 
 import graph_tool.all as graph_tool
 import pandas as pd
@@ -62,9 +63,6 @@ class nasem_dag:
             )
 
         # Initalize DataFrame with a row for each variable name 
-        # NOTE variable_names.txt has been deprecated, now use ModelOutput to get
-        # all variable names in the model. The txt file is still in the dag directory
-        # in case there are any issues with creating dag_data
         varaible_names = self._get_variable_names()
         variables = pd.DataFrame(varaible_names, columns=["Name"])
 
@@ -527,7 +525,7 @@ class nasem_dag:
                     # docstring += '        Required keys:\n'
                     for key in user_inputs[arg].keys():
                         docstring += f'            - {key}\n'
-                elif arg in constants:
+                elif arg in constants and arg != "aa_list":
                     # docstring += '        Required keys:\n'
                     for key in constants[arg].keys():
                         docstring += f'            - {key}\n'
@@ -542,7 +540,7 @@ class nasem_dag:
             return docstring
 
 
-        def check_for_coeff_dict(functions_order, constants):
+        def check_for_constants(functions_order, constants):
             """
             Check for coeff_dict in arguments.
 
@@ -550,12 +548,43 @@ class nasem_dag:
             These function pass coeff_dict to other functions but do not access
             any keys, so no values are added to the Constants list in dag_data
             """
+            aa_list_required = False
             for function_name in functions_order:
                 func = getattr(nd, function_name)
                 func_args = inspect.signature(func).parameters.keys()
                 if "coeff_dict" in func_args and "coeff_dict" not in constants:
-                    constants["coeff_dict"] = {} #expected.CoeffDict().__annotations__.copy()
-                    break
+                    constants["coeff_dict"] = {} 
+                if "aa_list" in func_args and "aa_list" not in constants:
+                    aa_list_required = True
+            return aa_list_required
+
+
+        def _identify_dict_args(dag_data, functions_order: list):
+            dict_inputs = {}
+
+            for function_name in functions_order:
+                func = getattr(nd, function_name)
+                func_signature = inspect.signature(func)
+                dict_inputs[function_name] = {}
+               
+                # Check each parameter's type annotation to see if it is a dict (excluding 'coeff_dict')
+                for param_name, param in func_signature.parameters.items():
+                    annotation = param.annotation
+                    if param_name != "coeff_dict" and (annotation is dict or annotation is Dict):
+                        # Get the relevant row from dag_data
+                        dag_row = dag_data[dag_data['Function'] == function_name]
+                        
+                        if not dag_row.empty:
+                            # Extract the Arguments column from the row
+                            arguments_list = dag_row['Arguments'].values[0]
+                            dict_inputs[function_name][param_name] = arguments_list
+                        else:
+                            print(f"Warning: No entry found in DAG data for function '{function_name}'")
+            
+                if not dict_inputs[function_name]:
+                    del dict_inputs[function_name]
+            # print(f"DICT INPUTS: {dict_inputs}")
+            return dict_inputs
 
 
         # Call get_calculation_order to get requirements
@@ -564,7 +593,9 @@ class nasem_dag:
         user_inputs = requirements["user_inputs"]
         constants = requirements["constants"]
 
-        check_for_coeff_dict(functions_order, constants)
+        dict_inputs = _identify_dict_args(self.dag_data, functions_order)
+        aa_list_required = check_for_constants(functions_order, constants)
+
         arg_names = sorted(list(user_inputs.keys()) + list(constants.keys()))
 
         func_name_to_result_name = {}
@@ -584,6 +615,9 @@ class nasem_dag:
 def {generated_func_name}({func_args}):
     {docstring}
     results = {{}}
+    dict_inputs = {dict_inputs}    
+    if {aa_list_required}:
+        aa_list = {self.aa_list.copy()}
 
     # Step 1: Unpack nested values from user inputs and constants
     for input_dict_name, input_dict in {user_inputs}.items():
@@ -598,6 +632,11 @@ def {generated_func_name}({func_args}):
         func = getattr(nd, function_name)
         func_args = inspect.signature(func).parameters.keys()
 
+        # Create dictionary if requried
+        if function_name in dict_inputs.keys():
+            for dict_name, required_keys in dict_inputs[function_name].items():
+                locals()[dict_name] = {{key: locals()[key] for key in required_keys}}
+                
         # Resolve arguments for the function call
         func_call_args = {{arg: locals()[arg] for arg in func_args if arg in locals()}}
 

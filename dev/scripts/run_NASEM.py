@@ -1,24 +1,32 @@
 import nasem_dairy as nd
 import pandas as pd
 
-import importlib.resources
-import os
 import inspect
+
+def call_with_dict_args(func, args_dict):
+    """
+    Calls the given function with arguments automatically extracted from args_dict.
+
+    Parameters:
+    - func: The function to be called.
+    - args_dict: A dictionary mapping argument names to their values.
+
+    Returns:
+    - The result of calling func with the provided arguments.
+    """
+    func_signature = inspect.signature(func)
+    func_args = func_signature.parameters.keys()
+    func_call_args = {arg: args_dict[arg] for arg in func_args if arg in args_dict}
+    return func(**func_call_args)
 
 
 if __name__ == "__main__":
-    path_to_package_data = importlib.resources.files("nasem_dairy.data")
     user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("input")
-
-    feed_library_in = pd.read_csv(
-        path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv")
-        )
     
     output = nd.nasem(
         user_diet = user_diet_in, 
         animal_input = animal_input_in, 
         equation_selection = equation_selection_in, 
-        feed_library_df = feed_library_in, 
         coeff_dict = nd.coeff_dict
         )
 
@@ -29,15 +37,17 @@ if __name__ == "__main__":
         "Corn silage, typical",
         "Corn grain HM, coarse grind"
     ]
-    filtered_feeds = feed_library_in[feed_library_in["Fd_Name"].isin(feed_names)].reset_index()
-
+    filtered_feeds = nd.select_feeds(feed_names)
 
     # Testing variables
-    # variable = "Rsrv_Gain_empty"   
+    variable = "Rsrv_Gain_empty"   
     # variable = "Du_MiCP"
-    variable = "GrUter_Wt"          
+    # variable = "GrUter_Wt"          
     # variable = "Fd_ForNDF"
     # variable = "Fd_ADFIn"
+    # variable = "Fd_C160In"
+    # variable = "Dt_AARUPIn"
+
     expected_output = output.get_value(variable)  
     
 
@@ -49,15 +59,21 @@ if __name__ == "__main__":
     generated_function = dag.create_function(variable)
     print("\nGenerated Function Signature")
     print(inspect.signature(generated_function))
-    print(generated_function.__name__,"\n")
-    print(generated_function.__doc__,"\n")
 
 
-    print("\nModel has finished running!")
-    dynamic_func_output = generated_function(
-        animal_input_in, filtered_feeds, equation_selection_in
-        )
-    # print(expected_output)
+    print("\nModel has finished running!\n")
+    args_dict = {
+        "animal_input": animal_input_in, 
+        "coeff_dict": nd.coeff_dict, 
+        "equation_selection": equation_selection_in, 
+        "feed_library": filtered_feeds, 
+        "user_diet": user_diet_in,
+        "infusion_input": infusion_input
+        }
+    dynamic_func_output = call_with_dict_args(generated_function, args_dict)
+
+    # print(f"Expected output: \n{expected_output}\n")
     # print(dynamic_func_output)
+
     assert expected_output == dynamic_func_output, "Values should be equal"
     # assert expected_output.equals(dynamic_func_output), "Values should be equal"
