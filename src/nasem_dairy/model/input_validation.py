@@ -94,7 +94,7 @@ def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
     if not user_diet["Feedstuff"].apply(lambda x: isinstance(x, str)).all():
         raise ValueError("Feedstuff column must contain only string values")
     user_diet = (user_diet  # Combine duplicate Feedstuff entries
-                 .groupby("Feedstuff", as_index=False)
+                 .groupby("Feedstuff", as_index=False, sort=False)
                  .agg({"kg_user": "sum"})
                  )
     user_diet = user_diet.dropna()

@@ -215,4 +215,7 @@ def select_feeds(names: list) -> pd.DataFrame:
         )
     selected_feeds = feed_library[feed_library["Fd_Name"]
                                   .isin(names)].reset_index()
+    # Ensure the rows are in the same order as names list
+    selected_feeds["Fd_Name"] = pd.Categorical(selected_feeds["Fd_Name"], categories=names, ordered=True)
+    selected_feeds = selected_feeds.sort_values("Fd_Name").reset_index(drop=True)
     return selected_feeds
