@@ -29,6 +29,7 @@ def calculate_Fd_DNDF48(Fd_Conc: pd.Series, Fd_DNDF48_input: pd.Series) -> pd.Se
     Fd_DNDF48 = np.where(condition, 48.3, Fd_DNDF48_input)
     # Line 242, mean of concentrates in the feed library
     Fd_DNDF48 = np.where(condition_conc, 65, Fd_DNDF48)
+    Fd_DNDF48 = pd.Series(Fd_DNDF48, index=Fd_Conc.index)
     return Fd_DNDF48
 
 
@@ -3699,438 +3700,440 @@ def calculate_feed_data(Dt_DMIn: float,
 ) -> pd.DataFrame:
     # Start with copy of feed_data
     complete_feed_data = feed_data.copy()
+    new_columns = {}
 
     # Calculate all aditional feed data columns
     complete_feed_data['Fd_DMIn'] = calculate_Fd_DMIn(
         Dt_DMIn, complete_feed_data['Fd_DMInp']
         )
-    complete_feed_data['Fd_GE'] = calculate_Fd_GE(
+    new_columns['Fd_GE'] = calculate_Fd_GE(
         An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_CP'],
         complete_feed_data['Fd_FA'], complete_feed_data['Fd_Ash'], complete_feed_data['Fd_St'],
         complete_feed_data['Fd_NDF'], coeff_dict
         )
-    complete_feed_data['Fd_AFIn'] = calculate_Fd_AFIn(
+    new_columns['Fd_AFIn'] = calculate_Fd_AFIn(
         complete_feed_data['Fd_DM'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_For'] = calculate_Fd_For(complete_feed_data['Fd_Conc'])
-    complete_feed_data['Fd_ForWet'] = calculate_Fd_ForWet(
-        complete_feed_data['Fd_DM'], complete_feed_data['Fd_For']
+    new_columns['Fd_For'] = calculate_Fd_For(complete_feed_data['Fd_Conc'])
+    new_columns['Fd_ForWet'] = calculate_Fd_ForWet(
+        complete_feed_data['Fd_DM'], new_columns['Fd_For']
         )
-    complete_feed_data['Fd_ForDry'] = calculate_Fd_ForDry(
-        complete_feed_data['Fd_DM'], complete_feed_data['Fd_For']
+    new_columns['Fd_ForDry'] = calculate_Fd_ForDry(
+        complete_feed_data['Fd_DM'], new_columns['Fd_For']
         )
-    complete_feed_data['Fd_Past'] = calculate_Fd_Past(complete_feed_data['Fd_Category'])
-    complete_feed_data['Fd_LiqClf'] = calculate_Fd_LiqClf(
+    new_columns['Fd_Past'] = calculate_Fd_Past(complete_feed_data['Fd_Category'])
+    new_columns['Fd_LiqClf'] = calculate_Fd_LiqClf(
         complete_feed_data['Fd_Category']
         )
-    complete_feed_data['Fd_ForNDF'] = calculate_Fd_ForNDF(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Conc']
-        )
-    complete_feed_data['Fd_NDFnf'] = calculate_Fd_NDFnf(
+    # new_columns['Fd_ForNDF'] = calculate_Fd_ForNDF(
+    #     complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Conc']
+    #     )
+    new_columns['Fd_NDFnf'] = calculate_Fd_NDFnf(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_NDFIP']
         )
-    complete_feed_data['Fd_NPNCP'] = calculate_Fd_NPNCP(
+    new_columns['Fd_NPNCP'] = calculate_Fd_NPNCP(
         complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPN_CP']
         )
-    complete_feed_data['Fd_NPN'] = calculate_Fd_NPN(
-        complete_feed_data['Fd_NPNCP']
+    new_columns['Fd_NPN'] = calculate_Fd_NPN(
+        new_columns['Fd_NPNCP']
         )
-    complete_feed_data['Fd_NPNDM'] = calculate_Fd_NPNDM(
-        complete_feed_data['Fd_NPNCP']
+    new_columns['Fd_NPNDM'] = calculate_Fd_NPNDM(
+        new_columns['Fd_NPNCP']
         )
-    complete_feed_data['Fd_TP'] = calculate_Fd_TP(
-        complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP']
+    new_columns['Fd_TP'] = calculate_Fd_TP(
+        complete_feed_data['Fd_CP'], new_columns['Fd_NPNCP']
         )
-    complete_feed_data['Fd_fHydr_FA'] = calculate_Fd_fHydr_FA(
+    new_columns['Fd_fHydr_FA'] = calculate_Fd_fHydr_FA(
         complete_feed_data['Fd_Category']
         )
-    complete_feed_data['Fd_FAhydr'] = calculate_Fd_FAhydr(
-        complete_feed_data['Fd_FA'], complete_feed_data['Fd_fHydr_FA']
+    new_columns['Fd_FAhydr'] = calculate_Fd_FAhydr(
+        complete_feed_data['Fd_FA'], new_columns['Fd_fHydr_FA']
         )
-    complete_feed_data['Fd_NFC'] = calculate_Fd_NFC(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_TP'], complete_feed_data['Fd_Ash'],
-        complete_feed_data['Fd_FAhydr'], complete_feed_data['Fd_NPNDM']
+    new_columns['Fd_NFC'] = calculate_Fd_NFC(
+        complete_feed_data['Fd_NDF'], new_columns['Fd_TP'], complete_feed_data['Fd_Ash'],
+        new_columns['Fd_FAhydr'], new_columns['Fd_NPNDM']
         )
-    complete_feed_data['Fd_rOM'] = calculate_Fd_rOM(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], complete_feed_data['Fd_TP'],
-        complete_feed_data['Fd_FA'], complete_feed_data['Fd_fHydr_FA'],
-        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_NPNDM']
+    new_columns['Fd_rOM'] = calculate_Fd_rOM(
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], new_columns['Fd_TP'],
+        complete_feed_data['Fd_FA'], new_columns['Fd_fHydr_FA'],
+        complete_feed_data['Fd_Ash'], new_columns['Fd_NPNDM']
         )
-    complete_feed_data['Fd_GEIn'] = calculate_Fd_GEIn(
-        complete_feed_data['Fd_GE'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_GEIn'] = calculate_Fd_GEIn(
+        new_columns['Fd_GE'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ADFIn"] = calculate_Fd_ADFIn(
-        complete_feed_data["Fd_ADF"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ADFIn"] = calculate_Fd_ADFIn(
+        complete_feed_data["Fd_ADF"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_NDFIn"] = calculate_Fd_NDFIn(
-        complete_feed_data["Fd_NDF"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_NDFIn"] = calculate_Fd_NDFIn(
+        complete_feed_data["Fd_NDF"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_StIn"] = calculate_Fd_StIn(
-        complete_feed_data["Fd_St"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_StIn"] = calculate_Fd_StIn(
+        complete_feed_data["Fd_St"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_NFCIn"] = calculate_Fd_NFCIn(
-        complete_feed_data["Fd_NFC"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_NFCIn"] = calculate_Fd_NFCIn(
+        new_columns["Fd_NFC"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_WSCIn"] = calculate_Fd_WSCIn(
-        complete_feed_data["Fd_WSC"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_WSCIn"] = calculate_Fd_WSCIn(
+        complete_feed_data["Fd_WSC"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_rOMIn"] = calculate_Fd_rOMIn(
-        complete_feed_data["Fd_rOM"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_rOMIn"] = calculate_Fd_rOMIn(
+        new_columns["Fd_rOM"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_LgIn"] = calculate_Fd_LgIn(
-        complete_feed_data["Fd_Lg"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_LgIn"] = calculate_Fd_LgIn(
+        complete_feed_data["Fd_Lg"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ConcIn"] = calculate_Fd_ConcIn(
-        complete_feed_data["Fd_Conc"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ConcIn"] = calculate_Fd_ConcIn(
+        complete_feed_data["Fd_Conc"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ForIn"] = calculate_Fd_ForIn(
-        complete_feed_data["Fd_For"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ForIn"] = calculate_Fd_ForIn(
+        new_columns["Fd_For"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ForNDFIn"] = calculate_Fd_ForNDFIn(
-        complete_feed_data["Fd_ForNDF"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ForNDFIn"] = calculate_Fd_ForNDFIn(
+        complete_feed_data["Fd_ForNDF"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ForWetIn"] = calculate_Fd_ForWetIn(
-        complete_feed_data["Fd_ForWet"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ForWetIn"] = calculate_Fd_ForWetIn(
+        new_columns["Fd_ForWet"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ForDryIn"] = calculate_Fd_ForDryIn(
-        complete_feed_data["Fd_ForDry"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ForDryIn"] = calculate_Fd_ForDryIn(
+        new_columns["Fd_ForDry"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_PastIn"] = calculate_Fd_PastIn(
-        complete_feed_data["Fd_Past"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_PastIn"] = calculate_Fd_PastIn(
+        new_columns["Fd_Past"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_CPIn"] = calculate_Fd_CPIn(
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_CPIn"] = calculate_Fd_CPIn(
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_TPIn"] = calculate_Fd_TPIn(
-        complete_feed_data["Fd_TP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_TPIn"] = calculate_Fd_TPIn(
+        new_columns["Fd_TP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_CFatIn"] = calculate_Fd_CFatIn(
-        complete_feed_data["Fd_CFat"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_CFatIn"] = calculate_Fd_CFatIn(
+        complete_feed_data["Fd_CFat"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_FAIn"] = calculate_Fd_FAIn(
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_FAIn"] = calculate_Fd_FAIn(
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_FAhydrIn"] = calculate_Fd_FAhydrIn(
-        complete_feed_data["Fd_FAhydr"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_FAhydrIn"] = calculate_Fd_FAhydrIn(
+        new_columns["Fd_FAhydr"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_AshIn"] = calculate_Fd_AshIn(
-        complete_feed_data["Fd_Ash"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_AshIn"] = calculate_Fd_AshIn(
+        complete_feed_data["Fd_Ash"], complete_feed_data['Fd_DMIn']
         )
     # Calculate nutrient intakes for each feed
-    complete_feed_data['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
+    new_columns['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg']
         )
-    complete_feed_data['Fd_DNDF48'] = calculate_Fd_DNDF48(
+    new_columns['Fd_DNDF48'] = calculate_Fd_DNDF48(
         complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DNDF48_input']
         )
-    complete_feed_data['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
-        complete_feed_data['Fd_DNDF48']
+    new_columns['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
+        new_columns['Fd_DNDF48']
         )
-    complete_feed_data['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
-        Use_DNDF_IV, complete_feed_data['Fd_Conc'], complete_feed_data['TT_dcFdNDF_Lg'],
-        complete_feed_data['TT_dcFdNDF_48h']
+    new_columns['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
+        Use_DNDF_IV, complete_feed_data['Fd_Conc'], new_columns['TT_dcFdNDF_Lg'],
+        new_columns['TT_dcFdNDF_48h']
         )
-    complete_feed_data['Fd_DigNDFIn_Base'] = calculate_Fd_DigNDFIn_Base(
-        complete_feed_data['Fd_NDFIn'], complete_feed_data['TT_dcFdNDF_Base']
+    new_columns['Fd_DigNDFIn_Base'] = calculate_Fd_DigNDFIn_Base(
+        new_columns['Fd_NDFIn'], new_columns['TT_dcFdNDF_Base']
         )
-    complete_feed_data['Fd_NPNCPIn'] = calculate_Fd_NPNCPIn(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_NPN_CP']
+    new_columns['Fd_NPNCPIn'] = calculate_Fd_NPNCPIn(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_NPN_CP']
         )
-    complete_feed_data['Fd_NPNIn'] = calculate_Fd_NPNIn(
-        complete_feed_data['Fd_NPNCPIn']
+    new_columns['Fd_NPNIn'] = calculate_Fd_NPNIn(
+        new_columns['Fd_NPNCPIn']
         )
-    complete_feed_data['Fd_NPNDMIn'] = calculate_Fd_NPNDMIn(
-        complete_feed_data['Fd_NPNCPIn']
+    new_columns['Fd_NPNDMIn'] = calculate_Fd_NPNDMIn(
+        new_columns['Fd_NPNCPIn']
         )
-    complete_feed_data['Fd_CPAIn'] = calculate_Fd_CPAIn(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPARU']
+    new_columns['Fd_CPAIn'] = calculate_Fd_CPAIn(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CPARU']
         )
-    complete_feed_data['Fd_CPBIn'] = calculate_Fd_CPBIn(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU']
+    new_columns['Fd_CPBIn'] = calculate_Fd_CPBIn(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CPBRU']
         )
-    complete_feed_data['Fd_CPBIn_For'] = calculate_Fd_CPBIn_For(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
-        complete_feed_data['Fd_For']
+    new_columns['Fd_CPBIn_For'] = calculate_Fd_CPBIn_For(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
+        new_columns['Fd_For']
         )
-    complete_feed_data['Fd_CPBIn_Conc'] = calculate_Fd_CPBIn_Conc(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
+    new_columns['Fd_CPBIn_Conc'] = calculate_Fd_CPBIn_Conc(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CPBRU'],
         complete_feed_data['Fd_Conc']
         )
-    complete_feed_data['Fd_CPCIn'] = calculate_Fd_CPCIn(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPCRU']
+    new_columns['Fd_CPCIn'] = calculate_Fd_CPCIn(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CPCRU']
         )
-    complete_feed_data['Fd_CPIn_ClfLiq'] = calculate_Fd_CPIn_ClfLiq(
+    new_columns['Fd_CPIn_ClfLiq'] = calculate_Fd_CPIn_ClfLiq(
         complete_feed_data['Fd_Category'], complete_feed_data['Fd_DMIn'],
         complete_feed_data['Fd_CP']
         )
-    complete_feed_data['Fd_CPIn_ClfDry'] = calculate_Fd_CPIn_ClfDry(
+    new_columns['Fd_CPIn_ClfDry'] = calculate_Fd_CPIn_ClfDry(
         complete_feed_data['Fd_Category'], complete_feed_data['Fd_DMIn'],
         complete_feed_data['Fd_CP']
         )
-    complete_feed_data['Fd_OMIn'] = calculate_Fd_OMIn(
-        complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_AshIn']
+    new_columns['Fd_OMIn'] = calculate_Fd_OMIn(
+        complete_feed_data['Fd_DMIn'], new_columns['Fd_AshIn']
         )
-
     # Rumen Degraded and Undegraded Protein
-    complete_feed_data['Fd_rdcRUPB'] = calculate_Fd_rdcRUPB(
-        complete_feed_data['Fd_For'], complete_feed_data['Fd_Conc'],
+    new_columns['Fd_rdcRUPB'] = calculate_Fd_rdcRUPB(
+        new_columns['Fd_For'], complete_feed_data['Fd_Conc'],
         complete_feed_data['Fd_KdRUP'], coeff_dict
         )
-    complete_feed_data['Fd_RUPBIn'] = calculate_Fd_RUPBIn(
-        complete_feed_data['Fd_For'], complete_feed_data['Fd_Conc'],
-        complete_feed_data['Fd_KdRUP'], complete_feed_data['Fd_CPBIn'],
+    new_columns['Fd_RUPBIn'] = calculate_Fd_RUPBIn(
+        new_columns['Fd_For'], complete_feed_data['Fd_Conc'],
+        complete_feed_data['Fd_KdRUP'], new_columns['Fd_CPBIn'],
         coeff_dict
         )
-    complete_feed_data['Fd_RUPIn'] = calculate_Fd_RUPIn(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CPAIn'],
-        complete_feed_data['Fd_CPCIn'], complete_feed_data['Fd_NPNCPIn'],
-        complete_feed_data['Fd_RUPBIn'], coeff_dict
+    new_columns['Fd_RUPIn'] = calculate_Fd_RUPIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_CPAIn'],
+        new_columns['Fd_CPCIn'], new_columns['Fd_NPNCPIn'],
+        new_columns['Fd_RUPBIn'], coeff_dict
         )
-    complete_feed_data['Fd_RUP_CP'] = calculate_Fd_RUP_CP(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_RUPIn']
+    new_columns['Fd_RUP_CP'] = calculate_Fd_RUP_CP(
+        new_columns['Fd_CPIn'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data['Fd_RUP'] = calculate_Fd_RUP(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_RUPIn'],
+    new_columns['Fd_RUP'] = calculate_Fd_RUP(
+        new_columns['Fd_CPIn'], new_columns['Fd_RUPIn'],
         complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_RDP'] = calculate_Fd_RDP(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CP'],
-        complete_feed_data['Fd_RUP']
+    new_columns['Fd_RDP'] = calculate_Fd_RDP(
+        new_columns['Fd_CPIn'], complete_feed_data['Fd_CP'],
+        new_columns['Fd_RUP']
         )
     # FA Intakes
-    complete_feed_data["Fd_C120In"] = calculate_Fd_C120In(
+    new_columns["Fd_C120In"] = calculate_Fd_C120In(
         complete_feed_data["Fd_C120_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C140In"] = calculate_Fd_C140In(
+    new_columns["Fd_C140In"] = calculate_Fd_C140In(
         complete_feed_data["Fd_C140_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C160In"] = calculate_Fd_C160In(
+    new_columns["Fd_C160In"] = calculate_Fd_C160In(
         complete_feed_data["Fd_C160_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C161In"] = calculate_Fd_C161In(
+    new_columns["Fd_C161In"] = calculate_Fd_C161In(
         complete_feed_data["Fd_C161_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C180In"] = calculate_Fd_C180In(
+    new_columns["Fd_C180In"] = calculate_Fd_C180In(
         complete_feed_data["Fd_C180_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C181tIn"] = calculate_Fd_C181tIn(
+    new_columns["Fd_C181tIn"] = calculate_Fd_C181tIn(
         complete_feed_data["Fd_C181t_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C181cIn"] = calculate_Fd_C181cIn(
+    new_columns["Fd_C181cIn"] = calculate_Fd_C181cIn(
         complete_feed_data["Fd_C181c_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C182In"] = calculate_Fd_C182In(
+    new_columns["Fd_C182In"] = calculate_Fd_C182In(
         complete_feed_data["Fd_C182_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_C183In"] = calculate_Fd_C183In(
+    new_columns["Fd_C183In"] = calculate_Fd_C183In(
         complete_feed_data["Fd_C183_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_OtherFAIn"] = calculate_Fd_OtherFAIn(
+    new_columns["Fd_OtherFAIn"] = calculate_Fd_OtherFAIn(
         complete_feed_data["Fd_OtherFA_FA"], complete_feed_data["Fd_FA"], 
-        complete_feed_data["Fd_DMIn"]
+        complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
+    new_columns['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], complete_feed_data['Fd_St'],
         complete_feed_data['Fd_dcSt'], complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'],
-        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP'],
-        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP']
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_CP'], new_columns['Fd_NPNCP'],
+        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP']
         )
-    complete_feed_data['Fd_DE_base_2'] = calculate_Fd_DE_base_2(
+    new_columns['Fd_DE_base_2'] = calculate_Fd_DE_base_2(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt'],
         complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_Ash'],
-        complete_feed_data['Fd_CP'], complete_feed_data['Fd_NPNCP'],
-        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP'],
+        complete_feed_data['Fd_CP'], new_columns['Fd_NPNCP'],
+        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP'],
         complete_feed_data['Fd_DNDF48_NDF']
         )
-    complete_feed_data['Fd_DE_base'] = calculate_Fd_DE_base(
-        Use_DNDF_IV, complete_feed_data['Fd_DE_base_1'],
-        complete_feed_data['Fd_DE_base_2'], complete_feed_data['Fd_For'],
-        complete_feed_data['Fd_FA'], complete_feed_data['Fd_RDP'],
-        complete_feed_data['Fd_RUP'], complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_CP'],
-        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_NPN'],
+    new_columns['Fd_DE_base'] = calculate_Fd_DE_base(
+        Use_DNDF_IV, new_columns['Fd_DE_base_1'],
+        new_columns['Fd_DE_base_2'], new_columns['Fd_For'],
+        complete_feed_data['Fd_FA'], new_columns['Fd_RDP'],
+        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_CP'],
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_dcFA'], new_columns['Fd_NPN'],
         complete_feed_data['Fd_Category']
         )
-    complete_feed_data['Fd_DEIn_base'] = calculate_Fd_DEIn_base(
-        complete_feed_data['Fd_DE_base'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_DEIn_base'] = calculate_Fd_DEIn_base(
+        new_columns['Fd_DE_base'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_DEIn_base_ClfLiq'] = calculate_Fd_DEIn_base_ClfLiq(
-        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DEIn_base']
+    new_columns['Fd_DEIn_base_ClfLiq'] = calculate_Fd_DEIn_base_ClfLiq(
+        complete_feed_data['Fd_Category'], new_columns['Fd_DEIn_base']
         )
-    complete_feed_data['Fd_DEIn_base_ClfDry'] = calculate_Fd_DEIn_base_ClfDry(
-        complete_feed_data['Fd_Category'], complete_feed_data['Fd_DEIn_base']
+    new_columns['Fd_DEIn_base_ClfDry'] = calculate_Fd_DEIn_base_ClfDry(
+        complete_feed_data['Fd_Category'], new_columns['Fd_DEIn_base']
         )
-    complete_feed_data['Fd_DMIn_ClfLiq'] = calculate_Fd_DMIn_ClfLiq(
+    new_columns['Fd_DMIn_ClfLiq'] = calculate_Fd_DMIn_ClfLiq(
         An_StatePhys, complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_Category']
         )
-    complete_feed_data['Fd_DE_ClfLiq'] = calculate_Fd_DE_ClfLiq(
-        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_GE']
+    new_columns['Fd_DE_ClfLiq'] = calculate_Fd_DE_ClfLiq(
+        An_StatePhys, complete_feed_data['Fd_Category'], new_columns['Fd_GE']
         )
-    complete_feed_data['Fd_ME_ClfLiq'] = calculate_Fd_ME_ClfLiq(
+    new_columns['Fd_ME_ClfLiq'] = calculate_Fd_ME_ClfLiq(
         An_StatePhys, complete_feed_data['Fd_Category'],
-        complete_feed_data['Fd_DE_ClfLiq']
+        new_columns['Fd_DE_ClfLiq']
         )
-    complete_feed_data['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
+    new_columns['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
         Dt_DMIn, complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DMInp']
         )
-    complete_feed_data["Fd_CaIn"] = calculate_Fd_CaIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Ca"]
+    new_columns["Fd_CaIn"] = calculate_Fd_CaIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Ca"]
         )
-    complete_feed_data["Fd_PIn"] = calculate_Fd_PIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_P"]
+    new_columns["Fd_PIn"] = calculate_Fd_PIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_P"]
         )
-    complete_feed_data["Fd_NaIn"] = calculate_Fd_NaIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Na"]
+    new_columns["Fd_NaIn"] = calculate_Fd_NaIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Na"]
         )
-    complete_feed_data["Fd_MgIn"] = calculate_Fd_MgIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mg"]
+    new_columns["Fd_MgIn"] = calculate_Fd_MgIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Mg"]
         )
-    complete_feed_data["Fd_KIn"] = calculate_Fd_KIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_K"]
+    new_columns["Fd_KIn"] = calculate_Fd_KIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_K"]
         )
-    complete_feed_data["Fd_ClIn"] = calculate_Fd_ClIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cl"]
+    new_columns["Fd_ClIn"] = calculate_Fd_ClIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Cl"]
         )
-    complete_feed_data["Fd_SIn"] = calculate_Fd_SIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_S"]
+    new_columns["Fd_SIn"] = calculate_Fd_SIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_S"]
         )
-    complete_feed_data['Fd_PinorgIn'] = calculate_Fd_PinorgIn(
-        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_Pinorg_P']
+    new_columns['Fd_PinorgIn'] = calculate_Fd_PinorgIn(
+        new_columns['Fd_PIn'], complete_feed_data['Fd_Pinorg_P']
         )
-    complete_feed_data['Fd_PorgIn'] = calculate_Fd_PorgIn(
-        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_Porg_P']
+    new_columns['Fd_PorgIn'] = calculate_Fd_PorgIn(
+        new_columns['Fd_PIn'], complete_feed_data['Fd_Porg_P']
         )
-    complete_feed_data['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
-        complete_feed_data['Fd_Category'], complete_feed_data['Fd_MgIn']
+    new_columns['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
+        complete_feed_data['Fd_Category'], new_columns['Fd_MgIn']
         )
-    complete_feed_data["Fd_CoIn"] = calculate_Fd_CoIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Co"]
+    new_columns["Fd_CoIn"] = calculate_Fd_CoIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Co"]
         )
-    complete_feed_data["Fd_CrIn"] = calculate_Fd_CrIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cr"]
+    new_columns["Fd_CrIn"] = calculate_Fd_CrIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Cr"]
         )
-    complete_feed_data["Fd_CuIn"] = calculate_Fd_CuIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cu"]
+    new_columns["Fd_CuIn"] = calculate_Fd_CuIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Cu"]
         )
-    complete_feed_data["Fd_FeIn"] = calculate_Fd_FeIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Fe"]
+    new_columns["Fd_FeIn"] = calculate_Fd_FeIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Fe"]
         )
-    complete_feed_data["Fd_IIn"] = calculate_Fd_IIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_I"]
+    new_columns["Fd_IIn"] = calculate_Fd_IIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_I"]
         )
-    complete_feed_data["Fd_MnIn"] = calculate_Fd_MnIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mn"]
+    new_columns["Fd_MnIn"] = calculate_Fd_MnIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Mn"]
         )
-    complete_feed_data["Fd_MoIn"] = calculate_Fd_MoIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mo"]
+    new_columns["Fd_MoIn"] = calculate_Fd_MoIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Mo"]
         )
-    complete_feed_data["Fd_SeIn"] = calculate_Fd_SeIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Se"]
+    new_columns["Fd_SeIn"] = calculate_Fd_SeIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Se"]
         )
-    complete_feed_data["Fd_ZnIn"] = calculate_Fd_ZnIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Zn"]
+    new_columns["Fd_ZnIn"] = calculate_Fd_ZnIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Zn"]
         )
-    complete_feed_data["Fd_VitAIn"] = calculate_Fd_VitAIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitA"]
+    new_columns["Fd_VitAIn"] = calculate_Fd_VitAIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_VitA"]
         )
-    complete_feed_data["Fd_VitDIn"] = calculate_Fd_VitDIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitD"]
+    new_columns["Fd_VitDIn"] = calculate_Fd_VitDIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_VitD"]
         )
-    complete_feed_data["Fd_VitEIn"] = calculate_Fd_VitEIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitE"]
+    new_columns["Fd_VitEIn"] = calculate_Fd_VitEIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_VitE"]
         )
-    complete_feed_data["Fd_CholineIn"] = calculate_Fd_CholineIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Choline"]
+    new_columns["Fd_CholineIn"] = calculate_Fd_CholineIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Choline"]
         )
-    complete_feed_data["Fd_BiotinIn"] = calculate_Fd_BiotinIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Biotin"]
+    new_columns["Fd_BiotinIn"] = calculate_Fd_BiotinIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Biotin"]
         )
-    complete_feed_data["Fd_NiacinIn"] = calculate_Fd_NiacinIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Niacin"]
+    new_columns["Fd_NiacinIn"] = calculate_Fd_NiacinIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_Niacin"]
         )
-    complete_feed_data["Fd_B_CaroteneIn"] = calculate_Fd_B_CaroteneIn(
-        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_B_Carotene"]
+    new_columns["Fd_B_CaroteneIn"] = calculate_Fd_B_CaroteneIn(
+        complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_B_Carotene"]
         )
-    Dt_DMIn_ClfLiq = complete_feed_data['Fd_DMIn_ClfLiq'].sum()
+    Dt_DMIn_ClfLiq = new_columns['Fd_DMIn_ClfLiq'].sum()
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
 
-    complete_feed_data['Fd_acCa'] = calculate_Fd_acCa(
+    new_columns['Fd_acCa'] = calculate_Fd_acCa(
         An_StatePhys, complete_feed_data['Fd_acCa_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acPtot'] = calculate_Fd_acPtot(
+    new_columns['Fd_acPtot'] = calculate_Fd_acPtot(
         An_StatePhys, complete_feed_data['Fd_Category'],
         complete_feed_data['Fd_Pinorg_P'], complete_feed_data['Fd_Porg_P'],
         complete_feed_data['Fd_acPtot_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acMg'] = calculate_Fd_acMg(
+    new_columns['Fd_acMg'] = calculate_Fd_acMg(
         An_StatePhys, complete_feed_data['Fd_acMg_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acNa'] = calculate_Fd_acNa(
+    new_columns['Fd_acNa'] = calculate_Fd_acNa(
         An_StatePhys, complete_feed_data['Fd_acNa_input']
         )
-    complete_feed_data['Fd_acK'] = calculate_Fd_acK(
+    new_columns['Fd_acK'] = calculate_Fd_acK(
         An_StatePhys, complete_feed_data['Fd_acK_input']
         )
-    complete_feed_data['Fd_acCl'] = calculate_Fd_acCl(
+    new_columns['Fd_acCl'] = calculate_Fd_acCl(
         An_StatePhys, complete_feed_data['Fd_acCl_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_absCaIn'] = calculate_Fd_absCaIn(
-        complete_feed_data['Fd_CaIn'], complete_feed_data['Fd_acCa']
+    new_columns['Fd_absCaIn'] = calculate_Fd_absCaIn(
+        new_columns['Fd_CaIn'], new_columns['Fd_acCa']
         )
-    complete_feed_data['Fd_absPIn'] = calculate_Fd_absPIn(
-        complete_feed_data['Fd_PIn'], complete_feed_data['Fd_acPtot']
+    new_columns['Fd_absPIn'] = calculate_Fd_absPIn(
+        new_columns['Fd_PIn'], new_columns['Fd_acPtot']
         )
-    complete_feed_data['Fd_absMgIn_base'] = calculate_Fd_absMgIn_base(
-        complete_feed_data['Fd_MgIn'], complete_feed_data['Fd_acMg']
+    new_columns['Fd_absMgIn_base'] = calculate_Fd_absMgIn_base(
+        new_columns['Fd_MgIn'], new_columns['Fd_acMg']
         )
-    complete_feed_data['Fd_absNaIn'] = calculate_Fd_absNaIn(
-        complete_feed_data['Fd_NaIn'], complete_feed_data['Fd_acNa']
+    new_columns['Fd_absNaIn'] = calculate_Fd_absNaIn(
+        new_columns['Fd_NaIn'], new_columns['Fd_acNa']
         )
-    complete_feed_data['Fd_absKIn'] = calculate_Fd_absKIn(
-        complete_feed_data['Fd_KIn'], complete_feed_data['Fd_acK']
+    new_columns['Fd_absKIn'] = calculate_Fd_absKIn(
+        new_columns['Fd_KIn'], new_columns['Fd_acK']
         )
-    complete_feed_data['Fd_absClIn'] = calculate_Fd_absClIn(
-        complete_feed_data['Fd_ClIn'], complete_feed_data['Fd_acCl']
+    new_columns['Fd_absClIn'] = calculate_Fd_absClIn(
+        new_columns['Fd_ClIn'], new_columns['Fd_acCl']
         )
-    complete_feed_data['Fd_acCo'] = calculate_Fd_acCo(An_StatePhys)
-    complete_feed_data['Fd_acCu'] = calculate_Fd_acCu(
+    new_columns['Fd_acCo'] = calculate_Fd_acCo(An_StatePhys)
+    new_columns['Fd_acCu'] = calculate_Fd_acCu(
         An_StatePhys, complete_feed_data['Fd_acCu_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acFe'] = calculate_Fd_acFe(
+    new_columns['Fd_acFe'] = calculate_Fd_acFe(
         An_StatePhys, complete_feed_data['Fd_acFe_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acMn'] = calculate_Fd_acMn(
+    new_columns['Fd_acMn'] = calculate_Fd_acMn(
         An_StatePhys, complete_feed_data['Fd_acMn_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data['Fd_acZn'] = calculate_Fd_acZn(
+    new_columns['Fd_acZn'] = calculate_Fd_acZn(
         An_StatePhys, complete_feed_data['Fd_acZn_input'], Dt_DMIn_ClfLiq
         )
-    complete_feed_data["Fd_absCoIn"] = calculate_Fd_absCoIn(
-        complete_feed_data["Fd_CoIn"], complete_feed_data["Fd_acCo"]
+    new_columns["Fd_absCoIn"] = calculate_Fd_absCoIn(
+        new_columns["Fd_CoIn"], new_columns["Fd_acCo"]
         )
-    complete_feed_data["Fd_absCuIn"] = calculate_Fd_absCuIn(
-        complete_feed_data["Fd_CuIn"], complete_feed_data["Fd_acCu"]
+    new_columns["Fd_absCuIn"] = calculate_Fd_absCuIn(
+        new_columns["Fd_CuIn"], new_columns["Fd_acCu"]
         )
-    complete_feed_data["Fd_absFeIn"] = calculate_Fd_absFeIn(
-        complete_feed_data["Fd_FeIn"], complete_feed_data["Fd_acFe"]
+    new_columns["Fd_absFeIn"] = calculate_Fd_absFeIn(
+        new_columns["Fd_FeIn"], new_columns["Fd_acFe"]
         )
-    complete_feed_data["Fd_absMnIn"] = calculate_Fd_absMnIn(
-        complete_feed_data["Fd_MnIn"], complete_feed_data["Fd_acMn"]
+    new_columns["Fd_absMnIn"] = calculate_Fd_absMnIn(
+        new_columns["Fd_MnIn"], new_columns["Fd_acMn"]
         )
-    complete_feed_data["Fd_absZnIn"] = calculate_Fd_absZnIn(
-        complete_feed_data["Fd_ZnIn"], complete_feed_data["Fd_acZn"]
+    new_columns["Fd_absZnIn"] = calculate_Fd_absZnIn(
+        new_columns["Fd_ZnIn"], new_columns["Fd_acZn"]
         )
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed aa.
     # SI Digestibility of aa relative to RUP digestibility ([g dAA / g aa] / [g dRUP / g RUP])
     # All set to 1 due to lack of clear evidence for deviations.
+
+    # TODO refactor this to use coeff_dict
     SIDigArgRUPf = 1
     SIDigHisRUPf = 1
     SIDigIleRUPf = 1
@@ -4141,7 +4144,6 @@ def calculate_feed_data(Dt_DMIn: float,
     SIDigThrRUPf = 1
     SIDigTrpRUPf = 1
     SIDigValRUPf = 1
-
     # Store SIDig values in a dictionary
     SIDig_values = {
         'Arg': SIDigArgRUPf,
@@ -4156,238 +4158,237 @@ def calculate_feed_data(Dt_DMIn: float,
         'Val': SIDigValRUPf
     }
 
-    aa_list = [
-        'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
-    ]
-
-    complete_feed_data["Fd_Argt_CP"] = calculate_Fd_Argt_CP(
+    new_columns["Fd_Argt_CP"] = calculate_Fd_Argt_CP(
         complete_feed_data["Fd_Arg_CP"], coeff_dict["RecArg"]
         )
-    complete_feed_data["Fd_Hist_CP"] = calculate_Fd_Hist_CP(
+    new_columns["Fd_Hist_CP"] = calculate_Fd_Hist_CP(
         complete_feed_data["Fd_His_CP"], coeff_dict["RecHis"]
         )
-    complete_feed_data["Fd_Ilet_CP"] = calculate_Fd_Ilet_CP(
+    new_columns["Fd_Ilet_CP"] = calculate_Fd_Ilet_CP(
         complete_feed_data["Fd_Ile_CP"], coeff_dict["RecIle"]
         )
-    complete_feed_data["Fd_Leut_CP"] = calculate_Fd_Leut_CP(
+    new_columns["Fd_Leut_CP"] = calculate_Fd_Leut_CP(
         complete_feed_data["Fd_Leu_CP"], coeff_dict["RecLeu"]
         )
-    complete_feed_data["Fd_Lyst_CP"] = calculate_Fd_Lyst_CP(
+    new_columns["Fd_Lyst_CP"] = calculate_Fd_Lyst_CP(
         complete_feed_data["Fd_Lys_CP"], coeff_dict["RecLys"]
         )
-    complete_feed_data["Fd_Mett_CP"] = calculate_Fd_Mett_CP(
+    new_columns["Fd_Mett_CP"] = calculate_Fd_Mett_CP(
         complete_feed_data["Fd_Met_CP"], coeff_dict["RecMet"]
         )
-    complete_feed_data["Fd_Phet_CP"] = calculate_Fd_Phet_CP(
+    new_columns["Fd_Phet_CP"] = calculate_Fd_Phet_CP(
         complete_feed_data["Fd_Phe_CP"], coeff_dict["RecPhe"]
         )
-    complete_feed_data["Fd_Thrt_CP"] = calculate_Fd_Thrt_CP(
+    new_columns["Fd_Thrt_CP"] = calculate_Fd_Thrt_CP(
         complete_feed_data["Fd_Thr_CP"], coeff_dict["RecThr"]
         )
-    complete_feed_data["Fd_Trpt_CP"] = calculate_Fd_Trpt_CP(
+    new_columns["Fd_Trpt_CP"] = calculate_Fd_Trpt_CP(
         complete_feed_data["Fd_Trp_CP"], coeff_dict["RecTrp"]
         )
-    complete_feed_data["Fd_Valt_CP"] = calculate_Fd_Valt_CP(
+    new_columns["Fd_Valt_CP"] = calculate_Fd_Valt_CP(
         complete_feed_data["Fd_Val_CP"], coeff_dict["RecVal"]
         )
-    complete_feed_data["Fd_ArgRUPIn"] = calculate_Fd_ArgRUPIn(
-        complete_feed_data["Fd_Argt_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_ArgRUPIn"] = calculate_Fd_ArgRUPIn(
+        new_columns['Fd_Argt_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_HisRUPIn"] = calculate_Fd_HisRUPIn(
-        complete_feed_data["Fd_Hist_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_HisRUPIn"] = calculate_Fd_HisRUPIn(
+        new_columns['Fd_Hist_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_IleRUPIn"] = calculate_Fd_IleRUPIn(
-        complete_feed_data["Fd_Ilet_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_IleRUPIn"] = calculate_Fd_IleRUPIn(
+        new_columns['Fd_Ilet_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_LeuRUPIn"] = calculate_Fd_LeuRUPIn(
-        complete_feed_data["Fd_Leut_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_LeuRUPIn"] = calculate_Fd_LeuRUPIn(
+        new_columns['Fd_Leut_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_LysRUPIn"] = calculate_Fd_LysRUPIn(
-        complete_feed_data["Fd_Lyst_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_LysRUPIn"] = calculate_Fd_LysRUPIn(
+        new_columns['Fd_Lyst_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_MetRUPIn"] = calculate_Fd_MetRUPIn(
-        complete_feed_data["Fd_Mett_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_MetRUPIn"] = calculate_Fd_MetRUPIn(
+        new_columns['Fd_Mett_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_PheRUPIn"] = calculate_Fd_PheRUPIn(
-        complete_feed_data["Fd_Phet_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_PheRUPIn"] = calculate_Fd_PheRUPIn(
+        new_columns['Fd_Phet_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_ThrRUPIn"] = calculate_Fd_ThrRUPIn(
-        complete_feed_data["Fd_Thrt_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_ThrRUPIn"] = calculate_Fd_ThrRUPIn(
+        new_columns['Fd_Thrt_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_TrpRUPIn"] = calculate_Fd_TrpRUPIn(
-        complete_feed_data["Fd_Trpt_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_TrpRUPIn"] = calculate_Fd_TrpRUPIn(
+        new_columns['Fd_Trpt_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_ValRUPIn"] = calculate_Fd_ValRUPIn(
-        complete_feed_data["Fd_Valt_CP"], complete_feed_data["Fd_RUPIn"]
+    new_columns["Fd_ValRUPIn"] = calculate_Fd_ValRUPIn(
+        new_columns['Fd_Valt_CP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data["Fd_IdArgRUPIn"] = calculate_Fd_IdArgRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ArgRUPIn"], 
+    new_columns["Fd_IdArgRUPIn"] = calculate_Fd_IdArgRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_ArgRUPIn'], 
         SIDig_values["Arg"]
         )
-    complete_feed_data["Fd_IdHisRUPIn"] = calculate_Fd_IdHisRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_HisRUPIn"], 
+    new_columns["Fd_IdHisRUPIn"] = calculate_Fd_IdHisRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_HisRUPIn'], 
         SIDig_values["His"]
         )
-    complete_feed_data["Fd_IdIleRUPIn"] = calculate_Fd_IdIleRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_IleRUPIn"], 
+    new_columns["Fd_IdIleRUPIn"] = calculate_Fd_IdIleRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_IleRUPIn'], 
         SIDig_values["Ile"]
         )
-    complete_feed_data["Fd_IdLeuRUPIn"] = calculate_Fd_IdLeuRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_LeuRUPIn"], 
+    new_columns["Fd_IdLeuRUPIn"] = calculate_Fd_IdLeuRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_LeuRUPIn'], 
         SIDig_values["Leu"]
         )
-    complete_feed_data["Fd_IdLysRUPIn"] = calculate_Fd_IdLysRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_LysRUPIn"], 
+    new_columns["Fd_IdLysRUPIn"] = calculate_Fd_IdLysRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_LysRUPIn'], 
         SIDig_values["Lys"]
         )
-    complete_feed_data["Fd_IdMetRUPIn"] = calculate_Fd_IdMetRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_MetRUPIn"], 
+    new_columns["Fd_IdMetRUPIn"] = calculate_Fd_IdMetRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_MetRUPIn'], 
         SIDig_values["Met"]
         )
-    complete_feed_data["Fd_IdPheRUPIn"] = calculate_Fd_IdPheRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_PheRUPIn"], 
+    new_columns["Fd_IdPheRUPIn"] = calculate_Fd_IdPheRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_PheRUPIn'], 
         SIDig_values["Phe"]
         )
-    complete_feed_data["Fd_IdThrRUPIn"] = calculate_Fd_IdThrRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ThrRUPIn"], 
+    new_columns["Fd_IdThrRUPIn"] = calculate_Fd_IdThrRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_ThrRUPIn'], 
         SIDig_values["Thr"]
         )
-    complete_feed_data["Fd_IdTrpRUPIn"] = calculate_Fd_IdTrpRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_TrpRUPIn"], 
+    new_columns["Fd_IdTrpRUPIn"] = calculate_Fd_IdTrpRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_TrpRUPIn'], 
         SIDig_values["Trp"]
         )
-    complete_feed_data["Fd_IdValRUPIn"] = calculate_Fd_IdValRUPIn(
-        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ValRUPIn"], 
+    new_columns["Fd_IdValRUPIn"] = calculate_Fd_IdValRUPIn(
+        complete_feed_data["Fd_dcRUP"], new_columns['Fd_ValRUPIn'], 
         SIDig_values["Val"]
         )
-    complete_feed_data['Fd_DigSt'] = calculate_Fd_DigSt(
+    new_columns['Fd_DigSt'] = calculate_Fd_DigSt(
         complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt']
         )
-    complete_feed_data['Fd_DigStIn_Base'] = calculate_Fd_DigStIn_Base(
-        complete_feed_data['Fd_DigSt'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_DigStIn_Base'] = calculate_Fd_DigStIn_Base(
+        new_columns['Fd_DigSt'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_DigrOMt'] = calculate_Fd_DigrOMt(
-        complete_feed_data['Fd_rOM'], coeff_dict
+    new_columns['Fd_DigrOMt'] = calculate_Fd_DigrOMt(
+        new_columns['Fd_rOM'], coeff_dict
         )
-    complete_feed_data['Fd_DigrOMtIn'] = calculate_Fd_DigrOMtIn(
-        complete_feed_data['Fd_DigrOMt'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_DigrOMtIn'] = calculate_Fd_DigrOMtIn(
+        new_columns['Fd_DigrOMt'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_idRUPIn'] = calculate_Fd_idRUPIn(
-        complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_RUPIn']
+    new_columns['Fd_idRUPIn'] = calculate_Fd_idRUPIn(
+        complete_feed_data['Fd_dcRUP'], new_columns['Fd_RUPIn']
         )
-    complete_feed_data['TT_dcFdFA'] = calculate_TT_dcFdFA(
+    new_columns['TT_dcFdFA'] = calculate_TT_dcFdFA(
         An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_Type'],
         complete_feed_data['Fd_dcFA'], coeff_dict
         )
-    complete_feed_data['Fd_DigFAIn'] = calculate_Fd_DigFAIn(
-        complete_feed_data['TT_dcFdFA'], complete_feed_data['Fd_FA'],
+    new_columns['Fd_DigFAIn'] = calculate_Fd_DigFAIn(
+        new_columns['TT_dcFdFA'], complete_feed_data['Fd_FA'],
         complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC120In"] = calculate_Fd_DigC120In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C120_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC120In"] = calculate_Fd_DigC120In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C120_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC140In"] = calculate_Fd_DigC140In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C140_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC140In"] = calculate_Fd_DigC140In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C140_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC160In"] = calculate_Fd_DigC160In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C160_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC160In"] = calculate_Fd_DigC160In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C160_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC161In"] = calculate_Fd_DigC161In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C161_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC161In"] = calculate_Fd_DigC161In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C161_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC180In"] = calculate_Fd_DigC180In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C180_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC180In"] = calculate_Fd_DigC180In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C180_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC181tIn"] = calculate_Fd_DigC181tIn(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C181t_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC181tIn"] = calculate_Fd_DigC181tIn(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C181t_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC181cIn"] = calculate_Fd_DigC181cIn(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C181c_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC181cIn"] = calculate_Fd_DigC181cIn(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C181c_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC182In"] = calculate_Fd_DigC182In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C182_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC182In"] = calculate_Fd_DigC182In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C182_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigC183In"] = calculate_Fd_DigC183In(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C183_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigC183In"] = calculate_Fd_DigC183In(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_C183_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_DigOtherFAIn"] = calculate_Fd_DigOtherFAIn(
-        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_OtherFA_FA"], 
-        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_DigOtherFAIn"] = calculate_Fd_DigOtherFAIn(
+        new_columns['TT_dcFdFA'], complete_feed_data["Fd_OtherFA_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_DigrOMa'] = calculate_Fd_DigrOMa(
-        complete_feed_data['Fd_DigrOMt'], coeff_dict
+    new_columns['Fd_DigrOMa'] = calculate_Fd_DigrOMa(
+        new_columns['Fd_DigrOMt'], coeff_dict
         )
-    complete_feed_data['Fd_DigrOMaIn'] = calculate_Fd_DigrOMaIn(
-        complete_feed_data['Fd_DigrOMa'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_DigrOMaIn'] = calculate_Fd_DigrOMaIn(
+        new_columns['Fd_DigrOMa'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_DigWSC'] = calculate_Fd_DigWSC(
+    new_columns['Fd_DigWSC'] = calculate_Fd_DigWSC(
         complete_feed_data['Fd_WSC']
         )
-    complete_feed_data['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(
-        complete_feed_data['Fd_DigWSC'], complete_feed_data['Fd_DMIn']
+    new_columns['Fd_DigWSCIn'] = calculate_Fd_DigWSCIn(
+        new_columns['Fd_DigWSC'], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_idRUP'] = calculate_Fd_idRUP(
-        complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_idRUPIn'],
+    new_columns['Fd_idRUP'] = calculate_Fd_idRUP(
+        new_columns['Fd_CPIn'], new_columns['Fd_idRUPIn'],
         complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
-        complete_feed_data['Fd_RUPIn'], complete_feed_data['Fd_dcRUP']
+    new_columns['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
+        new_columns['Fd_RUPIn'], complete_feed_data['Fd_dcRUP']
         )
-    complete_feed_data["Fd_ArgIn"] = calculate_Fd_ArgIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Argt_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ArgIn"] = calculate_Fd_ArgIn(
+        new_columns["Fd_CPIn"], new_columns['Fd_Argt_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_HisIn"] = calculate_Fd_HisIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Hist_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_HisIn"] = calculate_Fd_HisIn(
+        new_columns["Fd_CPIn"], new_columns['Fd_Hist_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_IleIn"] = calculate_Fd_IleIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Ilet_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_IleIn"] = calculate_Fd_IleIn(
+        new_columns["Fd_CPIn"], new_columns['Fd_Ilet_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_LeuIn"] = calculate_Fd_LeuIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Leut_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_LeuIn"] = calculate_Fd_LeuIn(
+        new_columns["Fd_CPIn"], new_columns['Fd_Leut_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_LysIn"] = calculate_Fd_LysIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Lyst_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_LysIn"] = calculate_Fd_LysIn(
+        new_columns["Fd_CPIn"], new_columns['Fd_Lyst_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_MetIn"] = calculate_Fd_MetIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Mett_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_MetIn"] = calculate_Fd_MetIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_Mett_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_PheIn"] = calculate_Fd_PheIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Phet_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_PheIn"] = calculate_Fd_PheIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_Phet_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ThrIn"] = calculate_Fd_ThrIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Thrt_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ThrIn"] = calculate_Fd_ThrIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_Thrt_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_TrpIn"] = calculate_Fd_TrpIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Trpt_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_TrpIn"] = calculate_Fd_TrpIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_Trpt_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_ValIn"] = calculate_Fd_ValIn(
-        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Valt_CP"], 
-        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_ValIn"] = calculate_Fd_ValIn(
+        new_columns['Fd_CPIn'], new_columns['Fd_Valt_CP'], 
+        complete_feed_data["Fd_CP"], complete_feed_data['Fd_DMIn']
         )
-    complete_feed_data["Fd_AFInp"] = calculate_Fd_AFInp(
-        complete_feed_data["Fd_AFIn"]
+    new_columns["Fd_AFInp"] = calculate_Fd_AFInp(
+        new_columns["Fd_AFIn"]
         )
-    complete_feed_data["Fd_RDPIn"] = calculate_Fd_RDPIn(
-        complete_feed_data["Fd_RDP"], complete_feed_data["Fd_DMIn"]
+    new_columns["Fd_RDPIn"] = calculate_Fd_RDPIn(
+        new_columns["Fd_RDP"], complete_feed_data['Fd_DMIn']
     )
+    complete_feed_data = pd.concat(
+        [complete_feed_data, pd.DataFrame(new_columns)], axis=1
+        )
     return complete_feed_data
 
 

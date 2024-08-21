@@ -306,9 +306,6 @@ def nasem(user_diet: pd.DataFrame,
     diet_data["Dt_ForWet"] = diet.calculate_Dt_ForWet(
         diet_data["Dt_ForWetIn"], Dt_DMIn
         )
-    diet_data["Dt_ForNDF"] = diet.calculate_Dt_ForNDF(
-        feed_data["Fd_DMInp"], feed_data["Fd_ForNDF"]
-        )
     diet_data["Dt_rOMIn"] = diet.calculate_Dt_rOMIn(
         Dt_DMIn, diet_data["Dt_AshIn"], diet_data["Dt_NDFIn"], 
         diet_data["Dt_StIn"], diet_data["Dt_FAhydrIn"], diet_data["Dt_TPIn"],
