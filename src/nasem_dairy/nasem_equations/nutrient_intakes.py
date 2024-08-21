@@ -1198,53 +1198,53 @@ def calculate_Fd_absZnIn(Fd_ZnIn: pd.Series, Fd_acZn: pd.Series) -> pd.Series:
     return Fd_absZnIn
 
 
-def calculate_Fd_Argt_CP(Fd_Arg_CP: pd.Series, RecArg: float) -> pd.Series:
-    Fd_Argt_CP = Fd_Arg_CP / RecArg
+def calculate_Fd_Argt_CP(Fd_Arg_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Argt_CP = Fd_Arg_CP / coeff_dict["RecArg"]
     return Fd_Argt_CP
 
 
-def calculate_Fd_Hist_CP(Fd_His_CP: pd.Series, RecHis: float) -> pd.Series:
-    Fd_Hist_CP = Fd_His_CP / RecHis
+def calculate_Fd_Hist_CP(Fd_His_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Hist_CP = Fd_His_CP / coeff_dict["RecHis"]
     return Fd_Hist_CP
 
 
-def calculate_Fd_Ilet_CP(Fd_Ile_CP: pd.Series, RecIle: float) -> pd.Series:
-    Fd_Ilet_CP = Fd_Ile_CP / RecIle
+def calculate_Fd_Ilet_CP(Fd_Ile_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Ilet_CP = Fd_Ile_CP / coeff_dict["RecIle"]
     return Fd_Ilet_CP
 
 
-def calculate_Fd_Leut_CP(Fd_Leu_CP: pd.Series, RecLeu: float) -> pd.Series:
-    Fd_Leut_CP = Fd_Leu_CP / RecLeu
+def calculate_Fd_Leut_CP(Fd_Leu_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Leut_CP = Fd_Leu_CP / coeff_dict["RecLeu"]
     return Fd_Leut_CP
 
 
-def calculate_Fd_Lyst_CP(Fd_Lys_CP: pd.Series, RecLys: float) -> pd.Series:
-    Fd_Lyst_CP = Fd_Lys_CP / RecLys
+def calculate_Fd_Lyst_CP(Fd_Lys_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Lyst_CP = Fd_Lys_CP / coeff_dict["RecLys"]
     return Fd_Lyst_CP
 
 
-def calculate_Fd_Mett_CP(Fd_Met_CP: pd.Series, RecMet: float) -> pd.Series:
-    Fd_Mett_CP = Fd_Met_CP / RecMet
+def calculate_Fd_Mett_CP(Fd_Met_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Mett_CP = Fd_Met_CP / coeff_dict["RecMet"]
     return Fd_Mett_CP
 
 
-def calculate_Fd_Phet_CP(Fd_Phe_CP: pd.Series, RecPhe: float) -> pd.Series:
-    Fd_Phet_CP = Fd_Phe_CP / RecPhe
+def calculate_Fd_Phet_CP(Fd_Phe_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Phet_CP = Fd_Phe_CP / coeff_dict["RecPhe"]
     return Fd_Phet_CP
 
 
-def calculate_Fd_Thrt_CP(Fd_Thr_CP: pd.Series, RecThr: float) -> pd.Series:
-    Fd_Thrt_CP = Fd_Thr_CP / RecThr
+def calculate_Fd_Thrt_CP(Fd_Thr_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Thrt_CP = Fd_Thr_CP / coeff_dict["RecThr"]
     return Fd_Thrt_CP
 
 
-def calculate_Fd_Trpt_CP(Fd_Trp_CP: pd.Series, RecTrp: float) -> pd.Series:
-    Fd_Trpt_CP = Fd_Trp_CP / RecTrp
+def calculate_Fd_Trpt_CP(Fd_Trp_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Trpt_CP = Fd_Trp_CP / coeff_dict["RecTrp"]
     return Fd_Trpt_CP
 
 
-def calculate_Fd_Valt_CP(Fd_Val_CP: pd.Series, RecVal: float) -> pd.Series:
-    Fd_Valt_CP = Fd_Val_CP / RecVal
+def calculate_Fd_Valt_CP(Fd_Val_CP: pd.Series, coeff_dict: dict) -> pd.Series:
+    Fd_Valt_CP = Fd_Val_CP / coeff_dict["RecVal"]
     return Fd_Valt_CP
 
 
@@ -4170,34 +4170,34 @@ def calculate_feed_data(Dt_DMIn: float,
     }
 
     new_columns["Fd_Argt_CP"] = calculate_Fd_Argt_CP(
-        complete_feed_data["Fd_Arg_CP"], coeff_dict["RecArg"]
+        complete_feed_data["Fd_Arg_CP"], coeff_dict
         )
     new_columns["Fd_Hist_CP"] = calculate_Fd_Hist_CP(
-        complete_feed_data["Fd_His_CP"], coeff_dict["RecHis"]
+        complete_feed_data["Fd_His_CP"], coeff_dict
         )
     new_columns["Fd_Ilet_CP"] = calculate_Fd_Ilet_CP(
-        complete_feed_data["Fd_Ile_CP"], coeff_dict["RecIle"]
+        complete_feed_data["Fd_Ile_CP"], coeff_dict
         )
     new_columns["Fd_Leut_CP"] = calculate_Fd_Leut_CP(
-        complete_feed_data["Fd_Leu_CP"], coeff_dict["RecLeu"]
+        complete_feed_data["Fd_Leu_CP"], coeff_dict
         )
     new_columns["Fd_Lyst_CP"] = calculate_Fd_Lyst_CP(
-        complete_feed_data["Fd_Lys_CP"], coeff_dict["RecLys"]
+        complete_feed_data["Fd_Lys_CP"], coeff_dict
         )
     new_columns["Fd_Mett_CP"] = calculate_Fd_Mett_CP(
-        complete_feed_data["Fd_Met_CP"], coeff_dict["RecMet"]
+        complete_feed_data["Fd_Met_CP"], coeff_dict
         )
     new_columns["Fd_Phet_CP"] = calculate_Fd_Phet_CP(
-        complete_feed_data["Fd_Phe_CP"], coeff_dict["RecPhe"]
+        complete_feed_data["Fd_Phe_CP"], coeff_dict
         )
     new_columns["Fd_Thrt_CP"] = calculate_Fd_Thrt_CP(
-        complete_feed_data["Fd_Thr_CP"], coeff_dict["RecThr"]
+        complete_feed_data["Fd_Thr_CP"], coeff_dict
         )
     new_columns["Fd_Trpt_CP"] = calculate_Fd_Trpt_CP(
-        complete_feed_data["Fd_Trp_CP"], coeff_dict["RecTrp"]
+        complete_feed_data["Fd_Trp_CP"], coeff_dict
         )
     new_columns["Fd_Valt_CP"] = calculate_Fd_Valt_CP(
-        complete_feed_data["Fd_Val_CP"], coeff_dict["RecVal"]
+        complete_feed_data["Fd_Val_CP"], coeff_dict
         )
     new_columns["Fd_ArgRUPIn"] = calculate_Fd_ArgRUPIn(
         new_columns['Fd_Argt_CP'], new_columns['Fd_RUPIn']
