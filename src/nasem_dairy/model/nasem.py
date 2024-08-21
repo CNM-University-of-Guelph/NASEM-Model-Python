@@ -284,19 +284,31 @@ def nasem(user_diet: pd.DataFrame,
         Dt_DMIn, animal_input["An_StatePhys"], 
         equation_selection["Use_DNDF_IV"], feed_data, coeff_dict
         )
-    diet_data = diet.calculate_DtIn(
-        feed_data, 
-        ["CPIn_ClfLiq", "DMIn_ClfLiq", "NDFIn", "StIn", "CPIn", "ADFIn", "ForNDF", 
-         "AshIn", "FAhydrIn", "TPIn", "NPNDMIn", "idRUPIn", "ForWetIn"], 
-         diet_data
-         )
+    diet_data["Dt_CPIn_ClfLiq"] = diet.calculate_Dt_CPIn_ClfLiq(feed_data["Fd_CPIn_ClfLiq"])
+    diet_data["Dt_DMIn_ClfLiq"] = diet.calculate_Dt_DMIn_ClfLiq(feed_data["Fd_DMIn_ClfLiq"])
+    diet_data["Dt_NDFIn"] = diet.calculate_Dt_NDFIn(feed_data["Fd_NDFIn"])
+    diet_data["Dt_StIn"] = diet.calculate_Dt_StIn(feed_data["Fd_StIn"])
+    diet_data["Dt_CPIn"] = diet.calculate_Dt_CPIn(feed_data["Fd_CPIn"])
+    diet_data["Dt_ADFIn"] = diet.calculate_Dt_ADFIn(feed_data["Fd_ADFIn"])
+    diet_data["Dt_ForNDF"] = diet.calculate_Dt_ForNDF(feed_data["Fd_DMInp"], feed_data["Fd_ForNDF"])
+    diet_data["Dt_AshIn"] = diet.calculate_Dt_AshIn(feed_data["Fd_AshIn"])
+    diet_data["Dt_FAhydrIn"] = diet.calculate_Dt_FAhydrIn(feed_data["Fd_FAhydrIn"])
+    diet_data["Dt_TPIn"] = diet.calculate_Dt_TPIn(feed_data["Fd_TPIn"])
+    diet_data["Dt_NPNDMIn"] = diet.calculate_Dt_NPNDMIn(feed_data["Fd_NPNDMIn"])
+    diet_data["Dt_idRUPIn"] = diet.calculate_Dt_idRUPIn(feed_data["Fd_idRUPIn"])
+    diet_data["Dt_ForWetIn"] = diet.calculate_Dt_ForWetIn(feed_data["Fd_ForWetIn"])
     diet_data["Dt_dcCP_ClfDry"] = diet.calculate_Dt_dcCP_ClfDry(
         animal_input["An_StatePhys"], diet_data["Dt_DMIn_ClfLiq"]
         )
     diet_data["Dt_ForNDFIn"] = diet.calculate_Dt_ForNDFIn(
         feed_data["Fd_DMIn"], feed_data["Fd_ForNDF"]
         )
-    diet_data = diet.calculate_Dt_DMI(["ForWet", "ForNDF"], Dt_DMIn, diet_data)
+    diet_data["Dt_ForWet"] = diet.calculate_Dt_ForWet(
+        diet_data["Dt_ForWetIn"], Dt_DMIn
+        )
+    diet_data["Dt_ForNDF"] = diet.calculate_Dt_ForNDF(
+        feed_data["Fd_DMInp"], feed_data["Fd_ForNDF"]
+        )
     diet_data["Dt_rOMIn"] = diet.calculate_Dt_rOMIn(
         Dt_DMIn, diet_data["Dt_AshIn"], diet_data["Dt_NDFIn"], 
         diet_data["Dt_StIn"], diet_data["Dt_FAhydrIn"], diet_data["Dt_TPIn"],

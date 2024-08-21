@@ -10,8 +10,6 @@ import pandas as pd
 ####################
 # Functions for Feed Intakes
 ####################
-
-
 def calculate_TT_dcFdNDF_Lg(Fd_NDF: pd.Series, Fd_Lg: pd.Series) -> pd.Series:
     Fd_NFD_check = np.where(Fd_NDF == 0, 1e-6, Fd_NDF)
     TT_dcFdNDF_Lg = (0.75 * (Fd_NDF - Fd_Lg) * 
@@ -914,109 +912,579 @@ def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series,
     return Fd_Fe_RUPout
 
 
-def calculate_Fd_XIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"{var}In": (lambda feed_data, var=var: 
-                         feed_data[var] / 100 * feed_data['Fd_DMIn'])
-            for var in variables
-        })
+def calculate_Fd_ADFIn(Fd_ADF: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ADFIn = Fd_ADF / 100 * Fd_DMIn
+    return Fd_ADFIn
 
 
-def calculate_Fd_FAIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"{var}In":
-                lambda feed_data, var=var: 
-                feed_data[f"{var}_FA"] / 100 * feed_data['Fd_FA'] / 100 *
-                feed_data['Fd_DMIn'] 
-            for var in variables
-        })
+def calculate_Fd_NDFIn(Fd_NDF: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_NDFIn = Fd_NDF / 100 * Fd_DMIn
+    return Fd_NDFIn
 
 
-def calculate_macroIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"{var}In": lambda feed_data, var=var: 
-                feed_data['Fd_DMIn'] * feed_data[var] / 100 * 1000
-            for var in variables
-        })
+def calculate_Fd_StIn(Fd_St: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_StIn = Fd_St / 100 * Fd_DMIn
+    return Fd_StIn
 
 
-def calculate_microIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return feed_data.assign(**{
-            f"{var}In": lambda feed_data, var=var: 
-            feed_data['Fd_DMIn'] * feed_data[var]
-        for var in variables
-    })
+def calculate_Fd_NFCIn(Fd_NFC: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_NFCIn = Fd_NFC / 100 * Fd_DMIn
+    return Fd_NFCIn
 
 
-def calculate_micro_absorbtion(feed_data: pd.DataFrame,
-                               variables: list
-) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_abs{var}In": lambda feed_data, var=var: 
-                feed_data[f"Fd_{var}In"] * feed_data[f"Fd_ac{var}"]
-            for var in variables
-        })
+def calculate_Fd_WSCIn(Fd_WSC: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_WSCIn = Fd_WSC / 100 * Fd_DMIn
+    return Fd_WSCIn
 
 
-def calculate_Fd_AAt_CP(feed_data: pd.DataFrame, 
-                        aa_list: list,
-                        coeff_dict: dict
-) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_{aa}t_CP": lambda feed_data, aa=aa: 
-                feed_data[f"Fd_{aa}_CP"] / coeff_dict[f"Rec{aa}"]
-            for aa in aa_list
-        })
+def calculate_Fd_rOMIn(Fd_rOM: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_rOMIn = Fd_rOM / 100 * Fd_DMIn
+    return Fd_rOMIn
 
 
-def calculate_Fd_AARUPIn(feed_data: pd.DataFrame, aa_list: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_{aa}RUPIn": lambda feed_data, aa=aa: 
-                feed_data[f"Fd_{aa}t_CP"] / 100 * feed_data['Fd_RUPIn'] * 1000 
-            for aa in aa_list
-        })
+def calculate_Fd_LgIn(Fd_Lg: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_LgIn = Fd_Lg / 100 * Fd_DMIn
+    return Fd_LgIn
 
 
-def calculate_Fd_IdAARUPIn(feed_data: pd.DataFrame, 
-                           aa_list: list,
-                           SIDig_values: dict
-) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_Id{aa}RUPIn":
-                lambda feed_data, aa=aa: 
-                feed_data['Fd_dcRUP'] / 100 * 
-                feed_data[f"Fd_{aa}RUPIn"] * SIDig_values[aa] 
-            for aa in aa_list
-        })
+def calculate_Fd_ConcIn(Fd_Conc: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ConcIn = Fd_Conc / 100 * Fd_DMIn
+    return Fd_ConcIn
 
 
-def calculate_Fd_Dig_FAIn(feed_data: pd.DataFrame, variables: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_Dig{var}In": lambda feed_data, var=var: 
-                feed_data['TT_dcFdFA'] / 100 * feed_data[f"Fd_{var}_FA"] /
-                100 * feed_data['Fd_FA'] / 100 * feed_data['Fd_DMIn'] 
-            for var in variables
-        })
+def calculate_Fd_ForIn(Fd_For: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ForIn = Fd_For / 100 * Fd_DMIn
+    return Fd_ForIn
 
 
-def calculate_Fd_AAIn(feed_data: pd.DataFrame, aa_list: list) -> pd.DataFrame:
-    return feed_data.assign(
-        **{
-            f"Fd_{aa}In": lambda feed_data, aa=aa: np.where(
-                feed_data['Fd_CPIn'] > 0, 
-                    ((feed_data[f"Fd_{aa}t_CP"] / 100) * 
-                     (feed_data['Fd_CP'] / 100) * (feed_data['Fd_DMIn'] * 1000)), 
-                    0)
-            for aa in aa_list
-        })
+def calculate_Fd_ForNDFIn(Fd_ForNDF: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ForNDFIn = Fd_ForNDF / 100 * Fd_DMIn
+    return Fd_ForNDFIn
+
+
+def calculate_Fd_ForWetIn(Fd_ForWet: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ForWetIn = Fd_ForWet / 100 * Fd_DMIn
+    return Fd_ForWetIn
+
+
+def calculate_Fd_ForDryIn(Fd_ForDry: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ForDryIn = Fd_ForDry / 100 * Fd_DMIn
+    return Fd_ForDryIn
+
+
+def calculate_Fd_PastIn(Fd_Past: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_PastIn = Fd_Past / 100 * Fd_DMIn
+    return Fd_PastIn
+
+
+def calculate_Fd_CPIn(Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_CPIn = Fd_CP / 100 * Fd_DMIn
+    return Fd_CPIn
+
+
+def calculate_Fd_TPIn(Fd_TP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_TPIn = Fd_TP / 100 * Fd_DMIn
+    return Fd_TPIn
+
+
+def calculate_Fd_CFatIn(Fd_CFat: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_CFatIn = Fd_CFat / 100 * Fd_DMIn
+    return Fd_CFatIn
+
+
+def calculate_Fd_FAIn(Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_FAIn = Fd_FA / 100 * Fd_DMIn
+    return Fd_FAIn
+
+
+def calculate_Fd_FAhydrIn(Fd_FAhydr: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_FAhydrIn = Fd_FAhydr / 100 * Fd_DMIn
+    return Fd_FAhydrIn
+
+
+def calculate_Fd_AshIn(Fd_Ash: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_AshIn = Fd_Ash / 100 * Fd_DMIn
+    return Fd_AshIn
+
+
+def calculate_Fd_C120In(Fd_C120_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C120In = Fd_C120_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C120In
+
+
+def calculate_Fd_C140In(Fd_C140_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C140In = Fd_C140_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C140In
+
+
+def calculate_Fd_C160In(Fd_C160_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C160In = Fd_C160_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C160In
+
+
+def calculate_Fd_C161In(Fd_C161_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C161In = Fd_C161_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C161In
+
+
+def calculate_Fd_C180In(Fd_C180_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C180In = Fd_C180_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C180In
+
+
+def calculate_Fd_C181tIn(Fd_C181t_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C181tIn = Fd_C181t_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C181tIn
+
+
+def calculate_Fd_C181cIn(Fd_C181c_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C181cIn = Fd_C181c_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C181cIn
+
+
+def calculate_Fd_C182In(Fd_C182_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C182In = Fd_C182_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C182In
+
+
+def calculate_Fd_C183In(Fd_C183_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_C183In = Fd_C183_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_C183In
+
+
+def calculate_Fd_OtherFAIn(Fd_OtherFA_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_OtherFAIn = Fd_OtherFA_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_OtherFAIn
+
+
+def calculate_Fd_CaIn(Fd_DMIn: pd.Series, Fd_Ca: pd.Series) -> pd.Series:
+    Fd_CaIn = Fd_DMIn * Fd_Ca / 100 * 1000
+    return Fd_CaIn
+
+
+def calculate_Fd_PIn(Fd_DMIn: pd.Series, Fd_P: pd.Series) -> pd.Series:
+    Fd_PIn = Fd_DMIn * Fd_P / 100 * 1000
+    return Fd_PIn
+
+
+def calculate_Fd_NaIn(Fd_DMIn: pd.Series, Fd_Na: pd.Series) -> pd.Series:
+    Fd_NaIn = Fd_DMIn * Fd_Na / 100 * 1000
+    return Fd_NaIn
+
+
+def calculate_Fd_MgIn(Fd_DMIn: pd.Series, Fd_Mg: pd.Series) -> pd.Series:
+    Fd_MgIn = Fd_DMIn * Fd_Mg / 100 * 1000
+    return Fd_MgIn
+
+
+def calculate_Fd_KIn(Fd_DMIn: pd.Series, Fd_K: pd.Series) -> pd.Series:
+    Fd_KIn = Fd_DMIn * Fd_K / 100 * 1000
+    return Fd_KIn
+
+
+def calculate_Fd_ClIn(Fd_DMIn: pd.Series, Fd_Cl: pd.Series) -> pd.Series:
+    Fd_ClIn = Fd_DMIn * Fd_Cl / 100 * 1000
+    return Fd_ClIn
+
+
+def calculate_Fd_SIn(Fd_DMIn: pd.Series, Fd_S: pd.Series) -> pd.Series:
+    Fd_SIn = Fd_DMIn * Fd_S / 100 * 1000
+    return Fd_SIn
+
+
+def calculate_Fd_CoIn(Fd_DMIn: pd.Series, Fd_Co: pd.Series) -> pd.Series:
+    Fd_CoIn = Fd_DMIn * Fd_Co
+    return Fd_CoIn
+
+
+def calculate_Fd_CrIn(Fd_DMIn: pd.Series, Fd_Cr: pd.Series) -> pd.Series:
+    Fd_CrIn = Fd_DMIn * Fd_Cr
+    return Fd_CrIn
+
+
+def calculate_Fd_CuIn(Fd_DMIn: pd.Series, Fd_Cu: pd.Series) -> pd.Series:
+    Fd_CuIn = Fd_DMIn * Fd_Cu
+    return Fd_CuIn
+
+
+def calculate_Fd_FeIn(Fd_DMIn: pd.Series, Fd_Fe: pd.Series) -> pd.Series:
+    Fd_FeIn = Fd_DMIn * Fd_Fe
+    return Fd_FeIn
+
+
+def calculate_Fd_IIn(Fd_DMIn: pd.Series, Fd_I: pd.Series) -> pd.Series:
+    Fd_IIn = Fd_DMIn * Fd_I
+    return Fd_IIn
+
+
+def calculate_Fd_MnIn(Fd_DMIn: pd.Series, Fd_Mn: pd.Series) -> pd.Series:
+    Fd_MnIn = Fd_DMIn * Fd_Mn
+    return Fd_MnIn
+
+
+def calculate_Fd_MoIn(Fd_DMIn: pd.Series, Fd_Mo: pd.Series) -> pd.Series:
+    Fd_MoIn = Fd_DMIn * Fd_Mo
+    return Fd_MoIn
+
+
+def calculate_Fd_SeIn(Fd_DMIn: pd.Series, Fd_Se: pd.Series) -> pd.Series:
+    Fd_SeIn = Fd_DMIn * Fd_Se
+    return Fd_SeIn
+
+
+def calculate_Fd_ZnIn(Fd_DMIn: pd.Series, Fd_Zn: pd.Series) -> pd.Series:
+    Fd_ZnIn = Fd_DMIn * Fd_Zn
+    return Fd_ZnIn
+
+
+def calculate_Fd_VitAIn(Fd_DMIn: pd.Series, Fd_VitA: pd.Series) -> pd.Series:
+    Fd_VitAIn = Fd_DMIn * Fd_VitA
+    return Fd_VitAIn
+
+
+def calculate_Fd_VitDIn(Fd_DMIn: pd.Series, Fd_VitD: pd.Series) -> pd.Series:
+    Fd_VitDIn = Fd_DMIn * Fd_VitD
+    return Fd_VitDIn
+
+
+def calculate_Fd_VitEIn(Fd_DMIn: pd.Series, Fd_VitE: pd.Series) -> pd.Series:
+    Fd_VitEIn = Fd_DMIn * Fd_VitE
+    return Fd_VitEIn
+
+
+def calculate_Fd_CholineIn(Fd_DMIn: pd.Series, Fd_Choline: pd.Series) -> pd.Series:
+    Fd_CholineIn = Fd_DMIn * Fd_Choline
+    return Fd_CholineIn
+
+
+def calculate_Fd_BiotinIn(Fd_DMIn: pd.Series, Fd_Biotin: pd.Series) -> pd.Series:
+    Fd_BiotinIn = Fd_DMIn * Fd_Biotin
+    return Fd_BiotinIn
+
+
+def calculate_Fd_NiacinIn(Fd_DMIn: pd.Series, Fd_Niacin: pd.Series) -> pd.Series:
+    Fd_NiacinIn = Fd_DMIn * Fd_Niacin
+    return Fd_NiacinIn
+
+
+def calculate_Fd_B_CaroteneIn(Fd_DMIn: pd.Series, Fd_B_Carotene: pd.Series) -> pd.Series:
+    Fd_B_CaroteneIn = Fd_DMIn * Fd_B_Carotene
+    return Fd_B_CaroteneIn
+
+
+def calculate_Fd_absCoIn(Fd_CoIn: pd.Series, Fd_acCo: pd.Series) -> pd.Series:
+    Fd_absCoIn = Fd_CoIn * Fd_acCo
+    return Fd_absCoIn
+
+
+def calculate_Fd_absCuIn(Fd_CuIn: pd.Series, Fd_acCu: pd.Series) -> pd.Series:
+    Fd_absCuIn = Fd_CuIn * Fd_acCu
+    return Fd_absCuIn
+
+
+def calculate_Fd_absFeIn(Fd_FeIn: pd.Series, Fd_acFe: pd.Series) -> pd.Series:
+    Fd_absFeIn = Fd_FeIn * Fd_acFe
+    return Fd_absFeIn
+
+
+def calculate_Fd_absMnIn(Fd_MnIn: pd.Series, Fd_acMn: pd.Series) -> pd.Series:
+    Fd_absMnIn = Fd_MnIn * Fd_acMn
+    return Fd_absMnIn
+
+
+def calculate_Fd_absZnIn(Fd_ZnIn: pd.Series, Fd_acZn: pd.Series) -> pd.Series:
+    Fd_absZnIn = Fd_ZnIn * Fd_acZn
+    return Fd_absZnIn
+
+
+def calculate_Fd_Argt_CP(Fd_Arg_CP: pd.Series, RecArg: float) -> pd.Series:
+    Fd_Argt_CP = Fd_Arg_CP / RecArg
+    return Fd_Argt_CP
+
+
+def calculate_Fd_Hist_CP(Fd_His_CP: pd.Series, RecHis: float) -> pd.Series:
+    Fd_Hist_CP = Fd_His_CP / RecHis
+    return Fd_Hist_CP
+
+
+def calculate_Fd_Ilet_CP(Fd_Ile_CP: pd.Series, RecIle: float) -> pd.Series:
+    Fd_Ilet_CP = Fd_Ile_CP / RecIle
+    return Fd_Ilet_CP
+
+
+def calculate_Fd_Leut_CP(Fd_Leu_CP: pd.Series, RecLeu: float) -> pd.Series:
+    Fd_Leut_CP = Fd_Leu_CP / RecLeu
+    return Fd_Leut_CP
+
+
+def calculate_Fd_Lyst_CP(Fd_Lys_CP: pd.Series, RecLys: float) -> pd.Series:
+    Fd_Lyst_CP = Fd_Lys_CP / RecLys
+    return Fd_Lyst_CP
+
+
+def calculate_Fd_Mett_CP(Fd_Met_CP: pd.Series, RecMet: float) -> pd.Series:
+    Fd_Mett_CP = Fd_Met_CP / RecMet
+    return Fd_Mett_CP
+
+
+def calculate_Fd_Phet_CP(Fd_Phe_CP: pd.Series, RecPhe: float) -> pd.Series:
+    Fd_Phet_CP = Fd_Phe_CP / RecPhe
+    return Fd_Phet_CP
+
+
+def calculate_Fd_Thrt_CP(Fd_Thr_CP: pd.Series, RecThr: float) -> pd.Series:
+    Fd_Thrt_CP = Fd_Thr_CP / RecThr
+    return Fd_Thrt_CP
+
+
+def calculate_Fd_Trpt_CP(Fd_Trp_CP: pd.Series, RecTrp: float) -> pd.Series:
+    Fd_Trpt_CP = Fd_Trp_CP / RecTrp
+    return Fd_Trpt_CP
+
+
+def calculate_Fd_Valt_CP(Fd_Val_CP: pd.Series, RecVal: float) -> pd.Series:
+    Fd_Valt_CP = Fd_Val_CP / RecVal
+    return Fd_Valt_CP
+
+
+def calculate_Fd_ArgRUPIn(Fd_Argt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_ArgRUPIn = Fd_Argt_CP / 100 * Fd_RUPIn * 1000
+    return Fd_ArgRUPIn
+
+
+def calculate_Fd_HisRUPIn(Fd_Hist_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_HisRUPIn = Fd_Hist_CP / 100 * Fd_RUPIn * 1000
+    return Fd_HisRUPIn
+
+
+def calculate_Fd_IleRUPIn(Fd_Ilet_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_IleRUPIn = Fd_Ilet_CP / 100 * Fd_RUPIn * 1000
+    return Fd_IleRUPIn
+
+
+def calculate_Fd_LeuRUPIn(Fd_Leut_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_LeuRUPIn = Fd_Leut_CP / 100 * Fd_RUPIn * 1000
+    return Fd_LeuRUPIn
+
+
+def calculate_Fd_LysRUPIn(Fd_Lyst_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_LysRUPIn = Fd_Lyst_CP / 100 * Fd_RUPIn * 1000
+    return Fd_LysRUPIn
+
+
+def calculate_Fd_MetRUPIn(Fd_Mett_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_MetRUPIn = Fd_Mett_CP / 100 * Fd_RUPIn * 1000
+    return Fd_MetRUPIn
+
+
+def calculate_Fd_PheRUPIn(Fd_Phet_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_PheRUPIn = Fd_Phet_CP / 100 * Fd_RUPIn * 1000
+    return Fd_PheRUPIn
+
+
+def calculate_Fd_ThrRUPIn(Fd_Thrt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_ThrRUPIn = Fd_Thrt_CP / 100 * Fd_RUPIn * 1000
+    return Fd_ThrRUPIn
+
+
+def calculate_Fd_TrpRUPIn(Fd_Trpt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_TrpRUPIn = Fd_Trpt_CP / 100 * Fd_RUPIn * 1000
+    return Fd_TrpRUPIn
+
+
+def calculate_Fd_ValRUPIn(Fd_Valt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+    Fd_ValRUPIn = Fd_Valt_CP / 100 * Fd_RUPIn * 1000
+    return Fd_ValRUPIn
+
+
+def calculate_Fd_IdArgRUPIn(Fd_dcRUP: pd.Series, Fd_ArgRUPIn: pd.Series, SIDigArg: float) -> pd.Series:
+    Fd_IdArgRUPIn = Fd_dcRUP / 100 * Fd_ArgRUPIn * SIDigArg
+    return Fd_IdArgRUPIn
+
+
+def calculate_Fd_IdHisRUPIn(Fd_dcRUP: pd.Series, Fd_HisRUPIn: pd.Series, SIDigHis: float) -> pd.Series:
+    Fd_IdHisRUPIn = Fd_dcRUP / 100 * Fd_HisRUPIn * SIDigHis
+    return Fd_IdHisRUPIn
+
+
+def calculate_Fd_IdIleRUPIn(Fd_dcRUP: pd.Series, Fd_IleRUPIn: pd.Series, SIDigIle: float) -> pd.Series:
+    Fd_IdIleRUPIn = Fd_dcRUP / 100 * Fd_IleRUPIn * SIDigIle
+    return Fd_IdIleRUPIn
+
+
+def calculate_Fd_IdLeuRUPIn(Fd_dcRUP: pd.Series, Fd_LeuRUPIn: pd.Series, SIDigLeu: float) -> pd.Series:
+    Fd_IdLeuRUPIn = Fd_dcRUP / 100 * Fd_LeuRUPIn * SIDigLeu
+    return Fd_IdLeuRUPIn
+
+
+def calculate_Fd_IdLysRUPIn(Fd_dcRUP: pd.Series, Fd_LysRUPIn: pd.Series, SIDigLys: float) -> pd.Series:
+    Fd_IdLysRUPIn = Fd_dcRUP / 100 * Fd_LysRUPIn * SIDigLys
+    return Fd_IdLysRUPIn
+
+
+def calculate_Fd_IdMetRUPIn(Fd_dcRUP: pd.Series, Fd_MetRUPIn: pd.Series, SIDigMet: float) -> pd.Series:
+    Fd_IdMetRUPIn = Fd_dcRUP / 100 * Fd_MetRUPIn * SIDigMet
+    return Fd_IdMetRUPIn
+
+
+def calculate_Fd_IdPheRUPIn(Fd_dcRUP: pd.Series, Fd_PheRUPIn: pd.Series, SIDigPhe: float) -> pd.Series:
+    Fd_IdPheRUPIn = Fd_dcRUP / 100 * Fd_PheRUPIn * SIDigPhe
+    return Fd_IdPheRUPIn
+
+
+def calculate_Fd_IdThrRUPIn(Fd_dcRUP: pd.Series, Fd_ThrRUPIn: pd.Series, SIDigThr: float) -> pd.Series:
+    Fd_IdThrRUPIn = Fd_dcRUP / 100 * Fd_ThrRUPIn * SIDigThr
+    return Fd_IdThrRUPIn
+
+
+def calculate_Fd_IdTrpRUPIn(Fd_dcRUP: pd.Series, Fd_TrpRUPIn: pd.Series, SIDigTrp: float) -> pd.Series:
+    Fd_IdTrpRUPIn = Fd_dcRUP / 100 * Fd_TrpRUPIn * SIDigTrp
+    return Fd_IdTrpRUPIn
+
+
+def calculate_Fd_IdValRUPIn(Fd_dcRUP: pd.Series, Fd_ValRUPIn: pd.Series, SIDigVal: float) -> pd.Series:
+    Fd_IdValRUPIn = Fd_dcRUP / 100 * Fd_ValRUPIn * SIDigVal
+    return Fd_IdValRUPIn
+
+
+def calculate_Fd_DigC120In(TT_dcFdFA: pd.Series, Fd_C120_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC120In = TT_dcFdFA / 100 * Fd_C120_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC120In
+
+
+def calculate_Fd_DigC140In(TT_dcFdFA: pd.Series, Fd_C140_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC140In = TT_dcFdFA / 100 * Fd_C140_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC140In
+
+
+def calculate_Fd_DigC160In(TT_dcFdFA: pd.Series, Fd_C160_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC160In = TT_dcFdFA / 100 * Fd_C160_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC160In
+
+
+def calculate_Fd_DigC161In(TT_dcFdFA: pd.Series, Fd_C161_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC161In = TT_dcFdFA / 100 * Fd_C161_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC161In
+
+
+def calculate_Fd_DigC180In(TT_dcFdFA: pd.Series, Fd_C180_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC180In = TT_dcFdFA / 100 * Fd_C180_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC180In
+
+
+def calculate_Fd_DigC181tIn(TT_dcFdFA: pd.Series, Fd_C181t_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC181tIn = TT_dcFdFA / 100 * Fd_C181t_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC181tIn
+
+
+def calculate_Fd_DigC181cIn(TT_dcFdFA: pd.Series, Fd_C181c_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC181cIn = TT_dcFdFA / 100 * Fd_C181c_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC181cIn
+
+
+def calculate_Fd_DigC182In(TT_dcFdFA: pd.Series, Fd_C182_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC182In = TT_dcFdFA / 100 * Fd_C182_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC182In
+
+
+def calculate_Fd_DigC183In(TT_dcFdFA: pd.Series, Fd_C183_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigC183In = TT_dcFdFA / 100 * Fd_C183_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigC183In
+
+
+def calculate_Fd_DigOtherFAIn(TT_dcFdFA: pd.Series, Fd_OtherFA_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_DigOtherFAIn = TT_dcFdFA / 100 * Fd_OtherFA_FA / 100 * Fd_FA / 100 * Fd_DMIn
+    return Fd_DigOtherFAIn
+
+
+def calculate_Fd_ArgIn(Fd_CPIn: pd.Series, Fd_Argt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ArgIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Argt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_ArgIn
+
+
+def calculate_Fd_HisIn(Fd_CPIn: pd.Series, Fd_Hist_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_HisIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Hist_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_HisIn
+
+
+def calculate_Fd_IleIn(Fd_CPIn: pd.Series, Fd_Ilet_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_IleIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Ilet_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_IleIn
+
+
+def calculate_Fd_LeuIn(Fd_CPIn: pd.Series, Fd_Leut_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_LeuIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Leut_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_LeuIn
+
+
+def calculate_Fd_LysIn(Fd_CPIn: pd.Series, Fd_Lyst_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_LysIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Lyst_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_LysIn
+
+
+def calculate_Fd_MetIn(Fd_CPIn: pd.Series, Fd_Mett_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_MetIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Mett_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_MetIn
+
+
+def calculate_Fd_PheIn(Fd_CPIn: pd.Series, Fd_Phet_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_PheIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Phet_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_PheIn
+
+
+def calculate_Fd_ThrIn(Fd_CPIn: pd.Series, Fd_Thrt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ThrIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Thrt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_ThrIn
+
+
+def calculate_Fd_TrpIn(Fd_CPIn: pd.Series, Fd_Trpt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_TrpIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Trpt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_TrpIn
+
+
+def calculate_Fd_ValIn(Fd_CPIn: pd.Series, Fd_Valt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+    Fd_ValIn = np.where(
+        Fd_CPIn > 0, 
+        (Fd_Valt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
+        0
+    )
+    return Fd_ValIn
 
 
 def calculate_Fd_AFInp(Fd_AFIn: pd.Series) -> pd.Series:
@@ -1032,8 +1500,6 @@ def calculate_Fd_RDPIn(Fd_RDP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
 ####################
 # Functions for Diet Intakes
 ####################
-
-
 def calculate_Dt_ForDNDF48(Fd_DMInp: pd.Series, 
                            Fd_Conc: pd.Series, 
                            Fd_NDF: pd.Series, 
@@ -1721,113 +2187,1194 @@ def calculate_Dt_GasEOut(An_StatePhys: str,
     return Dt_GasEOut
 
 
-def calculate_Dt_X(feed_data: pd.DataFrame, 
-                   variables: list, 
-                   diet_data: dict
-) -> dict:
-    for var in variables:  # Line 255-256
-        diet_data[f"Dt_{var}"] = (feed_data['Fd_DMInp'] * feed_data[f"Fd_{var}"]).sum()
-    return diet_data
+def calculate_Dt_ADF(Fd_DMInp: pd.Series, Fd_ADF: pd.Series) -> float:
+    Dt_ADF = (Fd_DMInp * Fd_ADF).sum()
+    return Dt_ADF
 
 
-def calculate_DtIn(feed_data: pd.DataFrame, 
-                   variables: list, 
-                   diet_data: dict
-) -> dict:
-    for var in variables:
-        diet_data[f'Dt_{var}'] = (feed_data[f'Fd_{var}']).sum()
-    return diet_data
+def calculate_Dt_NDF(Fd_DMInp: pd.Series, Fd_NDF: pd.Series) -> float:
+    Dt_NDF = (Fd_DMInp * Fd_NDF).sum()
+    return Dt_NDF
 
 
-def calculate_Dt_DMI(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
-    # Lines 620, 656, 657, 659-662, 666-709
-    for var in variables:
-        diet_data[f'Dt_{var}'] = diet_data[f'Dt_{var}In'] / Dt_DMIn * 100
-    return diet_data
+def calculate_Dt_For(Fd_DMInp: pd.Series, Fd_For: pd.Series) -> float:
+    Dt_For = (Fd_DMInp * Fd_For).sum()
+    return Dt_For
 
 
-def calculate_Dt_FA(variables: list, diet_data: dict) -> dict:
-    # Line 712-725
-    for var in variables:
-        diet_data[f'Dt_{var}_FA'] = (diet_data[f'Dt_{var}In'] / 
-                                     diet_data['Dt_FAIn'] * 100)
-    return diet_data
+def calculate_Dt_ForNDF(Fd_DMInp: pd.Series, Fd_ForNDF: pd.Series) -> float:
+    Dt_ForNDF = (Fd_DMInp * Fd_ForNDF).sum()
+    return Dt_ForNDF
 
 
-def calculate_Dt_microIn(feed_data: pd.DataFrame, 
-                         variables: list,
-                         diet_data: dict
-) -> dict:
-    # Lines 762-791
-    for var in variables:
-        diet_data[f'Dt_{var}'] = feed_data[f'Fd_{var}'].sum()
-    return diet_data
+def calculate_Dt_DMIn_ClfLiq(Fd_DMIn_ClfLiq: pd.Series) -> float:
+    Dt_DMIn_ClfLiq = Fd_DMIn_ClfLiq.sum()
+    return Dt_DMIn_ClfLiq
 
 
-def calculate_Dt_macro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
-    # Line 795-804
-    for var in variables:
-        diet_data[f'{var}'] = diet_data[f'{var}In'] / Dt_DMIn / 1000 * 100
-    return diet_data
+def calculate_Dt_DMIn_ClfFor(Fd_DMIn_ClfFor: pd.Series) -> float:
+    Dt_DMIn_ClfFor = Fd_DMIn_ClfFor.sum()
+    return Dt_DMIn_ClfFor
 
 
-def calculate_Dt_micro(variables: list, Dt_DMIn: float, diet_data: dict) -> dict:
-    # Line 807-825
-    for var in variables:
-        diet_data[f'{var}'] = diet_data[f'{var}In'] / Dt_DMIn
-    return diet_data
+def calculate_Dt_AFIn(Fd_AFIn: pd.Series) -> float:
+    Dt_AFIn = Fd_AFIn.sum()
+    return Dt_AFIn
 
 
-def calculate_Dt_IdAARUPIn(feed_data: pd.DataFrame, 
-                           aa_list: list,
-                           diet_data: dict
-) -> dict:
-    for aa in aa_list:
-        diet_data[f'Dt_Id{aa}RUPIn'] = feed_data[f'Fd_Id{aa}RUPIn'].sum()
-    return diet_data
+def calculate_Dt_NDFIn(Fd_NDFIn: pd.Series) -> float:
+    Dt_NDFIn = Fd_NDFIn.sum()
+    return Dt_NDFIn
 
 
-def calculate_Dt_DigFAIn(feed_data: pd.DataFrame, 
-                         variables: list,
-                         diet_data: dict
-) -> dict:
-    for var in variables:
-        diet_data[f'Dt_Dig{var}In'] = feed_data[f'Fd_Dig{var}In'].sum()
-    return diet_data
+def calculate_Dt_ADFIn(Fd_ADFIn: pd.Series) -> float:
+    Dt_ADFIn = Fd_ADFIn.sum()
+    return Dt_ADFIn
 
 
-def calculate_Abs_micro(feed_data: pd.DataFrame, 
-                        variables: list,
-                        diet_data: dict
-) -> dict:
-    for var in variables:
-        diet_data[f"Abs_{var}"] = feed_data[f"Fd_abs{var}"].sum()
-    return diet_data
+def calculate_Dt_LgIn(Fd_LgIn: pd.Series) -> float:
+    Dt_LgIn = Fd_LgIn.sum()
+    return Dt_LgIn
 
 
-def calculate_Dt_FA_FA(variables: list, diet_data: dict) -> dict:
-    # Line 1288-1302
-    for var in variables:
-        diet_data[f'Dt_{var}_FA'] = (diet_data[f'Dt_{var}In'] / 
-                                     diet_data['Dt_FAIn'] * 100)
-    return diet_data
+def calculate_Dt_DigNDFIn_Base(Fd_DigNDFIn_Base: pd.Series) -> float:
+    Dt_DigNDFIn_Base = Fd_DigNDFIn_Base.sum()
+    return Dt_DigNDFIn_Base
 
 
-def calculate_DtAARUP_DtAA(aa_list: list, diet_data: dict) -> dict:
-    for aa in aa_list:
-        diet_data[f"Dt{aa}RUP_Dt{aa}"] = (diet_data[f"Dt_{aa}RUPIn"] / 
-                                          diet_data[f"Dt_{aa}In"])
-    return diet_data
+def calculate_Dt_ForWetIn(Fd_ForWetIn: pd.Series) -> float:
+    Dt_ForWetIn = Fd_ForWetIn.sum()
+    return Dt_ForWetIn
 
 
-def calculate_Dt_IdAAIn(Du_IdAAMic: pd.Series, 
-                        aa_list: list,
-                        diet_data: dict
-) -> dict:
-    for aa in aa_list:
-        diet_data[f'Dt_Id{aa}In'] = (Du_IdAAMic[aa] + 
-                                     diet_data[f'Dt_Id{aa}RUPIn'])
-    return diet_data
+def calculate_Dt_ForDryIn(Fd_ForDryIn: pd.Series) -> float:
+    Dt_ForDryIn = Fd_ForDryIn.sum()
+    return Dt_ForDryIn
+
+
+def calculate_Dt_PastIn(Fd_PastIn: pd.Series) -> float:
+    Dt_PastIn = Fd_PastIn.sum()
+    return Dt_PastIn
+
+
+def calculate_Dt_ForIn(Fd_ForIn: pd.Series) -> float:
+    Dt_ForIn = Fd_ForIn.sum()
+    return Dt_ForIn
+
+
+def calculate_Dt_ConcIn(Fd_ConcIn: pd.Series) -> float:
+    Dt_ConcIn = Fd_ConcIn.sum()
+    return Dt_ConcIn
+
+
+def calculate_Dt_NFCIn(Fd_NFCIn: pd.Series) -> float:
+    Dt_NFCIn = Fd_NFCIn.sum()
+    return Dt_NFCIn
+
+
+def calculate_Dt_StIn(Fd_StIn: pd.Series) -> float:
+    Dt_StIn = Fd_StIn.sum()
+    return Dt_StIn
+
+
+def calculate_Dt_WSCIn(Fd_WSCIn: pd.Series) -> float:
+    Dt_WSCIn = Fd_WSCIn.sum()
+    return Dt_WSCIn
+
+
+def calculate_Dt_CPIn(Fd_CPIn: pd.Series) -> float:
+    Dt_CPIn = Fd_CPIn.sum()
+    return Dt_CPIn
+
+
+def calculate_Dt_CPIn_ClfLiq(Fd_CPIn_ClfLiq: pd.Series) -> float:
+    Dt_CPIn_ClfLiq = Fd_CPIn_ClfLiq.sum()
+    return Dt_CPIn_ClfLiq
+
+
+def calculate_Dt_TPIn(Fd_TPIn: pd.Series) -> float:
+    Dt_TPIn = Fd_TPIn.sum()
+    return Dt_TPIn
+
+
+def calculate_Dt_NPNCPIn(Fd_NPNCPIn: pd.Series) -> float:
+    Dt_NPNCPIn = Fd_NPNCPIn.sum()
+    return Dt_NPNCPIn
+
+
+def calculate_Dt_NPNIn(Fd_NPNIn: pd.Series) -> float:
+    Dt_NPNIn = Fd_NPNIn.sum()
+    return Dt_NPNIn
+
+
+def calculate_Dt_NPNDMIn(Fd_NPNDMIn: pd.Series) -> float:
+    Dt_NPNDMIn = Fd_NPNDMIn.sum()
+    return Dt_NPNDMIn
+
+
+def calculate_Dt_CPAIn(Fd_CPAIn: pd.Series) -> float:
+    Dt_CPAIn = Fd_CPAIn.sum()
+    return Dt_CPAIn
+
+
+def calculate_Dt_CPBIn(Fd_CPBIn: pd.Series) -> float:
+    Dt_CPBIn = Fd_CPBIn.sum()
+    return Dt_CPBIn
+
+
+def calculate_Dt_CPCIn(Fd_CPCIn: pd.Series) -> float:
+    Dt_CPCIn = Fd_CPCIn.sum()
+    return Dt_CPCIn
+
+
+def calculate_Dt_RUPBIn(Fd_RUPBIn: pd.Series) -> float:
+    Dt_RUPBIn = Fd_RUPBIn.sum()
+    return Dt_RUPBIn
+
+
+def calculate_Dt_CFatIn(Fd_CFatIn: pd.Series) -> float:
+    Dt_CFatIn = Fd_CFatIn.sum()
+    return Dt_CFatIn
+
+
+def calculate_Dt_FAIn(Fd_FAIn: pd.Series) -> float:
+    Dt_FAIn = Fd_FAIn.sum()
+    return Dt_FAIn
+
+
+def calculate_Dt_FAhydrIn(Fd_FAhydrIn: pd.Series) -> float:
+    Dt_FAhydrIn = Fd_FAhydrIn.sum()
+    return Dt_FAhydrIn
+
+
+def calculate_Dt_C120In(Fd_C120In: pd.Series) -> float:
+    Dt_C120In = Fd_C120In.sum()
+    return Dt_C120In
+
+
+def calculate_Dt_C140In(Fd_C140In: pd.Series) -> float:
+    Dt_C140In = Fd_C140In.sum()
+    return Dt_C140In
+
+
+def calculate_Dt_C160In(Fd_C160In: pd.Series) -> float:
+    Dt_C160In = Fd_C160In.sum()
+    return Dt_C160In
+
+
+def calculate_Dt_C161In(Fd_C161In: pd.Series) -> float:
+    Dt_C161In = Fd_C161In.sum()
+    return Dt_C161In
+
+
+def calculate_Dt_C180In(Fd_C180In: pd.Series) -> float:
+    Dt_C180In = Fd_C180In.sum()
+    return Dt_C180In
+
+
+def calculate_Dt_C181tIn(Fd_C181tIn: pd.Series) -> float:
+    Dt_C181tIn = Fd_C181tIn.sum()
+    return Dt_C181tIn
+
+
+def calculate_Dt_C181cIn(Fd_C181cIn: pd.Series) -> float:
+    Dt_C181cIn = Fd_C181cIn.sum()
+    return Dt_C181cIn
+
+
+def calculate_Dt_C182In(Fd_C182In: pd.Series) -> float:
+    Dt_C182In = Fd_C182In.sum()
+    return Dt_C182In
+
+
+def calculate_Dt_C183In(Fd_C183In: pd.Series) -> float:
+    Dt_C183In = Fd_C183In.sum()
+    return Dt_C183In
+
+
+def calculate_Dt_OtherFAIn(Fd_OtherFAIn: pd.Series) -> float:
+    Dt_OtherFAIn = Fd_OtherFAIn.sum()
+    return Dt_OtherFAIn
+
+
+def calculate_Dt_AshIn(Fd_AshIn: pd.Series) -> float:
+    Dt_AshIn = Fd_AshIn.sum()
+    return Dt_AshIn
+
+
+def calculate_Dt_GEIn(Fd_GEIn: pd.Series) -> float:
+    Dt_GEIn = Fd_GEIn.sum()
+    return Dt_GEIn
+
+
+def calculate_Dt_DEIn_base(Fd_DEIn_base: pd.Series) -> float:
+    Dt_DEIn_base = Fd_DEIn_base.sum()
+    return Dt_DEIn_base
+
+
+def calculate_Dt_DEIn_base_ClfLiq(Fd_DEIn_base_ClfLiq: pd.Series) -> float:
+    Dt_DEIn_base_ClfLiq = Fd_DEIn_base_ClfLiq.sum()
+    return Dt_DEIn_base_ClfLiq
+
+
+def calculate_Dt_DEIn_base_ClfDry(Fd_DEIn_base_ClfDry: pd.Series) -> float:
+    Dt_DEIn_base_ClfDry = Fd_DEIn_base_ClfDry.sum()
+    return Dt_DEIn_base_ClfDry
+
+
+def calculate_Dt_DigStIn_Base(Fd_DigStIn_Base: pd.Series) -> float:
+    Dt_DigStIn_Base = Fd_DigStIn_Base.sum()
+    return Dt_DigStIn_Base
+
+
+def calculate_Dt_DigrOMtIn(Fd_DigrOMtIn: pd.Series) -> float:
+    Dt_DigrOMtIn = Fd_DigrOMtIn.sum()
+    return Dt_DigrOMtIn
+
+
+def calculate_Dt_idRUPIn(Fd_idRUPIn: pd.Series) -> float:
+    Dt_idRUPIn = Fd_idRUPIn.sum()
+    return Dt_idRUPIn
+
+
+def calculate_Dt_DigFAIn(Fd_DigFAIn: pd.Series) -> float:
+    Dt_DigFAIn = Fd_DigFAIn.sum()
+    return Dt_DigFAIn
+
+
+def calculate_Dt_ArgIn(Fd_ArgIn: pd.Series) -> float:
+    Dt_ArgIn = Fd_ArgIn.sum()
+    return Dt_ArgIn
+
+
+def calculate_Dt_HisIn(Fd_HisIn: pd.Series) -> float:
+    Dt_HisIn = Fd_HisIn.sum()
+    return Dt_HisIn
+
+
+def calculate_Dt_IleIn(Fd_IleIn: pd.Series) -> float:
+    Dt_IleIn = Fd_IleIn.sum()
+    return Dt_IleIn
+
+
+def calculate_Dt_LeuIn(Fd_LeuIn: pd.Series) -> float:
+    Dt_LeuIn = Fd_LeuIn.sum()
+    return Dt_LeuIn
+
+
+def calculate_Dt_LysIn(Fd_LysIn: pd.Series) -> float:
+    Dt_LysIn = Fd_LysIn.sum()
+    return Dt_LysIn
+
+
+def calculate_Dt_MetIn(Fd_MetIn: pd.Series) -> float:
+    Dt_MetIn = Fd_MetIn.sum()
+    return Dt_MetIn
+
+
+def calculate_Dt_PheIn(Fd_PheIn: pd.Series) -> float:
+    Dt_PheIn = Fd_PheIn.sum()
+    return Dt_PheIn
+
+
+def calculate_Dt_ThrIn(Fd_ThrIn: pd.Series) -> float:
+    Dt_ThrIn = Fd_ThrIn.sum()
+    return Dt_ThrIn
+
+
+def calculate_Dt_TrpIn(Fd_TrpIn: pd.Series) -> float:
+    Dt_TrpIn = Fd_TrpIn.sum()
+    return Dt_TrpIn
+
+
+def calculate_Dt_ValIn(Fd_ValIn: pd.Series) -> float:
+    Dt_ValIn = Fd_ValIn.sum()
+    return Dt_ValIn
+
+
+def calculate_Dt_ArgRUPIn(Fd_ArgRUPIn: pd.Series) -> float:
+    Dt_ArgRUPIn = Fd_ArgRUPIn.sum()
+    return Dt_ArgRUPIn
+
+
+def calculate_Dt_HisRUPIn(Fd_HisRUPIn: pd.Series) -> float:
+    Dt_HisRUPIn = Fd_HisRUPIn.sum()
+    return Dt_HisRUPIn
+
+
+def calculate_Dt_IleRUPIn(Fd_IleRUPIn: pd.Series) -> float:
+    Dt_IleRUPIn = Fd_IleRUPIn.sum()
+    return Dt_IleRUPIn
+
+
+def calculate_Dt_LeuRUPIn(Fd_LeuRUPIn: pd.Series) -> float:
+    Dt_LeuRUPIn = Fd_LeuRUPIn.sum()
+    return Dt_LeuRUPIn
+
+
+def calculate_Dt_LysRUPIn(Fd_LysRUPIn: pd.Series) -> float:
+    Dt_LysRUPIn = Fd_LysRUPIn.sum()
+    return Dt_LysRUPIn
+
+
+def calculate_Dt_MetRUPIn(Fd_MetRUPIn: pd.Series) -> float:
+    Dt_MetRUPIn = Fd_MetRUPIn.sum()
+    return Dt_MetRUPIn
+
+
+def calculate_Dt_PheRUPIn(Fd_PheRUPIn: pd.Series) -> float:
+    Dt_PheRUPIn = Fd_PheRUPIn.sum()
+    return Dt_PheRUPIn
+
+
+def calculate_Dt_ThrRUPIn(Fd_ThrRUPIn: pd.Series) -> float:
+    Dt_ThrRUPIn = Fd_ThrRUPIn.sum()
+    return Dt_ThrRUPIn
+
+
+def calculate_Dt_TrpRUPIn(Fd_TrpRUPIn: pd.Series) -> float:
+    Dt_TrpRUPIn = Fd_TrpRUPIn.sum()
+    return Dt_TrpRUPIn
+
+
+def calculate_Dt_ValRUPIn(Fd_ValRUPIn: pd.Series) -> float:
+    Dt_ValRUPIn = Fd_ValRUPIn.sum()
+    return Dt_ValRUPIn
+
+
+def calculate_Dt_RUP(Dt_RUPIn: float, Dt_DMIn: float) -> float:
+    Dt_RUP = Dt_RUPIn / Dt_DMIn * 100
+    return Dt_RUP
+
+
+def calculate_Dt_OM(Dt_OMIn: float, Dt_DMIn: float) -> float:
+    Dt_OM = Dt_OMIn / Dt_DMIn * 100
+    return Dt_OM
+
+
+def calculate_Dt_NDFnf(Dt_NDFnfIn: float, Dt_DMIn: float) -> float:
+    Dt_NDFnf = Dt_NDFnfIn / Dt_DMIn * 100
+    return Dt_NDFnf
+
+
+def calculate_Dt_Lg(Dt_LgIn: float, Dt_DMIn: float) -> float:
+    Dt_Lg = Dt_LgIn / Dt_DMIn * 100
+    return Dt_Lg
+
+
+def calculate_Dt_NFC(Dt_NFCIn: float, Dt_DMIn: float) -> float:
+    Dt_NFC = Dt_NFCIn / Dt_DMIn * 100
+    return Dt_NFC
+
+
+def calculate_Dt_St(Dt_StIn: float, Dt_DMIn: float) -> float:
+    Dt_St = Dt_StIn / Dt_DMIn * 100
+    return Dt_St
+
+
+def calculate_Dt_WSC(Dt_WSCIn: float, Dt_DMIn: float) -> float:
+    Dt_WSC = Dt_WSCIn / Dt_DMIn * 100
+    return Dt_WSC
+
+
+def calculate_Dt_rOM(Dt_rOMIn: float, Dt_DMIn: float) -> float:
+    Dt_rOM = Dt_rOMIn / Dt_DMIn * 100
+    return Dt_rOM
+
+
+def calculate_Dt_CFat(Dt_CFatIn: float, Dt_DMIn: float) -> float:
+    Dt_CFat = Dt_CFatIn / Dt_DMIn * 100
+    return Dt_CFat
+
+
+def calculate_Dt_FA(Dt_FAIn: float, Dt_DMIn: float) -> float:
+    Dt_FA = Dt_FAIn / Dt_DMIn * 100
+    return Dt_FA
+
+
+def calculate_Dt_FAhydr(Dt_FAhydrIn: float, Dt_DMIn: float) -> float:
+    Dt_FAhydr = Dt_FAhydrIn / Dt_DMIn * 100
+    return Dt_FAhydr
+
+
+def calculate_Dt_CP(Dt_CPIn: float, Dt_DMIn: float) -> float:
+    Dt_CP = Dt_CPIn / Dt_DMIn * 100
+    return Dt_CP
+
+
+def calculate_Dt_TP(Dt_TPIn: float, Dt_DMIn: float) -> float:
+    Dt_TP = Dt_TPIn / Dt_DMIn * 100
+    return Dt_TP
+
+
+def calculate_Dt_NPNCP(Dt_NPNCPIn: float, Dt_DMIn: float) -> float:
+    Dt_NPNCP = Dt_NPNCPIn / Dt_DMIn * 100
+    return Dt_NPNCP
+
+
+def calculate_Dt_NPN(Dt_NPNIn: float, Dt_DMIn: float) -> float:
+    Dt_NPN = Dt_NPNIn / Dt_DMIn * 100
+    return Dt_NPN
+
+
+def calculate_Dt_NPNDM(Dt_NPNDMIn: float, Dt_DMIn: float) -> float:
+    Dt_NPNDM = Dt_NPNDMIn / Dt_DMIn * 100
+    return Dt_NPNDM
+
+
+def calculate_Dt_CPA(Dt_CPAIn: float, Dt_DMIn: float) -> float:
+    Dt_CPA = Dt_CPAIn / Dt_DMIn * 100
+    return Dt_CPA
+
+
+def calculate_Dt_CPB(Dt_CPBIn: float, Dt_DMIn: float) -> float:
+    Dt_CPB = Dt_CPBIn / Dt_DMIn * 100
+    return Dt_CPB
+
+
+def calculate_Dt_CPC(Dt_CPCIn: float, Dt_DMIn: float) -> float:
+    Dt_CPC = Dt_CPCIn / Dt_DMIn * 100
+    return Dt_CPC
+
+
+def calculate_Dt_Ash(Dt_AshIn: float, Dt_DMIn: float) -> float:
+    Dt_Ash = Dt_AshIn / Dt_DMIn * 100
+    return Dt_Ash
+
+
+def calculate_Dt_ForWet(Dt_ForWetIn: float, Dt_DMIn: float) -> float:
+    Dt_ForWet = Dt_ForWetIn / Dt_DMIn * 100
+    return Dt_ForWet
+
+
+def calculate_Dt_ForDry(Dt_ForDryIn: float, Dt_DMIn: float) -> float:
+    Dt_ForDry = Dt_ForDryIn / Dt_DMIn * 100
+    return Dt_ForDry
+
+
+def calculate_Dt_Conc(Dt_ConcIn: float, Dt_DMIn: float) -> float:
+    Dt_Conc = Dt_ConcIn / Dt_DMIn * 100
+    return Dt_Conc
+
+
+def calculate_Dt_C120(Dt_C120In: float, Dt_DMIn: float) -> float:
+    Dt_C120 = Dt_C120In / Dt_DMIn * 100
+    return Dt_C120
+
+
+def calculate_Dt_C140(Dt_C140In: float, Dt_DMIn: float) -> float:
+    Dt_C140 = Dt_C140In / Dt_DMIn * 100
+    return Dt_C140
+
+
+def calculate_Dt_C160(Dt_C160In: float, Dt_DMIn: float) -> float:
+    Dt_C160 = Dt_C160In / Dt_DMIn * 100
+    return Dt_C160
+
+
+def calculate_Dt_C161(Dt_C161In: float, Dt_DMIn: float) -> float:
+    Dt_C161 = Dt_C161In / Dt_DMIn * 100
+    return Dt_C161
+
+
+def calculate_Dt_C180(Dt_C180In: float, Dt_DMIn: float) -> float:
+    Dt_C180 = Dt_C180In / Dt_DMIn * 100
+    return Dt_C180
+
+
+def calculate_Dt_C181t(Dt_C181tIn: float, Dt_DMIn: float) -> float:
+    Dt_C181t = Dt_C181tIn / Dt_DMIn * 100
+    return Dt_C181t
+
+
+def calculate_Dt_C181c(Dt_C181cIn: float, Dt_DMIn: float) -> float:
+    Dt_C181c = Dt_C181cIn / Dt_DMIn * 100
+    return Dt_C181c
+
+
+def calculate_Dt_C182(Dt_C182In: float, Dt_DMIn: float) -> float:
+    Dt_C182 = Dt_C182In / Dt_DMIn * 100
+    return Dt_C182
+
+
+def calculate_Dt_C183(Dt_C183In: float, Dt_DMIn: float) -> float:
+    Dt_C183 = Dt_C183In / Dt_DMIn * 100
+    return Dt_C183
+
+
+def calculate_Dt_OtherFA(Dt_OtherFAIn: float, Dt_DMIn: float) -> float:
+    Dt_OtherFA = Dt_OtherFAIn / Dt_DMIn * 100
+    return Dt_OtherFA
+
+
+def calculate_Dt_UFA(Dt_UFAIn: float, Dt_DMIn: float) -> float:
+    Dt_UFA = Dt_UFAIn / Dt_DMIn * 100
+    return Dt_UFA
+
+
+def calculate_Dt_MUFA(Dt_MUFAIn: float, Dt_DMIn: float) -> float:
+    Dt_MUFA = Dt_MUFAIn / Dt_DMIn * 100
+    return Dt_MUFA
+
+
+def calculate_Dt_PUFA(Dt_PUFAIn: float, Dt_DMIn: float) -> float:
+    Dt_PUFA = Dt_PUFAIn / Dt_DMIn * 100
+    return Dt_PUFA
+
+
+def calculate_Dt_SatFA(Dt_SatFAIn: float, Dt_DMIn: float) -> float:
+    Dt_SatFA = Dt_SatFAIn / Dt_DMIn * 100
+    return Dt_SatFA
+
+
+def calculate_Dt_C120_FA(Dt_C120In: float, Dt_FAIn: float) -> float:
+    Dt_C120_FA = Dt_C120In / Dt_FAIn * 100
+    return Dt_C120_FA
+
+
+def calculate_Dt_C140_FA(Dt_C140In: float, Dt_FAIn: float) -> float:
+    Dt_C140_FA = Dt_C140In / Dt_FAIn * 100
+    return Dt_C140_FA
+
+
+def calculate_Dt_C160_FA(Dt_C160In: float, Dt_FAIn: float) -> float:
+    Dt_C160_FA = Dt_C160In / Dt_FAIn * 100
+    return Dt_C160_FA
+
+
+def calculate_Dt_C161_FA(Dt_C161In: float, Dt_FAIn: float) -> float:
+    Dt_C161_FA = Dt_C161In / Dt_FAIn * 100
+    return Dt_C161_FA
+
+
+def calculate_Dt_C180_FA(Dt_C180In: float, Dt_FAIn: float) -> float:
+    Dt_C180_FA = Dt_C180In / Dt_FAIn * 100
+    return Dt_C180_FA
+
+
+def calculate_Dt_C181t_FA(Dt_C181tIn: float, Dt_FAIn: float) -> float:
+    Dt_C181t_FA = Dt_C181tIn / Dt_FAIn * 100
+    return Dt_C181t_FA
+
+
+def calculate_Dt_C181c_FA(Dt_C181cIn: float, Dt_FAIn: float) -> float:
+    Dt_C181c_FA = Dt_C181cIn / Dt_FAIn * 100
+    return Dt_C181c_FA
+
+
+def calculate_Dt_C182_FA(Dt_C182In: float, Dt_FAIn: float) -> float:
+    Dt_C182_FA = Dt_C182In / Dt_FAIn * 100
+    return Dt_C182_FA
+
+
+def calculate_Dt_C183_FA(Dt_C183In: float, Dt_FAIn: float) -> float:
+    Dt_C183_FA = Dt_C183In / Dt_FAIn * 100
+    return Dt_C183_FA
+
+
+def calculate_Dt_OtherFA_FA(Dt_OtherFAIn: float, Dt_FAIn: float) -> float:
+    Dt_OtherFA_FA = Dt_OtherFAIn / Dt_FAIn * 100
+    return Dt_OtherFA_FA
+
+
+def calculate_Dt_UFA_FA(Dt_UFAIn: float, Dt_FAIn: float) -> float:
+    Dt_UFA_FA = Dt_UFAIn / Dt_FAIn * 100
+    return Dt_UFA_FA
+
+
+def calculate_Dt_MUFA_FA(Dt_MUFAIn: float, Dt_FAIn: float) -> float:
+    Dt_MUFA_FA = Dt_MUFAIn / Dt_FAIn * 100
+    return Dt_MUFA_FA
+
+
+def calculate_Dt_PUFA_FA(Dt_PUFAIn: float, Dt_FAIn: float) -> float:
+    Dt_PUFA_FA = Dt_PUFAIn / Dt_FAIn * 100
+    return Dt_PUFA_FA
+
+
+def calculate_Dt_SatFA_FA(Dt_SatFAIn: float, Dt_FAIn: float) -> float:
+    Dt_SatFA_FA = Dt_SatFAIn / Dt_FAIn * 100
+    return Dt_SatFA_FA
+
+
+def calculate_Dt_CaIn(Fd_CaIn: pd.Series) -> float:
+    Dt_CaIn = Fd_CaIn.sum()
+    return Dt_CaIn
+
+
+def calculate_Dt_PIn(Fd_PIn: pd.Series) -> float:
+    Dt_PIn = Fd_PIn.sum()
+    return Dt_PIn
+
+
+def calculate_Dt_PinorgIn(Fd_PinorgIn: pd.Series) -> float:
+    Dt_PinorgIn = Fd_PinorgIn.sum()
+    return Dt_PinorgIn
+
+
+def calculate_Dt_PorgIn(Fd_PorgIn: pd.Series) -> float:
+    Dt_PorgIn = Fd_PorgIn.sum()
+    return Dt_PorgIn
+
+
+def calculate_Dt_NaIn(Fd_NaIn: pd.Series) -> float:
+    Dt_NaIn = Fd_NaIn.sum()
+    return Dt_NaIn
+
+
+def calculate_Dt_MgIn(Fd_MgIn: pd.Series) -> float:
+    Dt_MgIn = Fd_MgIn.sum()
+    return Dt_MgIn
+
+
+def calculate_Dt_MgIn_min(Fd_MgIn_min: pd.Series) -> float:
+    Dt_MgIn_min = Fd_MgIn_min.sum()
+    return Dt_MgIn_min
+
+
+def calculate_Dt_KIn(Fd_KIn: pd.Series) -> float:
+    Dt_KIn = Fd_KIn.sum()
+    return Dt_KIn
+
+
+def calculate_Dt_ClIn(Fd_ClIn: pd.Series) -> float:
+    Dt_ClIn = Fd_ClIn.sum()
+    return Dt_ClIn
+
+
+def calculate_Dt_SIn(Fd_SIn: pd.Series) -> float:
+    Dt_SIn = Fd_SIn.sum()
+    return Dt_SIn
+
+
+def calculate_Dt_CoIn(Fd_CoIn: pd.Series) -> float:
+    Dt_CoIn = Fd_CoIn.sum()
+    return Dt_CoIn
+
+
+def calculate_Dt_CrIn(Fd_CrIn: pd.Series) -> float:
+    Dt_CrIn = Fd_CrIn.sum()
+    return Dt_CrIn
+
+
+def calculate_Dt_CuIn(Fd_CuIn: pd.Series) -> float:
+    Dt_CuIn = Fd_CuIn.sum()
+    return Dt_CuIn
+
+
+def calculate_Dt_FeIn(Fd_FeIn: pd.Series) -> float:
+    Dt_FeIn = Fd_FeIn.sum()
+    return Dt_FeIn
+
+
+def calculate_Dt_IIn(Fd_IIn: pd.Series) -> float:
+    Dt_IIn = Fd_IIn.sum()
+    return Dt_IIn
+
+
+def calculate_Dt_MnIn(Fd_MnIn: pd.Series) -> float:
+    Dt_MnIn = Fd_MnIn.sum()
+    return Dt_MnIn
+
+
+def calculate_Dt_MoIn(Fd_MoIn: pd.Series) -> float:
+    Dt_MoIn = Fd_MoIn.sum()
+    return Dt_MoIn
+
+
+def calculate_Dt_SeIn(Fd_SeIn: pd.Series) -> float:
+    Dt_SeIn = Fd_SeIn.sum()
+    return Dt_SeIn
+
+
+def calculate_Dt_ZnIn(Fd_ZnIn: pd.Series) -> float:
+    Dt_ZnIn = Fd_ZnIn.sum()
+    return Dt_ZnIn
+
+
+def calculate_Dt_VitAIn(Fd_VitAIn: pd.Series) -> float:
+    Dt_VitAIn = Fd_VitAIn.sum()
+    return Dt_VitAIn
+
+
+def calculate_Dt_VitDIn(Fd_VitDIn: pd.Series) -> float:
+    Dt_VitDIn = Fd_VitDIn.sum()
+    return Dt_VitDIn
+
+
+def calculate_Dt_VitEIn(Fd_VitEIn: pd.Series) -> float:
+    Dt_VitEIn = Fd_VitEIn.sum()
+    return Dt_VitEIn
+
+
+def calculate_Dt_CholineIn(Fd_CholineIn: pd.Series) -> float:
+    Dt_CholineIn = Fd_CholineIn.sum()
+    return Dt_CholineIn
+
+
+def calculate_Dt_BiotinIn(Fd_BiotinIn: pd.Series) -> float:
+    Dt_BiotinIn = Fd_BiotinIn.sum()
+    return Dt_BiotinIn
+
+
+def calculate_Dt_NiacinIn(Fd_NiacinIn: pd.Series) -> float:
+    Dt_NiacinIn = Fd_NiacinIn.sum()
+    return Dt_NiacinIn
+
+
+def calculate_Dt_B_CaroteneIn(Fd_B_CaroteneIn: pd.Series) -> float:
+    Dt_B_CaroteneIn = Fd_B_CaroteneIn.sum()
+    return Dt_B_CaroteneIn
+
+
+def calculate_Dt_Ca(Dt_CaIn: float, Dt_DMIn: float) -> float:
+    Dt_Ca = Dt_CaIn / Dt_DMIn / 1000 * 100
+    return Dt_Ca
+
+
+def calculate_Dt_P(Dt_PIn: float, Dt_DMIn: float) -> float:
+    Dt_P = Dt_PIn / Dt_DMIn / 1000 * 100
+    return Dt_P
+
+
+def calculate_Dt_Pinorg(Dt_PinorgIn: float, Dt_DMIn: float) -> float:
+    Dt_Pinorg = Dt_PinorgIn / Dt_DMIn / 1000 * 100
+    return Dt_Pinorg
+
+
+def calculate_Dt_Porg(Dt_PorgIn: float, Dt_DMIn: float) -> float:
+    Dt_Porg = Dt_PorgIn / Dt_DMIn / 1000 * 100
+    return Dt_Porg
+
+
+def calculate_Dt_Na(Dt_NaIn: float, Dt_DMIn: float) -> float:
+    Dt_Na = Dt_NaIn / Dt_DMIn / 1000 * 100
+    return Dt_Na
+
+
+def calculate_Dt_Mg(Dt_MgIn: float, Dt_DMIn: float) -> float:
+    Dt_Mg = Dt_MgIn / Dt_DMIn / 1000 * 100
+    return Dt_Mg
+
+
+def calculate_Dt_K(Dt_KIn: float, Dt_DMIn: float) -> float:
+    Dt_K = Dt_KIn / Dt_DMIn / 1000 * 100
+    return Dt_K
+
+
+def calculate_Dt_Cl(Dt_ClIn: float, Dt_DMIn: float) -> float:
+    Dt_Cl = Dt_ClIn / Dt_DMIn / 1000 * 100
+    return Dt_Cl
+
+
+def calculate_Dt_S(Dt_SIn: float, Dt_DMIn: float) -> float:
+    Dt_S = Dt_SIn / Dt_DMIn / 1000 * 100
+    return Dt_S
+
+
+def calculate_Dt_Co(Dt_CoIn: float, Dt_DMIn: float) -> float:
+    Dt_Co = Dt_CoIn / Dt_DMIn
+    return Dt_Co
+
+
+def calculate_Dt_Cr(Dt_CrIn: float, Dt_DMIn: float) -> float:
+    Dt_Cr = Dt_CrIn / Dt_DMIn
+    return Dt_Cr
+
+
+def calculate_Dt_Cu(Dt_CuIn: float, Dt_DMIn: float) -> float:
+    Dt_Cu = Dt_CuIn / Dt_DMIn
+    return Dt_Cu
+
+
+def calculate_Dt_Fe(Dt_FeIn: float, Dt_DMIn: float) -> float:
+    Dt_Fe = Dt_FeIn / Dt_DMIn
+    return Dt_Fe
+
+
+def calculate_Dt_I(Dt_IIn: float, Dt_DMIn: float) -> float:
+    Dt_I = Dt_IIn / Dt_DMIn
+    return Dt_I
+
+
+def calculate_Dt_Mn(Dt_MnIn: float, Dt_DMIn: float) -> float:
+    Dt_Mn = Dt_MnIn / Dt_DMIn
+    return Dt_Mn
+
+
+def calculate_Dt_Mo(Dt_MoIn: float, Dt_DMIn: float) -> float:
+    Dt_Mo = Dt_MoIn / Dt_DMIn
+    return Dt_Mo
+
+
+def calculate_Dt_Se(Dt_SeIn: float, Dt_DMIn: float) -> float:
+    Dt_Se = Dt_SeIn / Dt_DMIn
+    return Dt_Se
+
+
+def calculate_Dt_Zn(Dt_ZnIn: float, Dt_DMIn: float) -> float:
+    Dt_Zn = Dt_ZnIn / Dt_DMIn
+    return Dt_Zn
+
+
+def calculate_Dt_VitA(Dt_VitAIn: float, Dt_DMIn: float) -> float:
+    Dt_VitA = Dt_VitAIn / Dt_DMIn
+    return Dt_VitA
+
+
+def calculate_Dt_VitD(Dt_VitDIn: float, Dt_DMIn: float) -> float:
+    Dt_VitD = Dt_VitDIn / Dt_DMIn
+    return Dt_VitD
+
+
+def calculate_Dt_VitE(Dt_VitEIn: float, Dt_DMIn: float) -> float:
+    Dt_VitE = Dt_VitEIn / Dt_DMIn
+    return Dt_VitE
+
+
+def calculate_Dt_Choline(Dt_CholineIn: float, Dt_DMIn: float) -> float:
+    Dt_Choline = Dt_CholineIn / Dt_DMIn
+    return Dt_Choline
+
+
+def calculate_Dt_Biotin(Dt_BiotinIn: float, Dt_DMIn: float) -> float:
+    Dt_Biotin = Dt_BiotinIn / Dt_DMIn
+    return Dt_Biotin
+
+
+def calculate_Dt_Niacin(Dt_NiacinIn: float, Dt_DMIn: float) -> float:
+    Dt_Niacin = Dt_NiacinIn / Dt_DMIn
+    return Dt_Niacin
+
+
+def calculate_Dt_B_Carotene(Dt_B_CaroteneIn: float, Dt_DMIn: float) -> float:
+    Dt_B_Carotene = Dt_B_CaroteneIn / Dt_DMIn
+    return Dt_B_Carotene
+
+
+def calculate_Dt_IdArgRUPIn(Fd_IdArgRUPIn: pd.Series) -> float:
+    Dt_IdArgRUPIn = Fd_IdArgRUPIn.sum()
+    return Dt_IdArgRUPIn
+
+
+def calculate_Dt_IdHisRUPIn(Fd_IdHisRUPIn: pd.Series) -> float:
+    Dt_IdHisRUPIn = Fd_IdHisRUPIn.sum()
+    return Dt_IdHisRUPIn
+
+
+def calculate_Dt_IdIleRUPIn(Fd_IdIleRUPIn: pd.Series) -> float:
+    Dt_IdIleRUPIn = Fd_IdIleRUPIn.sum()
+    return Dt_IdIleRUPIn
+
+
+def calculate_Dt_IdLeuRUPIn(Fd_IdLeuRUPIn: pd.Series) -> float:
+    Dt_IdLeuRUPIn = Fd_IdLeuRUPIn.sum()
+    return Dt_IdLeuRUPIn
+
+
+def calculate_Dt_IdLysRUPIn(Fd_IdLysRUPIn: pd.Series) -> float:
+    Dt_IdLysRUPIn = Fd_IdLysRUPIn.sum()
+    return Dt_IdLysRUPIn
+
+
+def calculate_Dt_IdMetRUPIn(Fd_IdMetRUPIn: pd.Series) -> float:
+    Dt_IdMetRUPIn = Fd_IdMetRUPIn.sum()
+    return Dt_IdMetRUPIn
+
+
+def calculate_Dt_IdPheRUPIn(Fd_IdPheRUPIn: pd.Series) -> float:
+    Dt_IdPheRUPIn = Fd_IdPheRUPIn.sum()
+    return Dt_IdPheRUPIn
+
+
+def calculate_Dt_IdThrRUPIn(Fd_IdThrRUPIn: pd.Series) -> float:
+    Dt_IdThrRUPIn = Fd_IdThrRUPIn.sum()
+    return Dt_IdThrRUPIn
+
+
+def calculate_Dt_IdTrpRUPIn(Fd_IdTrpRUPIn: pd.Series) -> float:
+    Dt_IdTrpRUPIn = Fd_IdTrpRUPIn.sum()
+    return Dt_IdTrpRUPIn
+
+
+def calculate_Dt_IdValRUPIn(Fd_IdValRUPIn: pd.Series) -> float:
+    Dt_IdValRUPIn = Fd_IdValRUPIn.sum()
+    return Dt_IdValRUPIn
+
+
+def calculate_Dt_DigC120In(Fd_DigC120In: pd.Series) -> float:
+    Dt_DigC120In = Fd_DigC120In.sum()
+    return Dt_DigC120In
+
+
+def calculate_Dt_DigC140In(Fd_DigC140In: pd.Series) -> float:
+    Dt_DigC140In = Fd_DigC140In.sum()
+    return Dt_DigC140In
+
+
+def calculate_Dt_DigC160In(Fd_DigC160In: pd.Series) -> float:
+    Dt_DigC160In = Fd_DigC160In.sum()
+    return Dt_DigC160In
+
+
+def calculate_Dt_DigC161In(Fd_DigC161In: pd.Series) -> float:
+    Dt_DigC161In = Fd_DigC161In.sum()
+    return Dt_DigC161In
+
+
+def calculate_Dt_DigC180In(Fd_DigC180In: pd.Series) -> float:
+    Dt_DigC180In = Fd_DigC180In.sum()
+    return Dt_DigC180In
+
+
+def calculate_Dt_DigC181tIn(Fd_DigC181tIn: pd.Series) -> float:
+    Dt_DigC181tIn = Fd_DigC181tIn.sum()
+    return Dt_DigC181tIn
+
+
+def calculate_Dt_DigC181cIn(Fd_DigC181cIn: pd.Series) -> float:
+    Dt_DigC181cIn = Fd_DigC181cIn.sum()
+    return Dt_DigC181cIn
+
+
+def calculate_Dt_DigC182In(Fd_DigC182In: pd.Series) -> float:
+    Dt_DigC182In = Fd_DigC182In.sum()
+    return Dt_DigC182In
+
+
+def calculate_Dt_DigC183In(Fd_DigC183In: pd.Series) -> float:
+    Dt_DigC183In = Fd_DigC183In.sum()
+    return Dt_DigC183In
+
+
+def calculate_Dt_DigOtherFAIn(Fd_DigOtherFAIn: pd.Series) -> float:
+    Dt_DigOtherFAIn = Fd_DigOtherFAIn.sum()
+    return Dt_DigOtherFAIn
+
+
+def calculate_Abs_CaIn(Fd_absCaIn: pd.Series) -> float:
+    Abs_CaIn = Fd_absCaIn.sum()
+    return Abs_CaIn
+
+
+def calculate_Abs_PIn(Fd_absPIn: pd.Series) -> float:
+    Abs_PIn = Fd_absPIn.sum()
+    return Abs_PIn
+
+
+def calculate_Abs_NaIn(Fd_absNaIn: pd.Series) -> float:
+    Abs_NaIn = Fd_absNaIn.sum()
+    return Abs_NaIn
+
+
+def calculate_Abs_KIn(Fd_absKIn: pd.Series) -> float:
+    Abs_KIn = Fd_absKIn.sum()
+    return Abs_KIn
+
+
+def calculate_Abs_ClIn(Fd_absClIn: pd.Series) -> float:
+    Abs_ClIn = Fd_absClIn.sum()
+    return Abs_ClIn
+
+
+def calculate_Abs_CoIn(Fd_absCoIn: pd.Series) -> float:
+    Abs_CoIn = Fd_absCoIn.sum()
+    return Abs_CoIn
+
+
+def calculate_Abs_CuIn(Fd_absCuIn: pd.Series) -> float:
+    Abs_CuIn = Fd_absCuIn.sum()
+    return Abs_CuIn
+
+
+def calculate_Abs_FeIn(Fd_absFeIn: pd.Series) -> float:
+    Abs_FeIn = Fd_absFeIn.sum()
+    return Abs_FeIn
+
+
+def calculate_Abs_MnIn(Fd_absMnIn: pd.Series) -> float:
+    Abs_MnIn = Fd_absMnIn.sum()
+    return Abs_MnIn
+
+
+def calculate_Abs_ZnIn(Fd_absZnIn: pd.Series) -> float:
+    Abs_ZnIn = Fd_absZnIn.sum()
+    return Abs_ZnIn
+
+
+def calculate_Dt_DigFA_FA(Dt_DigFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigFA_FA = Dt_DigFAIn / Dt_FAIn * 100
+    return Dt_DigFA_FA
+
+
+def calculate_Dt_DigC120_FA(Dt_DigC120In: float, Dt_FAIn: float) -> float:
+    Dt_DigC120_FA = Dt_DigC120In / Dt_FAIn * 100
+    return Dt_DigC120_FA
+
+
+def calculate_Dt_DigC140_FA(Dt_DigC140In: float, Dt_FAIn: float) -> float:
+    Dt_DigC140_FA = Dt_DigC140In / Dt_FAIn * 100
+    return Dt_DigC140_FA
+
+
+def calculate_Dt_DigC160_FA(Dt_DigC160In: float, Dt_FAIn: float) -> float:
+    Dt_DigC160_FA = Dt_DigC160In / Dt_FAIn * 100
+    return Dt_DigC160_FA
+
+
+def calculate_Dt_DigC161_FA(Dt_DigC161In: float, Dt_FAIn: float) -> float:
+    Dt_DigC161_FA = Dt_DigC161In / Dt_FAIn * 100
+    return Dt_DigC161_FA
+
+
+def calculate_Dt_DigC180_FA(Dt_DigC180In: float, Dt_FAIn: float) -> float:
+    Dt_DigC180_FA = Dt_DigC180In / Dt_FAIn * 100
+    return Dt_DigC180_FA
+
+
+def calculate_Dt_DigC181t_FA(Dt_DigC181tIn: float, Dt_FAIn: float) -> float:
+    Dt_DigC181t_FA = Dt_DigC181tIn / Dt_FAIn * 100
+    return Dt_DigC181t_FA
+
+
+def calculate_Dt_DigC181c_FA(Dt_DigC181cIn: float, Dt_FAIn: float) -> float:
+    Dt_DigC181c_FA = Dt_DigC181cIn / Dt_FAIn * 100
+    return Dt_DigC181c_FA
+
+
+def calculate_Dt_DigC182_FA(Dt_DigC182In: float, Dt_FAIn: float) -> float:
+    Dt_DigC182_FA = Dt_DigC182In / Dt_FAIn * 100
+    return Dt_DigC182_FA
+
+
+def calculate_Dt_DigC183_FA(Dt_DigC183In: float, Dt_FAIn: float) -> float:
+    Dt_DigC183_FA = Dt_DigC183In / Dt_FAIn * 100
+    return Dt_DigC183_FA
+
+
+def calculate_Dt_DigUFA_FA(Dt_DigUFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigUFA_FA = Dt_DigUFAIn / Dt_FAIn * 100
+    return Dt_DigUFA_FA
+
+
+def calculate_Dt_DigMUFA_FA(Dt_DigMUFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigMUFA_FA = Dt_DigMUFAIn / Dt_FAIn * 100
+    return Dt_DigMUFA_FA
+
+
+def calculate_Dt_DigPUFA_FA(Dt_DigPUFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigPUFA_FA = Dt_DigPUFAIn / Dt_FAIn * 100
+    return Dt_DigPUFA_FA
+
+
+def calculate_Dt_DigSatFA_FA(Dt_DigSatFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigSatFA_FA = Dt_DigSatFAIn / Dt_FAIn * 100
+    return Dt_DigSatFA_FA
+
+
+def calculate_Dt_DigOtherFA_FA(Dt_DigOtherFAIn: float, Dt_FAIn: float) -> float:
+    Dt_DigOtherFA_FA = Dt_DigOtherFAIn / Dt_FAIn * 100
+    return Dt_DigOtherFA_FA
+
+
+def calculate_DtArgRUP_DtArg(Dt_ArgRUPIn: float, Dt_ArgIn: float) -> float:
+    Dt_ArgRUP_DtArg = Dt_ArgRUPIn / Dt_ArgIn
+    return Dt_ArgRUP_DtArg
+
+
+def calculate_DtHisRUP_DtHis(Dt_HisRUPIn: float, Dt_HisIn: float) -> float:
+    Dt_HisRUP_DtHis = Dt_HisRUPIn / Dt_HisIn
+    return Dt_HisRUP_DtHis
+
+
+def calculate_DtIleRUP_DtIle(Dt_IleRUPIn: float, Dt_IleIn: float) -> float:
+    Dt_IleRUP_DtIle = Dt_IleRUPIn / Dt_IleIn
+    return Dt_IleRUP_DtIle
+
+
+def calculate_DtLeuRUP_DtLeu(Dt_LeuRUPIn: float, Dt_LeuIn: float) -> float:
+    Dt_LeuRUP_DtLeu = Dt_LeuRUPIn / Dt_LeuIn
+    return Dt_LeuRUP_DtLeu
+
+
+def calculate_DtLysRUP_DtLys(Dt_LysRUPIn: float, Dt_LysIn: float) -> float:
+    Dt_LysRUP_DtLys = Dt_LysRUPIn / Dt_LysIn
+    return Dt_LysRUP_DtLys
+
+
+def calculate_DtMetRUP_DtMet(Dt_MetRUPIn: float, Dt_MetIn: float) -> float:
+    Dt_MetRUP_DtMet = Dt_MetRUPIn / Dt_MetIn
+    return Dt_MetRUP_DtMet
+
+
+def calculate_DtPheRUP_DtPhe(Dt_PheRUPIn: float, Dt_PheIn: float) -> float:
+    Dt_PheRUP_DtPhe = Dt_PheRUPIn / Dt_PheIn
+    return Dt_PheRUP_DtPhe
+
+
+def calculate_DtThrRUP_DtThr(Dt_ThrRUPIn: float, Dt_ThrIn: float) -> float:
+    Dt_ThrRUP_DtThr = Dt_ThrRUPIn / Dt_ThrIn
+    return Dt_ThrRUP_DtThr
+
+
+def calculate_DtTrpRUP_DtTrp(Dt_TrpRUPIn: float, Dt_TrpIn: float) -> float:
+    Dt_TrpRUP_DtTrp = Dt_TrpRUPIn / Dt_TrpIn
+    return Dt_TrpRUP_DtTrp
+
+
+def calculate_DtValRUP_DtVal(Dt_ValRUPIn: float, Dt_ValIn: float) -> float:
+    Dt_ValRUP_DtVal = Dt_ValRUPIn / Dt_ValIn
+    return Dt_ValRUP_DtVal
+
+
+def calculate_Dt_IdArgIn(Du_IdAAMic_Arg: float, Dt_IdArgRUPIn: float) -> float:
+    Dt_IdArgIn = Du_IdAAMic_Arg + Dt_IdArgRUPIn
+    return Dt_IdArgIn
+
+
+def calculate_Dt_IdHisIn(Du_IdAAMic_His: float, Dt_IdHisRUPIn: float) -> float:
+    Dt_IdHisIn = Du_IdAAMic_His + Dt_IdHisRUPIn
+    return Dt_IdHisIn
+
+
+def calculate_Dt_IdIleIn(Du_IdAAMic_Ile: float, Dt_IdIleRUPIn: float) -> float:
+    Dt_IdIleIn = Du_IdAAMic_Ile + Dt_IdIleRUPIn
+    return Dt_IdIleIn
+
+
+def calculate_Dt_IdLeuIn(Du_IdAAMic_Leu: float, Dt_IdLeuRUPIn: float) -> float:
+    Dt_IdLeuIn = Du_IdAAMic_Leu + Dt_IdLeuRUPIn
+    return Dt_IdLeuIn
+
+
+def calculate_Dt_IdLysIn(Du_IdAAMic_Lys: float, Dt_IdLysRUPIn: float) -> float:
+    Dt_IdLysIn = Du_IdAAMic_Lys + Dt_IdLysRUPIn
+    return Dt_IdLysIn
+
+
+def calculate_Dt_IdMetIn(Du_IdAAMic_Met: float, Dt_IdMetRUPIn: float) -> float:
+    Dt_IdMetIn = Du_IdAAMic_Met + Dt_IdMetRUPIn
+    return Dt_IdMetIn
+
+
+def calculate_Dt_IdPheIn(Du_IdAAMic_Phe: float, Dt_IdPheRUPIn: float) -> float:
+    Dt_IdPheIn = Du_IdAAMic_Phe + Dt_IdPheRUPIn
+    return Dt_IdPheIn
+
+
+def calculate_Dt_IdThrIn(Du_IdAAMic_Thr: float, Dt_IdThrRUPIn: float) -> float:
+    Dt_IdThrIn = Du_IdAAMic_Thr + Dt_IdThrRUPIn
+    return Dt_IdThrIn
+
+
+def calculate_Dt_IdTrpIn(Du_IdAAMic_Trp: float, Dt_IdTrpRUPIn: float) -> float:
+    Dt_IdTrpIn = Du_IdAAMic_Trp + Dt_IdTrpRUPIn
+    return Dt_IdTrpIn
+
+
+def calculate_Dt_IdValIn(Du_IdAAMic_Val: float, Dt_IdValRUPIn: float) -> float:
+    Dt_IdValIn = Du_IdAAMic_Val + Dt_IdValRUPIn
+    return Dt_IdValIn
 
 
 ####################
@@ -2212,14 +3759,63 @@ def calculate_feed_data(Dt_DMIn: float,
     complete_feed_data['Fd_GEIn'] = calculate_Fd_GEIn(
         complete_feed_data['Fd_GE'], complete_feed_data['Fd_DMIn']
         )
-    # Loop through identical calculations
-    column_names_XIn = [
-        'Fd_ADF', 'Fd_NDF', 'Fd_St', 'Fd_NFC', 'Fd_WSC', 'Fd_rOM', 'Fd_Lg',
-        'Fd_Conc', 'Fd_For', 'Fd_ForNDF', 'Fd_ForWet', 'Fd_ForDry', 'Fd_Past', 
-        'Fd_CP', 'Fd_TP', 'Fd_CFat', 'Fd_FA', 'Fd_FAhydr', 'Fd_Ash'
-    ]
-    complete_feed_data = calculate_Fd_XIn(complete_feed_data, column_names_XIn)
-
+    complete_feed_data["Fd_ADFIn"] = calculate_Fd_ADFIn(
+        complete_feed_data["Fd_ADF"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_NDFIn"] = calculate_Fd_NDFIn(
+        complete_feed_data["Fd_NDF"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_StIn"] = calculate_Fd_StIn(
+        complete_feed_data["Fd_St"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_NFCIn"] = calculate_Fd_NFCIn(
+        complete_feed_data["Fd_NFC"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_WSCIn"] = calculate_Fd_WSCIn(
+        complete_feed_data["Fd_WSC"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_rOMIn"] = calculate_Fd_rOMIn(
+        complete_feed_data["Fd_rOM"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_LgIn"] = calculate_Fd_LgIn(
+        complete_feed_data["Fd_Lg"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ConcIn"] = calculate_Fd_ConcIn(
+        complete_feed_data["Fd_Conc"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ForIn"] = calculate_Fd_ForIn(
+        complete_feed_data["Fd_For"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ForNDFIn"] = calculate_Fd_ForNDFIn(
+        complete_feed_data["Fd_ForNDF"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ForWetIn"] = calculate_Fd_ForWetIn(
+        complete_feed_data["Fd_ForWet"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ForDryIn"] = calculate_Fd_ForDryIn(
+        complete_feed_data["Fd_ForDry"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_PastIn"] = calculate_Fd_PastIn(
+        complete_feed_data["Fd_Past"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_CPIn"] = calculate_Fd_CPIn(
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_TPIn"] = calculate_Fd_TPIn(
+        complete_feed_data["Fd_TP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_CFatIn"] = calculate_Fd_CFatIn(
+        complete_feed_data["Fd_CFat"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_FAIn"] = calculate_Fd_FAIn(
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_FAhydrIn"] = calculate_Fd_FAhydrIn(
+        complete_feed_data["Fd_FAhydr"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_AshIn"] = calculate_Fd_AshIn(
+        complete_feed_data["Fd_Ash"], complete_feed_data["Fd_DMIn"]
+        )
     # Calculate nutrient intakes for each feed
     complete_feed_data['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg']
@@ -2301,14 +3897,46 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['Fd_CPIn'], complete_feed_data['Fd_CP'],
         complete_feed_data['Fd_RUP']
         )
-
     # FA Intakes
-    column_names_FAIn = [
-        'Fd_C120', 'Fd_C140', 'Fd_C160', 'Fd_C161', 'Fd_C180', 'Fd_C181t',
-        'Fd_C181c', 'Fd_C182', 'Fd_C183', 'Fd_OtherFA'
-    ]
-    complete_feed_data = calculate_Fd_FAIn(
-        complete_feed_data, column_names_FAIn
+    complete_feed_data["Fd_C120In"] = calculate_Fd_C120In(
+        complete_feed_data["Fd_C120_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C140In"] = calculate_Fd_C140In(
+        complete_feed_data["Fd_C140_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C160In"] = calculate_Fd_C160In(
+        complete_feed_data["Fd_C160_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C161In"] = calculate_Fd_C161In(
+        complete_feed_data["Fd_C161_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C180In"] = calculate_Fd_C180In(
+        complete_feed_data["Fd_C180_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C181tIn"] = calculate_Fd_C181tIn(
+        complete_feed_data["Fd_C181t_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C181cIn"] = calculate_Fd_C181cIn(
+        complete_feed_data["Fd_C181c_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C182In"] = calculate_Fd_C182In(
+        complete_feed_data["Fd_C182_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_C183In"] = calculate_Fd_C183In(
+        complete_feed_data["Fd_C183_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_OtherFAIn"] = calculate_Fd_OtherFAIn(
+        complete_feed_data["Fd_OtherFA_FA"], complete_feed_data["Fd_FA"], 
+        complete_feed_data["Fd_DMIn"]
         )
     complete_feed_data['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], complete_feed_data['Fd_St'],
@@ -2353,12 +3981,26 @@ def calculate_feed_data(Dt_DMIn: float,
     complete_feed_data['Fd_DMIn_ClfFor'] = calculate_Fd_DMIn_ClfFor(
         Dt_DMIn, complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DMInp']
         )
-    
-    macro_mineral_intakes = [
-        'Fd_Ca', 'Fd_P', 'Fd_Na', 'Fd_Mg', 'Fd_K', 'Fd_Cl', 'Fd_S'
-    ]
-    complete_feed_data = calculate_macroIn(
-        complete_feed_data, macro_mineral_intakes
+    complete_feed_data["Fd_CaIn"] = calculate_Fd_CaIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Ca"]
+        )
+    complete_feed_data["Fd_PIn"] = calculate_Fd_PIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_P"]
+        )
+    complete_feed_data["Fd_NaIn"] = calculate_Fd_NaIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Na"]
+        )
+    complete_feed_data["Fd_MgIn"] = calculate_Fd_MgIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mg"]
+        )
+    complete_feed_data["Fd_KIn"] = calculate_Fd_KIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_K"]
+        )
+    complete_feed_data["Fd_ClIn"] = calculate_Fd_ClIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cl"]
+        )
+    complete_feed_data["Fd_SIn"] = calculate_Fd_SIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_S"]
         )
     complete_feed_data['Fd_PinorgIn'] = calculate_Fd_PinorgIn(
         complete_feed_data['Fd_PIn'], complete_feed_data['Fd_Pinorg_P']
@@ -2369,16 +4011,54 @@ def calculate_feed_data(Dt_DMIn: float,
     complete_feed_data['Fd_MgIn_min'] = calculate_Fd_MgIn_min(
         complete_feed_data['Fd_Category'], complete_feed_data['Fd_MgIn']
         )
-
-    micro_nutrient_intakes = [
-        'Fd_Co', 'Fd_Cr', 'Fd_Cu', 'Fd_Fe', 'Fd_I', 'Fd_Mn', 'Fd_Mo', 'Fd_Se',
-        'Fd_Zn', 'Fd_VitA', 'Fd_VitD', 'Fd_VitE', 'Fd_Choline', 'Fd_Biotin',
-        'Fd_Niacin', 'Fd_B_Carotene'
-    ]
-    complete_feed_data = calculate_microIn(
-        complete_feed_data, micro_nutrient_intakes
-        ) # Line 741-749
-
+    complete_feed_data["Fd_CoIn"] = calculate_Fd_CoIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Co"]
+        )
+    complete_feed_data["Fd_CrIn"] = calculate_Fd_CrIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cr"]
+        )
+    complete_feed_data["Fd_CuIn"] = calculate_Fd_CuIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Cu"]
+        )
+    complete_feed_data["Fd_FeIn"] = calculate_Fd_FeIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Fe"]
+        )
+    complete_feed_data["Fd_IIn"] = calculate_Fd_IIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_I"]
+        )
+    complete_feed_data["Fd_MnIn"] = calculate_Fd_MnIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mn"]
+        )
+    complete_feed_data["Fd_MoIn"] = calculate_Fd_MoIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Mo"]
+        )
+    complete_feed_data["Fd_SeIn"] = calculate_Fd_SeIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Se"]
+        )
+    complete_feed_data["Fd_ZnIn"] = calculate_Fd_ZnIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Zn"]
+        )
+    complete_feed_data["Fd_VitAIn"] = calculate_Fd_VitAIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitA"]
+        )
+    complete_feed_data["Fd_VitDIn"] = calculate_Fd_VitDIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitD"]
+        )
+    complete_feed_data["Fd_VitEIn"] = calculate_Fd_VitEIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_VitE"]
+        )
+    complete_feed_data["Fd_CholineIn"] = calculate_Fd_CholineIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Choline"]
+        )
+    complete_feed_data["Fd_BiotinIn"] = calculate_Fd_BiotinIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Biotin"]
+        )
+    complete_feed_data["Fd_NiacinIn"] = calculate_Fd_NiacinIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_Niacin"]
+        )
+    complete_feed_data["Fd_B_CaroteneIn"] = calculate_Fd_B_CaroteneIn(
+        complete_feed_data["Fd_DMIn"], complete_feed_data["Fd_B_Carotene"]
+        )
     Dt_DMIn_ClfLiq = complete_feed_data['Fd_DMIn_ClfLiq'].sum()
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
 
@@ -2433,12 +4113,21 @@ def calculate_feed_data(Dt_DMIn: float,
     complete_feed_data['Fd_acZn'] = calculate_Fd_acZn(
         An_StatePhys, complete_feed_data['Fd_acZn_input'], Dt_DMIn_ClfLiq
         )
-
-    micro_absorption = ['Co', 'Cu', 'Fe', 'Mn', 'Zn']
-    complete_feed_data = calculate_micro_absorbtion(
-        complete_feed_data, micro_absorption
+    complete_feed_data["Fd_absCoIn"] = calculate_Fd_absCoIn(
+        complete_feed_data["Fd_CoIn"], complete_feed_data["Fd_acCo"]
         )
-
+    complete_feed_data["Fd_absCuIn"] = calculate_Fd_absCuIn(
+        complete_feed_data["Fd_CuIn"], complete_feed_data["Fd_acCu"]
+        )
+    complete_feed_data["Fd_absFeIn"] = calculate_Fd_absFeIn(
+        complete_feed_data["Fd_FeIn"], complete_feed_data["Fd_acFe"]
+        )
+    complete_feed_data["Fd_absMnIn"] = calculate_Fd_absMnIn(
+        complete_feed_data["Fd_MnIn"], complete_feed_data["Fd_acMn"]
+        )
+    complete_feed_data["Fd_absZnIn"] = calculate_Fd_absZnIn(
+        complete_feed_data["Fd_ZnIn"], complete_feed_data["Fd_acZn"]
+        )
     # Digested endogenous protein is ignored as it is a recycle of previously absorbed aa.
     # SI Digestibility of aa relative to RUP digestibility ([g dAA / g aa] / [g dRUP / g RUP])
     # All set to 1 due to lack of clear evidence for deviations.
@@ -2471,12 +4160,105 @@ def calculate_feed_data(Dt_DMIn: float,
         'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
     ]
 
-    complete_feed_data = calculate_Fd_AAt_CP(
-        complete_feed_data, aa_list, coeff_dict
+    complete_feed_data["Fd_Argt_CP"] = calculate_Fd_Argt_CP(
+        complete_feed_data["Fd_Arg_CP"], coeff_dict["RecArg"]
         )
-    complete_feed_data = calculate_Fd_AARUPIn(complete_feed_data, aa_list)
-    complete_feed_data = calculate_Fd_IdAARUPIn(
-        complete_feed_data, aa_list, SIDig_values
+    complete_feed_data["Fd_Hist_CP"] = calculate_Fd_Hist_CP(
+        complete_feed_data["Fd_His_CP"], coeff_dict["RecHis"]
+        )
+    complete_feed_data["Fd_Ilet_CP"] = calculate_Fd_Ilet_CP(
+        complete_feed_data["Fd_Ile_CP"], coeff_dict["RecIle"]
+        )
+    complete_feed_data["Fd_Leut_CP"] = calculate_Fd_Leut_CP(
+        complete_feed_data["Fd_Leu_CP"], coeff_dict["RecLeu"]
+        )
+    complete_feed_data["Fd_Lyst_CP"] = calculate_Fd_Lyst_CP(
+        complete_feed_data["Fd_Lys_CP"], coeff_dict["RecLys"]
+        )
+    complete_feed_data["Fd_Mett_CP"] = calculate_Fd_Mett_CP(
+        complete_feed_data["Fd_Met_CP"], coeff_dict["RecMet"]
+        )
+    complete_feed_data["Fd_Phet_CP"] = calculate_Fd_Phet_CP(
+        complete_feed_data["Fd_Phe_CP"], coeff_dict["RecPhe"]
+        )
+    complete_feed_data["Fd_Thrt_CP"] = calculate_Fd_Thrt_CP(
+        complete_feed_data["Fd_Thr_CP"], coeff_dict["RecThr"]
+        )
+    complete_feed_data["Fd_Trpt_CP"] = calculate_Fd_Trpt_CP(
+        complete_feed_data["Fd_Trp_CP"], coeff_dict["RecTrp"]
+        )
+    complete_feed_data["Fd_Valt_CP"] = calculate_Fd_Valt_CP(
+        complete_feed_data["Fd_Val_CP"], coeff_dict["RecVal"]
+        )
+    complete_feed_data["Fd_ArgRUPIn"] = calculate_Fd_ArgRUPIn(
+        complete_feed_data["Fd_Argt_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_HisRUPIn"] = calculate_Fd_HisRUPIn(
+        complete_feed_data["Fd_Hist_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_IleRUPIn"] = calculate_Fd_IleRUPIn(
+        complete_feed_data["Fd_Ilet_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_LeuRUPIn"] = calculate_Fd_LeuRUPIn(
+        complete_feed_data["Fd_Leut_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_LysRUPIn"] = calculate_Fd_LysRUPIn(
+        complete_feed_data["Fd_Lyst_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_MetRUPIn"] = calculate_Fd_MetRUPIn(
+        complete_feed_data["Fd_Mett_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_PheRUPIn"] = calculate_Fd_PheRUPIn(
+        complete_feed_data["Fd_Phet_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_ThrRUPIn"] = calculate_Fd_ThrRUPIn(
+        complete_feed_data["Fd_Thrt_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_TrpRUPIn"] = calculate_Fd_TrpRUPIn(
+        complete_feed_data["Fd_Trpt_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_ValRUPIn"] = calculate_Fd_ValRUPIn(
+        complete_feed_data["Fd_Valt_CP"], complete_feed_data["Fd_RUPIn"]
+        )
+    complete_feed_data["Fd_IdArgRUPIn"] = calculate_Fd_IdArgRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ArgRUPIn"], 
+        SIDig_values["Arg"]
+        )
+    complete_feed_data["Fd_IdHisRUPIn"] = calculate_Fd_IdHisRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_HisRUPIn"], 
+        SIDig_values["His"]
+        )
+    complete_feed_data["Fd_IdIleRUPIn"] = calculate_Fd_IdIleRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_IleRUPIn"], 
+        SIDig_values["Ile"]
+        )
+    complete_feed_data["Fd_IdLeuRUPIn"] = calculate_Fd_IdLeuRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_LeuRUPIn"], 
+        SIDig_values["Leu"]
+        )
+    complete_feed_data["Fd_IdLysRUPIn"] = calculate_Fd_IdLysRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_LysRUPIn"], 
+        SIDig_values["Lys"]
+        )
+    complete_feed_data["Fd_IdMetRUPIn"] = calculate_Fd_IdMetRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_MetRUPIn"], 
+        SIDig_values["Met"]
+        )
+    complete_feed_data["Fd_IdPheRUPIn"] = calculate_Fd_IdPheRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_PheRUPIn"], 
+        SIDig_values["Phe"]
+        )
+    complete_feed_data["Fd_IdThrRUPIn"] = calculate_Fd_IdThrRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ThrRUPIn"], 
+        SIDig_values["Thr"]
+        )
+    complete_feed_data["Fd_IdTrpRUPIn"] = calculate_Fd_IdTrpRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_TrpRUPIn"], 
+        SIDig_values["Trp"]
+        )
+    complete_feed_data["Fd_IdValRUPIn"] = calculate_Fd_IdValRUPIn(
+        complete_feed_data["Fd_dcRUP"], complete_feed_data["Fd_ValRUPIn"], 
+        SIDig_values["Val"]
         )
     complete_feed_data['Fd_DigSt'] = calculate_Fd_DigSt(
         complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt']
@@ -2501,13 +4283,46 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['TT_dcFdFA'], complete_feed_data['Fd_FA'],
         complete_feed_data['Fd_DMIn']
         )
-
-    Dig_FA_list = [
-        'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
-        'C183', 'OtherFA'
-    ]
-    complete_feed_data = calculate_Fd_Dig_FAIn(complete_feed_data, Dig_FA_list)
-
+    complete_feed_data["Fd_DigC120In"] = calculate_Fd_DigC120In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C120_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC140In"] = calculate_Fd_DigC140In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C140_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC160In"] = calculate_Fd_DigC160In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C160_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC161In"] = calculate_Fd_DigC161In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C161_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC180In"] = calculate_Fd_DigC180In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C180_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC181tIn"] = calculate_Fd_DigC181tIn(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C181t_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC181cIn"] = calculate_Fd_DigC181cIn(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C181c_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC182In"] = calculate_Fd_DigC182In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C182_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigC183In"] = calculate_Fd_DigC183In(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_C183_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_DigOtherFAIn"] = calculate_Fd_DigOtherFAIn(
+        complete_feed_data["TT_dcFdFA"], complete_feed_data["Fd_OtherFA_FA"], 
+        complete_feed_data["Fd_FA"], complete_feed_data["Fd_DMIn"]
+        )
     complete_feed_data['Fd_DigrOMa'] = calculate_Fd_DigrOMa(
         complete_feed_data['Fd_DigrOMt'], coeff_dict
         )
@@ -2527,7 +4342,46 @@ def calculate_feed_data(Dt_DMIn: float,
     complete_feed_data['Fd_Fe_RUPout'] = calculate_Fd_Fe_RUPout(
         complete_feed_data['Fd_RUPIn'], complete_feed_data['Fd_dcRUP']
         )
-    complete_feed_data = calculate_Fd_AAIn(complete_feed_data, aa_list)
+    complete_feed_data["Fd_ArgIn"] = calculate_Fd_ArgIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Argt_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_HisIn"] = calculate_Fd_HisIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Hist_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_IleIn"] = calculate_Fd_IleIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Ilet_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_LeuIn"] = calculate_Fd_LeuIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Leut_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_LysIn"] = calculate_Fd_LysIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Lyst_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_MetIn"] = calculate_Fd_MetIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Mett_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_PheIn"] = calculate_Fd_PheIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Phet_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ThrIn"] = calculate_Fd_ThrIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Thrt_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_TrpIn"] = calculate_Fd_TrpIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Trpt_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
+    complete_feed_data["Fd_ValIn"] = calculate_Fd_ValIn(
+        complete_feed_data["Fd_CPIn"], complete_feed_data["Fd_Valt_CP"], 
+        complete_feed_data["Fd_CP"], complete_feed_data["Fd_DMIn"]
+        )
     complete_feed_data["Fd_AFInp"] = calculate_Fd_AFInp(
         complete_feed_data["Fd_AFIn"]
         )
@@ -2557,25 +4411,219 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
                         coeff_dict: dict
 ) -> dict:
     # Diet Intakes
-    # column_names_DMInp = ['Fd_ADF', 'Fd_NDF', 'Fd_For', 'Fd_ForNDF']
-    column_names_DMInp = ['ADF', 'NDF', 'For', 'ForNDF']
-    diet_data = calculate_Dt_X(complete_feed_data, column_names_DMInp, diet_data)
-
-    column_names_sum = [
-        'DMIn_ClfLiq', 'DMIn_ClfFor', 'AFIn', 'NDFIn', 'ADFIn', 'LgIn',
-        'DigNDFIn_Base', 'ForWetIn', 'ForDryIn', 'PastIn', 'ForIn', 'ConcIn',
-        'NFCIn', 'StIn', 'WSCIn', 'CPIn', 'CPIn_ClfLiq', 'TPIn', 'NPNCPIn',
-        'NPNIn', 'NPNDMIn', 'CPAIn', 'CPBIn', 'CPCIn', 'RUPBIn', 'CFatIn',
-        'FAIn', 'FAhydrIn', 'C120In', 'C140In', 'C160In', 'C161In', 'C180In',
-        'C181tIn', 'C181cIn', 'C182In', 'C183In', 'OtherFAIn', 'AshIn', 'GEIn',
-        'DEIn_base', 'DEIn_base_ClfLiq', 'DEIn_base_ClfDry', 'DigStIn_Base',
-        'DigrOMtIn', 'idRUPIn', 'DigFAIn', 'DMIn_ClfFor', 'ArgIn', 'HisIn',
-        'IleIn', 'LeuIn', 'LysIn', 'MetIn', 'PheIn', 'ThrIn', 'TrpIn', 'ValIn',
-        'ArgRUPIn', 'HisRUPIn', 'IleRUPIn', 'LeuRUPIn', 'LysRUPIn', 'MetRUPIn',
-        'PheRUPIn', 'ThrRUPIn', 'TrpRUPIn', 'ValRUPIn'
-    ]
-    diet_data = calculate_DtIn(complete_feed_data, column_names_sum, diet_data)
-
+    diet_data["Dt_ADF"] = calculate_Dt_ADF(
+        complete_feed_data["Fd_DMInp"], complete_feed_data["Fd_ADF"]
+        )
+    diet_data["Dt_NDF"] = calculate_Dt_NDF(
+        complete_feed_data["Fd_DMInp"], complete_feed_data["Fd_NDF"]
+        )
+    diet_data["Dt_For"] = calculate_Dt_For(
+        complete_feed_data["Fd_DMInp"], complete_feed_data["Fd_For"]
+        )
+    diet_data["Dt_ForNDF"] = calculate_Dt_ForNDF(
+        complete_feed_data["Fd_DMInp"], complete_feed_data["Fd_ForNDF"]
+        )
+    diet_data["Dt_DMIn_ClfLiq"] = calculate_Dt_DMIn_ClfLiq(
+        complete_feed_data["Fd_DMIn_ClfLiq"]
+        )
+    diet_data["Dt_DMIn_ClfFor"] = calculate_Dt_DMIn_ClfFor(
+        complete_feed_data["Fd_DMIn_ClfFor"]
+        )
+    diet_data["Dt_AFIn"] = calculate_Dt_AFIn(
+        complete_feed_data["Fd_AFIn"]
+        )
+    diet_data["Dt_NDFIn"] = calculate_Dt_NDFIn(
+        complete_feed_data["Fd_NDFIn"]
+        )
+    diet_data["Dt_ADFIn"] = calculate_Dt_ADFIn(
+        complete_feed_data["Fd_ADFIn"]
+        )
+    diet_data["Dt_LgIn"] = calculate_Dt_LgIn(
+        complete_feed_data["Fd_LgIn"]
+        )
+    diet_data["Dt_DigNDFIn_Base"] = calculate_Dt_DigNDFIn_Base(
+        complete_feed_data["Fd_DigNDFIn_Base"]
+        )
+    diet_data["Dt_ForWetIn"] = calculate_Dt_ForWetIn(
+        complete_feed_data["Fd_ForWetIn"]
+        )
+    diet_data["Dt_ForDryIn"] = calculate_Dt_ForDryIn(
+        complete_feed_data["Fd_ForDryIn"]
+        )
+    diet_data["Dt_PastIn"] = calculate_Dt_PastIn(
+        complete_feed_data["Fd_PastIn"]
+        )
+    diet_data["Dt_ForIn"] = calculate_Dt_ForIn(
+        complete_feed_data["Fd_ForIn"]
+        )
+    diet_data["Dt_ConcIn"] = calculate_Dt_ConcIn(
+        complete_feed_data["Fd_ConcIn"]
+        )
+    diet_data["Dt_NFCIn"] = calculate_Dt_NFCIn(
+        complete_feed_data["Fd_NFCIn"]
+        )
+    diet_data["Dt_StIn"] = calculate_Dt_StIn(
+        complete_feed_data["Fd_StIn"]
+        )
+    diet_data["Dt_WSCIn"] = calculate_Dt_WSCIn(
+        complete_feed_data["Fd_WSCIn"]
+        )
+    diet_data["Dt_CPIn"] = calculate_Dt_CPIn(
+        complete_feed_data["Fd_CPIn"]
+        )
+    diet_data["Dt_CPIn_ClfLiq"] = calculate_Dt_CPIn_ClfLiq(
+        complete_feed_data["Fd_CPIn_ClfLiq"]
+        )
+    diet_data["Dt_TPIn"] = calculate_Dt_TPIn(
+        complete_feed_data["Fd_TPIn"]
+        )
+    diet_data["Dt_NPNCPIn"] = calculate_Dt_NPNCPIn(
+        complete_feed_data["Fd_NPNCPIn"]
+        )
+    diet_data["Dt_NPNIn"] = calculate_Dt_NPNIn(
+        complete_feed_data["Fd_NPNIn"]
+        )
+    diet_data["Dt_NPNDMIn"] = calculate_Dt_NPNDMIn(
+        complete_feed_data["Fd_NPNDMIn"]
+        )
+    diet_data["Dt_CPAIn"] = calculate_Dt_CPAIn(
+        complete_feed_data["Fd_CPAIn"]
+        )
+    diet_data["Dt_CPBIn"] = calculate_Dt_CPBIn(
+        complete_feed_data["Fd_CPBIn"]
+        )
+    diet_data["Dt_CPCIn"] = calculate_Dt_CPCIn(
+        complete_feed_data["Fd_CPCIn"]
+        )
+    diet_data["Dt_RUPBIn"] = calculate_Dt_RUPBIn(
+        complete_feed_data["Fd_RUPBIn"]
+        )
+    diet_data["Dt_CFatIn"] = calculate_Dt_CFatIn(
+        complete_feed_data["Fd_CFatIn"]
+        )
+    diet_data["Dt_FAIn"] = calculate_Dt_FAIn(
+        complete_feed_data["Fd_FAIn"]
+        )
+    diet_data["Dt_FAhydrIn"] = calculate_Dt_FAhydrIn(
+        complete_feed_data["Fd_FAhydrIn"]
+        )
+    diet_data["Dt_C120In"] = calculate_Dt_C120In(
+        complete_feed_data["Fd_C120In"]
+        )
+    diet_data["Dt_C140In"] = calculate_Dt_C140In(
+        complete_feed_data["Fd_C140In"]
+        )
+    diet_data["Dt_C160In"] = calculate_Dt_C160In(
+        complete_feed_data["Fd_C160In"]
+        )
+    diet_data["Dt_C161In"] = calculate_Dt_C161In(
+        complete_feed_data["Fd_C161In"]
+        )
+    diet_data["Dt_C180In"] = calculate_Dt_C180In(
+        complete_feed_data["Fd_C180In"]
+        )
+    diet_data["Dt_C181tIn"] = calculate_Dt_C181tIn(
+        complete_feed_data["Fd_C181tIn"]
+        )
+    diet_data["Dt_C181cIn"] = calculate_Dt_C181cIn(
+        complete_feed_data["Fd_C181cIn"]
+        )
+    diet_data["Dt_C182In"] = calculate_Dt_C182In(
+        complete_feed_data["Fd_C182In"]
+        )
+    diet_data["Dt_C183In"] = calculate_Dt_C183In(
+        complete_feed_data["Fd_C183In"]
+        )
+    diet_data["Dt_OtherFAIn"] = calculate_Dt_OtherFAIn(
+        complete_feed_data["Fd_OtherFAIn"]
+        )
+    diet_data["Dt_AshIn"] = calculate_Dt_AshIn(
+        complete_feed_data["Fd_AshIn"]
+        )
+    diet_data["Dt_GEIn"] = calculate_Dt_GEIn(
+        complete_feed_data["Fd_GEIn"]
+        )
+    diet_data["Dt_DEIn_base"] = calculate_Dt_DEIn_base(
+        complete_feed_data["Fd_DEIn_base"]
+        )
+    diet_data["Dt_DEIn_base_ClfLiq"] = calculate_Dt_DEIn_base_ClfLiq(
+        complete_feed_data["Fd_DEIn_base_ClfLiq"]
+        )
+    diet_data["Dt_DEIn_base_ClfDry"] = calculate_Dt_DEIn_base_ClfDry(
+        complete_feed_data["Fd_DEIn_base_ClfDry"]
+        )
+    diet_data["Dt_DigStIn_Base"] = calculate_Dt_DigStIn_Base(
+        complete_feed_data["Fd_DigStIn_Base"]
+        )
+    diet_data["Dt_DigrOMtIn"] = calculate_Dt_DigrOMtIn(
+        complete_feed_data["Fd_DigrOMtIn"]
+        )
+    diet_data["Dt_idRUPIn"] = calculate_Dt_idRUPIn(
+        complete_feed_data["Fd_idRUPIn"]
+        )
+    diet_data["Dt_DigFAIn"] = calculate_Dt_DigFAIn(
+        complete_feed_data["Fd_DigFAIn"]
+        )
+    diet_data["Dt_ArgIn"] = calculate_Dt_ArgIn(
+        complete_feed_data["Fd_ArgIn"]
+        )
+    diet_data["Dt_HisIn"] = calculate_Dt_HisIn(
+        complete_feed_data["Fd_HisIn"]
+        )
+    diet_data["Dt_IleIn"] = calculate_Dt_IleIn(
+        complete_feed_data["Fd_IleIn"]
+        )
+    diet_data["Dt_LeuIn"] = calculate_Dt_LeuIn(
+        complete_feed_data["Fd_LeuIn"]
+        )
+    diet_data["Dt_LysIn"] = calculate_Dt_LysIn(
+        complete_feed_data["Fd_LysIn"]
+        )
+    diet_data["Dt_MetIn"] = calculate_Dt_MetIn(
+        complete_feed_data["Fd_MetIn"]
+        )
+    diet_data["Dt_PheIn"] = calculate_Dt_PheIn(
+        complete_feed_data["Fd_PheIn"]
+        )
+    diet_data["Dt_ThrIn"] = calculate_Dt_ThrIn(
+        complete_feed_data["Fd_ThrIn"]
+        )
+    diet_data["Dt_TrpIn"] = calculate_Dt_TrpIn(
+        complete_feed_data["Fd_TrpIn"]
+        )
+    diet_data["Dt_ValIn"] = calculate_Dt_ValIn(
+        complete_feed_data["Fd_ValIn"]
+        )
+    diet_data["Dt_ArgRUPIn"] = calculate_Dt_ArgRUPIn(
+        complete_feed_data["Fd_ArgRUPIn"]
+        )
+    diet_data["Dt_HisRUPIn"] = calculate_Dt_HisRUPIn(
+        complete_feed_data["Fd_HisRUPIn"]
+        )
+    diet_data["Dt_IleRUPIn"] = calculate_Dt_IleRUPIn(
+        complete_feed_data["Fd_IleRUPIn"]
+        )
+    diet_data["Dt_LeuRUPIn"] = calculate_Dt_LeuRUPIn(
+        complete_feed_data["Fd_LeuRUPIn"]
+        )
+    diet_data["Dt_LysRUPIn"] = calculate_Dt_LysRUPIn(
+        complete_feed_data["Fd_LysRUPIn"]
+        )
+    diet_data["Dt_MetRUPIn"] = calculate_Dt_MetRUPIn(
+        complete_feed_data["Fd_MetRUPIn"]
+        )
+    diet_data["Dt_PheRUPIn"] = calculate_Dt_PheRUPIn(
+        complete_feed_data["Fd_PheRUPIn"]
+        )
+    diet_data["Dt_ThrRUPIn"] = calculate_Dt_ThrRUPIn(
+        complete_feed_data["Fd_ThrRUPIn"]
+        )
+    diet_data["Dt_TrpRUPIn"] = calculate_Dt_TrpRUPIn(
+        complete_feed_data["Fd_TrpRUPIn"]
+        )
+    diet_data["Dt_ValRUPIn"] = calculate_Dt_ValRUPIn(
+        complete_feed_data["Fd_ValRUPIn"]
+        )
     diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(complete_feed_data['Fd_DMIn'])
     diet_data['Dt_DEIn_ClfLiq'] = calculate_Dt_DEIn_ClfLiq(
         complete_feed_data['Fd_DE_ClfLiq'], complete_feed_data['Fd_DMIn_ClfLiq']
@@ -2636,22 +4684,93 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data['Dt_NDFIn_BW'] = calculate_Dt_NDFIn_BW(
         An_BW, diet_data['Dt_NDFIn']
         )
-
-    column_names_DMI = [
-        'RUP', 'OM', 'NDFnf', 'Lg', 'NFC', 'St', 'WSC',
-        'rOM', 'CFat', 'FA', 'FAhydr', 'CP', 'TP', 'NPNCP', 'NPN', 'NPNDM',
-        'CPA', 'CPB', 'CPC', 'Ash', 'ForWet', 'ForDry', 'Conc', 'C120',
-        'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182', 'C183',
-        'OtherFA', 'UFA', 'MUFA', 'PUFA', 'SatFA'
-    ]
-    diet_data = calculate_Dt_DMI(column_names_DMI, Dt_DMIn, diet_data)
-
-    column_names_FA = [
-        'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
-        'C183', 'OtherFA', 'UFA', 'MUFA', 'PUFA', 'SatFA'
-    ]
-    diet_data = calculate_Dt_FA(column_names_FA, diet_data)
-
+    diet_data["Dt_RUP"] = calculate_Dt_RUP(diet_data["Dt_RUPIn"], Dt_DMIn)
+    diet_data["Dt_OM"] = calculate_Dt_OM(diet_data["Dt_OMIn"], Dt_DMIn)
+    diet_data["Dt_NDFnf"] = calculate_Dt_NDFnf(diet_data["Dt_NDFnfIn"], Dt_DMIn)
+    diet_data["Dt_Lg"] = calculate_Dt_Lg(diet_data["Dt_LgIn"], Dt_DMIn)
+    diet_data["Dt_NFC"] = calculate_Dt_NFC(diet_data["Dt_NFCIn"], Dt_DMIn)
+    diet_data["Dt_St"] = calculate_Dt_St(diet_data["Dt_StIn"], Dt_DMIn)
+    diet_data["Dt_WSC"] = calculate_Dt_WSC(diet_data["Dt_WSCIn"], Dt_DMIn)
+    diet_data["Dt_rOM"] = calculate_Dt_rOM(diet_data["Dt_rOMIn"], Dt_DMIn)
+    diet_data["Dt_CFat"] = calculate_Dt_CFat(diet_data["Dt_CFatIn"], Dt_DMIn)
+    diet_data["Dt_FA"] = calculate_Dt_FA(diet_data["Dt_FAIn"], Dt_DMIn)
+    diet_data["Dt_FAhydr"] = calculate_Dt_FAhydr(
+        diet_data["Dt_FAhydrIn"], Dt_DMIn
+        )
+    diet_data["Dt_CP"] = calculate_Dt_CP(diet_data["Dt_CPIn"], Dt_DMIn)
+    diet_data["Dt_TP"] = calculate_Dt_TP(diet_data["Dt_TPIn"], Dt_DMIn)
+    diet_data["Dt_NPNCP"] = calculate_Dt_NPNCP(diet_data["Dt_NPNCPIn"], Dt_DMIn)
+    diet_data["Dt_NPN"] = calculate_Dt_NPN(diet_data["Dt_NPNIn"], Dt_DMIn)
+    diet_data["Dt_NPNDM"] = calculate_Dt_NPNDM(diet_data["Dt_NPNDMIn"], Dt_DMIn)
+    diet_data["Dt_CPA"] = calculate_Dt_CPA(diet_data["Dt_CPAIn"], Dt_DMIn)
+    diet_data["Dt_CPB"] = calculate_Dt_CPB(diet_data["Dt_CPBIn"], Dt_DMIn)
+    diet_data["Dt_CPC"] = calculate_Dt_CPC(diet_data["Dt_CPCIn"], Dt_DMIn)
+    diet_data["Dt_Ash"] = calculate_Dt_Ash(diet_data["Dt_AshIn"], Dt_DMIn)
+    diet_data["Dt_ForWet"] = calculate_Dt_ForWet(
+        diet_data["Dt_ForWetIn"], Dt_DMIn
+        )
+    diet_data["Dt_ForDry"] = calculate_Dt_ForDry(
+        diet_data["Dt_ForDryIn"], Dt_DMIn
+        )
+    diet_data["Dt_Conc"] = calculate_Dt_Conc(diet_data["Dt_ConcIn"], Dt_DMIn)
+    diet_data["Dt_C120"] = calculate_Dt_C120(diet_data["Dt_C120In"], Dt_DMIn)
+    diet_data["Dt_C140"] = calculate_Dt_C140(diet_data["Dt_C140In"], Dt_DMIn)
+    diet_data["Dt_C160"] = calculate_Dt_C160(diet_data["Dt_C160In"], Dt_DMIn)
+    diet_data["Dt_C161"] = calculate_Dt_C161(diet_data["Dt_C161In"], Dt_DMIn)
+    diet_data["Dt_C180"] = calculate_Dt_C180(diet_data["Dt_C180In"], Dt_DMIn)
+    diet_data["Dt_C181t"] = calculate_Dt_C181t(diet_data["Dt_C181tIn"], Dt_DMIn)
+    diet_data["Dt_C181c"] = calculate_Dt_C181c(diet_data["Dt_C181cIn"], Dt_DMIn)
+    diet_data["Dt_C182"] = calculate_Dt_C182(diet_data["Dt_C182In"], Dt_DMIn)
+    diet_data["Dt_C183"] = calculate_Dt_C183(diet_data["Dt_C183In"], Dt_DMIn)
+    diet_data["Dt_OtherFA"] = calculate_Dt_OtherFA(
+        diet_data["Dt_OtherFAIn"], Dt_DMIn
+        )
+    diet_data["Dt_UFA"] = calculate_Dt_UFA(diet_data["Dt_UFAIn"], Dt_DMIn)
+    diet_data["Dt_MUFA"] = calculate_Dt_MUFA(diet_data["Dt_MUFAIn"], Dt_DMIn)
+    diet_data["Dt_PUFA"] = calculate_Dt_PUFA(diet_data["Dt_PUFAIn"], Dt_DMIn)
+    diet_data["Dt_SatFA"] = calculate_Dt_SatFA(diet_data["Dt_SatFAIn"], Dt_DMIn)
+    diet_data["Dt_C120_FA"] = calculate_Dt_C120_FA(
+        diet_data["Dt_C120In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C140_FA"] = calculate_Dt_C140_FA(
+        diet_data["Dt_C140In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C160_FA"] = calculate_Dt_C160_FA(
+        diet_data["Dt_C160In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C161_FA"] = calculate_Dt_C161_FA(
+        diet_data["Dt_C161In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C180_FA"] = calculate_Dt_C180_FA(
+        diet_data["Dt_C180In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C181t_FA"] = calculate_Dt_C181t_FA(
+        diet_data["Dt_C181tIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C181c_FA"] = calculate_Dt_C181c_FA(
+        diet_data["Dt_C181cIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C182_FA"] = calculate_Dt_C182_FA(
+        diet_data["Dt_C182In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_C183_FA"] = calculate_Dt_C183_FA(
+        diet_data["Dt_C183In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_OtherFA_FA"] = calculate_Dt_OtherFA_FA(
+        diet_data["Dt_OtherFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_UFA_FA"] = calculate_Dt_UFA_FA(
+        diet_data["Dt_UFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_MUFA_FA"] = calculate_Dt_MUFA_FA(
+        diet_data["Dt_MUFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_PUFA_FA"] = calculate_Dt_PUFA_FA(
+        diet_data["Dt_PUFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_SatFA_FA"] = calculate_Dt_SatFA_FA(
+        diet_data["Dt_SatFAIn"], diet_data["Dt_FAIn"]
+        )
     diet_data['Dt_ForNDF_NDF'] = calculate_Dt_ForNDF_NDF(
         diet_data['Dt_ForNDF'], diet_data['Dt_NDF']
         )
@@ -2667,37 +4786,118 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data['Dt_CPC_CP'] = calculate_Dt_CPC_CP(
         diet_data['Dt_CPCIn'], diet_data['Dt_CPIn']
         )
-
-    column_names_micronutrients = [
-        'CaIn', 'PIn', 'PinorgIn', 'PorgIn', 'NaIn', 'MgIn', 'MgIn_min', 'KIn',
-        'ClIn', 'SIn', 'CoIn', 'CrIn', 'CuIn', 'FeIn', 'IIn', 'MnIn', 'MoIn',
-        'SeIn', 'ZnIn', 'VitAIn', 'VitDIn', 'VitEIn', 'CholineIn', 'BiotinIn',
-        'NiacinIn', 'B_CaroteneIn'
-    ]
-    diet_data = calculate_Dt_microIn(complete_feed_data, column_names_micronutrients, diet_data)
-
-    column_names_macro = [
-        'Dt_Ca', 'Dt_P', 'Dt_Pinorg', 'Dt_Porg', 'Dt_Na', 'Dt_Mg', 'Dt_K',
-        'Dt_Cl', 'Dt_S'
-    ]
-    diet_data = calculate_Dt_macro(column_names_macro, Dt_DMIn, diet_data)
-
-    column_names_micro_vitamin = [
-        'Dt_Co', 'Dt_Cr', 'Dt_Cu', 'Dt_Fe', 'Dt_I', 'Dt_Mn', 'Dt_Mo', 'Dt_Se',
-        'Dt_Zn', 'Dt_VitA', 'Dt_VitD', 'Dt_VitE', 'Dt_Choline', 'Dt_Biotin',
-        'Dt_Niacin', 'Dt_B_Carotene'
-    ]
-    diet_data = calculate_Dt_micro(column_names_micro_vitamin, Dt_DMIn, diet_data)
-
-    aa_list = [
-        'Arg', 'His', 'Ile', 'Leu', 'Lys', 'Met', 'Phe', 'Thr', 'Trp', 'Val'
-    ]
-    diet_data = calculate_Dt_IdAARUPIn(complete_feed_data, aa_list, diet_data)
-
+    diet_data["Dt_CaIn"] = calculate_Dt_CaIn(complete_feed_data["Fd_CaIn"])
+    diet_data["Dt_PIn"] = calculate_Dt_PIn(complete_feed_data["Fd_PIn"])
+    diet_data["Dt_PinorgIn"] = calculate_Dt_PinorgIn(
+        complete_feed_data["Fd_PinorgIn"]
+        )
+    diet_data["Dt_PorgIn"] = calculate_Dt_PorgIn(complete_feed_data["Fd_PorgIn"])
+    diet_data["Dt_NaIn"] = calculate_Dt_NaIn(complete_feed_data["Fd_NaIn"])
+    diet_data["Dt_MgIn"] = calculate_Dt_MgIn(complete_feed_data["Fd_MgIn"])
+    diet_data["Dt_MgIn_min"] = calculate_Dt_MgIn_min(
+        complete_feed_data["Fd_MgIn_min"]
+        )
+    diet_data["Dt_KIn"] = calculate_Dt_KIn(complete_feed_data["Fd_KIn"])
+    diet_data["Dt_ClIn"] = calculate_Dt_ClIn(complete_feed_data["Fd_ClIn"])
+    diet_data["Dt_SIn"] = calculate_Dt_SIn(complete_feed_data["Fd_SIn"])
+    diet_data["Dt_CoIn"] = calculate_Dt_CoIn(complete_feed_data["Fd_CoIn"])
+    diet_data["Dt_CrIn"] = calculate_Dt_CrIn(complete_feed_data["Fd_CrIn"])
+    diet_data["Dt_CuIn"] = calculate_Dt_CuIn(complete_feed_data["Fd_CuIn"])
+    diet_data["Dt_FeIn"] = calculate_Dt_FeIn(complete_feed_data["Fd_FeIn"])
+    diet_data["Dt_IIn"] = calculate_Dt_IIn(complete_feed_data["Fd_IIn"])
+    diet_data["Dt_MnIn"] = calculate_Dt_MnIn(complete_feed_data["Fd_MnIn"])
+    diet_data["Dt_MoIn"] = calculate_Dt_MoIn(complete_feed_data["Fd_MoIn"])
+    diet_data["Dt_SeIn"] = calculate_Dt_SeIn(complete_feed_data["Fd_SeIn"])
+    diet_data["Dt_ZnIn"] = calculate_Dt_ZnIn(complete_feed_data["Fd_ZnIn"])
+    diet_data["Dt_VitAIn"] = calculate_Dt_VitAIn(
+        complete_feed_data["Fd_VitAIn"]
+        )
+    diet_data["Dt_VitDIn"] = calculate_Dt_VitDIn(
+        complete_feed_data["Fd_VitDIn"]
+        )
+    diet_data["Dt_VitEIn"] = calculate_Dt_VitEIn(
+        complete_feed_data["Fd_VitEIn"]
+        )
+    diet_data["Dt_CholineIn"] = calculate_Dt_CholineIn(
+        complete_feed_data["Fd_CholineIn"]
+        )
+    diet_data["Dt_BiotinIn"] = calculate_Dt_BiotinIn(
+        complete_feed_data["Fd_BiotinIn"]
+        )
+    diet_data["Dt_NiacinIn"] = calculate_Dt_NiacinIn(
+        complete_feed_data["Fd_NiacinIn"]
+        )
+    diet_data["Dt_B_CaroteneIn"] = calculate_Dt_B_CaroteneIn(
+        complete_feed_data["Fd_B_CaroteneIn"]
+        )
+    diet_data["Dt_Ca"] = calculate_Dt_Ca(diet_data["Dt_CaIn"], Dt_DMIn)
+    diet_data["Dt_P"] = calculate_Dt_P(diet_data["Dt_PIn"], Dt_DMIn)
+    diet_data["Dt_Pinorg"] = calculate_Dt_Pinorg(
+        diet_data["Dt_PinorgIn"], Dt_DMIn
+        )
+    diet_data["Dt_Porg"] = calculate_Dt_Porg(diet_data["Dt_PorgIn"], Dt_DMIn)
+    diet_data["Dt_Na"] = calculate_Dt_Na(diet_data["Dt_NaIn"], Dt_DMIn)
+    diet_data["Dt_Mg"] = calculate_Dt_Mg(diet_data["Dt_MgIn"], Dt_DMIn)
+    diet_data["Dt_K"] = calculate_Dt_K(diet_data["Dt_KIn"], Dt_DMIn)
+    diet_data["Dt_Cl"] = calculate_Dt_Cl(diet_data["Dt_ClIn"], Dt_DMIn)
+    diet_data["Dt_S"] = calculate_Dt_S(diet_data["Dt_SIn"], Dt_DMIn)
+    diet_data["Dt_Co"] = calculate_Dt_Co(diet_data["Dt_CoIn"], Dt_DMIn)
+    diet_data["Dt_Cr"] = calculate_Dt_Cr(diet_data["Dt_CrIn"], Dt_DMIn)
+    diet_data["Dt_Cu"] = calculate_Dt_Cu(diet_data["Dt_CuIn"], Dt_DMIn)
+    diet_data["Dt_Fe"] = calculate_Dt_Fe(diet_data["Dt_FeIn"], Dt_DMIn)
+    diet_data["Dt_I"] = calculate_Dt_I(diet_data["Dt_IIn"], Dt_DMIn)
+    diet_data["Dt_Mn"] = calculate_Dt_Mn(diet_data["Dt_MnIn"], Dt_DMIn)
+    diet_data["Dt_Mo"] = calculate_Dt_Mo(diet_data["Dt_MoIn"], Dt_DMIn)
+    diet_data["Dt_Se"] = calculate_Dt_Se(diet_data["Dt_SeIn"], Dt_DMIn)
+    diet_data["Dt_Zn"] = calculate_Dt_Zn(diet_data["Dt_ZnIn"], Dt_DMIn)
+    diet_data["Dt_VitA"] = calculate_Dt_VitA(diet_data["Dt_VitAIn"], Dt_DMIn)
+    diet_data["Dt_VitD"] = calculate_Dt_VitD(diet_data["Dt_VitDIn"], Dt_DMIn)
+    diet_data["Dt_VitE"] = calculate_Dt_VitE(diet_data["Dt_VitEIn"], Dt_DMIn)
+    diet_data["Dt_Choline"] = calculate_Dt_Choline(
+        diet_data["Dt_CholineIn"], Dt_DMIn
+        )
+    diet_data["Dt_Biotin"] = calculate_Dt_Biotin(
+        diet_data["Dt_BiotinIn"], Dt_DMIn
+        )
+    diet_data["Dt_Niacin"] = calculate_Dt_Niacin(
+        diet_data["Dt_NiacinIn"], Dt_DMIn
+        )
+    diet_data["Dt_B_Carotene"] = calculate_Dt_B_Carotene(
+        diet_data["Dt_B_CaroteneIn"], Dt_DMIn
+        )
+    diet_data["Dt_IdArgRUPIn"] = calculate_Dt_IdArgRUPIn(
+        complete_feed_data["Fd_IdArgRUPIn"]
+        )
+    diet_data["Dt_IdHisRUPIn"] = calculate_Dt_IdHisRUPIn(
+        complete_feed_data["Fd_IdHisRUPIn"]
+        )
+    diet_data["Dt_IdIleRUPIn"] = calculate_Dt_IdIleRUPIn(
+        complete_feed_data["Fd_IdIleRUPIn"]
+        )
+    diet_data["Dt_IdLeuRUPIn"] = calculate_Dt_IdLeuRUPIn(
+        complete_feed_data["Fd_IdLeuRUPIn"]
+        )
+    diet_data["Dt_IdLysRUPIn"] = calculate_Dt_IdLysRUPIn(
+        complete_feed_data["Fd_IdLysRUPIn"]
+        )
+    diet_data["Dt_IdMetRUPIn"] = calculate_Dt_IdMetRUPIn(
+        complete_feed_data["Fd_IdMetRUPIn"]
+        )
+    diet_data["Dt_IdPheRUPIn"] = calculate_Dt_IdPheRUPIn(
+        complete_feed_data["Fd_IdPheRUPIn"]
+        )
+    diet_data["Dt_IdThrRUPIn"] = calculate_Dt_IdThrRUPIn(
+        complete_feed_data["Fd_IdThrRUPIn"]
+        )
+    diet_data["Dt_IdTrpRUPIn"] = calculate_Dt_IdTrpRUPIn(
+        complete_feed_data["Fd_IdTrpRUPIn"]
+        )
+    diet_data["Dt_IdValRUPIn"] = calculate_Dt_IdValRUPIn(
+        complete_feed_data["Fd_IdValRUPIn"]
+        )
     diet_data['Dt_RDPIn'] = calculate_Dt_RDPIn(
         diet_data['Dt_CPIn'], diet_data['Dt_RUPIn']
         )
-
     # NOTE TT_dc values are calculated here as they are required for calculating 
     # Dt_ values. The could be calculated outside of this function but then 
     # diet_data would need to be calculated in 2 steps
@@ -2746,18 +4946,46 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         diet_data['Dt_DMIn_ClfFor'], An_AgeDryFdStart, Env_TempCurr, DMIn_eqn,
         Dt_DMIn, coeff_dict
         )
-    Dig_FA_list = [
-        'C120', 'C140', 'C160', 'C161', 'C180', 'C181t', 'C181c', 'C182',
-        'C183', 'OtherFA'
-    ]
-    diet_data = calculate_Dt_DigFAIn(complete_feed_data, Dig_FA_list, diet_data)
-
-    Abs_micro_list = [
-        'CaIn', 'PIn', 'NaIn', 'KIn', 'ClIn', 'CoIn', 'CuIn', 'FeIn', 'MnIn',
-        'ZnIn'
-    ]
-    diet_data = calculate_Abs_micro(complete_feed_data, Abs_micro_list, diet_data)
-
+    diet_data["Dt_DigC120In"] = calculate_Dt_DigC120In(
+        complete_feed_data["Fd_DigC120In"]
+        )
+    diet_data["Dt_DigC140In"] = calculate_Dt_DigC140In(
+        complete_feed_data["Fd_DigC140In"]
+        )
+    diet_data["Dt_DigC160In"] = calculate_Dt_DigC160In(
+        complete_feed_data["Fd_DigC160In"]
+        )
+    diet_data["Dt_DigC161In"] = calculate_Dt_DigC161In(
+        complete_feed_data["Fd_DigC161In"]
+        )
+    diet_data["Dt_DigC180In"] = calculate_Dt_DigC180In(
+        complete_feed_data["Fd_DigC180In"]
+        )
+    diet_data["Dt_DigC181tIn"] = calculate_Dt_DigC181tIn(
+        complete_feed_data["Fd_DigC181tIn"]
+        )
+    diet_data["Dt_DigC181cIn"] = calculate_Dt_DigC181cIn(
+        complete_feed_data["Fd_DigC181cIn"]
+        )
+    diet_data["Dt_DigC182In"] = calculate_Dt_DigC182In(
+        complete_feed_data["Fd_DigC182In"]
+        )
+    diet_data["Dt_DigC183In"] = calculate_Dt_DigC183In(
+        complete_feed_data["Fd_DigC183In"]
+        )
+    diet_data["Dt_DigOtherFAIn"] = calculate_Dt_DigOtherFAIn(
+        complete_feed_data["Fd_DigOtherFAIn"]
+        )
+    diet_data["Abs_CaIn"] = calculate_Abs_CaIn(complete_feed_data["Fd_absCaIn"])
+    diet_data["Abs_PIn"] = calculate_Abs_PIn(complete_feed_data["Fd_absPIn"])
+    diet_data["Abs_NaIn"] = calculate_Abs_NaIn(complete_feed_data["Fd_absNaIn"])
+    diet_data["Abs_KIn"] = calculate_Abs_KIn(complete_feed_data["Fd_absKIn"])
+    diet_data["Abs_ClIn"] = calculate_Abs_ClIn(complete_feed_data["Fd_absClIn"])
+    diet_data["Abs_CoIn"] = calculate_Abs_CoIn(complete_feed_data["Fd_absCoIn"])
+    diet_data["Abs_CuIn"] = calculate_Abs_CuIn(complete_feed_data["Fd_absCuIn"])
+    diet_data["Abs_FeIn"] = calculate_Abs_FeIn(complete_feed_data["Fd_absFeIn"])
+    diet_data["Abs_MnIn"] = calculate_Abs_MnIn(complete_feed_data["Fd_absMnIn"])
+    diet_data["Abs_ZnIn"] = calculate_Abs_ZnIn(complete_feed_data["Fd_absZnIn"])
     diet_data['Dt_acMg'] = calculate_Dt_acMg(
         An_StatePhys, diet_data['Dt_K'], diet_data['Dt_MgIn_min'], 
         diet_data['Dt_MgIn']
@@ -2815,13 +5043,51 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         diet_data['Dt_DigFAIn'], diet_data['Dt_DigUFAIn']
         )
     diet_data['Dt_DigFA'] = calculate_Dt_DigFA(diet_data['Dt_DigFAIn'], Dt_DMIn)
-    DigFA_FA_list = [
-        'DigFA', 'DigC120', 'DigC140', 'DigC160', 'DigC161', 'DigC180',
-        'DigC181t', 'DigC181c', 'DigC182', 'DigC183', 'DigUFA', 'DigMUFA',
-        'DigPUFA', 'DigSatFA', 'DigOtherFA'
-    ]
-    diet_data = calculate_Dt_FA_FA(DigFA_FA_list, diet_data)
-
+    diet_data["Dt_DigFA_FA"] = calculate_Dt_DigFA_FA(
+        diet_data["Dt_DigFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC120_FA"] = calculate_Dt_DigC120_FA(
+        diet_data["Dt_DigC120In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC140_FA"] = calculate_Dt_DigC140_FA(
+        diet_data["Dt_DigC140In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC160_FA"] = calculate_Dt_DigC160_FA(
+        diet_data["Dt_DigC160In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC161_FA"] = calculate_Dt_DigC161_FA(
+        diet_data["Dt_DigC161In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC180_FA"] = calculate_Dt_DigC180_FA(
+        diet_data["Dt_DigC180In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC181t_FA"] = calculate_Dt_DigC181t_FA(
+        diet_data["Dt_DigC181tIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC181c_FA"] = calculate_Dt_DigC181c_FA(
+        diet_data["Dt_DigC181cIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC182_FA"] = calculate_Dt_DigC182_FA(
+        diet_data["Dt_DigC182In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigC183_FA"] = calculate_Dt_DigC183_FA(
+        diet_data["Dt_DigC183In"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigUFA_FA"] = calculate_Dt_DigUFA_FA(
+        diet_data["Dt_DigUFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigMUFA_FA"] = calculate_Dt_DigMUFA_FA(
+        diet_data["Dt_DigMUFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigPUFA_FA"] = calculate_Dt_DigPUFA_FA(
+        diet_data["Dt_DigPUFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigSatFA_FA"] = calculate_Dt_DigSatFA_FA(
+        diet_data["Dt_DigSatFAIn"], diet_data["Dt_FAIn"]
+        )
+    diet_data["Dt_DigOtherFA_FA"] = calculate_Dt_DigOtherFA_FA(
+        diet_data["Dt_DigOtherFAIn"], diet_data["Dt_FAIn"]
+        )
     diet_data['TT_dcDtFA'] = calculate_TT_dcDtFA(
         diet_data['Dt_DigFAIn'], diet_data['Dt_FAIn']
         )
@@ -2831,7 +5097,36 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         An_StatePhys, Monensin_eqn, Dt_DMIn, diet_data['Dt_FA'], 
         diet_data['Dt_DigNDF'], diet_data['Dt_GEIn'], diet_data['Dt_NDF']
         )
-    diet_data = calculate_DtAARUP_DtAA(aa_list, diet_data)
+    diet_data["DtArgRUP_DtArg"] = calculate_DtArgRUP_DtArg(
+        diet_data["Dt_ArgRUPIn"], diet_data["Dt_ArgIn"]
+        )
+    diet_data["DtHisRUP_DtHis"] = calculate_DtHisRUP_DtHis(
+        diet_data["Dt_HisRUPIn"], diet_data["Dt_HisIn"]
+        )
+    diet_data["DtIleRUP_DtIle"] = calculate_DtIleRUP_DtIle(
+        diet_data["Dt_IleRUPIn"], diet_data["Dt_IleIn"]
+        )
+    diet_data["DtLeuRUP_DtLeu"] = calculate_DtLeuRUP_DtLeu(
+        diet_data["Dt_LeuRUPIn"], diet_data["Dt_LeuIn"]
+        )
+    diet_data["DtLysRUP_DtLys"] = calculate_DtLysRUP_DtLys(
+        diet_data["Dt_LysRUPIn"], diet_data["Dt_LysIn"]
+        )
+    diet_data["DtMetRUP_DtMet"] = calculate_DtMetRUP_DtMet(
+        diet_data["Dt_MetRUPIn"], diet_data["Dt_MetIn"]
+        )
+    diet_data["DtPheRUP_DtPhe"] = calculate_DtPheRUP_DtPhe(
+        diet_data["Dt_PheRUPIn"], diet_data["Dt_PheIn"]
+        )
+    diet_data["DtThrRUP_DtThr"] = calculate_DtThrRUP_DtThr(
+        diet_data["Dt_ThrRUPIn"], diet_data["Dt_ThrIn"]
+        )
+    diet_data["DtTrpRUP_DtTrp"] = calculate_DtTrpRUP_DtTrp(
+        diet_data["Dt_TrpRUPIn"], diet_data["Dt_TrpIn"]
+        )
+    diet_data["DtValRUP_DtVal"] = calculate_DtValRUP_DtVal(
+        diet_data["Dt_ValRUPIn"], diet_data["Dt_ValIn"]
+        )
     diet_data["Dt_DE_ClfLiq"] = calculate_Dt_DE_ClfLiq(
         diet_data["Dt_DEIn_ClfLiq"], diet_data["Dt_DMIn_ClfLiq"]
         )
@@ -2886,8 +5181,35 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         diet_data['Dt_DEIn_base_ClfLiq'],
         diet_data['Dt_DEIn_base_ClfDry'], Monensin_eqn
         )
-    diet_data = calculate_Dt_IdAAIn(
-        Du_IdAAMic, aa_list, diet_data
+    diet_data["Dt_IdArgIn"] = calculate_Dt_IdArgIn(
+        Du_IdAAMic["Arg"], diet_data["Dt_IdArgRUPIn"]
+        )
+    diet_data["Dt_IdHisIn"] = calculate_Dt_IdHisIn(
+        Du_IdAAMic["His"], diet_data["Dt_IdHisRUPIn"]
+        )
+    diet_data["Dt_IdIleIn"] = calculate_Dt_IdIleIn(
+        Du_IdAAMic["Ile"], diet_data["Dt_IdIleRUPIn"]
+        )
+    diet_data["Dt_IdLeuIn"] = calculate_Dt_IdLeuIn(
+        Du_IdAAMic["Leu"], diet_data["Dt_IdLeuRUPIn"]
+        )
+    diet_data["Dt_IdLysIn"] = calculate_Dt_IdLysIn(
+        Du_IdAAMic["Lys"], diet_data["Dt_IdLysRUPIn"]
+        )
+    diet_data["Dt_IdMetIn"] = calculate_Dt_IdMetIn(
+        Du_IdAAMic["Met"], diet_data["Dt_IdMetRUPIn"]
+        )
+    diet_data["Dt_IdPheIn"] = calculate_Dt_IdPheIn(
+        Du_IdAAMic["Phe"], diet_data["Dt_IdPheRUPIn"]
+        )
+    diet_data["Dt_IdThrIn"] = calculate_Dt_IdThrIn(
+        Du_IdAAMic["Thr"], diet_data["Dt_IdThrRUPIn"]
+        )
+    diet_data["Dt_IdTrpIn"] = calculate_Dt_IdTrpIn(
+        Du_IdAAMic["Trp"], diet_data["Dt_IdTrpRUPIn"]
+        )
+    diet_data["Dt_IdValIn"] = calculate_Dt_IdValIn(
+        Du_IdAAMic["Val"], diet_data["Dt_IdValRUPIn"]
         )
     diet_data['Dt_DigOMaIn'] = calculate_Dt_DigOMaIn(
         diet_data['Dt_DigNDFIn'], diet_data['Dt_DigStIn'],
