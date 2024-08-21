@@ -549,7 +549,7 @@ class nasem_dag:
         user_inputs = requirements["user_inputs"]
         constants = requirements["constants"]
 
-        arg_names = list(user_inputs.keys()) + list(constants.keys())
+        arg_names = sorted(list(user_inputs.keys()) + list(constants.keys()))
 
         func_name_to_result_name = {}
         for func in functions_order:
