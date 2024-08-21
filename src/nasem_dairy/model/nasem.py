@@ -150,8 +150,11 @@ def nasem(user_diet: pd.DataFrame,
         animal_input["Trg_MilkProd"], animal_input["An_GestDay"], 
         animal_input["An_GestLength"], animal_input["An_AgeDryFdStart"],
         animal_input["Env_TempCurr"], An_PrePartWk, 
-        Trg_NEmilkOut, An_PrePartWklim, An_PrePartWkDurat, feed_data, 
-        coeff_dict
+        Trg_NEmilkOut, An_PrePartWklim, An_PrePartWkDurat, feed_data["Fd_NDF"],
+        feed_data["Fd_DMInp"], feed_data["Fd_ADF"], feed_data["Fd_ForNDF"],
+        feed_data["Fd_Conc"], feed_data["Fd_DNDF48_input"],
+        feed_data["Trg_Fd_DMIn"], feed_data["Fd_Category"], feed_data["Fd_CP"],
+        feed_data["Fd_FA"], feed_data["Fd_Ash"], feed_data["Fd_St"], coeff_dict
         )
 
     ####################

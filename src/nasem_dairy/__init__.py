@@ -27,7 +27,8 @@ from nasem_dairy.nasem_equations.dry_matter_intake import (
     calculate_Dt_DMIn_DryCow1_Close,
     calculate_Dt_DMIn_DryCow2,
     calculate_Dt_DMIn_Calf1,
-    calculate_Dt_DMIn_DryCow_AdjGest
+    calculate_Dt_DMIn_DryCow_AdjGest,
+    calculate_Dt_DMIn
 )
 
 from nasem_dairy.nasem_equations.milk import (

@@ -407,17 +407,28 @@ def calculate_Dt_DMIn(DMIn_eqn: int,
                       Trg_NEmilkOut: float,
                       An_PrePartWklim: float,
                       An_PrePartWkDurat: float,
-                      feed_data: pd.DataFrame,
+                      Fd_NDF: pd.Series,
+                      Fd_DMInp: pd.Series,
+                      Fd_ADF: pd.Series,
+                      Fd_ForNDF: pd.Series,
+                      Fd_Conc: pd.Series,
+                      Fd_DNDF48_input: pd.Series,
+                      Trg_Fd_DMIn: pd.Series,
+                      Fd_Category: pd.Series,
+                      Fd_CP: pd.Series,
+                      Fd_FA: pd.Series,
+                      Fd_Ash: pd.Series,
+                      Fd_St: pd.Series,
                       coeff_dict: dict
 ) -> float:   
-    Dt_NDF = (feed_data["Fd_NDF"] * feed_data["Fd_DMInp"]).sum()
-    Dt_ADF = (feed_data["Fd_ADF"] * feed_data["Fd_DMInp"]).sum()
-    Dt_ForNDF = (feed_data["Fd_ForNDF"] * feed_data["Fd_DMInp"]).sum()
+    Dt_NDF = (Fd_NDF * Fd_DMInp).sum()
+    Dt_ADF = (Fd_ADF * Fd_DMInp).sum()
+    Dt_ForNDF = (Fd_ForNDF * Fd_DMInp).sum()
     Fd_DNDF48 = diet.calculate_Fd_DNDF48(
-        feed_data["Fd_Conc"], feed_data["Fd_DNDF48_input"]
+        Fd_Conc, Fd_DNDF48_input
         )
     Dt_ForDNDF48 = diet.calculate_Dt_ForDNDF48(
-        feed_data["Fd_DMInp"], feed_data["Fd_Conc"], feed_data["Fd_NDF"], 
+        Fd_DMInp, Fd_Conc, Fd_NDF, 
         Fd_DNDF48
         )
     Dt_ForDNDF48_ForNDF = diet.calculate_Dt_ForDNDF48_ForNDF(
@@ -430,21 +441,21 @@ def calculate_Dt_DMIn(DMIn_eqn: int,
 
     elif DMIn_eqn == 1:
         Fd_DMIn_ClfLiq = diet.calculate_Fd_DMIn_ClfLiq(
-            An_StatePhys, feed_data["Trg_Fd_DMIn"], feed_data["Fd_Category"]
+            An_StatePhys, Trg_Fd_DMIn, Fd_Category
         )
         Fd_DMIn_ClfFor = diet.calculate_Fd_DMIn_ClfFor(
-            Trg_Dt_DMIn, feed_data["Fd_Conc"], feed_data["Fd_DMInp"]
+            Trg_Dt_DMIn, Fd_Conc, Fd_DMInp
         )
         Fd_GE = diet.calculate_Fd_GE(
-            An_StatePhys, feed_data["Fd_Category"], feed_data["Fd_CP"], 
-            feed_data["Fd_FA"], feed_data["Fd_Ash"], feed_data["Fd_St"],
-            feed_data["Fd_NDF"], coeff_dict
+            An_StatePhys, Fd_Category, Fd_CP, 
+            Fd_FA, Fd_Ash, Fd_St,
+            Fd_NDF, coeff_dict
         )
         Fd_DE_ClfLiq = diet.calculate_Fd_DE_ClfLiq(
-            An_StatePhys, feed_data["Fd_Category"], Fd_GE
+            An_StatePhys, Fd_Category, Fd_GE
         )
         Fd_ME_ClfLiq = diet.calculate_Fd_ME_ClfLiq(
-            An_StatePhys, feed_data["Fd_Category"], Fd_DE_ClfLiq
+            An_StatePhys, Fd_Category, Fd_DE_ClfLiq
         )
         Dt_MEIn_ClfLiq = diet.calculate_Dt_MEIn_ClfLiq(
             Fd_ME_ClfLiq, Fd_DMIn_ClfLiq
