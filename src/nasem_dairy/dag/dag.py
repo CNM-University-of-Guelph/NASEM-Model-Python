@@ -9,6 +9,7 @@ import pandas as pd
 
 import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
+import nasem_dairy.model_output.ModelOutput as output
 
 class ModelDAG:
     ### Initalization ###
@@ -898,7 +899,7 @@ class ModelDAG:
             func_name_to_result_name[func] = result_name
         
         # Define the function dynamically using exec
-        func_args = ", ".join(arg_names + ["return_all=False"])
+        func_args = ", ".join(arg_names)
         generated_func_name = f"wrapper_{target_variable}"
         generated_func_return = list(func_name_to_result_name.values())[-1]
         docstring = create_docstring(
@@ -908,7 +909,6 @@ class ModelDAG:
         func_body = f"""
 def {generated_func_name}({func_args}):
     {docstring}
-    results = {{}}
     dict_inputs = {dict_inputs}    
     if {aa_list_required}:
         aa_list = {self.aa_list.copy()}
@@ -929,27 +929,35 @@ def {generated_func_name}({func_args}):
         # Create dictionary if requried
         if function_name in dict_inputs.keys():
             for dict_name, required_keys in dict_inputs[function_name].items():
-                locals()[dict_name] = {{key: locals()[key] for key in required_keys}}
+                locals()[dict_name] = {{
+                    key: locals()[key] for key in required_keys
+                    }}
                 
         # Resolve arguments for the function call
-        func_call_args = {{arg: locals()[arg] for arg in func_args if arg in locals()}}
+        func_call_args = {{
+            arg: locals()[arg] for arg in func_args if arg in locals()
+            }}
 
         # Call the function and store the result with the correct name
         result = func(**func_call_args)
         result_name = {func_name_to_result_name}[function_name]
         locals()[result_name] = result
-        results[result_name] = result
    
-    # Step 3: Return the target value
-    if return_all:
-        return results
-    else:
-        return results['{generated_func_return}']
+    exclude_keys = {
+        'dict_inputs', 'input_dict_name', 'input_dict', 'function_name', 
+        'func', 'func_args', 'func_call_args', 'result', 'result_name', 
+        'exclude_keys'
+        }
+    locals_dict = {{
+        key: value for key, value in locals().items() if key not in exclude_keys
+    }}
+    model_output = output.ModelOutput(locals_input=locals_dict)
+    return model_output
 """
         # Execute the dynamic function definition
         exec_namespace = {}
         exec(func_body, globals(), exec_namespace)
         generated_function = exec_namespace[generated_func_name]
-        
+
         return generated_function
     

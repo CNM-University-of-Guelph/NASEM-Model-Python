@@ -40,8 +40,8 @@ if __name__ == "__main__":
     filtered_feeds = nd.select_feeds(feed_names)
 
     # Testing variables
-    variable = "Rsrv_Gain_empty"   
-    # variable = "Du_MiCP"
+    # variable = "Rsrv_Gain_empty"   
+    variable = "Du_MiCP"
     # variable = "GrUter_Wt"          
     # variable = "Fd_ForNDF"
     # variable = "Fd_ADFIn"
@@ -72,8 +72,11 @@ if __name__ == "__main__":
         }
     dynamic_func_output = call_with_dict_args(generated_function, args_dict)
 
+    print(f"Expected Output: {output.get_value(variable)}")
+    print(f"Actual Output: {dynamic_func_output.get_value(variable)}")
+
     # print(f"Expected output: \n{expected_output}\n")
     # print(dynamic_func_output)
 
-    assert expected_output == dynamic_func_output, "Values should be equal"
+    assert output.get_value(variable) == dynamic_func_output.get_value(variable), "Values should be equal"
     # assert expected_output.equals(dynamic_func_output), "Values should be equal"
