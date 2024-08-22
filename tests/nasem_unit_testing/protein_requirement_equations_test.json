@@ -65,17 +65,17 @@
       "Output": 1723
     },
     {
-      "Name": "calculate_Kg_MP_NP_Trg",
+      "Name": "calculate_Kg_MP_NP_Trg_initial",
       "Input": {"An_StatePhys": "Heifer", "An_Parity_rl": 0, "An_BW": 710, "An_BW_empty": 600, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
       "Output": 0.2914024
     },
     {
-        "Name": "calculate_Kg_MP_NP_Trg",
+        "Name": "calculate_Kg_MP_NP_Trg_initial",
         "Input": {"An_StatePhys": "Calf", "An_Parity_rl": 0, "An_BW": 145, "An_BW_empty": 120, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
         "Output": 0.51354613
     },
     {
-        "Name": "calculate_Kg_MP_NP_Trg",
+        "Name": "calculate_Kg_MP_NP_Trg_initial",
         "Input": {"An_StatePhys": "Lactating Cow", "An_Parity_rl": 2, "An_BW": 810, "An_BW_empty": 700, "An_BW_mature": 750, "An_BWmature_empty": 690, "MP_NP_efficiency_dict": null, "coeff_dict": null},
         "Output": 0.69
     },
