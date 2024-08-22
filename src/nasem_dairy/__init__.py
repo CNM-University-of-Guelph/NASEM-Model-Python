@@ -1090,7 +1090,6 @@ from nasem_dairy.nasem_equations.body_composition import (
     calculate_BW_BCS,
     calculate_An_BWnp3,
     calculate_An_GutFill_Wt_Erdman,
-    calculate_An_GutFill_Wt,
     calculate_An_BWnp_empty,
     calculate_An_BWnp3_empty,
     calculate_Body_Fat_EBW,

@@ -195,11 +195,6 @@
       "Output": 202.37
     },
     {
-      "Name": "calculate_An_GutFill_Wt",
-      "Input": {"An_GutFill_BW": 142, "An_BWnp": 4.1},
-      "Output": 582.1999999999999
-    },
-    {
       "Name": "calculate_An_BWnp_empty",
       "Input": {"An_BWnp": 5.1, "An_GutFill_Wt": 210},
       "Output": -204.9

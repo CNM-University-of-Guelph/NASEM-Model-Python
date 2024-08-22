@@ -683,9 +683,6 @@ def nasem(user_diet: pd.DataFrame,
         Dt_DMIn, infusion_data["InfRum_DMIn"],
         infusion_data["InfSI_DMIn"]
         )
-    an_data["An_GutFill_Wt"] = body_comp.calculate_An_GutFill_Wt(
-        an_data["An_GutFill_BW"], an_data["An_BWnp"]
-        )
     an_data["An_BWnp_empty"] = body_comp.calculate_An_BWnp_empty(
         an_data["An_BWnp"], an_data["An_GutFill_Wt"]
         )
