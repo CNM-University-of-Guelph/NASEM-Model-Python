@@ -164,7 +164,7 @@ def calculate_Kg_MP_NP_Trg_initial(An_StatePhys: str,
         'Trg_MP_NP': 0.69
     }
 
-    calculate_Kg_MP_NP_Trg(
+    calculate_Kg_MP_NP_Trg_initial(
         An_StatePhys = "Calf", An_Parity_rl = 0, An_BW = 150.0, 
         An_BW_empty = 40.0, An_BW_mature = 600.0, An_BWmature_empty = 70.0, 
         MP_NP_efficiency_dict = MP_NP_efficiency_dict, coeff_dict = coeff_dict
