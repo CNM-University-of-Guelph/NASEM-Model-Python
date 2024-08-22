@@ -113,6 +113,21 @@
       "Name": "calculate_Rum_MiCP_DigCHO",
       "Input": {"Du_MiCP": 417, "Rum_DigNDFIn": 10.9, "Rum_DigStIn": 8.9},
       "Output": 21.06060606060606
+    },
+    {
+      "Name": "calculate_Du_MiN_g",
+      "Input": {"MiN_eqn": 1, "MiN_Vm": 5.7, "Dt_rOMIn": 9.5, "Dt_ForNDFIn": 3.9, "An_RDPIn": 2.5, "Rum_DigNDFIn": 1.0, "Rum_DigStIn": 0.3, "An_RDPIn_g": 2.5, "coeff_dict": null},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_Du_MiN_g",
+      "Input": {"MiN_eqn": 2, "MiN_Vm": 5.7, "Dt_rOMIn": 9.5, "Dt_ForNDFIn": 3.9, "An_RDPIn": 2.5, "Rum_DigNDFIn": 1.0, "Rum_DigStIn": 0.3, "An_RDPIn_g": 2.5, "coeff_dict": null},
+      "Output": 348.0974
+    },
+    {
+      "Name": "calculate_Du_MiN_g",
+      "Input": {"MiN_eqn": 3, "MiN_Vm": 5.7, "Dt_rOMIn": 9.5, "Dt_ForNDFIn": 3.9, "An_RDPIn": 2.5, "Rum_DigNDFIn": 1.0, "Rum_DigStIn": 0.3, "An_RDPIn_g": 2.5, "coeff_dict": null},
+      "Output": 38.939298245614026
     }    
   ]
   
