@@ -1113,5 +1113,540 @@
         "Name": "calculate_Fd_RDPIn",
         "Input": {"Fd_RDP_series": [4.6, 0.4, 2.1], "Fd_DMIn_series": [3.1, 9.4, 5.1]},
         "Output": [0.1426, 0.0376, 0.1071]
+      },
+      {
+        "Name": "calculate_Fd_ADFIn",
+        "Input": {"Fd_ADF_series": [30, 40, 50], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.3, 0.8, 1.5]
+      },
+      {
+        "Name": "calculate_Fd_NDFIn",
+        "Input": {"Fd_NDF_series": [30, 35, 40], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.3, 0.7, 1.2]
+      },
+      {
+        "Name": "calculate_Fd_StIn",
+        "Input": {"Fd_St_series": [20, 25, 30], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.2, 0.5, 0.9]
+      },
+      {
+        "Name": "calculate_Fd_NFCIn",
+        "Input": {"Fd_NFC_series": [15, 20, 25], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.15, 0.4, 0.75]
+      },
+      {
+        "Name": "calculate_Fd_WSCIn",
+        "Input": {"Fd_WSC_series": [10, 15, 20], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.1, 0.3, 0.6]
+      },
+      {
+        "Name": "calculate_Fd_rOMIn",
+        "Input": {"Fd_rOM_series": [40, 45, 50], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.4, 0.9, 1.5]
+      },
+      {
+        "Name": "calculate_Fd_LgIn",
+        "Input": {"Fd_Lg_series": [25, 30, 35], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.25, 0.6, 1.05]
+      },
+      {
+        "Name": "calculate_Fd_ConcIn",
+        "Input": {"Fd_Conc_series": [50, 55, 60], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.5, 1.1, 1.8]
+      },
+      {
+        "Name": "calculate_Fd_ForIn",
+        "Input": {"Fd_For_series": [20, 25, 30], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.2, 0.5, 0.9]
+      },
+      {
+        "Name": "calculate_Fd_ForNDFIn",
+        "Input": {"Fd_ForNDF_series": [30, 35, 40], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.3, 0.7, 1.2]
+      },
+      {
+        "Name": "calculate_Fd_ForWetIn",
+        "Input": {"Fd_ForWet_series": [25, 30, 35], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.25, 0.6, 1.05]
+      },
+      {
+        "Name": "calculate_Fd_ForDryIn",
+        "Input": {"Fd_ForDry_series": [10, 15, 20], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.1, 0.3, 0.6]
+      },
+      {
+        "Name": "calculate_Fd_PastIn",
+        "Input": {"Fd_Past_series": [15, 20, 25], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.15, 0.4, 0.75]
+      },
+      {
+        "Name": "calculate_Fd_CPIn",
+        "Input": {"Fd_CP_series": [18, 20, 22], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.18, 0.4, 0.66]
+      },
+      {
+        "Name": "calculate_Fd_TPIn",
+        "Input": {"Fd_TP_series": [14, 16, 18], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.14, 0.32, 0.54]
+      },
+      {
+        "Name": "calculate_Fd_CFatIn",
+        "Input": {"Fd_CFat_series": [5, 10, 15], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.05, 0.2, 0.45]
+      },
+      {
+        "Name": "calculate_Fd_FAIn",
+        "Input": {"Fd_FA_series": [3, 5, 7], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.03, 0.1, 0.21]
+      },
+      {
+        "Name": "calculate_Fd_FAhydrIn",
+        "Input": {"Fd_FAhydr_series": [8, 10, 12], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.08, 0.2, 0.36]
+      },
+      {
+        "Name": "calculate_Fd_AshIn",
+        "Input": {"Fd_Ash_series": [10, 12, 15], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.1, 0.24, 0.45]
+      },
+      {
+        "Name": "calculate_Fd_C120In",
+        "Input": {"Fd_C120_FA_series": [2, 4, 6], "Fd_FA_series": [3, 5, 7], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0006, 0.004, 0.0126]
+      },
+      {
+        "Name": "calculate_Fd_C140In",
+        "Input": {"Fd_C140_FA_series": [3, 5, 7], "Fd_FA_series": [4, 6, 8], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0012, 0.006, 0.0168]
+      },
+      {
+        "Name": "calculate_Fd_C160In",
+        "Input": {"Fd_C160_FA_series": [4, 6, 8], "Fd_FA_series": [5, 7, 9], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.002, 0.0084, 0.0216]
+      },
+      {
+        "Name": "calculate_Fd_C161In",
+        "Input": {"Fd_C161_FA_series": [5, 7, 9], "Fd_FA_series": [6, 8, 10], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.003, 0.0112, 0.027]
+      },
+      {
+        "Name": "calculate_Fd_C180In",
+        "Input": {"Fd_C180_FA_series": [6, 8, 10], "Fd_FA_series": [7, 9, 11], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0042, 0.0144, 0.033]
+      },
+      {
+        "Name": "calculate_Fd_C181tIn",
+        "Input": {"Fd_C181t_FA_series": [7, 9, 11], "Fd_FA_series": [8, 10, 12], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0056, 0.018, 0.0396]
+      },
+      {
+        "Name": "calculate_Fd_C181cIn",
+        "Input": {"Fd_C181c_FA_series": [8, 10, 12], "Fd_FA_series": [9, 11, 13], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0072, 0.022, 0.0468]
+      },
+      {
+        "Name": "calculate_Fd_C182In",
+        "Input": {"Fd_C182_FA_series": [9, 11, 13], "Fd_FA_series": [10, 12, 14], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.009, 0.0264, 0.0546]
+      },
+      {
+        "Name": "calculate_Fd_C183In",
+        "Input": {"Fd_C183_FA_series": [10, 12, 14], "Fd_FA_series": [11, 13, 15], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.011, 0.0312, 0.063]
+      },
+      {
+        "Name": "calculate_Fd_OtherFAIn",
+        "Input": {"Fd_OtherFA_FA_series": [11, 13, 15], "Fd_FA_series": [12, 14, 16], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0132, 0.0364, 0.072]
+      },
+      {
+        "Name": "calculate_Fd_CaIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Ca_series": [0.1, 0.15, 0.2]},
+        "Output": [1.0, 3.0, 6.0]
+      },
+      {
+        "Name": "calculate_Fd_PIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_P_series": [0.2, 0.25, 0.3]},
+        "Output": [2.0, 5.0, 9.0]
+      },
+      {
+        "Name": "calculate_Fd_NaIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Na_series": [0.3, 0.35, 0.4]},
+        "Output": [3.0, 7.0, 12.0]
+      },
+      {
+        "Name": "calculate_Fd_MgIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Mg_series": [0.4, 0.45, 0.5]},
+        "Output": [4.0, 9.0, 15.0]
+      },
+      {
+        "Name": "calculate_Fd_KIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_K_series": [0.5, 0.55, 0.6]},
+        "Output": [5.0, 11.0, 18.0]
+      },
+      {
+        "Name": "calculate_Fd_ClIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Cl_series": [0.6, 0.65, 0.7]},
+        "Output": [6.0, 13.0, 21.0]
+      },
+      {
+        "Name": "calculate_Fd_SIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_S_series": [0.7, 0.75, 0.8]},
+        "Output": [7.0, 15.0, 24.0]
+      },
+      {
+        "Name": "calculate_Fd_CoIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Co_series": [0.01, 0.015, 0.02]},
+        "Output": [0.01, 0.03, 0.06]
+      },
+      {
+        "Name": "calculate_Fd_CrIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Cr_series": [0.02, 0.025, 0.03]},
+        "Output": [0.02, 0.05, 0.09]
+      },
+      {
+        "Name": "calculate_Fd_CuIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Cu_series": [0.03, 0.035, 0.04]},
+        "Output": [0.03, 0.07, 0.12]
+      },
+      {
+        "Name": "calculate_Fd_FeIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Fe_series": [0.04, 0.045, 0.05]},
+        "Output": [0.04, 0.09, 0.15]
+      },
+      {
+        "Name": "calculate_Fd_IIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_I_series": [0.05, 0.055, 0.06]},
+        "Output": [0.05, 0.11, 0.18]
+      },
+      {
+        "Name": "calculate_Fd_MnIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Mn_series": [0.06, 0.065, 0.07]},
+        "Output": [0.06, 0.13, 0.21]
+      },
+      {
+        "Name": "calculate_Fd_MoIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Mo_series": [0.07, 0.075, 0.08]},
+        "Output": [0.07, 0.15, 0.24]
+      },
+      {
+        "Name": "calculate_Fd_SeIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Se_series": [0.08, 0.085, 0.09]},
+        "Output": [0.08, 0.17, 0.27]
+      },
+      {
+        "Name": "calculate_Fd_ZnIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Zn_series": [0.09, 0.095, 0.1]},
+        "Output": [0.09, 0.19, 0.3]
+      },
+      {
+        "Name": "calculate_Fd_VitAIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_VitA_series": [0.01, 0.015, 0.02]},
+        "Output": [0.01, 0.03, 0.06]
+      },
+      {
+        "Name": "calculate_Fd_VitDIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_VitD_series": [0.02, 0.025, 0.03]},
+        "Output": [0.02, 0.05, 0.09]
+      },
+      {
+        "Name": "calculate_Fd_VitEIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_VitE_series": [0.03, 0.035, 0.04]},
+        "Output": [0.03, 0.07, 0.12]
+      },
+      {
+        "Name": "calculate_Fd_CholineIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Choline_series": [0.04, 0.045, 0.05]},
+        "Output": [0.04, 0.09, 0.15]
+      },
+      {
+        "Name": "calculate_Fd_BiotinIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Biotin_series": [0.05, 0.055, 0.06]},
+        "Output": [0.05, 0.11, 0.18]
+      },
+      {
+        "Name": "calculate_Fd_NiacinIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_Niacin_series": [0.06, 0.065, 0.07]},
+        "Output": [0.06, 0.13, 0.21]
+      },
+      {
+        "Name": "calculate_Fd_B_CaroteneIn",
+        "Input": {"Fd_DMIn_series": [1.0, 2.0, 3.0], "Fd_B_Carotene_series": [0.07, 0.075, 0.08]},
+        "Output": [0.07, 0.15, 0.24]
+      },
+      {
+        "Name": "calculate_Fd_absCoIn",
+        "Input": {"Fd_CoIn_series": [1.0, 2.0, 3.0], "Fd_acCo_series": [0.1, 0.15, 0.2]},
+        "Output": [0.1, 0.3, 0.6]
+      },
+      {
+        "Name": "calculate_Fd_absCuIn",
+        "Input": {"Fd_CuIn_series": [1.0, 2.0, 3.0], "Fd_acCu_series": [0.2, 0.25, 0.3]},
+        "Output": [0.2, 0.5, 0.9]
+      },
+      {
+        "Name": "calculate_Fd_absFeIn",
+        "Input": {"Fd_FeIn_series": [1.0, 2.0, 3.0], "Fd_acFe_series": [0.3, 0.35, 0.4]},
+        "Output": [0.3, 0.7, 1.2]
+      },
+      {
+        "Name": "calculate_Fd_absMnIn",
+        "Input": {"Fd_MnIn_series": [1.0, 2.0, 3.0], "Fd_acMn_series": [0.4, 0.45, 0.5]},
+        "Output": [0.4, 0.9, 1.5]
+      },
+      {
+        "Name": "calculate_Fd_absZnIn",
+        "Input": {"Fd_ZnIn_series": [1.0, 2.0, 3.0], "Fd_acZn_series": [0.5, 0.55, 0.6]},
+        "Output": [0.5, 1.1, 1.8]
+      },
+      {
+        "Name": "calculate_Fd_Argt_CP",
+        "Input": {"Fd_Arg_CP_series": [0.8, 1.0, 1.2], "coeff_dict": {"RecArg": 0.2}},
+        "Output": [4.0, 5.0, 6.0]
+      },
+      {
+        "Name": "calculate_Fd_Hist_CP",
+        "Input": {"Fd_His_CP_series": [0.9, 1.1, 1.3], "coeff_dict": {"RecHis": 0.3}},
+        "Output": [3.0, 3.67, 4.33]
+      },
+      {
+        "Name": "calculate_Fd_Ilet_CP",
+        "Input": {"Fd_Ile_CP_series": [1.0, 1.2, 1.4], "coeff_dict": {"RecIle": 0.4}},
+        "Output": [2.5, 3.0, 3.5]
+      },
+      {
+        "Name": "calculate_Fd_Leut_CP",
+        "Input": {"Fd_Leu_CP_series": [1.1, 1.3, 1.5], "coeff_dict": {"RecLeu": 0.5}},
+        "Output": [2.2, 2.6, 3.0]
+      },
+      {
+        "Name": "calculate_Fd_Lyst_CP",
+        "Input": {"Fd_Lys_CP_series": [1.2, 1.4, 1.6], "coeff_dict": {"RecLys": 0.6}},
+        "Output": [2.0, 2.33, 2.67]
+      },
+      {
+        "Name": "calculate_Fd_Mett_CP",
+        "Input": {"Fd_Met_CP_series": [1.3, 1.5, 1.7], "coeff_dict": {"RecMet": 0.7}},
+        "Output": [1.86, 2.14, 2.43]
+      },
+      {
+        "Name": "calculate_Fd_Phet_CP",
+        "Input": {"Fd_Phe_CP_series": [1.4, 1.6, 1.8], "coeff_dict": {"RecPhe": 0.8}},
+        "Output": [1.75, 2.0, 2.25]
+      },
+      {
+        "Name": "calculate_Fd_Thrt_CP",
+        "Input": {"Fd_Thr_CP_series": [1.5, 1.7, 1.9], "coeff_dict": {"RecThr": 0.9}},
+        "Output": [1.67, 1.89, 2.11]
+      },
+      {
+        "Name": "calculate_Fd_Trpt_CP",
+        "Input": {"Fd_Trp_CP_series": [1.6, 1.8, 2.0], "coeff_dict": {"RecTrp": 1.0}},
+        "Output": [1.6, 1.8, 2.0]
+      },
+      {
+        "Name": "calculate_Fd_Valt_CP",
+        "Input": {"Fd_Val_CP_series": [1.7, 1.9, 2.1], "coeff_dict": {"RecVal": 1.1}},
+        "Output": [1.55, 1.73, 1.91]
+      },
+      {
+        "Name": "calculate_Fd_ArgRUPIn",
+        "Input": {"Fd_Argt_CP_series": [1.5, 1.7, 1.9], "Fd_RUPIn_series": [0.8, 1.0, 1.2]},
+        "Output": [12.0, 17.0, 22.8]
+      },
+      {
+        "Name": "calculate_Fd_HisRUPIn",
+        "Input": {"Fd_Hist_CP_series": [1.6, 1.8, 2.0], "Fd_RUPIn_series": [0.9, 1.1, 1.3]},
+        "Output": [14.4, 19.8, 26.0]
+      },
+      {
+        "Name": "calculate_Fd_IleRUPIn",
+        "Input": {"Fd_Ilet_CP_series": [1.7, 1.9, 2.1], "Fd_RUPIn_series": [1.0, 1.2, 1.4]},
+        "Output": [17.0, 22.8, 29.4]
+      },
+      {
+        "Name": "calculate_Fd_LeuRUPIn",
+        "Input": {"Fd_Leut_CP_series": [1.8, 2.0, 2.2], "Fd_RUPIn_series": [1.1, 1.3, 1.5]},
+        "Output": [19.8, 26.0, 33.0]
+      },
+      {
+        "Name": "calculate_Fd_LysRUPIn",
+        "Input": {"Fd_Lyst_CP_series": [1.9, 2.1, 2.3], "Fd_RUPIn_series": [1.2, 1.4, 1.6]},
+        "Output": [22.8, 29.4, 36.8]
+      },
+      {
+        "Name": "calculate_Fd_MetRUPIn",
+        "Input": {"Fd_Mett_CP_series": [2.0, 2.2, 2.4], "Fd_RUPIn_series": [1.3, 1.5, 1.7]},
+        "Output": [26.0, 33.0, 40.8]
+      },
+      {
+        "Name": "calculate_Fd_PheRUPIn",
+        "Input": {"Fd_Phet_CP_series": [2.1, 2.3, 2.5], "Fd_RUPIn_series": [1.4, 1.6, 1.8]},
+        "Output": [29.4, 36.8, 45.0]
+      },
+      {
+        "Name": "calculate_Fd_ThrRUPIn",
+        "Input": {"Fd_Thrt_CP_series": [2.2, 2.4, 2.6], "Fd_RUPIn_series": [1.5, 1.7, 1.9]},
+        "Output": [33.0, 40.8, 49.4]
+      },
+      {
+        "Name": "calculate_Fd_TrpRUPIn",
+        "Input": {"Fd_Trpt_CP_series": [2.3, 2.5, 2.7], "Fd_RUPIn_series": [1.6, 1.8, 2.0]},
+        "Output": [36.8, 45.0, 54.0]
+      },
+      {
+        "Name": "calculate_Fd_ValRUPIn",
+        "Input": {"Fd_Valt_CP_series": [2.4, 2.6, 2.8], "Fd_RUPIn_series": [1.7, 1.9, 2.1]},
+        "Output": [40.8, 49.4, 58.8]
+      },
+      {
+        "Name": "calculate_Fd_IdArgRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.8, 2.0, 2.2], "Fd_ArgRUPIn_series": [12.0, 17.0, 22.8], "SIDigArg": 0.8},
+        "Output": [0.1728, 0.272, 0.4015]
+      },
+      {
+        "Name": "calculate_Fd_IdHisRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.7, 1.9, 2.1], "Fd_HisRUPIn_series": [14.4, 19.8, 26.0], "SIDigHis": 0.75},
+        "Output": [0.1836, 0.2829, 0.4095]
+      },
+      {
+        "Name": "calculate_Fd_IdIleRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.6, 1.8, 2.0], "Fd_IleRUPIn_series": [17.0, 22.8, 29.4], "SIDigIle": 0.7},
+        "Output": [0.1904, 0.287, 0.4116]
+      },
+      {
+        "Name": "calculate_Fd_IdLeuRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.5, 1.7, 1.9], "Fd_LeuRUPIn_series": [19.8, 26.0, 33.0], "SIDigLeu": 0.85},
+        "Output": [0.25245, 0.3754, 0.5329]
+      },
+      {
+        "Name": "calculate_Fd_IdLysRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.4, 1.6, 1.8], "Fd_LysRUPIn_series": [22.8, 29.4, 36.8], "SIDigLys": 0.9},
+        "Output": [0.28728, 0.42336, 0.59616]
+      },
+      {
+        "Name": "calculate_Fd_IdMetRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.3, 1.5, 1.7], "Fd_MetRUPIn_series": [26.0, 33.0, 40.8], "SIDigMet": 0.85},
+        "Output": [0.2873, 0.4208, 0.5896]
+      },
+      {
+        "Name": "calculate_Fd_IdPheRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.2, 1.4, 1.6], "Fd_PheRUPIn_series": [29.4, 36.8, 45.0], "SIDigPhe": 0.8},
+        "Output": [0.28224, 0.41216, 0.576]
+      },
+      {
+        "Name": "calculate_Fd_IdThrRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.1, 1.3, 1.5], "Fd_ThrRUPIn_series": [33.0, 40.8, 49.4], "SIDigThr": 0.75},
+        "Output": [0.27225, 0.3978, 0.55575]
+      },
+      {
+        "Name": "calculate_Fd_IdTrpRUPIn",
+        "Input": {"Fd_dcRUP_series": [1.0, 1.2, 1.4], "Fd_TrpRUPIn_series": [36.8, 45.0, 54.0], "SIDigTrp": 0.85},
+        "Output": [0.3128, 0.4590, 0.6426]
+      },
+      {
+        "Name": "calculate_Fd_IdValRUPIn",
+        "Input": {"Fd_dcRUP_series": [0.9, 1.1, 1.3], "Fd_ValRUPIn_series": [40.8, 49.4, 59.0], "SIDigVal": 0.9},
+        "Output": [0.33048, 0.48762, 0.68166]
+      },
+      {
+        "Name": "calculate_Fd_DigC120In",
+        "Input": {"TT_dcFdFA_series": [2.0, 2.2, 2.4], "Fd_C120_FA_series": [3.0, 4.0, 5.0], "Fd_FA_series": [6.0, 7.0, 8.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00036, 0.001232, 0.00288]
+      },
+      {
+        "Name": "calculate_Fd_DigC140In",
+        "Input": {"TT_dcFdFA_series": [2.1, 2.3, 2.5], "Fd_C140_FA_series": [4.0, 5.0, 6.0], "Fd_FA_series": [7.0, 8.0, 9.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.000588, 0.00184, 0.003375]
+      },
+      {
+        "Name": "calculate_Fd_DigC160In",
+        "Input": {"TT_dcFdFA_series": [2.2, 2.4, 2.6], "Fd_C160_FA_series": [5.0, 6.0, 7.0], "Fd_FA_series": [8.0, 9.0, 10.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00088, 0.002304, 0.004368]
+      },
+      {
+        "Name": "calculate_Fd_DigC161In",
+        "Input": {"TT_dcFdFA_series": [2.3, 2.5, 2.7], "Fd_C161_FA_series": [6.0, 7.0, 8.0], "Fd_FA_series": [9.0, 10.0, 11.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.001242, 0.002875, 0.005346]
+      },
+      {
+        "Name": "calculate_Fd_DigC180In",
+        "Input": {"TT_dcFdFA_series": [2.4, 2.6, 2.8], "Fd_C180_FA_series": [7.0, 8.0, 9.0], "Fd_FA_series": [10.0, 11.0, 12.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00168, 0.00384, 0.00648]
+      },
+      {
+        "Name": "calculate_Fd_DigC181tIn",
+        "Input": {"TT_dcFdFA_series": [2.5, 2.7, 2.9], "Fd_C181t_FA_series": [8.0, 9.0, 10.0], "Fd_FA_series": [11.0, 12.0, 13.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.0022, 0.004752, 0.00774]
+      },
+      {
+        "Name": "calculate_Fd_DigC181cIn",
+        "Input": {"TT_dcFdFA_series": [2.6, 2.8, 3.0], "Fd_C181c_FA_series": [9.0, 10.0, 11.0], "Fd_FA_series": [12.0, 13.0, 14.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.002808, 0.005565, 0.00924]
+      },
+      {
+        "Name": "calculate_Fd_DigC182In",
+        "Input": {"TT_dcFdFA_series": [2.7, 2.9, 3.1], "Fd_C182_FA_series": [10.0, 11.0, 12.0], "Fd_FA_series": [13.0, 14.0, 15.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00351, 0.00657, 0.01068]
+      },
+      {
+        "Name": "calculate_Fd_DigC183In",
+        "Input": {"TT_dcFdFA_series": [2.8, 3.0, 3.2], "Fd_C183_FA_series": [11.0, 12.0, 13.0], "Fd_FA_series": [14.0, 15.0, 16.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00431, 0.00108, 0.001997]
+      },
+      {
+        "Name": "calculate_Fd_DigOtherFAIn",
+        "Input": {"TT_dcFdFA_series": [2.9, 3.1, 3.3], "Fd_OtherFA_FA_series": [12.0, 13.0, 14.0], "Fd_FA_series": [15.0, 16.0, 17.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.00522, 0.001290, 0.002356]
+      },
+      {
+        "Name": "calculate_Fd_ArgIn",
+        "Input": {"Fd_CPIn_series": [0.5, 0.7, 0.9], "Fd_Argt_CP_series": [1.5, 1.7, 1.9], "Fd_CP_series": [2.0, 2.5, 3.0], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.3, 0.85, 1.71]
+      },
+      {
+        "Name": "calculate_Fd_HisIn",
+        "Input": {"Fd_CPIn_series": [0.6, 0.8, 1.0], "Fd_Hist_CP_series": [1.6, 1.8, 2.0], "Fd_CP_series": [2.1, 2.6, 3.1], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.336, 0.936, 1.86]
+      },
+      {
+        "Name": "calculate_Fd_IleIn",
+        "Input": {"Fd_CPIn_series": [0.7, 0.9, 1.1], "Fd_Ilet_CP_series": [1.7, 1.9, 2.1], "Fd_CP_series": [2.2, 2.7, 3.2], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.374, 1.026, 2.016]
+      },
+      {
+        "Name": "calculate_Fd_LeuIn",
+        "Input": {"Fd_CPIn_series": [0.8, 1.0, 1.2], "Fd_Leut_CP_series": [1.8, 2.0, 2.2], "Fd_CP_series": [2.3, 2.8, 3.3], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.414, 1.12, 2.178]
+      },
+      {
+        "Name": "calculate_Fd_LysIn",
+        "Input": {"Fd_CPIn_series": [0.9, 1.1, 1.3], "Fd_Lyst_CP_series": [1.9, 2.1, 2.3], "Fd_CP_series": [2.4, 2.9, 3.4], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.456, 1.218, 2.346]
+      },
+      {
+        "Name": "calculate_Fd_MetIn",
+        "Input": {"Fd_CPIn_series": [1.0, 1.2, 1.4], "Fd_Mett_CP_series": [2.0, 2.2, 2.4], "Fd_CP_series": [2.5, 3.0, 3.5], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.5, 1.32, 2.52]
+      },
+      {
+        "Name": "calculate_Fd_PheIn",
+        "Input": {"Fd_CPIn_series": [1.1, 1.3, 1.5], "Fd_Phet_CP_series": [2.1, 2.3, 2.5], "Fd_CP_series": [2.6, 3.1, 3.6], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.546, 1.426, 2.7]
+      },
+      {
+        "Name": "calculate_Fd_ThrIn",
+        "Input": {"Fd_CPIn_series": [1.2, 1.4, 1.6], "Fd_Thrt_CP_series": [2.2, 2.4, 2.6], "Fd_CP_series": [2.7, 3.2, 3.7], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.594, 1.536, 2.886]
+      },
+      {
+        "Name": "calculate_Fd_TrpIn",
+        "Input": {"Fd_CPIn_series": [1.3, 1.5, 1.7], "Fd_Trpt_CP_series": [2.3, 2.5, 2.7], "Fd_CP_series": [2.8, 3.3, 3.8], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.644, 1.65, 3.078]
+      },
+      {
+        "Name": "calculate_Fd_ValIn",
+        "Input": {"Fd_CPIn_series": [1.4, 1.6, 1.8], "Fd_Valt_CP_series": [2.4, 2.6, 2.8], "Fd_CP_series": [2.9, 3.4, 3.9], "Fd_DMIn_series": [1.0, 2.0, 3.0]},
+        "Output": [0.696, 1.768, 3.276]
       }
 ]
