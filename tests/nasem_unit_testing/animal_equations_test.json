@@ -833,5 +833,65 @@
     "Name": "calculate_An_PrePartWkDurat",
     "Input": {"An_PrePartWklim": 2.1},
     "Output": 4.2
+  },
+  {
+    "Name": "calculate_An_IdArgIn",
+    "Input": {"Dt_IdArgIn": 1.5, "Inf_IdArgIn": 2.0},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdHisIn",
+    "Input": {"Dt_IdHisIn": 1.2, "Inf_IdHisIn": 2.3},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdIleIn",
+    "Input": {"Dt_IdIleIn": 0.7, "Inf_IdIleIn": 1.3},
+    "Output": 2.0
+  },
+  {
+    "Name": "calculate_An_IdLeuIn",
+    "Input": {"Dt_IdLeuIn": 2.0, "Inf_IdLeuIn": 1.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdLysIn",
+    "Input": {"Dt_IdLysIn": 1.8, "Inf_IdLysIn": 1.7},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdMetIn",
+    "Input": {"Dt_IdMetIn": 1.0, "Inf_IdMetIn": 2.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdPheIn",
+    "Input": {"Dt_IdPheIn": 1.6, "Inf_IdPheIn": 1.9},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdThrIn",
+    "Input": {"Dt_IdThrIn": 2.0, "Inf_IdThrIn": 1.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdTrpIn",
+    "Input": {"Dt_IdTrpIn": 1.4, "Inf_IdTrpIn": 2.1},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdValIn",
+    "Input": {"Dt_IdValIn": 1.3, "Inf_IdValIn": 2.2},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_NPNCPIn",
+    "Input": {"Dt_NPNCPIn": 1.9, "Inf_NPNCPIn": 1.6},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_FAIn",
+    "Input": {"Dt_FAIn": 1.5, "Inf_FAIn": 2.0},
+    "Output": 3.5
   }
 ]

@@ -994,7 +994,15 @@ from nasem_dairy.nasem_equations.animal import (
     calculate_An_IdThrIn,
     calculate_An_IdTrpIn,
     calculate_An_IdValIn,
-
+    calculate_An_NPNCPIn,
+    calculate_An_FAIn,
+    calculate_An_RDNPNCPIn,
+    calculate_An_RUP,
+    calculate_An_RUP_CP,
+    calculate_An_idRUCPIn,
+    calculate_An_idRUP,
+    calculate_An_RDTPIn,
+    calculate_An_RDP_CP
 )
 
 from nasem_dairy.nasem_equations.gestation import (
