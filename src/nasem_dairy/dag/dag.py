@@ -2,7 +2,7 @@ import ast
 import glob
 import inspect
 import os
-from typing import Dict
+from typing import Dict, List, Any, Tuple, Optional, Callable
 
 import graph_tool.all as graph_tool
 import pandas as pd
@@ -20,10 +20,10 @@ class ModelDAG:
             "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
             ]
         self.module_colour_map = {
-            "amino_acid": [1.0, 0.0, 0.0, 0.7],             # Bright Red
+            "amino_acid": [1.0, 0.0, 0.0, 0.7],            # Bright Red
             "animal": [0.0, 0.5, 1.0, 0.7],                # Sky Blue
             "body_composition": [0.0, 1.0, 0.0, 0.7],      # Bright Green
-            "coefficient_adjustment": [0.6, 0.2, 0.8, 0.7], # Lavender
+            "coefficient_adjustment": [0.6, 0.2, 0.8, 0.7],# Lavender
             "dry_matter_intake": [1.0, 0.5, 0.0, 0.7],     # Orange
             "energy_requirement": [0.2, 0.7, 0.2, 0.7],    # Forest Green
             "fecal": [0.8, 0.4, 0.0, 0.7],                 # Burnt Orange
@@ -46,7 +46,9 @@ class ModelDAG:
             }
         self.possible_user_inputs = {
             "animal_input": expected.AnimalInput.__annotations__.copy(),
-            "equation_selection": expected.EquationSelection.__annotations__.copy(),
+            "equation_selection": (
+                expected.EquationSelection.__annotations__.copy()
+                ),
             "infusion_input": expected.InfusionInput.__annotations__.copy(),
             "user_diet": expected.UserDietSchema.copy(),
             "feed_library": expected.FeedLibrarySchema.copy()
@@ -54,7 +56,9 @@ class ModelDAG:
         self.possible_constants = {
             "coeff_dict": expected.CoeffDict.__annotations__.copy(),
             "infusion_dict": expected.InfusionDict.__annotations__.copy(),
-            "mpnp_efficiency_dict": expected.MPNPEfficiencyDict.__annotations__.copy(),
+            "mpnp_efficiency_dict": (
+                expected.MPNPEfficiencyDict.__annotations__.copy()
+                ),
             "mprt_coeff_dict": expected.mPrtCoeffDict.__annotations__.copy(),
             "f_imb": expected.f_Imb.copy()
         }
@@ -62,21 +66,22 @@ class ModelDAG:
             self.possible_user_inputs
             )
 
-        # Initalize DataFrame with a row for each variable name 
         varaible_names = self._get_variable_names()
         variables = pd.DataFrame(varaible_names, columns=["Name"])
 
-        # Get list of module files
+        # Collect data for DAG
         modules = self._get_py_files("./src/nasem_dairy/nasem_equations")  
-  
-        # Create dag_data
-        self.dag_data = self._parse_NASEM_equations(modules, variables)
+        self.dag_data = self._parse_nasem_equations(modules, variables)
         self.dag_data = self.dag_data.dropna(axis=0)
-
-        # Create DAG
         self.dag = self._create_dag(self.dag_data)
 
-    def _get_variable_names(self):
+    def _get_variable_names(self) -> List[str]:
+        """
+        Retrieve the variable names needed to build the DAG.
+
+        Returns:
+            A list of variable names required for the DAG
+        """
         user_diet, animal_input, eqn_selection, inf_input = nd.demo("input")
         output = nd.nasem(
             user_diet = user_diet, 
@@ -89,17 +94,45 @@ class ModelDAG:
         # These 6 variables never appear in the nasem() local namespace as they
         # have been placed behind wrappers that only calculate one of them.
         # They are needed to build the DAG properly
-        variables = variables + ["Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", 
-                                 "Abs_EAA2_HILKMT_g", "An_GasEOut_Dry", 
-                                 "An_GasEOut_Lact", "An_GasEOut_Heif"]
+        variables += [
+            "Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", "Abs_EAA2_HILKMT_g", 
+            "An_GasEOut_Dry", "An_GasEOut_Lact", "An_GasEOut_Heif"
+            ]
         return variables
 
-    def _get_py_files(self, path: str) -> list:
+    def _get_py_files(self, path: str) -> List[str]:
+        """
+        Retrieve a list of Python files from the specified directory.
+
+        Args:
+            path: A string representing the directory path to search for Python files.
+
+        Returns:
+            A list of Python file paths in the specified directory, excluding `__init__.py`.
+        """
         py_files = glob.glob(os.path.join(path, "*.py"))
-        py_files = [file for file in py_files if os.path.basename(file) != "__init__.py"]
+        py_files = [
+            file for file in py_files 
+            if os.path.basename(file) != "__init__.py"
+            ]
         return py_files
 
-    def _get_dict_keys(self, node, id_to_check: str, check_fstring: bool = True) -> list:
+    def _get_dict_keys(self, 
+                       node: ast.AST, 
+                       id_to_check: str, 
+                       check_fstring: bool = True
+    ) -> List[str]:
+        """
+        Extract keys from a dictionary accessed in an AST node.
+
+        Args:
+            node: The AST node to analyze for dictionary key accesses.
+            id_to_check: The identifier of the dictionary to check.
+            check_fstring: Whether to check for keys formatted with f-strings.
+        
+        Returns:
+            A list of keys accessed from the specified dictionary.
+        """
         coeff_keys = []
         for body_item in node.body:
             for sub_node in ast.walk(body_item):
@@ -135,7 +168,20 @@ class ModelDAG:
                                             coeff_keys.append(formatted_coeff)
         return coeff_keys
 
-    def _generate_user_inputs_list(self, possible_user_inputs):
+    def _generate_user_inputs_list(self, 
+                                   possible_user_inputs: Dict[str, Any]
+    ) -> List[str]:
+        """
+        Generate a list of user input keys from possible user input structures.
+
+        Args:
+            possible_user_inputs: A dictionary mapping structure names to their
+                corresponding input structures, which can be either dictionaries
+                or objects with `__annotations__`.
+
+        Returns:
+            A list of all user input keys found in the input structures.
+        """
         user_inputs = []
 
         for structure_name, structure in possible_user_inputs.items():
@@ -145,12 +191,26 @@ class ModelDAG:
                 user_inputs.extend(structure.__annotations__.keys())
         return user_inputs
 
-    def _create_function_entry(self, node):
+    def _create_function_entry(self, 
+                               node: ast.FunctionDef
+    ) -> Tuple[Optional[str], List[str], List[str], List[str]]:
         """
-        Collect required data for regular functions
+        Collect required data for regular functions from an AST node.
+
+        This method processes an AST node representing a function definition
+        to extract its return variable, arguments, constants, and inputs.
+
+        Args:
+            node: An AST node representing a function definition.
+
+        Returns:
+            A tuple containing:
+                - The return variable name (or None if not found).
+                - A list of arguments that are not constants or user inputs.
+                - A list of keys related to constants required by the function.
+                - A list of arguments identified as user inputs.
         """
-        args = [arg.arg for arg in node.args.args 
-                if arg.arg not in ["aa_list"]]
+        args = [arg.arg for arg in node.args.args if arg.arg not in ["aa_list"]]
 
         # Extract names of constants from function definition
         coeff_keys = []
@@ -162,6 +222,7 @@ class ModelDAG:
                 keys = self._get_dict_keys(node, dictionary)
                 coeff_keys.extend(keys)
                 args.remove(dictionary)
+
         # Check for f_Imb seperatly as not a dictionary
         constants_series = ["f_Imb", "SIDig_values"]
         for constant in constants_series:
@@ -187,14 +248,28 @@ class ModelDAG:
             if isinstance(body_item, ast.Return):
                 if isinstance(body_item.value, ast.Name):
                     return_var = body_item.value.id
+
         return return_var, args ,coeff_keys, inputs
 
-    def _parse_NASEM_equations(self, py_files: list, variables: pd.DataFrame) -> pd.DataFrame:
+    def _parse_nasem_equations(self, 
+                               py_files: List[str], 
+                               variables: pd.DataFrame
+    ) -> pd.DataFrame:
         """
-        Function to parse through NASEM_equations directory and retrieve data used for plotting the DAG. 
-        Returns a DataFrame.  
+        Parse NASEM equations from Python files and extract data for the DAG.
 
-        This will only include variables in the variables DataFrame
+        This function parses through Python files in the NASEM equations directory 
+        to retrieve data used for plotting the DAG. It returns a DataFrame with 
+        the relevant information for each variable listed in the variables DataFrame.
+
+        Args:
+            py_files: A list of Python file paths to parse.
+            variables: A DataFrame containing the variables to include in the DAG.
+
+        Returns:
+            A DataFrame containing the parsed data, including the module name, 
+            function name, arguments, constants, and inputs associated with each 
+            variable.
         """
         dag_data = variables.copy()
         dag_data["Module"] = None
@@ -211,22 +286,44 @@ class ModelDAG:
             for node in ast.walk(tree):
                 if isinstance(node, ast.FunctionDef):
                     function_name = node.name
-                    return_var, args ,coeff_keys, inputs = self._create_function_entry(
-                        node
-                    )
+                    return_var, args ,coeff_keys, inputs = (
+                        self._create_function_entry(node)
+                        )
                     if return_var and return_var in dag_data["Name"].values:
                         idx = dag_data[dag_data["Name"] == return_var].index[0]
                         dag_data.at[idx, "Module"] = module_name
                         dag_data.at[idx, "Function"] = function_name
-                        dag_data.at[idx, "Arguments"] = list(set(args)) if args else args
-                        dag_data.at[idx, "Constants"] = list(set(coeff_keys)) if coeff_keys else coeff_keys
-                        dag_data.at[idx, "Inputs"] = list(set(inputs)) if inputs else inputs
+                        dag_data.at[idx, "Arguments"] = (
+                            list(set(args)) if args else args
+                            )
+                        dag_data.at[idx, "Constants"] = (
+                            list(set(coeff_keys)) if coeff_keys else coeff_keys
+                            )
+                        dag_data.at[idx, "Inputs"] = (
+                            list(set(inputs)) if inputs else inputs
+                            )
                                        
         return dag_data
 
-    def _create_dag(self, data):
-        # Create the DAG
+    def _create_dag(self, data: pd.DataFrame) -> graph_tool.Graph:
+        """
+        Create a Directed Acyclic Graph (DAG) from the provided data.
+
+        This function constructs a DAG using the variable names, functions, 
+        modules, constants, and inputs from the provided data. Each unique 
+        variable name, constant, and input is added as a vertex in the graph, 
+        and edges are added based on the dependencies specified in the 
+        'Arguments', 'Constants', and 'Inputs' columns.
+
+        Args:
+            data: A DataFrame containing the variables, functions, modules, 
+                constants, and inputs for the DAG.
+
+        Returns:
+            A graph-tool Graph object representing the DAG.
+        """
         dag = graph_tool.Graph(directed=True)
+
         # Create a dictionary to map variable names to graph vertices
         name_to_vertex = {}
         vertex_labels = dag.new_vertex_property("string")
@@ -289,10 +386,21 @@ class ModelDAG:
             self.vertex_functions = vertex_functions
             self.vertex_module = vertex_module
             self.vertex_colors = vertex_colors
+
         return dag
         
     ### Visualization ###
-    def draw_dag(self, output_path):
+    def draw_dag(self, output_path: str) -> None:
+        """
+        Draw and save the DAG to the specified output path.
+
+        This method generates a visual representation of the DAG using the 
+        `graph_tool` library, with custom styling for vertices and layout. 
+        The graph is saved as an image file at the specified output path.
+
+        Args:
+            output_path: The file path where the DAG image will be saved.
+        """
         pos = graph_tool.sfdp_layout(self.dag)
         graph_tool.graph_draw(self.dag, 
                               pos=pos,
@@ -304,24 +412,35 @@ class ModelDAG:
                               bg_color=[0.9, 0.9, 0.9, 1],
                               output=output_path
                               )
-        print("Graph has", self.dag.num_vertices(), "vertices and", self.dag.num_edges(), "edges.")
+        print(
+            "Graph has", self.dag.num_vertices(), 
+            "vertices and", self.dag.num_edges(), "edges."
+            )
         print(f"Graph image saved to {output_path}")
 
     ### Validation ###
-    def validate_dag(self):
+    def validate_dag(self) -> None:
         """
-        Validate the DAG structure
-        - Check for cycles
-        - Validate topological sort
-        - Ensure all nodes and edges are correct
+        Validate the DAG structure.
+
+        This method performs several checks to ensure the integrity of the DAG:
+        - Checks for cycles in the DAG.
+        - Validates the topological sort of the DAG.
+        - Ensures that all nodes and edges are correctly connected.
         """
         self._check_for_cycles()
         self._validate_topological_order()
         self._verify_connectivity()
 
-    def _check_for_cycles(self):
+    def _check_for_cycles(self) -> None:
         """
-        Check for cycles in the DAG. Raises an exception if a cycle is found.
+        Check for cycles in the DAG.
+
+        This method checks whether the DAG contains any cycles. If a cycle is 
+        detected, it raises a ValueError with details of the cycle(s) found.
+
+        Raises:
+            ValueError: If one or more cycles are detected in the DAG.
         """
         if graph_tool.is_DAG(self.dag):
             print("No cycles detected.")
@@ -330,34 +449,67 @@ class ModelDAG:
             if cycles:
                 cycle_strs = []
                 for cycle in cycles:
-                    cycle_vertices = [self.vertex_labels[vertex] for vertex in cycle]
+                    cycle_vertices = [
+                        self.vertex_labels[vertex] for vertex in cycle
+                        ]
                     cycle_strs.append(" -> ".join(cycle_vertices))
-                raise ValueError(f"Cycles detected in the DAG:\n" + "\n".join(cycle_strs))
+                raise ValueError(
+                    f"Cycles detected in the DAG:\n" + "\n".join(cycle_strs)
+                    )
 
-    def _validate_topological_order(self):
+    def _validate_topological_order(self) -> None:
         """
-        Attempt a topological sort. Raises an exception if sorting fails, 
-        which indicates a cycle or other inconsistency.
+        Validate the topological order of the DAG.
+
+        This method attempts a topological sort of the DAG. If the sort fails, 
+        it raises a ValueError, which may indicate the presence of cycles or 
+        other inconsistencies in the DAG structure.
+
+        Raises:
+            ValueError: If the topological sort fails
         """
         try:
             order = graph_tool.topological_sort(self.dag)
-            # print(f"Topological sort successful: {list(order)}")
         except ValueError as e:
-            raise ValueError("Topological sort failed. DAG may contain cycles or other inconsistencies.") from e
+            raise ValueError(
+                "Topological sort failed. DAG may contain cycles or other "
+                "inconsistencies."
+                ) from e
     
-    def _verify_connectivity(self):
+    def _verify_connectivity(self) -> None:
         """
-        Ensure all vertices are connected according to the DAG data.
-        Raises an exception if there are missing or extra connections.
+        Ensure all vertices are correctly connected according to the DAG data.
+
+        This method verifies the connectivity of the DAG by checking that:
+        - All vertices are connected according to the expected inputs.
+        - There are no isolated vertices (vertices with no edges).
+        - Each vertex has the correct number of incoming and outgoing edges.
+
+        Raises:
+            ValueError: If any vertex is isolated or has an incorrect number 
+            of incoming or outgoing edges.
         """
+        def _print_debug():
+            print(f"Vertex {name} has an incorrect number of incoming edges.")
+            print(
+                f"Expected {expected_incoming_edges} incoming edges from: "
+                f"{data['expected_inputs']}"
+                )
+            print(
+                f"Actual {actual_incoming_edges} incoming edges from: "
+                f"{actual_incoming_names}"
+                )
+
         vertex_data = {
             row["Name"]: {
-                "expected_inputs": row["Arguments"] + row["Constants"] + row["Inputs"],
+                "expected_inputs": (
+                    row["Arguments"] + row["Constants"] + row["Inputs"]
+                    ),
                 "outgoing_count": 0
                 }
                 for index, row in self.dag_data.iterrows()
             }
-        # Populate the outgoing_count based on references in other vertices' expected_inputs
+        # Populate outgoing_count based on references in other vertices' expected_inputs
         for name, data in vertex_data.items():
             for reference in data["expected_inputs"]:
                 if reference in vertex_data:
@@ -377,14 +529,17 @@ class ModelDAG:
 
                 if actual_incoming_edges != expected_incoming_edges:
                     actual_incoming_names = [
-                        self.vertex_labels[edge.source()] for edge in vertex.in_edges()
+                        self.vertex_labels[edge.source()] 
+                        for edge in vertex.in_edges()
                     ]
-                    missing_edges = [edge for edge in data["expected_inputs"] if edge not in actual_incoming_names]
+                    missing_edges = [
+                        edge for edge in data["expected_inputs"] 
+                        if edge not in actual_incoming_names
+                        ]
 
                     # Print debug information
-                    print(f"Vertex {name} has an incorrect number of incoming edges.")
-                    print(f"Expected {expected_incoming_edges} incoming edges from: {data['expected_inputs']}")
-                    print(f"Actual {actual_incoming_edges} incoming edges from: {actual_incoming_names}")
+                    # _print_debug()
+
                     if missing_edges:
                         print(f"Missing expected edges from: {missing_edges}")
 
@@ -403,7 +558,9 @@ class ModelDAG:
                 actual_outgoing_edges = vertex.out_degree()
 
                 if actual_outgoing_edges != expected_outgoing_edges:
-                    print(f"Vertex {name} has an incorrect number of outgoing edges.")
+                    print(
+                        f"Vertex {name} has an incorrect number of outgoing edges."
+                        )
                     print(f"Expected {expected_outgoing_edges} outgoing edges.")
                     print(f"Actual {actual_outgoing_edges} outgoing edges.")
 
@@ -415,8 +572,42 @@ class ModelDAG:
         print("Connectivity verification completed.")
 
     ### Tools ###
-    def get_calculation_order(self, target_variable: str, report: bool = True) -> dict:
-        def depth_first_search(vertex):
+    def get_calculation_order(self, 
+                              target_variable: str, 
+                              report: bool = True
+    ) -> Dict[List[str], Dict[str, Dict[str, Any]]]:
+        """
+        Determine the calculation order for a given target variable.
+
+        This method performs a depth-first search (DFS) on the DAG to determine
+        the order of function calls and the required inputs and constants needed
+        to calculate the specified target variable.
+
+        Args:
+            target_variable: The name of the target variable to calculate.
+            report: Whether to print a report of the calculation order. 
+                Default is True.
+
+        Returns:
+            dict:
+                - 'functions_order': A list of functions in the order they should 
+                be called.
+                - 'user_inputs': A dictionary of required user input structures 
+                and their respective fields.
+                - 'constants': A dictionary of required constants and their 
+                respective fields.
+        """
+        def depth_first_search(vertex: graph_tool.Vertex) -> None: # type:ignore
+            """
+            Perform a depth-first search to determine dependencies.
+
+            This helper function traverses the graph to find all dependencies for
+            the given vertex, recording user inputs, constants, and functions 
+            necessary to calculate the target variable.
+
+            Args:
+                vertex: The current vertex in the graph being explored.
+            """
             if vertex in visited:
                 return
             visited.add(vertex)
@@ -438,11 +629,26 @@ class ModelDAG:
                 functions_order.append(vertex_function)
 
 
-        def print_report(target_variable, 
-                         functions_order, 
-                         sorted_user_inputs, 
-                         sorted_constants
-        ):
+        def print_report(target_variable: str, 
+                         functions_order: List[str], 
+                         sorted_user_inputs: Dict[str, Dict[str, Optional[str]]], 
+                         sorted_constants: Dict[str, Optional[Dict[str, Optional[str]]]]
+        ) -> None:
+            """
+            Print a formatted report of the calculation requirements.
+
+            This function generates a report detailing the order of functions to 
+            be called, as well as the required user inputs and constants for 
+            calculating the specified target variable.
+
+            Args:
+                target_variable: The name of the target variable.
+                functions_order: A list of functions in the order they should be called.
+                sorted_user_inputs: A dictionary of required user input structures 
+                    and their respective fields.
+                sorted_constants: A dictionary of required constants and their 
+                    respective fields or special structures.
+            """
             print(f"\nRequirements for Calculating {target_variable}")
             print("\nOrder of Functions to Call:")
             for i, function in enumerate(functions_order, 1):
@@ -467,7 +673,9 @@ class ModelDAG:
 
 
         if target_variable not in self.name_to_vertex:
-            raise ValueError(f"Variable '{target_variable}' not found in the DAG.")
+            raise ValueError(
+                f"Variable '{target_variable}' not found in the DAG."
+                )
 
         target_vertex = self.name_to_vertex[target_variable]
         functions_order = []
@@ -515,18 +723,64 @@ class ModelDAG:
             "constants": sorted_constants
         }
 
-    def create_function(self, target_variable):
-        def create_docstring(target_variable, arg_names, user_inputs, constants, functions_order, generated_func_return):
-            docstring = f'"""Dynamically generated function to calculate {target_variable}.\n\n'
+    def create_function(self, target_variable: str) -> Callable[..., Any]:
+        """
+        Create a dynamically generated function to calculate the target variable.
+
+        This method generates and returns a function that can be used to calculate 
+        the specified target variable. The returned function will have all required 
+        arguments and the necessary logic to calculate the target variable based on 
+        the DAG structure.
+
+        Args:
+            target_variable: The name of the target variable being calculated.
+
+        Returns:
+            Callable: A function that calculates the target variable.
+        """
+        def create_docstring(target_variable: str, 
+                             arg_names: List[str], 
+                             user_inputs: Dict[str, Dict[str, Optional[str]]], 
+                             constants: Dict[str, Dict[str, Optional[str]]], 
+                             functions_order: List[str], 
+                             generated_func_return: str
+        ) -> str:
+            """
+            Generate a docstring for a dynamically generated function.
+
+            This function creates a docstring that describes the dynamically 
+            generated function used to calculate the specified target variable. 
+            The docstring includes information about the function's arguments, 
+            the order of function calls, and the return value.
+
+            Args:
+                target_variable: The name of the target variable being calculated.
+                arg_names: A list of argument names required by the function.
+                user_inputs: A dictionary of required user input structures and 
+                    their respective fields.
+                constants: A dictionary of required constants and their respective 
+                    fields, excluding special cases like "aa_list".
+                functions_order: A list of functions in the order they should be called.
+                generated_func_return: The name of the variable that the function 
+                    returns.
+
+            Returns:
+                A string representing the docstring for the generated function.
+            """
+            docstring = (
+                f'"""Dynamically generated function to calculate '
+                f'{target_variable}.\n\n'
+                )
             docstring += 'Arguments:\n'
             for arg in arg_names:
-                docstring += f'    {arg} (dict): A dictionary containing the following keys:\n'
+                docstring += (
+                    f'    {arg} (dict): A dictionary containing the following '
+                    'keys:\n'
+                    )
                 if arg in user_inputs:
-                    # docstring += '        Required keys:\n'
                     for key in user_inputs[arg].keys():
                         docstring += f'            - {key}\n'
                 elif arg in constants and arg != "aa_list":
-                    # docstring += '        Required keys:\n'
                     for key in constants[arg].keys():
                         docstring += f'            - {key}\n'
             
@@ -535,18 +789,32 @@ class ModelDAG:
                 docstring += f'    {i}. {func}\n'
 
             docstring += '\nReturns:\n'
-            docstring += f'    {generated_func_return} (float): The calculated value for {target_variable}.\n'
+            docstring += (
+                f'    {generated_func_return} (float): The calculated value for '
+                f'{target_variable}.\n')
             docstring += '"""'
             return docstring
 
 
-        def check_for_constants(functions_order, constants):
+        def check_for_constants(functions_order: List[str], 
+                                constants: Dict[str, Dict[str, str]]
+        ) -> bool:
             """
-            Check for coeff_dict in arguments.
+            Check for 'coeff_dict' and 'aa_list' in function arguments.
 
-            There are some edge cases for wrapper functions such as calculate_Dt_DMIn.
-            These function pass coeff_dict to other functions but do not access
-            any keys, so no values are added to the Constants list in dag_data
+            This function checks if 'coeff_dict' and 'aa_list' are required by any 
+            function in the given order. For some wrapper functions, such as 
+            calculate_Dt_DMIn, 'coeff_dict' might be passed to other functions 
+            without accessing any keys, so it won't appear in the Constants list 
+            in dag_data. The function returns a boolean indicating whether 
+            'aa_list' is required.
+
+            Args:
+                functions_order: A list of function names to check.
+                constants: A dictionary of constants already identified.
+
+            Returns:
+                bool: True if 'aa_list' is required by any function, False otherwise.
             """
             aa_list_required = False
             for function_name in functions_order:
@@ -559,7 +827,27 @@ class ModelDAG:
             return aa_list_required
 
 
-        def _identify_dict_args(dag_data, functions_order: list):
+        def _identify_dict_args(dag_data: pd.DataFrame, 
+                                functions_order: List[str]
+        ) -> Dict[str, Dict[str, List[Any]]]:
+            """
+            Identify functions that require dictionaries as arguments.
+
+            This function examines the functions in the given order to identify 
+            which ones require dictionaries as arguments, excluding 'coeff_dict'. 
+            It uses type annotations to determine if an argument is a dictionary 
+            and retrieves the associated arguments from the DAG data.
+
+            Args:
+                dag_data: A DataFrame containing information about the DAG, 
+                    including function names and their arguments.
+                functions_order: A list of function names to check.
+
+            Returns:
+                A dictionary where each key is a function name, and each value 
+                is another dictionary that maps the dictionary argument name 
+                to a list of required arguments.
+            """
             dict_inputs = {}
 
             for function_name in functions_order:
@@ -570,20 +858,24 @@ class ModelDAG:
                 # Check each parameter's type annotation to see if it is a dict (excluding 'coeff_dict')
                 for param_name, param in func_signature.parameters.items():
                     annotation = param.annotation
-                    if param_name != "coeff_dict" and (annotation is dict or annotation is Dict):
-                        # Get the relevant row from dag_data
+                    if (param_name != "coeff_dict" and 
+                       (annotation is dict or 
+                        annotation is Dict)
+                       ):
                         dag_row = dag_data[dag_data['Function'] == function_name]
                         
                         if not dag_row.empty:
-                            # Extract the Arguments column from the row
                             arguments_list = dag_row['Arguments'].values[0]
                             dict_inputs[function_name][param_name] = arguments_list
                         else:
-                            print(f"Warning: No entry found in DAG data for function '{function_name}'")
+                            print(
+                                f"Warning: No entry found in DAG data for "
+                                f"function '{function_name}'"
+                                )
             
                 if not dict_inputs[function_name]:
                     del dict_inputs[function_name]
-            # print(f"DICT INPUTS: {dict_inputs}")
+
             return dict_inputs
 
 
@@ -600,7 +892,9 @@ class ModelDAG:
 
         func_name_to_result_name = {}
         for func in functions_order:
-            result_name = self.dag_data[self.dag_data['Function'] == func]['Name'].values[0]
+            result_name = (
+                self.dag_data[self.dag_data['Function'] == func]['Name'].values[0]
+                )
             func_name_to_result_name[func] = result_name
         
         # Define the function dynamically using exec
@@ -655,8 +949,7 @@ def {generated_func_name}({func_args}):
         # Execute the dynamic function definition
         exec_namespace = {}
         exec(func_body, globals(), exec_namespace)
-
-        # Retrieve the function
         generated_function = exec_namespace[generated_func_name]
+        
         return generated_function
     
