@@ -596,7 +596,27 @@ from nasem_dairy.nasem_equations.nutrient_intakes import (
     calculate_Dt_IdTrpIn,
     calculate_Dt_IdValIn,
     calculate_Fd_DMInp,
-    calculate_Trg_Fd_DMIn
+    calculate_Trg_Fd_DMIn,
+    calculate_Dt_DigC120In,
+    calculate_Dt_DigC140In,
+    calculate_Dt_DigC160In,
+    calculate_Dt_DigC161In,
+    calculate_Dt_DigC180In,
+    calculate_Dt_DigC181tIn,
+    calculate_Dt_DigC181cIn,
+    calculate_Dt_DigC182In,
+    calculate_Dt_DigC183In,
+    calculate_Dt_DigOtherFAIn,
+    calculate_DtArgRUP_DtArg,
+    calculate_DtHisRUP_DtHis,
+    calculate_DtIleRUP_DtIle,
+    calculate_DtLeuRUP_DtLeu,
+    calculate_DtLysRUP_DtLys,
+    calculate_DtMetRUP_DtMet,
+    calculate_DtPheRUP_DtPhe,
+    calculate_DtThrRUP_DtThr,
+    calculate_DtTrpRUP_DtTrp,
+    calculate_DtValRUP_DtVal
 )
 
 from nasem_dairy.nasem_equations.rumen import (
