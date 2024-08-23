@@ -4,12 +4,39 @@ import inspect
 import os
 from typing import Dict, List, Any, Tuple, Optional, Callable
 
-import graph_tool.all as graph_tool
+try:
+    import graph_tool.all as graph_tool
+except ImportError:
+    raise ImportError(
+        "The 'graph-tool' package is required for this module. "
+        "Install it with `poetry install --extras dag` or `pip install nasem-dairy[dag]`."
+    )
 import pandas as pd
 
 import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 import nasem_dairy.model_output.ModelOutput as output
+
+# NOTE: Since the graph-tool dependency will not always be installed we need to 
+# skip the testing for this module when graph-tool is not installed. This can be
+# achieved using the code below:
+#
+# import unittest
+# try:
+#     import graph_tool.all as gt
+# except ImportError:
+#     gt = None
+# @unittest.skipUnless(gt, "Skipping DAG tests because graph-tool is not installed")
+# class TestYourModelDAG(unittest.TestCase):
+
+# NOTE: Since ModelDAG is a subpackage we should inlcude the following code in any 
+# modules where it is used. This will ensure a meaningful error is raised in cases
+# where graph-tool is not imported (nd.ModelDAG is set to None in __init__.py) but
+# a user tries to run code that requires nd.ModelDAG.
+# if nd.ModelDAG is None:
+#     raise ImportError(
+#         "ModelDAG requires the 'graph-tool' package. Please install it with `poetry install --extras dag`."
+#     )
 
 class ModelDAG:
     ### Initalization ###
@@ -901,6 +928,7 @@ class ModelDAG:
         # Define the function dynamically using exec
         func_args = ", ".join(arg_names)
         generated_func_name = f"wrapper_{target_variable}"
+        #NOTE Update return
         generated_func_return = list(func_name_to_result_name.values())[-1]
         docstring = create_docstring(
             target_variable, arg_names, user_inputs, constants, functions_order,
