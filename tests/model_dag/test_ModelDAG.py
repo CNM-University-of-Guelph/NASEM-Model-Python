@@ -1,13 +1,12 @@
 import os
-import unittest
 
 import pandas as pd
 import pytest
 
 try:
-    import graph_tool.all as graph_tool
+    import graph_tool.all as gt
 except ImportError:
-    graph_tool = None
+    gt = None
 
 import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy as nd
@@ -57,9 +56,8 @@ demo_model_data = {
 }
 expected_dag_data = pd.DataFrame(demo_model_data)
 
-@unittest.skipUnless(
-    graph_tool, "Skipping DAG tests because graph-tool is not installed"
-    )
+
+pytestmark = pytest.mark.skipif(gt is None, reason="graph-tool is not installed")
 class TestModelDAG():
     @pytest.fixture
     def demo_model_dag(self):
