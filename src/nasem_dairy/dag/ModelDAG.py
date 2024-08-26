@@ -17,18 +17,6 @@ import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 import nasem_dairy.model_output.ModelOutput as output
 
-# NOTE: Since the graph-tool dependency will not always be installed we need to 
-# skip the testing for this module when graph-tool is not installed. This can be
-# achieved using the code below:
-#
-# import unittest
-# try:
-#     import graph_tool.all as gt
-# except ImportError:
-#     gt = None
-# @unittest.skipUnless(gt, "Skipping DAG tests because graph-tool is not installed")
-# class TestYourModelDAG(unittest.TestCase):
-
 # NOTE: Since ModelDAG is a subpackage we should inlcude the following code in any 
 # modules where it is used. This will ensure a meaningful error is raised in cases
 # where graph-tool is not imported (nd.ModelDAG is set to None in __init__.py) but
