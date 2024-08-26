@@ -7,7 +7,7 @@ import pytest
 try:
     import graph_tool.all as graph_tool
 except ImportError:
-    gt = None
+    graph_tool = None
 
 import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy as nd
