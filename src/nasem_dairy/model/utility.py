@@ -6,6 +6,7 @@ from typing import Dict, Tuple, Union
 
 import pandas as pd
 
+import nasem_dairy.nasem_equations.nutrient_intakes as diet
 
 def get_feed_data(Trg_Dt_DMIn: float,
                   user_diet: pd.DataFrame,
@@ -66,12 +67,11 @@ def get_feed_data(Trg_Dt_DMIn: float,
             ["Feedstuff"] + [col for col in df.columns if col != "Feedstuff"]
             ])
         )
-    feed_data = (user_diet.assign(
-        Fd_DMInp=lambda df: df["kg_user"] / df["kg_user"].sum(),
-        Fd_DMIn=lambda df: df["Fd_DMInp"] * Trg_Dt_DMIn,
+    user_diet["Fd_DMInp"] = diet.calculate_Fd_DMInp(user_diet["kg_user"])
+    user_diet["Trg_Fd_DMIn"] = diet.calculate_Trg_Fd_DMIn(
+        user_diet["Fd_DMInp"], Trg_Dt_DMIn
         )
-        .merge(selected_feeds, how="left", on="Feedstuff")
-    )
+    feed_data = user_diet.merge(selected_feeds, how="left", on="Feedstuff")
     return feed_data
 
 
@@ -204,3 +204,18 @@ def demo(scenario_name: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
         "nasem_dairy.data.demo"
         )
     return read_json_input(path_to_package_data.joinpath(f"{scenario_name}.json"))
+
+
+def select_feeds(names: list) -> pd.DataFrame:
+    path_to_package_data = importlib.resources.files(
+        "nasem_dairy.data.feed_library"
+        )
+    feed_library = pd.read_csv(
+        path_to_package_data.joinpath("NASEM_feed_library.csv")
+        )
+    selected_feeds = feed_library[feed_library["Fd_Name"]
+                                  .isin(names)].reset_index()
+    # Ensure the rows are in the same order as names list
+    selected_feeds["Fd_Name"] = pd.Categorical(selected_feeds["Fd_Name"], categories=names, ordered=True)
+    selected_feeds = selected_feeds.sort_values("Fd_Name").reset_index(drop=True)
+    return selected_feeds

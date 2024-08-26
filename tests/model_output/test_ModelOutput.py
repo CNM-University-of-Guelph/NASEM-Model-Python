@@ -94,7 +94,6 @@ class TestModelOutput:
             "key": "value",
             "value": "value",
             "num_value": "value",
-            "feed_data": "value",
             "user_diet": "diet_value",
             "animal_input": "animal_value"
         }
@@ -107,7 +106,6 @@ class TestModelOutput:
             "key": "value",
             "value": "value",
             "num_value": "value",
-            "feed_data": "value"
         }
         assert model_output.locals_input == {}
         assert model_output.Inputs == {
@@ -683,3 +681,19 @@ class TestModelOutput:
         expected_categories = ["Inputs", "Intakes", "Uncategorized"]
         assert category_list == expected_categories
     
+    def test_extract_variable_names(self, mock_structure, mock_report_structure, mock_locals_input):
+        # Adding a DataFrame to the locals input for testing
+        mock_locals_input["df_value"] = pd.DataFrame({
+            "column1": [1, 2, 3],
+            "column2": ["a", "b", "c"]
+        })
+        model_output = ModelOutput(
+            locals_input=mock_locals_input,
+            config_path=str(mock_structure),
+            report_config_path=str(mock_report_structure)
+        )
+        variable_names = model_output.export_variable_names()
+        expected_variable_names = [
+            "user_diet", "animal_input", "diet_info", "column1", "column2"
+        ]
+        assert sorted(variable_names) == sorted(expected_variable_names)

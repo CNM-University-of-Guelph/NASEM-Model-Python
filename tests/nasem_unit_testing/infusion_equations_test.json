@@ -135,44 +135,474 @@
       "Output": 2.6775
     },
     {
-      "Name": "calculate_XIn",
-      "Input": {"infusion_data": {"test1_g": 1.6, "test2_g": 4.8, "test3_g": 3.9}, "variables": ["test1", "test2", "test3"]},
-      "Output": {"test1_g": 1.6, "test2_g": 4.8, "test3_g": 3.9, "test1In": 0.0016, "test2In": 0.0048, "test3In": 0.0039}
+      "Name": "calculate_Inf_DMIn",
+      "Input": {"Inf_DM_g": 1000},
+      "Output": 1.0
     },
     {
-      "Name": "calculate_CPXIn",
-      "Input": {"infusion_data": {"Inf_CP_g": 20.6,"test1Rum_CP": 0.6, "test2Rum_CP": 7.5, "test3Rum_CP": 3.8}, "variables": ["test1", "test2", "test3"]},
-      "Output": {"Inf_CP_g": 20.6, "test1Rum_CP": 0.6, "test2Rum_CP": 7.5, "test3Rum_CP": 3.8, "test1In": 0.0001236, "test2In": 0.001545, "test3In": 0.0007828}
+      "Name": "calculate_Inf_StIn",
+      "Input": {"Inf_St_g": 500},
+      "Output": 0.5
     },
     {
-      "Name": "calculate_DMXIn",
-      "Input": {"infusion_data": {"Inf_DMIn": 3.8, "test1In": 6.3,  "test2In": 2.9, "test3In": 1.2}, "variables": ["test1", "test2", "test3"], "Dt_DMIn": 26.8},
-      "Output": {"Inf_DMIn": 3.8, "test1In": 6.3, "test2In": 2.9, "test3In": 1.2, "test1": 20.588235294117645, "test2": 9.477124183006536, "test3": 3.9215686274509802}
+      "Name": "calculate_Inf_NDFIn",
+      "Input": {"Inf_NDF_g": 750},
+      "Output": 0.75
     },
     {
-      "Name": "calculate_InfRum_X",
-      "Input": {"infusion_data": {"Inf_Rum": 1.4,"Inf_test1In": 5.8, "Inf_test2In": 2.0, "Inf_test3In": 3.7}, "variables": ["test1", "test2", "test3"]},
-      "Output": {"Inf_Rum": 1.4, "Inf_test1In": 5.8, "Inf_test2In": 2.0, "Inf_test3In": 3.7, "InfRum_test1In": 8.12, "InfRum_test2In": 2.8, "InfRum_test3In": 5.18}
+      "Name": "calculate_Inf_ADFIn",
+      "Input": {"Inf_ADF_g": 600},
+      "Output": 0.6
     },
     {
-      "Name": "calculate_InfSI_X",
-      "Input": {"infusion_data": {"Inf_SI": 4.9,"Inf_test1In": 4.0, "Inf_test2In": 1.4, "Inf_test3In": 6.5}, "variables": ["test1", "test2", "test3"]},
-      "Output": {"Inf_SI": 4.9, "Inf_test1In": 4.0, "Inf_test2In": 1.4, "Inf_test3In": 6.5, "InfSI_test1In": 19.6, "InfSI_test2In": 6.86, "InfSI_test3In": 31.85}
+      "Name": "calculate_Inf_GlcIn",
+      "Input": {"Inf_Glc_g": 900},
+      "Output": 0.9
     },
     {
-      "Name": "calculate_InfArt_X",
-      "Input": {"infusion_data": {"Inf_Art": 0.2,"Inf_test1In": 3.6, "Inf_test2In": 2.8, "Inf_test3In": 7.0}, "variables": ["test1", "test2", "test3"]},
-      "Output": {"Inf_Art": 0.2, "Inf_test1In": 3.6, "Inf_test2In": 2.8, "Inf_test3In": 7.0, "InfArt_test1In": 0.7200000000000001, "InfArt_test2In": 0.5599999999999999, "InfArt_test3In": 1.4000000000000001}
+      "Name": "calculate_Inf_CPIn",
+      "Input": {"Inf_CP_g": 1200},
+      "Output": 1.2
     },
     {
-      "Name": "calculate_Inf_IdAARUPIn",
-      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_Rum": 2.6, "InfRum_RUP_CP": 0.8}, "aa_list": null},
-      "Output": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4, "Inf_Rum": 2.6, "InfRum_RUP_CP": 0.8, "Inf_ArgRUPIn": 0.10816000000000002, "Inf_HisRUPIn": 0.033280000000000004, "Inf_IleRUPIn": 0.0041600000000000005, "Inf_LeuRUPIn": 0.18928, "Inf_LysRUPIn": 0.03536, "Inf_MetRUPIn": 0.04784, "Inf_PheRUPIn": 0.13104, "Inf_ThrRUPIn": 0.09984000000000001, "Inf_TrpRUPIn": 0.14768, "Inf_ValRUPIn": 0.07072}
+      "Name": "calculate_Inf_NPNCPIn",
+      "Input": {"Inf_NPNCP_g": 1100},
+      "Output": 1.1
     },
     {
-      "Name": "calculate_Inf_IdAAIn",
-      "Input": {"infusion_data": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4,"Inf_SI": 3.1,"Inf_dcRUP": 1.0,"Inf_ArgRUPIn": 3.7,"Inf_HisRUPIn": 8.4,"Inf_IleRUPIn": 2.4,"Inf_LeuRUPIn": 5.3,"Inf_LysRUPIn": 0.7,"Inf_MetRUPIn": 1.1,"Inf_PheRUPIn": 2.5,"Inf_ThrRUPIn": 5.3,"Inf_TrpRUPIn": 7.2, "Inf_ValRUPIn": 0.9}, "aa_list": null},
-      "Output": {"Inf_Arg_g": 5.2, "Inf_His_g": 1.6, "Inf_Ile_g": 0.2, "Inf_Leu_g": 9.1, "Inf_Lys_g": 1.7, "Inf_Met_g": 2.3, "Inf_Phe_g": 6.3, "Inf_Thr_g": 4.8, "Inf_Trp_g": 7.1, "Inf_Val_g": 3.4, "Inf_SI": 3.1, "Inf_dcRUP": 1.0, "Inf_ArgRUPIn": 3.7, "Inf_HisRUPIn": 8.4, "Inf_IleRUPIn": 2.4, "Inf_LeuRUPIn": 5.3, "Inf_LysRUPIn": 0.7, "Inf_MetRUPIn": 1.1, "Inf_PheRUPIn": 2.5, "Inf_ThrRUPIn": 5.3, "Inf_TrpRUPIn": 7.2, "Inf_ValRUPIn": 0.9, "Inf_IdArgIn": 0.19820000000000002, "Inf_IdHisIn": 0.13360000000000002, "Inf_IdIleIn": 0.0302, "Inf_IdLeuIn": 0.33509999999999995, "Inf_IdLysIn": 0.059699999999999996, "Inf_IdMetIn": 0.0823, "Inf_IdPheIn": 0.22030000000000002, "Inf_IdThrIn": 0.2018, "Inf_IdTrpIn": 0.29209999999999997, "Inf_IdValIn": 0.1144}
+      "Name": "calculate_Inf_FAIn",
+      "Input": {"Inf_FA_g": 400},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_Inf_AshIn",
+      "Input": {"Inf_Ash_g": 700},
+      "Output": 0.7
+    },
+    {
+      "Name": "calculate_Inf_VFAIn",
+      "Input": {"Inf_VFA_g": 300},
+      "Output": 0.3
+    },
+    {
+      "Name": "calculate_Inf_AcetIn",
+      "Input": {"Inf_Acet_g": 800},
+      "Output": 0.8
+    },
+    {
+      "Name": "calculate_Inf_PropIn",
+      "Input": {"Inf_Prop_g": 650},
+      "Output": 0.65
+    },
+    {
+      "Name": "calculate_Inf_ButrIn",
+      "Input": {"Inf_Butr_g": 550},
+      "Output": 0.55
+    },
+    {
+      "Name": "calculate_Inf_CPAIn",
+      "Input": {"Inf_CP_g": 1000, "Inf_CPARum_CP": 50},
+      "Output": 0.5
+    },
+    {
+      "Name": "calculate_Inf_CPBIn",
+      "Input": {"Inf_CP_g": 800, "Inf_CPBRum_CP": 30},
+      "Output": 0.24
+    },
+    {
+      "Name": "calculate_Inf_CPCIn",
+      "Input": {"Inf_CP_g": 600, "Inf_CPCRum_CP": 20},
+      "Output": 0.12
+    },
+    {
+      "Name": "calculate_Inf_DM",
+      "Input": {"Dt_DMIn": 20.0, "Inf_DMIn": 5.0},
+      "Output": 20.0
+    },
+    {
+      "Name": "calculate_Inf_OM",
+      "Input": {"Dt_DMIn": 15.0, "Inf_OMIn": 3.0},
+      "Output": 16.666666666666664
+    },
+    {
+      "Name": "calculate_Inf_St",
+      "Input": {"Dt_DMIn": 18.0, "Inf_StIn": 4.0},
+      "Output": 18.181818181818183
+    },
+    {
+      "Name": "calculate_Inf_NDF",
+      "Input": {"Dt_DMIn": 22.0, "Inf_NDFIn": 6.0},
+      "Output": 21.428571428571427
+    },
+    {
+      "Name": "calculate_Inf_ADF",
+      "Input": {"Dt_DMIn": 10.0, "Inf_ADFIn": 2.0},
+      "Output": 16.666666666666664
+    },
+    {
+      "Name": "calculate_Inf_Glc",
+      "Input": {"Dt_DMIn": 14.0, "Inf_GlcIn": 2.0},
+      "Output": 12.5
+    },
+    {
+      "Name": "calculate_Inf_CP",
+      "Input": {"Dt_DMIn": 16.0, "Inf_CPIn": 4.0},
+      "Output": 20.0
+    },
+    {
+      "Name": "calculate_Inf_FA",
+      "Input": {"Dt_DMIn": 12.0, "Inf_FAIn": 3.0},
+      "Output": 20.0
+    },
+    {
+      "Name": "calculate_Inf_VFA",
+      "Input": {"Dt_DMIn": 8.0, "Inf_VFAIn": 1.0},
+      "Output": 11.11111111111
+    },
+    {
+      "Name": "calculate_Inf_Acet",
+      "Input": {"Dt_DMIn": 25.0, "Inf_AcetIn": 7.0},
+      "Output": 21.875
+    },
+    {
+      "Name": "calculate_Inf_Prop",
+      "Input": {"Dt_DMIn": 30.0, "Inf_PropIn": 5.0},
+      "Output": 14.285714285714285 
+    },
+    {
+      "Name": "calculate_Inf_Butr",
+      "Input": {"Dt_DMIn": 24.0, "Inf_ButrIn": 4.0},
+      "Output": 14.285714285714285 
+    },
+    {
+      "Name": "calculate_InfRum_DMIn",
+      "Input": {"Inf_Rum": 0.9, "Inf_DMIn": 1.0},
+      "Output": 0.9
+    },
+    {
+      "Name": "calculate_InfRum_OMIn",
+      "Input": {"Inf_Rum": 0.85, "Inf_OMIn": 0.8},
+      "Output": 0.68
+    },
+    {
+      "Name": "calculate_InfRum_CPIn",
+      "Input": {"Inf_Rum": 0.75, "Inf_CPIn": 0.6},
+      "Output": 0.45
+    },
+    {
+      "Name": "calculate_InfRum_NPNCPIn",
+      "Input": {"Inf_Rum": 0.95, "Inf_NPNCPIn": 0.7},
+      "Output": 0.665
+    },
+    {
+      "Name": "calculate_InfRum_CPAIn",
+      "Input": {"Inf_Rum": 0.8, "Inf_CPAIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfRum_CPBIn",
+      "Input": {"Inf_Rum": 0.7, "Inf_CPBIn": 0.6},
+      "Output": 0.42
+    },
+    {
+      "Name": "calculate_InfRum_CPCIn",
+      "Input": {"Inf_Rum": 0.6, "Inf_CPCIn": 0.4},
+      "Output": 0.24
+    },
+    {
+      "Name": "calculate_InfRum_StIn",
+      "Input": {"Inf_Rum": 0.65, "Inf_StIn": 0.7},
+      "Output": 0.455
+    },
+    {
+      "Name": "calculate_InfRum_NDFIn",
+      "Input": {"Inf_Rum": 0.75, "Inf_NDFIn": 0.8},
+      "Output": 0.6
+    },
+    {
+      "Name": "calculate_InfRum_ADFIn",
+      "Input": {"Inf_Rum": 0.7, "Inf_ADFIn": 0.9},
+      "Output": 0.63
+    },
+    {
+      "Name": "calculate_InfRum_FAIn",
+      "Input": {"Inf_Rum": 0.85, "Inf_FAIn": 0.5},
+      "Output": 0.425
+    },
+    {
+      "Name": "calculate_InfRum_GlcIn",
+      "Input": {"Inf_Rum": 0.8, "Inf_GlcIn": 0.6},
+      "Output": 0.48
+    },
+    {
+      "Name": "calculate_InfRum_VFAIn",
+      "Input": {"Inf_Rum": 0.9, "Inf_VFAIn": 0.7},
+      "Output": 0.63
+    },
+    {
+      "Name": "calculate_InfRum_AcetIn",
+      "Input": {"Inf_Rum": 0.75, "Inf_AcetIn": 0.8},
+      "Output": 0.6
+    },
+    {
+      "Name": "calculate_InfRum_PropIn",
+      "Input": {"Inf_Rum": 0.65, "Inf_PropIn": 0.6},
+      "Output": 0.39
+    },
+    {
+      "Name": "calculate_InfRum_ButrIn",
+      "Input": {"Inf_Rum": 0.8, "Inf_ButrIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfRum_AshIn",
+      "Input": {"Inf_Rum": 0.85, "Inf_AshIn": 0.7},
+      "Output": 0.595
+    },
+    {
+      "Name": "calculate_InfSI_DMIn",
+      "Input": {"Inf_SI": 0.9, "Inf_DMIn": 1.0},
+      "Output": 0.9
+    },
+    {
+      "Name": "calculate_InfSI_OMIn",
+      "Input": {"Inf_SI": 0.85, "Inf_OMIn": 0.8},
+      "Output": 0.68
+    },
+    {
+      "Name": "calculate_InfSI_CPIn",
+      "Input": {"Inf_SI": 0.75, "Inf_CPIn": 0.6},
+      "Output": 0.45
+    },
+    {
+      "Name": "calculate_InfSI_NPNCPIn",
+      "Input": {"Inf_SI": 0.95, "Inf_NPNCPIn": 0.7},
+      "Output": 0.665
+    },
+    {
+      "Name": "calculate_InfSI_StIn",
+      "Input": {"Inf_SI": 0.8, "Inf_StIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfSI_GlcIn",
+      "Input": {"Inf_SI": 0.7, "Inf_GlcIn": 0.6},
+      "Output": 0.42
+    },
+    {
+      "Name": "calculate_InfSI_NDFIn",
+      "Input": {"Inf_SI": 0.75, "Inf_NDFIn": 0.8},
+      "Output": 0.6
+    },
+    {
+      "Name": "calculate_InfSI_ADFIn",
+      "Input": {"Inf_SI": 0.65, "Inf_ADFIn": 0.7},
+      "Output": 0.455
+    },
+    {
+      "Name": "calculate_InfSI_FAIn",
+      "Input": {"Inf_SI": 0.85, "Inf_FAIn": 0.6},
+      "Output": 0.51
+    },
+    {
+      "Name": "calculate_InfSI_VFAIn",
+      "Input": {"Inf_SI": 0.8, "Inf_VFAIn": 0.7},
+      "Output": 0.56
+    },
+    {
+      "Name": "calculate_InfSI_AcetIn",
+      "Input": {"Inf_SI": 0.9, "Inf_AcetIn": 0.5},
+      "Output": 0.45
+    },
+    {
+      "Name": "calculate_InfSI_PropIn",
+      "Input": {"Inf_SI": 0.85, "Inf_PropIn": 0.6},
+      "Output": 0.51
+    },
+    {
+      "Name": "calculate_InfSI_ButrIn",
+      "Input": {"Inf_SI": 0.8, "Inf_ButrIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfSI_AshIn",
+      "Input": {"Inf_SI": 0.7, "Inf_AshIn": 0.7},
+      "Output": 0.49
+    },
+    {
+      "Name": "calculate_InfArt_DMIn",
+      "Input": {"Inf_Art": 0.9, "Inf_DMIn": 1.0},
+      "Output": 0.9
+    },
+    {
+      "Name": "calculate_InfArt_OMIn",
+      "Input": {"Inf_Art": 0.85, "Inf_OMIn": 0.8},
+      "Output": 0.68
+    },
+    {
+      "Name": "calculate_InfArt_CPIn",
+      "Input": {"Inf_Art": 0.75, "Inf_CPIn": 0.6},
+      "Output": 0.45
+    },
+    {
+      "Name": "calculate_InfArt_NPNCPIn",
+      "Input": {"Inf_Art": 0.95, "Inf_NPNCPIn": 0.7},
+      "Output": 0.665
+    },
+    {
+      "Name": "calculate_InfArt_TPIn",
+      "Input": {"Inf_Art": 0.8, "Inf_TPIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfArt_StIn",
+      "Input": {"Inf_Art": 0.7, "Inf_StIn": 0.6},
+      "Output": 0.42
+    },
+    {
+      "Name": "calculate_InfArt_GlcIn",
+      "Input": {"Inf_Art": 0.85, "Inf_GlcIn": 0.7},
+      "Output": 0.595
+    },
+    {
+      "Name": "calculate_InfArt_NDFIn",
+      "Input": {"Inf_Art": 0.9, "Inf_NDFIn": 0.8},
+      "Output": 0.72
+    },
+    {
+      "Name": "calculate_InfArt_ADFIn",
+      "Input": {"Inf_Art": 0.75, "Inf_ADFIn": 0.7},
+      "Output": 0.525
+    },
+    {
+      "Name": "calculate_InfArt_FAIn",
+      "Input": {"Inf_Art": 0.85, "Inf_FAIn": 0.6},
+      "Output": 0.51
+    },
+    {
+      "Name": "calculate_InfArt_VFAIn",
+      "Input": {"Inf_Art": 0.8, "Inf_VFAIn": 0.5},
+      "Output": 0.4
+    },
+    {
+      "Name": "calculate_InfArt_AcetIn",
+      "Input": {"Inf_Art": 0.75, "Inf_AcetIn": 0.6},
+      "Output": 0.45
+    },
+    {
+      "Name": "calculate_InfArt_PropIn",
+      "Input": {"Inf_Art": 0.7, "Inf_PropIn": 0.7},
+      "Output": 0.49
+    },
+    {
+      "Name": "calculate_InfArt_ButrIn",
+      "Input": {"Inf_Art": 0.9, "Inf_ButrIn": 0.6},
+      "Output": 0.54
+    },
+    {
+      "Name": "calculate_InfArt_AshIn",
+      "Input": {"Inf_Art": 0.8, "Inf_AshIn": 0.7},
+      "Output": 0.56
+    },
+    {
+      "Name": "calculate_Inf_ArgRUPIn",
+      "Input": {"Inf_Rum": 0.9, "Inf_Arg_g": 1000, "InfRum_RUP_CP": 50},
+      "Output": 450.0
+    },
+    {
+      "Name": "calculate_Inf_HisRUPIn",
+      "Input": {"Inf_Rum": 0.8, "Inf_His_g": 900, "InfRum_RUP_CP": 40},
+      "Output": 288.0
+    },
+    {
+      "Name": "calculate_Inf_IleRUPIn",
+      "Input": {"Inf_Rum": 0.85, "Inf_Ile_g": 950, "InfRum_RUP_CP": 60},
+      "Output": 484.5
+    },
+    {
+      "Name": "calculate_Inf_LeuRUPIn",
+      "Input": {"Inf_Rum": 0.7, "Inf_Leu_g": 800, "InfRum_RUP_CP": 30},
+      "Output": 168.0
+    },
+    {
+      "Name": "calculate_Inf_LysRUPIn",
+      "Input": {"Inf_Rum": 0.9, "Inf_Lys_g": 1100, "InfRum_RUP_CP": 70},
+      "Output": 693.0
+    },
+    {
+      "Name": "calculate_Inf_MetRUPIn",
+      "Input": {"Inf_Rum": 0.75, "Inf_Met_g": 1200, "InfRum_RUP_CP": 55},
+      "Output": 495.0
+    },
+    {
+      "Name": "calculate_Inf_PheRUPIn",
+      "Input": {"Inf_Rum": 0.8, "Inf_Phe_g": 1000, "InfRum_RUP_CP": 50},
+      "Output": 400.0
+    },
+    {
+      "Name": "calculate_Inf_ThrRUPIn",
+      "Input": {"Inf_Rum": 0.85, "Inf_Thr_g": 900, "InfRum_RUP_CP": 60},
+      "Output": 459.0
+    },
+    {
+      "Name": "calculate_Inf_TrpRUPIn",
+      "Input": {"Inf_Rum": 0.9, "Inf_Trp_g": 950, "InfRum_RUP_CP": 70},
+      "Output": 598.5
+    },
+    {
+      "Name": "calculate_Inf_ValRUPIn",
+      "Input": {"Inf_Rum": 0.7, "Inf_Val_g": 1000, "InfRum_RUP_CP": 55},
+      "Output": 385.0
+    },
+    {
+      "Name": "calculate_Inf_IdArgIn",
+      "Input": {"Inf_Arg_g": 1000, "Inf_SI": 0.8, "Inf_ArgRUPIn": 450, "Inf_dcRUP": 80},
+      "Output": 1000.0
+    },
+    {
+      "Name": "calculate_Inf_IdHisIn",
+      "Input": {"Inf_His_g": 900, "Inf_SI": 0.75, "Inf_HisRUPIn": 288, "Inf_dcRUP": 75},
+      "Output": 722.25
+    },
+    {
+      "Name": "calculate_Inf_IdIleIn",
+      "Input": {"Inf_Ile_g": 950, "Inf_SI": 0.7, "Inf_IleRUPIn": 484.5, "Inf_dcRUP": 70},
+      "Output": 804.65
+    },
+    {
+      "Name": "calculate_Inf_IdLeuIn",
+      "Input": {"Inf_Leu_g": 800, "Inf_SI": 0.85, "Inf_LeuRUPIn": 168, "Inf_dcRUP": 85},
+      "Output": 720.8
+    },
+    {
+      "Name": "calculate_Inf_IdLysIn",
+      "Input": {"Inf_Lys_g": 1100, "Inf_SI": 0.9, "Inf_LysRUPIn": 693, "Inf_dcRUP": 90},
+      "Output": 1514.7
+    },
+    {
+      "Name": "calculate_Inf_IdMetIn",
+      "Input": {"Inf_Met_g": 1200, "Inf_SI": 0.8, "Inf_MetRUPIn": 495, "Inf_dcRUP": 85},
+      "Output": 1236.75
+    },
+    {
+      "Name": "calculate_Inf_IdPheIn",
+      "Input": {"Inf_Phe_g": 1000, "Inf_SI": 0.7, "Inf_PheRUPIn": 400, "Inf_dcRUP": 70},
+      "Output": 770.0
+    },
+    {
+      "Name": "calculate_Inf_IdThrIn",
+      "Input": {"Inf_Thr_g": 900, "Inf_SI": 0.75, "Inf_ThrRUPIn": 459, "Inf_dcRUP": 75},
+      "Output": 850.5
+    },
+    {
+      "Name": "calculate_Inf_IdTrpIn",
+      "Input": {"Inf_Trp_g": 950, "Inf_SI": 0.85, "Inf_TrpRUPIn": 598.5, "Inf_dcRUP": 85},
+      "Output": 1195.1
+    },
+    {
+      "Name": "calculate_Inf_IdValIn",
+      "Input": {"Inf_Val_g": 1000, "Inf_SI": 0.8, "Inf_ValRUPIn": 385, "Inf_dcRUP": 80},
+      "Output": 948.0
     }
   ]
   

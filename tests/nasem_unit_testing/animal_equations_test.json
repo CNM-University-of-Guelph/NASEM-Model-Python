@@ -277,17 +277,17 @@
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
+    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 3, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 0},
     "Output": 15.06
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+    "Input": {"An_StatePhys": "Calf", "An_BW": 60, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
     "Output": 14.13
   },
   {
     "Name": "calculate_An_MEIn",
-    "Input": {"An_StatePhys": "Dry Cow", "An_BW": 600, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_CflLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
+    "Input": {"An_StatePhys": "Dry Cow", "An_BW": 600, "An_DEIn": 12, "An_GasEOut": 3, "Ur_DEout": 2.4, "Dt_DMIn_ClfLiq": 0.9, "Dt_DEIn_base_ClfLiq": 6, "Dt_DEIn_base_ClfDry": 10, "RumDevDisc_Clf": 1},
     "Output": 6.6
   },
   {
@@ -820,20 +820,6 @@
     "Output": 0.816990976
   },
   {
-    "Name": "calculate_An_IdAAIn",
-    "Input": {"diet_data": {"Dt_IdArgIn": 3.4, "Dt_IdHisIn": 1.2, "Dt_IdIleIn": 2.4, "Dt_IdLeuIn": 4.3, "Dt_IdLysIn": 2.9, "Dt_IdMetIn": 5.2, "Dt_IdPheIn": 2.3, "Dt_IdThrIn": 1.9, "Dt_IdTrpIn": 4.1, "Dt_IdValIn": 8.5}, 
-              "infusion_data": {"Inf_IdArgIn": 5.2, "Inf_IdHisIn": 1.6, "Inf_IdIleIn": 0.2, "Inf_IdLeuIn": 9.1, "Inf_IdLysIn": 1.7, "Inf_IdMetIn": 2.3, "Inf_IdPheIn": 6.3, "Inf_IdThrIn": 4.8, "Inf_IdTrpIn": 7.1, "Inf_IdValIn": 3.4}, 
-              "aa_list": null, "an_data": {}},
-    "Output": {"An_IdArgIn": 8.6, "An_IdHisIn": 2.8, "An_IdIleIn": 2.6, "An_IdLeuIn": 13.399999999999999, "An_IdLysIn": 4.6, "An_IdMetIn": 7.5, "An_IdPheIn": 8.6, "An_IdThrIn": 6.699999999999999, "An_IdTrpIn": 11.2, "An_IdValIn": 11.9}
-  },
-  {
-    "Name": "calculate_An_XIn",
-    "Input": {"diet_data": {"Dt_test1": 1.5, "Dt_test2": 4.6, "Dt_test3": 6.2}, 
-              "infusion_data": {"Inf_test1": 2.4, "Inf_test2": 3.5, "Inf_test3": 4.7}, 
-              "variables": ["test1", "test2", "test3"], "an_data": {}},
-    "Output": {"An_test1": 3.9, "An_test2": 8.1, "An_test3": 10.9}
-  },
-  {
     "Name": "calculate_An_PrePartDay",
     "Input": {"An_GestDay": 25, "An_GestLength": 280},
     "Output": -255
@@ -847,5 +833,65 @@
     "Name": "calculate_An_PrePartWkDurat",
     "Input": {"An_PrePartWklim": 2.1},
     "Output": 4.2
+  },
+  {
+    "Name": "calculate_An_IdArgIn",
+    "Input": {"Dt_IdArgIn": 1.5, "Inf_IdArgIn": 2.0},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdHisIn",
+    "Input": {"Dt_IdHisIn": 1.2, "Inf_IdHisIn": 2.3},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdIleIn",
+    "Input": {"Dt_IdIleIn": 0.7, "Inf_IdIleIn": 1.3},
+    "Output": 2.0
+  },
+  {
+    "Name": "calculate_An_IdLeuIn",
+    "Input": {"Dt_IdLeuIn": 2.0, "Inf_IdLeuIn": 1.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdLysIn",
+    "Input": {"Dt_IdLysIn": 1.8, "Inf_IdLysIn": 1.7},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdMetIn",
+    "Input": {"Dt_IdMetIn": 1.0, "Inf_IdMetIn": 2.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdPheIn",
+    "Input": {"Dt_IdPheIn": 1.6, "Inf_IdPheIn": 1.9},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdThrIn",
+    "Input": {"Dt_IdThrIn": 2.0, "Inf_IdThrIn": 1.5},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdTrpIn",
+    "Input": {"Dt_IdTrpIn": 1.4, "Inf_IdTrpIn": 2.1},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_IdValIn",
+    "Input": {"Dt_IdValIn": 1.3, "Inf_IdValIn": 2.2},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_NPNCPIn",
+    "Input": {"Dt_NPNCPIn": 1.9, "Inf_NPNCPIn": 1.6},
+    "Output": 3.5
+  },
+  {
+    "Name": "calculate_An_FAIn",
+    "Input": {"Dt_FAIn": 1.5, "Inf_FAIn": 2.0},
+    "Output": 3.5
   }
 ]

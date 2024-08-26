@@ -6,7 +6,7 @@ import numpy as np
 def calculate_An_NEmUse_NS(An_StatePhys: str, 
                            An_BW: float, 
                            An_BW_empty: float,
-                           An_parity_rl: int, 
+                           An_Parity_rl: int, 
                            Dt_DMIn_ClfLiq: float
 ) -> float:
     """
@@ -58,7 +58,7 @@ def calculate_An_NEmUse_NS(An_StatePhys: str,
         An_StatePhys='Calf',
         An_BW=93,
         An_BW_empty=85,
-        An_parity_rl=0,
+        An_Parity_rl=0,
         Dt_DMIn_ClfLiq=4
     )
     ```
@@ -77,7 +77,7 @@ def calculate_An_NEmUse_NS(An_StatePhys: str,
         An_NEmUse_NS = 0.097 * An_BW_empty**0.75
     # Adjust NEm for cows based on parity (assuming parity > 0 implies cow)
     # R code line 2782
-    elif An_parity_rl > 0:
+    elif An_Parity_rl > 0:
         # This recalculates what is already set as default for Heifers
         # Equation 20-272 says An_BW is An_BW NPr_3 i.e. Equation 20-246
         An_NEmUse_NS = 0.10 * An_BW**0.75

@@ -5,13 +5,18 @@ description = "Implementation of (part of) NASEM 2021 dairy model in python "
 authors = ["Braeden Fieguth & David Innes"]
 license = "MIT"
 readme = "README.md"
+packages = [
+    { include = "nasem_dairy", from = "src" }
+]
 
 [tool.poetry.dependencies]
 python = "^3.9"
 pandas = "^2.0.3"
 numpy = "^1.25.1"
-icecream = "^2.1.3"
 pytest = "^7.4.4"
+
+[tool.poetry.extras]
+dag = []
 
 [tool.poetry.dev-dependencies]
 

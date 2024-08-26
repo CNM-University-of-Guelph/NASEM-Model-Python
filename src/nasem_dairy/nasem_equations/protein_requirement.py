@@ -5,26 +5,26 @@ import numpy as np
 
 
 def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 
-                           Scrf_MPuse_g_Trg: float,
+                           Scrf_MPUse_g_Trg: float,
                            Ur_MPendUse_g: float
 ) -> float:
     """
     An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
     """
-    An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPuse_g_Trg + Ur_MPendUse_g  
+    An_MPm_g_Trg = Fe_MPendUse_g_Trg + Scrf_MPUse_g_Trg + Ur_MPendUse_g  
     # Line 2679
     return An_MPm_g_Trg
 
 
 def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
-                                       Kg_MP_NP_Trg: float
+                                       Kg_MP_NP_Trg_initial: float
 ) -> float:
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
     """
-    Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  
+    Body_MPUse_g_Trg_initial = Body_NPgain_g / Kg_MP_NP_Trg_initial 
     # Line 2675, kg MP/d for NP gain
-    return Body_MPUse_g_Trg
+    return Body_MPUse_g_Trg_initial
 
 
 def calculate_Gest_MPUse_g_Trg(Gest_NPuse_g: float, coeff_dict: dict) -> float:
@@ -78,7 +78,7 @@ def calculate_Mlk_MPUse_g_Trg(Trg_Mlk_NP_g: float, coeff_dict: dict) -> float:
 
 
 def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
-                                     Body_MPUse_g_Trg: float,
+                                     Body_MPUse_g_Trg_initial: float,
                                      Gest_MPUse_g_Trg: float,
                                      Mlk_MPUse_g_Trg: float
 ) -> float:
@@ -88,13 +88,13 @@ def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
             If An_StatePhys == "Heifer" & Diff_MPuse_g > 0 then the value of An_MPuse_g_Trg will change
             To do this in package will need to calculate an inital value (this function) then calcualte the value again
     """
-    An_MPuse_g_Trg = (An_MPm_g_Trg + Body_MPUse_g_Trg + 
+    An_MPuse_g_Trg_initial = (An_MPm_g_Trg + Body_MPUse_g_Trg_initial + 
                       Gest_MPUse_g_Trg + Mlk_MPUse_g_Trg)  # Line 2680
-    return An_MPuse_g_Trg
+    return An_MPuse_g_Trg_initial
 
 
 def calculate_Min_MPuse_g(An_StatePhys: str, 
-                          An_MPuse_g_Trg: float,
+                          An_MPuse_g_Trg_initial: float,
                           An_BW: float, 
                           An_BW_mature: float,
                           An_MEIn_approx: float
@@ -103,32 +103,32 @@ def calculate_Min_MPuse_g(An_StatePhys: str,
     Min_MPuse_g: I think minimum MP use, g/d, but not 100% sure
     """
     if (An_StatePhys == "Heifer" and 
-        An_MPuse_g_Trg < ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
+        An_MPuse_g_Trg_initial < ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
         ): # Line 2686-2687
         Min_MPuse_g = ((53 - 25 * An_BW / An_BW_mature) * An_MEIn_approx)
     else:
-        Min_MPuse_g = An_MPuse_g_Trg
+        Min_MPuse_g = An_MPuse_g_Trg_initial
     return Min_MPuse_g
 
 
-def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg: float) -> float:
+def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg_initial: float) -> float:
     """
     Diff_MPuse_g: g/d, I believe this is the difference betweem minimum MP use and MP requirement 
     """
-    Diff_MPuse_g = Min_MPuse_g - An_MPuse_g_Trg  # Line 2688
+    Diff_MPuse_g = Min_MPuse_g - An_MPuse_g_Trg_initial  # Line 2688
     return Diff_MPuse_g
 
 
 def calculate_Frm_MPUse_g_Trg(An_StatePhys: str, 
                               Frm_NPgain_g: float,
-                              Kg_MP_NP_Trg: float,
+                              Kg_MP_NP_Trg_initial: float,
                               Diff_MPuse_g: float
 ) -> float:
     """
     Frm_MPUse_g_Trg: kg MP/d for Frame NP gain
     """
     # kg MP/d for Frame NP gain, Line 2674
-    Frm_MPUse_g_Trg = Frm_NPgain_g / Kg_MP_NP_Trg  
+    Frm_MPUse_g_Trg = Frm_NPgain_g / Kg_MP_NP_Trg_initial  
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Frm_MPUse_g_Trg = Frm_MPUse_g_Trg + Diff_MPuse_g  # Line 2691
     return Frm_MPUse_g_Trg
@@ -142,17 +142,17 @@ def calculate_Frm_NPgain_g(Frm_NPgain: float) -> float:
     return Frm_NPgain_g
 
 
-def calculate_Kg_MP_NP_Trg(An_StatePhys: str, 
-                           An_Parity_rl: int, 
-                           An_BW: float,
-                           An_BW_empty: float, 
-                           An_BW_mature: float,
-                           An_BWmature_empty: float,
-                           MP_NP_efficiency_dict: dict,
-                           coeff_dict: dict
+def calculate_Kg_MP_NP_Trg_initial(An_StatePhys: str, 
+                                   An_Parity_rl: int, 
+                                   An_BW: float,
+                                   An_BW_empty: float, 
+                                   An_BW_mature: float,
+                                   An_BWmature_empty: float,
+                                   MP_NP_efficiency_dict: dict,
+                                   coeff_dict: dict
 ) -> float:
     """
-    Kg_MP_NP_Trg: Conversion of NP to MP for growth
+    Kg_MP_NP_Trg_initial: Conversion of NP to MP for growth
     
     Examples
     --------
@@ -164,7 +164,7 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
         'Trg_MP_NP': 0.69
     }
 
-    calculate_Kg_MP_NP_Trg(
+    calculate_Kg_MP_NP_Trg_initial(
         An_StatePhys = "Calf", An_Parity_rl = 0, An_BW = 150.0, 
         An_BW_empty = 40.0, An_BW_mature = 600.0, An_BWmature_empty = 70.0, 
         MP_NP_efficiency_dict = MP_NP_efficiency_dict, coeff_dict = coeff_dict
@@ -172,35 +172,36 @@ def calculate_Kg_MP_NP_Trg(An_StatePhys: str,
     ```
     """
     # Default value for Growth MP to TP.  Shouldn't be used for any., Line 2659
-    Kg_MP_NP_Trg = 0.60 * coeff_dict['Body_NP_CP']  
+    Kg_MP_NP_Trg_initial = 0.60 * coeff_dict['Body_NP_CP']  
 
     if (An_Parity_rl == 0) and (An_BW_empty / An_BWmature_empty > 0.12):
         # for heifers from 12% until 83% of BW_mature
-        Kg_MP_NP_Trg = ((0.64 - 0.3 * An_BW_empty / An_BWmature_empty) 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = ((0.64 - 0.3 * An_BW_empty / An_BWmature_empty) 
+                                * coeff_dict['Body_NP_CP'])
         
-    if Kg_MP_NP_Trg < 0.394 * coeff_dict['Body_NP_CP']:
+    if Kg_MP_NP_Trg_initial < 0.394 * coeff_dict['Body_NP_CP']:
         # Trap heifer values less than 0.39 MP to CP, Line 2663
-        Kg_MP_NP_Trg = (0.394 * coeff_dict['Body_NP_CP'] 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = (0.394 * coeff_dict['Body_NP_CP'] 
+                                * coeff_dict['Body_NP_CP'])
     
     if An_StatePhys == "Calf":
         # calves, Line 2664
-        Kg_MP_NP_Trg = ((0.70 - 0.532 * (An_BW / An_BW_mature)) 
-                        * coeff_dict['Body_NP_CP'])
+        Kg_MP_NP_Trg_initial = ((0.70 - 0.532 * (An_BW / An_BW_mature)) 
+                                * coeff_dict['Body_NP_CP'])
         
     if An_Parity_rl > 0:
         # Cows, Line 2665
-        Kg_MP_NP_Trg = MP_NP_efficiency_dict['Trg_MP_NP']
-    return Kg_MP_NP_Trg
+        Kg_MP_NP_Trg_initial = MP_NP_efficiency_dict['Trg_MP_NP']
+    return Kg_MP_NP_Trg_initial
 
 
 def calculate_Kg_MP_NP_Trg_heifer_adjustment(An_StatePhys: str, 
                                              Diff_MPuse_g: float, 
                                              Frm_NPgain_g: float, 
                                              Frm_MPUse_g_Trg: float,
-                                             Kg_MP_NP_Trg: float
+                                             Kg_MP_NP_Trg_initial: float
 ) -> float:
+    Kg_MP_NP_Trg = Kg_MP_NP_Trg_initial
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Kg_MP_NP_Trg = Frm_NPgain_g / Frm_MPUse_g_Trg
     return Kg_MP_NP_Trg
@@ -235,7 +236,7 @@ def calculate_Rsrv_MPUse_g_Trg(An_StatePhys: str,
 def calculate_Body_MPUse_g_Trg(An_StatePhys: str, 
                                Diff_MPuse_g: float,
                                Body_NPgain_g: float, 
-                               Body_MPUse_g_Trg: float,
+                               Body_MPUse_g_Trg_initial: float,
                                Kg_MP_NP_Trg: float
 ) -> float:
     """
@@ -244,7 +245,7 @@ def calculate_Body_MPUse_g_Trg(An_StatePhys: str,
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
         Body_MPUse_g_Trg = Body_NPgain_g / Kg_MP_NP_Trg  # Line 2696
     else:
-        Body_MPUse_g_Trg = Body_MPUse_g_Trg
+        Body_MPUse_g_Trg = Body_MPUse_g_Trg_initial
     return Body_MPUse_g_Trg
 
 

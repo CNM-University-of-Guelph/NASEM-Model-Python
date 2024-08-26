@@ -36,12 +36,12 @@
     },
     {
       "Name": "calculate_Mlk_Fatemp_g",
-      "Input": {"An_StatePhys": "Lactating Cow", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_Ile_g": 1.4, "Abs_Met_g": 3.2},
+      "Input": {"An_StatePhys": "Lactating Cow", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_AA_g_series": {"Ile": 1.4, "Met": 3.2}},
       "Output": 1222.69
     },
     {
       "Name": "calculate_Mlk_Fatemp_g",
-      "Input": {"An_StatePhys": "Heifer", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_Ile_g": 1.4, "Abs_Met_g": 3.2},
+      "Input": {"An_StatePhys": "Heifer", "An_LactDay_MlkPred": 130, "Dt_DMIn": 25, "Dt_FAIn": 6.4, "Dt_DigC160In": 0.19, "Dt_DigC183In": 0.23, "Abs_AA_g_series": {"Ile": 1.4, "Met": 3.2}},
       "Output": 0
     },
     {

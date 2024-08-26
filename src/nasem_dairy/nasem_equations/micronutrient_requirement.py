@@ -1142,13 +1142,13 @@ def calculate_Dt_acNa(Abs_NaIn: float, Dt_NaIn: float) -> float:
     return Dt_acNa
 
 
-def recalculate_Dt_acMg(Abs_MgIn: float, Dt_MgIn: float) -> float:
+def calculate_Dt_acMg_final(Abs_MgIn: float, Dt_MgIn: float) -> float:
     """
     This gets caclulated earlier then recalculated at the end of the model?
     Dt_acMg: Diet level absorption coefficient magnesium (g/g) 
     """
-    Dt_acMg = Abs_MgIn / Dt_MgIn  # Line 3226
-    return Dt_acMg
+    Dt_acMg_final = Abs_MgIn / Dt_MgIn  # Line 3226
+    return Dt_acMg_final
 
 
 def calculate_Dt_acK(Abs_KIn: float, Dt_KIn: float) -> float:

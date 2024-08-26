@@ -45,7 +45,7 @@ def calculate_Uter_Wt(An_Parity_rl: int,
     )
     ```
     """
-    Uter_Wt = coeff_dict['Uter_Wt']  # Line 2312
+    Uter_Wt = coeff_dict['Uter_Wt_coeff']  # Line 2312
     if An_AgeDay < 240:  # Line 2313
         Uter_Wt = 0
 
@@ -135,7 +135,7 @@ def calculate_Uter_BWgain(An_LactDay: int,
     )
     ```
     """
-    Uter_BWgain = coeff_dict['Uter_BWgain']
+    Uter_BWgain = coeff_dict['Uter_BWgain_coeff']
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         Uter_BWgain = (coeff_dict['Uter_Ksyn'] -
                        coeff_dict['Uter_KsynDecay'] * An_GestDay) * Uter_Wt
@@ -168,7 +168,7 @@ def calculate_GrUter_BWgain(An_LactDay: int,
     )
     ```
     """
-    GrUter_BWgain = coeff_dict['GrUter_BWgain']  # Line 2341-2345
+    GrUter_BWgain = coeff_dict['GrUter_BWgain_coeff']  # Line 2341-2345
     if An_GestDay > 0 and An_GestDay <= An_GestLength:
         GrUter_BWgain = (
             coeff_dict['GrUter_Ksyn'] -

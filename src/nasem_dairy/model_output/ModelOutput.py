@@ -83,7 +83,7 @@ class ModelOutput:
             - mPrt_k_AA
         """
         variables_to_remove = [
-            "key", "value", "num_value", "feed_data", "feed_library_df",
+            "key", "value", "num_value", "feed_library_df",
             "diet_info_initial", "diet_data_initial", "aa_list",
             "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
         ]
@@ -537,12 +537,30 @@ class ModelOutput:
         for attr_name in self.categories:
             _recursive_extract(getattr(self, attr_name), attr_name)
 
-        print("DataFrame keys:", special_keys["dataframe"])
-        print("Series keys:", special_keys["series"])
-        print("Numpy array keys:", special_keys["ndarray"])
-        print("Dict keys:", special_keys["dict"])
-        print("List keys:", special_keys["list"])
+        # print("DataFrame keys:", special_keys["dataframe"])
+        # print("Series keys:", special_keys["series"])
+        # print("Numpy array keys:", special_keys["ndarray"])
+        # print("Dict keys:", special_keys["dict"])
+        # print("List keys:", special_keys["list"])
         return data_dict
+
+    def export_variable_names(self) -> List[str]: 
+        """
+        Extract a list of variable names stored in the class.
+        If a value is a DataFrame, replace the DataFrame name with its column names.
+
+        Returns:
+            List[str]: A list of variable names including DataFrame column names.
+        """
+        variables_dict = self.export_to_dict()
+        variable_names = []
+
+        for key, value in variables_dict.items():
+            if isinstance(value, pd.DataFrame):
+                variable_names.extend(value.columns.tolist())
+            else:
+                variable_names.append(key)
+        return list(set(variable_names))
 
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:

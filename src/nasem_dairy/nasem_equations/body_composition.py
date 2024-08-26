@@ -318,14 +318,6 @@ def calculate_An_GutFill_Wt_Erdman(Dt_DMIn: float,
     return An_GutFill_Wt_Erdman
 
 
-def calculate_An_GutFill_Wt(An_GutFill_BW: float, An_BWnp: float) -> float:
-    """
-    An_GutFill_Wt: Gut fill (kg)
-    """
-    An_GutFill_Wt = An_GutFill_BW * An_BWnp  # Line 2413
-    return An_GutFill_Wt
-
-
 def calculate_An_BWnp_empty(An_BWnp: float, An_GutFill_Wt: float) -> float:
     """
     An_BWnp_empty: Non pregnant empty BW (kg). 

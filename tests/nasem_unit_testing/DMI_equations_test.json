@@ -148,6 +148,161 @@
     "Name": "calculate_Dt_DMIn_DryCow_AdjGest",
     "Input": {"An_GestDay": 300, "An_GestLength": 280, "An_BW": 605},
     "Output": -99.5185808797262
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 0, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Lactating Cow", "An_BW": 650.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 150, "An_Parity_rl": 2, "Trg_MilkProd": 35.0, "An_GestDay": 200, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 3.0, "Trg_NEmilkOut": 1.0, "An_PrePartWklim": 2.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 20.5
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 1, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Lactating Cow", "An_BW": 650.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 150, "An_Parity_rl": 2, "Trg_MilkProd": 35.0, "An_GestDay": 200, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 3.0, "Trg_NEmilkOut": 1.0, "An_PrePartWklim": 2.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 29.578034000000002
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 2, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 600.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 240, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -2.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -2.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.686808484101448
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 2, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 600.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 240, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -2.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 9.98976
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 3, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 620.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 250, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -1.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -1.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 19.300515857419736
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 3, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 620.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 250, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -1.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 9.362496
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 4, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 640.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 260, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -0.5, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.5, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.60245158402052
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 4, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 640.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 260, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.5, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 9.021056000000002
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 5, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 660.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -0.1, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.1, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 15.331675054440034
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 5, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 660.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.1, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 8.698932
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 6, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.173273178045912
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 6, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 8.796479999999999
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 7, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 700.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 14.916350416885722
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 7, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 700.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 9.0552
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 8, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Lactating", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 180, "An_Parity_rl": 2, "Trg_MilkProd": 40.0, "An_GestDay": 200, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 1.5, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 17.14007102362691
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 9, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Lactating", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 180, "An_Parity_rl": 2, "Trg_MilkProd": 40.0, "An_GestDay": 200, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 1.5, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 23.46229125867597
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 10, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Dry", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 2, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 10.584000000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 10, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Dry", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 2, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 6.793200000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 11, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Dry", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 2, "Trg_MilkProd": 0.0, "An_GestDay": 275, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.728527266568324
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 12, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 620.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 250, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -1.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -1.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.88046655418521
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 12, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 620.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 250, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -1.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.147736000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 13, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 640.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 260, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -0.5, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.5, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 19.271114627945344
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 13, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 640.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 260, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.5, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.313792000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 14, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 660.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": -0.1, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.1, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.764199172931859
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 14, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 660.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": -0.1, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.4798480000000005
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 15, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 15.48736564359012
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 15, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 680.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.645904000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 16, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 700.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 11.272775868767184
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 16, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 700.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 270, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.81196
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 17, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 0.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 15.0084808215767
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 17, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": 5.978016000000001
   }
 ]
   

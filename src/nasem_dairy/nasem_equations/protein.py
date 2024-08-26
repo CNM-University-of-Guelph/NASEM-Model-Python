@@ -77,7 +77,7 @@ def calculate_Scrf_MPUse_g_Trg(An_StatePhys: str,
                                Km_MP_NP_Trg: float
 ) -> float:
     """
-    Scrf_MPuse_g_Trg: Scurf Metabolizable protein, g
+    Scrf_MPUse_g_Trg: Scurf Metabolizable protein, g
     """
     if An_StatePhys in ["Calf", "Heifer"]:
         Scrf_MPUse_g_Trg = Scrf_CP_g / Km_MP_NP_Trg  

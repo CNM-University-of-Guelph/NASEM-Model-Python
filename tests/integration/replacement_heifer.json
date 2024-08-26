@@ -91,7 +91,7 @@
             "MiTPValProf": 6.88,
             "Body_NP_CP": 0.86,
             "CPGain_RsrvGain": 0.068,
-            "GrUter_BWgain": 0.0,
+            "GrUter_BWgain_coeff": 0.0,
             "CP_GrUtWt": 0.123,
             "Gest_NPother_g": 0.0,
             "En_NDF": 4.2,
@@ -108,14 +108,14 @@
             "Uter_Ksyn": 0.0242,
             "Uter_KsynDecay": 0.0000353,
             "Uter_Kdeg": 0.2,
-            "Uter_Wt": 0.204,
+            "Uter_Wt_coeff": 0.204,
             "GrUterWt_FetBWbrth": 1.816,
-            "Uter_BWgain": 0.0,
+            "Uter_BWgain_coeff": 0.0,
             "An_NEmUse_Env": 0.0,
             "FatGain_RsrvGain": 0.622,
             "NE_GrUtWt": 0.95,
             "Km_MP_NP_Trg": 0.69,
-            "Kg_MP_NP_Trg": 0.69,
+            "Kg_MP_NP_Trg_coeff": 0.69,
             "Ky_MP_NP_Trg": 0.33,
             "Ky_NP_MP_Trg": 1.0,
             "Kl_MP_NP_Trg": 0.69,
@@ -299,7 +299,7 @@
                 "mPrt_k_Val": 0.0,
                 "mPrt_k_NEAA": 0.0,
                 "mPrt_k_OthAA": 0.0773,
-                "mPrt_k_EAA2": -0.00215
+                "mPrt_k_EAA2_coeff": -0.00215
             },
             {
                 "mPrt_Int": -141,
@@ -320,7 +320,7 @@
                 "mPrt_k_Val": 0,
                 "mPrt_k_NEAA": 0.0925,
                 "mPrt_k_OthAA": 0,
-                "mPrt_k_EAA2": -0.002451
+                "mPrt_k_EAA2_coeff": -0.002451
             },
             {
                 "mPrt_Int": -73.7,
@@ -341,7 +341,7 @@
                 "mPrt_k_Val": 0,
                 "mPrt_k_NEAA": 0.075,
                 "mPrt_k_OthAA": 0,
-                "mPrt_k_EAA2": -0.00175
+                "mPrt_k_EAA2_coeff": -0.00175
             }
         ],
         "f_Imb": [

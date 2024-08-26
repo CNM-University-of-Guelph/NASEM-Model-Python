@@ -45,7 +45,7 @@ def test_non_numeric_value_raises_type_error():
             "mPrt_k_Val": 0,
             "mPrt_k_NEAA": 0,
             "mPrt_k_OthAA": 0.0773,
-            "mPrt_k_EAA2": -0.00215
+            "mPrt_k_EAA2_coeff": -0.00215
         }
     ]
     with pytest.raises(TypeError, match="Value for mPrt_k_DigNDF in mPrt_coeff_list\\[0\\] must be int or float"):

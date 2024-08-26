@@ -173,9 +173,8 @@ def calculate_Mlk_Fatemp_g(An_StatePhys: str,
                            Dt_DMIn: float, 
                            Dt_FAIn: float, 
                            Dt_DigC160In: float,
-                           Dt_DigC183In: float, 
-                           Abs_Ile_g: float,
-                           Abs_Met_g: float
+                           Dt_DigC183In: float,
+                           Abs_AA_g: pd.Series 
 ) -> float:
     """
     Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
@@ -197,8 +196,8 @@ def calculate_Mlk_Fatemp_g(An_StatePhys: str,
                         24.52 * (Dt_DMIn - Dt_FAIn) + 
                         0.41 * Dt_DigC160In * 1000 + 
                         1.80 * Dt_DigC183In * 1000 + 
-                        1.45 * Abs_Ile_g + 
-                        1.34 * Abs_Met_g)
+                        1.45 * Abs_AA_g["Ile"] + 
+                        1.34 * Abs_AA_g["Met"])
     else:
         Mlk_Fatemp_g = 0  # Line 2261
     return Mlk_Fatemp_g

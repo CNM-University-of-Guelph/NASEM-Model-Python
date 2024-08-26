@@ -99,7 +99,7 @@ coeff_dict = {
                           # growth function such as Dijkstra's mammary growth
                           # equation. MDH.
     'GrUterWt_FetBWbrth': 1.816,  # Line 2295
-    'GrUter_BWgain': 0,  # Line 2341-2345
+    'GrUter_BWgain_coeff': 0,  # Line 2341-2345
     'GrUter_Ksyn': 2.43e-2,  # Line 2302
     'GrUter_KsynDecay': 2.45e-5,  # Line 2303
     'HydrArg': 0.8967,  # AA dehydration factors for mass change during peptide 
@@ -119,7 +119,7 @@ coeff_dict = {
     'Ka_LateGest_DMIn': 1.47,
     'Kc_LateGest_DMIn': -0.035,
     'Kf_ME_RE_ClfLiq': 0.56,  # Line 2828
-    'Kg_MP_NP_Trg': 0.69,  # Line 54, 2665
+    'Kg_MP_NP_Trg_coeff': 0.69,  # Line 54, 2665
     'Kl_ME_NE': 0.66,
     'Kl_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2654
     'KmMiNRDNDF': 0.0939,  # Line 1119
@@ -219,11 +219,11 @@ coeff_dict = {
     'Ur_TrpEnd_TP': 1.05,
     'Ur_ValEnd_TP': 5.15,
     'UterWt_FetBWbrth': 0.2311,  # Line 2296
-    'Uter_BWgain': 0,  # Open and nonregressing animal
+    'Uter_BWgain_coeff': 0,  # Open and nonregressing animal
     'Uter_Kdeg': 0.20,  # Line 2308
     'Uter_Ksyn': 2.42e-2,  # Line 2306
     'Uter_KsynDecay': 3.53e-5,  # Line 2307
-    'Uter_Wt': 0.204,  # Line 2312-2318
+    'Uter_Wt_coeff': 0.204,  # Line 2312-2318
     'VmMiNInt': 100.8,  # Line 1117
     'VmMiNRDPSlp': 81.56,  # Line 1118
 }
@@ -297,7 +297,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0,
         "mPrt_k_OthAA": 0.0773,
-        "mPrt_k_EAA2": -0.00215
+        "mPrt_k_EAA2_coeff": -0.00215
     },
     {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
         "mPrt_Int": -141,
@@ -318,7 +318,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0.0925,
         "mPrt_k_OthAA": 0,
-        "mPrt_k_EAA2": -0.002451
+        "mPrt_k_EAA2_coeff": -0.002451
     },
     {  # VT2 derived Coefficients from April, 2022 solutions after further data cleaning, AIC=10,405. In publication. mPrt_eqn == 2
         "mPrt_Int": -73.7,
@@ -339,7 +339,7 @@ mPrt_coeff_list = [
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0.075,
         "mPrt_k_OthAA": 0,
-        "mPrt_k_EAA2": -0.00175
+        "mPrt_k_EAA2_coeff": -0.00175
     }
 ]
 

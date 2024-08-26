@@ -1,12 +1,12 @@
 [
     {
       "Name": "calculate_An_MPm_g_Trg",
-      "Input": {"Fe_MPendUse_g_Trg": 2.6, "Scrf_MPuse_g_Trg": 7.1, "Ur_MPendUse_g": 1.9},
+      "Input": {"Fe_MPendUse_g_Trg": 2.6, "Scrf_MPUse_g_Trg": 7.1, "Ur_MPendUse_g": 1.9},
       "Output": 11.6
     },
     {
       "Name": "calculate_Body_MPUse_g_Trg_initial",
-      "Input": {"Body_NPgain_g": 827, "Kg_MP_NP_Trg": 0.65},
+      "Input": {"Body_NPgain_g": 827, "Kg_MP_NP_Trg_initial": 0.65},
       "Output": 1272.3076923076924
     },
     {
@@ -31,32 +31,32 @@
     },
     {
       "Name": "calculate_An_MPuse_g_Trg_initial",
-      "Input": {"An_MPm_g_Trg": 164, "Body_MPUse_g_Trg": 223, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g_Trg": 492},
+      "Input": {"An_MPm_g_Trg": 164, "Body_MPUse_g_Trg_initial": 223, "Gest_MPUse_g_Trg": 91, "Mlk_MPUse_g_Trg": 492},
       "Output": 970
     },
     {
       "Name": "calculate_Min_MPuse_g",
-      "Input": {"An_StatePhys": "Heifer", "An_MPuse_g_Trg": 12, "An_BW": 723, "An_BW_mature": 750, "An_MEIn_approx": 105},
+      "Input": {"An_StatePhys": "Heifer", "An_MPuse_g_Trg_initial": 12, "An_BW": 723, "An_BW_mature": 750, "An_MEIn_approx": 105},
       "Output": 3034.5
     },
     {
       "Name": "calculate_Min_MPuse_g",
-      "Input": {"An_StatePhys": "Lactating Cow", "An_MPuse_g_Trg": 140, "An_BW": 430, "An_BW_mature": 750, "An_MEIn_approx": 5},
+      "Input": {"An_StatePhys": "Lactating Cow", "An_MPuse_g_Trg_initial": 140, "An_BW": 430, "An_BW_mature": 750, "An_MEIn_approx": 5},
       "Output": 140
     },
     {
       "Name": "calculate_Diff_MPuse_g",
-      "Input": {"Min_MPuse_g": 351, "An_MPuse_g_Trg": 648},
+      "Input": {"Min_MPuse_g": 351, "An_MPuse_g_Trg_initial": 648},
       "Output": -297
     },
     {
       "Name": "calculate_Frm_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Heifer", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg": 0.5, "Diff_MPuse_g": 182},
+      "Input": {"An_StatePhys": "Heifer", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg_initial": 0.5, "Diff_MPuse_g": 182},
       "Output": 1442.0
     },
     {
       "Name": "calculate_Frm_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Lactating Cow", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg": 0.5, "Diff_MPuse_g": 182},
+      "Input": {"An_StatePhys": "Lactating Cow", "Frm_NPgain_g": 630, "Kg_MP_NP_Trg_initial": 0.5, "Diff_MPuse_g": 182},
       "Output": 1260.0
     },
     {
@@ -65,17 +65,17 @@
       "Output": 1723
     },
     {
-      "Name": "calculate_Kg_MP_NP_Trg",
+      "Name": "calculate_Kg_MP_NP_Trg_initial",
       "Input": {"An_StatePhys": "Heifer", "An_Parity_rl": 0, "An_BW": 710, "An_BW_empty": 600, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
       "Output": 0.2914024
     },
     {
-        "Name": "calculate_Kg_MP_NP_Trg",
+        "Name": "calculate_Kg_MP_NP_Trg_initial",
         "Input": {"An_StatePhys": "Calf", "An_Parity_rl": 0, "An_BW": 145, "An_BW_empty": 120, "An_BW_mature": 750, "An_BWmature_empty": 700, "MP_NP_efficiency_dict": null, "coeff_dict": null},
         "Output": 0.51354613
     },
     {
-        "Name": "calculate_Kg_MP_NP_Trg",
+        "Name": "calculate_Kg_MP_NP_Trg_initial",
         "Input": {"An_StatePhys": "Lactating Cow", "An_Parity_rl": 2, "An_BW": 810, "An_BW_empty": 700, "An_BW_mature": 750, "An_BWmature_empty": 690, "MP_NP_efficiency_dict": null, "coeff_dict": null},
         "Output": 0.69
     },
@@ -96,12 +96,12 @@
     },
     {
       "Name": "calculate_Body_MPUse_g_Trg",
-      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+      "Input": {"An_StatePhys": "Heifer", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg_initial": 310, "Kg_MP_NP_Trg": 0.58},
       "Output": 287.9310345
     },
     {
         "Name": "calculate_Body_MPUse_g_Trg",
-        "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg": 310, "Kg_MP_NP_Trg": 0.58},
+        "Input": {"An_StatePhys": "Calf", "Diff_MPuse_g": 41, "Body_NPgain_g": 167, "Body_MPUse_g_Trg_initial": 310, "Kg_MP_NP_Trg": 0.58},
         "Output": 310
     },
     {
@@ -116,14 +116,15 @@
     },
     {
       "Name": "calculate_Kg_MP_NP_Trg_heifer_adjustment",
-      "Input": { "An_StatePhys": "Heifer", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg": 0.74 },
+      "Input": { "An_StatePhys": "Heifer", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg_initial": 0.74},
       "Output": 0.9230769230769231
     },
     {
       "Name": "calculate_Kg_MP_NP_Trg_heifer_adjustment",
-      "Input": { "An_StatePhys": "Lactating Cow", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg": 0.74 },
+      "Input": { "An_StatePhys": "Lactating Cow", "Diff_MPuse_g": 230, "Frm_NPgain_g": 120, "Frm_MPUse_g_Trg": 130, "Kg_MP_NP_Trg_initial": 0.74},
       "Output": 0.74
     },
+
     {
       "Name": "calculate_Km_MP_NP_Trg",
       "Input": { "An_StatePhys": "Heifer", "coeff_dict": null},

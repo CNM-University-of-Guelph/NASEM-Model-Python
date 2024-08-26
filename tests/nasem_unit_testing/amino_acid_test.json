@@ -35,17 +35,17 @@
     },
     {
       "Name": "calculate_mPrtmx_AA",
-      "Input": {"mPrt_k_AA": 0.4, "mPrt_coeff": null},
+      "Input": {"mPrt_k_AA_array": 0.4, "mPrt_coeff": null},
       "Output": [18.604651162790702]
     },
     {
       "Name": "calculate_AA_mPrtmx",
-      "Input": {"mPrt_k_AA": 1.3, "mPrt_coeff": null},
+      "Input": {"mPrt_k_AA_array": 1.3, "mPrt_coeff": null},
       "Output": [302.3255813953488]
   },
   {
       "Name": "calculate_mPrt_AA_01",
-      "Input": {"AA_mPrtmx": 0.5, "mPrt_k_AA": 0.9, "mPrt_coeff": null},
+      "Input": {"AA_mPrtmx": 0.5, "mPrt_k_AA_array": 0.9, "mPrt_coeff": null},
       "Output": [0.044994625]
   },
   {
@@ -106,9 +106,9 @@
     "Output": 74.24000000000001
   },  
   {
-      "Name": "calculate_mPrt_k_EAA2",
-      "Input": {"mPrtmx_Met2": 3.1, "mPrt_Met_0_1": 2.4, "Met_mPrtmx": 2.9},
-      "Output": -10.152390338510724
+    "Name": "calculate_mPrt_k_EAA2",
+    "Input": {"mPrtmx_AA2_series": {"Met": 3.1}, "mPrt_AA_01_series": {"Met": 2.4}, "AA_mPrtmx_series": {"Met": 2.9}},
+    "Output": -10.152390338510724
   },
   {
       "Name": "calculate_Du_AAEndP",
@@ -199,7 +199,7 @@
   },
   {
       "Name": "calculate_An_AAEff_EAAEff",
-      "Input": {"An_AAUse_AbsAA_series": [8.4, 6.1, 3.9], "AnEAAUse_AbsEAA_series": [6.0, 4.8, 7.2]},
+      "Input": {"AnAAUse_AbsAA_series": [8.4, 6.1, 3.9], "AnEAAUse_AbsEAA_series": [6.0, 4.8, 7.2]},
       "Output": [1.400000, 1.270833, 0.541667]
   },
   {
@@ -264,7 +264,7 @@
   },
   {
     "Name": "calculate_Trg_MlkEAA_AbsEAA",
-    "Input": {"Mlk_EAA_g": 2396, "Mlk_Arg_g": 302, "Trg_AbsEAA_g": 1279},
+    "Input": {"Mlk_EAA_g": 2396, "Mlk_AA_g_series": {"Arg": 302}, "Trg_AbsEAA_g": 1279},
     "Output": 1.63721657544957
   },
   {
@@ -354,7 +354,7 @@
   },
   {
     "Name": "calculate_An_IdAAIn_array",
-    "Input": {"An_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "aa_list": null},
+    "Input": {"an_data": {"An_IdArgIn": 1.4, "An_IdHisIn": 2.4, "An_IdIleIn": 4.5, "An_IdLeuIn": 1.2, "An_IdLysIn": 8.4,"An_IdMetIn": 7.3, "An_IdPheIn": 3.0, "An_IdThrIn": 1.1, "An_IdTrpIn": 2.5,"An_IdValIn": 0.5}, "aa_list": null},
     "Output": [1.4, 2.4, 4.5, 1.2, 8.4, 7.3, 3.0, 1.1, 2.5, 0.5]
   },
   {

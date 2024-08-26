@@ -429,19 +429,19 @@ def calculate_An_MEIn(An_StatePhys: str,
                       An_DEIn: float, 
                       An_GasEOut: float, 
                       Ur_DEout: float,
-                      Dt_DMIn_CflLiq: float, 
+                      Dt_DMIn_ClfLiq: float, 
                       Dt_DEIn_base_ClfLiq: float, 
                       Dt_DEIn_base_ClfDry: float,
                       RumDevDisc_Clf: float
 ) -> float:
     condition = ((An_StatePhys == "Calf") 
-                 and (Dt_DMIn_CflLiq > 0.015 * An_BW) 
+                 and (Dt_DMIn_ClfLiq > 0.015 * An_BW) 
                  and (RumDevDisc_Clf > 0))
     K_DE_ME_ClfDry = 0.93 * 0.9 if condition else 0.93 # Line 2755   
     
     An_MEIn = An_DEIn - An_GasEOut - Ur_DEout  # Line 2753
     An_MEIn = (Dt_DEIn_base_ClfLiq * 0.96 + Dt_DEIn_base_ClfDry * K_DE_ME_ClfDry
-               if (An_StatePhys == "Calf") and (Dt_DMIn_CflLiq > 0) 
+               if (An_StatePhys == "Calf") and (Dt_DMIn_ClfLiq > 0) 
                else An_MEIn) 
     return An_MEIn
 
@@ -1303,26 +1303,65 @@ def calculate_An_NE_ClfDry(An_ME_ClfDry: float) -> float:
     return An_NE_ClfDry
 
 
-def calculate_An_IdAAIn(diet_data: dict, 
-                        infusion_data: dict, 
-                        aa_list: list, 
-                        an_data: dict
-) -> dict:
-    for aa in aa_list:
-        an_data[f"An_Id{aa}In"] = (diet_data[f"Dt_Id{aa}In"] + 
-                                            infusion_data[f"Inf_Id{aa}In"])
-    return an_data
+def calculate_An_IdArgIn(Dt_IdArgIn: float, Inf_IdArgIn: float) -> float:
+    An_IdArgIn = Dt_IdArgIn + Inf_IdArgIn
+    return An_IdArgIn
 
 
-def calculate_An_XIn(diet_data: dict, 
-                     infusion_data: dict,
-                     variables: list, 
-                     an_data: dict
-) -> dict:
-    for var in variables:
-        an_data[f"An_{var}"] = (diet_data[f"Dt_{var}"] + 
-                                         infusion_data[f"Inf_{var}"])
-    return an_data
+def calculate_An_IdHisIn(Dt_IdHisIn: float, Inf_IdHisIn: float) -> float:
+    An_IdHisIn = Dt_IdHisIn + Inf_IdHisIn
+    return An_IdHisIn
+
+
+def calculate_An_IdIleIn(Dt_IdIleIn: float, Inf_IdIleIn: float) -> float:
+    An_IdIleIn = Dt_IdIleIn + Inf_IdIleIn
+    return An_IdIleIn
+
+
+def calculate_An_IdLeuIn(Dt_IdLeuIn: float, Inf_IdLeuIn: float) -> float:
+    An_IdLeuIn = Dt_IdLeuIn + Inf_IdLeuIn
+    return An_IdLeuIn
+
+
+def calculate_An_IdLysIn(Dt_IdLysIn: float, Inf_IdLysIn: float) -> float:
+    An_IdLysIn = Dt_IdLysIn + Inf_IdLysIn
+    return An_IdLysIn
+
+
+def calculate_An_IdMetIn(Dt_IdMetIn: float, Inf_IdMetIn: float) -> float:
+    An_IdMetIn = Dt_IdMetIn + Inf_IdMetIn
+    return An_IdMetIn
+
+
+def calculate_An_IdPheIn(Dt_IdPheIn: float, Inf_IdPheIn: float) -> float:
+    An_IdPheIn = Dt_IdPheIn + Inf_IdPheIn
+    return An_IdPheIn
+
+
+def calculate_An_IdThrIn(Dt_IdThrIn: float, Inf_IdThrIn: float) -> float:
+    An_IdThrIn = Dt_IdThrIn + Inf_IdThrIn
+    return An_IdThrIn
+
+
+def calculate_An_IdTrpIn(Dt_IdTrpIn: float, Inf_IdTrpIn: float) -> float:
+    An_IdTrpIn = Dt_IdTrpIn + Inf_IdTrpIn
+    return An_IdTrpIn
+
+
+def calculate_An_IdValIn(Dt_IdValIn: float, Inf_IdValIn: float) -> float:
+    An_IdValIn = Dt_IdValIn + Inf_IdValIn
+    return An_IdValIn
+
+
+def calculate_An_NPNCPIn(Dt_NPNCPIn: float, Inf_NPNCPIn: float) -> float:
+    An_NPNCPIn = Dt_NPNCPIn + Inf_NPNCPIn
+    return An_NPNCPIn
+
+
+def calculate_An_FAIn(Dt_FAIn: float, Inf_FAIn: float) -> float:
+    An_FAIn = Dt_FAIn + Inf_FAIn
+    return An_FAIn
+
 
 ####################
 # Animal Warpper Functions
@@ -1501,12 +1540,41 @@ def calculate_an_data(an_data: dict,
     an_data["An_DigTPaIn"] = calculate_An_DigTPaIn(
         an_data["An_TPIn"], infusion_data["InfArt_CPIn"], Fe_CP
         )
-    an_data = calculate_An_IdAAIn(
-        diet_data, infusion_data, aa_list, an_data
+    an_data["An_IdArgIn"] = calculate_An_IdArgIn(
+        diet_data["Dt_IdArgIn"], infusion_data["Inf_IdArgIn"]
         )
-    nutrient_list = ["CPIn", "NPNCPIn", "TPIn", "FAIn"]
-    an_data = calculate_An_XIn(
-        diet_data, infusion_data, nutrient_list, an_data
+    an_data["An_IdHisIn"] = calculate_An_IdHisIn(
+        diet_data["Dt_IdHisIn"], infusion_data["Inf_IdHisIn"]
+        )
+    an_data["An_IdIleIn"] = calculate_An_IdIleIn(
+        diet_data["Dt_IdIleIn"], infusion_data["Inf_IdIleIn"]
+        )
+    an_data["An_IdLeuIn"] = calculate_An_IdLeuIn(
+        diet_data["Dt_IdLeuIn"], infusion_data["Inf_IdLeuIn"]
+        )
+    an_data["An_IdLysIn"] = calculate_An_IdLysIn(
+        diet_data["Dt_IdLysIn"], infusion_data["Inf_IdLysIn"]
+        )
+    an_data["An_IdMetIn"] = calculate_An_IdMetIn(
+        diet_data["Dt_IdMetIn"], infusion_data["Inf_IdMetIn"]
+        )
+    an_data["An_IdPheIn"] = calculate_An_IdPheIn(
+        diet_data["Dt_IdPheIn"], infusion_data["Inf_IdPheIn"]
+        )
+    an_data["An_IdThrIn"] = calculate_An_IdThrIn(
+        diet_data["Dt_IdThrIn"], infusion_data["Inf_IdThrIn"]
+        )
+    an_data["An_IdTrpIn"] = calculate_An_IdTrpIn(
+        diet_data["Dt_IdTrpIn"], infusion_data["Inf_IdTrpIn"]
+        )
+    an_data["An_IdValIn"] = calculate_An_IdValIn(
+        diet_data["Dt_IdValIn"], infusion_data["Inf_IdValIn"]
+        )
+    an_data["An_NPNCPIn"] = calculate_An_NPNCPIn(
+        diet_data["Dt_NPNCPIn"], infusion_data["Inf_NPNCPIn"]
+        )
+    an_data["An_FAIn"] = calculate_An_FAIn(
+        diet_data["Dt_FAIn"], infusion_data["Inf_FAIn"]
         )
     an_data["An_DMIn_MBW"] = calculate_An_DMIn_MBW(
         an_data["An_DMIn"], an_data["An_MBW"]

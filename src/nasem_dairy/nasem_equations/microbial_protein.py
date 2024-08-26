@@ -103,6 +103,38 @@ def calculate_Du_MiN_VTnln_g(An_RDPIn: float,
     return Du_MiN_VTnln_g
 
 
+def calculate_Du_MiN_g(MiN_eqn: int, 
+                       MiN_Vm: float, 
+                       Dt_rOMIn: float,
+                       Dt_ForNDFIn: float,
+                       An_RDPIn: float,
+                       Rum_DigNDFIn: float,
+                       Rum_DigStIn: float,
+                       An_RDPIn_g: float,
+                       coeff_dict: dict
+) -> float:
+    if MiN_eqn == 1:
+        Du_MiN_g = calculate_Du_MiN_NRC2021_g(
+            MiN_Vm, Rum_DigNDFIn, Rum_DigStIn, An_RDPIn_g, 
+            coeff_dict
+            )
+    elif MiN_eqn == 2:
+        Du_MiN_g = calculate_Du_MiN_VTln_g(
+            Dt_rOMIn, Dt_ForNDFIn, An_RDPIn, Rum_DigStIn, Rum_DigNDFIn, 
+            coeff_dict
+            )
+    elif MiN_eqn == 3:
+        Du_MiN_g = calculate_Du_MiN_VTnln_g(
+            An_RDPIn, Rum_DigNDFIn, Rum_DigStIn
+            )
+    else:
+        raise ValueError(
+            f"Invalid MiN_eqn: {MiN_eqn} was entered. "
+            "Must choose 1, 2 or 3."
+            )
+    return Du_MiN_g
+
+
 def calculate_Du_MiCP(Du_MiCP_g: float) -> float:
     Du_MiCP = Du_MiCP_g / 1000  # Line 1166
     return Du_MiCP
