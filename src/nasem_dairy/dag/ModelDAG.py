@@ -38,16 +38,7 @@ import nasem_dairy.model_output.ModelOutput as output
 #         "ModelDAG requires the 'graph-tool' package. Please install it with `poetry install --extras dag`."
 #     )
 
-class ModelDAG:
-    ### Initalization ###
-    def __init__(self):
-        """
-        Collect data for DAG and create graph.
-        """
-        self.aa_list = [
-            "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
-            ]
-        self.module_colour_map = {
+module_colour_map = {
             "amino_acid": [1.0, 0.0, 0.0, 0.7],            # Bright Red
             "animal": [0.0, 0.5, 1.0, 0.7],                # Sky Blue
             "body_composition": [0.0, 1.0, 0.0, 0.7],      # Bright Green
@@ -72,6 +63,20 @@ class ModelDAG:
             "Constants": [0.6, 0.6, 0.6, 1.0],             # Light Gray
             "Inputs": [0.2, 0.2, 0.2, 1.0]                 # Dark Gray
             }
+
+class ModelDAG:
+    ### Initalization ###
+    def __init__(self, 
+                 path:str = "./src/nasem_dairy/nasem_equations", 
+                 colour_map: dict = module_colour_map
+    ):
+        """
+        Collect data for DAG and create graph.
+        """
+        self.aa_list = [
+            "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
+            ]
+        self.module_colour_map = colour_map
         self.possible_user_inputs = {
             "animal_input": expected.AnimalInput.__annotations__.copy(),
             "equation_selection": (
@@ -98,8 +103,8 @@ class ModelDAG:
         variables = pd.DataFrame(varaible_names, columns=["Name"])
 
         # Collect data for DAG
-        modules = self._get_py_files("./src/nasem_dairy/nasem_equations")  
-        self.dag_data = self._parse_nasem_equations(modules, variables)
+        self.modules = self._get_py_files(path)  
+        self.dag_data = self._parse_nasem_equations(self.modules, variables)
         self.dag_data = self.dag_data.dropna(axis=0)
         self.dag = self._create_dag(self.dag_data)
 
@@ -215,8 +220,6 @@ class ModelDAG:
         for structure_name, structure in possible_user_inputs.items():
             if isinstance(structure, dict):
                 user_inputs.extend(structure.keys())
-            elif hasattr(structure, '__annotations__'):
-                user_inputs.extend(structure.__annotations__.keys())
         return user_inputs
 
     def _create_function_entry(self, 
