@@ -5,8 +5,8 @@ __version__ = version("nasem_dairy")
 # from nasem_dairy.dag.ModelDAG import ModelDAG
 try:
     from nasem_dairy.dag.ModelDAG import ModelDAG
-except ImportError:
-    ModelDAG = None
+except ImportError: # pragma: no cover
+    ModelDAG = None 
 
 from nasem_dairy.model.utility import read_csv_input, read_json_input, demo, get_feed_data, select_feeds
 from nasem_dairy.model_output.ModelOutput import ModelOutput
