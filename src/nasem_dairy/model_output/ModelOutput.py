@@ -509,10 +509,6 @@ class ModelOutput:
                         final_key = full_key.split(".")[-1]
                         data_dict[final_key] = value
                         _categorize_key(final_key, value)
-            else:
-                final_key = parent_key.split(".")[-1]
-                data_dict[final_key] = value
-                _categorize_key(parent_key, value)
 
 
         def _categorize_key(key: str, value: Any) -> None:
