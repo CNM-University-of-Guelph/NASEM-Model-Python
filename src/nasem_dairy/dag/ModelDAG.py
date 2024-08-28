@@ -19,7 +19,7 @@ from typing import Dict, List, Any, Tuple, Optional, Callable
 
 try:
     import graph_tool.all as graph_tool
-except ImportError:
+except ImportError: # pragma: no cover
     raise ImportError(
         "The 'graph-tool' package is required for this module. "
         "Install it with `poetry install --extras dag` or `pip install nasem-dairy[dag]`."
@@ -523,17 +523,6 @@ class ModelDAG:
             ValueError: If any vertex is isolated or has an incorrect number 
             of incoming or outgoing edges.
         """
-        def _print_debug():
-            print(f"Vertex {name} has an incorrect number of incoming edges.")
-            print(
-                f"Expected {expected_incoming_edges} incoming edges from: "
-                f"{data['expected_inputs']}"
-                )
-            print(
-                f"Actual {actual_incoming_edges} incoming edges from: "
-                f"{actual_incoming_names}"
-                )
-
         vertex_data = {
             row["Name"]: {
                 "expected_inputs": (
@@ -570,9 +559,6 @@ class ModelDAG:
                         edge for edge in data["expected_inputs"] 
                         if edge not in actual_incoming_names
                         ]
-
-                    # Print debug information
-                    # _print_debug()
 
                     if missing_edges:
                         print(f"Missing expected edges from: {missing_edges}")
@@ -703,7 +689,7 @@ class ModelDAG:
                         for field in sorted_constants[key]:
                             print(f"    - {field}")
                     else:
-                        print(f"    - {key} (Special structure like f_imb)")
+                        print(f"    - {key}")
 
 
         if target_variable not in self.name_to_vertex:
