@@ -116,7 +116,9 @@ class ModelDAG:
         Returns:
             A list of variable names required for the DAG
         """
-        user_diet, animal_input, eqn_selection, inf_input = nd.demo("input")
+        user_diet, animal_input, eqn_selection, inf_input = nd.demo(
+            "lactating_cow_test"
+            )
         output = nd.nasem(
             user_diet = user_diet, 
             animal_input = animal_input, 
