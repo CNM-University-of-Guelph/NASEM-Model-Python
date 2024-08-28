@@ -48,7 +48,7 @@ class AnimalInput(TypedDict):
     Env_DistParlor: float
     Env_TripsParlor: int
     Env_Topo: float
-    An_AgeConcept1st: Optional[int]
+    An_AgeConcept1st: int
 
 
 class EquationSelection(TypedDict):

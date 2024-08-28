@@ -134,11 +134,6 @@ def validate_animal_input(animal_input: dict) -> dict:
     check_keys_presence(animal_input, type_mapping.keys())
     corrected_input = check_and_convert_type(animal_input, type_mapping)
     
-    if corrected_input["An_StatePhys"] == "Heifer":
-        if "An_AgeConcept1st" not in corrected_input.keys():
-            raise KeyError("The An_AgeConcept1st key is missing")        
-        if not isinstance(corrected_input["An_AgeConcept1st"], int):
-            raise TypeError("An_AgeConcept1st must be an int")
     return corrected_input
 
 
