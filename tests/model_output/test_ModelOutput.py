@@ -697,3 +697,12 @@ class TestModelOutput:
             "user_diet", "animal_input", "feed_data", "column1", "column2"
         ]
         assert sorted(variable_names) == sorted(expected_variable_names)
+
+    def test_get_report_missing(self, mock_structure_search, mock_report_structure_test, mock_locals_input_report):
+        model_output = ModelOutput(
+            locals_input=mock_locals_input_report,
+            config_path=str(mock_structure_search),
+            report_config_path=str(mock_report_structure_test)
+        )
+        with pytest.raises(ValueError, match="Report non_existent_report not found in the report structure."):
+            model_output.get_report("non_existent_report")
