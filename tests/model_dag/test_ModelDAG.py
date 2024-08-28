@@ -433,3 +433,8 @@ class TestModelDAG():
             "The result is not an instance of ModelOutput."
         
         assert result.get_value(target_variable) == 1.4460342969801294
+
+    def test_get_calculation_order_variable_not_found(self, demo_model_dag):
+        with pytest.raises(ValueError, match="Variable 'non_existent_variable' not found in the DAG."):
+            demo_model_dag.get_calculation_order("non_existent_variable")
+
