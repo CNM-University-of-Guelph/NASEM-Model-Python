@@ -152,12 +152,12 @@ def read_csv_input(path_to_file: str = "input.csv"
 
         if location == 'equation_selection':
             equation_selection[variable] = (
-                float(value) if value.replace('.', '', 1).isdigit() else value
+                float(value) if isinstance(value, str) and value.replace('.', '', 1).isdigit() else value
                 )
 
         elif location == 'animal_input':
             animal_input[variable] = (
-                float(value) if value.replace('.', '', 1).isdigit() else value
+                float(value) if isinstance(value, str) and value.replace('.', '', 1).isdigit() else value
                 )
             
         elif location == 'user_diet':
@@ -166,7 +166,7 @@ def read_csv_input(path_to_file: str = "input.csv"
 
         elif location == "infusion_input":
             infusion_input[variable] = (
-                float(value) if value.replace('.', '', 1).isdigit() else value
+                float(value) if isinstance(value, str) and value.replace('.', '', 1).isdigit() else value
                 )
             
     user_diet = pd.DataFrame(user_diet_data)
