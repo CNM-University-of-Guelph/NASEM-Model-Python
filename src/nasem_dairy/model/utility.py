@@ -148,7 +148,7 @@ def read_csv_input(path_to_file: str = "input.csv"
                 float(value) if value.replace('.', '', 1).isdigit() else value
                 )
             
-        elif location == 'diet_info':
+        elif location == 'user_diet':
             user_diet_data['Feedstuff'].append(variable)
             user_diet_data['kg_user'].append(value)
 
@@ -167,17 +167,17 @@ def read_json_input(file_path: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
     with open(file_path, "r") as f:
         data = json.load(f)
     
-    diet_info = data["diet_info"]
-    user_diet = pd.DataFrame({
-        "Feedstuff": diet_info["Feedstuff"],
-        "kg_user": diet_info["kg_user"]
+    user_diet = data["user_diet"]
+    user_diet_df = pd.DataFrame({
+        "Feedstuff": user_diet["Feedstuff"],
+        "kg_user": user_diet["kg_user"]
     })
 
     equation_selection = data["equation_selection"]
     animal_input = data["animal_input"]
     infusion_input = data["infusion_input"]
     
-    return user_diet, animal_input, equation_selection, infusion_input
+    return user_diet_df, animal_input, equation_selection, infusion_input
 
 
 def demo(scenario_name: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
@@ -189,7 +189,7 @@ def demo(scenario_name: str) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
     
     Returns:
     Tuple[pd.DataFrame, Dict, Dict, Dict, pd.DataFrame]: A tuple containing:
-        - diet_info_df (pd.DataFrame): A DataFrame with Feedstuff and kg_user columns.
+        - user_diet_df (pd.DataFrame): A DataFrame with Feedstuff and kg_user columns.
         - equation_selection (Dict): A dictionary of equation selection inputs.
         - animal_input (Dict): A dictionary of animal input data.
         - infusion_input (Dict): A dictionary of infusion input data.

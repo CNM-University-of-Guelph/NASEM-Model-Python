@@ -15,7 +15,7 @@ class TestModelOutput:
                 "animal_input": None,
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         structure_path = tmp_path / "model_output_structure.json"
@@ -41,7 +41,7 @@ class TestModelOutput:
         return {
             "user_diet": "value1",
             "animal_input": "value2",
-            "diet_info": "value3",
+            "feed_data": "value3",
             "key": "value4"
         }
 
@@ -57,7 +57,7 @@ class TestModelOutput:
                 "animal_input": None,
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         assert model_output.report_structure == {
@@ -73,7 +73,7 @@ class TestModelOutput:
             "animal_input": "value2",
         }
         assert model_output.Intakes == {
-            "diet_info": "value3",
+            "feed_data": "value3",
         }
         assert model_output.Uncategorized == {}
 
@@ -141,7 +141,7 @@ class TestModelOutput:
                 }
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         structure_path = tmp_path / "nested_model_output_structure.json"
@@ -154,7 +154,7 @@ class TestModelOutput:
         return {
             "user_diet": "value1",
             "animal_input": "value2",
-            "diet_info": "value3",
+            "feed_data": "value3",
             "deep_value1": "deep_value_data1",
             "deep_value2": "deep_value_data2",
             "value0": "data0",
@@ -197,7 +197,7 @@ class TestModelOutput:
                 }
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         assert model_output.report_structure == {
@@ -231,7 +231,7 @@ class TestModelOutput:
             }
         }
         assert model_output.Intakes == {
-            "diet_info": "value3",
+            "feed_data": "value3",
         }
         assert model_output.Uncategorized == {
             "uncategorized_key1": "uncategorized_value1",
@@ -694,6 +694,6 @@ class TestModelOutput:
         )
         variable_names = model_output.export_variable_names()
         expected_variable_names = [
-            "user_diet", "animal_input", "diet_info", "column1", "column2"
+            "user_diet", "animal_input", "feed_data", "column1", "column2"
         ]
         assert sorted(variable_names) == sorted(expected_variable_names)

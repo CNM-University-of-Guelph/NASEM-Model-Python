@@ -63,8 +63,7 @@ def nasem(user_diet: pd.DataFrame,
     Returns
     -------
     Multiple
-        Currently returns animal_input, diet_info, equation_selection, diet_data, aa_values, infusion_data, an_data, model_out_dict
-        To be updated
+        Currently returns nd.ModelOutput
 
     Notes
     -----
