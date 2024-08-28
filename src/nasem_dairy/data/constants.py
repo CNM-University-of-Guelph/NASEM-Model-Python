@@ -1,27 +1,21 @@
+"""Constants used in the NASEM model.
+
+This module contains constants that are imported with the `nasem_dairy` package. 
+These default values are derived from the original R Code version of the model 
+and are generally not changed by most users. However, they are passed to functions 
+that require these values, allowing users to modify the dictionary as needed.
+
+Attributes:
+    coeff_dict (dict): Coefficients used throughout the model.
+    infusion_dict (dict): Infusion values set to 0, used when no infusions are applied. 
+                          Typically used by researchers familiar with infusion techniques.
+    MP_NP_efficiency_dict (dict): Coefficients for the conversion of metabolizable protein (MP) 
+                                  to net protein (NP) for individual amino acids.
+    mPrt_coeff_list (list): A list of dictionaries containing coefficients for microbial protein equations.
+    f_Imb (pd.Series): An array of 1.0 values for individual amino acids, representing 
+                       a relative penalty, currently set to 1 but can be adjusted by users.
 """
-This module contains constants that are imported with nasem_dairy package. 
-These default values are from the original R Code version of the model and most users would not change. 
-However, they parsed to functions that need any of these values, so users can alter this dictionary and give to functions as needed.
 
-- `coeff_dict` - coefficients used throughout the model.
-- `infusion_dict` - All required infusion values set to 0, for when no infusions are used. Normally only used by researchers familiar with infusion techniques.
-- `MP_NP_efficiency_dict` - coefficients (efficiencies) for conversions of MP to NP for individual AA
-- `mPrt_coeff_list` - a list of dictionaries with coefficients for microbial protein equations
-- `f_Imb` - an array of 1's for individual AA, currently all are 1 but could be a relative penalty provided by user
-
-Examples
---------
-```{python}
-import nasem_dairy as nd
-
-nd.coeff_dict
-```
-
-```{python}
-nd.infusion_dict
-```
-
-"""
 import pandas as pd
 
 coeff_dict = {

@@ -1,5 +1,7 @@
-# Amino Acid equations
-# import nasem_dairy.nasem_equations.amino_acid as aa
+"""Functions to calculate various amino acid-related parameters.
+
+These calculations include amino acid absorption, utilization, and metabolism.
+"""
 
 import math
 

@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.energy_requirement as energy
+"""Functions to calculate energy requirement calculations.
+
+This module provides functions to estimate the energy requirements for maintenance, 
+growth, lactation, and gestation.
+"""
 
 import numpy as np
 

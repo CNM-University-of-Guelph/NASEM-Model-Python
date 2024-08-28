@@ -1,5 +1,8 @@
-# Manure equations
-# import nasem_dairy.nasem_equations.manure as manure
+"""Manure production and composition calculations.
+
+This module includes functions to estimate the production and composition of 
+manure, including volatile solids, nitrogen, and minerals.
+"""
 
 import numpy as np
 

@@ -1,6 +1,9 @@
-# All functions for calculating nutrient intakes based on ration formulation
-# import nasem_dairy.nasem_equations.nutrient_intakes as diet
+"""Functions for calcualting nutrient intakes.
 
+This module contains functions to estimate the intake of various nutrients 
+by animals, including energy, protein, and minerals, based on dietary composition 
+and dry matter intake.
+"""
 import math
 
 import numpy as np

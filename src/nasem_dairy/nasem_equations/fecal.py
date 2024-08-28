@@ -1,5 +1,8 @@
-# Fecal N Flow; Fecal Outputs should be renamed Fe_xxxOut to avoid confusion with conc, MDH
-# import nasem_dairy.nasem_equations.fecal as fecal
+"""Fecal output calculations for nitrogen and organic matter losses.
+
+This module includes functions to estimate the amount of nitrogen and organic 
+matter lost through feces, based on dietary intake and physiological state.
+"""
 
 import numpy as np
 import pandas as pd

@@ -1,24 +1,8 @@
-# dry_matter_intake
-# This file contains all the calculations for dry matter intake (DMI)
-# Calculations are in the order coresponding to their DMIn_eqn value
-# import nasem_dairy.nasem_equations.dry_matter_intake as DMI
+"""Functions for calculating for dry matter intake (DMI).
 
+Includes equations for animals of different physiological states. Some equations
+will use diet information in the prediction.
 """
-This sub-module includes all equations required to calculate dry matter intake (DMI) 
-for animals of different physiological states.
-
-
-Example
--------
-Example of how to use this module:
-    
-    # Suggested import
-    import nasem_dairy.nasem_equations.DMI_equations as DMI
-    
-    # Example usage
-    calculate_Kb_LateGest_DMIn()
-"""
-
 
 import math
 from typing import Union

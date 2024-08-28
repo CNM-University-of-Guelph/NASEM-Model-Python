@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.protein as protein
+"""Protein metabolism and utilization calculations.
+
+This module includes functions to estimate the utilization, synthesis, and 
+degradation of protein.
+"""
 
 import numpy as np
 import pandas as pd

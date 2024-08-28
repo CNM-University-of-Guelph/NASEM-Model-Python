@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.microbial_protein as micp 
+"""Microbial protein synthesis and flow calculations.
+
+This module contains functions to estimate the production, flow, and 
+digestion of microbial protein within the rumen, based on various dietary inputs.
+"""
 
 
 def calculate_RDPIn_MiNmax(Dt_DMIn: float, 

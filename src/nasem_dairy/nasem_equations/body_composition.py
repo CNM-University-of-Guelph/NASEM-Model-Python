@@ -1,6 +1,9 @@
-# Body composition equations
-# Calculations for body reseves gain/loss, frame gain, energy reserves
-# import nasem_dairy.nasem_equations.body_composition as body_comp
+"""Functions to calculate values related to the body composition of animals.
+
+This includes fat, protein, and water content. There are also estimates of 
+composition change based on the change in body reserves.
+"""
+
 import math
 
 import numpy as np

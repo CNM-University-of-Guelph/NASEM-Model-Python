@@ -1,5 +1,8 @@
-# Micronutrient Requirement Equations
-# import nasem_dairy.nasem_equations.micronutrient_requirement as micro
+"""Micronutrient requirement calculations.
+
+This module provides functions to estimate the micronutrient requirements for 
+animals, including minerals and vitamins, based on physiological state and diet.
+"""
 
 import math
 

@@ -1,3 +1,26 @@
+"""NASEM Nutrient Requirements of Dairy Cattle model implementation.
+
+This module implements the NASEM (National Academies of Sciences, Engineering, 
+and Medicine) Nutrient Requirements of Dairy Cattle model. It provides 
+a function for calculating various nutritional and physiological requirements 
+for dairy cattle based on user-defined inputs such as diet composition, animal 
+characteristics, and environmental conditions.
+
+Functions:
+    nasem: Runs the NASEM model to compute nutritional and physiological 
+           requirements based on input data.
+
+Example:
+    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("input")
+    
+    output = nd.nasem(
+        user_diet=user_diet_in, 
+        animal_input=animal_input_in, 
+        equation_selection=equation_selection_in, 
+        coeff_dict=nd.coeff_dict
+    )
+"""
+
 import importlib.resources
 
 import numpy as np

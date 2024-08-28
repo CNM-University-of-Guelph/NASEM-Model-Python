@@ -1,4 +1,10 @@
-# import nasem_dairy.nasem_equations.rumen as rumen
+"""Rumen digestion calculations.
+
+This module provides functions to estimate the digestibility of different 
+dietary components in the rumen, including neutral detergent fiber (NDF) 
+and starch, and their passage through the digestive system.
+"""
+
 
 def calculate_Rum_dcNDF(Dt_DMIn: float, 
                         Dt_NDFIn: float, 

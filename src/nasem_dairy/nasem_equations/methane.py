@@ -1,5 +1,9 @@
-# Methane equations
-# import nasem_dairy.nasem_equations.methane as methane
+"""Methane production and emission calculations.
+
+This module provides functions to calculate methane emissions, expressed in 
+grams or liters per day, and per unit of milk produced.
+"""
+
 
 def calculate_CH4out_g(An_GasEOut: float, coeff_dict: dict) -> float:
     """

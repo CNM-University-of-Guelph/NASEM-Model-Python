@@ -1,3 +1,16 @@
+"""Directed Acyclic Graph (DAG) management for the NASEM model.
+
+This module provides functionality for creating, managing, and visualizing a 
+Directed Acyclic Graph (DAG) that represents the dependencies and execution 
+order of calculations within the NASEM model. It leverages the `graph-tool` 
+library for efficient graph manipulation and visualization.
+
+Classes:
+    ModelDAG: Manages the creation and validation of a DAG for the NASEM model, 
+              including methods for generating calculation orders and 
+              dynamically creating functions.
+"""
+
 import ast
 import glob
 import inspect

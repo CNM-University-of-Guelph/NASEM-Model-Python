@@ -1,5 +1,9 @@
-# Urinary excretion of nutrients
-# import nasem_dairy.nasem_equations.urine as urine
+"""Urinary excretion calculations.
+
+This module contains functions to estimate the excretion of nitrogen and other 
+components in urine.
+"""
+
 import numpy as np
 import pandas as pd
 

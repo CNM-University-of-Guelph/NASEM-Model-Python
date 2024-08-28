@@ -1,6 +1,5 @@
-# Functions that recalculate values in coeff_dict
-# import nasem_dairy.nasem_equations.coefficient_adjustment as coeff_adjust
-
+"""Functions for adjusting coefficient values used in the model. 
+"""
 
 def adjust_LCT(An_AgeDay: int) -> int:
     """

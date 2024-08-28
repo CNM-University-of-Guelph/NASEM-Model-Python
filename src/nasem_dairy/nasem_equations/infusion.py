@@ -1,4 +1,5 @@
-# import nasem_dairy.nasem_equations.infusion as infusion
+"""Functions to calculate nutrients from infusions. 
+"""
 
 import numpy as np
 

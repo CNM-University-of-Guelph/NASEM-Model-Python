@@ -1,8 +1,9 @@
-# Protein Requirement Equations
-# import nasem_dairy.nasem_equations.protein_requirement as protein_req
+"""Protein requirement calculations.
 
-import numpy as np
-
+This module contains functions to estimate the metabolizable protein 
+requirements for maintenance, growth, gestation, and lactation, 
+adjusting for various physiological conditions.
+"""
 
 def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 
                            Scrf_MPUse_g_Trg: float,

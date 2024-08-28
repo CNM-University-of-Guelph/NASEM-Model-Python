@@ -1,3 +1,23 @@
+"""
+Validation functions for input data.
+
+This module provides functions to validate and correct input data according to 
+the expected schemas defined in `input_definitions.py`. These functions ensure 
+that the input data is correctly typed, complete, and consistent with the 
+model's requirements.
+
+Functions:
+    validate_user_diet: Validates the structure and content of a user diet DataFrame.
+    validate_animal_input: Validates the structure and content of the animal input dictionary.
+    validate_equation_selection: Validates the structure and content of the equation selection dictionary.
+    validate_feed_library_df: Validates the structure and content of the feed library DataFrame.
+    validate_coeff_dict: Validates and corrects the coefficient dictionary.
+    validate_infusion_input: Validates the structure and content of the infusion input dictionary.
+    validate_MP_NP_efficiency_input: Validates the MP/NP efficiency input dictionary.
+    validate_mPrt_coeff_list: Validates a list of mPrt coefficient dictionaries.
+    validate_f_Imb: Validates the structure and content of the f_Imb pandas Series.
+"""
+
 from typing import Any, Type, Union, List, Dict, Literal, get_args
 
 import pandas as pd
@@ -5,7 +25,7 @@ import pandas as pd
 import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 
-# Helper Function
+
 def check_input_type(input_value: Any, 
                      expected_type: Type, 
                      var_name: str

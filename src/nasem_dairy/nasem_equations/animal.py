@@ -1,8 +1,8 @@
-# import nasem_dairy.nasem_equations.animal as animal
+"""Functions for values related to nutrient intakes from infusions and diet.
 
-import numpy as np
-import pandas as pd
-
+This module also include various calculations related to protein and energy
+efficiency and physiological state.
+"""
 
 ####################
 # Functions for Animal Level Intakes in Wrappers

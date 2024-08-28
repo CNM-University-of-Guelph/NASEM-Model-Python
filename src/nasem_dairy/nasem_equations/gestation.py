@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.gestation as gestation
+"""Gestation-related calculations for fetal growth and uterine changes.
+
+This module covers the estimation of fetal growth, uterine weight changes, and 
+nutrient requirements during pregnancy.
+"""
 
 import math
 

@@ -1,3 +1,15 @@
+"""Model output handling and reporting.
+
+This module defines the `ModelOutput` class, which is responsible for organizing,
+accessing, and reporting the results of model computations. The `ModelOutput`
+class loads output structures from JSON configuration files, categorizes the
+model outputs, and provides various methods for retrieving, displaying, and
+exporting the model data.
+
+Class:
+    ModelOutput: Handles the organization and retrieval of model outputs.
+"""
+
 import json
 import os
 import re

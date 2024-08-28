@@ -1,3 +1,24 @@
+"""Definitions for input schemas and data structures.
+
+This module defines various TypedDict classes and schemas that represent the 
+expected structure and types of input data for the NASEM model. These 
+definitions are used throughout the model for input validation and type 
+checking.
+
+Classes:
+    AnimalInput: Defines the schema for animal input data.
+    EquationSelection: Defines the schema for equation selection input data.
+    InfusionInput: Defines the schema for infusion input data.
+    CoeffDict: Defines the schema for coefficient dictionaries.
+    MPNPEfficiencyDict: Defines the schema for MP/NP efficiency input data.
+    mPrtCoeffDict: Defines the schema for mPrt coefficient input data.
+
+Variables:
+    f_Imb: A pandas Series representing imbalance factors for amino acids.
+    UserDietSchema: A dictionary defining the expected structure of the user diet.
+    FeedLibrarySchema: A dictionary defining the expected structure of the feed library.
+"""
+
 from typing import TypedDict, Optional, Literal
 
 import pandas as pd

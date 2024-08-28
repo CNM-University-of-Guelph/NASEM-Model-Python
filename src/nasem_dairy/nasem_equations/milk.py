@@ -1,6 +1,8 @@
-# All calculations related to milk production, milk components, and milk energy
-# import nasem_dairy.nasem_equations.milk as milk
+"""Milk production and composition calculations.
 
+This module covers calculations related to milk production, including the 
+estimation of milk energy content, protein, fat, and lactose yields.
+"""
 import numpy as np
 import pandas as pd
 

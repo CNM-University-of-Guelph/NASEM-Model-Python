@@ -1,5 +1,17 @@
-# This file contains all of the functions used to execute the NASEM model in python
-# import nasem_dairy.ration_balancer.ration_balancer_functions as ration_funcs
+"""Utility functions to help use the NASEM model in Python.
+
+This module provides various utility functions to support the execution of the 
+NASEM Nutrient Requirements of Dairy Cattle model. These functions handle tasks 
+such as reading input data from CSV and JSON files, filtering feed data, and 
+providing demo scenarios.
+
+Functions:
+    get_feed_data: Filters the NASEM feed library DataFrame based on user-entered diet.
+    read_csv_input: Reads input data from a CSV file and organizes it into a DataFrame and dictionaries.
+    read_json_input: Reads input data from a JSON file and returns it as a DataFrame and dictionaries.
+    demo: Provides input data for a given scenario from the demo directory.
+    select_feeds: Selects specific feeds from the NASEM feed library based on a list of feed names.
+"""
 import importlib
 import json
 from typing import Dict, Tuple, Union
