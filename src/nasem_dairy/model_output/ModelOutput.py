@@ -525,8 +525,6 @@ class ModelOutput:
                 special_keys["series"].append(key)
             elif isinstance(value, np.ndarray):
                 special_keys["ndarray"].append(key)
-            elif isinstance(value, dict):
-                special_keys["dict"].append(key)
             elif isinstance(value, list):
                 special_keys["list"].append(key)
 
@@ -536,7 +534,6 @@ class ModelOutput:
             "dataframe": [],
             "series": [],
             "ndarray": [],
-            "dict": [],
             "list": []
         }
         for attr_name in self.categories:
@@ -545,7 +542,6 @@ class ModelOutput:
         # print("DataFrame keys:", special_keys["dataframe"])
         # print("Series keys:", special_keys["series"])
         # print("Numpy array keys:", special_keys["ndarray"])
-        # print("Dict keys:", special_keys["dict"])
         # print("List keys:", special_keys["list"])
         return data_dict
 
