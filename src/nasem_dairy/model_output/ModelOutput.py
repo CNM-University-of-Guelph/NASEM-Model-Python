@@ -75,17 +75,14 @@ class ModelOutput:
             - num_value
             - feed_data
             - feed_library_df
-            - diet_info_initial
-            - diet_data_initial
             - aa_list
-            - An_data_initial
             - mPrt_coeff_list
             - mPrt_k_AA
+            - path_to_package_data
         """
         variables_to_remove = [
-            "key", "value", "num_value", "feed_library_df",
-            "diet_info_initial", "diet_data_initial", "aa_list",
-            "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
+            "key", "value", "num_value", "feed_library_df", "aa_list",
+            "mPrt_coeff_list", "mPrt_k_AA", "path_to_package_data"
         ]
         for key in variables_to_remove:
             if key in self.locals_input:
