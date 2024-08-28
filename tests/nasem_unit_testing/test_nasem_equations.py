@@ -49,6 +49,9 @@ def test_from_json(json_file: str) -> None:
                 pd.testing.assert_frame_equal(
                     func(**input_params), row.Output, rtol=1e-3, atol=1e-2
                     )
+            elif isinstance(row.Output, str):
+                with pytest.raises(ValueError, match=row.Output):
+                    func(**input_params)
 
             else:
                 result = func(**input_params)
