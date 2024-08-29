@@ -22,7 +22,8 @@ try:
 except ImportError: # pragma: no cover
     raise ImportError(
         "The 'graph-tool' package is required for this module. "
-        "Install it with `poetry install --extras dag` or `pip install nasem-dairy[dag]`."
+        "Install it with `poetry install --extras dag` or "
+        "`pip install nasem-dairy[dag]`."
     )
 import pandas as pd
 
@@ -36,7 +37,8 @@ import nasem_dairy.model_output.ModelOutput as output
 # a user tries to run code that requires nd.ModelDAG.
 # if nd.ModelDAG is None:
 #     raise ImportError(
-#         "ModelDAG requires the 'graph-tool' package. Please install it with `poetry install --extras dag`."
+#         "ModelDAG requires the 'graph-tool' package. Please install it with "
+#         "`poetry install --extras dag`."
 #     )
 
 module_colour_map = {
@@ -100,8 +102,8 @@ class ModelDAG:
             self.possible_user_inputs
             )
 
-        varaible_names = self._get_variable_names()
-        variables = pd.DataFrame(varaible_names, columns=["Name"])
+        variable_names = self._get_variable_names()
+        variables = pd.DataFrame(variable_names, columns=["Name"])
 
         # Collect data for DAG
         self.modules = self._get_py_files(path)  
