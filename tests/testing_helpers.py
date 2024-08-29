@@ -27,10 +27,11 @@ def find_json_files(directory: str) -> list:
     return json_files
 
 
-def compare_dicts_with_tolerance(input: dict, 
-                                 output: dict,
-                                 rtol: float = rtol,
-                                 atol: float = atol
+def compare_dicts_with_tolerance(
+    input: dict, 
+    output: dict,
+    rtol: float = rtol,
+    atol: float = atol
 ) -> None:
     """
     Compares two dictionaries with numerical values with a tolerance.
@@ -75,10 +76,11 @@ def compare_dicts_with_tolerance(input: dict,
         raise KeyError(f"Keys {missing_keys} not found in the output dictionary")
 
 
-def compare_series_with_tolerance(input: pd.Series,
-                                  output: pd.Series,
-                                  rtol: float = rtol,
-                                  atol: float = atol
+def compare_series_with_tolerance(
+    input: pd.Series,
+    output: pd.Series,
+    rtol: float = rtol,
+    atol: float = atol
 ) -> bool:
     """
     Compares two pandas Series with numerical values with a tolerance.

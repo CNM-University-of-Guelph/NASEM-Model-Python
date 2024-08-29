@@ -1,3 +1,4 @@
+
 import pandas as pd
 import pytest
 
@@ -34,7 +35,9 @@ def test_missing_kg_user():
         "kg_user": [None, 5]
     }
     df = pd.DataFrame(data)
-    with pytest.raises(ValueError, match="kg_user column must contain only numeric values"):
+    with pytest.raises(
+        ValueError, match="kg_user column must contain only numeric values"
+        ):
         validate_user_diet(df)
 
 
@@ -44,7 +47,9 @@ def test_missing_feedstuff():
         "kg_user": [5, 5]
     }
     df = pd.DataFrame(data)
-    with pytest.raises(ValueError, match="Feedstuff column must contain only string values"):
+    with pytest.raises(
+        ValueError, match="Feedstuff column must contain only string values"
+        ):
         validate_user_diet(df)
 
 

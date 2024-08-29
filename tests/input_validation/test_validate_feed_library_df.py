@@ -33,7 +33,9 @@ def test_wrong_columns():
 def test_missing_feeds():
     feed_library = feed_library_in.copy()
     user_diet = pd.DataFrame({"Feedstuff": ["Feed1", "Feed3"]})
-    with pytest.raises(ValueError, match="The following feeds are missing in the feed library:"):
+    with pytest.raises(
+        ValueError, match="The following feeds are missing in the feed library:"
+        ):
         validate_feed_library_df(feed_library, user_diet)
 
 

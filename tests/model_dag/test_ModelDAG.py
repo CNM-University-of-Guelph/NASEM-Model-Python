@@ -57,7 +57,9 @@ demo_model_data = {
 expected_dag_data = pd.DataFrame(demo_model_data)
 
 
-pytestmark = pytest.mark.skipif(gt is None, reason="graph-tool is not installed")
+pytestmark = pytest.mark.skipif(
+    gt is None, reason="graph-tool is not installed"
+    )
 class TestModelDAG():
     @pytest.fixture
     def demo_model_dag(self):
@@ -204,8 +206,9 @@ class TestModelDAG():
         dag.name_to_vertex["Isolated_Vertex"] = isolated_vertex 
         return dag
 
-    def test_validate_dag_with_isolated_vertex(self, 
-                                               demo_model_dag_isolated_vertex
+    def test_validate_dag_with_isolated_vertex(
+        self, 
+        demo_model_dag_isolated_vertex
     ):
         """
         Test that validate_dag method raises an error for isolated vertices.
@@ -228,9 +231,10 @@ class TestModelDAG():
         dag.dag.remove_edge(dag.dag.edge(vertex2, vertex1))
         return dag
 
-    def test_validate_dag_with_missing_edges(self, 
-                                             demo_model_dag_with_missing_edges, 
-                                             capsys
+    def test_validate_dag_with_missing_edges(
+        self, 
+        demo_model_dag_with_missing_edges, 
+        capsys
     ):
         """Test for missing expected edges in the DAG."""
         try:
@@ -244,13 +248,16 @@ class TestModelDAG():
         """
         Fixture to create a ModelDAG instance where a vertex is not found in self.name_to_vertex.
         """
-        dag = nd.ModelDAG(path="./tests/model_dag/demo_model", colour_map=demo_colour_map)
+        dag = nd.ModelDAG(
+            path="./tests/model_dag/demo_model", colour_map=demo_colour_map
+            )
         del dag.name_to_vertex['Mlk_Prod']
         return dag
 
-    def test_validate_dag_vertex_not_found(self, 
-                                           demo_model_dag_vertex_not_found, 
-                                           capsys
+    def test_validate_dag_vertex_not_found(
+        self, 
+        demo_model_dag_vertex_not_found, 
+        capsys
     ):
         """Test for vertex not found in self.name_to_vertex."""
         demo_model_dag_vertex_not_found._verify_connectivity()
@@ -271,9 +278,10 @@ class TestModelDAG():
         dag.dag.add_edge(tracked_vertex, new_vertex)
         return dag
 
-    def test_validate_dag_incorrect_outgoing_edges(self, 
-                                                   demo_model_dag_incorrect_outgoing_edges, 
-                                                   capsys
+    def test_validate_dag_incorrect_outgoing_edges(
+        self, 
+        demo_model_dag_incorrect_outgoing_edges, 
+        capsys
     ):
         """Test for incorrect number of outgoing edges in the DAG."""
         with pytest.raises(
@@ -435,6 +443,8 @@ class TestModelDAG():
         assert result.get_value(target_variable) == 1.4460342969801294
 
     def test_get_calculation_order_variable_not_found(self, demo_model_dag):
-        with pytest.raises(ValueError, match="Variable 'non_existent_variable' not found in the DAG."):
+        with pytest.raises(
+            ValueError, 
+            match="Variable 'non_existent_variable' not found in the DAG."
+            ):
             demo_model_dag.get_calculation_order("non_existent_variable")
-
