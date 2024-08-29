@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "nasem_dairy"
-version = "1.0.0a0"
-description = "Implementation of (part of) NASEM 2021 dairy model in python "
+version = "1.0.0"
+description = "Implementation of the NASEM 2021 dairy model in python "
 authors = ["Braeden Fieguth & David Innes"]
 license = "MIT"
 readme = "README.md"
