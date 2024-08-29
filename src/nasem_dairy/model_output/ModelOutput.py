@@ -20,10 +20,11 @@ import pandas as pd
 
 
 class ModelOutput:
-    def __init__(self, 
-                 locals_input: dict, 
-                 config_path: str = "./model_output_structure.json",
-                 report_config_path: str = "./report_structure.json"
+    def __init__(
+        self, 
+        locals_input: dict, 
+        config_path: str = "./model_output_structure.json",
+        report_config_path: str = "./report_structure.json"
     ):
         """
         Initialize ModelOutput with input data and configuration paths.
@@ -100,9 +101,10 @@ class ModelOutput:
             if key in self.locals_input:
                 self.dev_out[key] = self.locals_input.pop(key)
 
-    def __populate_category(self, 
-                            category_name: str, 
-                            group_structure: dict
+    def __populate_category(
+        self, 
+        category_name: str, 
+        group_structure: dict
     ) -> None:
         """
         Create and populate nested dictionaries using the structure from JSON.
@@ -111,7 +113,10 @@ class ModelOutput:
             category_name (str): The name of the category to populate.
             group_structure (dict): The structure of the group from the JSON file.
         """
-        def _recursive_populate(sub_category: dict, sub_structure: dict) -> None:
+        def _recursive_populate(
+            sub_category: dict, 
+            sub_structure: dict
+        ) -> None:
             """
             Recursively populate sub-categories based on the provided structure.
 
@@ -290,8 +295,9 @@ class ModelOutput:
         return snapshot_data
 
     ### Data Access ### 
-    def get_value(self, 
-                  name: str
+    def get_value(
+        self, 
+        name: str
     ) -> Union[str, int, float, dict, pd.DataFrame, None]:
         """
         Retrieve a value, dictionary, or dataframe with a given name.
@@ -306,8 +312,9 @@ class ModelOutput:
             Union[str, int, float, dict, pd.DataFrame, None]: The object with the
             given name, or None if not found.
         """
-        def _recursive_search_get_value(dictionary: dict, 
-                                        target_name: str
+        def _recursive_search_get_value(
+            dictionary: dict, 
+            target_name: str
         ) -> Union[Any, None]:
             """
             Recursively search for a group in a nested dictionary.
@@ -342,10 +349,11 @@ class ModelOutput:
                 return result
         return None                   
 
-    def search(self, 
-               search_string: str, 
-               dictionaries_to_search: Union[None, List[str]] = None,
-               case_sensitive: bool = False
+    def search(
+        self, 
+        search_string: str, 
+        dictionaries_to_search: Union[None, List[str]] = None,
+        case_sensitive: bool = False
     ) -> pd.DataFrame:
         """
         Search for a string in the ModelOutput instance and return matching results.
@@ -363,7 +371,10 @@ class ModelOutput:
         Returns:
             pd.DataFrame: A DataFrame containing the search results.
         """
-        def _recursive_search_search(dict_to_search: Dict[str, Any], path: str = "") -> None:
+        def _recursive_search_search(
+            dict_to_search: Dict[str, Any], 
+            path: str = ""
+        ) -> None:
             """
             Recursively search for a string in a nested dictionary.
 
@@ -393,8 +404,9 @@ class ModelOutput:
                             visited_keys.add(columns_key)
 
 
-        def _extract_dataframe_and_column(key: str, 
-                                         value: Any
+        def _extract_dataframe_and_column(
+            key: str, 
+            value: Any
         ) -> Dict[str, Union[str, List[str]]]:
             """
             Extract information from a DataFrame column.
