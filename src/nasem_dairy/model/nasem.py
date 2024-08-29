@@ -17,12 +17,11 @@ Example:
         user_diet=user_diet_in, 
         animal_input=animal_input_in, 
         equation_selection=equation_selection_in, 
-        coeff_dict=nd.coeff_dict
     )
 """
 
 import importlib.resources
-from typing import Dict, List, Any, Tuple, Optional, Callable
+from typing import Dict, List, Any, Optional
 
 import numpy as np
 import pandas as pd
@@ -68,46 +67,48 @@ def nasem(
     """
     Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
 
-    Parameters
-    ----------
-    user_diet : pd.DataFrame
-        DataFrame containing user-defined diet composition in kg of feed ingredient. Expects two columns, "Feedstuff" as a string with the name from the feed library and "kg_user" as a float with the kg of the ingredient to feed.
-    animal_input : dict
-        Dictionary containing animal-specific input values.
-    equation_selection : dict
-        Dictionary containing equation selection criteria.
-    feed_library : pd.DataFrame
-        DataFrame containing the feed library data.
-    coeff_dict : dict, optional
-        Dictionary containing coefficients for the model, by default `nd.coeff_dict`.
-    infusion_input : dict, optional
-        Dictionary containing infusion input data, by default `nd.infusion_dict`.
-    MP_NP_efficiency : dict, optional
-        Dictionary containing amino acid conversion efficiencies, by default `nd.MP_NP_efficiency_dict`.
+    This function runs the NASEM dairy model using various inputs, including the 
+    user's diet, animal inputs, selected equations, and optional infusion data. 
+    The function returns a ModelOutput object containing the results of the 
+    calculations.
 
-    Returns
-    -------
-    Multiple
-        Currently returns nd.ModelOutput
+    Args:
+        user_diet: A pandas DataFrame representing the user's diet input.
+        animal_input: A dictionary containing the animal's input data, such as 
+                      body weight, milk production, and other physiological parameters.
+        equation_selection: A dictionary specifying the equations to be used in 
+                            the model.
+        feed_library: An optional pandas DataFrame representing the feed library. 
+                      If not provided, the standard feed library is used.
+        coeff_dict: A dictionary of coefficients used throughout the model. Defaults 
+                    to the standard coefficients from the NASEM constants.
+        infusion_input: An optional dictionary of nutrient infusion rates and 
+                        locations. If not provided, default values are used.
+        MP_NP_efficiency_dict: A dictionary containing the MP to NP efficiency 
+                               coefficients for various amino acids. Defaults to the 
+                               standard dictionary from NASEM constants.
+        mPrt_coeff_list: A list of dictionaries containing microbial protein equation 
+                         coefficients. Defaults to the standard list from NASEM constants.
+        f_Imb: An optional pandas Series representing imbalance factors for amino 
+               acids. If not provided, default values are used.
 
-    Notes
-    -----
-    - user_diet, animal_input an equation_selection can be generated from a CSV file using nd.read_csv_input
-    - The default feed_library can be read from NASEM_feed_library.csv
-    
-    Examples
-    --------
-    Run the NASEM dairy model with user-defined inputs:
+    Returns:
+        ModelOutput: An object containing the results of the NASEM dairy model.
 
-    ```python
-    import nasem_dairy as nd
-    nd.dev_run_NASEM_model(
-        user_diet=user_diet_df,
-        animal_input=animal_input_dict,
-        equation_selection=equation_selection_dict,
-        feed_library=feed_library
-    )
-    ```
+    Raises:
+        ValueError: If any input validation checks fail or if required data is 
+                    missing from the inputs.
+        TypeError: If any input is not of the expected type.
+
+    Example:
+        user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("lactating_cow_test")
+        
+        output = nd.nasem(
+            user_diet=user_diet_in, 
+            animal_input=animal_input_in, 
+            equation_selection=equation_selection_in, 
+            coeff_dict=nd.coeff_dict
+        )
     """
     ####################
     # Validate Inputs  
@@ -311,19 +312,33 @@ def nasem(
         Dt_DMIn, animal_input["An_StatePhys"], 
         equation_selection["Use_DNDF_IV"], feed_data, coeff_dict
         )
-    diet_data["Dt_CPIn_ClfLiq"] = diet.calculate_Dt_CPIn_ClfLiq(feed_data["Fd_CPIn_ClfLiq"])
-    diet_data["Dt_DMIn_ClfLiq"] = diet.calculate_Dt_DMIn_ClfLiq(feed_data["Fd_DMIn_ClfLiq"])
+    diet_data["Dt_CPIn_ClfLiq"] = diet.calculate_Dt_CPIn_ClfLiq(
+        feed_data["Fd_CPIn_ClfLiq"]
+        )
+    diet_data["Dt_DMIn_ClfLiq"] = diet.calculate_Dt_DMIn_ClfLiq(
+        feed_data["Fd_DMIn_ClfLiq"]
+        )
     diet_data["Dt_NDFIn"] = diet.calculate_Dt_NDFIn(feed_data["Fd_NDFIn"])
     diet_data["Dt_StIn"] = diet.calculate_Dt_StIn(feed_data["Fd_StIn"])
     diet_data["Dt_CPIn"] = diet.calculate_Dt_CPIn(feed_data["Fd_CPIn"])
     diet_data["Dt_ADFIn"] = diet.calculate_Dt_ADFIn(feed_data["Fd_ADFIn"])
-    diet_data["Dt_ForNDF"] = diet.calculate_Dt_ForNDF(feed_data["Fd_DMInp"], feed_data["Fd_ForNDF"])
+    diet_data["Dt_ForNDF"] = diet.calculate_Dt_ForNDF(
+        feed_data["Fd_DMInp"], feed_data["Fd_ForNDF"]
+        )
     diet_data["Dt_AshIn"] = diet.calculate_Dt_AshIn(feed_data["Fd_AshIn"])
-    diet_data["Dt_FAhydrIn"] = diet.calculate_Dt_FAhydrIn(feed_data["Fd_FAhydrIn"])
+    diet_data["Dt_FAhydrIn"] = diet.calculate_Dt_FAhydrIn(
+        feed_data["Fd_FAhydrIn"]
+        )
     diet_data["Dt_TPIn"] = diet.calculate_Dt_TPIn(feed_data["Fd_TPIn"])
-    diet_data["Dt_NPNDMIn"] = diet.calculate_Dt_NPNDMIn(feed_data["Fd_NPNDMIn"])
-    diet_data["Dt_idRUPIn"] = diet.calculate_Dt_idRUPIn(feed_data["Fd_idRUPIn"])
-    diet_data["Dt_ForWetIn"] = diet.calculate_Dt_ForWetIn(feed_data["Fd_ForWetIn"])
+    diet_data["Dt_NPNDMIn"] = diet.calculate_Dt_NPNDMIn(
+        feed_data["Fd_NPNDMIn"]
+        )
+    diet_data["Dt_idRUPIn"] = diet.calculate_Dt_idRUPIn(
+        feed_data["Fd_idRUPIn"]
+        )
+    diet_data["Dt_ForWetIn"] = diet.calculate_Dt_ForWetIn(
+        feed_data["Fd_ForWetIn"]
+        )
     diet_data["Dt_dcCP_ClfDry"] = diet.calculate_Dt_dcCP_ClfDry(
         animal_input["An_StatePhys"], diet_data["Dt_DMIn_ClfLiq"]
         )
@@ -378,7 +393,9 @@ def nasem(
         Dt_DMIn, diet_data["Dt_ForNDF"], diet_data["Dt_StIn"], 
         diet_data["Dt_ForWet"]
         )
-    Rum_DigNDFIn = rumen.calculate_Rum_DigNDFIn(Rum_dcNDF, diet_data["Dt_NDFIn"])
+    Rum_DigNDFIn = rumen.calculate_Rum_DigNDFIn(
+        Rum_dcNDF, diet_data["Dt_NDFIn"]
+        )
     Rum_DigStIn = rumen.calculate_Rum_DigStIn(Rum_dcSt, diet_data["Dt_StIn"])    
     RDPIn_MiNmax = micp.calculate_RDPIn_MiNmax(
         Dt_DMIn, an_data["An_RDP"], an_data["An_RDPIn"]
@@ -489,7 +506,9 @@ def nasem(
     Gest_NCPgain_g = gestation.calculate_Gest_NCPgain_g(
         GrUter_BWgain, coeff_dict
         )
-    Gest_NPgain_g = gestation.calculate_Gest_NPgain_g(Gest_NCPgain_g, coeff_dict)
+    Gest_NPgain_g = gestation.calculate_Gest_NPgain_g(
+        Gest_NCPgain_g, coeff_dict
+        )
     Gest_NPuse_g = gestation.calculate_Gest_NPuse_g(Gest_NPgain_g, coeff_dict)
     Gest_CPuse_g = gestation.calculate_Gest_CPuse_g(Gest_NPuse_g, coeff_dict)
     aa_values["Gest_AA_g"] = gestation.calculate_Gest_AA_g(
@@ -519,7 +538,9 @@ def nasem(
     ####################
     # Ruminal N Flow and Microbial Crude Protein
     ####################
-    Du_EndCP_g = micp.calculate_Du_EndCP_g(Dt_DMIn, infusion_data["InfRum_DMIn"])
+    Du_EndCP_g = micp.calculate_Du_EndCP_g(
+        Dt_DMIn, infusion_data["InfRum_DMIn"]
+        )
     Du_EndN_g = micp.calculate_Du_EndN_g(Dt_DMIn, infusion_data["InfRum_DMIn"])
     Du_EndCP = micp.calculate_Du_EndCP(Du_EndCP_g)
     Du_EndN = micp.calculate_Du_EndN(Du_EndN_g)
@@ -618,7 +639,9 @@ def nasem(
         infusion_data["Inf_DigFAIn"]
         )
     Fe_OM_end = fecal.calculate_Fe_OM_end(Fe_rOMend, Fe_CPend)
-    Fe_rOM = fecal.calculate_Fe_rOM(an_data["An_rOMIn"], an_data["An_DigrOMaIn"])
+    Fe_rOM = fecal.calculate_Fe_rOM(
+        an_data["An_rOMIn"], an_data["An_DigrOMaIn"]
+        )
     Fe_St = fecal.calculate_Fe_St(
         diet_data["Dt_StIn"], infusion_data["Inf_StIn"], an_data["An_DigStIn"]
         )
@@ -704,8 +727,7 @@ def nasem(
         an_data["An_BWnp"], animal_input["An_BCS"]
         )
     an_data["An_GutFill_Wt_Erdman"] = body_comp.calculate_An_GutFill_Wt_Erdman(
-        Dt_DMIn, infusion_data["InfRum_DMIn"],
-        infusion_data["InfSI_DMIn"]
+        Dt_DMIn, infusion_data["InfRum_DMIn"], infusion_data["InfSI_DMIn"]
         )
     an_data["An_BWnp_empty"] = body_comp.calculate_An_BWnp_empty(
         an_data["An_BWnp"], an_data["An_GutFill_Wt"]
@@ -866,7 +888,9 @@ def nasem(
     Trg_Mlk_NEout = energy_req.calculate_Trg_Mlk_NEout(
         animal_input["Trg_MilkProd"], Trg_NEmilk_Milk
         )
-    Trg_Mlk_MEout = energy_req.calculate_Trg_Mlk_MEout(Trg_Mlk_NEout, coeff_dict)
+    Trg_Mlk_MEout = energy_req.calculate_Trg_Mlk_MEout(
+        Trg_Mlk_NEout, coeff_dict
+        )
     Trg_MEuse = energy_req.calculate_Trg_MEuse(
         An_MEmUse, An_MEgain, Gest_MEuse, Trg_Mlk_MEout
         )
@@ -897,9 +921,13 @@ def nasem(
     An_MEprod_Avail = energy_req.calculate_An_MEprod_Avail(An_MEIn, An_MEmUse)
     Gest_NELuse = energy_req.calculate_Gest_NELuse(Gest_MEuse, coeff_dict)
     Gest_NE_ME = energy_req.calculate_Gest_NE_ME(Gest_MEuse, An_MEIn)
-    Gest_NE_DE = energy_req.calculate_Gest_NE_DE(Gest_REgain, an_data["An_DEIn"])
+    Gest_NE_DE = energy_req.calculate_Gest_NE_DE(
+        Gest_REgain, an_data["An_DEIn"]
+        )
     An_REgain = energy_req.calculate_An_REgain(Body_Fatgain, Body_CPgain)
-    Rsrv_NE_DE = energy_req.calculate_Rsrv_NE_DE(Rsrv_NEgain, an_data["An_DEIn"])
+    Rsrv_NE_DE = energy_req.calculate_Rsrv_NE_DE(
+        Rsrv_NEgain, an_data["An_DEIn"]
+        )
     Frm_NE_DE = energy_req.calculate_Frm_NE_DE(Frm_NEgain, an_data["An_DEIn"])
     Body_NEgain_BWgain = energy_req.calculate_Body_NEgain_BWgain(
         An_REgain, Body_Gain
@@ -908,7 +936,9 @@ def nasem(
     Rsrv_NELgain = energy_req.calculate_Rsrv_NELgain(Rsrv_MEgain, coeff_dict)
     Frm_NELgain = energy_req.calculate_Frm_NELgain(Frm_MEgain, coeff_dict)
     An_NELgain = energy_req.calculate_An_NELgain(An_MEgain, coeff_dict)
-    An_NEgain_DE = energy_req.calculate_An_NEgain_DE(An_REgain, an_data["An_DEIn"])
+    An_NEgain_DE = energy_req.calculate_An_NEgain_DE(
+        An_REgain, an_data["An_DEIn"]
+        )
     An_NEgain_ME = energy_req.calculate_An_NEgain_ME(An_REgain, An_MEIn)
     En_OM = animal.calculate_En_OM(an_data["An_DEIn"], an_data["An_DigOMtIn"])
 
@@ -950,15 +980,16 @@ def nasem(
     # Diff_MPuse_g > 0. Some of the values used to make this adjustment are used
     #  elsewhere so it can"t just be put behind an if statement
     An_MPuse_g_Trg_initial = protein_req.calculate_An_MPuse_g_Trg_initial(
-        An_MPm_g_Trg, Body_MPUse_g_Trg_initial, Gest_MPUse_g_Trg, Mlk_MPUse_g_Trg
+        An_MPm_g_Trg, Body_MPUse_g_Trg_initial, Gest_MPUse_g_Trg, 
+        Mlk_MPUse_g_Trg
         )
     An_MEIn_approx = animal.calculate_An_MEIn_approx(
         an_data["An_DEInp"], an_data["An_DENPNCPIn"], an_data["An_DigTPaIn"], 
         Body_NPgain, an_data["An_GasEOut"], coeff_dict
         )
     Min_MPuse_g = protein_req.calculate_Min_MPuse_g(
-        animal_input["An_StatePhys"], An_MPuse_g_Trg_initial, animal_input["An_BW"], 
-        animal_input["An_BW_mature"], An_MEIn_approx
+        animal_input["An_StatePhys"], An_MPuse_g_Trg_initial, 
+        animal_input["An_BW"], animal_input["An_BW_mature"], An_MEIn_approx
         )
     Diff_MPuse_g = protein_req.calculate_Diff_MPuse_g(
         Min_MPuse_g, An_MPuse_g_Trg_initial
@@ -1128,7 +1159,9 @@ def nasem(
     Trg_NEprod_GE = energy_req.calculate_Trg_NEprod_GE(
         Trg_NEuse, An_NEmUse, an_data["An_GEIn"]
         )
-    An_NEmlk_GE = energy_req.calculate_An_NEmlk_GE(Mlk_NEout, an_data["An_GEIn"])
+    An_NEmlk_GE = energy_req.calculate_An_NEmlk_GE(
+        Mlk_NEout, an_data["An_GEIn"]
+        )
     Trg_NEmlk_GE = energy_req.calculate_Trg_NEmlk_GE(
         Trg_Mlk_NEout, an_data["An_GEIn"]
         )
@@ -1316,7 +1349,9 @@ def nasem(
     An_P_y = micro_req.calculate_An_P_y(
         animal_input["An_GestDay"], animal_input["An_BW"]
         )
-    An_P_l = micro_req.calculate_An_P_l(animal_input["Trg_MilkProd"], MlkNP_Milk)
+    An_P_l = micro_req.calculate_An_P_l(
+        animal_input["Trg_MilkProd"], MlkNP_Milk
+        )
     An_P_Clf = micro_req.calculate_An_P_Clf(
         an_data["An_BW_empty"], Body_Gain_empty
         )
@@ -1496,14 +1531,18 @@ def nasem(
     Dt_acCa = micro_req.calculate_Dt_acCa(
         diet_data["Abs_CaIn"], diet_data["Dt_CaIn"]
         )
-    Dt_acP = micro_req.calculate_Dt_acP(diet_data["Abs_PIn"], diet_data["Dt_PIn"])
+    Dt_acP = micro_req.calculate_Dt_acP(
+        diet_data["Abs_PIn"], diet_data["Dt_PIn"]
+        )
     Dt_acNa = micro_req.calculate_Dt_acNa(
         diet_data["Abs_NaIn"], diet_data["Dt_NaIn"]
         )
     Dt_acMg = micro_req.calculate_Dt_acMg_final(
         diet_data["Abs_MgIn"], diet_data["Dt_MgIn"]
         )
-    Dt_acK = micro_req.calculate_Dt_acK(diet_data["Abs_KIn"], diet_data["Dt_KIn"])
+    Dt_acK = micro_req.calculate_Dt_acK(
+        diet_data["Abs_KIn"], diet_data["Dt_KIn"]
+        )
     Dt_acCl = micro_req.calculate_Dt_acCl(
         diet_data["Abs_ClIn"], diet_data["Dt_ClIn"]
         )
@@ -1727,7 +1766,9 @@ def nasem(
         animal_input['An_StatePhys'], Man_out, Fe_OM, Ur_Nout_g, Man_Min_out_g
         )
     if animal_input['An_StatePhys'] != "Calf":
-        An_Wa_Insens = water.calculate_An_Wa_Insens(An_WaIn, Mlk_Prod, Man_Wa_out)
+        An_Wa_Insens = water.calculate_An_Wa_Insens(
+            An_WaIn, Mlk_Prod, Man_Wa_out
+            )
     else:
         An_Wa_Insens = 0
         
@@ -1790,7 +1831,9 @@ def nasem(
     An_RDPbal_kg = report.calculate_An_RDPbal_kg(An_RDPbal_g)
     MP_from_body = report.calculate_MP_from_body(Body_MPUse_g_Trg)
     An_BW_centered = report.calculate_An_BW_centered(animal_input["An_BW"])
-    An_DigNDF_centered = report.calculate_An_DigNDF_centered(an_data["An_DigNDF"])
+    An_DigNDF_centered = report.calculate_An_DigNDF_centered(
+        an_data["An_DigNDF"]
+        )
     An_BW_protein = report.calculate_An_BW_protein(
         animal_input["An_BW"], mPrt_coeff
         )
