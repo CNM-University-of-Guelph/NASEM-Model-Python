@@ -1,5 +1,10 @@
 # The NASEM 2021 Nutrient Requirements of Dairy Cattle Model in Python
 
+![Build Status](https://github.com/CNM-University-of-Guelph/NASEM-Model-Python/actions/workflows/ci.yml/badge.svg)
+[![Coverage Status](https://coveralls.io/repos/github/CNM-University-of-Guelph/NASEM-Model-Python/badge.svg?branch=main)](https://coveralls.io/github/CNM-University-of-Guelph/NASEM-Model-Python?branch=main)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/CNM-University-of-Guelph/NASEM-Model-Python/blob/main/LICENSE)
+
+
 - [Installation](#installation)
 - [Using the Model](#using-the-model)
   - [Import package](#import-package)
