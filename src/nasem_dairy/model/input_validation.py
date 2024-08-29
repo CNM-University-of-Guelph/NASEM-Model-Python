@@ -26,12 +26,21 @@ import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 
 
-def check_input_type(input_value: Any, 
-                     expected_type: Type, 
-                     var_name: str
+def check_input_type(
+    input_value: Any, 
+    expected_type: Type, 
+    var_name: str
 ) -> None:
     """
-    Check the input data has the expected type
+    Validates that the input data has the expected type.
+
+    Args:
+        input_value: The value to be checked.
+        expected_type: The type that input_value is expected to be.
+        var_name: The name of the variable being checked.
+
+    Raises:
+        TypeError: If input_value is not of the expected type.
     """
     if not isinstance(input_value, expected_type):
         raise TypeError(f"{var_name} must be a {expected_type.__name__}")
@@ -39,8 +48,22 @@ def check_input_type(input_value: Any,
 
 def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
     """
-    For each value in a dictionary check that the type is correct. Atttempt to
-    convert to the correct type and raise a TypeError if this fails.
+    Validates and attempts to convert the types of values in a dictionary.
+
+    This function checks that each value in the input dictionary has the 
+    expected type as specified in the type_mapping. If a value does not 
+    have the expected type, it attempts to convert it. If conversion 
+    fails, a TypeError is raised.
+
+    Args:
+        input_dict: The dictionary containing values to be checked.
+        type_mapping: A dictionary mapping keys to expected types.
+
+    Returns:
+        dict: A dictionary with corrected values where types were successfully converted.
+
+    Raises:
+        TypeError: If a value cannot be converted to the expected type.
     """
     corrected_input = {}
     for key, expected_type in type_mapping.items():
@@ -48,7 +71,8 @@ def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
             value = input_dict[key]
 
             # Check if the expected type is a Literal
-            if hasattr(expected_type, '__origin__') and expected_type.__origin__ is Literal:
+            if hasattr(expected_type, '__origin__') and \
+               expected_type.__origin__ is Literal:
                 valid_values = get_args(expected_type)
                 valid_type = type(valid_values[0])
                 if not isinstance(value, valid_type):
@@ -56,8 +80,9 @@ def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
                         corrected_value = valid_type(value)
                     except (ValueError, TypeError) as e:
                         raise TypeError(
-                            f"Value for {key} must be of type {valid_type.__name__}. "
-                            f"Got {type(value).__name__} instead and failed to convert."
+                            f"Value for {key} must be of type "
+                            f"{valid_type.__name__}. Got {type(value).__name__}"
+                            f" instead and failed to convert."
                         ) from e
                 else:
                     corrected_value = value
@@ -71,8 +96,9 @@ def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
                         corrected_value = expected_type(value)
                     except (ValueError, TypeError) as e:
                         raise TypeError(
-                            f"Value for {key} must be of type {expected_type.__name__}. "
-                            f"Got {type(value).__name__} instead and failed to convert."
+                            f"Value for {key} must be of type "
+                            f"{expected_type.__name__}. Got {type(value).__name__}"
+                            f" instead and failed to convert."
                         ) from e
                     corrected_input[key] = corrected_value
                 else:
@@ -84,18 +110,34 @@ def check_and_convert_type(input_dict: dict, type_mapping: dict) -> dict:
 def check_keys_presence(input_keys: list, required_keys: list) -> None:
     """
     Checks that required keys are present in a given iterable.
+
+    Args:
+        input_keys: A list of keys present in the input.
+        required_keys: A list of keys that must be present.
+
+    Raises:
+        KeyError: If any required keys are missing.
     """
     missing_keys = set(required_keys) - set(input_keys)
     if missing_keys:
         raise KeyError(f"The following keys are missing: {missing_keys}")
 
 
-def check_value_is_valid(input_value: Union[str, int], 
-                         valid_values: list, 
-                         value_name: str
+def check_value_is_valid(
+    input_value: Union[str, int], 
+    valid_values: list, 
+    value_name: str
 ) -> None:
     """
-    Check that the input value is included in a list of valid values.
+    Validates that the input value is included in a list of valid values.
+
+    Args:
+        input_value: The value to be validated.
+        valid_values: A list of valid values.
+        value_name: The name of the value being checked.
+
+    Raises:
+        ValueError: If input_value is not in valid_values.
     """
     if input_value not in valid_values:
         raise ValueError(f"{value_name} must be one of {valid_values}, "
@@ -103,6 +145,27 @@ def check_value_is_valid(input_value: Union[str, int],
 
 # Validation Functions 
 def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
+    """
+    Validates the structure and content of a user diet DataFrame.
+
+    This function ensures that the user diet DataFrame conforms to the expected 
+    schema, including checking for the presence of required columns and validating 
+    data types. It also combines duplicate feedstuff entries and removes any 
+    rows with missing data.
+
+    Args:
+        user_diet: A pandas DataFrame representing the user's diet input.
+
+    Returns:
+        A cleaned and validated pandas DataFrame.
+
+    Raises:
+        TypeError: If the user_diet is not a pandas DataFrame.
+        KeyError: If required columns are missing from the user_diet.
+        ValueError: If the kg_user column contains non-numeric values, if the 
+                    Feedstuff column contains non-string values, or if the 
+                    resulting DataFrame is empty.
+    """
     check_input_type(user_diet, pd.DataFrame, "user_diet")
     
     expected_columns = expected.UserDietSchema.keys()
@@ -124,6 +187,25 @@ def validate_user_diet(user_diet: pd.DataFrame) -> pd.DataFrame:
 
 
 def validate_animal_input(animal_input: dict) -> dict:
+    """
+    Validates the structure and content of the animal input dictionary.
+
+    This function ensures that the animal input dictionary contains the correct 
+    keys and values according to the expected schema. It checks for the presence 
+    of required keys, validates types, and attempts to convert values to the 
+    correct type if necessary.
+
+    Args:
+        animal_input: A dictionary containing animal input data.
+
+    Returns:
+        A corrected dictionary with validated and possibly converted values.
+
+    Raises:
+        TypeError: If the animal_input is not a dictionary or if any value 
+                   cannot be converted to the expected type.
+        KeyError: If required keys are missing from the animal_input.
+    """
     check_input_type(animal_input, dict, "animal_input")
 
     type_mapping = expected.AnimalInput.__annotations__.copy()
@@ -138,6 +220,25 @@ def validate_animal_input(animal_input: dict) -> dict:
 
 
 def validate_equation_selection(equation_selection: dict) -> dict:
+    """
+    Validates the structure and content of the equation selection dictionary.
+
+    This function ensures that the equation selection dictionary contains the 
+    correct keys and values according to the expected schema. It checks for 
+    the presence of required keys, validates types, and attempts to convert 
+    values to the correct type if necessary.
+
+    Args:
+        equation_selection: A dictionary containing equation selection data.
+
+    Returns:
+        A corrected dictionary with validated and possibly converted values.
+
+    Raises:
+        TypeError: If the equation_selection is not a dictionary or if any value 
+                   cannot be converted to the expected type.
+        KeyError: If required keys are missing from the equation_selection.
+    """
     check_input_type(equation_selection, dict, "equation_selection")
     
     input_mapping = expected.EquationSelection.__annotations__.copy()
@@ -149,9 +250,30 @@ def validate_equation_selection(equation_selection: dict) -> dict:
     return corrected_input
 
 
-def validate_feed_library_df(feed_library_df: pd.DataFrame, 
-                             user_diet: pd.DataFrame
+def validate_feed_library_df(
+    feed_library_df: pd.DataFrame, 
+    user_diet: pd.DataFrame
 ) -> pd.DataFrame:
+    """
+    Validates the structure and content of the feed library DataFrame.
+
+    This function ensures that the feed library DataFrame contains the correct 
+    columns according to the expected schema and checks for the presence of 
+    all feeds listed in the user diet DataFrame.
+
+    Args:
+        feed_library_df: A pandas DataFrame representing the feed library.
+        user_diet: A pandas DataFrame representing the user's diet input.
+
+    Returns:
+        The validated feed library DataFrame.
+
+    Raises:
+        TypeError: If feed_library_df or user_diet is not a pandas DataFrame.
+        KeyError: If required columns are missing from the feed_library_df.
+        ValueError: If any feeds listed in the user_diet are missing from the 
+                    feed_library_df.
+    """
     check_input_type(feed_library_df, pd.DataFrame, "feed_library_df")
     check_input_type(user_diet, pd.DataFrame, "user_diet")
 
@@ -167,6 +289,24 @@ def validate_feed_library_df(feed_library_df: pd.DataFrame,
 
 
 def validate_coeff_dict(coeff_dict: dict) -> dict:
+    """
+    Validates and corrects the coefficient dictionary.
+
+    This function checks that the coefficient dictionary contains the correct 
+    keys and values according to the expected schema. It also compares the 
+    dictionary against a default set of coefficients to identify any differences.
+
+    Args:
+        coeff_dict: A dictionary containing coefficient data.
+
+    Returns:
+        A corrected dictionary with validated and possibly converted values.
+
+    Raises:
+        TypeError: If coeff_dict is not a dictionary or if any value cannot be 
+                   converted to the expected type.
+        KeyError: If required keys are missing from the coeff_dict.
+    """
     expected_coeff_dict = expected.CoeffDict.__annotations__.copy()
 
     check_input_type(coeff_dict, dict, "coeff_dict")
@@ -191,6 +331,25 @@ def validate_coeff_dict(coeff_dict: dict) -> dict:
 
 
 def validate_infusion_input(infusion_input: dict) -> dict:
+    """
+    Validates the structure and content of the infusion input dictionary.
+
+    This function ensures that the infusion input dictionary contains the correct 
+    keys and values according to the expected schema. It checks for the presence 
+    of required keys, validates types, and attempts to convert values to the 
+    correct type if necessary.
+
+    Args:
+        infusion_input: A dictionary containing infusion input data.
+
+    Returns:
+        A corrected dictionary with validated and possibly converted values.
+
+    Raises:
+        TypeError: If infusion_input is not a dictionary or if any value cannot be 
+                   converted to the expected type.
+        KeyError: If required keys are missing from the infusion_input.
+    """
     expected_infusion_dict = expected.InfusionDict.__annotations__.copy()
 
     check_input_type(infusion_input, dict, "infusion_input")
@@ -203,6 +362,25 @@ def validate_infusion_input(infusion_input: dict) -> dict:
 
 
 def validate_MP_NP_efficiency_input(MP_NP_efficiency_input: dict) -> dict:
+    """
+    Validates the MP/NP efficiency input dictionary.
+
+    This function ensures that the MP/NP efficiency input dictionary contains 
+    the correct keys and values according to the expected schema. It checks for 
+    the presence of required keys, validates types, and attempts to convert 
+    values to the correct type if necessary.
+
+    Args:
+        MP_NP_efficiency_input: A dictionary containing MP/NP efficiency data.
+
+    Returns:
+        A corrected dictionary with validated and possibly converted values.
+
+    Raises:
+        TypeError: If MP_NP_efficiency_input is not a dictionary or if any value 
+                   cannot be converted to the expected type.
+        KeyError: If required keys are missing from the MP_NP_efficiency_input.
+    """
     expected_MP_NP_efficiency = expected.MPNPEfficiencyDict.__annotations__.copy()
     check_input_type(MP_NP_efficiency_input, dict, "MP_NP_efficiency_input")
     check_keys_presence(
@@ -214,8 +392,30 @@ def validate_MP_NP_efficiency_input(MP_NP_efficiency_input: dict) -> dict:
     return corrected_values
 
 
-def validate_mPrt_coeff_list(mPrt_coeff_list: List[Dict[str, Any]]
+def validate_mPrt_coeff_list(
+    mPrt_coeff_list: List[Dict[str, Any]]
 ) -> List[Dict[str, Any]]:
+    """
+    Validates a list of mPrt coefficient dictionaries.
+
+    This function ensures that each dictionary in the list contains the correct 
+    keys and values according to the expected schema. It checks for the presence 
+    of required keys, validates types, and raises an error if any value is not 
+    of the expected type.
+
+    Args:
+        mPrt_coeff_list: A list of dictionaries containing microbial protein 
+                         coefficient data.
+
+    Returns:
+        The validated list of dictionaries.
+
+    Raises:
+        TypeError: If mPrt_coeff_list is not a list, if any dictionary in the 
+                   list is not a dictionary, or if any value is not of the 
+                   expected type.
+        KeyError: If required keys are missing from any dictionary in the list.
+    """
     default_keys = expected.mPrtCoeffDict.__annotations__.copy()
     check_input_type(mPrt_coeff_list, list, "mPrt_coeff_list")
     for index, coeffs in enumerate(mPrt_coeff_list):
@@ -231,6 +431,23 @@ def validate_mPrt_coeff_list(mPrt_coeff_list: List[Dict[str, Any]]
 
 
 def validate_f_Imb(f_Imb: pd.Series) -> pd.Series:
+    """
+    Validates the structure and content of the f_Imb pandas Series.
+
+    This function ensures that the f_Imb pandas Series contains the correct 
+    indices and that all values are of the correct type (int or float). 
+
+    Args:
+        f_Imb: A pandas Series representing imbalance factors for amino acids.
+
+    Returns:
+        The validated pandas Series.
+
+    Raises:
+        TypeError: If f_Imb is not a pandas Series or if any value is not of 
+                   the expected type.
+        KeyError: If required indices are missing from the f_Imb Series.
+    """
     expected_f_Imb = expected.f_Imb
     check_input_type(f_Imb, pd.Series, "f_Imb")
     check_keys_presence(f_Imb.index, expected_f_Imb.index)
