@@ -53,7 +53,9 @@ class AnimalInput(TypedDict):
 
 class EquationSelection(TypedDict):
     Use_DNDF_IV: Literal[0, 1, 2]
-    DMIn_eqn: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15, 16, 17, 18]
+    DMIn_eqn: Literal[
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15, 16, 17, 18
+        ]
     mProd_eqn: Literal[0, 1, 2, 3, 4]
     MiN_eqn: Literal[1, 2, 3]
     NonMilkCP_ClfLiq: Literal[0, 1]
@@ -359,9 +361,10 @@ class mPrtCoeffDict(TypedDict):
     mPrt_k_EAA2_coeff: float
 
 
-f_Imb = pd.Series([1.0] * 10, index=[
-    "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
-    ])
+f_Imb = pd.Series(
+    [1.0] * 10, 
+    index=["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]
+)
 
 
 FeedLibrarySchema = {
