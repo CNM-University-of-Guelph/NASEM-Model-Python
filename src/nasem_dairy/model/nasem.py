@@ -11,7 +11,7 @@ Functions:
            requirements based on input data.
 
 Example:
-    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("input")
+    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("lactating_cow_test")
     
     output = nd.nasem(
         user_diet=user_diet_in, 
@@ -22,6 +22,7 @@ Example:
 """
 
 import importlib.resources
+from typing import Dict, List, Any, Tuple, Optional, Callable
 
 import numpy as np
 import pandas as pd
@@ -47,22 +48,23 @@ import nasem_dairy.nasem_equations.rumen as rumen
 import nasem_dairy.nasem_equations.report as report
 import nasem_dairy.nasem_equations.urine as urine
 import nasem_dairy.nasem_equations.water as water
-
 import nasem_dairy.data.constants as constants
 import nasem_dairy.model.input_validation as validate
-import nasem_dairy.model_output.ModelOutput as output
 import nasem_dairy.model.utility as utility
+from nasem_dairy.model_output.ModelOutput import ModelOutput
 
-def nasem(user_diet: pd.DataFrame,
-          animal_input: dict,
-          equation_selection: dict,
-          feed_library_df: pd.DataFrame = None,
-          coeff_dict: dict = constants.coeff_dict,
-          infusion_input: dict = constants.infusion_dict,
-          MP_NP_efficiency: dict = constants.MP_NP_efficiency_dict,
-          mPrt_coeff_list: list = constants.mPrt_coeff_list,
-          f_Imb: np.array = constants.f_Imb
-) -> output.ModelOutput:
+
+def nasem(
+    user_diet: pd.DataFrame,
+    animal_input: Dict[str, Any],
+    equation_selection: Dict[str, Any],
+    feed_library: Optional[pd.DataFrame] = None,
+    coeff_dict: Optional[Dict[str, float]] = constants.coeff_dict,
+    infusion_input: Optional[Dict[str, float]] = constants.infusion_dict,
+    MP_NP_efficiency: Optional[Dict[str, float]] = constants.MP_NP_efficiency_dict,
+    mPrt_coeff_list: Optional[List[Dict[str, float]]] = constants.mPrt_coeff_list,
+    f_Imb: Optional[pd.Series] = constants.f_Imb,
+) -> ModelOutput:
     """
     Run the NASEM (National Academies of Sciences, Engineering, and Medicine) Nutrient Requirements of Dairy Cattle model.
 
@@ -74,7 +76,7 @@ def nasem(user_diet: pd.DataFrame,
         Dictionary containing animal-specific input values.
     equation_selection : dict
         Dictionary containing equation selection criteria.
-    feed_library_df : pd.DataFrame
+    feed_library : pd.DataFrame
         DataFrame containing the feed library data.
     coeff_dict : dict, optional
         Dictionary containing coefficients for the model, by default `nd.coeff_dict`.
@@ -91,7 +93,7 @@ def nasem(user_diet: pd.DataFrame,
     Notes
     -----
     - user_diet, animal_input an equation_selection can be generated from a CSV file using nd.read_csv_input
-    - The default feed_library_df can be read from NASEM_feed_library.csv
+    - The default feed_library can be read from NASEM_feed_library.csv
     
     Examples
     --------
@@ -103,18 +105,18 @@ def nasem(user_diet: pd.DataFrame,
         user_diet=user_diet_df,
         animal_input=animal_input_dict,
         equation_selection=equation_selection_dict,
-        feed_library_df=feed_library_df
+        feed_library=feed_library
     )
     ```
     """
     ####################
     # Validate Inputs  
     ####################
-    if feed_library_df is None:
+    if feed_library is None:
         path_to_package_data = importlib.resources.files(
             "nasem_dairy.data.feed_library"
             )
-        feed_library_df = pd.read_csv(
+        feed_library = pd.read_csv(
             path_to_package_data.joinpath("NASEM_feed_library.csv")
         )
     user_diet = validate.validate_user_diet(user_diet.copy())
@@ -122,7 +124,7 @@ def nasem(user_diet: pd.DataFrame,
     equation_selection = validate.validate_equation_selection(
         equation_selection.copy()
         )
-    feed_library_df = validate.validate_feed_library_df(feed_library_df.copy(),
+    feed_library = validate.validate_feed_library_df(feed_library.copy(),
                                                         user_diet.copy())
     coeff_dict = validate.validate_coeff_dict(coeff_dict.copy())
     infusion_input = validate.validate_infusion_input(infusion_input.copy())
@@ -142,7 +144,7 @@ def nasem(user_diet: pd.DataFrame,
     an_data = {}
 
     feed_data = utility.get_feed_data(
-        animal_input["Trg_Dt_DMIn"], user_diet, feed_library_df
+        animal_input["Trg_Dt_DMIn"], user_diet, feed_library
         )
     feed_data["Fd_ForNDF"] = diet.calculate_Fd_ForNDF(
         feed_data["Fd_NDF"], feed_data["Fd_Conc"]
@@ -1813,5 +1815,5 @@ def nasem(user_diet: pd.DataFrame,
     # Capture Outputs
     ####################
     locals_dict = locals()
-    model_output = output.ModelOutput(locals_input=locals_dict)
+    model_output = ModelOutput(locals_input=locals_dict)
     return model_output

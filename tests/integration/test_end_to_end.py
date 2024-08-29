@@ -88,7 +88,7 @@ def test_end_to_end(json_file: str) -> None:
     output = nasem(user_diet=user_diet_in,
                            animal_input=animal_input_in,
                            equation_selection=equation_selection_in,
-                           feed_library_df=feed_library_in,
+                           feed_library=feed_library_in,
                            coeff_dict=coeff_dict_in,
                            infusion_input=infusion_input_in,
                            MP_NP_efficiency=MP_NP_efficiency_in,

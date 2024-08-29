@@ -251,7 +251,7 @@ def validate_equation_selection(equation_selection: dict) -> dict:
 
 
 def validate_feed_library_df(
-    feed_library_df: pd.DataFrame, 
+    feed_library: pd.DataFrame, 
     user_diet: pd.DataFrame
 ) -> pd.DataFrame:
     """
@@ -262,30 +262,30 @@ def validate_feed_library_df(
     all feeds listed in the user diet DataFrame.
 
     Args:
-        feed_library_df: A pandas DataFrame representing the feed library.
+        feed_library: A pandas DataFrame representing the feed library.
         user_diet: A pandas DataFrame representing the user's diet input.
 
     Returns:
         The validated feed library DataFrame.
 
     Raises:
-        TypeError: If feed_library_df or user_diet is not a pandas DataFrame.
-        KeyError: If required columns are missing from the feed_library_df.
+        TypeError: If feed_library or user_diet is not a pandas DataFrame.
+        KeyError: If required columns are missing from the feed_library.
         ValueError: If any feeds listed in the user_diet are missing from the 
-                    feed_library_df.
+                    feed_library.
     """
-    check_input_type(feed_library_df, pd.DataFrame, "feed_library_df")
+    check_input_type(feed_library, pd.DataFrame, "feed_library")
     check_input_type(user_diet, pd.DataFrame, "user_diet")
 
     expected_columns = expected.FeedLibrarySchema.keys()
 
-    check_keys_presence(feed_library_df.columns, expected_columns)
-    missing_feeds = set(user_diet["Feedstuff"]) - set(feed_library_df["Fd_Name"])
+    check_keys_presence(feed_library.columns, expected_columns)
+    missing_feeds = set(user_diet["Feedstuff"]) - set(feed_library["Fd_Name"])
     if missing_feeds:
         raise ValueError(
             f"The following feeds are missing in the feed library: {missing_feeds}"
             )
-    return feed_library_df
+    return feed_library
 
 
 def validate_coeff_dict(coeff_dict: dict) -> dict:

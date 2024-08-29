@@ -86,14 +86,14 @@ class ModelOutput:
             - value
             - num_value
             - feed_data
-            - feed_library_df
+            - feed_library
             - aa_list
             - mPrt_coeff_list
             - mPrt_k_AA
             - path_to_package_data
         """
         variables_to_remove = [
-            "key", "value", "num_value", "feed_library_df", "aa_list",
+            "key", "value", "num_value", "feed_library", "aa_list",
             "mPrt_coeff_list", "mPrt_k_AA", "path_to_package_data"
         ]
         for key in variables_to_remove:
