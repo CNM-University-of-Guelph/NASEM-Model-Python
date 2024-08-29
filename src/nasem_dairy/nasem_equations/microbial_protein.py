@@ -5,9 +5,10 @@ digestion of microbial protein within the rumen, based on various dietary inputs
 """
 
 
-def calculate_RDPIn_MiNmax(Dt_DMIn: float, 
-                           An_RDP: float, 
-                           An_RDPIn: float
+def calculate_RDPIn_MiNmax(
+    Dt_DMIn: float, 
+    An_RDP: float, 
+    An_RDPIn: float
 ) -> float:
     if An_RDP <= 12:  # Line 1124
         RDPIn_MiNmax = An_RDPIn
@@ -33,11 +34,12 @@ def calculate_MiN_Vm(RDPIn_MiNmax: float, coeff_dict: dict) -> float:
     return MiN_Vm
 
 
-def calculate_Du_MiN_NRC2021_g(MiN_Vm: float, 
-                               Rum_DigNDFIn: float, 
-                               Rum_DigStIn: float, 
-                               An_RDPIn_g: float,
-                               coeff_dict: dict
+def calculate_Du_MiN_NRC2021_g(
+    MiN_Vm: float, 
+    Rum_DigNDFIn: float, 
+    Rum_DigStIn: float, 
+    An_RDPIn_g: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -60,12 +62,13 @@ def calculate_Du_MiN_NRC2021_g(MiN_Vm: float,
     return Du_MiN_NRC2021_g
 
 
-def calculate_Du_MiN_VTln_g(Dt_rOMIn: float, 
-                            Dt_ForNDFIn: float, 
-                            An_RDPIn: float, 
-                            Rum_DigStIn: float,
-                            Rum_DigNDFIn: float, 
-                            coeff_dict: dict
+def calculate_Du_MiN_VTln_g(
+    Dt_rOMIn: float, 
+    Dt_ForNDFIn: float, 
+    An_RDPIn: float, 
+    Rum_DigStIn: float,
+    Rum_DigNDFIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -98,24 +101,26 @@ def calculate_Du_MiN_VTln_g(Dt_rOMIn: float,
     return Du_MiN_VTln_g
 
 
-def calculate_Du_MiN_VTnln_g(An_RDPIn: float, 
-                             Rum_DigNDFIn: float, 
-                             Rum_DigStIn: float
+def calculate_Du_MiN_VTnln_g(
+    An_RDPIn: float, 
+    Rum_DigNDFIn: float, 
+    Rum_DigStIn: float
 ) -> float:
     Du_MiN_VTnln_g = (7.47 + 0.574 * An_RDPIn * 1000 / 
                       (1 + 3.60 / Rum_DigNDFIn + 12.3 / Rum_DigStIn)) # Line 1147
     return Du_MiN_VTnln_g
 
 
-def calculate_Du_MiN_g(MiN_eqn: int, 
-                       MiN_Vm: float, 
-                       Dt_rOMIn: float,
-                       Dt_ForNDFIn: float,
-                       An_RDPIn: float,
-                       Rum_DigNDFIn: float,
-                       Rum_DigStIn: float,
-                       An_RDPIn_g: float,
-                       coeff_dict: dict
+def calculate_Du_MiN_g(
+    MiN_eqn: int, 
+    MiN_Vm: float, 
+    Dt_rOMIn: float,
+    Dt_ForNDFIn: float,
+    An_RDPIn: float,
+    Rum_DigNDFIn: float,
+    Rum_DigStIn: float,
+    An_RDPIn_g: float,
+    coeff_dict: dict
 ) -> float:
     if MiN_eqn == 1:
         Du_MiN_g = calculate_Du_MiN_NRC2021_g(
@@ -227,9 +232,10 @@ def calculate_Du_EndN(Du_EndN_g: float) -> float:
     return Du_EndN
 
 
-def calculate_Du_NAN_g(Du_MiN_g: float, 
-                       An_RUPIn: float,
-                       Du_EndN_g: float
+def calculate_Du_NAN_g(
+    Du_MiN_g: float, 
+    An_RUPIn: float,
+    Du_EndN_g: float
 ) -> float:
     """
     Du_NAN_g: ??? Not sure what NAN means. Something to do with Nitrogen flow. g/d
@@ -258,9 +264,10 @@ def calculate_Du_MiN_NRC2001_g(Dt_TDNIn: float, An_RDPIn: float) -> float:
     return Du_MiN_NRC2001_g
 
 
-def calculate_Rum_MiCP_DigCHO(Du_MiCP: float, 
-                              Rum_DigNDFIn: float,
-                              Rum_DigStIn: float
+def calculate_Rum_MiCP_DigCHO(
+    Du_MiCP: float, 
+    Rum_DigNDFIn: float,
+    Rum_DigStIn: float
 ) -> float:
     """
     Rum_MiCP_DigCHO: Microbial CP as a fraction of digestable carbohydrates

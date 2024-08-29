@@ -5,9 +5,10 @@ requirements for maintenance, growth, gestation, and lactation,
 adjusting for various physiological conditions.
 """
 
-def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float, 
-                           Scrf_MPUse_g_Trg: float,
-                           Ur_MPendUse_g: float
+def calculate_An_MPm_g_Trg(
+    Fe_MPendUse_g_Trg: float, 
+    Scrf_MPUse_g_Trg: float,
+    Ur_MPendUse_g: float
 ) -> float:
     """
     An_MPm_g_Trg: Metabolizable protein requirement for maintenance (g/d)
@@ -17,8 +18,9 @@ def calculate_An_MPm_g_Trg(Fe_MPendUse_g_Trg: float,
     return An_MPm_g_Trg
 
 
-def calculate_Body_MPUse_g_Trg_initial(Body_NPgain_g: float,
-                                       Kg_MP_NP_Trg_initial: float
+def calculate_Body_MPUse_g_Trg_initial(
+    Body_NPgain_g: float,
+    Kg_MP_NP_Trg_initial: float
 ) -> float:
     """
     Body_MPUse_g_Trg: Metabolizable protein requirement for reserve and frame gain (g/d)
@@ -78,10 +80,11 @@ def calculate_Mlk_MPUse_g_Trg(Trg_Mlk_NP_g: float, coeff_dict: dict) -> float:
     return Mlk_MPUse_g_Trg
 
 
-def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
-                                     Body_MPUse_g_Trg_initial: float,
-                                     Gest_MPUse_g_Trg: float,
-                                     Mlk_MPUse_g_Trg: float
+def calculate_An_MPuse_g_Trg_initial(
+    An_MPm_g_Trg: float,
+    Body_MPUse_g_Trg_initial: float,
+    Gest_MPUse_g_Trg: float,
+    Mlk_MPUse_g_Trg: float
 ) -> float:
     """
     An_MPuse_g_Trg: Metabolizable protein requirement (g/d)
@@ -94,11 +97,12 @@ def calculate_An_MPuse_g_Trg_initial(An_MPm_g_Trg: float,
     return An_MPuse_g_Trg_initial
 
 
-def calculate_Min_MPuse_g(An_StatePhys: str, 
-                          An_MPuse_g_Trg_initial: float,
-                          An_BW: float, 
-                          An_BW_mature: float,
-                          An_MEIn_approx: float
+def calculate_Min_MPuse_g(
+    An_StatePhys: str, 
+    An_MPuse_g_Trg_initial: float,
+    An_BW: float, 
+    An_BW_mature: float,
+    An_MEIn_approx: float
 ) -> float:
     """
     Min_MPuse_g: I think minimum MP use, g/d, but not 100% sure
@@ -112,7 +116,10 @@ def calculate_Min_MPuse_g(An_StatePhys: str,
     return Min_MPuse_g
 
 
-def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg_initial: float) -> float:
+def calculate_Diff_MPuse_g(
+    Min_MPuse_g: float, 
+    An_MPuse_g_Trg_initial: float
+) -> float:
     """
     Diff_MPuse_g: g/d, I believe this is the difference betweem minimum MP use and MP requirement 
     """
@@ -120,10 +127,11 @@ def calculate_Diff_MPuse_g(Min_MPuse_g: float, An_MPuse_g_Trg_initial: float) ->
     return Diff_MPuse_g
 
 
-def calculate_Frm_MPUse_g_Trg(An_StatePhys: str, 
-                              Frm_NPgain_g: float,
-                              Kg_MP_NP_Trg_initial: float,
-                              Diff_MPuse_g: float
+def calculate_Frm_MPUse_g_Trg(
+    An_StatePhys: str, 
+    Frm_NPgain_g: float,
+    Kg_MP_NP_Trg_initial: float,
+    Diff_MPuse_g: float
 ) -> float:
     """
     Frm_MPUse_g_Trg: kg MP/d for Frame NP gain
@@ -143,14 +151,15 @@ def calculate_Frm_NPgain_g(Frm_NPgain: float) -> float:
     return Frm_NPgain_g
 
 
-def calculate_Kg_MP_NP_Trg_initial(An_StatePhys: str, 
-                                   An_Parity_rl: int, 
-                                   An_BW: float,
-                                   An_BW_empty: float, 
-                                   An_BW_mature: float,
-                                   An_BWmature_empty: float,
-                                   MP_NP_efficiency_dict: dict,
-                                   coeff_dict: dict
+def calculate_Kg_MP_NP_Trg_initial(
+    An_StatePhys: str, 
+    An_Parity_rl: int, 
+    An_BW: float,
+    An_BW_empty: float, 
+    An_BW_mature: float,
+    An_BWmature_empty: float,
+    MP_NP_efficiency_dict: dict,
+    coeff_dict: dict
 ) -> float:
     """
     Kg_MP_NP_Trg_initial: Conversion of NP to MP for growth
@@ -196,11 +205,12 @@ def calculate_Kg_MP_NP_Trg_initial(An_StatePhys: str,
     return Kg_MP_NP_Trg_initial
 
 
-def calculate_Kg_MP_NP_Trg_heifer_adjustment(An_StatePhys: str, 
-                                             Diff_MPuse_g: float, 
-                                             Frm_NPgain_g: float, 
-                                             Frm_MPUse_g_Trg: float,
-                                             Kg_MP_NP_Trg_initial: float
+def calculate_Kg_MP_NP_Trg_heifer_adjustment(
+    An_StatePhys: str, 
+    Diff_MPuse_g: float, 
+    Frm_NPgain_g: float, 
+    Frm_MPUse_g_Trg: float,
+    Kg_MP_NP_Trg_initial: float
 ) -> float:
     Kg_MP_NP_Trg = Kg_MP_NP_Trg_initial
     if An_StatePhys == "Heifer" and Diff_MPuse_g > 0:
@@ -216,10 +226,11 @@ def calculate_Rsrv_NPgain_g(Rsrv_NPgain: float) -> float:
     return Rsrv_NPgain_g
 
 
-def calculate_Rsrv_MPUse_g_Trg(An_StatePhys: str, 
-                               Diff_MPuse_g: float,
-                               Rsrv_NPgain_g: float,
-                               Kg_MP_NP_Trg: float
+def calculate_Rsrv_MPUse_g_Trg(
+    An_StatePhys: str, 
+    Diff_MPuse_g: float,
+    Rsrv_NPgain_g: float,
+    Kg_MP_NP_Trg: float
 ) -> float:
     """
 
@@ -234,11 +245,12 @@ def calculate_Rsrv_MPUse_g_Trg(An_StatePhys: str,
     return Rsrv_MPUse_g_Trg
 
 
-def calculate_Body_MPUse_g_Trg(An_StatePhys: str, 
-                               Diff_MPuse_g: float,
-                               Body_NPgain_g: float, 
-                               Body_MPUse_g_Trg_initial: float,
-                               Kg_MP_NP_Trg: float
+def calculate_Body_MPUse_g_Trg(
+    An_StatePhys: str, 
+    Diff_MPuse_g: float,
+    Body_NPgain_g: float, 
+    Body_MPUse_g_Trg_initial: float,
+    Kg_MP_NP_Trg: float
 ) -> float:
     """
     Body_MPUse_g_Trg: MP requirement for frame and reserve gain, g/d
@@ -250,11 +262,12 @@ def calculate_Body_MPUse_g_Trg(An_StatePhys: str,
     return Body_MPUse_g_Trg
 
 
-def calculate_An_MPuse_g_Trg(An_MPm_g_Trg: float, 
-                             Frm_MPUse_g_Trg: float,
-                             Rsrv_MPUse_g_Trg: float, 
-                             Gest_MPUse_g_Trg: float,
-                             Mlk_MPUse_g_Trg: float
+def calculate_An_MPuse_g_Trg(
+    An_MPm_g_Trg: float, 
+    Frm_MPUse_g_Trg: float,
+    Rsrv_MPUse_g_Trg: float, 
+    Gest_MPUse_g_Trg: float,
+    Mlk_MPUse_g_Trg: float
 ) -> float:
     """
     An_MPuse_g_Trg: Metabolizable protein requirement (g/d)
@@ -264,13 +277,14 @@ def calculate_An_MPuse_g_Trg(An_MPm_g_Trg: float,
     return An_MPuse_g_Trg
 
 
-def calculate_Trg_MPIn_req(Fe_MPendUse_g_Trg: float, 
-                           Scrf_MPUse_g_Trg: float,
-                           Ur_MPendUse_g: float, 
-                           Body_MPUse_g_Trg: float,
-                           Gest_MPUse_g_Trg: float, 
-                           Trg_Mlk_NP_g: float,
-                           coeff_dict: dict
+def calculate_Trg_MPIn_req(
+    Fe_MPendUse_g_Trg: float, 
+    Scrf_MPUse_g_Trg: float,
+    Ur_MPendUse_g: float, 
+    Body_MPUse_g_Trg: float,
+    Gest_MPUse_g_Trg: float, 
+    Trg_Mlk_NP_g: float,
+    coeff_dict: dict
 ) -> float:
     """
     Trg_MPIn_req: Target MP requirement (g/d)

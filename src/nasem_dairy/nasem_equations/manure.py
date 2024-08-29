@@ -23,11 +23,12 @@ def calculate_Man_Milk(Man_out: float, Mlk_Prod: float) -> float:
     return Man_Milk
 
 
-def calculate_Man_VolSld(Dt_DMIn: float, 
-                         InfRum_DMIn: float, 
-                         InfSI_DMIn: float,
-                         An_NDF: float, 
-                         An_CP: float
+def calculate_Man_VolSld(
+    Dt_DMIn: float, 
+    InfRum_DMIn: float, 
+    InfSI_DMIn: float,
+    An_NDF: float, 
+    An_CP: float
 ) -> float:
     """
     Man_VolSld: Volatile solids in manure (kg/d)
@@ -38,9 +39,10 @@ def calculate_Man_VolSld(Dt_DMIn: float,
     return Man_VolSld
 
 
-def calculate_Man_VolSld2(Fe_OM: float, 
-                          Dt_LgIn: float,
-                          Ur_Nout_g: float
+def calculate_Man_VolSld2(
+    Fe_OM: float, 
+    Dt_LgIn: float,
+    Ur_Nout_g: float
 ) -> float:
     """
     Man_VolSld: Volatile solids in manure (kg/d)
@@ -66,9 +68,10 @@ def calculate_VolSlds_Milk2(Man_VolSld2: float, Mlk_Prod: float) -> float:
     return VolSlds_Milk2
 
 
-def calculate_Man_Nout_g(Ur_Nout_g: float, 
-                         Fe_N_g: float,
-                         Scrf_N_g: float
+def calculate_Man_Nout_g(
+    Ur_Nout_g: float, 
+    Fe_N_g: float,
+    Scrf_N_g: float
 ) -> float:
     """
     Man_Nout_g: Manure nitrogen by summation of fecal, urinary, and scurf predictions (g/d)
@@ -146,12 +149,13 @@ def calculate_Man_Cl_out(Dt_ClIn: float, An_Cl_prod: float) -> float:
     return Man_Cl_out
 
 
-def calculate_Man_MacMin_out(Man_Ca_out: float, 
-                             Man_P_out: float,
-                             Man_Mg_out: float, 
-                             Man_K_out: float,
-                             Man_Na_out: float, 
-                             Man_Cl_out: float
+def calculate_Man_MacMin_out(
+    Man_Ca_out: float, 
+    Man_P_out: float,
+    Man_Mg_out: float, 
+    Man_K_out: float,
+    Man_Na_out: float, 
+    Man_Cl_out: float
 ) -> float:
     """
     Man_MacMin_out: Macrominerals in manure (g/d)
@@ -193,10 +197,11 @@ def calculate_Man_Zn_out(Dt_ZnIn: float, An_Zn_prod: float) -> float:
     return Man_Zn_out
 
 
-def calculate_Man_MicMin_out(Man_Cu_out: float, 
-                             Man_Fe_out: float,
-                             Man_Mn_out: float, 
-                             Man_Zn_out: float
+def calculate_Man_MicMin_out(
+    Man_Cu_out: float, 
+    Man_Fe_out: float,
+    Man_Mn_out: float, 
+    Man_Zn_out: float
 ) -> float:
     """
     Man_MicMin_out: Microminerals in manure (g/d)
@@ -206,8 +211,9 @@ def calculate_Man_MicMin_out(Man_Cu_out: float,
     return Man_MicMin_out
 
 
-def calculate_Man_Min_out_g(Man_MacMin_out: float,
-                            Man_MicMin_out: float
+def calculate_Man_Min_out_g(
+    Man_MacMin_out: float,
+    Man_MicMin_out: float
 ) -> float:
     """
     Man_Min_out_g: Minerals in manure (g/d)
@@ -217,11 +223,12 @@ def calculate_Man_Min_out_g(Man_MacMin_out: float,
     return Man_Min_out_g
 
 
-def calculate_Man_Wa_out(An_StatePhys: str, 
-                         Man_out: float, 
-                         Fe_OM: float,
-                         Ur_Nout_g: float, 
-                         Man_Min_out_g: float
+def calculate_Man_Wa_out(
+    An_StatePhys: str, 
+    Man_out: float, 
+    Fe_OM: float,
+    Ur_Nout_g: float, 
+    Man_Min_out_g: float
 ) -> float:
     """
     Man_Wa_out: Estimated water in manure (L/d)

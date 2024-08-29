@@ -31,9 +31,10 @@ def calculate_Fe_Ca_m(An_DMIn: float) -> float:
     return Fe_Ca_m
 
 
-def calculate_An_Ca_g(An_BW_mature: float, 
-                      An_BW: float,
-                      Body_Gain: float
+def calculate_An_Ca_g(
+    An_BW_mature: float, 
+    An_BW: float,
+    Body_Gain: float
 ) -> float:
     """
     An_Ca_g: Ca requirement for growth, g/d
@@ -58,10 +59,11 @@ def calculate_An_Ca_y(An_GestDay: int, An_BW: float) -> float:
     return An_Ca_y
 
 
-def calculate_An_Ca_l(Mlk_NP_g: float, 
-                      Ca_Mlk: float, 
-                      Trg_MilkProd: float,
-                      Trg_MilkTPp: float
+def calculate_An_Ca_l(
+    Mlk_NP_g: float, 
+    Ca_Mlk: float, 
+    Trg_MilkProd: float,
+    Trg_MilkTPp: float
 ) -> float:
     """
     An_Ca_l: Ca requirement for lactation, g/d
@@ -86,13 +88,14 @@ def calculate_An_Ca_Clf(An_BW_empty: float, Body_Gain_empty: float) -> float:
     return An_Ca_Clf
 
 
-def calculate_An_Ca_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Ca_Clf: float, 
-                        Fe_Ca_m: float, 
-                        An_Ca_g: float,
-                        An_Ca_y: float, 
-                        An_Ca_l: float
+def calculate_An_Ca_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Ca_Clf: float, 
+    Fe_Ca_m: float, 
+    An_Ca_g: float,
+    An_Ca_y: float, 
+    An_Ca_l: float
 ) -> float:
     """
     An_Ca_req: Calcium requirement, g/d
@@ -112,9 +115,10 @@ def calculate_An_Ca_bal(Abs_CaIn: float, An_Ca_req: float) -> float:
     return An_Ca_bal
 
 
-def calculate_An_Ca_prod(An_Ca_y: float, 
-                         An_Ca_l: float,
-                         An_Ca_g: float
+def calculate_An_Ca_prod(
+    An_Ca_y: float, 
+    An_Ca_l: float,
+    An_Ca_g: float
 ) -> float:
     """
     An_Ca_prod: Calcium used for production? (gestation + lactation + growth), g/d
@@ -151,14 +155,15 @@ def calculate_An_P_m(Ur_P_m: float, Fe_P_m: float) -> float:
     return An_P_m
 
 
-def calculate_An_P_g(An_BW_mature: float, 
-                     An_BW: float,
-                     Body_Gain: float
+def calculate_An_P_g(
+    An_BW_mature: float, 
+    An_BW: float,
+    Body_Gain: float
 ) -> float:
     """
     An_P_g: P requirement for growth
     """
-    An_P_g = (1.2 + (4.635 * An_BW_mature**.22 * An_BW**-0.22)) * Body_Gain 
+    An_P_g = (1.2 + (4.635 * An_BW_mature**0.22 * An_BW**-0.22)) * Body_Gain 
     # Line 2980
     return An_P_g
 
@@ -198,13 +203,14 @@ def calculate_An_P_Clf(An_BW_empty: float, Body_Gain_empty: float) -> float:
     return An_P_Clf
 
 
-def calculate_An_P_req(An_StatePhys: str, 
-                       Dt_DMIn_ClfLiq: float,
-                       An_P_Clf: float, 
-                       An_P_m: float, 
-                       An_P_g: float,
-                       An_P_y: float, 
-                       An_P_l: float
+def calculate_An_P_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_P_Clf: float, 
+    An_P_m: float, 
+    An_P_g: float,
+    An_P_y: float, 
+    An_P_l: float
 ) -> float:
     """
     An_P_req: P requirement, g/d
@@ -225,11 +231,12 @@ def calculate_An_P_bal(Abs_PIn: float, An_P_req: float) -> float:
     return An_P_bal
 
 
-def calculate_Fe_P_g(Dt_PIn: float, 
-                     An_P_l: float, 
-                     An_P_y: float, 
-                     An_P_g: float,
-                     Ur_P_m: float
+def calculate_Fe_P_g(
+    Dt_PIn: float, 
+    An_P_l: float, 
+    An_P_y: float, 
+    An_P_g: float,
+    Ur_P_m: float
 ) -> float:
     """
     Fe_P_g: Fecal P loss, g/d
@@ -313,13 +320,14 @@ def calculate_An_Mg_l(Trg_MilkProd: float) -> float:
     return An_Mg_l
 
 
-def calculate_An_Mg_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Mg_Clf: float, 
-                        An_Mg_m: float, 
-                        An_Mg_g: float,
-                        An_Mg_y: float, 
-                        An_Mg_l: float
+def calculate_An_Mg_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Mg_Clf: float, 
+    An_Mg_m: float, 
+    An_Mg_g: float,
+    An_Mg_y: float, 
+    An_Mg_l: float
 ) -> float:
     """
     An_Mg_req: Mg requirement, g/d
@@ -339,9 +347,10 @@ def calculate_An_Mg_bal(Abs_MgIn: float, An_Mg_req: float) -> float:
     return An_Mg_bal
 
 
-def calculate_An_Mg_prod(An_Mg_y: float, 
-                         An_Mg_l: float,
-                         An_Mg_g: float
+def calculate_An_Mg_prod(
+    An_Mg_y: float, 
+    An_Mg_l: float,
+    An_Mg_g: float
 ) -> float:
     """
     An_Mg_prod: Mg for production?, g/d
@@ -399,13 +408,14 @@ def calculate_An_Na_l(Trg_MilkProd: float) -> float:
     return An_Na_l
 
 
-def calculate_An_Na_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Na_Clf: float, 
-                        Fe_Na_m: float, 
-                        An_Na_g: float,
-                        An_Na_y: float, 
-                        An_Na_l: float
+def calculate_An_Na_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Na_Clf: float, 
+    Fe_Na_m: float, 
+    An_Na_g: float,
+    An_Na_y: float, 
+    An_Na_l: float
 ) -> float:
     """
     An_Na_req: Na requirement, g/d
@@ -425,9 +435,10 @@ def calculate_An_Na_bal(Abs_NaIn: float, An_Na_req: float) -> float:
     return An_Na_bal
 
 
-def calculate_An_Na_prod(An_Na_y: float, 
-                         An_Na_l: float,
-                         An_Na_g: float
+def calculate_An_Na_prod(
+    An_Na_y: float, 
+    An_Na_l: float,
+    An_Na_g: float
 ) -> float:
     """
     An_Na_prod: Na for production?, g/d
@@ -485,13 +496,14 @@ def calculate_An_Cl_l(Trg_MilkProd: float) -> float:
     return An_Cl_l
 
 
-def calculate_An_Cl_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Cl_Clf: float, 
-                        Fe_Cl_m: float, 
-                        An_Cl_g: float,
-                        An_Cl_y: float, 
-                        An_Cl_l: float
+def calculate_An_Cl_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Cl_Clf: float, 
+    Fe_Cl_m: float, 
+    An_Cl_g: float,
+    An_Cl_y: float, 
+    An_Cl_l: float
 ) -> float:
     """
     An_Cl_req: Cl requirement, g/d
@@ -511,9 +523,10 @@ def calculate_An_Cl_bal(Abs_ClIn: float, An_Cl_req: float) -> float:
     return An_Cl_bal
 
 
-def calculate_An_Cl_prod(An_Cl_y: float, 
-                         An_Cl_l: float,
-                         An_Cl_g: float
+def calculate_An_Cl_prod(
+    An_Cl_y: float, 
+    An_Cl_l: float,
+    An_Cl_g: float
 ) -> float:
     """
     An_Cl_prod: Cl required for production?, g/d
@@ -590,13 +603,14 @@ def calculate_An_K_l(Trg_MilkProd: float) -> float:
     return An_K_l
 
 
-def calculate_An_K_req(An_StatePhys: str, 
-                       Dt_DMIn_ClfLiq: float,
-                       An_K_Clf: float, 
-                       An_K_m: float, 
-                       An_K_g: float,
-                       An_K_y: float, 
-                       An_K_l: float
+def calculate_An_K_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_K_Clf: float, 
+    An_K_m: float, 
+    An_K_g: float,
+    An_K_y: float, 
+    An_K_l: float
 ) -> float:
     """
     An_K_req: K requirement, g/d
@@ -709,13 +723,14 @@ def calculate_An_Cu_l(Trg_MilkProd: float) -> float:
     return An_Cu_l
 
 
-def calculate_An_Cu_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Cu_Clf: float, 
-                        An_Cu_m: float, 
-                        An_Cu_g: float,
-                        An_Cu_y: float, 
-                        An_Cu_l: float
+def calculate_An_Cu_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Cu_Clf: float, 
+    An_Cu_m: float, 
+    An_Cu_g: float,
+    An_Cu_y: float, 
+    An_Cu_l: float
 ) -> float:
     """
     An_Cu_req: Cu requirement, mg/d
@@ -735,9 +750,10 @@ def calculate_An_Cu_bal(Abs_CuIn: float, An_Cu_req: float) -> float:
     return An_Cu_bal
 
 
-def calculate_An_Cu_prod(An_Cu_y: float, 
-                         An_Cu_l: float,
-                         An_Cu_g: float
+def calculate_An_Cu_prod(
+    An_Cu_y: float, 
+    An_Cu_l: float,
+    An_Cu_g: float
 ) -> float:
     """
     An_Cu_prod: Cu for production?, mg/d
@@ -747,10 +763,11 @@ def calculate_An_Cu_prod(An_Cu_y: float,
 
 
 ### IODINE ###
-def calculate_An_I_req(An_StatePhys: str, 
-                       An_DMIn: float, 
-                       An_BW: float,
-                       Trg_MilkProd: float
+def calculate_An_I_req(
+    An_StatePhys: str, 
+    An_DMIn: float, 
+    An_BW: float,
+    Trg_MilkProd: float
 ) -> float:
     """
     An_I_req: I requirement, mg/d
@@ -809,12 +826,13 @@ def calculate_An_Fe_l(Trg_MilkProd: float) -> float:
     return An_Fe_l
 
 
-def calculate_An_Fe_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Fe_Clf: float, 
-                        An_Fe_g: float, 
-                        An_Fe_y: float,
-                        An_Fe_l: float
+def calculate_An_Fe_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Fe_Clf: float, 
+    An_Fe_g: float, 
+    An_Fe_y: float,
+    An_Fe_l: float
 ) -> float:
     """
     An_Fe_req: Fe requirement, mg/d
@@ -836,9 +854,10 @@ def calculate_An_Fe_bal(Abs_FeIn: float, An_Fe_req: float) -> float:
     return An_Fe_bal
 
 
-def calculate_An_Fe_prod(An_Fe_y: float, 
-                         An_Fe_l: float,
-                         An_Fe_g: float
+def calculate_An_Fe_prod(
+    An_Fe_y: float, 
+    An_Fe_l: float,
+    An_Fe_g: float
 ) -> float:
     """
     An_Fe_prod: Fe required for production?, mg/d
@@ -894,13 +913,14 @@ def calculate_An_Mn_l(Trg_MilkProd: float) -> float:
     return An_Mn_l
 
 
-def calculate_An_Mn_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Mn_Clf: float, 
-                        An_Mn_m: float, 
-                        An_Mn_g: float,
-                        An_Mn_y: float, 
-                        An_Mn_l: float
+def calculate_An_Mn_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Mn_Clf: float, 
+    An_Mn_m: float, 
+    An_Mn_g: float,
+    An_Mn_y: float, 
+    An_Mn_l: float
 ) -> float:
     """
     An_Mn_req: Mn requirement, mg/d
@@ -920,9 +940,10 @@ def calculate_An_Mn_bal(Abs_MnIn: float, An_Mn_req: float) -> float:
     return An_Mn_bal
 
 
-def calculate_An_Mn_prod(An_Mn_y: float, 
-                         An_Mn_l: float,
-                         An_Mn_g: float
+def calculate_An_Mn_prod(
+    An_Mn_y: float, 
+    An_Mn_l: float,
+    An_Mn_g: float
 ) -> float:
     """
     An_Mn_prod: Mn required for production?, mg/d
@@ -995,13 +1016,14 @@ def calculate_An_Zn_l(Trg_MilkProd: float) -> float:
     return An_Zn_l
 
 
-def calculate_An_Zn_req(An_StatePhys: str, 
-                        Dt_DMIn_ClfLiq: float,
-                        An_Zn_Clf: float, 
-                        An_Zn_m: float, 
-                        An_Zn_g: float,
-                        An_Zn_y: float, 
-                        An_Zn_l: float
+def calculate_An_Zn_req(
+    An_StatePhys: str, 
+    Dt_DMIn_ClfLiq: float,
+    An_Zn_Clf: float, 
+    An_Zn_m: float, 
+    An_Zn_g: float,
+    An_Zn_y: float, 
+    An_Zn_l: float
 ) -> float:
     """
     An_Zn_req: Zn requirement, mg/d
@@ -1021,9 +1043,10 @@ def calculate_An_Zn_bal(Abs_ZnIn: float, An_Zn_req: float) -> float:
     return An_Zn_bal
 
 
-def calculate_An_Zn_prod(An_Zn_y: float, 
-                         An_Zn_l: float,
-                         An_Zn_g: float
+def calculate_An_Zn_prod(
+    An_Zn_y: float, 
+    An_Zn_l: float,
+    An_Zn_g: float
 ) -> float:
     """
     An_Zn_prod: Zn required for production, mg/d
@@ -1033,10 +1056,11 @@ def calculate_An_Zn_prod(An_Zn_y: float,
 
 
 ### DCAD ###
-def calculate_An_DCADmeq(Dt_K: float, 
-                         Dt_Na: float, 
-                         Dt_Cl: float,
-                         Dt_S: float
+def calculate_An_DCADmeq(
+    Dt_K: float, 
+    Dt_Na: float, 
+    Dt_Cl: float,
+    Dt_S: float
 ) -> float:
     """
     An_DCADmeq: DCAD, meg/kg? Should this be meq/kg?
@@ -1085,13 +1109,14 @@ def calculate_An_VitD_bal(Dt_VitDIn: float, An_VitD_req: float) -> float:
     return An_VitD_bal
 
 
-def calculate_An_VitE_req(Trg_MilkProd: float, 
-                          An_Parity_rl: int,
-                          An_StatePhys: str, 
-                          An_BW: float, 
-                          An_GestDay: int,
-                          An_Preg: int, 
-                          Dt_PastIn: float
+def calculate_An_VitE_req(
+    Trg_MilkProd: float, 
+    An_Parity_rl: int,
+    An_StatePhys: str, 
+    An_BW: float, 
+    An_GestDay: int,
+    An_Preg: int, 
+    Dt_PastIn: float
 ) -> float:
     """
     An_VitE_req: Vitamin E requirement (IU/d)
@@ -1373,9 +1398,10 @@ def calculate_ZnProd_ZnAbs(An_Zn_prod: float, Abs_ZnIn: float) -> float:
     return ZnProd_ZnAbs
 
 
-def calculate_Dt_CaReq_DMI(An_Ca_req: float, 
-                           Dt_acCa: float,
-                           An_DMIn: float
+def calculate_Dt_CaReq_DMI(
+    An_Ca_req: float, 
+    Dt_acCa: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_CaReq_DMI: Required dietary calcium density to meet requirements
@@ -1384,9 +1410,10 @@ def calculate_Dt_CaReq_DMI(An_Ca_req: float,
     return Dt_CaReq_DMI
 
 
-def calculate_Dt_PReq_DMI(An_P_req: float, 
-                          Dt_acP: float,
-                          An_DMIn: float
+def calculate_Dt_PReq_DMI(
+    An_P_req: float, 
+    Dt_acP: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_PReq_DMI: Required dietary phosphorus density to meet requirements
@@ -1395,9 +1422,10 @@ def calculate_Dt_PReq_DMI(An_P_req: float,
     return Dt_PReq_DMI
 
 
-def calculate_Dt_MgReq_DMI(An_Mg_req: float, 
-                           Dt_acMg: float,
-                           An_DMIn: float
+def calculate_Dt_MgReq_DMI(
+    An_Mg_req: float, 
+    Dt_acMg: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_MgReq_DMI: Required dietary magnesium density to meet requirements
@@ -1406,9 +1434,10 @@ def calculate_Dt_MgReq_DMI(An_Mg_req: float,
     return Dt_MgReq_DMI
 
 
-def calculate_Dt_KReq_DMI(An_K_req: float, 
-                          Dt_acK: float,
-                          An_DMIn: float
+def calculate_Dt_KReq_DMI(
+    An_K_req: float, 
+    Dt_acK: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_KReq_DMI: Required dietary potassium density to meet requirements
@@ -1417,9 +1446,10 @@ def calculate_Dt_KReq_DMI(An_K_req: float,
     return Dt_KReq_DMI
 
 
-def calculate_Dt_NaReq_DMI(An_Na_req: float, 
-                           Dt_acNa: float,
-                           An_DMIn: float
+def calculate_Dt_NaReq_DMI(
+    An_Na_req: float, 
+    Dt_acNa: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_NaReq_DMI: Required dietary sodium density to meet requirements
@@ -1428,9 +1458,10 @@ def calculate_Dt_NaReq_DMI(An_Na_req: float,
     return Dt_NaReq_DMI
 
 
-def calculate_Dt_ClReq_DMI(An_Cl_req: float, 
-                           Dt_acCl: float,
-                           An_DMIn: float
+def calculate_Dt_ClReq_DMI(
+    An_Cl_req: float, 
+    Dt_acCl: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_ClReq_DMI: Required dietary chloride density to meet requirements
@@ -1455,9 +1486,10 @@ def calculate_Dt_CoReq_DMI(An_Co_req: float, An_DMIn: float) -> float:
     return Dt_CoReq_DMI
 
 
-def calculate_Dt_CuReq_DMI(An_Cu_req: float, 
-                           Dt_acCu: float,
-                           An_DMIn: float
+def calculate_Dt_CuReq_DMI(
+    An_Cu_req: float, 
+    Dt_acCu: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_CuReq_DMI: Required dietary copper density to meet requirements
@@ -1466,9 +1498,10 @@ def calculate_Dt_CuReq_DMI(An_Cu_req: float,
     return Dt_CuReq_DMI
 
 
-def calculate_Dt_FeReq_DMI(An_Fe_req: float, 
-                           Dt_acFe: float,
-                           An_DMIn: float
+def calculate_Dt_FeReq_DMI(
+    An_Fe_req: float, 
+    Dt_acFe: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_FeReq_DMI: Required dietary iron density to meet requirements
@@ -1485,9 +1518,10 @@ def calculate_Dt_IReq_DMI(An_I_req: float, An_DMIn: float) -> float:
     return Dt_IReq_DMI
 
 
-def calculate_Dt_MnReq_DMI(An_Mn_req: float, 
-                           Dt_acMn: float,
-                           An_DMIn: float
+def calculate_Dt_MnReq_DMI(
+    An_Mn_req: float, 
+    Dt_acMn: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_MnReq_DMI: Required dietary manganese density to meet requirements
@@ -1504,9 +1538,10 @@ def calculate_Dt_SeReq_DMI(An_Se_req: float, An_DMIn: float) -> float:
     return Dt_SeReq_DMI
 
 
-def calculate_Dt_ZnReq_DMI(An_Zn_req: float, 
-                           Dt_acZn: float,
-                           An_DMIn: float
+def calculate_Dt_ZnReq_DMI(
+    An_Zn_req: float, 
+    Dt_acZn: float,
+    An_DMIn: float
 ) -> float:
     """
     Dt_ZnReq_DMI: Required dietary zinc density to meet requirements

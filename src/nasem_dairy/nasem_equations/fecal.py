@@ -25,9 +25,10 @@ def calculate_Fe_rOMend(Dt_DMIn: float, coeff_dict: dict) -> float:
     return Fe_rOMend
 
 
-def calculate_Fe_RUP(An_RUPIn: float, 
-                     InfSI_TPIn: float, 
-                     An_idRUPIn: float
+def calculate_Fe_RUP(
+    An_RUPIn: float, 
+    InfSI_TPIn: float, 
+    An_idRUPIn: float
 ) -> float:
     Fe_RUP = An_RUPIn + InfSI_TPIn - An_idRUPIn  # SI infusions not considered
     return Fe_RUP
@@ -43,12 +44,13 @@ def calculate_K_FeCPend_ClfLiq(NonMilkCP_ClfLiq: int):
     return K_FeCPend_ClfLiq
 
 
-def calculate_Fe_CPend_g(An_StatePhys: str, 
-                         An_DMIn: float,
-                         An_NDF: float, 
-                         Dt_DMIn: float, 
-                         Dt_DMIn_ClfLiq: float, 
-                         K_FeCPend_ClfLiq: float
+def calculate_Fe_CPend_g(
+    An_StatePhys: str, 
+    An_DMIn: float,
+    An_NDF: float, 
+    Dt_DMIn: float, 
+    Dt_DMIn_ClfLiq: float, 
+    K_FeCPend_ClfLiq: float
 ) -> float:
     '''
     An_DMIn = DMI + Infusion from calculate_An_DMIn()
@@ -75,15 +77,16 @@ def calculate_Fe_CPend(Fe_CPend_g: float) -> float:
     return Fe_CPend
 
 
-def calculate_Fe_CP(An_StatePhys: str, 
-                    Dt_CPIn_ClfLiq: float, 
-                    Dt_dcCP_ClfDry: float, 
-                    An_CPIn: float,
-                    Fe_RUP: float, 
-                    Fe_RumMiCP: float, 
-                    Fe_CPend: float, 
-                    InfSI_NPNCPIn: float, 
-                    coeff_dict: dict
+def calculate_Fe_CP(
+    An_StatePhys: str, 
+    Dt_CPIn_ClfLiq: float, 
+    Dt_dcCP_ClfDry: float, 
+    An_CPIn: float,
+    Fe_RUP: float, 
+    Fe_RumMiCP: float, 
+    Fe_CPend: float, 
+    InfSI_NPNCPIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -124,10 +127,11 @@ def calculate_Fe_NPend_g(Fe_NPend: float) -> float:
     return Fe_NPend_g
 
 
-def calculate_Fe_MPendUse_g_Trg(An_StatePhys: str, 
-                                Fe_CPend_g: float,
-                                Fe_NPend_g: float, 
-                                Km_MP_NP_Trg: float
+def calculate_Fe_MPendUse_g_Trg(
+    An_StatePhys: str, 
+    Fe_CPend_g: float,
+    Fe_NPend_g: float, 
+    Km_MP_NP_Trg: float
 ) -> float:
     """
     Fe_MPendUse_g_Trg: Fecal MP from endogenous secretions and urea captured by microbes, g
@@ -148,9 +152,10 @@ def calculate_Fe_rOM(An_rOMIn: float, An_DigrOMaIn: float) -> float:
     return Fe_rOM
 
 
-def calculate_Fe_St(Dt_StIn: float, 
-                    Inf_StIn: float,
-                    An_DigStIn: float
+def calculate_Fe_St(
+    Dt_StIn: float, 
+    Inf_StIn: float,
+    An_DigStIn: float
 ) -> float:
     """
     Fe_St: Fecal starch, kg/d
@@ -183,9 +188,10 @@ def calculate_Fe_Nend(Fe_CPend: float) -> float:
     return Fe_Nend
 
 
-def calculate_Fe_RDPend(Fe_CPend: float, 
-                        An_RDPIn: float,
-                        An_CPIn: float
+def calculate_Fe_RDPend(
+    Fe_CPend: float, 
+    An_RDPIn: float,
+    An_CPIn: float
 ) -> float:
     """
     Fe_RDPend: Endogenous RDP lost in feces (kg/d), arbitrary value (see comment)
@@ -195,9 +201,10 @@ def calculate_Fe_RDPend(Fe_CPend: float,
     return Fe_RDPend
 
 
-def calculate_Fe_RUPend(Fe_CPend: float, 
-                        An_RUPIn: float,
-                        An_CPIn: float
+def calculate_Fe_RUPend(
+    Fe_CPend: float, 
+    An_RUPIn: float,
+    An_CPIn: float
 ) -> float:
     """
     Fe_RUPend: Endogenous RUP lost in feces (kg/d), arbitrary value (see comment)
@@ -215,10 +222,11 @@ def calculate_Fe_MiTP(Du_MiTP: float, Du_idMiTP: float) -> float:
     return Fe_MiTP
 
 
-def calculate_Fe_InfCP(InfRum_RUPIn: float, 
-                       InfSI_CPIn: float,
-                       InfRum_idRUPIn: float, 
-                       InfSI_idCPIn: float
+def calculate_Fe_InfCP(
+    InfRum_RUPIn: float, 
+    InfSI_CPIn: float,
+    InfRum_idRUPIn: float, 
+    InfSI_idCPIn: float
 ) -> float:
     """
     Fe_InfCP: Infused CP lost in feces (kg/d)
@@ -252,11 +260,12 @@ def calculate_Fe_N_g(Fe_N: float) -> float:
     return Fe_N_g
 
 
-def calculate_Fe_FA(Dt_FAIn: float, 
-                    InfRum_FAIn: float, 
-                    InfSI_FAIn: float,
-                    Dt_DigFAIn: float, 
-                    Inf_DigFAIn: float
+def calculate_Fe_FA(
+    Dt_FAIn: float, 
+    InfRum_FAIn: float, 
+    InfSI_FAIn: float,
+    Dt_DigFAIn: float, 
+    Inf_DigFAIn: float
 ) -> float:
     """
     Fe_FA: FA lost in feces (kg/d)
@@ -266,11 +275,12 @@ def calculate_Fe_FA(Dt_FAIn: float,
     return Fe_FA
 
 
-def calculate_Fe_OM(Fe_CP: float, 
-                    Fe_NDF: float, 
-                    Fe_St: float, 
-                    Fe_rOM: float,
-                    Fe_FA: float
+def calculate_Fe_OM(
+    Fe_CP: float, 
+    Fe_NDF: float, 
+    Fe_St: float, 
+    Fe_rOM: float,
+    Fe_FA: float
 ) -> float:
     """
     Fe_OM: Organic matter lost in feces (kg/d)
@@ -372,8 +382,9 @@ def calculate_Fe_AAMetab_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return Fe_AAMetab_TP
 
 
-def calculate_Fe_AAMet_g(Fe_NPend_g: float, 
-                         Fe_AAMetab_TP: np.ndarray
+def calculate_Fe_AAMet_g(
+    Fe_NPend_g: float, 
+    Fe_AAMetab_TP: np.ndarray
 ) -> np.ndarray:
     """
     Fe_AAMet_g: Metabolic fecal AA (g/d)
@@ -382,8 +393,9 @@ def calculate_Fe_AAMet_g(Fe_NPend_g: float,
     return Fe_AAMet_g
 
 
-def calculate_Fe_AAMet_AbsAA(Fe_AAMet_g: np.array,
-                             Abs_AA_g: pd.Series
+def calculate_Fe_AAMet_AbsAA(
+    Fe_AAMet_g: np.array,
+        Abs_AA_g: pd.Series
 ) -> np.array:
     """
     Fe_AAMet_AbsAA: Metabolic fecal AA as fraction of absorbed aa 

@@ -34,8 +34,9 @@ def calculate_age_first_calving(An_AgeConcept1st: int) -> int:
     return age_first_calving  
   
 
-def calculate_milk_lactose_percent(Trg_MilkProd: float, 
-                                   Trg_MilkLacp: float
+def calculate_milk_lactose_percent(
+    Trg_MilkProd: float, 
+    Trg_MilkLacp: float
 ) -> float:
     milk_lactose_percent = Trg_MilkProd * Trg_MilkLacp / 100
     return milk_lactose_percent

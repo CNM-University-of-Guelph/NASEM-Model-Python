@@ -75,9 +75,10 @@ def calculate_Inf_AA_g(infusion_data: dict, aa_list: list) -> np.ndarray:
     return Inf_AA_g
 
 
-def calculate_Abs_AA_g(An_IdAAIn: np.ndarray,
-                       Inf_AA_g: np.ndarray, 
-                       Inf_Art: float
+def calculate_Abs_AA_g(
+    An_IdAAIn: np.ndarray,
+    Inf_AA_g: np.ndarray, 
+    Inf_Art: float
 ) -> pd.Series:
     Abs_AA_g = An_IdAAIn + Inf_AA_g * Inf_Art
     return Abs_AA_g
@@ -106,9 +107,10 @@ def calculate_AA_mPrtmx(mPrt_k_AA_array: np.array, mPrt_coeff: dict) -> np.array
     return AA_mPrtmx
 
 
-def calculate_mPrt_AA_01(AA_mPrtmx: np.array, 
-                         mPrt_k_AA_array: np.array,
-                         mPrt_coeff: dict
+def calculate_mPrt_AA_01(
+    AA_mPrtmx: np.array, 
+    mPrt_k_AA_array: np.array,
+    mPrt_coeff: dict
 ) -> np.array:
     """
     mPrt_AA_01: Milk protein from each EAA at 10% of max response
@@ -119,9 +121,10 @@ def calculate_mPrt_AA_01(AA_mPrtmx: np.array,
     return mPrt_AA_01
 
 
-def calculate_mPrt_k_AA(mPrtmx_AA2: pd.Series, 
-                        mPrt_AA_01: pd.Series, 
-                        AA_mPrtmx: pd.Series
+def calculate_mPrt_k_AA(
+    mPrtmx_AA2: pd.Series, 
+    mPrt_AA_01: pd.Series, 
+    AA_mPrtmx: pd.Series
 ) -> pd.Series:
     mPrt_k_AA = np.zeros_like(mPrtmx_AA2)
     for i in range(len(mPrtmx_AA2)):
@@ -198,9 +201,10 @@ def calculate_Abs_EAA2b_g(mPrt_eqn: int, Abs_AA_g: pd.Series) -> float:
     return Abs_EAA2b_g
 
 
-def calculate_mPrt_k_EAA2(mPrtmx_AA2: float, 
-                          mPrt_AA_01: float, 
-                          AA_mPrtmx: float
+def calculate_mPrt_k_EAA2(
+    mPrtmx_AA2: float, 
+    mPrt_AA_01: float, 
+    AA_mPrtmx: float
 ) -> float:
     # Scale the quadratic; can be calculated from any of the aa included in the 
     # squared term. All give the same answer. Line 2184
@@ -235,8 +239,9 @@ def calculate_EndAAProf(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return EndAAProf
 
 
-def calculate_Du_AAEndP(Du_EndCP_g: float,
-                        EndAAProf: np.ndarray
+def calculate_Du_AAEndP(
+    Du_EndCP_g: float,
+    EndAAProf: np.ndarray
 ) -> pd.Series:
     """
     Du_AAEndP: Duodenal EndPAA, g hydrated true aa/d 
@@ -256,10 +261,11 @@ def calculate_Inf_AARUPIn(aa_list: list, infusion_data: dict) -> np.ndarray:
     return Inf_AARUPIn
 
 
-def calculate_Du_AA(Dt_AARUPIn: np.ndarray,
-                    Inf_AARUPIn: np.ndarray,
-                    Du_AAMic: float,
-                    Du_AAEndP: float
+def calculate_Du_AA(
+    Dt_AARUPIn: np.ndarray,
+    Inf_AARUPIn: np.ndarray,
+    Du_AAMic: float,
+    Du_AAEndP: float
 ) -> pd.Series:
     """
     Du_AA: Total ruminal aa outflows, g hydr, fully recovered aa/d (true protein bound aa flows)
@@ -275,8 +281,9 @@ def calculate_Dt_AAIn(aa_list: list, diet_data: dict) -> np.ndarray:
     return Dt_AAIn
 
 
-def calculate_DuAA_AArg(Du_AA: pd.Series, 
-                        Dt_AAIn: np.ndarray
+def calculate_DuAA_AArg(
+    Du_AA: pd.Series, 
+    Dt_AAIn: np.ndarray
 ) -> pd.Series:
     """
     DuAA_DtAA: Duodenal aa flow expressed as a fraction of dietary aa
@@ -292,8 +299,9 @@ def calculate_RecAA(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return RecAA
 
 
-def calculate_Du_AA24h(Du_AA: pd.Series, 
-                       RecAA: np.ndarray
+def calculate_Du_AA24h(
+    Du_AA: pd.Series, 
+    RecAA: np.ndarray
 ) -> pd.Series:
     """
     Du_AA24h: g hydrat 24h recovered aa/d
@@ -356,8 +364,9 @@ def calculate_Body_AA_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return Body_AA_TP
 
 
-def calculate_Body_AAGain_g(Body_NPgain_g: float,
-                            Body_AA_TP: np.ndarray
+def calculate_Body_AAGain_g(
+    Body_NPgain_g: float,
+    Body_AA_TP: np.ndarray
 ) -> np.array:
     """
     Body_AAGain_g: Body aa gain (g/d)
@@ -374,8 +383,9 @@ def calculate_Body_EAAGain_g(Body_AAGain_g: pd.Series) -> float:
     return Body_EAAGain_g
 
 
-def calculate_BodyAA_AbsAA(Body_AAGain_g: pd.Series,
-                           Abs_AA_g: pd.Series
+def calculate_BodyAA_AbsAA(
+    Body_AAGain_g: pd.Series,
+    Abs_AA_g: pd.Series
 ) -> pd.Series:
     """
     BodyAA_AbsAA: Body aa gain as a fraction of absolute aa intake
@@ -384,12 +394,13 @@ def calculate_BodyAA_AbsAA(Body_AAGain_g: pd.Series,
     return BodyAA_AbsAA
 
 
-def calculate_An_AAUse_g(Gest_AA_g: pd.Series, 
-                         Mlk_AA_g: pd.Series,
-                         Body_AAGain_g: pd.Series,
-                         Scrf_AA_g: pd.Series,
-                         Fe_AAMet_g: pd.Series,
-                         Ur_AAEnd_g: pd.Series
+def calculate_An_AAUse_g(
+    Gest_AA_g: pd.Series, 
+    Mlk_AA_g: pd.Series,
+    Body_AAGain_g: pd.Series,
+    Scrf_AA_g: pd.Series,
+    Fe_AAMet_g: pd.Series,
+    Ur_AAEnd_g: pd.Series
 ) -> pd.Series:
     """
     An_AAUse_g: Total net aa use (g/d)
@@ -408,8 +419,9 @@ def calculate_An_EAAUse_g(An_AAUse_g: pd.Series) -> float:
     return An_EAAUse_g
 
 
-def calculate_AnAAUse_AbsAA(An_AAUse_g: pd.Series,
-                            Abs_AA_g: pd.Series
+def calculate_AnAAUse_AbsAA(
+    An_AAUse_g: pd.Series,
+    Abs_AA_g: pd.Series
 ) -> pd.Series:
     """
     AnAAUse_AbsAA: Total net aa efficieny (g/g)
@@ -427,8 +439,9 @@ def calculate_AnEAAUse_AbsEAA(An_EAAUse_g: float, Abs_EAA_g: float) -> float:
     return AnEAAUse_AbsEAA
 
 
-def calculate_An_AABal_g(Abs_AA_g: pd.Series,
-                         An_AAUse_g: pd.Series
+def calculate_An_AABal_g(
+    Abs_AA_g: pd.Series,
+    An_AAUse_g: pd.Series
 ) -> pd.Series:
     """
     An_AABal_g: Total net aa balance (g/d)
@@ -448,7 +461,9 @@ def calculate_An_EAABal_g(Abs_EAA_g: float, An_EAAUse_g: float) -> float:
 
 def calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA: np.array) -> np.array:
     """
-    Trg_AbsEAA_NPxprtEAA: Target postabsorptive EAA efficiencies based on maximum obsreved efficiencies from Martineau and LaPiere as listed in NRC, Ch. 6.
+    Trg_AbsEAA_NPxprtEAA: Target postabsorptive EAA efficiencies based on maximum 
+                          obsreved efficiencies from Martineau and LaPiere as 
+                          listed in NRC, Ch. 6.
     """
     Trg_AbsEAA_NPxprtEAA = Trg_AbsAA_NPxprtAA.sum() / 9  
     # Should be weighted or derived directly from total EAA, Line 2593-2594
@@ -457,18 +472,22 @@ def calculate_Trg_AbsEAA_NPxprtEAA(Trg_AbsAA_NPxprtAA: np.array) -> np.array:
 
 def calculate_Trg_AbsArg_NPxprtArg(Trg_AbsEAA_NPxprtEAA: float) -> float:
     """
-    Trg_AbsArg_NPxprtArg: Target postabsorptive efficiencies based on maximum obsreved efficiencies from Martineau and LaPiere as listed in NRC, Ch. 6.
+    Trg_AbsArg_NPxprtArg: Target postabsorptive efficiencies based on maximum 
+                          obsreved efficiencies from Martineau and LaPiere as 
+                          listed in NRC, Ch. 6.
     """
     Trg_AbsArg_NPxprtArg = Trg_AbsEAA_NPxprtEAA  
     # none provided thus assumed to be the same as for EAA, Line 2595
     return Trg_AbsArg_NPxprtArg
 
 
-def calculate_Trg_AAEff_EAAEff(Trg_AbsAA_NPxprtAA: pd.Series,
-                               Trg_AbsEAA_NPxprtEAA: float
+def calculate_Trg_AAEff_EAAEff(
+    Trg_AbsAA_NPxprtAA: pd.Series,
+    Trg_AbsEAA_NPxprtEAA: float
 ) -> pd.Series:
     """
-    Trg_AAEff_EAAEff: Estimate the degree of aa imbalance within the EAA as ratios of each Eff to the total EAA Eff.
+    Trg_AAEff_EAAEff: Estimate the degree of aa imbalance within the EAA as 
+                      ratios of each Eff to the total EAA Eff.
     """
     # Estimate the degree of aa imbalance within the EAA as ratios of each Eff to the total EAA Eff.
     # These "Target" ratios are calculated as efficiency target (NRC 2021 Ch. 6) / total EAA eff.
@@ -479,8 +498,9 @@ def calculate_Trg_AAEff_EAAEff(Trg_AbsAA_NPxprtAA: pd.Series,
     return Trg_AAEff_EAAEff
 
 
-def calculate_An_AAEff_EAAEff(AnAAUse_AbsAA: pd.Series,
-                              AnEAAUse_AbsEAA: pd.Series
+def calculate_An_AAEff_EAAEff(
+    AnAAUse_AbsAA: pd.Series,
+    AnEAAUse_AbsEAA: pd.Series
 ) -> pd.Series:
     """
     An_AAEff_EAAEff: aa efficiency as ratio of EAA efficiency
@@ -491,9 +511,10 @@ def calculate_An_AAEff_EAAEff(AnAAUse_AbsAA: pd.Series,
     return An_AAEff_EAAEff
 
 
-def calculate_Imb_AA(An_AAEff_EAAEff: pd.Series, 
-                     Trg_AAEff_EAAEff: float,
-                     f_Imb: np.array
+def calculate_Imb_AA(
+    An_AAEff_EAAEff: pd.Series, 
+    Trg_AAEff_EAAEff: float,
+    f_Imb: np.array
 ) -> pd.Series:
     """
     Imb_AA: Calculate a relative penalty for each EAA to reflect the degree of imbalance for each
@@ -538,8 +559,9 @@ def calculate_Dt_IdEAARUPIn(Dt_IdAARUPIn: pd.Series) -> float:
     return Dt_IdEAARUPIn
 
 
-def calculate_Trg_Mlk_AA_g(Trg_Mlk_NP_g: float,
-                           Mlk_AA_TP: pd.Series
+def calculate_Trg_Mlk_AA_g(
+    Trg_Mlk_NP_g: float,
+    Mlk_AA_TP: pd.Series
 ) -> pd.Series:
     """
     Trg_Mlk_AA_g: Target Milk individual aa Outputs (g/d)
@@ -557,12 +579,13 @@ def calculate_Trg_Mlk_EAA_g(Trg_Mlk_AA_g: pd.Series) -> float:
     return Trg_Mlk_EAA_g
 
 
-def calculate_Trg_AAUse_g(Trg_Mlk_AA_g: pd.Series, 
-                          Scrf_AA_g: pd.Series,
-                          Fe_AAMet_g: pd.Series,
-                          Ur_AAEnd_g: pd.Series,
-                          Gest_AA_g: pd.Series,
-                          Body_AAGain_g: pd.Series
+def calculate_Trg_AAUse_g(
+    Trg_Mlk_AA_g: pd.Series, 
+    Scrf_AA_g: pd.Series,
+    Fe_AAMet_g: pd.Series,
+    Ur_AAEnd_g: pd.Series,
+    Gest_AA_g: pd.Series,
+    Body_AAGain_g: pd.Series
 ) -> pd.Series:
     """
     Trg_AAUse_g: Net individual aa use at user entered production (g/d)
@@ -581,15 +604,16 @@ def calculate_Trg_EAAUse_g(Trg_AAUse_g: pd.Series) -> float:
     return Trg_EAAUse_g
 
 
-def calculate_Trg_AbsAA_g(Trg_Mlk_AA_g: pd.Series, 
-                          Scrf_AA_g: pd.Series,
-                          Fe_AAMet_g: pd.Series,
-                          Trg_AbsAA_NPxprtAA: pd.Series,
-                          Ur_AAEnd_g: pd.Series, 
-                          Gest_AA_g: pd.Series,
-                          Body_AAGain_g: pd.Series, 
-                          Kg_MP_NP_Trg: float,
-                          coeff_dict: dict
+def calculate_Trg_AbsAA_g(
+    Trg_Mlk_AA_g: pd.Series, 
+    Scrf_AA_g: pd.Series,
+    Fe_AAMet_g: pd.Series,
+    Trg_AbsAA_NPxprtAA: pd.Series,
+    Ur_AAEnd_g: pd.Series, 
+    Gest_AA_g: pd.Series,
+    Body_AAGain_g: pd.Series, 
+    Kg_MP_NP_Trg: float,
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Trg_AbsAA_g: Absorbed aa at user entered production (g/d)
@@ -626,9 +650,10 @@ def calculate_Trg_AbsEAA_g(Trg_AbsAA_g: pd.Series) -> float:
     return Trg_AbsEAA_g
 
 
-def calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g: float, 
-                                Mlk_AA_g: pd.Series,
-                                Trg_AbsEAA_g: float
+def calculate_Trg_MlkEAA_AbsEAA(
+    Mlk_EAA_g: float, 
+    Mlk_AA_g: pd.Series,
+    Trg_AbsEAA_g: float
 ) -> float:
     """
     Trg_MlkEAA_AbsEAA: Milk EAA as a fraction of absorbed EAA at user entered production
@@ -637,14 +662,16 @@ def calculate_Trg_MlkEAA_AbsEAA(Mlk_EAA_g: float,
     return Trg_MlkEAA_AbsEAA
 
 
-def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series, 
-                            Gest_AA_g: pd.Series,
-                            Ur_AAEnd_g: pd.Series, 
-                            Abs_AA_g: pd.Series,
-                            coeff_dict: dict
+def calculate_AnNPxAA_AbsAA(
+    An_AAUse_g: pd.Series, 
+    Gest_AA_g: pd.Series,
+    Ur_AAEnd_g: pd.Series, 
+    Abs_AA_g: pd.Series,
+    coeff_dict: dict
 ) -> pd.Series:
     """
-    AnNPxAA_AbsAA: Predicted Efficiency of AbsAA to export and gain NPAA using Nutrient Allowable milk protein, g NPAA/g absorbed aa
+    AnNPxAA_AbsAA: Predicted Efficiency of AbsAA to export and gain NPAA using 
+                   Nutrient Allowable milk protein, g NPAA/g absorbed aa
 
     Examples
     --------
@@ -668,14 +695,16 @@ def calculate_AnNPxAA_AbsAA(An_AAUse_g: pd.Series,
     return AnNPxAA_AbsAA
 
 
-def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float, 
-                              Gest_EAA_g: float,
-                              Ur_EAAEnd_g: float, 
-                              Abs_EAA_g: float,
-                              coeff_dict: dict
+def calculate_AnNPxEAA_AbsEAA(
+    An_EAAUse_g: float, 
+    Gest_EAA_g: float,
+    Ur_EAAEnd_g: float, 
+    Abs_EAA_g: float,
+    coeff_dict: dict
 ) -> float:
     """
-    AnNPxEAA_AbsEAA: Predicted Efficiency of AbsEAA to export and gain NPEAA using Nutrient Allowable milk protein, g NPEAA/g absorbed EAA
+    AnNPxEAA_AbsEAA: Predicted Efficiency of AbsEAA to export and gain NPEAA 
+                     using Nutrient Allowable milk protein, g NPEAA/g absorbed EAA
        
     Examples
     --------
@@ -695,14 +724,16 @@ def calculate_AnNPxEAA_AbsEAA(An_EAAUse_g: float,
     return AnNPxEAA_AbsEAA
 
 
-def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series, 
-                                Gest_AA_g: pd.Series,
-                                Ur_AAEnd_g: pd.Series, 
-                                Abs_AA_g: pd.Series,
-                                coeff_dict: dict
+def calculate_AnNPxAAUser_AbsAA(
+    Trg_AAUse_g: pd.Series, 
+    Gest_AA_g: pd.Series,
+    Ur_AAEnd_g: pd.Series, 
+    Abs_AA_g: pd.Series,
+    coeff_dict: dict
 ) -> pd.Series:
     """
-    AnNPxAAUser_AbsAA: Efficiency of AbsAA to export and gain NPAA at User Entered milk protein, g NPAA/g absorbed aa
+    AnNPxAAUser_AbsAA: Efficiency of AbsAA to export and gain NPAA at User 
+                       Entered milk protein, g NPAA/g absorbed aa
     
     Examples
     --------
@@ -725,14 +756,16 @@ def calculate_AnNPxAAUser_AbsAA(Trg_AAUse_g: pd.Series,
     return AnNPxAAUser_AbsAA
 
 
-def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float, 
-                                  Gest_EAA_g: float,
-                                  Ur_EAAEnd_g: float, 
-                                  Abs_EAA_g: float,
-                                  coeff_dict: dict
+def calculate_AnNPxEAAUser_AbsEAA(
+    Trg_EAAUse_g: float, 
+    Gest_EAA_g: float,
+    Ur_EAAEnd_g: float, 
+    Abs_EAA_g: float,
+    coeff_dict: dict
 ) -> float:
     """
-    AnNPxEAAUser_AbsEAA: Efficiency of AbsEAA to export and gain NPEAA at User Entered milk protein, g NPEAA/g absorbed EAA
+    AnNPxEAAUser_AbsEAA: Efficiency of AbsEAA to export and gain NPEAA at 
+                         User Entered milk protein, g NPEAA/g absorbed EAA
     """
     AnNPxEAAUser_AbsEAA = (Trg_EAAUse_g - Gest_EAA_g - Ur_EAAEnd_g) / (
         Abs_EAA_g - Ur_EAAEnd_g - Gest_EAA_g / coeff_dict['Ky_MP_NP_Trg']
@@ -740,8 +773,9 @@ def calculate_AnNPxEAAUser_AbsEAA(Trg_EAAUse_g: float,
     return AnNPxEAAUser_AbsEAA
 
 
-def calculate_Trg_AbsAA_NPxprtAA_array(MP_NP_efficiency_dict: dict, 
-                                       aa_list: list
+def calculate_Trg_AbsAA_NPxprtAA_array(
+    MP_NP_efficiency_dict: dict, 
+    aa_list: list
 ) -> np.ndarray: 
     Trg_AbsAA_NPxprtAA = np.array([
         MP_NP_efficiency_dict[f"Trg_Abs{aa}_NP{aa}"]

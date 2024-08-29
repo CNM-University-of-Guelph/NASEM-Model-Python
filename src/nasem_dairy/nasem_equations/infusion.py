@@ -48,12 +48,13 @@ def calculate_InfSI_TPIn(InfSI_CPIn: float, InfSI_NPNCPIn: float) -> float:
     return InfSI_TPIn
 
 
-def calculate_InfRum_RUPIn(InfRum_CPAIn: float, 
-                           InfRum_CPBIn: float, 
-                           InfRum_CPCIn: float,
-                           InfRum_NPNCPIn: float, 
-                           Inf_KdCPB: float, 
-                           coeff_dict: dict
+def calculate_InfRum_RUPIn(
+    InfRum_CPAIn: float, 
+    InfRum_CPBIn: float, 
+    InfRum_CPCIn: float,
+    InfRum_NPNCPIn: float, 
+    Inf_KdCPB: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -91,9 +92,10 @@ def calculate_InfSI_idTPIn(InfSI_TPIn: float, Inf_dcRUP: float) -> float:
     return InfSI_idTPIn
 
 
-def calculate_InfSI_idCPIn(InfSI_idTPIn: float, 
-                           InfSI_NPNCPIn: float, 
-                           coeff_dict: dict
+def calculate_InfSI_idCPIn(
+    InfSI_idTPIn: float, 
+    InfSI_NPNCPIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -557,109 +559,200 @@ def calculate_InfArt_AshIn(Inf_Art: float, Inf_AshIn: float) -> float:
     return InfArt_AshIn
 
 
-def calculate_Inf_ArgRUPIn(Inf_Rum: float, Inf_Arg_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_ArgRUPIn(
+    Inf_Rum: float, 
+    Inf_Arg_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_ArgRUPIn = Inf_Rum * Inf_Arg_g * (InfRum_RUP_CP / 100)
     return Inf_ArgRUPIn
 
 
-def calculate_Inf_HisRUPIn(Inf_Rum: float, Inf_His_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_HisRUPIn(
+    Inf_Rum: float, 
+    Inf_His_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_HisRUPIn = Inf_Rum * Inf_His_g * (InfRum_RUP_CP / 100)
     return Inf_HisRUPIn
 
 
-def calculate_Inf_IleRUPIn(Inf_Rum: float, Inf_Ile_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_IleRUPIn(
+    Inf_Rum: float, 
+    Inf_Ile_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_IleRUPIn = Inf_Rum * Inf_Ile_g * (InfRum_RUP_CP / 100)
     return Inf_IleRUPIn
 
 
-def calculate_Inf_LeuRUPIn(Inf_Rum: float, Inf_Leu_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_LeuRUPIn(
+    Inf_Rum: float, 
+    Inf_Leu_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_LeuRUPIn = Inf_Rum * Inf_Leu_g * (InfRum_RUP_CP / 100)
     return Inf_LeuRUPIn
 
 
-def calculate_Inf_LysRUPIn(Inf_Rum: float, Inf_Lys_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_LysRUPIn(
+    Inf_Rum: float, 
+    Inf_Lys_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_LysRUPIn = Inf_Rum * Inf_Lys_g * (InfRum_RUP_CP / 100)
     return Inf_LysRUPIn
 
 
-def calculate_Inf_MetRUPIn(Inf_Rum: float, Inf_Met_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_MetRUPIn(
+    Inf_Rum: float, 
+    Inf_Met_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_MetRUPIn = Inf_Rum * Inf_Met_g * (InfRum_RUP_CP / 100)
     return Inf_MetRUPIn
 
 
-def calculate_Inf_PheRUPIn(Inf_Rum: float, Inf_Phe_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_PheRUPIn(
+    Inf_Rum: float, 
+    Inf_Phe_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_PheRUPIn = Inf_Rum * Inf_Phe_g * (InfRum_RUP_CP / 100)
     return Inf_PheRUPIn
 
 
-def calculate_Inf_ThrRUPIn(Inf_Rum: float, Inf_Thr_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_ThrRUPIn(
+    Inf_Rum: float, 
+    Inf_Thr_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_ThrRUPIn = Inf_Rum * Inf_Thr_g * (InfRum_RUP_CP / 100)
     return Inf_ThrRUPIn
 
 
-def calculate_Inf_TrpRUPIn(Inf_Rum: float, Inf_Trp_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_TrpRUPIn(
+    Inf_Rum: float, 
+    Inf_Trp_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_TrpRUPIn = Inf_Rum * Inf_Trp_g * (InfRum_RUP_CP / 100)
     return Inf_TrpRUPIn
 
 
-def calculate_Inf_ValRUPIn(Inf_Rum: float, Inf_Val_g: float, InfRum_RUP_CP: float) -> float:
+def calculate_Inf_ValRUPIn(
+    Inf_Rum: float, 
+    Inf_Val_g: float, 
+    InfRum_RUP_CP: float
+) -> float:
     Inf_ValRUPIn = Inf_Rum * Inf_Val_g * (InfRum_RUP_CP / 100)
     return Inf_ValRUPIn
 
 
-def calculate_Inf_IdArgIn(Inf_Arg_g: float, Inf_SI: float, Inf_ArgRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdArgIn(
+    Inf_Arg_g: float, 
+    Inf_SI: float, 
+    Inf_ArgRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdArgIn = ((Inf_Arg_g * Inf_SI) + Inf_ArgRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdArgIn
 
 
-def calculate_Inf_IdHisIn(Inf_His_g: float, Inf_SI: float, Inf_HisRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdHisIn(
+    Inf_His_g: float, 
+    Inf_SI: float, 
+    Inf_HisRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdHisIn = ((Inf_His_g * Inf_SI) + Inf_HisRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdHisIn
 
 
-def calculate_Inf_IdIleIn(Inf_Ile_g: float, Inf_SI: float, Inf_IleRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdIleIn(
+    Inf_Ile_g: float, 
+    Inf_SI: float, 
+    Inf_IleRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdIleIn = ((Inf_Ile_g * Inf_SI) + Inf_IleRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdIleIn
 
 
-def calculate_Inf_IdLeuIn(Inf_Leu_g: float, Inf_SI: float, Inf_LeuRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdLeuIn(
+    Inf_Leu_g: float, 
+    Inf_SI: float, 
+    Inf_LeuRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdLeuIn = ((Inf_Leu_g * Inf_SI) + Inf_LeuRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdLeuIn
 
 
-def calculate_Inf_IdLysIn(Inf_Lys_g: float, Inf_SI: float, Inf_LysRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdLysIn(
+    Inf_Lys_g: float, 
+    Inf_SI: float, 
+    Inf_LysRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdLysIn = ((Inf_Lys_g * Inf_SI) + Inf_LysRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdLysIn
 
 
-def calculate_Inf_IdMetIn(Inf_Met_g: float, Inf_SI: float, Inf_MetRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdMetIn(
+    Inf_Met_g: float, 
+    Inf_SI: float, 
+    Inf_MetRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdMetIn = ((Inf_Met_g * Inf_SI) + Inf_MetRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdMetIn
 
 
-def calculate_Inf_IdPheIn(Inf_Phe_g: float, Inf_SI: float, Inf_PheRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdPheIn(
+    Inf_Phe_g: float, 
+    Inf_SI: float, 
+    Inf_PheRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdPheIn = ((Inf_Phe_g * Inf_SI) + Inf_PheRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdPheIn
 
 
-def calculate_Inf_IdThrIn(Inf_Thr_g: float, Inf_SI: float, Inf_ThrRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdThrIn(
+    Inf_Thr_g: float, 
+    Inf_SI: float, 
+    Inf_ThrRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdThrIn = ((Inf_Thr_g * Inf_SI) + Inf_ThrRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdThrIn
 
 
-def calculate_Inf_IdTrpIn(Inf_Trp_g: float, Inf_SI: float, Inf_TrpRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdTrpIn(
+    Inf_Trp_g: float, 
+    Inf_SI: float, 
+    Inf_TrpRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdTrpIn = ((Inf_Trp_g * Inf_SI) + Inf_TrpRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdTrpIn
 
 
-def calculate_Inf_IdValIn(Inf_Val_g: float, Inf_SI: float, Inf_ValRUPIn: float, Inf_dcRUP: float) -> float:
+def calculate_Inf_IdValIn(
+    Inf_Val_g: float, 
+    Inf_SI: float, 
+    Inf_ValRUPIn: float, 
+    Inf_dcRUP: float
+) -> float:
     Inf_IdValIn = ((Inf_Val_g * Inf_SI) + Inf_ValRUPIn) * (Inf_dcRUP / 100)
     return Inf_IdValIn
 
 
-def calculate_infusion_data(infusion_input: dict, 
-                            Dt_DMIn: float, 
-                            coeff_dict: dict
+def calculate_infusion_data(
+    infusion_input: dict, 
+    Dt_DMIn: float, 
+    coeff_dict: dict
 ) -> dict:
     '''
     Infusion input is a dictionary
@@ -678,9 +771,15 @@ def calculate_infusion_data(infusion_input: dict,
     infusion_data["Inf_FAIn"] = calculate_Inf_FAIn(infusion_data["Inf_FA_g"])
     infusion_data["Inf_AshIn"] = calculate_Inf_AshIn(infusion_data["Inf_Ash_g"])
     infusion_data["Inf_VFAIn"] = calculate_Inf_VFAIn(infusion_data["Inf_VFA_g"])
-    infusion_data["Inf_AcetIn"] = calculate_Inf_AcetIn(infusion_data["Inf_Acet_g"])
-    infusion_data["Inf_PropIn"] = calculate_Inf_PropIn(infusion_data["Inf_Prop_g"])
-    infusion_data["Inf_ButrIn"] = calculate_Inf_ButrIn(infusion_data["Inf_Butr_g"])
+    infusion_data["Inf_AcetIn"] = calculate_Inf_AcetIn(
+        infusion_data["Inf_Acet_g"]
+        )
+    infusion_data["Inf_PropIn"] = calculate_Inf_PropIn(
+        infusion_data["Inf_Prop_g"]
+        )
+    infusion_data["Inf_ButrIn"] = calculate_Inf_ButrIn(
+        infusion_data["Inf_Butr_g"]
+        )
     infusion_data["Inf_CPAIn"] = calculate_Inf_CPAIn(
         infusion_data["Inf_CP_g"], infusion_data["Inf_CPARum_CP"]
         )
@@ -690,10 +789,12 @@ def calculate_infusion_data(infusion_input: dict,
     infusion_data["Inf_CPCIn"] = calculate_Inf_CPCIn(
         infusion_data["Inf_CP_g"], infusion_data["Inf_CPCRum_CP"]
         )
-    infusion_data['Inf_TPIn'] = calculate_Inf_TPIn(infusion_data['Inf_CPIn'],
-                                                   infusion_data['Inf_NPNCPIn'])
-    infusion_data['Inf_OMIn'] = calculate_Inf_OMIn(infusion_data['Inf_DMIn'],
-                                                   infusion_data['Inf_AshIn'])
+    infusion_data['Inf_TPIn'] = calculate_Inf_TPIn(
+        infusion_data['Inf_CPIn'], infusion_data['Inf_NPNCPIn']
+        )
+    infusion_data['Inf_OMIn'] = calculate_Inf_OMIn(
+        infusion_data['Inf_DMIn'], infusion_data['Inf_AshIn']
+        )
     infusion_data["Inf_DM"] = calculate_Inf_DM(
         Dt_DMIn, infusion_data["Inf_DMIn"]
         )
@@ -785,7 +886,8 @@ def calculate_infusion_data(infusion_input: dict,
         infusion_data["Inf_Rum"], infusion_data["Inf_AshIn"]
         )
     infusion_data['InfRum_TPIn'] = calculate_InfRum_TPIn(
-        infusion_data['InfRum_CPIn'], infusion_data['InfRum_NPNCPIn'])
+        infusion_data['InfRum_CPIn'], infusion_data['InfRum_NPNCPIn']
+        )
     infusion_data["InfSI_DMIn"] = calculate_InfSI_DMIn(
         infusion_data["Inf_SI"], infusion_data["Inf_DMIn"]
         )
@@ -829,7 +931,8 @@ def calculate_infusion_data(infusion_input: dict,
         infusion_data["Inf_SI"], infusion_data["Inf_AshIn"]
         )
     infusion_data['InfSI_TPIn'] = calculate_InfSI_TPIn(
-        infusion_data['InfSI_CPIn'], infusion_data['InfSI_NPNCPIn'])
+        infusion_data['InfSI_CPIn'], infusion_data['InfSI_NPNCPIn']
+        )
     infusion_data["InfArt_DMIn"] = calculate_InfArt_DMIn(
         infusion_data["Inf_Art"], infusion_data["Inf_DMIn"]
         )
@@ -877,27 +980,32 @@ def calculate_infusion_data(infusion_input: dict,
         )
 
     # RUP does not include CP infused into the SI
-    # In general, CPB for infused proteins, which are generally soluble, has been set to 0.
-    # Abo/Duod infusions only considered at absorption.
+    # In general, CPB for infused proteins, which are generally soluble, has 
+    # been set to 0. Abo/Duod infusions only considered at absorption.
     infusion_data['InfRum_RUPIn'] = calculate_InfRum_RUPIn(
         infusion_data['InfRum_CPAIn'], infusion_data['InfRum_CPBIn'],
         infusion_data['InfRum_CPCIn'], infusion_data['InfRum_NPNCPIn'],
         infusion_input['Inf_KdCPB'], coeff_dict)
     infusion_data['InfRum_RUP_CP'] = calculate_InfRum_RUP_CP(
-        infusion_data['InfRum_CPIn'], infusion_data['InfRum_RUPIn'])
+        infusion_data['InfRum_CPIn'], infusion_data['InfRum_RUPIn']
+        )
     infusion_data['InfRum_idRUPIn'] = calculate_InfRum_idRUPIn(
-        infusion_data['InfRum_RUPIn'], infusion_input['Inf_dcRUP'])
+        infusion_data['InfRum_RUPIn'], infusion_input['Inf_dcRUP']
+        )
     infusion_data['InfSI_idTPIn'] = calculate_InfSI_idTPIn(
-        infusion_data['InfSI_TPIn'], infusion_input['Inf_dcRUP'])
+        infusion_data['InfSI_TPIn'], infusion_input['Inf_dcRUP']
+        )
     infusion_data['InfSI_idCPIn'] = calculate_InfSI_idCPIn(
         infusion_data['InfSI_idTPIn'], infusion_data['InfSI_NPNCPIn'],
         coeff_dict)
     infusion_data['Inf_idCPIn'] = calculate_Inf_idCPIn(
-        infusion_data['InfRum_idRUPIn'], infusion_data['InfSI_idCPIn'])
+        infusion_data['InfRum_idRUPIn'], infusion_data['InfSI_idCPIn']
+        )
     infusion_data['InfRum_RDPIn'] = calculate_InfRum_RDPIn(
-        infusion_data['InfRum_CPIn'], infusion_data['InfRum_RUPIn'])
-    # Infused individual FA should be calculated here if they are to be considered.  
-    # Requires a change to the infusion table. MDH
+        infusion_data['InfRum_CPIn'], infusion_data['InfRum_RUPIn']
+        )
+    # Infused individual FA should be calculated here if they are to be 
+    # considered. Requires a change to the infusion table. MDH
     infusion_data['Inf_DigFAIn'] = calculate_Inf_DigFAIn(
         infusion_data['Inf_FAIn'], coeff_dict)
     infusion_data['Inf_DEAcetIn'] = calculate_Inf_DEAcetIn(

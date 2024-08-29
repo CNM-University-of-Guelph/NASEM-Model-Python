@@ -8,13 +8,14 @@ import numpy as np
 import pandas as pd
 
 
-def calculate_Ur_Nout_g(Dt_CPIn: float, 
-                        Fe_CP: float, 
-                        Scrf_CP_g: float, 
-                        Fe_CPend_g: float, 
-                        Mlk_CP_g: float,
-                        Body_CPgain_g: float, 
-                        Gest_CPuse_g: float
+def calculate_Ur_Nout_g(
+    Dt_CPIn: float, 
+    Fe_CP: float, 
+    Scrf_CP_g: float, 
+    Fe_CPend_g: float, 
+    Mlk_CP_g: float,
+    Body_CPgain_g: float, 
+    Gest_CPuse_g: float
 ) -> float:
     Ur_Nout_g = (Dt_CPIn * 1000 - Fe_CP * 1000 - Scrf_CP_g - Fe_CPend_g -
                  Mlk_CP_g - Body_CPgain_g - Gest_CPuse_g) / 6.25  # Line 2742
@@ -34,9 +35,10 @@ def calculate_Ur_Nend_g(An_BW: float) -> float:
     return Ur_Nend_g
 
 
-def calculate_Ur_NPend_g(An_StatePhys: str, 
-                         An_BW: float, 
-                         Ur_Nend_g: float
+def calculate_Ur_NPend_g(
+    An_StatePhys: str, 
+    An_BW: float, 
+    Ur_Nend_g: float
 ) -> float:
     """
     Ur_NPend_g: Urinary endogenous Net protein, g
@@ -117,11 +119,12 @@ def calculate_Ur_Nend_3MH_g(Ur_NPend_3MH_g: float, coeff_dict: dict) -> float:
     return Ur_Nend_3MH_g
 
 
-def calculate_Ur_Nend_sum_g(Ur_Nend_Urea_g: float, 
-                            Ur_Nend_Creatn_g: float,
-                            Ur_Nend_Creat_g: float, 
-                            Ur_Nend_PD_g: float,
-                            Ur_Nend_3MH_g: float
+def calculate_Ur_Nend_sum_g(
+    Ur_Nend_Urea_g: float, 
+    Ur_Nend_Creatn_g: float,
+    Ur_Nend_Creat_g: float, 
+    Ur_Nend_PD_g: float,
+    Ur_Nend_3MH_g: float
 ) -> float:
     """
     Ur_Nend_sum_g: Total urinary endogenous N (g/d)
@@ -170,9 +173,10 @@ def calculate_Ur_AAEnd_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return Ur_AAEnd_TP
 
 
-def calculate_Ur_AAEnd_g(Ur_EAAend_g: float, 
-                         Ur_NPend_3MH_g: float,
-                         Ur_AAEnd_TP: np.ndarray
+def calculate_Ur_AAEnd_g(
+    Ur_EAAend_g: float, 
+    Ur_NPend_3MH_g: float,
+    Ur_AAEnd_TP: np.ndarray
 ) -> pd.Series:
     """
     Ur_AAEnd_g: Endogenous AA in urine (g/d)
@@ -182,8 +186,9 @@ def calculate_Ur_AAEnd_g(Ur_EAAend_g: float,
     return Ur_AAEnd_g
 
 
-def calculate_Ur_AAEnd_AbsAA(Ur_AAEnd_g: np.array,
-                             Abs_AA_g: pd.Series
+def calculate_Ur_AAEnd_AbsAA(
+    Ur_AAEnd_g: np.array,
+    Abs_AA_g: pd.Series
 ) -> np.array:
     """
     Ur_AAEnd_AbsAA: Endogenous AA in urine as fraction of absorbed AA

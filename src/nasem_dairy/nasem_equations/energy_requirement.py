@@ -4,14 +4,12 @@ This module provides functions to estimate the energy requirements for maintenan
 growth, lactation, and gestation.
 """
 
-import numpy as np
-
-
-def calculate_An_NEmUse_NS(An_StatePhys: str, 
-                           An_BW: float, 
-                           An_BW_empty: float,
-                           An_Parity_rl: int, 
-                           Dt_DMIn_ClfLiq: float
+def calculate_An_NEmUse_NS(
+    An_StatePhys: str, 
+    An_BW: float, 
+    An_BW_empty: float,
+    An_Parity_rl: int, 
+    Dt_DMIn_ClfLiq: float
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (NE) of maintenance in unstressed (NS) dairy cows*
@@ -88,10 +86,11 @@ def calculate_An_NEmUse_NS(An_StatePhys: str,
     return An_NEmUse_NS
 
 
-def calculate_An_NEm_Act_Graze(Dt_PastIn: float, 
-                               Dt_DMIn: float,
-                               Dt_PastSupplIn: float, 
-                               An_MBW: float
+def calculate_An_NEm_Act_Graze(
+    Dt_PastIn: float, 
+    Dt_DMIn: float,
+    Dt_PastSupplIn: float, 
+    An_MBW: float
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (NE) of maintenance for grazing activity (Act_Graze)*
@@ -147,9 +146,10 @@ def calculate_An_NEm_Act_Graze(Dt_PastIn: float,
     return An_NEm_Act_Graze
 
 
-def calculate_An_NEm_Act_Parlor(An_BW: float, 
-                                Env_DistParlor: float,
-                                Env_TripsParlor: float
+def calculate_An_NEm_Act_Parlor(
+    An_BW: float, 
+    Env_DistParlor: float,
+    Env_TripsParlor: float
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (NE) of maintenance for activity walk to/from parlor (Act_Parlor)*
@@ -241,9 +241,10 @@ def calculate_An_NEm_Act_Topo(An_BW: float, Env_Topo: float) -> float:
     return An_NEm_Act_Topo
 
 
-def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float, 
-                            An_NEm_Act_Parlor: float,
-                            An_NEm_Act_Topo: float
+def calculate_An_NEmUse_Act(
+    An_NEm_Act_Graze: float, 
+    An_NEm_Act_Parlor: float,
+    An_NEm_Act_Topo: float
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (NE) of maintenance use (mUse) for activity (Act)*
@@ -289,9 +290,10 @@ def calculate_An_NEmUse_Act(An_NEm_Act_Graze: float,
     return An_NEmUse_Act
 
 
-def calculate_An_NEmUse(An_NEmUse_NS: float, 
-                        An_NEmUse_Act: float,
-                        coeff_dict: dict
+def calculate_An_NEmUse(
+    An_NEmUse_NS: float, 
+    An_NEmUse_Act: float,
+    coeff_dict: dict
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (ME) maintenance use (mUse)*
@@ -630,11 +632,12 @@ def calculate_Kf_ME_RE_ClfDry(An_DE: float) -> float:
     return Kf_ME_RE_ClfDry 
 
 
-def calculate_Kf_ME_RE(An_StatePhys: str, 
-                       Kf_ME_RE_ClfDry: float, 
-                       Dt_DMIn_ClfLiq: float, 
-                       Dt_DMIn: float,
-                       coeff_dict: dict
+def calculate_Kf_ME_RE(
+    An_StatePhys: str, 
+    Kf_ME_RE_ClfDry: float, 
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DMIn: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -793,8 +796,9 @@ def calculate_Gest_MEuse(Gest_REgain: float, Ky_ME_NE: float) -> float:
     return Gest_MEuse
 
 
-def calculate_Trg_Mlk_NEout(Trg_MilkProd: float,
-                            Trg_NEmilk_Milk: float
+def calculate_Trg_Mlk_NEout(
+    Trg_MilkProd: float,
+    Trg_NEmilk_Milk: float
 ) -> float:
     """
     *Calculate Target (Trg) Milk Net Energy (NE) Output*
@@ -882,10 +886,11 @@ def calculate_Trg_Mlk_MEout(Trg_Mlk_NEout: float, coeff_dict: dict) -> float:
     return Trg_Mlk_MEout
 
 
-def calculate_Trg_MEuse(An_MEmUse: float, 
-                        An_MEgain: float,
-                        Gest_MEuse: float,
-                        Trg_Mlk_MEout: float
+def calculate_Trg_MEuse(
+    An_MEmUse: float, 
+    An_MEgain: float,
+    Gest_MEuse: float,
+    Trg_Mlk_MEout: float
 ) -> float:
     """
     *Calculate Total Target (Trg) Metabolizable Energy (ME) Use*
@@ -1194,10 +1199,11 @@ def calculate_An_NEgain_ME(An_REgain: float, An_MEIn: float) -> float:
     return An_NEgain_ME
 
 
-def calculate_An_MEuse(An_MEmUse: float, 
-                       An_MEgain: float, 
-                       Gest_MEuse: float,
-                       Mlk_MEout: float
+def calculate_An_MEuse(
+    An_MEmUse: float, 
+    An_MEgain: float, 
+    Gest_MEuse: float,
+    Mlk_MEout: float
 ) -> float:
     """
     An_MEuse: Total ME use (Mcal/d)
@@ -1206,10 +1212,11 @@ def calculate_An_MEuse(An_MEmUse: float,
     return An_MEuse
 
 
-def calculate_An_NEuse(An_NEmUse: float, 
-                       An_REgain: float, 
-                       Gest_REgain: float,
-                       Mlk_NEout: float
+def calculate_An_NEuse(
+    An_NEmUse: float, 
+    An_REgain: float, 
+    Gest_REgain: float,
+    Mlk_NEout: float
 ) -> float:
     """
     An_NEuse: Total NE use (Mcal/d)
@@ -1218,10 +1225,11 @@ def calculate_An_NEuse(An_NEmUse: float,
     return An_NEuse
 
 
-def calculate_Trg_NEuse(An_NEmUse: float, 
-                        An_REgain: float, 
-                        Gest_REgain: float,
-                        Trg_Mlk_NEout: float
+def calculate_Trg_NEuse(
+    An_NEmUse: float, 
+    An_REgain: float, 
+    Gest_REgain: float,
+    Trg_Mlk_NEout: float
 ) -> float:
     """
     Trg_NEuse: Target total NE use (Mcal/d)
@@ -1266,9 +1274,10 @@ def calculate_Trg_NELuse(Trg_MEuse: float, coeff_dict: dict) -> float:
     return Trg_NELuse
 
 
-def calculate_An_NEprod_GE(An_NEuse: float, 
-                           An_NEmUse: float,
-                           An_GEIn: float
+def calculate_An_NEprod_GE(
+    An_NEuse: float, 
+    An_NEmUse: float,
+    An_GEIn: float
 ) -> float:
     """
     An_NEprod_GE: Total efficiency of GE use (predicted NE use)
@@ -1278,9 +1287,10 @@ def calculate_An_NEprod_GE(An_NEuse: float,
     return An_NEprod_GE
 
 
-def calculate_Trg_NEprod_GE(Trg_NEuse: float, 
-                            An_NEmUse: float,
-                            An_GEIn: float
+def calculate_Trg_NEprod_GE(
+    Trg_NEuse: float, 
+    An_NEmUse: float,
+    An_GEIn: float
 ) -> float:
     """
     Trg_NEprod_GE: Total efficiency of GE use (target NE use)
@@ -1392,10 +1402,11 @@ def calculate_Trg_MPuse_MEuse(An_MPuse_g_Trg: float, An_MEuse: float) -> float:
     return Trg_MPuse_MEuse
 
 
-def calculate_Km_ME_NE_Clf(An_ME_ClfDry: float, 
-                           An_NE_ClfDry: float, 
-                           Dt_DMIn_ClfLiq: float, 
-                           Dt_DMIn_ClfStrt: float
+def calculate_Km_ME_NE_Clf(
+    An_ME_ClfDry: float, 
+    An_NE_ClfDry: float, 
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DMIn_ClfStrt: float
 ) -> float:
     """Conversion efficiency of ME to NE for maintenance, calves"""
     if (An_ME_ClfDry > 0 and 
@@ -1419,8 +1430,9 @@ def calculate_Km_ME_NE(An_StatePhys: str) -> float:
     return Km_ME_NE
 
 
-def calculate_Trg_NEmilkOut(Trg_NEmilk_Milk: float, 
-                            Trg_MilkProd: float
+def calculate_Trg_NEmilkOut(
+    Trg_NEmilk_Milk: float, 
+    Trg_MilkProd: float
 ) -> float:
     Trg_NEmilkOut = Trg_NEmilk_Milk * Trg_MilkProd  # Line 387
     return Trg_NEmilkOut
