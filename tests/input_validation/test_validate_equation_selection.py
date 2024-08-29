@@ -48,7 +48,10 @@ def test_invalid_value_range():
         "mFat_eqn": 1,
         "RumDevDisc_Clf": 0
     }
-    with pytest.raises(ValueError, match=re.escape("DMIn_eqn must be one of (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18), 20 was given")):
+    with pytest.raises(ValueError, match=re.escape(
+        "DMIn_eqn must be one of (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13,"
+         " 14, 15, 16, 17, 18), 20 was given"
+         )):
         validate_equation_selection(equation_selection)
 
 

@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.protein as protein
+"""Protein metabolism and utilization calculations.
+
+This module includes functions to estimate the utilization, synthesis, and 
+degradation of protein.
+"""
 
 import numpy as np
 import pandas as pd
@@ -71,10 +75,11 @@ def calculate_Scrf_NP_g(Scrf_CP_g: float, coeff_dict: dict) -> float:
     return Scrf_NP_g
 
 
-def calculate_Scrf_MPUse_g_Trg(An_StatePhys: str, 
-                               Scrf_CP_g: float,
-                               Scrf_NP_g: float, 
-                               Km_MP_NP_Trg: float
+def calculate_Scrf_MPUse_g_Trg(
+    An_StatePhys: str, 
+    Scrf_CP_g: float,
+    Scrf_NP_g: float, 
+    Km_MP_NP_Trg: float
 ) -> float:
     """
     Scrf_MPUse_g_Trg: Scurf Metabolizable protein, g
@@ -116,8 +121,9 @@ def calculate_Scrf_AA_g(Scrf_NP_g: float, Scrf_AA_TP: np.ndarray) -> np.ndarray:
     return Scrf_AA_g
 
 
-def calculate_ScrfAA_AbsAA(Scrf_AA_g: pd.Series,
-                           Abs_AA_g: pd.Series
+def calculate_ScrfAA_AbsAA(
+    Scrf_AA_g: pd.Series,
+    Abs_AA_g: pd.Series
 ) -> np.array:
     """
     ScrfAA_AbsAA: Scurf aa as a fraction of absorbed aa
@@ -126,10 +132,11 @@ def calculate_ScrfAA_AbsAA(Scrf_AA_g: pd.Series,
     return ScrfAA_AbsAA
 
 
-def calculate_An_CPxprt_g(Scrf_CP_g: float, 
-                          Fe_CPend_g: float, 
-                          Mlk_CP_g: float,
-                          Body_CPgain_g: float
+def calculate_An_CPxprt_g(
+    Scrf_CP_g: float, 
+    Fe_CPend_g: float, 
+    Mlk_CP_g: float,
+    Body_CPgain_g: float
 ) -> float:
     """
     An_CPxprt_g: CP used for export protein (g/d)
@@ -140,10 +147,11 @@ def calculate_An_CPxprt_g(Scrf_CP_g: float,
     return An_CPxprt_g
 
 
-def calculate_An_NPxprt_g(Scrf_NP_g: float, 
-                          Fe_NPend_g: float, 
-                          Mlk_NP_g: float,
-                          Body_NPgain_g: float
+def calculate_An_NPxprt_g(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float, 
+    Mlk_NP_g: float,
+    Body_NPgain_g: float
 ) -> float:
     """
     An_NPxprt_g: NP used for export protein (g/d)
@@ -153,10 +161,11 @@ def calculate_An_NPxprt_g(Scrf_NP_g: float,
     return An_NPxprt_g
 
 
-def calculate_Trg_NPxprt_g(Scrf_NP_g: float, 
-                           Fe_NPend_g: float,
-                           Trg_Mlk_NP_g: float, 
-                           Body_NPgain_g: float
+def calculate_Trg_NPxprt_g(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float,
+    Trg_Mlk_NP_g: float, 
+    Body_NPgain_g: float
 ) -> float:
     """
     Trg_NPxprt_g: NP used for export protein (g/d)
@@ -166,9 +175,10 @@ def calculate_Trg_NPxprt_g(Scrf_NP_g: float,
     return Trg_NPxprt_g
 
 
-def calculate_An_CPprod_g(Mlk_CP_g: float, 
-                          Gest_NCPgain_g: float,
-                          Body_CPgain_g: float
+def calculate_An_CPprod_g(
+    Mlk_CP_g: float, 
+    Gest_NCPgain_g: float,
+    Body_CPgain_g: float
 ) -> float:
     """
     An_CPprod_g: CP use for production (g/d)
@@ -178,9 +188,10 @@ def calculate_An_CPprod_g(Mlk_CP_g: float,
     return An_CPprod_g
 
 
-def calculate_An_NPprod_g(Mlk_NP_g: float, 
-                          Gest_NPgain_g: float,
-                          Body_NPgain_g: float
+def calculate_An_NPprod_g(
+    Mlk_NP_g: float, 
+    Gest_NPgain_g: float,
+    Body_NPgain_g: float
 ) -> float:
     """
     An_NPprod_g: NP use for production (g/d)
@@ -190,9 +201,10 @@ def calculate_An_NPprod_g(Mlk_NP_g: float,
     return An_NPprod_g
 
 
-def calculate_Trg_NPprod_g(Trg_Mlk_NP_g: float, 
-                           Gest_NPgain_g: float,
-                           Body_NPgain_g: float
+def calculate_Trg_NPprod_g(
+    Trg_Mlk_NP_g: float, 
+    Gest_NPgain_g: float,
+    Body_NPgain_g: float
 ) -> float:
     """
     Trg_NPprod_g: NP used fpr production (g/d)
@@ -210,12 +222,13 @@ def calculate_An_NPprod_MPIn(An_NPprod_g: float, An_MPIn_g: float) -> float:
     return An_NPprod_MPIn
 
 
-def calculate_Trg_NPuse_g(Scrf_NP_g: float, 
-                          Fe_NPend_g: float,
-                          Ur_NPend_g: float, 
-                          Trg_Mlk_NP_g: float,
-                          Body_NPgain_g: float, 
-                          Gest_NPgain_g: float
+def calculate_Trg_NPuse_g(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float,
+    Ur_NPend_g: float, 
+    Trg_Mlk_NP_g: float,
+    Body_NPgain_g: float, 
+    Gest_NPgain_g: float
 ) -> float:
     """
     Trg_NPuse_g: Target NP use (g/d)
@@ -225,12 +238,13 @@ def calculate_Trg_NPuse_g(Scrf_NP_g: float,
     return Trg_NPuse_g
 
 
-def calculate_An_NPuse_g(Scrf_NP_g: float, 
-                         Fe_NPend_g: float, 
-                         Ur_NPend_g: float,
-                         Mlk_NP_g: float, 
-                         Body_NPgain_g: float,
-                         Gest_NPgain_g: float
+def calculate_An_NPuse_g(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float, 
+    Ur_NPend_g: float,
+    Mlk_NP_g: float, 
+    Body_NPgain_g: float,
+    Gest_NPgain_g: float
 ) -> float:
     """
     An_NPuse_g: NP use (g/d)
@@ -242,12 +256,13 @@ def calculate_An_NPuse_g(Scrf_NP_g: float,
     return An_NPuse_g
 
 
-def calculate_An_NCPuse_g(Scrf_CP_g: float, 
-                          Fe_CPend_g: float,
-                          Ur_NPend_g: float, 
-                          Mlk_CP_g: float,
-                          Body_CPgain_g: float, 
-                          Gest_NCPgain_g: float
+def calculate_An_NCPuse_g(
+    Scrf_CP_g: float, 
+    Fe_CPend_g: float,
+    Ur_NPend_g: float, 
+    Mlk_CP_g: float,
+    Body_CPgain_g: float, 
+    Gest_NCPgain_g: float
 ) -> float:
     """
     An_NCPuse_g: Net CP use (g/d)
@@ -258,9 +273,10 @@ def calculate_An_NCPuse_g(Scrf_CP_g: float,
     return An_NCPuse_g
 
 
-def calculate_An_Nprod_g(Gest_NCPgain_g: float, 
-                         Body_CPgain_g: float,
-                         Mlk_CP_g: float
+def calculate_An_Nprod_g(
+    Gest_NCPgain_g: float, 
+    Body_CPgain_g: float,
+    Mlk_CP_g: float
 ) -> float:
     """
     An_Nprod_g: N used for production (g/d)
@@ -294,13 +310,14 @@ def calculate_An_MPBal_g_Trg(An_MPIn_g: float, An_MPuse_g_Trg: float) -> float:
     return An_MPBal_g_Trg
 
 
-def calculate_Xprt_NP_MP_Trg(Scrf_NP_g: float, 
-                             Fe_NPend_g: float,
-                             Trg_Mlk_NP_g: float, 
-                             Body_NPgain_g: float,
-                             An_MPIn_g: float, 
-                             Ur_NPend_g: float,
-                             Gest_MPUse_g_Trg: float
+def calculate_Xprt_NP_MP_Trg(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float,
+    Trg_Mlk_NP_g: float, 
+    Body_NPgain_g: float,
+    An_MPIn_g: float, 
+    Ur_NPend_g: float,
+    Gest_MPUse_g_Trg: float
 ) -> float:
     """
     Xprt_NP_MP_Trg: Export NP to MP efficiency
@@ -315,13 +332,14 @@ def calculate_Xprt_NP_MP_Trg(Scrf_NP_g: float,
     return Xprt_NP_MP_Trg
 
 
-def calculate_Xprt_NP_MP(Scrf_NP_g: float, 
-                         Fe_NPend_g: float, 
-                         Mlk_NP_g: float,
-                         Body_NPgain_g: float, 
-                         An_MPIn_g: float,
-                         Ur_NPend_g: float, 
-                         Gest_MPUse_g_Trg: float
+def calculate_Xprt_NP_MP(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float, 
+    Mlk_NP_g: float,
+    Body_NPgain_g: float, 
+    An_MPIn_g: float,
+    Ur_NPend_g: float, 
+    Gest_MPUse_g_Trg: float
 ) -> float:
     """
     Xprt_NP_MP: Export efficiency NP to MP
@@ -362,12 +380,13 @@ def calculate_Scrf_MPUse_g(Scrf_NP_g: float, Km_MP_NP: float) -> float:
     return Scrf_MPUse_g
 
 
-def calculate_An_MPuse_g(Fe_MPendUse_g: float, 
-                         Scrf_MPUse_g: float, 
-                         Ur_MPendUse_g: float, 
-                         Body_MPUse_g_Trg: float, 
-                         Gest_MPUse_g_Trg: float, 
-                         Mlk_MPUse_g: float,
+def calculate_An_MPuse_g(
+    Fe_MPendUse_g: float, 
+    Scrf_MPUse_g: float, 
+    Ur_MPendUse_g: float, 
+    Body_MPUse_g_Trg: float, 
+    Gest_MPUse_g_Trg: float, 
+    Mlk_MPUse_g: float,
 ) -> float:
     """
     An_MPuse_g: Total MP use (g/d)
@@ -403,11 +422,12 @@ def calculate_An_MP_NP(An_NPuse_g: float, An_MPuse_g: float) -> float:
     return An_MP_NP
 
 
-def calculate_An_NPxprt_MP(An_NPuse_g: float, 
-                           Ur_NPend_g: float,
-                           Gest_NPuse_g: float, 
-                           An_MPIn_g: float,
-                           Gest_MPUse_g_Trg: float
+def calculate_An_NPxprt_MP(
+    An_NPuse_g: float, 
+    Ur_NPend_g: float,
+    Gest_NPuse_g: float, 
+    An_MPIn_g: float,
+    Gest_MPUse_g_Trg: float
 ) -> float:
     """
     An_NPxprt_MP: NP to MP conversion efficiency
@@ -428,9 +448,10 @@ def calculate_An_CP_NP(An_NPuse_g: float, An_CPIn: float) -> float:
     return An_CP_NP
 
 
-def calculate_An_NPBal_g(An_MPIn_g: float, 
-                         An_MP_NP: float,
-                         An_NPuse_g: float
+def calculate_An_NPBal_g(
+    An_MPIn_g: float, 
+    An_MP_NP: float,
+    An_NPuse_g: float
 ) -> float:
     """
     An_NPBal_g: Net protein balance (g/d)

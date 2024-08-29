@@ -1,3 +1,24 @@
+"""Definitions for input schemas and data structures.
+
+This module defines various TypedDict classes and schemas that represent the 
+expected structure and types of input data for the NASEM model. These 
+definitions are used throughout the model for input validation and type 
+checking.
+
+Classes:
+    AnimalInput: Defines the schema for animal input data.
+    EquationSelection: Defines the schema for equation selection input data.
+    InfusionInput: Defines the schema for infusion input data.
+    CoeffDict: Defines the schema for coefficient dictionaries.
+    MPNPEfficiencyDict: Defines the schema for MP/NP efficiency input data.
+    mPrtCoeffDict: Defines the schema for mPrt coefficient input data.
+
+Variables:
+    f_Imb: A pandas Series representing imbalance factors for amino acids.
+    UserDietSchema: A dictionary defining the expected structure of the user diet.
+    FeedLibrarySchema: A dictionary defining the expected structure of the feed library.
+"""
+
 from typing import TypedDict, Optional, Literal
 
 import pandas as pd
@@ -27,12 +48,14 @@ class AnimalInput(TypedDict):
     Env_DistParlor: float
     Env_TripsParlor: int
     Env_Topo: float
-    An_AgeConcept1st: Optional[int]
+    An_AgeConcept1st: int
 
 
 class EquationSelection(TypedDict):
     Use_DNDF_IV: Literal[0, 1, 2]
-    DMIn_eqn: Literal[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15, 16, 17, 18]
+    DMIn_eqn: Literal[
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 , 11, 12, 13, 14, 15, 16, 17, 18
+        ]
     mProd_eqn: Literal[0, 1, 2, 3, 4]
     MiN_eqn: Literal[1, 2, 3]
     NonMilkCP_ClfLiq: Literal[0, 1]
@@ -338,9 +361,10 @@ class mPrtCoeffDict(TypedDict):
     mPrt_k_EAA2_coeff: float
 
 
-f_Imb = pd.Series([1.0] * 10, index=[
-    "Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"
-    ])
+f_Imb = pd.Series(
+    [1.0] * 10, 
+    index=["Arg", "His", "Ile", "Leu", "Lys", "Met", "Phe", "Thr", "Trp", "Val"]
+)
 
 
 FeedLibrarySchema = {

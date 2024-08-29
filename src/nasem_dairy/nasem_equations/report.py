@@ -1,5 +1,10 @@
-# These calculations are part of the NASEM model but never get used anywhere in the model
-# import nasem_dairy.nasem_equations.unused as unused 
+"""Miscellaneous reporting calculations.
+
+This module includes various functions for calculating ratios, percentages, 
+and other derived metrics that are part of the NASEM model but are not 
+used directly in the core calculations.
+"""
+
 import pandas as pd
 
 
@@ -29,8 +34,9 @@ def calculate_age_first_calving(An_AgeConcept1st: int) -> int:
     return age_first_calving  
   
 
-def calculate_milk_lactose_percent(Trg_MilkProd: float, 
-                                   Trg_MilkLacp: float
+def calculate_milk_lactose_percent(
+    Trg_MilkProd: float, 
+    Trg_MilkLacp: float
 ) -> float:
     milk_lactose_percent = Trg_MilkProd * Trg_MilkLacp / 100
     return milk_lactose_percent

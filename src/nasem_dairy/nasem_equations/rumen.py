@@ -1,11 +1,18 @@
-# import nasem_dairy.nasem_equations.rumen as rumen
+"""Rumen digestion calculations.
 
-def calculate_Rum_dcNDF(Dt_DMIn: float, 
-                        Dt_NDFIn: float, 
-                        Dt_StIn: float, 
-                        Dt_CPIn: float, 
-                        Dt_ADFIn: float,
-                        Dt_ForWet: float
+This module provides functions to estimate the digestibility of different 
+dietary components in the rumen, including neutral detergent fiber (NDF) 
+and starch, and their passage through the digestive system.
+"""
+
+
+def calculate_Rum_dcNDF(
+    Dt_DMIn: float, 
+    Dt_NDFIn: float, 
+    Dt_StIn: float, 
+    Dt_CPIn: float, 
+    Dt_ADFIn: float,
+    Dt_ForWet: float
 ) -> float:
     Rum_dcNDF = (-31.9 + 0.721 * Dt_NDFIn / 
                  Dt_DMIn * 100 - 0.247 * Dt_StIn / 
@@ -19,10 +26,11 @@ def calculate_Rum_dcNDF(Dt_DMIn: float,
     return Rum_dcNDF
 
 
-def calculate_Rum_dcSt(Dt_DMIn: float, 
-                       Dt_ForNDF: float, 
-                       Dt_StIn: float, 
-                       Dt_ForWet: float
+def calculate_Rum_dcSt(
+    Dt_DMIn: float, 
+    Dt_ForNDF: float, 
+    Dt_StIn: float, 
+    Dt_ForWet: float
 ) -> float:
     Rum_dcSt = (70.6 - 1.45 * Dt_DMIn + 0.424 * Dt_ForNDF + 1.39 * Dt_StIn / 
                 Dt_DMIn * 100 - 0.0219 * (Dt_StIn / Dt_DMIn * 100)**2 - 
@@ -53,9 +61,10 @@ def calculate_Rum_DigNDFnfIn(Rum_dcNDF: float, Dt_NDFnfIn: float) -> float:
     return Rum_DigNDFnfIn
 
 
-def calculate_Du_StPas(Dt_StIn: float, 
-                       InfRum_StIn: float,
-                       Rum_DigStIn: float
+def calculate_Du_StPas(
+    Dt_StIn: float, 
+    InfRum_StIn: float,
+    Rum_DigStIn: float
 ) -> float:
     """
     Du_StPas: Duodenal starch passage?, kg?
@@ -67,9 +76,10 @@ def calculate_Du_StPas(Dt_StIn: float,
     return Du_StPas
 
 
-def calculate_Du_NDFPas(Dt_NDFIn: float, 
-                        Inf_NDFIn: float,
-                        Rum_DigNDFIn: float
+def calculate_Du_NDFPas(
+    Dt_NDFIn: float, 
+    Inf_NDFIn: float,
+    Rum_DigNDFIn: float
 ) -> float:
     """
     Du_NDFPas: Duodenal NDF passage?, kg?

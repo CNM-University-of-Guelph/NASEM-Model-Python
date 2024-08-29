@@ -128,6 +128,11 @@
       "Name": "calculate_Du_MiN_g",
       "Input": {"MiN_eqn": 3, "MiN_Vm": 5.7, "Dt_rOMIn": 9.5, "Dt_ForNDFIn": 3.9, "An_RDPIn": 2.5, "Rum_DigNDFIn": 1.0, "Rum_DigStIn": 0.3, "An_RDPIn_g": 2.5, "coeff_dict": null},
       "Output": 38.939298245614026
-    }    
+    },
+    {
+      "Name": "calculate_Du_MiN_g",
+      "Input": {"MiN_eqn": 0, "MiN_Vm": 5.7, "Dt_rOMIn": 9.5, "Dt_ForNDFIn": 3.9, "An_RDPIn": 2.5, "Rum_DigNDFIn": 1.0, "Rum_DigStIn": 0.3, "An_RDPIn_g": 2.5, "coeff_dict": null},
+      "Output": "Invalid MiN_eqn: 0 was entered. Must choose 1, 2 or 3."
+    }
   ]
   

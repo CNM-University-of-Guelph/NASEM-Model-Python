@@ -15,7 +15,7 @@ class TestModelOutput:
                 "animal_input": None,
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         structure_path = tmp_path / "model_output_structure.json"
@@ -41,11 +41,16 @@ class TestModelOutput:
         return {
             "user_diet": "value1",
             "animal_input": "value2",
-            "diet_info": "value3",
+            "feed_data": "value3",
             "key": "value4"
         }
 
-    def test_initialization(self, mock_structure, mock_report_structure, mock_locals_input):
+    def test_initialization(
+        self, 
+        mock_structure, 
+        mock_report_structure, 
+        mock_locals_input
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input,
             config_path=str(mock_structure),
@@ -57,7 +62,7 @@ class TestModelOutput:
                 "animal_input": None,
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         assert model_output.report_structure == {
@@ -73,7 +78,7 @@ class TestModelOutput:
             "animal_input": "value2",
         }
         assert model_output.Intakes == {
-            "diet_info": "value3",
+            "feed_data": "value3",
         }
         assert model_output.Uncategorized == {}
 
@@ -141,7 +146,7 @@ class TestModelOutput:
                 }
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         structure_path = tmp_path / "nested_model_output_structure.json"
@@ -154,7 +159,7 @@ class TestModelOutput:
         return {
             "user_diet": "value1",
             "animal_input": "value2",
-            "diet_info": "value3",
+            "feed_data": "value3",
             "deep_value1": "deep_value_data1",
             "deep_value2": "deep_value_data2",
             "value0": "data0",
@@ -166,7 +171,12 @@ class TestModelOutput:
             "uncategorized_key2": "uncategorized_value2"
         }
 
-    def test_initialization_nested(self, mock_structure_nested, mock_report_structure, mock_locals_input_nested):
+    def test_initialization_nested(
+        self, 
+        mock_structure_nested, 
+        mock_report_structure, 
+        mock_locals_input_nested
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input_nested,
             config_path=str(mock_structure_nested),
@@ -197,7 +207,7 @@ class TestModelOutput:
                 }
             },
             "Intakes": {
-                "diet_info": None,
+                "feed_data": None,
             }
         }
         assert model_output.report_structure == {
@@ -231,7 +241,7 @@ class TestModelOutput:
             }
         }
         assert model_output.Intakes == {
-            "diet_info": "value3",
+            "feed_data": "value3",
         }
         assert model_output.Uncategorized == {
             "uncategorized_key1": "uncategorized_value1",
@@ -280,7 +290,12 @@ class TestModelOutput:
             json.dump(structure, f)
         return structure_path
 
-    def test_repr_html(self, mock_structure_snapshot, mock_report_structure, mock_snapshot_data):
+    def test_repr_html(
+        self, 
+        mock_structure_snapshot, 
+        mock_report_structure, 
+        mock_snapshot_data
+    ):
         model_output = ModelOutput(
             locals_input=mock_snapshot_data,
             config_path=str(mock_structure_snapshot),
@@ -370,7 +385,12 @@ class TestModelOutput:
 
         assert actual_html == expected_html.replace('\n', '').replace('  ', '')
 
-    def test_str(self, mock_structure_snapshot, mock_report_structure, mock_snapshot_data):
+    def test_str(
+        self, 
+        mock_structure_snapshot, 
+        mock_report_structure, 
+        mock_snapshot_data
+    ):
         model_output = ModelOutput(
             locals_input=mock_snapshot_data,
             config_path=str(mock_structure_snapshot),
@@ -429,7 +449,12 @@ class TestModelOutput:
             })
         }
 
-    def test_get_value(self, mock_structure_get_value, mock_report_structure, mock_locals_input_get_value):
+    def test_get_value(
+        self, 
+        mock_structure_get_value, 
+        mock_report_structure, 
+        mock_locals_input_get_value
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input_get_value,
             config_path=str(mock_structure_get_value),
@@ -438,7 +463,9 @@ class TestModelOutput:
         assert model_output.get_value("string_value") == "example string"
         assert model_output.get_value("int_value") == 123
         assert model_output.get_value("float_value") == 45.67
-        assert model_output.get_value("dict_value") == {"nested_key": "nested value"}
+        assert model_output.get_value("dict_value") == {
+            "nested_key": "nested value"
+            }
         pd.testing.assert_frame_equal(
             model_output.get_value("df_value"),
             pd.DataFrame({"column1": [1, 2, 3], "column2": ["a", "b", "c"]})
@@ -496,7 +523,12 @@ class TestModelOutput:
             "list_value": ["item1", "item2", "item3"],
         }
 
-    def test_search(self, mock_structure_search, mock_report_structure, mock_locals_input_search):
+    def test_search(
+        self, 
+        mock_structure_search, 
+        mock_report_structure, 
+        mock_locals_input_search
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input_search,
             config_path=str(mock_structure_search),
@@ -559,7 +591,9 @@ class TestModelOutput:
         pd.testing.assert_frame_equal(search_df, expected_df)
 
         search_df = model_output.search("non_existent_value")
-        expected_df = pd.DataFrame(columns=['Name', 'Value', 'Category', 'Level 1', 'Level 2'])
+        expected_df = pd.DataFrame(
+            columns=['Name', 'Value', 'Category', 'Level 1', 'Level 2']
+            )
         pd.testing.assert_frame_equal(search_df, expected_df)
 
         search_df = model_output.search("list_value")
@@ -591,7 +625,12 @@ class TestModelOutput:
 
         pd.testing.assert_frame_equal(search_df, expected_df)
 
-    def test_export_to_dict(self, mock_structure_search, mock_report_structure, mock_locals_input_search):
+    def test_export_to_dict(
+        self, 
+        mock_structure_search, 
+        mock_report_structure, 
+        mock_locals_input_search
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input_search,
             config_path=str(mock_structure_search),
@@ -621,7 +660,9 @@ class TestModelOutput:
         assert exported_dict["nested_key"] == expected_dict["nested_key"]
         assert exported_dict["another_value"] == expected_dict["another_value"]
         assert exported_dict["list_value"] == expected_dict["list_value"]
-        pd.testing.assert_frame_equal(exported_dict["df_value"], expected_dict["df_value"])
+        pd.testing.assert_frame_equal(
+            exported_dict["df_value"], expected_dict["df_value"]
+            )
 
     @pytest.fixture
     def mock_report_structure_test(self, tmp_path):
@@ -652,11 +693,19 @@ class TestModelOutput:
             }),
             "another_value": "output value",
             "list_value": ["item1", "item2", "item3"],
-            "nested_list": [[1, 2, {"inner_key": "inner_value"}], ["a", "b", "c"], {"key": "value"}],
+            "nested_list": [
+                [1, 2, {"inner_key": "inner_value"}], 
+                ["a", "b", "c"], {"key": "value"}
+                ],
             "dict_with_list": {"key": [1, 2, 3, 4]}
         }
 
-    def test_get_report(self, mock_structure_search, mock_report_structure_test, mock_locals_input_report):
+    def test_get_report(
+        self, 
+        mock_structure_search, 
+        mock_report_structure_test, 
+        mock_locals_input_report
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input_report,
             config_path=str(mock_structure_search),
@@ -664,14 +713,23 @@ class TestModelOutput:
         )
         report_df = model_output.get_report("SampleReport")
         expected_data = {
-            "Description": ["Description 1", "Description 2", "Total", "Footnote 1"],
-            "Target Performance": ["Performance 1", "Performance 2", 123, "This is a footnote."],
+            "Description": [
+                "Description 1", "Description 2", "Total", "Footnote 1"
+                ],
+            "Target Performance": [
+                "Performance 1", "Performance 2", 123, "This is a footnote."
+                ],
             "Values": [123, 45.67, 45.67, ""]
         }
         expected_df = pd.DataFrame(expected_data)
         pd.testing.assert_frame_equal(report_df, expected_df)
 
-    def test_get_category_list(self, mock_structure, mock_report_structure, mock_locals_input):
+    def test_get_category_list(
+        self, 
+        mock_structure, 
+        mock_report_structure, 
+        mock_locals_input
+    ):
         model_output = ModelOutput(
             locals_input=mock_locals_input,
             config_path=str(mock_structure),
@@ -681,7 +739,12 @@ class TestModelOutput:
         expected_categories = ["Inputs", "Intakes", "Uncategorized"]
         assert category_list == expected_categories
     
-    def test_extract_variable_names(self, mock_structure, mock_report_structure, mock_locals_input):
+    def test_extract_variable_names(
+        self, 
+        mock_structure, 
+        mock_report_structure, 
+        mock_locals_input
+    ):
         # Adding a DataFrame to the locals input for testing
         mock_locals_input["df_value"] = pd.DataFrame({
             "column1": [1, 2, 3],
@@ -694,6 +757,23 @@ class TestModelOutput:
         )
         variable_names = model_output.export_variable_names()
         expected_variable_names = [
-            "user_diet", "animal_input", "diet_info", "column1", "column2"
+            "user_diet", "animal_input", "feed_data", "column1", "column2"
         ]
         assert sorted(variable_names) == sorted(expected_variable_names)
+
+    def test_get_report_missing(
+        self, 
+        mock_structure_search, 
+        mock_report_structure_test, 
+        mock_locals_input_report
+    ):
+        model_output = ModelOutput(
+            locals_input=mock_locals_input_report,
+            config_path=str(mock_structure_search),
+            report_config_path=str(mock_report_structure_test)
+        )
+        with pytest.raises(
+            ValueError, 
+            match="Report non_existent_report not found in the report structure."
+            ):
+            model_output.get_report("non_existent_report")

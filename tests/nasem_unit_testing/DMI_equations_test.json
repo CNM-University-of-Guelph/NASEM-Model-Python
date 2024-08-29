@@ -303,6 +303,11 @@
     "Name": "calculate_Dt_DMIn",
     "Input": {"DMIn_eqn": 17, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Heifer", "An_BW": 720.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 0, "An_Parity_rl": 1, "Trg_MilkProd": 0.0, "An_GestDay": 280, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 4.0, "Trg_NEmilkOut": 0.0, "An_PrePartWklim": 0.0, "An_PrePartWkDurat": 3.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [10, 8], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
     "Output": 5.978016000000001
+  },
+  {
+    "Name": "calculate_Dt_DMIn",
+    "Input": {"DMIn_eqn": 25, "Trg_Dt_DMIn": 20.5, "An_StatePhys": "Lactating Cow", "An_BW": 650.0, "An_BW_mature": 750.0, "An_BCS": 3, "An_LactDay": 150, "An_Parity_rl": 2, "Trg_MilkProd": 35.0, "An_GestDay": 200, "An_GestLength": 280, "An_AgeDryFdStart": 14, "Env_TempCurr": 15.0, "An_PrePartWk": 3.0, "Trg_NEmilkOut": 1.0, "An_PrePartWklim": 2.0, "An_PrePartWkDurat": 6.0, "Fd_NDF_series": [0.35, 0.3], "Fd_DMInp_series": [0.4, 0.6], "Fd_ADF_series": [0.2, 0.18], "Fd_ForNDF_series": [0.4, 0.35], "Fd_Conc_series": [0.2, 0.25], "Fd_DNDF48_input_series": [0.5, 0.55], "Trg_Fd_DMIn_series": [2, 1.5], "Fd_Category_series": [1, 2], "Fd_CP_series": [0.18, 0.16], "Fd_FA_series": [0.03, 0.025], "Fd_Ash_series": [0.1, 0.08], "Fd_St_series": [0.3, 0.25], "coeff_dict": null},
+    "Output": "Invalid value for DMIn_eqn: 25. Must be between 0 and 17."
   }
 ]
   

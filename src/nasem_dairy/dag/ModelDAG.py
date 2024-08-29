@@ -1,29 +1,44 @@
+"""Directed Acyclic Graph (DAG) management for the NASEM model.
+
+This module provides functionality for creating, managing, and visualizing a 
+Directed Acyclic Graph (DAG) that represents the dependencies and execution 
+order of calculations within the NASEM model. It leverages the `graph-tool` 
+library for efficient graph manipulation and visualization.
+
+Classes:
+    ModelDAG: Manages the creation and validation of a DAG for the NASEM model, 
+              including methods for generating calculation orders and 
+              dynamically creating functions.
+"""
+
 import ast
 import glob
 import inspect
 import os
 from typing import Dict, List, Any, Tuple, Optional, Callable
 
-try:
-    import graph_tool.all as graph_tool
-except ImportError:
-    raise ImportError(
-        "The 'graph-tool' package is required for this module. "
-        "Install it with `poetry install --extras dag` or `pip install nasem-dairy[dag]`."
-    )
 import pandas as pd
 
 import nasem_dairy as nd
 import nasem_dairy.model.input_definitions as expected
 import nasem_dairy.model_output.ModelOutput as output
 
+try:
+    import graph_tool.all as graph_tool
+except ImportError: # pragma: no cover
+    raise ImportError(
+        "The 'graph-tool' package is required for this module. "
+        "Install it with `poetry install --extras dag` or "
+        "`pip install nasem-dairy[dag]`."
+    )
 # NOTE: Since ModelDAG is a subpackage we should inlcude the following code in any 
 # modules where it is used. This will ensure a meaningful error is raised in cases
 # where graph-tool is not imported (nd.ModelDAG is set to None in __init__.py) but
 # a user tries to run code that requires nd.ModelDAG.
 # if nd.ModelDAG is None:
 #     raise ImportError(
-#         "ModelDAG requires the 'graph-tool' package. Please install it with `poetry install --extras dag`."
+#         "ModelDAG requires the 'graph-tool' package. Please install it with "
+#         "`poetry install --extras dag`."
 #     )
 
 module_colour_map = {
@@ -53,10 +68,71 @@ module_colour_map = {
             }
 
 class ModelDAG:
+    """
+    Manages the creation, validation, and visualization of a Directed Acyclic Graph (DAG) 
+    for the NASEM model.
+
+    The `ModelDAG` class is responsible for constructing a DAG that represents the 
+    dependencies and execution order of calculations within the NASEM model. It uses 
+    the `graph-tool` library for efficient graph manipulation and visualization, and 
+    provides various methods to validate the structure, generate calculation orders, 
+    and create dynamic functions based on the DAG.
+
+    Attributes:
+        aa_list (List[str]): A list of essential amino acids used in various calculations.
+        module_colour_map (dict): A dictionary mapping module names to RGBA color values 
+            for graph visualization.
+        possible_user_inputs (Dict[str, Dict[str, Any]]): A dictionary of possible user 
+            input structures, mapping names to their respective schema.
+        possible_constants (Dict[str, Dict[str, Any]]): A dictionary of possible constants, 
+            mapping names to their respective schema.
+        user_inputs (List[str]): A list of user input keys extracted from possible user input structures.
+        modules (List[str]): A list of Python file paths in the specified directory, excluding `__init__.py`.
+        dag_data (pd.DataFrame): A DataFrame containing parsed data for each variable in the DAG.
+        dag (graph_tool.Graph): The Directed Acyclic Graph representing the dependencies of variables.
+
+    Methods:
+        __init__(self, path: str = "./src/nasem_dairy/nasem_equations", colour_map: dict = module_colour_map):
+            Initializes the `ModelDAG` instance by collecting data and creating the DAG.
+        
+        _get_variable_names(self) -> List[str]:
+            Retrieves the variable names needed to build the DAG.
+        
+        _get_py_files(self, path: str) -> List[str]:
+            Retrieves a list of Python files from the specified directory.
+        
+        _get_dict_keys(self, node: ast.AST, id_to_check: str, check_fstring: bool = True) -> List[str]:
+            Extracts keys from a dictionary accessed in an AST node.
+        
+        _generate_user_inputs_list(self, possible_user_inputs: Dict[str, Any]) -> List[str]:
+            Generates a list of user input keys from possible user input structures.
+        
+        _create_function_entry(self, node: ast.FunctionDef) -> Tuple[Optional[str], List[str], List[str], List[str]]:
+            Collects required data for regular functions from an AST node.
+        
+        _parse_nasem_equations(self, py_files: List[str], variables: pd.DataFrame) -> pd.DataFrame:
+            Parses NASEM equations from Python files and extracts data for the DAG.
+        
+        _create_dag(self, data: pd.DataFrame) -> graph_tool.Graph:
+            Creates a Directed Acyclic Graph (DAG) from the provided data.
+        
+        draw_dag(self, output_path: str) -> None:
+            Draws and saves the DAG to the specified output path.
+        
+        validate_dag(self) -> None:
+            Validates the DAG structure by checking for cycles, verifying the topological order, and ensuring connectivity.
+        
+        get_calculation_order(self, target_variable: str, report: bool = True) -> Dict[List[str], Dict[str, Dict[str, Any]]]:
+            Determines the calculation order for a given target variable using depth-first search on the DAG.
+        
+        create_function(self, target_variable: str) -> Callable[..., Any]:
+            Creates a dynamically generated function to calculate the target variable based on the DAG structure.
+    """
     ### Initalization ###
-    def __init__(self, 
-                 path:str = "./src/nasem_dairy/nasem_equations", 
-                 colour_map: dict = module_colour_map
+    def __init__(
+        self, 
+        path:str = "./src/nasem_dairy/nasem_equations", 
+        colour_map: dict = module_colour_map
     ):
         """
         Collect data for DAG and create graph.
@@ -87,8 +163,8 @@ class ModelDAG:
             self.possible_user_inputs
             )
 
-        varaible_names = self._get_variable_names()
-        variables = pd.DataFrame(varaible_names, columns=["Name"])
+        variable_names = self._get_variable_names()
+        variables = pd.DataFrame(variable_names, columns=["Name"])
 
         # Collect data for DAG
         self.modules = self._get_py_files(path)  
@@ -103,7 +179,9 @@ class ModelDAG:
         Returns:
             A list of variable names required for the DAG
         """
-        user_diet, animal_input, eqn_selection, inf_input = nd.demo("input")
+        user_diet, animal_input, eqn_selection, inf_input = nd.demo(
+            "lactating_cow_test"
+            )
         output = nd.nasem(
             user_diet = user_diet, 
             animal_input = animal_input, 
@@ -112,13 +190,12 @@ class ModelDAG:
             infusion_input=inf_input
             )
         variables = output.export_variable_names()
-        # These 6 variables never appear in the nasem() local namespace as they
-        # have been placed behind wrappers that only calculate one of them.
-        # They are needed to build the DAG properly
-        variables += [
+        # These variables are necessary for the DAG but not directly available
+        additional_vars = [
             "Abs_EAA2_HILKM_g" ,"Abs_EAA2_RHILKM_g", "Abs_EAA2_HILKMT_g", 
             "An_GasEOut_Dry", "An_GasEOut_Lact", "An_GasEOut_Heif"
             ]
+        variables.extend(additional_vars)
         return variables
 
     def _get_py_files(self, path: str) -> List[str]:
@@ -132,16 +209,16 @@ class ModelDAG:
             A list of Python file paths in the specified directory, excluding `__init__.py`.
         """
         py_files = glob.glob(os.path.join(path, "*.py"))
-        py_files = [
+        return [
             file for file in py_files 
             if os.path.basename(file) != "__init__.py"
             ]
-        return py_files
 
-    def _get_dict_keys(self, 
-                       node: ast.AST, 
-                       id_to_check: str, 
-                       check_fstring: bool = True
+    def _get_dict_keys(
+        self, 
+        node: ast.AST, 
+        id_to_check: str, 
+        check_fstring: bool = True
     ) -> List[str]:
         """
         Extract keys from a dictionary accessed in an AST node.
@@ -189,11 +266,15 @@ class ModelDAG:
                                             coeff_keys.append(formatted_coeff)
         return coeff_keys
 
-    def _generate_user_inputs_list(self, 
-                                   possible_user_inputs: Dict[str, Any]
+    def _generate_user_inputs_list(
+        self, 
+        possible_user_inputs: Dict[str, Any]
     ) -> List[str]:
         """
         Generate a list of user input keys from possible user input structures.
+
+        This method iterates over the possible user input structures from the
+        input definitions module to extract the keys representing user inputs.
 
         Args:
             possible_user_inputs: A dictionary mapping structure names to their
@@ -204,14 +285,14 @@ class ModelDAG:
             A list of all user input keys found in the input structures.
         """
         user_inputs = []
-
         for structure_name, structure in possible_user_inputs.items():
             if isinstance(structure, dict):
                 user_inputs.extend(structure.keys())
         return user_inputs
 
-    def _create_function_entry(self, 
-                               node: ast.FunctionDef
+    def _create_function_entry(
+        self, 
+        node: ast.FunctionDef
     ) -> Tuple[Optional[str], List[str], List[str], List[str]]:
         """
         Collect required data for regular functions from an AST node.
@@ -270,9 +351,10 @@ class ModelDAG:
 
         return return_var, args ,coeff_keys, inputs
 
-    def _parse_nasem_equations(self, 
-                               py_files: List[str], 
-                               variables: pd.DataFrame
+    def _parse_nasem_equations(
+        self, 
+        py_files: List[str], 
+        variables: pd.DataFrame
     ) -> pd.DataFrame:
         """
         Parse NASEM equations from Python files and extract data for the DAG.
@@ -508,17 +590,6 @@ class ModelDAG:
             ValueError: If any vertex is isolated or has an incorrect number 
             of incoming or outgoing edges.
         """
-        def _print_debug():
-            print(f"Vertex {name} has an incorrect number of incoming edges.")
-            print(
-                f"Expected {expected_incoming_edges} incoming edges from: "
-                f"{data['expected_inputs']}"
-                )
-            print(
-                f"Actual {actual_incoming_edges} incoming edges from: "
-                f"{actual_incoming_names}"
-                )
-
         vertex_data = {
             row["Name"]: {
                 "expected_inputs": (
@@ -556,9 +627,6 @@ class ModelDAG:
                         if edge not in actual_incoming_names
                         ]
 
-                    # Print debug information
-                    # _print_debug()
-
                     if missing_edges:
                         print(f"Missing expected edges from: {missing_edges}")
 
@@ -591,9 +659,10 @@ class ModelDAG:
         print("Connectivity verification completed.")
 
     ### Tools ###
-    def get_calculation_order(self, 
-                              target_variable: str, 
-                              report: bool = True
+    def get_calculation_order(
+        self, 
+        target_variable: str, 
+        report: bool = True
     ) -> Dict[List[str], Dict[str, Dict[str, Any]]]:
         """
         Determine the calculation order for a given target variable.
@@ -648,10 +717,11 @@ class ModelDAG:
                 functions_order.append(vertex_function)
 
 
-        def print_report(target_variable: str, 
-                         functions_order: List[str], 
-                         sorted_user_inputs: Dict[str, Dict[str, Optional[str]]], 
-                         sorted_constants: Dict[str, Optional[Dict[str, Optional[str]]]]
+        def print_report(
+            target_variable: str, 
+            functions_order: List[str], 
+            sorted_user_inputs: Dict[str, Dict[str, Optional[str]]], 
+            sorted_constants: Dict[str, Optional[Dict[str, Optional[str]]]]
         ) -> None:
             """
             Print a formatted report of the calculation requirements.
@@ -688,7 +758,7 @@ class ModelDAG:
                         for field in sorted_constants[key]:
                             print(f"    - {field}")
                     else:
-                        print(f"    - {key} (Special structure like f_imb)")
+                        print(f"    - {key}")
 
 
         if target_variable not in self.name_to_vertex:
@@ -757,12 +827,13 @@ class ModelDAG:
         Returns:
             Callable: A function that calculates the target variable.
         """
-        def create_docstring(target_variable: str, 
-                             arg_names: List[str], 
-                             user_inputs: Dict[str, Dict[str, Optional[str]]], 
-                             constants: Dict[str, Dict[str, Optional[str]]], 
-                             functions_order: List[str], 
-                             generated_func_return: str
+        def create_docstring(
+            target_variable: str, 
+            arg_names: List[str], 
+            user_inputs: Dict[str, Dict[str, Optional[str]]], 
+            constants: Dict[str, Dict[str, Optional[str]]], 
+            functions_order: List[str], 
+            generated_func_return: str
         ) -> str:
             """
             Generate a docstring for a dynamically generated function.
@@ -815,8 +886,9 @@ class ModelDAG:
             return docstring
 
 
-        def check_for_constants(functions_order: List[str], 
-                                constants: Dict[str, Dict[str, str]]
+        def check_for_constants(
+            functions_order: List[str], 
+            constants: Dict[str, Dict[str, str]]
         ) -> bool:
             """
             Check for 'coeff_dict' and 'aa_list' in function arguments.
@@ -846,8 +918,9 @@ class ModelDAG:
             return aa_list_required
 
 
-        def _identify_dict_args(dag_data: pd.DataFrame, 
-                                functions_order: List[str]
+        def _identify_dict_args(
+            dag_data: pd.DataFrame, 
+            functions_order: List[str]
         ) -> Dict[str, Dict[str, List[Any]]]:
             """
             Identify functions that require dictionaries as arguments.

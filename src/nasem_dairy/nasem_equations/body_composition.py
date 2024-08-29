@@ -1,15 +1,19 @@
-# Body composition equations
-# Calculations for body reseves gain/loss, frame gain, energy reserves
-# import nasem_dairy.nasem_equations.body_composition as body_comp
+"""Functions to calculate values related to the body composition of animals.
+
+This includes fat, protein, and water content. There are also estimates of 
+composition change based on the change in body reserves.
+"""
+
 import math
 
 import numpy as np
 
 
-def calculate_Frm_Gain_empty(Frm_Gain: float, 
-                             Dt_DMIn_ClfLiq: float, 
-                             Dt_DMIn_ClfStrt: float,
-                             An_GutFill_BW: float
+def calculate_Frm_Gain_empty(
+    Frm_Gain: float, 
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DMIn_ClfStrt: float,
+    An_GutFill_BW: float
 ) -> float:
     Frm_Gain_empty = Frm_Gain * (1 - An_GutFill_BW)  
     # Line 2439, Assume the same gut fill for frame gain
@@ -19,8 +23,9 @@ def calculate_Frm_Gain_empty(Frm_Gain: float,
     return Frm_Gain_empty
 
 
-def calculate_Body_Gain_empty(Frm_Gain_empty: float, 
-                              Rsrv_Gain_empty: float
+def calculate_Body_Gain_empty(
+    Frm_Gain_empty: float, 
+    Rsrv_Gain_empty: float
 ) -> float:
     Body_Gain_empty = Frm_Gain_empty + Rsrv_Gain_empty  # Line 2442
     return Body_Gain_empty
@@ -41,8 +46,9 @@ def calculate_NPGain_RsrvGain(coeff_dict: dict) -> float:
     return NPGain_RsrvGain
 
 
-def calculate_Rsrv_NPgain(NPGain_RsrvGain: float, 
-                          Rsrv_Gain_empty: float
+def calculate_Rsrv_NPgain(
+    NPGain_RsrvGain: float, 
+    Rsrv_Gain_empty: float
 ) -> float:
     Rsrv_NPgain = NPGain_RsrvGain * Rsrv_Gain_empty  # Line 2468
     return Rsrv_NPgain
@@ -76,7 +82,8 @@ def calculate_Body_CPgain_g(Body_CPgain: float) -> float:
 
 def calculate_Rsrv_Gain(Trg_RsrvGain: float) -> float:
     """
-    Trg_RsrvGain (float): Target gain or loss in body reserves (66% fat, 8% CP) in kg fresh weight/day
+    Trg_RsrvGain (float): Target gain or loss in body reserves 
+                          (66% fat, 8% CP) in kg fresh weight/day
     """
     Rsrv_Gain = Trg_RsrvGain  # Line 2435
     return Rsrv_Gain
@@ -119,8 +126,9 @@ def calculate_CPGain_FrmGain(An_BW: float, An_BW_mature: float) -> float:
     return CPGain_FrmGain
 
 
-def calculate_Rsrv_CPgain(CPGain_FrmGain: float,
-                          Rsrv_Gain_empty: float
+def calculate_Rsrv_CPgain(
+    CPGain_FrmGain: float,
+    Rsrv_Gain_empty: float
 ) -> float:
     """
     Rsrv_CPgain: CP portion of body reserve gain, g/g
@@ -129,14 +137,16 @@ def calculate_Rsrv_CPgain(CPGain_FrmGain: float,
     return Rsrv_CPgain
 
 
-def calculate_FatGain_FrmGain(An_StatePhys: str, 
-                              An_REgain_Calf: float,
-                              An_BW: float, 
-                              An_BW_mature: float
+def calculate_FatGain_FrmGain(
+    An_StatePhys: str, 
+    An_REgain_Calf: float,
+    An_BW: float, 
+    An_BW_mature: float
 ) -> float:
     """
     FatGain_FrmGain: Fat gain per unit frame gain, kg/kg EBW (Empty body weight)
-    This is the proportion of the empty body weight that is fat, which increases (and protein decreases) as the animal matures
+    This is the proportion of the empty body weight that is fat, which increases 
+    (and protein decreases) as the animal matures
     This is why it is scaled to a proportion of mature BW (An_BW / An_BW_mature)
     Also in equation 20-253
     """
@@ -158,8 +168,9 @@ def calculate_Frm_Gain(Trg_FrmGain: float) -> float:
     return Frm_Gain
 
 
-def calculate_Frm_Fatgain(FatGain_FrmGain: float,
-                          Frm_Gain_empty: float
+def calculate_Frm_Fatgain(
+    FatGain_FrmGain: float,
+    Frm_Gain_empty: float
 ) -> float:
     """
     Frm_Fatgain: Frame fat gain kg/?
@@ -192,11 +203,12 @@ def calculate_NPGain_FrmGain(CPGain_FrmGain: float, coeff_dict: dict) -> float:
     return NPGain_FrmGain
 
 
-def calculate_Frm_NPgain(An_StatePhys: str, 
-                         NPGain_FrmGain: float,
-                         Frm_Gain_empty: float, 
-                         Body_Gain_empty: float,
-                         An_REgain_Calf: float
+def calculate_Frm_NPgain(
+    An_StatePhys: str, 
+    NPGain_FrmGain: float,
+    Frm_Gain_empty: float, 
+    Body_Gain_empty: float,
+    An_REgain_Calf: float
 ) -> float:
     """
     Frm_NPgain: NP portion of frame gain
@@ -234,8 +246,9 @@ def calculate_Body_NPgain_g(Body_NPgain: float) -> float:
     return Body_NPgain_g
 
 
-def calculate_An_BWmature_empty(An_BW_mature: float, 
-                                coeff_dict: dict
+def calculate_An_BWmature_empty(
+    An_BW_mature: float, 
+    coeff_dict: dict
 ) -> float:
     """
     An_BWmature_empty: kg bodyweight with no gut fill 
@@ -306,9 +319,10 @@ def calculate_An_BWnp3(An_BWnp: float, An_BCS: float) -> float:
     return An_BWnp3
 
 
-def calculate_An_GutFill_Wt_Erdman(Dt_DMIn: float, 
-                                   InfRum_DMIn: float,
-                                   InfSI_DMIn: float
+def calculate_An_GutFill_Wt_Erdman(
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_GutFill_Wt_Erdman: Gut fill from Erdman et al. 2017
@@ -384,8 +398,9 @@ def calculate_Body_Fat(An_BWnp_empty: float, Body_Fat_EBW: float) -> float:
     return Body_Fat
 
 
-def calculate_Body_NonFat(An_BWnp_empty: float,
-                          Body_NonFat_EBW: float
+def calculate_Body_NonFat(
+    An_BWnp_empty: float,
+    Body_NonFat_EBW: float
 ) -> float:
     """
     Body_NonFat: Non fat bodyweight (g)
@@ -442,8 +457,9 @@ def calculate_Body_Fatgain(Frm_Fatgain: float, Rsrv_Fatgain: float) -> float:
     return Body_Fatgain
 
 
-def calculate_Body_NonFatGain(Body_Gain_empty: float,
-                              Body_Fatgain: float
+def calculate_Body_NonFatGain(
+    Body_Gain_empty: float,
+    Body_Fatgain: float
 ) -> float:
     """
     Body_NonFatGain: Non fat gain (g/g)
@@ -485,8 +501,9 @@ def calculate_Frm_AshGain(Body_AshGain: float) -> float:
     return Frm_AshGain
 
 
-def calculate_WatGain_RsrvGain(NPGain_RsrvGain: float,
-                               coeff_dict: dict
+def calculate_WatGain_RsrvGain(
+    NPGain_RsrvGain: float,
+    coeff_dict: dict
 ) -> float:
     """
     WatGain_RsrvGain: Body reserve water gain (g/g)
@@ -506,8 +523,9 @@ def calculate_WatGain_RsrvGain(NPGain_RsrvGain: float,
     return WatGain_RsrvGain
 
 
-def calculate_Rsrv_WatGain(WatGain_RsrvGain: float,
-                           Rsrv_Gain_empty: float
+def calculate_Rsrv_WatGain(
+    WatGain_RsrvGain: float,
+    Rsrv_Gain_empty: float
 ) -> float:
     """
     Rsrv_WatGain: Body reserve water gain (g/g)
@@ -533,9 +551,10 @@ def calculate_Frm_WatGain(Body_WatGain: float, Rsrv_WatGain: float) -> float:
     return Frm_WatGain
 
 
-def calculate_An_MPavail_Gain_Trg(An_MPIn: float, 
-                                  An_MPuse_g_Trg: float,
-                                  Body_MPUse_g_Trg: float
+def calculate_An_MPavail_Gain_Trg(
+    An_MPIn: float, 
+    An_MPuse_g_Trg: float,
+    Body_MPUse_g_Trg: float
 ) -> float:
     """
     An_MPavail_Gain_Trg: MP available for target gain? (kg/d)
@@ -545,8 +564,9 @@ def calculate_An_MPavail_Gain_Trg(An_MPIn: float,
     return An_MPavail_Gain_Trg
 
 
-def calculate_Body_NPgain_MPalowTrg_g(An_MPavail_Gain_Trg: float,
-                                      Kg_MP_NP_Trg: float
+def calculate_Body_NPgain_MPalowTrg_g(
+    An_MPavail_Gain_Trg: float,
+    Kg_MP_NP_Trg: float
 ) -> float:
     """
     Body_NPgain_MPalowTrg_g: MP allowable NP gain (g/d)
@@ -556,8 +576,9 @@ def calculate_Body_NPgain_MPalowTrg_g(An_MPavail_Gain_Trg: float,
     return Body_NPgain_MPalowTrg_g
 
 
-def calculate_Body_CPgain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float,
-                                      coeff_dict: dict
+def calculate_Body_CPgain_MPalowTrg_g(
+    Body_NPgain_MPalowTrg_g: float,
+    coeff_dict: dict
 ) -> float:
     """
     Body_CPgain_MPalowTrg_g: MP allowable CP gain (g/d)
@@ -578,8 +599,9 @@ def calculate_Body_CPgain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float,
     return Body_CPgain_MPalowTrg_g
 
 
-def calculate_Body_Gain_MPalowTrg_g(Body_NPgain_MPalowTrg_g: float,
-                                    NPGain_FrmGain: float
+def calculate_Body_Gain_MPalowTrg_g(
+    Body_NPgain_MPalowTrg_g: float,
+    NPGain_FrmGain: float
 ) -> float:
     """
     Body_Gain_MPalowTrg_g: MP allowable body gain (g/d)
@@ -597,10 +619,11 @@ def calculate_Body_Gain_MPalowTrg(Body_Gain_MPalowTrg_g: float) -> float:
     return Body_Gain_MPalowTrg
 
 
-def calculate_An_MEavail_Grw(An_MEIn: float, 
-                             An_MEmUse: float,
-                             Gest_MEuse: float, 
-                             Mlk_MEout: float
+def calculate_An_MEavail_Grw(
+    An_MEIn: float, 
+    An_MEmUse: float,
+    Gest_MEuse: float, 
+    Mlk_MEout: float
 ) -> float:
     """
     An_MEavail_Grw: ME available for growth (Mcal/d)
@@ -609,10 +632,11 @@ def calculate_An_MEavail_Grw(An_MEIn: float,
     return An_MEavail_Grw
 
 
-def calculate_Kg_ME_NE(Frm_NEgain: float, 
-                       Rsrv_NEgain: float, 
-                       Kr_ME_RE: float,
-                       Kf_ME_RE: float
+def calculate_Kg_ME_NE(
+    Frm_NEgain: float, 
+    Rsrv_NEgain: float, 
+    Kr_ME_RE: float,
+    Kf_ME_RE: float
 ) -> float:
     """
     Kg_ME_NE: ME to NE for NE allowable gain?
@@ -627,9 +651,10 @@ def calculate_Kg_ME_NE(Frm_NEgain: float,
     return Kg_ME_NE
 
 
-def calculate_Body_Gain_NEalow(An_MEavail_Grw: float, 
-                               Kg_ME_NE: float,
-                               Body_NEgain_BWgain: float
+def calculate_Body_Gain_NEalow(
+    An_MEavail_Grw: float, 
+    Kg_ME_NE: float,
+    Body_NEgain_BWgain: float
 ) -> float:
     """
     Body_Gain_NEalow: NE allowable body gain
@@ -645,8 +670,9 @@ def calculate_Body_Gain_NEalow(An_MEavail_Grw: float,
     return Body_Gain_NEalow
 
 
-def calculate_An_BodConcgain_NEalow(Body_Gain_NEalow: float,
-                                    Conc_BWgain: float
+def calculate_An_BodConcgain_NEalow(
+    Body_Gain_NEalow: float,
+    Conc_BWgain: float
 ) -> float:
     """
     An_BodConcgain_NEalow: ?
@@ -672,8 +698,9 @@ def calculate_Body_NPgain_NEalow(Body_Fatgain_NEalow: float) -> float:
     return Body_NPgain_NEalow
 
 
-def calculate_An_Days_BCSdelta1(BW_BCS: float,
-                                Body_Gain_NEalow: float
+def calculate_An_Days_BCSdelta1(
+    BW_BCS: float,
+    Body_Gain_NEalow: float
 ) -> float:
     """
     An_Days_BCSdelta1: Days to gain/lose 1 BCS 
@@ -683,8 +710,9 @@ def calculate_An_Days_BCSdelta1(BW_BCS: float,
     return An_Days_BCSdelta1
 
 
-def calculate_Rsrv_AshGain(Rsrv_Gain_empty: float,
-                           coeff_dict: dict
+def calculate_Rsrv_AshGain(
+    Rsrv_Gain_empty: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples

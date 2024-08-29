@@ -3,7 +3,9 @@ import pytest
 from nasem_dairy.model.input_validation import validate_MP_NP_efficiency_input
 
 def test_not_a_dictionary():
-    with pytest.raises(TypeError, match="MP_NP_efficiency_input must be a dict"):
+    with pytest.raises(
+        TypeError, match="MP_NP_efficiency_input must be a dict"
+        ):
         validate_MP_NP_efficiency_input(["not", "a", "dict"])
 
 
@@ -54,7 +56,9 @@ def test_invalid_conversion():
         'Trg_AbsVal_NPVal': "0.74",
         'Trg_MP_NP': "0.69"
     }
-    with pytest.raises(TypeError, match="Value for Trg_AbsHis_NPHis must be of type float"):
+    with pytest.raises(
+        TypeError, match="Value for Trg_AbsHis_NPHis must be of type float"
+        ):
         validate_MP_NP_efficiency_input(MP_NP_efficiency_input)
 
 

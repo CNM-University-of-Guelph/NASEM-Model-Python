@@ -1,3 +1,15 @@
+"""Model output handling and reporting.
+
+This module defines the `ModelOutput` class, which is responsible for organizing,
+accessing, and reporting the results of model computations. The `ModelOutput`
+class loads output structures from JSON configuration files, categorizes the
+model outputs, and provides various methods for retrieving, displaying, and
+exporting the model data.
+
+Class:
+    ModelOutput: Handles the organization and retrieval of model outputs.
+"""
+
 import json
 import os
 import re
@@ -8,10 +20,11 @@ import pandas as pd
 
 
 class ModelOutput:
-    def __init__(self, 
-                 locals_input: dict, 
-                 config_path: str = "./model_output_structure.json",
-                 report_config_path: str = "./report_structure.json"
+    def __init__(
+        self, 
+        locals_input: dict, 
+        config_path: str = "./model_output_structure.json",
+        report_config_path: str = "./report_structure.json"
     ):
         """
         Initialize ModelOutput with input data and configuration paths.
@@ -74,26 +87,24 @@ class ModelOutput:
             - value
             - num_value
             - feed_data
-            - feed_library_df
-            - diet_info_initial
-            - diet_data_initial
+            - feed_library
             - aa_list
-            - An_data_initial
             - mPrt_coeff_list
             - mPrt_k_AA
+            - path_to_package_data
         """
         variables_to_remove = [
-            "key", "value", "num_value", "feed_library_df",
-            "diet_info_initial", "diet_data_initial", "aa_list",
-            "An_data_initial", "mPrt_coeff_list", "mPrt_k_AA"
+            "key", "value", "num_value", "feed_library", "aa_list",
+            "mPrt_coeff_list", "mPrt_k_AA", "path_to_package_data"
         ]
         for key in variables_to_remove:
             if key in self.locals_input:
                 self.dev_out[key] = self.locals_input.pop(key)
 
-    def __populate_category(self, 
-                            category_name: str, 
-                            group_structure: dict
+    def __populate_category(
+        self, 
+        category_name: str, 
+        group_structure: dict
     ) -> None:
         """
         Create and populate nested dictionaries using the structure from JSON.
@@ -102,7 +113,10 @@ class ModelOutput:
             category_name (str): The name of the category to populate.
             group_structure (dict): The structure of the group from the JSON file.
         """
-        def _recursive_populate(sub_category: dict, sub_structure: dict) -> None:
+        def _recursive_populate(
+            sub_category: dict, 
+            sub_structure: dict
+        ) -> None:
             """
             Recursively populate sub-categories based on the provided structure.
 
@@ -281,8 +295,9 @@ class ModelOutput:
         return snapshot_data
 
     ### Data Access ### 
-    def get_value(self, 
-                  name: str
+    def get_value(
+        self, 
+        name: str
     ) -> Union[str, int, float, dict, pd.DataFrame, None]:
         """
         Retrieve a value, dictionary, or dataframe with a given name.
@@ -297,8 +312,9 @@ class ModelOutput:
             Union[str, int, float, dict, pd.DataFrame, None]: The object with the
             given name, or None if not found.
         """
-        def _recursive_search_get_value(dictionary: dict, 
-                                        target_name: str
+        def _recursive_search_get_value(
+            dictionary: dict, 
+            target_name: str
         ) -> Union[Any, None]:
             """
             Recursively search for a group in a nested dictionary.
@@ -333,10 +349,11 @@ class ModelOutput:
                 return result
         return None                   
 
-    def search(self, 
-               search_string: str, 
-               dictionaries_to_search: Union[None, List[str]] = None,
-               case_sensitive: bool = False
+    def search(
+        self, 
+        search_string: str, 
+        dictionaries_to_search: Union[None, List[str]] = None,
+        case_sensitive: bool = False
     ) -> pd.DataFrame:
         """
         Search for a string in the ModelOutput instance and return matching results.
@@ -354,7 +371,10 @@ class ModelOutput:
         Returns:
             pd.DataFrame: A DataFrame containing the search results.
         """
-        def _recursive_search_search(dict_to_search: Dict[str, Any], path: str = "") -> None:
+        def _recursive_search_search(
+            dict_to_search: Dict[str, Any], 
+            path: str = ""
+        ) -> None:
             """
             Recursively search for a string in a nested dictionary.
 
@@ -384,8 +404,9 @@ class ModelOutput:
                             visited_keys.add(columns_key)
 
 
-        def _extract_dataframe_and_column(key: str, 
-                                         value: Any
+        def _extract_dataframe_and_column(
+            key: str, 
+            value: Any
         ) -> Dict[str, Union[str, List[str]]]:
             """
             Extract information from a DataFrame column.
@@ -500,10 +521,6 @@ class ModelOutput:
                         final_key = full_key.split(".")[-1]
                         data_dict[final_key] = value
                         _categorize_key(final_key, value)
-            else:
-                final_key = parent_key.split(".")[-1]
-                data_dict[final_key] = value
-                _categorize_key(parent_key, value)
 
 
         def _categorize_key(key: str, value: Any) -> None:
@@ -520,8 +537,6 @@ class ModelOutput:
                 special_keys["series"].append(key)
             elif isinstance(value, np.ndarray):
                 special_keys["ndarray"].append(key)
-            elif isinstance(value, dict):
-                special_keys["dict"].append(key)
             elif isinstance(value, list):
                 special_keys["list"].append(key)
 
@@ -531,7 +546,6 @@ class ModelOutput:
             "dataframe": [],
             "series": [],
             "ndarray": [],
-            "dict": [],
             "list": []
         }
         for attr_name in self.categories:
@@ -540,7 +554,6 @@ class ModelOutput:
         # print("DataFrame keys:", special_keys["dataframe"])
         # print("Series keys:", special_keys["series"])
         # print("Numpy array keys:", special_keys["ndarray"])
-        # print("Dict keys:", special_keys["dict"])
         # print("List keys:", special_keys["list"])
         return data_dict
 

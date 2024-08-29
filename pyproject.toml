@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "nasem_dairy"
-version = "1.0.0a0"
-description = "Implementation of (part of) NASEM 2021 dairy model in python "
+version = "1.0.0"
+description = "Implementation of the NASEM 2021 dairy model in python "
 authors = ["Braeden Fieguth & David Innes"]
 license = "MIT"
 readme = "README.md"
@@ -29,6 +29,9 @@ requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
+pythonpath = "."
 filterwarnings = [
-    "ignore::DeprecationWarning:dateutil.tz"
+    "ignore::DeprecationWarning:dateutil.tz",
+    "ignore::DeprecationWarning:gi.overrides",
+    "ignore::DeprecationWarning:pkgutil"
 ]

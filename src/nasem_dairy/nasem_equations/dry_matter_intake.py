@@ -1,24 +1,8 @@
-# dry_matter_intake
-# This file contains all the calculations for dry matter intake (DMI)
-# Calculations are in the order coresponding to their DMIn_eqn value
-# import nasem_dairy.nasem_equations.dry_matter_intake as DMI
+"""Functions for calculating for dry matter intake (DMI).
 
+Includes equations for animals of different physiological states. Some equations
+will use diet information in the prediction.
 """
-This sub-module includes all equations required to calculate dry matter intake (DMI) 
-for animals of different physiological states.
-
-
-Example
--------
-Example of how to use this module:
-    
-    # Suggested import
-    import nasem_dairy.nasem_equations.DMI_equations as DMI
-    
-    # Example usage
-    calculate_Kb_LateGest_DMIn()
-"""
-
 
 import math
 from typing import Union
@@ -81,9 +65,10 @@ def calculate_An_PrePartWklim(An_PrePartWk: float) -> Union[int, float]:
 
 
 # Need when DMIn_eqn == 2,3,4,5,6,7,10
-def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim: Union[int, float], 
-                                    Kb_LateGest_DMIn: float,
-                                    coeff_dict: dict
+def calculate_Dt_DMIn_BW_LateGest_i(
+    An_PrePartWklim: Union[int, float], 
+    Kb_LateGest_DMIn: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -105,9 +90,10 @@ def calculate_Dt_DMIn_BW_LateGest_i(An_PrePartWklim: Union[int, float],
 
 
 # Need when DMIn_eqn == 10,12,13,14,15,16,17
-def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat: Union[int, float], 
-                                    Kb_LateGest_DMIn: float,
-                                    coeff_dict: dict
+def calculate_Dt_DMIn_BW_LateGest_p(
+    An_PrePartWkDurat: Union[int, float], 
+    Kb_LateGest_DMIn: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -133,8 +119,9 @@ def calculate_Dt_DMIn_BW_LateGest_p(An_PrePartWkDurat: Union[int, float],
 
 
 # Need when DMIn_eqn == 2,3,4,5,6,7
-def calculate_Dt_DMIn_Heif_LateGestInd(An_BW: float, 
-                                       Dt_DMIn_BW_LateGest_i: float
+def calculate_Dt_DMIn_Heif_LateGestInd(
+    An_BW: float, 
+    Dt_DMIn_BW_LateGest_i: float
 ) -> float:
     # Individual intake for the specified day prepart or the pen mean intake 
     # for the interval, 0 to PrePart_WkDurat
@@ -144,8 +131,9 @@ def calculate_Dt_DMIn_Heif_LateGestInd(An_BW: float,
 
 
 # Need when DMIn_eqn == 12,13,14,15,16,17
-def calculate_Dt_DMIn_Heif_LateGestPen(An_BW: float, 
-                                       Dt_DMIn_BW_LateGest_p: float
+def calculate_Dt_DMIn_Heif_LateGestPen(
+    An_BW: float, 
+    Dt_DMIn_BW_LateGest_p: float
 ) -> float:
     Dt_DMIn_Heif_LateGestPen = 0.88 * An_BW * Dt_DMIn_BW_LateGest_p / 100  
     # Pen mean
@@ -171,9 +159,10 @@ def calculate_Dt_DMIn_Heif_NRCa(An_BW: float, An_BW_mature: float) -> float:
 
 
 # DMIn_eqn == 3, 13
-def calculate_Dt_DMIn_Heif_NRCad(An_BW: float, 
-                                 An_BW_mature: float, 
-                                 Dt_NDF: float
+def calculate_Dt_DMIn_Heif_NRCad(
+    An_BW: float, 
+    An_BW_mature: float, 
+    Dt_NDF: float
 ) -> float:
     # Anim & diet factors, eqn 2-4 NRC
     Dt_DMIn_Heif_NRCad = ((0.0226 * An_BW_mature * 
@@ -262,11 +251,12 @@ def calculate_Dt_DMIn_Heif_HJ2(An_BW:float, Dt_NDFdev_DMI: float) -> float:
 
 
 # DMIn_eqn == 8
-def calculate_Dt_DMIn_Lact1(An_BW: float, 
-                            An_BCS: float, 
-                            An_LactDay: int,
-                            An_Parity_rl: int, 
-                            Trg_NEmilkOut: float
+def calculate_Dt_DMIn_Lact1(
+    An_BW: float, 
+    An_BCS: float, 
+    An_LactDay: int,
+    An_Parity_rl: int, 
+    Trg_NEmilkOut: float
 ) -> float:
     """
     Calculate the predicted dry matter intake (DMI) for lactating dairy cows using equation 8.
@@ -324,11 +314,12 @@ def calculate_Dt_DMIn_Lact1(An_BW: float,
     return Dt_DMIn_Lact1
 
 # DMIn_eqn == 9 
-def calculate_Dt_DMIn_Lact2(Dt_ForNDF: float, 
-                            Dt_ADF: float, 
-                            Dt_NDF: float, 
-                            Dt_ForDNDF48_ForNDF: float,
-                            Trg_MilkProd: float
+def calculate_Dt_DMIn_Lact2(
+    Dt_ForNDF: float, 
+    Dt_ADF: float, 
+    Dt_NDF: float, 
+    Dt_ForDNDF48_ForNDF: float,
+    Trg_MilkProd: float
 ) -> float:
     Dt_DMIn_Lact2 = (12.0 - 0.107 * Dt_ForNDF + 8.17 * Dt_ADF / Dt_NDF + 
                      0.0253 * Dt_ForDNDF48_ForNDF - 
@@ -339,24 +330,27 @@ def calculate_Dt_DMIn_Lact2(Dt_ForNDF: float,
     return Dt_DMIn_Lact2
 
 # DMIn_eqn == 10
-def calculate_Dt_DMIn_DryCow1_FarOff(An_BW: float, 
-                                     Dt_DMIn_BW_LateGest_i: float
+def calculate_Dt_DMIn_DryCow1_FarOff(
+    An_BW: float, 
+    Dt_DMIn_BW_LateGest_i: float
 ) -> float:
     Dt_DMIn_DryCow1_FarOff = An_BW * Dt_DMIn_BW_LateGest_i / 100
     return Dt_DMIn_DryCow1_FarOff
 
 
 # DMIn_eqn == 10
-def calculate_Dt_DMIn_DryCow1_Close(An_BW: float, 
-                                    Dt_DMIn_BW_LateGest_p: float
+def calculate_Dt_DMIn_DryCow1_Close(
+    An_BW: float, 
+    Dt_DMIn_BW_LateGest_p: float
 ) -> float:
     Dt_DMIn_DryCow1_Close = An_BW * Dt_DMIn_BW_LateGest_p / 100
     return Dt_DMIn_DryCow1_Close
 
 
-def calculate_Dt_DMIn_DryCow_AdjGest(An_GestDay: int,
-                                     An_GestLength: int,
-                                     An_BW: float
+def calculate_Dt_DMIn_DryCow_AdjGest(
+    An_GestDay: int,
+    An_GestLength: int,
+    An_BW: float
 ) -> float:
     # from Hayirli et al., 2003 JDS
     if (An_GestDay - An_GestLength) < -21:
@@ -370,16 +364,18 @@ def calculate_Dt_DMIn_DryCow_AdjGest(An_GestDay: int,
 
 
 # DMIn_eqn == 11
-def calculate_Dt_DMIn_DryCow2(An_BW: float, 
-                              Dt_DMIn_DryCow_AdjGest: float
+def calculate_Dt_DMIn_DryCow2(
+    An_BW: float, 
+    Dt_DMIn_DryCow_AdjGest: float
 ) -> float:
     Dt_DMIn_DryCow2 = An_BW * 1.979 / 100 + Dt_DMIn_DryCow_AdjGest
     return Dt_DMIn_DryCow2
 
 
-def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float, 
-                            Dt_DMIn_ClfStrt: float,
-                            Dt_DMIn_ClfFor: float
+def calculate_Dt_DMIn_Calf1(
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DMIn_ClfStrt: float,
+    Dt_DMIn_ClfFor: float
 ) -> float:
     """
     Dt_DMIn_Calf1: Calf DMI with predicted starter intake, kg/d
@@ -390,36 +386,37 @@ def calculate_Dt_DMIn_Calf1(Dt_DMIn_ClfLiq: float,
     return Dt_DMIn_Calf1
 
 
-def calculate_Dt_DMIn(DMIn_eqn: int,
-                      Trg_Dt_DMIn: float,
-                      An_StatePhys: str,
-                      An_BW: float,
-                      An_BW_mature: float,
-                      An_BCS: int,
-                      An_LactDay: int,
-                      An_Parity_rl: int, 
-                      Trg_MilkProd: float,
-                      An_GestDay: int,
-                      An_GestLength: int,
-                      An_AgeDryFdStart: int,
-                      Env_TempCurr: float,
-                      An_PrePartWk: float,
-                      Trg_NEmilkOut: float,
-                      An_PrePartWklim: float,
-                      An_PrePartWkDurat: float,
-                      Fd_NDF: pd.Series,
-                      Fd_DMInp: pd.Series,
-                      Fd_ADF: pd.Series,
-                      Fd_ForNDF: pd.Series,
-                      Fd_Conc: pd.Series,
-                      Fd_DNDF48_input: pd.Series,
-                      Trg_Fd_DMIn: pd.Series,
-                      Fd_Category: pd.Series,
-                      Fd_CP: pd.Series,
-                      Fd_FA: pd.Series,
-                      Fd_Ash: pd.Series,
-                      Fd_St: pd.Series,
-                      coeff_dict: dict
+def calculate_Dt_DMIn(
+    DMIn_eqn: int,
+    Trg_Dt_DMIn: float,
+    An_StatePhys: str,
+    An_BW: float,
+    An_BW_mature: float,
+    An_BCS: int,
+    An_LactDay: int,
+    An_Parity_rl: int, 
+    Trg_MilkProd: float,
+    An_GestDay: int,
+    An_GestLength: int,
+    An_AgeDryFdStart: int,
+    Env_TempCurr: float,
+    An_PrePartWk: float,
+    Trg_NEmilkOut: float,
+    An_PrePartWklim: float,
+    An_PrePartWkDurat: float,
+    Fd_NDF: pd.Series,
+    Fd_DMInp: pd.Series,
+    Fd_ADF: pd.Series,
+    Fd_ForNDF: pd.Series,
+    Fd_Conc: pd.Series,
+    Fd_DNDF48_input: pd.Series,
+    Trg_Fd_DMIn: pd.Series,
+    Fd_Category: pd.Series,
+    Fd_CP: pd.Series,
+    Fd_FA: pd.Series,
+    Fd_Ash: pd.Series,
+    Fd_St: pd.Series,
+    coeff_dict: dict
 ) -> float:   
     Dt_NDF = (Fd_NDF * Fd_DMInp).sum()
     Dt_ADF = (Fd_ADF * Fd_DMInp).sum()

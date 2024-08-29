@@ -1,13 +1,19 @@
-# import nasem_dairy.nasem_equations.water as water
+"""Water intake and balance calculations.
+
+This module provides functions to estimate voluntary water intake, 
+water loss through manure, and water balance, adjusted for diet and 
+environmental conditions.
+"""
 
 
-def calculate_An_WaIn(An_StatePhys: str, 
-                      Dt_DMIn: float, 
-                      Dt_DM: float,
-                      Dt_Na: float, 
-                      Dt_K: float, 
-                      Dt_CP: float,
-                      Env_TempCurr: float
+def calculate_An_WaIn(
+    An_StatePhys: str, 
+    Dt_DMIn: float, 
+    Dt_DM: float,
+    Dt_Na: float, 
+    Dt_K: float, 
+    Dt_CP: float,
+    Env_TempCurr: float
 ) -> float:
     """
     An_WaIn: predicted voluntary water intake, kg/d
@@ -32,9 +38,10 @@ def calculate_An_WaIn(An_StatePhys: str,
     return An_WaIn
 
 
-def calculate_An_Wa_Insens(An_WaIn: float, 
-                           Mlk_Prod: float,
-                           Man_Wa_out: float
+def calculate_An_Wa_Insens(
+    An_WaIn: float, 
+    Mlk_Prod: float,
+    Man_Wa_out: float
 ) -> float:
     """
     An_Wa_Insens: Water baalance? (L/d)

@@ -1,6 +1,9 @@
-# All functions for calculating nutrient intakes based on ration formulation
-# import nasem_dairy.nasem_equations.nutrient_intakes as diet
+"""Functions for calcualting nutrient intakes.
 
+This module contains functions to estimate the intake of various nutrients 
+by animals, including energy, protein, and minerals, based on dietary composition 
+and dry matter intake.
+"""
 import math
 
 import numpy as np
@@ -38,10 +41,11 @@ def calculate_TT_dcFdNDF_48h(Fd_DNDF48: pd.Series) -> pd.Series:
     return TT_dcFdNDF_48h
 
 
-def calculate_TT_dcFdNDF_Base(Use_DNDF_IV: int, 
-                              Fd_Conc: pd.Series, 
-                              TT_dcFdNDF_Lg: pd.Series,
-                              TT_dcFdNDF_48h: pd.Series
+def calculate_TT_dcFdNDF_Base(
+    Use_DNDF_IV: int, 
+    Fd_Conc: pd.Series, 
+    TT_dcFdNDF_Lg: pd.Series,
+    TT_dcFdNDF_48h: pd.Series
 ) -> pd.Series:
     condition1 = (Use_DNDF_IV == 1) & (Fd_Conc < 100) & ~TT_dcFdNDF_48h.isna()  
     # Line 249, Forages only
@@ -54,14 +58,15 @@ def calculate_TT_dcFdNDF_Base(Use_DNDF_IV: int,
     return TT_dcFdNDF_Base
 
 
-def calculate_Fd_GE(An_StatePhys: str, 
-                    Fd_Category: pd.Series, 
-                    Fd_CP: pd.Series, 
-                    Fd_FA: pd.Series, 
-                    Fd_Ash: pd.Series, 
-                    Fd_St: pd.Series,
-                    Fd_NDF: pd.Series, 
-                    coeff_dict: dict
+def calculate_Fd_GE(
+    An_StatePhys: str, 
+    Fd_Category: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_Ash: pd.Series, 
+    Fd_St: pd.Series,
+    Fd_NDF: pd.Series, 
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Examples
@@ -183,11 +188,12 @@ def calculate_Fd_FAhydr(Fd_FA: pd.Series, Fd_fHydr_FA: pd.Series) -> pd.Series:
     return Fd_FAhydr
 
 
-def calculate_Fd_NFC(Fd_NDF: pd.Series, 
-                     Fd_TP: pd.Series, 
-                     Fd_Ash: pd.Series, 
-                     Fd_FAhydr: pd.Series, 
-                     Fd_NPNDM: pd.Series
+def calculate_Fd_NFC(
+    Fd_NDF: pd.Series, 
+    Fd_TP: pd.Series, 
+    Fd_Ash: pd.Series, 
+    Fd_FAhydr: pd.Series, 
+    Fd_NPNDM: pd.Series
 ) -> pd.Series:
     Fd_NFC = 100 - Fd_Ash - Fd_NDF - Fd_TP - Fd_NPNDM - Fd_FAhydr  # Line 465
     # Forces any values below 0 to =0           # Line 466
@@ -195,13 +201,14 @@ def calculate_Fd_NFC(Fd_NDF: pd.Series,
     return Fd_NFC
 
 
-def calculate_Fd_rOM(Fd_NDF: pd.Series, 
-                     Fd_St: pd.Series, 
-                     Fd_TP: pd.Series, 
-                     Fd_FA: pd.Series, 
-                     Fd_fHydr_FA: pd.Series, 
-                     Fd_Ash: pd.Series,
-                     Fd_NPNDM: pd.Series
+def calculate_Fd_rOM(
+    Fd_NDF: pd.Series, 
+    Fd_St: pd.Series, 
+    Fd_TP: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_fHydr_FA: pd.Series, 
+    Fd_Ash: pd.Series,
+    Fd_NPNDM: pd.Series
 ) -> pd.Series:
     Fd_rOM = (100 - Fd_Ash - Fd_NDF - Fd_St - 
               (Fd_FA*Fd_fHydr_FA) - Fd_TP - Fd_NPNDM) # Line 468
@@ -213,8 +220,9 @@ def calculate_Fd_GEIn(Fd_GE: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     return Fd_GEIn
 
 
-def calculate_Fd_DigNDFIn_Base(Fd_NDFIn: pd.Series, 
-                               TT_dcFdNDF_Base: pd.Series
+def calculate_Fd_DigNDFIn_Base(
+    Fd_NDFIn: pd.Series, 
+    TT_dcFdNDF_Base: pd.Series
 ) -> pd.Series:
     Fd_DigNDFIn_Base = TT_dcFdNDF_Base / 100 * Fd_NDFIn  # Line 481
     return Fd_DigNDFIn_Base
@@ -245,17 +253,19 @@ def calculate_Fd_CPBIn(Fd_CPIn: pd.Series, Fd_CPBRU: pd.Series) -> pd.Series:
     return Fd_CPBIn
 
 
-def calculate_Fd_CPBIn_For(Fd_CPIn: pd.Series, 
-                           Fd_CPBRU: pd.Series, 
-                           Fd_For: pd.Series
+def calculate_Fd_CPBIn_For(
+    Fd_CPIn: pd.Series, 
+    Fd_CPBRU: pd.Series, 
+    Fd_For: pd.Series
 ) -> pd.Series:
     Fd_CPBIn_For = Fd_CPIn * Fd_CPBRU / 100 * Fd_For / 100  # Line 496
     return Fd_CPBIn_For
 
 
-def calculate_Fd_CPBIn_Conc(Fd_CPIn: pd.Series, 
-                            Fd_CPBRU: pd.Series, 
-                            Fd_Conc: pd.Series
+def calculate_Fd_CPBIn_Conc(
+    Fd_CPIn: pd.Series, 
+    Fd_CPBRU: pd.Series, 
+    Fd_Conc: pd.Series
 ) -> pd.Series:
     Fd_CPBIn_Conc = Fd_CPIn * Fd_CPBRU / 100 * Fd_Conc / 100  # Line 497
     return Fd_CPBIn_Conc
@@ -266,28 +276,31 @@ def calculate_Fd_CPCIn(Fd_CPIn: pd.Series, Fd_CPCRU: pd.Series) -> pd.Series:
     return Fd_CPCIn
 
 
-def calculate_Fd_CPIn_ClfLiq(Fd_Category: pd.Series, 
-                             Fd_DMIn: pd.Series, 
-                             Fd_CP: pd.Series
+def calculate_Fd_CPIn_ClfLiq(
+    Fd_Category: pd.Series, 
+    Fd_DMIn: pd.Series, 
+    Fd_CP: pd.Series
 ) -> pd.Series:
     Fd_CPIn_ClfLiq = np.where(Fd_Category == "Calf Liquid Feed",
                               Fd_DMIn * Fd_CP / 100, 0)  # Line 499
     return Fd_CPIn_ClfLiq
 
 
-def calculate_Fd_CPIn_ClfDry(Fd_Category: pd.Series, 
-                             Fd_DMIn: pd.Series, 
-                             Fd_CP: pd.Series
+def calculate_Fd_CPIn_ClfDry(
+    Fd_Category: pd.Series, 
+    Fd_DMIn: pd.Series, 
+    Fd_CP: pd.Series
 ) -> pd.Series:
     Fd_CPIn_ClfDry = np.where(Fd_Category == "Calf Liquid Feed", 
                               0, Fd_DMIn * Fd_CP / 100)  # Line 500
     return Fd_CPIn_ClfDry
 
 
-def calculate_Fd_rdcRUPB(Fd_For: pd.Series, 
-                         Fd_Conc: pd.Series, 
-                         Fd_KdRUP: pd.Series, 
-                         coeff_dict: dict
+def calculate_Fd_rdcRUPB(
+    Fd_For: pd.Series, 
+    Fd_Conc: pd.Series, 
+    Fd_KdRUP: pd.Series, 
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Examples
@@ -310,11 +323,12 @@ def calculate_Fd_rdcRUPB(Fd_For: pd.Series,
     return Fd_rdcRUPB
 
 
-def calculate_Fd_RUPBIn(Fd_For: pd.Series, 
-                        Fd_Conc: pd.Series, 
-                        Fd_KdRUP: pd.Series, 
-                        Fd_CPBIn: pd.Series, 
-                        coeff_dict: dict
+def calculate_Fd_RUPBIn(
+    Fd_For: pd.Series, 
+    Fd_Conc: pd.Series, 
+    Fd_KdRUP: pd.Series, 
+    Fd_CPBIn: pd.Series, 
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Examples
@@ -339,12 +353,13 @@ def calculate_Fd_RUPBIn(Fd_For: pd.Series,
     return Fd_RUPBIn
 
 
-def calculate_Fd_RUPIn(Fd_CPIn: pd.Series, 
-                       Fd_CPAIn: pd.Series, 
-                       Fd_CPCIn: pd.Series, 
-                       Fd_NPNCPIn: pd.Series, 
-                       Fd_RUPBIn: pd.Series,
-                       coeff_dict: dict
+def calculate_Fd_RUPIn(
+    Fd_CPIn: pd.Series, 
+    Fd_CPAIn: pd.Series, 
+    Fd_CPCIn: pd.Series, 
+    Fd_NPNCPIn: pd.Series, 
+    Fd_RUPBIn: pd.Series,
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Examples
@@ -372,17 +387,19 @@ def calculate_Fd_RUP_CP(Fd_CPIn: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
     return Fd_RUP_CP
 
 
-def calculate_Fd_RUP(Fd_CPIn: pd.Series, 
-                     Fd_RUPIn: pd.Series, 
-                     Fd_DMIn: pd.Series
+def calculate_Fd_RUP(
+    Fd_CPIn: pd.Series, 
+    Fd_RUPIn: pd.Series, 
+    Fd_DMIn: pd.Series
 ) -> pd.Series:
     Fd_RUP = np.where(Fd_CPIn > 0, Fd_RUPIn / Fd_DMIn * 100, 0)  # Line 522
     return Fd_RUP
 
 
-def calculate_Fd_RDP(Fd_CPIn: pd.Series, 
-                     Fd_CP: pd.Series, 
-                     Fd_RUP: pd.Series
+def calculate_Fd_RDP(
+    Fd_CPIn: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_RUP: pd.Series
 ) -> pd.Series:
     Fd_RDP = np.where(Fd_CPIn > 0, Fd_CP - Fd_RUP, 0)  # Line 523
     return Fd_RDP
@@ -393,17 +410,18 @@ def calculate_Fd_OMIn(Fd_DMIn: pd.Series, Fd_AshIn: pd.Series) -> pd.Series:
     return Fd_OMIn
 
 
-def calculate_Fd_DE_base_1(Fd_NDF: pd.Series, 
-                           Fd_Lg: pd.Series, 
-                           Fd_St: pd.Series, 
-                           Fd_dcSt: pd.Series, 
-                           Fd_FA: pd.Series, 
-                           Fd_dcFA: pd.Series,
-                           Fd_Ash: pd.Series, 
-                           Fd_CP: pd.Series, 
-                           Fd_NPNCP: pd.Series, 
-                           Fd_RUP: pd.Series, 
-                           Fd_dcRUP: pd.Series
+def calculate_Fd_DE_base_1(
+    Fd_NDF: pd.Series, 
+    Fd_Lg: pd.Series, 
+    Fd_St: pd.Series, 
+    Fd_dcSt: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_dcFA: pd.Series,
+    Fd_Ash: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_NPNCP: pd.Series, 
+    Fd_RUP: pd.Series, 
+    Fd_dcRUP: pd.Series
 ) -> pd.Series:
     adjusted_NDF = np.where(Fd_NDF == 0, 1e-9, Fd_NDF)
     # if Fd_NDF == 0:
@@ -428,17 +446,18 @@ def calculate_Fd_DE_base_1(Fd_NDF: pd.Series,
     return Fd_DE_base_1
 
 
-def calculate_Fd_DE_base_2(Fd_NDF: pd.Series, 
-                           Fd_St: pd.Series, 
-                           Fd_dcSt: pd.Series, 
-                           Fd_FA: pd.Series, 
-                           Fd_dcFA: pd.Series, 
-                           Fd_Ash: pd.Series,
-                           Fd_CP: pd.Series, 
-                           Fd_NPNCP: pd.Series, 
-                           Fd_RUP: pd.Series, 
-                           Fd_dcRUP: pd.Series, 
-                           Fd_DNDF48_NDF: pd.Series
+def calculate_Fd_DE_base_2(
+    Fd_NDF: pd.Series, 
+    Fd_St: pd.Series, 
+    Fd_dcSt: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_dcFA: pd.Series, 
+    Fd_Ash: pd.Series,
+    Fd_CP: pd.Series, 
+    Fd_NPNCP: pd.Series, 
+    Fd_RUP: pd.Series, 
+    Fd_dcRUP: pd.Series, 
+    Fd_DNDF48_NDF: pd.Series
 ) -> pd.Series:
     # Standard equation 2 - based on setting of IVNDF use switch
     Fd_DE_base_2 = (
@@ -455,19 +474,20 @@ def calculate_Fd_DE_base_2(Fd_NDF: pd.Series,
     return Fd_DE_base_2
 
 
-def calculate_Fd_DE_base(Use_DNDF_IV: int, 
-                         Fd_DE_base_1: pd.Series, 
-                         Fd_DE_base_2: pd.Series, 
-                         Fd_For: pd.Series, 
-                         Fd_FA: pd.Series,
-                         Fd_RDP: pd.Series, 
-                         Fd_RUP: pd.Series, 
-                         Fd_dcRUP: pd.Series, 
-                         Fd_CP: pd.Series, 
-                         Fd_Ash: pd.Series, 
-                         Fd_dcFA: pd.Series,
-                         Fd_NPN: pd.Series, 
-                         Fd_Category: pd.Series
+def calculate_Fd_DE_base(
+    Use_DNDF_IV: int, 
+    Fd_DE_base_1: pd.Series, 
+    Fd_DE_base_2: pd.Series, 
+    Fd_For: pd.Series, 
+    Fd_FA: pd.Series,
+    Fd_RDP: pd.Series, 
+    Fd_RUP: pd.Series, 
+    Fd_dcRUP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_Ash: pd.Series, 
+    Fd_dcFA: pd.Series,
+    Fd_NPN: pd.Series, 
+    Fd_Category: pd.Series
 ) -> pd.Series:
     Fd_DE_base = np.where(Use_DNDF_IV == 0, 
                           Fd_DE_base_1, Fd_DE_base_2) # Line 559
@@ -511,41 +531,46 @@ def calculate_Fd_DE_base(Use_DNDF_IV: int,
     return Fd_DE_base
 
 
-def calculate_Fd_DEIn_base(Fd_DE_base: pd.Series, 
-                           Fd_DMIn: pd.Series
+def calculate_Fd_DEIn_base(
+    Fd_DE_base: pd.Series, 
+    Fd_DMIn: pd.Series
 ) -> pd.Series:
     Fd_DEIn_base = Fd_DE_base * Fd_DMIn  # Line 574
     return Fd_DEIn_base
 
 
-def calculate_Fd_DEIn_base_ClfLiq(Fd_Category: pd.Series, 
-                                  Fd_DEIn_base: pd.Series
+def calculate_Fd_DEIn_base_ClfLiq(
+    Fd_Category: pd.Series, 
+    Fd_DEIn_base: pd.Series
 ) -> pd.Series:
     Fd_DEIn_base_ClfLiq = np.where(Fd_Category == "Calf Liquid Feed", 
                                    Fd_DEIn_base, 0) # Line 575
     return Fd_DEIn_base_ClfLiq
 
 
-def calculate_Fd_DEIn_base_ClfDry(Fd_Category: pd.Series, 
-                                  Fd_DEIn_base: pd.Series
+def calculate_Fd_DEIn_base_ClfDry(
+    Fd_Category: pd.Series, 
+    Fd_DEIn_base: pd.Series
 ) -> pd.Series:
     Fd_DEIn_base_ClfDry = np.where(Fd_Category == "Calf Liquid Feed", 
                                    0, Fd_DEIn_base) # Line 576
     return Fd_DEIn_base_ClfDry
 
 
-def calculate_Fd_DMIn_ClfLiq(An_StatePhys: str, 
-                             Fd_DMIn: pd.Series, 
-                             Fd_Category: pd.Series
+def calculate_Fd_DMIn_ClfLiq(
+    An_StatePhys: str, 
+    Fd_DMIn: pd.Series, 
+    Fd_Category: pd.Series
 ) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")  
     Fd_DMIn_ClfLiq = np.where(condition, Fd_DMIn, 0)  # milk intake, Line 283
     return Fd_DMIn_ClfLiq
 
 
-def calculate_Fd_DE_ClfLiq(An_StatePhys: str, 
-                           Fd_Category: pd.Series, 
-                           Fd_GE: pd.Series
+def calculate_Fd_DE_ClfLiq(
+    An_StatePhys: str, 
+    Fd_Category: pd.Series, 
+    Fd_GE: pd.Series
 ) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")
     # prelim estimate for DMI only, mcal/kg, nutrients are in %, Line 284
@@ -553,9 +578,10 @@ def calculate_Fd_DE_ClfLiq(An_StatePhys: str,
     return Fd_DE_ClfLiq
 
 
-def calculate_Fd_ME_ClfLiq(An_StatePhys: str, 
-                           Fd_Category: pd.Series, 
-                           Fd_DE_ClfLiq: pd.Series
+def calculate_Fd_ME_ClfLiq(
+    An_StatePhys: str, 
+    Fd_Category: pd.Series, 
+    Fd_DE_ClfLiq: pd.Series
 ) -> pd.Series:
     condition = (An_StatePhys == "Calf") & (Fd_Category == "Calf Liquid Feed")
     Fd_ME_ClfLiq = np.where(condition, 
@@ -564,16 +590,18 @@ def calculate_Fd_ME_ClfLiq(An_StatePhys: str,
     return Fd_ME_ClfLiq
 
 
-def calculate_Fd_DMIn_ClfFor(Dt_DMIn: float, 
-                             Fd_Conc: pd.Series, 
-                             Fd_DMInp: pd.Series
+def calculate_Fd_DMIn_ClfFor(
+    Dt_DMIn: float, 
+    Fd_Conc: pd.Series, 
+    Fd_DMInp: pd.Series
 ) -> pd.Series:
     Fd_DMIn_ClfFor = (1 - Fd_Conc / 100) * Dt_DMIn * Fd_DMInp  # Line 296
     return Fd_DMIn_ClfFor
 
 
-def calculate_Fd_PinorgIn(Fd_PIn: pd.Series, 
-                          Fd_Pinorg_P: pd.Series
+def calculate_Fd_PinorgIn(
+    Fd_PIn: pd.Series, 
+    Fd_Pinorg_P: pd.Series
 ) -> pd.Series:
     Fd_PinorgIn = Fd_PIn * Fd_Pinorg_P / 100  # Line 731, ??Check Bill's text
     return Fd_PinorgIn
@@ -586,17 +614,19 @@ def calculate_Fd_PorgIn(Fd_PIn: pd.Series, Fd_Porg_P: pd.Series) -> pd.Series:
     return Fd_PorgIn
 
 
-def calculate_Fd_MgIn_min(Fd_Category: pd.Series, 
-                          Fd_MgIn: pd.Series
+def calculate_Fd_MgIn_min(
+    Fd_Category: pd.Series, 
+    Fd_MgIn: pd.Series
 ) -> pd.Series:
     Fd_MgIn_min = Fd_MgIn.copy()
     Fd_MgIn_min[Fd_Category != "Vitamin/Mineral"] = 0
     return Fd_MgIn_min
 
 
-def calculate_Fd_acCa(An_StatePhys: str, 
-                      Fd_acCa_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acCa(
+    An_StatePhys: str, 
+    Fd_acCa_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1839
     Fd_acCa = np.where(condition, 1, Fd_acCa_input)
@@ -605,12 +635,13 @@ def calculate_Fd_acCa(An_StatePhys: str,
     return Fd_acCa
 
 
-def calculate_Fd_acPtot(An_StatePhys: str, 
-                        Fd_Category: pd.Series, 
-                        Fd_Pinorg_P: pd.Series, 
-                        Fd_Porg_P: pd.Series,
-                        Fd_acPtot_input: pd.Series, 
-                        Dt_DMIn_ClfLiq: float
+def calculate_Fd_acPtot(
+    An_StatePhys: str, 
+    Fd_Category: pd.Series, 
+    Fd_Pinorg_P: pd.Series, 
+    Fd_Porg_P: pd.Series,
+    Fd_acPtot_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acPtot = np.where(Fd_Category == "Vitamin/Mineral", 
                          Fd_acPtot_input, 
@@ -622,9 +653,10 @@ def calculate_Fd_acPtot(An_StatePhys: str,
     return Fd_acPtot
 
 
-def calculate_Fd_acMg(An_StatePhys: str, 
-                      Fd_acMg_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acMg(
+    An_StatePhys: str, 
+    Fd_acMg_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1844
     Fd_acMg = np.where(condition, 1, Fd_acMg_input)
@@ -633,7 +665,10 @@ def calculate_Fd_acMg(An_StatePhys: str,
     return Fd_acMg
 
 
-def calculate_Fd_acNa(An_StatePhys: str, Fd_acNa_input: pd.Series) -> np.ndarray:
+def calculate_Fd_acNa(
+    An_StatePhys: str, 
+    Fd_acNa_input: pd.Series
+) -> np.ndarray:
     Fd_acNa = np.where(An_StatePhys == "Calf", 1.0, Fd_acNa_input) # Line 1846
     return Fd_acNa
 
@@ -643,9 +678,10 @@ def calculate_Fd_acK(An_StatePhys: str, Fd_acK_input: pd.Series) -> np.ndarray:
     return Fd_acK
 
 
-def calculate_Fd_acCl(An_StatePhys: str, 
-                      Fd_acCl_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acCl(
+    An_StatePhys: str, 
+    Fd_acCl_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq > 0)  # Line 1848
     Fd_acCl = np.where(condition, 1, Fd_acCl_input)
@@ -664,8 +700,9 @@ def calculate_Fd_absPIn(Fd_PIn: pd.Series, Fd_acPtot: pd.Series) -> pd.Series:
     return Fd_absPIn
 
 
-def calculate_Fd_absMgIn_base(Fd_MgIn: pd.Series, 
-                              Fd_acMg: pd.Series
+def calculate_Fd_absMgIn_base(
+    Fd_MgIn: pd.Series, 
+    Fd_acMg: pd.Series
 ) -> pd.Series:
     Fd_absMgIn_base = Fd_MgIn * Fd_acMg  # line 1853
     return Fd_absMgIn_base
@@ -691,9 +728,10 @@ def calculate_Fd_acCo(An_StatePhys: str) -> np.ndarray:
     return Fd_acCo
 
 
-def calculate_Fd_acCu(An_StatePhys: str, 
-                      Fd_acCu_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acCu(
+    An_StatePhys: str, 
+    Fd_acCu_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acCu = np.where(An_StatePhys == "Calf", 1.0, Fd_acCu_input) # Line 1861
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
@@ -701,9 +739,10 @@ def calculate_Fd_acCu(An_StatePhys: str,
     return Fd_acCu
 
 
-def calculate_Fd_acFe(An_StatePhys: str, 
-                      Fd_acFe_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acFe(
+    An_StatePhys: str, 
+    Fd_acFe_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acFe = np.where(An_StatePhys == "Calf", 1.0, Fd_acFe_input) # Line 1863
     condition = (An_StatePhys == "Calf") & (Dt_DMIn_ClfLiq == 0)
@@ -711,9 +750,10 @@ def calculate_Fd_acFe(An_StatePhys: str,
     return Fd_acFe
 
 
-def calculate_Fd_acMn(An_StatePhys: str, 
-                      Fd_acMn_input: pd.Series, 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acMn(
+    An_StatePhys: str, 
+    Fd_acMn_input: pd.Series, 
+    Dt_DMIn_ClfLiq: float
 ) -> np.ndarray:
     Fd_acMn = np.where(
         An_StatePhys == "Calf",  # Line 1865
@@ -727,9 +767,10 @@ def calculate_Fd_acMn(An_StatePhys: str,
     return Fd_acMn
 
 
-def calculate_Fd_acZn(An_StatePhys: str, 
-                      Fd_acZn_input: pd.Series , 
-                      Dt_DMIn_ClfLiq: float
+def calculate_Fd_acZn(
+    An_StatePhys: str, 
+    Fd_acZn_input: pd.Series , 
+    Dt_DMIn_ClfLiq: float
 ) -> pd.Series:
     Fd_acZn = Fd_acZn_input.copy()
     if An_StatePhys == "Calf":
@@ -744,8 +785,9 @@ def calculate_Fd_DigSt(Fd_St: pd.Series, Fd_dcSt: pd.Series) -> pd.Series:
     return Fd_DigSt
 
 
-def calculate_Fd_DigStIn_Base(Fd_DigSt: pd.Series, 
-                              Fd_DMIn: pd.Series
+def calculate_Fd_DigStIn_Base(
+    Fd_DigSt: pd.Series, 
+    Fd_DMIn: pd.Series
 ) -> pd.Series:
     Fd_DigStIn_Base = Fd_DigSt / 100 * Fd_DMIn  # Line 1015
     return Fd_DigStIn_Base
@@ -770,8 +812,9 @@ def calculate_Fd_DigrOMt(Fd_rOM: pd.Series, coeff_dict: dict) -> pd.Series:
     return Fd_DigrOMt
 
 
-def calculate_Fd_DigrOMtIn(Fd_DigrOMt: pd.Series, 
-                           Fd_DMIn: pd.Series
+def calculate_Fd_DigrOMtIn(
+    Fd_DigrOMt: pd.Series, 
+    Fd_DMIn: pd.Series
 ) -> pd.Series:
     Fd_DigrOMtIn = Fd_DigrOMt / 100 * Fd_DMIn  # Line 1010, kg/d
     return Fd_DigrOMtIn
@@ -783,11 +826,12 @@ def calculate_Fd_idRUPIn(Fd_dcRUP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
     return Fd_idRUPIn
 
 
-def calculate_TT_dcFdFA(An_StatePhys: str, 
-                        Fd_Category: pd.Series, 
-                        Fd_Type: pd.Series, 
-                        Fd_dcFA: pd.Series,
-                        coeff_dict: dict
+def calculate_TT_dcFdFA(
+    An_StatePhys: str, 
+    Fd_Category: pd.Series, 
+    Fd_Type: pd.Series, 
+    Fd_dcFA: pd.Series,
+    coeff_dict: dict
 ) -> pd.Series:
     """
     Examples
@@ -841,9 +885,10 @@ def calculate_TT_dcFdFA(An_StatePhys: str,
     return TT_dcFdFA
 
 
-def calculate_Fd_DigFAIn(TT_dcFdFA: pd.Series, 
-                         Fd_FA: pd.Series, 
-                         Fd_DMIn: pd.Series
+def calculate_Fd_DigFAIn(
+    TT_dcFdFA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
 ) -> pd.Series:
     Fd_DigFAIn = TT_dcFdFA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigFAIn
@@ -892,9 +937,10 @@ def calculate_Fd_DigWSCIn(Fd_DigWSC: float, Fd_DMIn: float) -> float:
     return Fd_DigWSCIn
 
 
-def calculate_Fd_idRUP(Fd_CPIn: float | pd.Series,
-                       Fd_idRUPIn: float | pd.Series,
-                       Fd_DMIn: float | pd.Series
+def calculate_Fd_idRUP(
+    Fd_CPIn: float | pd.Series,
+    Fd_idRUPIn: float | pd.Series,
+    Fd_DMIn: float | pd.Series
 ) -> float | pd.Series:
     """
     Fd_idRUP: Intestinally digested RUP, % DM
@@ -903,8 +949,9 @@ def calculate_Fd_idRUP(Fd_CPIn: float | pd.Series,
     return Fd_idRUP
 
 
-def calculate_Fd_Fe_RUPout(Fd_RUPIn: float | pd.Series,
-                           Fd_dcRUP: float | pd.Series
+def calculate_Fd_Fe_RUPout(
+    Fd_RUPIn: float | pd.Series,
+    Fd_dcRUP: float | pd.Series
 ) -> float | pd.Series:
     """
     Fd_Fe_RUPout: Fecal RUP output, kg/d
@@ -958,17 +1005,26 @@ def calculate_Fd_ForIn(Fd_For: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     return Fd_ForIn
 
 
-def calculate_Fd_ForNDFIn(Fd_ForNDF: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ForNDFIn(
+    Fd_ForNDF: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ForNDFIn = Fd_ForNDF / 100 * Fd_DMIn
     return Fd_ForNDFIn
 
 
-def calculate_Fd_ForWetIn(Fd_ForWet: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ForWetIn(
+    Fd_ForWet: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ForWetIn = Fd_ForWet / 100 * Fd_DMIn
     return Fd_ForWetIn
 
 
-def calculate_Fd_ForDryIn(Fd_ForDry: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ForDryIn(
+    Fd_ForDry: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ForDryIn = Fd_ForDry / 100 * Fd_DMIn
     return Fd_ForDryIn
 
@@ -998,7 +1054,10 @@ def calculate_Fd_FAIn(Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     return Fd_FAIn
 
 
-def calculate_Fd_FAhydrIn(Fd_FAhydr: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_FAhydrIn(
+    Fd_FAhydr: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_FAhydrIn = Fd_FAhydr / 100 * Fd_DMIn
     return Fd_FAhydrIn
 
@@ -1008,52 +1067,92 @@ def calculate_Fd_AshIn(Fd_Ash: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
     return Fd_AshIn
 
 
-def calculate_Fd_C120In(Fd_C120_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C120In(
+    Fd_C120_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C120In = Fd_C120_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C120In
 
 
-def calculate_Fd_C140In(Fd_C140_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C140In(
+    Fd_C140_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C140In = Fd_C140_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C140In
 
 
-def calculate_Fd_C160In(Fd_C160_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C160In(
+    Fd_C160_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C160In = Fd_C160_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C160In
 
 
-def calculate_Fd_C161In(Fd_C161_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C161In(
+    Fd_C161_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C161In = Fd_C161_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C161In
 
 
-def calculate_Fd_C180In(Fd_C180_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C180In(
+    Fd_C180_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C180In = Fd_C180_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C180In
 
 
-def calculate_Fd_C181tIn(Fd_C181t_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C181tIn(
+    Fd_C181t_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C181tIn = Fd_C181t_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C181tIn
 
 
-def calculate_Fd_C181cIn(Fd_C181c_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C181cIn(
+    Fd_C181c_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C181cIn = Fd_C181c_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C181cIn
 
 
-def calculate_Fd_C182In(Fd_C182_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C182In(
+    Fd_C182_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C182In = Fd_C182_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C182In
 
 
-def calculate_Fd_C183In(Fd_C183_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_C183In(
+    Fd_C183_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_C183In = Fd_C183_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_C183In
 
 
-def calculate_Fd_OtherFAIn(Fd_OtherFA_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_OtherFAIn(
+    Fd_OtherFA_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_OtherFAIn = Fd_OtherFA_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_OtherFAIn
 
@@ -1153,22 +1252,34 @@ def calculate_Fd_VitEIn(Fd_DMIn: pd.Series, Fd_VitE: pd.Series) -> pd.Series:
     return Fd_VitEIn
 
 
-def calculate_Fd_CholineIn(Fd_DMIn: pd.Series, Fd_Choline: pd.Series) -> pd.Series:
+def calculate_Fd_CholineIn(
+    Fd_DMIn: pd.Series, 
+    Fd_Choline: pd.Series
+) -> pd.Series:
     Fd_CholineIn = Fd_DMIn * Fd_Choline
     return Fd_CholineIn
 
 
-def calculate_Fd_BiotinIn(Fd_DMIn: pd.Series, Fd_Biotin: pd.Series) -> pd.Series:
+def calculate_Fd_BiotinIn(
+    Fd_DMIn: pd.Series, 
+    Fd_Biotin: pd.Series
+) -> pd.Series:
     Fd_BiotinIn = Fd_DMIn * Fd_Biotin
     return Fd_BiotinIn
 
 
-def calculate_Fd_NiacinIn(Fd_DMIn: pd.Series, Fd_Niacin: pd.Series) -> pd.Series:
+def calculate_Fd_NiacinIn(
+    Fd_DMIn: pd.Series, 
+    Fd_Niacin: pd.Series
+) -> pd.Series:
     Fd_NiacinIn = Fd_DMIn * Fd_Niacin
     return Fd_NiacinIn
 
 
-def calculate_Fd_B_CaroteneIn(Fd_DMIn: pd.Series, Fd_B_Carotene: pd.Series) -> pd.Series:
+def calculate_Fd_B_CaroteneIn(
+    Fd_DMIn: pd.Series, 
+    Fd_B_Carotene: pd.Series
+) -> pd.Series:
     Fd_B_CaroteneIn = Fd_DMIn * Fd_B_Carotene
     return Fd_B_CaroteneIn
 
@@ -1248,157 +1359,282 @@ def calculate_Fd_Valt_CP(Fd_Val_CP: pd.Series, coeff_dict: dict) -> pd.Series:
     return Fd_Valt_CP
 
 
-def calculate_Fd_ArgRUPIn(Fd_Argt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_ArgRUPIn(
+    Fd_Argt_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_ArgRUPIn = Fd_Argt_CP / 100 * Fd_RUPIn * 1000
     return Fd_ArgRUPIn
 
 
-def calculate_Fd_HisRUPIn(Fd_Hist_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_HisRUPIn(
+    Fd_Hist_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_HisRUPIn = Fd_Hist_CP / 100 * Fd_RUPIn * 1000
     return Fd_HisRUPIn
 
 
-def calculate_Fd_IleRUPIn(Fd_Ilet_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_IleRUPIn(
+    Fd_Ilet_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_IleRUPIn = Fd_Ilet_CP / 100 * Fd_RUPIn * 1000
     return Fd_IleRUPIn
 
 
-def calculate_Fd_LeuRUPIn(Fd_Leut_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_LeuRUPIn(
+    Fd_Leut_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_LeuRUPIn = Fd_Leut_CP / 100 * Fd_RUPIn * 1000
     return Fd_LeuRUPIn
 
 
-def calculate_Fd_LysRUPIn(Fd_Lyst_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_LysRUPIn(
+    Fd_Lyst_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_LysRUPIn = Fd_Lyst_CP / 100 * Fd_RUPIn * 1000
     return Fd_LysRUPIn
 
 
-def calculate_Fd_MetRUPIn(Fd_Mett_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_MetRUPIn(
+    Fd_Mett_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_MetRUPIn = Fd_Mett_CP / 100 * Fd_RUPIn * 1000
     return Fd_MetRUPIn
 
 
-def calculate_Fd_PheRUPIn(Fd_Phet_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_PheRUPIn(
+    Fd_Phet_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_PheRUPIn = Fd_Phet_CP / 100 * Fd_RUPIn * 1000
     return Fd_PheRUPIn
 
 
-def calculate_Fd_ThrRUPIn(Fd_Thrt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_ThrRUPIn(
+    Fd_Thrt_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_ThrRUPIn = Fd_Thrt_CP / 100 * Fd_RUPIn * 1000
     return Fd_ThrRUPIn
 
 
-def calculate_Fd_TrpRUPIn(Fd_Trpt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_TrpRUPIn(
+    Fd_Trpt_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_TrpRUPIn = Fd_Trpt_CP / 100 * Fd_RUPIn * 1000
     return Fd_TrpRUPIn
 
 
-def calculate_Fd_ValRUPIn(Fd_Valt_CP: pd.Series, Fd_RUPIn: pd.Series) -> pd.Series:
+def calculate_Fd_ValRUPIn(
+    Fd_Valt_CP: pd.Series, 
+    Fd_RUPIn: pd.Series
+) -> pd.Series:
     Fd_ValRUPIn = Fd_Valt_CP / 100 * Fd_RUPIn * 1000
     return Fd_ValRUPIn
 
 
-def calculate_Fd_IdArgRUPIn(Fd_dcRUP: pd.Series, Fd_ArgRUPIn: pd.Series, SIDigArg: float) -> pd.Series:
+def calculate_Fd_IdArgRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_ArgRUPIn: pd.Series, 
+    SIDigArg: float
+) -> pd.Series:
     Fd_IdArgRUPIn = Fd_dcRUP / 100 * Fd_ArgRUPIn * SIDigArg
     return Fd_IdArgRUPIn
 
 
-def calculate_Fd_IdHisRUPIn(Fd_dcRUP: pd.Series, Fd_HisRUPIn: pd.Series, SIDigHis: float) -> pd.Series:
+def calculate_Fd_IdHisRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_HisRUPIn: pd.Series, 
+    SIDigHis: float
+) -> pd.Series:
     Fd_IdHisRUPIn = Fd_dcRUP / 100 * Fd_HisRUPIn * SIDigHis
     return Fd_IdHisRUPIn
 
 
-def calculate_Fd_IdIleRUPIn(Fd_dcRUP: pd.Series, Fd_IleRUPIn: pd.Series, SIDigIle: float) -> pd.Series:
+def calculate_Fd_IdIleRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_IleRUPIn: pd.Series, 
+    SIDigIle: float
+) -> pd.Series:
     Fd_IdIleRUPIn = Fd_dcRUP / 100 * Fd_IleRUPIn * SIDigIle
     return Fd_IdIleRUPIn
 
 
-def calculate_Fd_IdLeuRUPIn(Fd_dcRUP: pd.Series, Fd_LeuRUPIn: pd.Series, SIDigLeu: float) -> pd.Series:
+def calculate_Fd_IdLeuRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_LeuRUPIn: pd.Series, 
+    SIDigLeu: float
+) -> pd.Series:
     Fd_IdLeuRUPIn = Fd_dcRUP / 100 * Fd_LeuRUPIn * SIDigLeu
     return Fd_IdLeuRUPIn
 
 
-def calculate_Fd_IdLysRUPIn(Fd_dcRUP: pd.Series, Fd_LysRUPIn: pd.Series, SIDigLys: float) -> pd.Series:
+def calculate_Fd_IdLysRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_LysRUPIn: pd.Series, 
+    SIDigLys: float
+) -> pd.Series:
     Fd_IdLysRUPIn = Fd_dcRUP / 100 * Fd_LysRUPIn * SIDigLys
     return Fd_IdLysRUPIn
 
 
-def calculate_Fd_IdMetRUPIn(Fd_dcRUP: pd.Series, Fd_MetRUPIn: pd.Series, SIDigMet: float) -> pd.Series:
+def calculate_Fd_IdMetRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_MetRUPIn: pd.Series, 
+    SIDigMet: float
+) -> pd.Series:
     Fd_IdMetRUPIn = Fd_dcRUP / 100 * Fd_MetRUPIn * SIDigMet
     return Fd_IdMetRUPIn
 
 
-def calculate_Fd_IdPheRUPIn(Fd_dcRUP: pd.Series, Fd_PheRUPIn: pd.Series, SIDigPhe: float) -> pd.Series:
+def calculate_Fd_IdPheRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_PheRUPIn: pd.Series, 
+    SIDigPhe: float
+) -> pd.Series:
     Fd_IdPheRUPIn = Fd_dcRUP / 100 * Fd_PheRUPIn * SIDigPhe
     return Fd_IdPheRUPIn
 
 
-def calculate_Fd_IdThrRUPIn(Fd_dcRUP: pd.Series, Fd_ThrRUPIn: pd.Series, SIDigThr: float) -> pd.Series:
+def calculate_Fd_IdThrRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_ThrRUPIn: pd.Series, 
+    SIDigThr: float
+) -> pd.Series:
     Fd_IdThrRUPIn = Fd_dcRUP / 100 * Fd_ThrRUPIn * SIDigThr
     return Fd_IdThrRUPIn
 
 
-def calculate_Fd_IdTrpRUPIn(Fd_dcRUP: pd.Series, Fd_TrpRUPIn: pd.Series, SIDigTrp: float) -> pd.Series:
+def calculate_Fd_IdTrpRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_TrpRUPIn: pd.Series, 
+    SIDigTrp: float
+) -> pd.Series:
     Fd_IdTrpRUPIn = Fd_dcRUP / 100 * Fd_TrpRUPIn * SIDigTrp
     return Fd_IdTrpRUPIn
 
 
-def calculate_Fd_IdValRUPIn(Fd_dcRUP: pd.Series, Fd_ValRUPIn: pd.Series, SIDigVal: float) -> pd.Series:
+def calculate_Fd_IdValRUPIn(
+    Fd_dcRUP: pd.Series, 
+    Fd_ValRUPIn: pd.Series, 
+    SIDigVal: float
+) -> pd.Series:
     Fd_IdValRUPIn = Fd_dcRUP / 100 * Fd_ValRUPIn * SIDigVal
     return Fd_IdValRUPIn
 
 
-def calculate_Fd_DigC120In(TT_dcFdFA: pd.Series, Fd_C120_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC120In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C120_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC120In = TT_dcFdFA / 100 * Fd_C120_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC120In
 
 
-def calculate_Fd_DigC140In(TT_dcFdFA: pd.Series, Fd_C140_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC140In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C140_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC140In = TT_dcFdFA / 100 * Fd_C140_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC140In
 
 
-def calculate_Fd_DigC160In(TT_dcFdFA: pd.Series, Fd_C160_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC160In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C160_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC160In = TT_dcFdFA / 100 * Fd_C160_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC160In
 
 
-def calculate_Fd_DigC161In(TT_dcFdFA: pd.Series, Fd_C161_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC161In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C161_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC161In = TT_dcFdFA / 100 * Fd_C161_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC161In
 
 
-def calculate_Fd_DigC180In(TT_dcFdFA: pd.Series, Fd_C180_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC180In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C180_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC180In = TT_dcFdFA / 100 * Fd_C180_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC180In
 
 
-def calculate_Fd_DigC181tIn(TT_dcFdFA: pd.Series, Fd_C181t_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC181tIn(
+    TT_dcFdFA: pd.Series, 
+    Fd_C181t_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC181tIn = TT_dcFdFA / 100 * Fd_C181t_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC181tIn
 
 
-def calculate_Fd_DigC181cIn(TT_dcFdFA: pd.Series, Fd_C181c_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC181cIn(
+    TT_dcFdFA: pd.Series, 
+    Fd_C181c_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC181cIn = TT_dcFdFA / 100 * Fd_C181c_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC181cIn
 
 
-def calculate_Fd_DigC182In(TT_dcFdFA: pd.Series, Fd_C182_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC182In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C182_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC182In = TT_dcFdFA / 100 * Fd_C182_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC182In
 
 
-def calculate_Fd_DigC183In(TT_dcFdFA: pd.Series, Fd_C183_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigC183In(
+    TT_dcFdFA: pd.Series, 
+    Fd_C183_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigC183In = TT_dcFdFA / 100 * Fd_C183_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigC183In
 
 
-def calculate_Fd_DigOtherFAIn(TT_dcFdFA: pd.Series, Fd_OtherFA_FA: pd.Series, Fd_FA: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_DigOtherFAIn(
+    TT_dcFdFA: pd.Series, 
+    Fd_OtherFA_FA: pd.Series, 
+    Fd_FA: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_DigOtherFAIn = TT_dcFdFA / 100 * Fd_OtherFA_FA / 100 * Fd_FA / 100 * Fd_DMIn
     return Fd_DigOtherFAIn
 
 
-def calculate_Fd_ArgIn(Fd_CPIn: pd.Series, Fd_Argt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ArgIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Argt_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ArgIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Argt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1407,7 +1643,12 @@ def calculate_Fd_ArgIn(Fd_CPIn: pd.Series, Fd_Argt_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_ArgIn
 
 
-def calculate_Fd_HisIn(Fd_CPIn: pd.Series, Fd_Hist_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_HisIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Hist_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_HisIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Hist_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1416,7 +1657,12 @@ def calculate_Fd_HisIn(Fd_CPIn: pd.Series, Fd_Hist_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_HisIn
 
 
-def calculate_Fd_IleIn(Fd_CPIn: pd.Series, Fd_Ilet_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_IleIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Ilet_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_IleIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Ilet_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1425,7 +1671,12 @@ def calculate_Fd_IleIn(Fd_CPIn: pd.Series, Fd_Ilet_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_IleIn
 
 
-def calculate_Fd_LeuIn(Fd_CPIn: pd.Series, Fd_Leut_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_LeuIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Leut_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_LeuIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Leut_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1434,7 +1685,12 @@ def calculate_Fd_LeuIn(Fd_CPIn: pd.Series, Fd_Leut_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_LeuIn
 
 
-def calculate_Fd_LysIn(Fd_CPIn: pd.Series, Fd_Lyst_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_LysIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Lyst_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_LysIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Lyst_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1443,7 +1699,12 @@ def calculate_Fd_LysIn(Fd_CPIn: pd.Series, Fd_Lyst_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_LysIn
 
 
-def calculate_Fd_MetIn(Fd_CPIn: pd.Series, Fd_Mett_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_MetIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Mett_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_MetIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Mett_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1452,7 +1713,12 @@ def calculate_Fd_MetIn(Fd_CPIn: pd.Series, Fd_Mett_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_MetIn
 
 
-def calculate_Fd_PheIn(Fd_CPIn: pd.Series, Fd_Phet_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_PheIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Phet_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_PheIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Phet_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1461,7 +1727,12 @@ def calculate_Fd_PheIn(Fd_CPIn: pd.Series, Fd_Phet_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_PheIn
 
 
-def calculate_Fd_ThrIn(Fd_CPIn: pd.Series, Fd_Thrt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ThrIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Thrt_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ThrIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Thrt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1470,7 +1741,12 @@ def calculate_Fd_ThrIn(Fd_CPIn: pd.Series, Fd_Thrt_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_ThrIn
 
 
-def calculate_Fd_TrpIn(Fd_CPIn: pd.Series, Fd_Trpt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_TrpIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Trpt_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_TrpIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Trpt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1479,7 +1755,12 @@ def calculate_Fd_TrpIn(Fd_CPIn: pd.Series, Fd_Trpt_CP: pd.Series, Fd_CP: pd.Seri
     return Fd_TrpIn
 
 
-def calculate_Fd_ValIn(Fd_CPIn: pd.Series, Fd_Valt_CP: pd.Series, Fd_CP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
+def calculate_Fd_ValIn(
+    Fd_CPIn: pd.Series, 
+    Fd_Valt_CP: pd.Series, 
+    Fd_CP: pd.Series, 
+    Fd_DMIn: pd.Series
+) -> pd.Series:
     Fd_ValIn = np.where(
         Fd_CPIn > 0, 
         (Fd_Valt_CP / 100) * (Fd_CP / 100) * (Fd_DMIn * 1000), 
@@ -1501,18 +1782,20 @@ def calculate_Fd_RDPIn(Fd_RDP: pd.Series, Fd_DMIn: pd.Series) -> pd.Series:
 ####################
 # Functions for Diet Intakes
 ####################
-def calculate_Dt_ForDNDF48(Fd_DMInp: pd.Series, 
-                           Fd_Conc: pd.Series, 
-                           Fd_NDF: pd.Series, 
-                           Fd_DNDF48: pd.Series
+def calculate_Dt_ForDNDF48(
+    Fd_DMInp: pd.Series, 
+    Fd_Conc: pd.Series, 
+    Fd_NDF: pd.Series, 
+    Fd_DNDF48: pd.Series
 ) -> float:
     Dt_ForDNDF48 = ((1 - Fd_Conc / 100) * Fd_NDF * Fd_DNDF48 / 100 *
                     Fd_DMInp).sum()  # Line 259
     return Dt_ForDNDF48
 
 
-def calculate_Dt_ForDNDF48_ForNDF(Dt_ForDNDF48: float, 
-                                  Dt_ForNDF: float
+def calculate_Dt_ForDNDF48_ForNDF(
+    Dt_ForDNDF48: float, 
+    Dt_ForNDF: float
 ) -> float:
     if Dt_ForNDF != 0 and not np.isnan(Dt_ForNDF):
         Dt_ForDNDF48_ForNDF = Dt_ForDNDF48 / Dt_ForNDF * 100 # Line 260
@@ -1526,8 +1809,9 @@ def calculate_Dt_ADF_NDF(Dt_ADF: float, Dt_NDF: float) -> float:
     return Dt_ADF_NDF
 
 
-def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq: float, 
-                           Dt_DMIn_ClfLiq: float
+def calculate_Dt_DE_ClfLiq(
+    Dt_DEIn_ClfLiq: float, 
+    Dt_DMIn_ClfLiq: float
 ) -> float:
     # Line 289, DE content of the liquid feed
     Dt_DE_ClfLiq = 0 if Dt_DEIn_ClfLiq == 0 else Dt_DEIn_ClfLiq / Dt_DMIn_ClfLiq
@@ -1535,8 +1819,9 @@ def calculate_Dt_DE_ClfLiq(Dt_DEIn_ClfLiq: float,
     return Dt_DE_ClfLiq
 
 
-def calculate_Dt_ME_ClfLiq(Dt_MEIn_ClfLiq: float, 
-                           Dt_DMIn_ClfLiq: float
+def calculate_Dt_ME_ClfLiq(
+    Dt_MEIn_ClfLiq: float, 
+    Dt_DMIn_ClfLiq: float
 ) -> float:
     # Line 291, ME content of the liquid feed
     Dt_ME_ClfLiq = Dt_MEIn_ClfLiq / Dt_DMIn_ClfLiq
@@ -1575,10 +1860,13 @@ def calculate_Dt_RUPIn(Fd_RUPIn: pd.Series) -> float:
     Dt_RUPIn = Fd_RUPIn.sum()  # Line 616
     Dt_RUPIn = 0 if Dt_RUPIn < 0 else Dt_RUPIn # Line 617
 
-    # The following diet level RUPIn is slightly more accurate than the feed level summation as the intercept exactly matches the regression equations, but feed level is very close.
+    # The following diet level RUPIn is slightly more accurate than the feed 
+    # level summation as the intercept exactly matches the regression equations, 
+    # but feed level is very close.
     # if concerned about intercept, switch to using this eqn for RUP
     # this is called Dt_RUPIn.dt in the R code line 618
-    # Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
+    # Dt_RUPIn = (Dt_CPAIn - Dt_NPNIn) * coeff_dict['fCPAdu'] + Dt_RUPBIn + 
+    # Dt_CPCIn + coeff_dict['IntRUP']   # Line 619
     return Dt_RUPIn
 
 
@@ -1592,29 +1880,32 @@ def calculate_Dt_fCPBdu(Dt_RUPBIn: float, Dt_CPBIn: float) -> float:
     return Dt_fCPBdu
 
 
-def calculate_Dt_UFAIn(Dt_C161In: float, 
-                       Dt_C181tIn: float, 
-                       Dt_C181cIn: float, 
-                       Dt_C182In: float, 
-                       Dt_C183In: float
+def calculate_Dt_UFAIn(
+    Dt_C161In: float, 
+    Dt_C181tIn: float, 
+    Dt_C181cIn: float, 
+    Dt_C182In: float, 
+    Dt_C183In: float
 ) -> float:
     Dt_UFAIn = Dt_C161In + Dt_C181tIn + Dt_C181cIn + Dt_C182In + Dt_C183In
     # Line 639
     return Dt_UFAIn
 
 
-def calculate_Dt_MUFAIn(Dt_C161In: float, 
-                        Dt_C181tIn: float, 
-                        Dt_C181cIn: float
+def calculate_Dt_MUFAIn(
+    Dt_C161In: float, 
+    Dt_C181tIn: float, 
+    Dt_C181cIn: float
 ) -> float:
     Dt_MUFAIn = Dt_C161In + Dt_C181tIn + Dt_C181cIn  # Line 640
     return Dt_MUFAIn
 
 
-def calculate_Dt_PUFAIn(Dt_UFAIn: float, 
-                        Dt_C161In: float, 
-                        Dt_C181tIn: float, 
-                        Dt_C181cIn: float
+def calculate_Dt_PUFAIn(
+    Dt_UFAIn: float, 
+    Dt_C161In: float, 
+    Dt_C181tIn: float, 
+    Dt_C181cIn: float
 ) -> float:
     Dt_PUFAIn = Dt_UFAIn - (Dt_C161In + Dt_C181tIn + Dt_C181cIn)  # Line 641
     return Dt_PUFAIn
@@ -1630,13 +1921,14 @@ def calculate_Dt_OMIn(Dt_DMIn: float, Dt_AshIn: float) -> float:
     return Dt_OMIn
 
 
-def calculate_Dt_rOMIn(Dt_DMIn: float, 
-                       Dt_AshIn: float, 
-                       Dt_NDFIn: float, 
-                       Dt_StIn: float, 
-                       Dt_FAhydrIn: float, 
-                       Dt_TPIn: float,
-                       Dt_NPNDMIn: float
+def calculate_Dt_rOMIn(
+    Dt_DMIn: float, 
+    Dt_AshIn: float, 
+    Dt_NDFIn: float, 
+    Dt_StIn: float, 
+    Dt_FAhydrIn: float, 
+    Dt_TPIn: float,
+    Dt_NPNDMIn: float
 ) -> float:
     Dt_rOMIn = (Dt_DMIn - Dt_AshIn - Dt_NDFIn - Dt_StIn - 
                 Dt_FAhydrIn - Dt_TPIn - Dt_NPNDMIn) # Line 646
@@ -1672,15 +1964,17 @@ def calculate_Dt_DMInSum(Fd_DMIn: pd.Series) -> float:
     return Dt_DMInSum
 
 
-def calculate_Dt_DEIn_ClfLiq(Fd_DE_ClfLiq: pd.Series, 
-                             Fd_DMIn_ClfLiq: pd.Series
+def calculate_Dt_DEIn_ClfLiq(
+    Fd_DE_ClfLiq: pd.Series, 
+    Fd_DMIn_ClfLiq: pd.Series
 ) -> float:
     Dt_DEIn_ClfLiq = (Fd_DE_ClfLiq * Fd_DMIn_ClfLiq).sum()  # Line 287
     return Dt_DEIn_ClfLiq
 
 
-def calculate_Dt_MEIn_ClfLiq(Fd_ME_ClfLiq: pd.Series, 
-                             Fd_DMIn_ClfLiq: pd.Series
+def calculate_Dt_MEIn_ClfLiq(
+    Fd_ME_ClfLiq: pd.Series, 
+    Fd_DMIn_ClfLiq: pd.Series
 ) -> float:
     Dt_MEIn_ClfLiq = (Fd_ME_ClfLiq * Fd_DMIn_ClfLiq).sum()  # Line 288
     return Dt_MEIn_ClfLiq
@@ -1811,17 +2105,16 @@ def calculate_Dt_DEFAIn(Dt_DigFAIn: float, coeff_dict: dict) -> float:
     return Dt_DEFAIn
 
 
-# This function is invovled in the calf DMIn prediction. In the future we will liekly need to pull a few of the calf intake calculations
-# out of the wrappers to run DMI prediciton properly. It all depends on how we handle the calf calculations which hasn't been decided yet
-def calculate_Dt_DMIn_ClfStrt(An_BW: float, 
-                              Dt_MEIn_ClfLiq: float, 
-                              Dt_DMIn_ClfLiq: float,
-                              Dt_DMIn_ClfFor: float, 
-                              An_AgeDryFdStart: int, 
-                              Env_TempCurr: float,
-                              DMIn_eqn: int, 
-                              Trg_Dt_DMIn: float, 
-                              coeff_dict: dict
+def calculate_Dt_DMIn_ClfStrt(
+    An_BW: float, 
+    Dt_MEIn_ClfLiq: float, 
+    Dt_DMIn_ClfLiq: float,
+    Dt_DMIn_ClfFor: float, 
+    An_AgeDryFdStart: int, 
+    Env_TempCurr: float,
+    DMIn_eqn: int, 
+    Trg_Dt_DMIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -1880,9 +2173,10 @@ def calculate_Dt_DECPIn(Dt_DigCPaIn: float, coeff_dict: dict) -> float:
     return Dt_DECPIn
 
 
-def calculate_Dt_DETPIn(Dt_DECPIn: float, 
-                        Dt_DENPNCPIn: float, 
-                        coeff_dict: dict
+def calculate_Dt_DETPIn(
+    Dt_DECPIn: float, 
+    Dt_DENPNCPIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -1904,17 +2198,18 @@ def calculate_Dt_DETPIn(Dt_DECPIn: float,
     return Dt_DETPIn
 
 
-def calculate_Dt_DEIn(An_StatePhys: str, 
-                      Dt_DENDFIn: float, 
-                      Dt_DEStIn: float, 
-                      Dt_DErOMIn: float,
-                      Dt_DETPIn: float, 
-                      Dt_DENPNCPIn: float, 
-                      Dt_DEFAIn: float, 
-                      Dt_DMIn_ClfLiq: float,
-                      Dt_DEIn_base_ClfLiq: float, 
-                      Dt_DEIn_base_ClfDry: float, 
-                      Monensin_eqn: int
+def calculate_Dt_DEIn(
+    An_StatePhys: str, 
+    Dt_DENDFIn: float, 
+    Dt_DEStIn: float, 
+    Dt_DErOMIn: float,
+    Dt_DETPIn: float, 
+    Dt_DENPNCPIn: float, 
+    Dt_DEFAIn: float, 
+    Dt_DMIn_ClfLiq: float,
+    Dt_DEIn_base_ClfLiq: float, 
+    Dt_DEIn_base_ClfDry: float, 
+    Monensin_eqn: int
 ) -> float:
     Dt_DEIn = (Dt_DENDFIn + Dt_DEStIn + Dt_DErOMIn + 
                Dt_DETPIn + Dt_DENPNCPIn + Dt_DEFAIn) # Line 1365
@@ -1925,10 +2220,11 @@ def calculate_Dt_DEIn(An_StatePhys: str,
     return Dt_DEIn
 
 
-def calculate_Dt_acMg(An_StatePhys: str, 
-                      Dt_K: float, 
-                      Dt_MgIn_min: float,
-                      Dt_MgIn: float
+def calculate_Dt_acMg(
+    An_StatePhys: str, 
+    Dt_K: float, 
+    Dt_MgIn_min: float,
+    Dt_MgIn: float
 ) -> float:
     if An_StatePhys == "Calf": # Line 1880
         Dt_acMg = 1.0
@@ -2047,9 +2343,10 @@ def calculate_Dt_Fe_RUPout(Fd_Fe_RUPout: float | pd.Series) -> float:
     return Dt_Fe_RUPout
 
 
-def calculate_Dt_RDTPIn(Dt_RDPIn: float, 
-                        Dt_NPNCPIn: float,
-                        coeff_dict: dict
+def calculate_Dt_RDTPIn(
+    Dt_RDPIn: float, 
+    Dt_NPNCPIn: float,
+    coeff_dict: dict
 ) -> float:
     """
     Dt_RDTPIn: Rumed degradable true protein intake, kg/d
@@ -2102,11 +2399,12 @@ def calculate_Dt_DE(Dt_DEIn: float, Dt_DMIn: float) -> float:
     return Dt_DE
 
 
-def calculate_Dt_TDN(Dt_DigSt: float, 
-                     Dt_DigNDF: float, 
-                     Dt_DigrOMa: float,
-                     Dt_DigCPa: float, 
-                     Dt_DigFA: float
+def calculate_Dt_TDN(
+    Dt_DigSt: float, 
+    Dt_DigNDF: float, 
+    Dt_DigrOMa: float,
+    Dt_DigCPa: float, 
+    Dt_DigFA: float
 ) -> float:
     """
     Dt_TDN: Dietary total digestable nutrients (kg/d)
@@ -2132,9 +2430,10 @@ def calculate_Dt_GasE_IPCC2(Dt_GEIn: float) -> float:
     return Dt_GasE_IPCC2
 
 
-def calculate_Dt_GasEOut_Lact(Dt_DMIn: float, 
-                              Dt_FA: float,
-                              Dt_DigNDF: float
+def calculate_Dt_GasEOut_Lact(
+    Dt_DMIn: float, 
+    Dt_FA: float,
+    Dt_DigNDF: float
 ) -> float:
     """
     Dt_GasEOut_Lact: Gaseous energy loss, lactating cow (Mcal/d)
@@ -2162,13 +2461,14 @@ def calculate_Dt_GasEOut_Dry(Dt_GEIn: float, Dt_FA: float) -> float:
     return Dt_GasEOut_Dry
 
 
-def calculate_Dt_GasEOut(An_StatePhys: str, 
-                         Monensin_eqn: int, 
-                         Dt_DMIn: float,
-                         Dt_FA: float, 
-                         Dt_DigNDF: float, 
-                         Dt_GEIn: float,
-                         Dt_NDF: float
+def calculate_Dt_GasEOut(
+    An_StatePhys: str, 
+    Monensin_eqn: int, 
+    Dt_DMIn: float,
+    Dt_FA: float, 
+    Dt_DigNDF: float, 
+    Dt_GEIn: float,
+    Dt_NDF: float
 ) -> float:
     """
     Dt_GasEOut: Gaseous energy loss (Mcal/d)
@@ -3381,11 +3681,6 @@ def calculate_Dt_IdValIn(Du_IdAAMic_Val: float, Dt_IdValRUPIn: float) -> float:
 ####################
 # Functions for Digestability Coefficients
 ####################
-# These values are used for calculating Dt_ level intakes
-# They could be put in a seperate .py file or be run seperately but that would
-# mean diet_data is calculated in two steps
-
-
 def calculate_TT_dcNDF_Base(Dt_DigNDFIn_Base: float, Dt_NDFIn: float) -> float:
     TT_dcNDF_Base = Dt_DigNDFIn_Base / Dt_NDFIn * 100  # Line 1056
     if math.isnan(TT_dcNDF_Base):
@@ -3393,10 +3688,11 @@ def calculate_TT_dcNDF_Base(Dt_DigNDFIn_Base: float, Dt_NDFIn: float) -> float:
     return TT_dcNDF_Base
 
 
-def calculate_TT_dcNDF(TT_dcNDF_Base: float, 
-                       Dt_StIn: float, 
-                       Dt_DMIn: float, 
-                       An_DMIn_BW: float
+def calculate_TT_dcNDF(
+    TT_dcNDF_Base: float, 
+    Dt_StIn: float, 
+    Dt_DMIn: float, 
+    An_DMIn_BW: float
 ) -> float:
     if TT_dcNDF_Base == 0: 
         TT_dcNDF = 0.0
@@ -3421,9 +3717,10 @@ def calculate_TT_dcSt(TT_dcSt_Base: float, An_DMIn_BW: float) -> float:
     return TT_dcSt
 
 
-def calculate_TT_dcAnSt(An_DigStIn: float, 
-                        Dt_StIn: float,
-                        Inf_StIn: float
+def calculate_TT_dcAnSt(
+    An_DigStIn: float, 
+    Dt_StIn: float,
+    Inf_StIn: float
 ) -> float:
     """
     TT_dcAnSt: Starch total tract digestability coefficient
@@ -3434,16 +3731,17 @@ def calculate_TT_dcAnSt(An_DigStIn: float,
     return TT_dcAnSt
 
 
-def calculate_TT_dcrOMa(An_DigrOMaIn: float, 
-                        Dt_rOMIn: float,
-                        InfRum_GlcIn: float, 
-                        InfRum_AcetIn: float,
-                        InfRum_PropIn: float, 
-                        InfRum_ButrIn: float,
-                        InfSI_GlcIn: float, 
-                        InfSI_AcetIn: float,
-                        InfSI_PropIn: float, 
-                        InfSI_ButrIn: float
+def calculate_TT_dcrOMa(
+    An_DigrOMaIn: float, 
+    Dt_rOMIn: float,
+    InfRum_GlcIn: float, 
+    InfRum_AcetIn: float,
+    InfRum_PropIn: float, 
+    InfRum_ButrIn: float,
+    InfSI_GlcIn: float, 
+    InfSI_AcetIn: float,
+    InfSI_PropIn: float, 
+    InfSI_ButrIn: float
 ) -> float:
     """
     TT_dcrOMa: Apparent digested residual organic matter total tract digestability coefficient
@@ -3455,16 +3753,17 @@ def calculate_TT_dcrOMa(An_DigrOMaIn: float,
     return TT_dcrOMa
 
 
-def calculate_TT_dcrOMt(An_DigrOMtIn: float, 
-                        Dt_rOMIn: float,
-                        InfRum_GlcIn: float, 
-                        InfRum_AcetIn: float,
-                        InfRum_PropIn: float, 
-                        InfRum_ButrIn: float,
-                        InfSI_GlcIn: float, 
-                        InfSI_AcetIn: float,
-                        InfSI_PropIn: float, 
-                        InfSI_ButrIn: float
+def calculate_TT_dcrOMt(
+    An_DigrOMtIn: float, 
+    Dt_rOMIn: float,
+    InfRum_GlcIn: float, 
+    InfRum_AcetIn: float,
+    InfRum_PropIn: float, 
+    InfRum_ButrIn: float,
+    InfSI_GlcIn: float, 
+    InfSI_AcetIn: float,
+    InfSI_PropIn: float, 
+    InfSI_ButrIn: float
 ) -> float:
     """
     TT_dcrOMt: Truly digested residual organic matter total tract digestability coefficient
@@ -3476,11 +3775,12 @@ def calculate_TT_dcrOMt(An_DigrOMtIn: float,
     return TT_dcrOMt
 
 
-def calculate_Dt_DigCPtIn(An_StatePhys: str, 
-                          Dt_DigCPaIn: float,
-                          Fe_CPend: float, 
-                          Dt_RDPIn: float,
-                          Dt_idRUPIn: float
+def calculate_Dt_DigCPtIn(
+    An_StatePhys: str, 
+    Dt_DigCPaIn: float,
+    Fe_CPend: float, 
+    Dt_RDPIn: float,
+    Dt_idRUPIn: float
 ) -> float:
     """
     Dt_DigCPtIn: True total tract digested CP, kg/d
@@ -3493,10 +3793,11 @@ def calculate_Dt_DigCPtIn(An_StatePhys: str,
     return Dt_DigCPtIn
 
 
-def calculate_Dt_DigTPaIn(Dt_RDTPIn: float, 
-                          Fe_MiTP: float, 
-                          Dt_idRUPIn: float,
-                          Fe_NPend: float
+def calculate_Dt_DigTPaIn(
+    Dt_RDTPIn: float, 
+    Fe_MiTP: float, 
+    Dt_idRUPIn: float,
+    Fe_NPend: float
 ) -> float:
     """
     Dt_DigTPaIn: Apparent total tract digested true protein, kg/d 
@@ -3557,12 +3858,13 @@ def calculate_TT_dcDtCPt(Dt_DigCPtIn: float, Dt_CPIn: float) -> float:
     return TT_dcDtCPt
 
 
-def calculate_Dt_MPIn(An_StatePhys: str, 
-                      Dt_CPIn: float, 
-                      Fe_CP: float,
-                      Fe_CPend: float, 
-                      Dt_idRUPIn: float,
-                      Du_idMiTP: float
+def calculate_Dt_MPIn(
+    An_StatePhys: str, 
+    Dt_CPIn: float, 
+    Fe_CP: float,
+    Fe_CPend: float, 
+    Dt_idRUPIn: float,
+    Du_idMiTP: float
 ) -> float:
     """
     Dt_MPIn: Dietary metabolizable protein intake, kg/d
@@ -3583,11 +3885,12 @@ def calculate_Dt_MP(Dt_MPIn: float, Dt_DMIn: float) -> float:
     return Dt_MP
 
 
-def calculate_Dt_DigUFAIn(Dt_DigC161In: float, 
-                          Dt_DigC181tIn: float,
-                          Dt_DigC181cIn: float, 
-                          Dt_DigC182In: float,
-                          Dt_DigC183In: float
+def calculate_Dt_DigUFAIn(
+    Dt_DigC161In: float, 
+    Dt_DigC181tIn: float,
+    Dt_DigC181cIn: float, 
+    Dt_DigC182In: float,
+    Dt_DigC183In: float
 ) -> float:
     """
     Dt_DigUFAIn: Dietary digestable unsaturated FA intake, kg/d 
@@ -3597,9 +3900,10 @@ def calculate_Dt_DigUFAIn(Dt_DigC161In: float,
     return Dt_DigUFAIn
 
 
-def calculate_Dt_DigMUFAIn(Dt_DigC161In: float, 
-                           Dt_DigC181tIn: float,
-                           Dt_DigC181cIn: float
+def calculate_Dt_DigMUFAIn(
+    Dt_DigC161In: float, 
+    Dt_DigC181tIn: float,
+    Dt_DigC181cIn: float
 ) -> float:
     """
     Dt_DigMUFAIn: Dietary digestable monounsaturated fatty acid intake, kg/d
@@ -3632,11 +3936,12 @@ def calculate_Dt_DigFA(Dt_DigFAIn: float, Dt_DMIn: float) -> float:
     return Dt_DigFA
 
 
-def calculate_Dt_DigOMaIn(Dt_DigNDFIn: float, 
-                          Dt_DigStIn: float,
-                          Dt_DigFAIn: float, 
-                          Dt_DigrOMaIn: float,
-                          Dt_DigCPaIn: float
+def calculate_Dt_DigOMaIn(
+    Dt_DigNDFIn: float, 
+    Dt_DigStIn: float,
+    Dt_DigFAIn: float, 
+    Dt_DigrOMaIn: float,
+    Dt_DigCPaIn: float
 ) -> float:
     """
     Dt_DigOMaIn: Apparent digested organic matter intake (kg/d)
@@ -3646,11 +3951,12 @@ def calculate_Dt_DigOMaIn(Dt_DigNDFIn: float,
     return Dt_DigOMaIn
 
 
-def calculate_Dt_DigOMtIn(Dt_DigNDFIn: float, 
-                          Dt_DigStIn: float,
-                          Dt_DigFAIn: float, 
-                          Dt_DigrOMtIn: float,
-                          Dt_DigCPtIn: float
+def calculate_Dt_DigOMtIn(
+    Dt_DigNDFIn: float, 
+    Dt_DigStIn: float,
+    Dt_DigFAIn: float, 
+    Dt_DigrOMtIn: float,
+    Dt_DigCPtIn: float
 ) -> float:
     """
     Dt_DigOMtIn: True digested organic matter intake (kg/d)
@@ -3703,11 +4009,12 @@ def calculate_Trg_Fd_DMIn(Fd_DMInp: pd.Series, Trg_Dt_DMIn: float) -> pd.Series:
 ####################
 # Wrapper functions for feed and diet intakes
 ####################
-def calculate_feed_data(Dt_DMIn: float, 
-                        An_StatePhys: str, 
-                        Use_DNDF_IV: int, 
-                        feed_data: pd.DataFrame, 
-                        coeff_dict: dict
+def calculate_feed_data(
+    Dt_DMIn: float, 
+    An_StatePhys: str, 
+    Use_DNDF_IV: int, 
+    feed_data: pd.DataFrame, 
+    coeff_dict: dict
 ) -> pd.DataFrame:
     # Start with copy of feed_data
     complete_feed_data = feed_data.copy()
@@ -3718,8 +4025,9 @@ def calculate_feed_data(Dt_DMIn: float,
         Dt_DMIn, complete_feed_data['Fd_DMInp']
         )
     new_columns['Fd_GE'] = calculate_Fd_GE(
-        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_CP'],
-        complete_feed_data['Fd_FA'], complete_feed_data['Fd_Ash'], complete_feed_data['Fd_St'],
+        An_StatePhys, complete_feed_data['Fd_Category'], 
+        complete_feed_data['Fd_CP'], complete_feed_data['Fd_FA'], 
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_St'],
         complete_feed_data['Fd_NDF'], coeff_dict
         )
     new_columns['Fd_AFIn'] = calculate_Fd_AFIn(
@@ -3732,13 +4040,12 @@ def calculate_feed_data(Dt_DMIn: float,
     new_columns['Fd_ForDry'] = calculate_Fd_ForDry(
         complete_feed_data['Fd_DM'], new_columns['Fd_For']
         )
-    new_columns['Fd_Past'] = calculate_Fd_Past(complete_feed_data['Fd_Category'])
+    new_columns['Fd_Past'] = calculate_Fd_Past(
+        complete_feed_data['Fd_Category']
+        )
     new_columns['Fd_LiqClf'] = calculate_Fd_LiqClf(
         complete_feed_data['Fd_Category']
         )
-    # new_columns['Fd_ForNDF'] = calculate_Fd_ForNDF(
-    #     complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Conc']
-    #     )
     new_columns['Fd_NDFnf'] = calculate_Fd_NDFnf(
         complete_feed_data['Fd_NDF'], complete_feed_data['Fd_NDFIP']
         )
@@ -3761,13 +4068,15 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['Fd_FA'], new_columns['Fd_fHydr_FA']
         )
     new_columns['Fd_NFC'] = calculate_Fd_NFC(
-        complete_feed_data['Fd_NDF'], new_columns['Fd_TP'], complete_feed_data['Fd_Ash'],
-        new_columns['Fd_FAhydr'], new_columns['Fd_NPNDM']
+        complete_feed_data['Fd_NDF'], new_columns['Fd_TP'], 
+        complete_feed_data['Fd_Ash'], new_columns['Fd_FAhydr'], 
+        new_columns['Fd_NPNDM']
         )
     new_columns['Fd_rOM'] = calculate_Fd_rOM(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], new_columns['Fd_TP'],
-        complete_feed_data['Fd_FA'], new_columns['Fd_fHydr_FA'],
-        complete_feed_data['Fd_Ash'], new_columns['Fd_NPNDM']
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], 
+        new_columns['Fd_TP'], complete_feed_data['Fd_FA'], 
+        new_columns['Fd_fHydr_FA'], complete_feed_data['Fd_Ash'], 
+        new_columns['Fd_NPNDM']
         )
     new_columns['Fd_GEIn'] = calculate_Fd_GEIn(
         new_columns['Fd_GE'], complete_feed_data['Fd_DMIn']
@@ -3840,8 +4149,8 @@ def calculate_feed_data(Dt_DMIn: float,
         new_columns['Fd_DNDF48']
         )
     new_columns['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
-        Use_DNDF_IV, complete_feed_data['Fd_Conc'], new_columns['TT_dcFdNDF_Lg'],
-        new_columns['TT_dcFdNDF_48h']
+        Use_DNDF_IV, complete_feed_data['Fd_Conc'], 
+        new_columns['TT_dcFdNDF_Lg'], new_columns['TT_dcFdNDF_48h']
         )
     new_columns['Fd_DigNDFIn_Base'] = calculate_Fd_DigNDFIn_Base(
         new_columns['Fd_NDFIn'], new_columns['TT_dcFdNDF_Base']
@@ -3951,14 +4260,17 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['Fd_DMIn']
         )
     new_columns['Fd_DE_base_1'] = calculate_Fd_DE_base_1(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], complete_feed_data['Fd_St'],
-        complete_feed_data['Fd_dcSt'], complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'],
-        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_CP'], new_columns['Fd_NPNCP'],
-        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP']
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], 
+        complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt'], 
+        complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'],
+        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_CP'], 
+        new_columns['Fd_NPNCP'], new_columns['Fd_RUP'], 
+        complete_feed_data['Fd_dcRUP']
         )
     new_columns['Fd_DE_base_2'] = calculate_Fd_DE_base_2(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], complete_feed_data['Fd_dcSt'],
-        complete_feed_data['Fd_FA'], complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_Ash'],
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_St'], 
+        complete_feed_data['Fd_dcSt'], complete_feed_data['Fd_FA'], 
+        complete_feed_data['Fd_dcFA'], complete_feed_data['Fd_Ash'],
         complete_feed_data['Fd_CP'], new_columns['Fd_NPNCP'],
         new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP'],
         complete_feed_data['Fd_DNDF48_NDF']
@@ -3967,8 +4279,9 @@ def calculate_feed_data(Dt_DMIn: float,
         Use_DNDF_IV, new_columns['Fd_DE_base_1'],
         new_columns['Fd_DE_base_2'], new_columns['Fd_For'],
         complete_feed_data['Fd_FA'], new_columns['Fd_RDP'],
-        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP'], complete_feed_data['Fd_CP'],
-        complete_feed_data['Fd_Ash'], complete_feed_data['Fd_dcFA'], new_columns['Fd_NPN'],
+        new_columns['Fd_RUP'], complete_feed_data['Fd_dcRUP'], 
+        complete_feed_data['Fd_CP'], complete_feed_data['Fd_Ash'], 
+        complete_feed_data['Fd_dcFA'], new_columns['Fd_NPN'],
         complete_feed_data['Fd_Category']
         )
     new_columns['Fd_DEIn_base'] = calculate_Fd_DEIn_base(
@@ -3981,7 +4294,8 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['Fd_Category'], new_columns['Fd_DEIn_base']
         )
     new_columns['Fd_DMIn_ClfLiq'] = calculate_Fd_DMIn_ClfLiq(
-        An_StatePhys, complete_feed_data['Fd_DMIn'], complete_feed_data['Fd_Category']
+        An_StatePhys, complete_feed_data['Fd_DMIn'], 
+        complete_feed_data['Fd_Category']
         )
     new_columns['Fd_DE_ClfLiq'] = calculate_Fd_DE_ClfLiq(
         An_StatePhys, complete_feed_data['Fd_Category'], new_columns['Fd_GE']
@@ -4071,8 +4385,8 @@ def calculate_feed_data(Dt_DMIn: float,
     new_columns["Fd_B_CaroteneIn"] = calculate_Fd_B_CaroteneIn(
         complete_feed_data['Fd_DMIn'], complete_feed_data["Fd_B_Carotene"]
         )
-    Dt_DMIn_ClfLiq = new_columns['Fd_DMIn_ClfLiq'].sum()
     # Dt_DMIn_ClfLiq is needed for the calf mineral absorption calculations
+    Dt_DMIn_ClfLiq = new_columns['Fd_DMIn_ClfLiq'].sum()
 
     new_columns['Fd_acCa'] = calculate_Fd_acCa(
         An_StatePhys, complete_feed_data['Fd_acCa_input'], Dt_DMIn_ClfLiq
@@ -4285,8 +4599,8 @@ def calculate_feed_data(Dt_DMIn: float,
         complete_feed_data['Fd_dcRUP'], new_columns['Fd_RUPIn']
         )
     new_columns['TT_dcFdFA'] = calculate_TT_dcFdFA(
-        An_StatePhys, complete_feed_data['Fd_Category'], complete_feed_data['Fd_Type'],
-        complete_feed_data['Fd_dcFA'], coeff_dict
+        An_StatePhys, complete_feed_data['Fd_Category'], 
+        complete_feed_data['Fd_Type'], complete_feed_data['Fd_dcFA'], coeff_dict
         )
     new_columns['Fd_DigFAIn'] = calculate_Fd_DigFAIn(
         new_columns['TT_dcFdFA'], complete_feed_data['Fd_FA'],
@@ -4403,24 +4717,25 @@ def calculate_feed_data(Dt_DMIn: float,
     return complete_feed_data
 
 
-def calculate_diet_data(complete_feed_data: pd.DataFrame,
-                        diet_data: dict,
-                        Dt_DMIn: float, 
-                        An_BW: float, 
-                        An_StatePhys: str, 
-                        An_DMIn_BW: float,
-                        An_AgeDryFdStart: int, 
-                        Env_TempCurr: float, 
-                        DMIn_eqn: int,
-                        Monensin_eqn: int, 
-                        Fe_rOMend: float, 
-                        Fe_CP: float,
-                        Fe_CPend: float,
-                        Fe_MiTP: float,
-                        Fe_NPend: float,
-                        Du_idMiTP: float,
-                        Du_IdAAMic: pd.Series,
-                        coeff_dict: dict
+def calculate_diet_data(
+    complete_feed_data: pd.DataFrame,
+    diet_data: dict,
+    Dt_DMIn: float, 
+    An_BW: float, 
+    An_StatePhys: str, 
+    An_DMIn_BW: float,
+    An_AgeDryFdStart: int, 
+    Env_TempCurr: float, 
+    DMIn_eqn: int,
+    Monensin_eqn: int, 
+    Fe_rOMend: float, 
+    Fe_CP: float,
+    Fe_CPend: float,
+    Fe_MiTP: float,
+    Fe_NPend: float,
+    Du_idMiTP: float,
+    Du_IdAAMic: pd.Series,
+    coeff_dict: dict
 ) -> dict:
     # Diet Intakes
     diet_data["Dt_ADF"] = calculate_Dt_ADF(
@@ -4636,7 +4951,9 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data["Dt_ValRUPIn"] = calculate_Dt_ValRUPIn(
         complete_feed_data["Fd_ValRUPIn"]
         )
-    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(complete_feed_data['Fd_DMIn'])
+    diet_data['Dt_DMInSum'] = calculate_Dt_DMInSum(
+        complete_feed_data['Fd_DMIn']
+        )
     diet_data['Dt_DEIn_ClfLiq'] = calculate_Dt_DEIn_ClfLiq(
         complete_feed_data['Fd_DE_ClfLiq'], complete_feed_data['Fd_DMIn_ClfLiq']
         )
@@ -4644,7 +4961,8 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         complete_feed_data['Fd_ME_ClfLiq'], complete_feed_data['Fd_DMIn_ClfLiq']
         )
     diet_data['Dt_ForDNDF48'] = calculate_Dt_ForDNDF48(
-        complete_feed_data['Fd_DMInp'], complete_feed_data['Fd_Conc'], complete_feed_data['Fd_NDF'], complete_feed_data['Fd_DNDF48']
+        complete_feed_data['Fd_DMInp'], complete_feed_data['Fd_Conc'], 
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_DNDF48']
         )
     diet_data['Dt_ForDNDF48_ForNDF'] = calculate_Dt_ForDNDF48_ForNDF(
         diet_data['Dt_ForDNDF48'], diet_data['Dt_ForNDF']
@@ -4689,8 +5007,9 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
         )
     diet_data['Dt_OMIn'] = calculate_Dt_OMIn(Dt_DMIn, diet_data['Dt_AshIn'])
     diet_data['Dt_rOMIn'] = calculate_Dt_rOMIn(
-        Dt_DMIn, diet_data['Dt_AshIn'], diet_data['Dt_NDFIn'], diet_data['Dt_StIn'],
-        diet_data['Dt_FAhydrIn'], diet_data['Dt_TPIn'], diet_data['Dt_NPNDMIn']
+        Dt_DMIn, diet_data['Dt_AshIn'], diet_data['Dt_NDFIn'], 
+        diet_data['Dt_StIn'], diet_data['Dt_FAhydrIn'], diet_data['Dt_TPIn'], 
+        diet_data['Dt_NPNDMIn']
         )
     diet_data['Dt_DM'] = calculate_Dt_DM(Dt_DMIn, diet_data['Dt_AFIn'])
     diet_data['Dt_NDFIn_BW'] = calculate_Dt_NDFIn_BW(
@@ -4803,7 +5122,9 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data["Dt_PinorgIn"] = calculate_Dt_PinorgIn(
         complete_feed_data["Fd_PinorgIn"]
         )
-    diet_data["Dt_PorgIn"] = calculate_Dt_PorgIn(complete_feed_data["Fd_PorgIn"])
+    diet_data["Dt_PorgIn"] = calculate_Dt_PorgIn(
+        complete_feed_data["Fd_PorgIn"]
+        )
     diet_data["Dt_NaIn"] = calculate_Dt_NaIn(complete_feed_data["Fd_NaIn"])
     diet_data["Dt_MgIn"] = calculate_Dt_MgIn(complete_feed_data["Fd_MgIn"])
     diet_data["Dt_MgIn_min"] = calculate_Dt_MgIn_min(
@@ -5005,7 +5326,9 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data['Abs_MgIn'] = calculate_Abs_MgIn(
         diet_data['Dt_acMg'], diet_data['Dt_MgIn']
         )
-    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(complete_feed_data['Fd_DigWSCIn'])
+    diet_data['Dt_DigWSCIn'] = calculate_Dt_DigWSCIn(
+        complete_feed_data['Fd_DigWSCIn']
+        )
     diet_data['Dt_DigSt'] = calculate_Dt_DigSt(diet_data['Dt_DigStIn'], Dt_DMIn)
     diet_data['Dt_DigWSC'] = calculate_Dt_DigWSC(
         diet_data['Dt_DigWSCIn'], Dt_DMIn
@@ -5031,7 +5354,9 @@ def calculate_diet_data(complete_feed_data: pd.DataFrame,
     diet_data['Dt_idcRUP'] = calculate_Dt_idcRUP(
         diet_data['Dt_idRUPIn'], diet_data['Dt_RUPIn']
         )
-    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(complete_feed_data['Fd_Fe_RUPout'])
+    diet_data['Dt_Fe_RUPout'] = calculate_Dt_Fe_RUPout(
+        complete_feed_data['Fd_Fe_RUPout']
+        )
     diet_data['Dt_RDTPIn'] = calculate_Dt_RDTPIn(
         diet_data['Dt_RDPIn'], diet_data['Dt_NPNCPIn'], coeff_dict
         )

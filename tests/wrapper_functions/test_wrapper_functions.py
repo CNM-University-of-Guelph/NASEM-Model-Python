@@ -1,8 +1,6 @@
-import glob
 import json
 import os
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -11,16 +9,10 @@ import tests.testing_helpers as helper
 
 
 def compare_dataframe_columns(df1: pd.DataFrame, df2: pd.DataFrame):
-    # Get the columns in each DataFrame
     df1_columns = set(df1.columns)
     df2_columns = set(df2.columns)
-    
-    # Determine which columns are only in df1
-    only_in_df1 = df1_columns - df2_columns
-    
-    # Determine which columns are only in df2
+    only_in_df1 = df1_columns - df2_columns    
     only_in_df2 = df2_columns - df1_columns
-    
     return only_in_df1, only_in_df2
 
 
@@ -43,13 +35,16 @@ def test_wrapper_functions(json_file: str) -> None:
         convert_to_series = [key for key in input_params.keys() 
                         if key.endswith('_series')]
         for key in convert_to_series:
-            input_params[key.replace("_series", "")] = pd.Series(input_params.pop(key))
+            input_params[key.replace("_series", "")] = pd.Series(
+                input_params.pop(key)
+                )
         output = helper.create_dataframe(output)
-
 
         input_df = func(**input_params)
         output_df = output.copy()
-        only_in_left, only_in_right = compare_dataframe_columns(input_df, output_df)
+        only_in_left, only_in_right = compare_dataframe_columns(
+            input_df, output_df
+            )
 
         print("Columns only in the left DataFrame:")
         print(only_in_left)
@@ -62,7 +57,8 @@ def test_wrapper_functions(json_file: str) -> None:
             helper.compare_dicts_with_tolerance(func(**input_params), output)
         elif isinstance(output, pd.DataFrame):
             pd.testing.assert_frame_equal(
-                func(**input_params), output, check_dtype=False, rtol=1e-3, atol=1e-2
+                func(**input_params), output, check_dtype=False, 
+                rtol=1e-3, atol=1e-2
             )
         else:
             raise TypeError(f"Output for {function} is not a dict")

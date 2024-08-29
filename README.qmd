@@ -70,7 +70,7 @@ output = nd.nasem(
     user_diet = user_diet_in, 
     animal_input = animal_input_in, 
     equation_selection = equation_selection_in, 
-    feed_library_df = feed_library_in)
+    feed_library = feed_library_in)
 
 print(output)
 ```

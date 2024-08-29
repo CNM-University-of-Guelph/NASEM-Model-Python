@@ -10,10 +10,11 @@
       "f_Imb": null
     },
     "Intakes": {
-        "diet_info": null,
+        "Dt_DMIn": null,
+        "user_diet": null,
         "infusion_data": null,
         "diet_data": null,
-        "An_data": null,
+        "an_data": null,
         "energy": {
           "An_MEIn": null,
           "An_NEIn": null,
@@ -50,7 +51,9 @@
           "Dt_AARUPIn": null,
           "Inf_AARUPIn": null,
           "Dt_AAIn": null,
-          "Inf_AA_g": null
+          "Inf_AA_g": null,
+          "Dt_IdAARUPIn": null,
+          "An_IdAAIn": null
         },
         "FA": {},
         "rumen_digestable": {
@@ -181,7 +184,9 @@
           "An_NPxprt_MP": null,
           "An_CP_NP": null,
           "An_NPBal_g": null,
-          "An_NPBal": null
+          "An_NPBal": null,
+          "Body_MPUse_g_Trg_initial": null,
+          "An_MPuse_g_Trg_initial": null
         },
         "vitamin": {
           "An_VitA_req": null,
@@ -604,6 +609,7 @@
           "Ky_ME_NE": null
         },
         "protein": {
+          "Kg_MP_NP_Trg_initial": null,
           "Kg_MP_NP_Trg": null,
           "AnNPxEAA_AbsEAA": null,
           "AnNPxEAAUser_AbsEAA": null,
@@ -612,7 +618,10 @@
           "MWAA": null,
           "Fe_AAMetab_TP": null,
           "Scrf_AA_TP": null,
-          "Ur_AAEnd_TP": null
+          "Ur_AAEnd_TP": null,
+          "MP_NP_efficiency": null,
+          "mPrt_k_AA_array": null,
+          "Mlk_AA_TP": null
         },
         "mineral": {
           "Dt_acCa": null,
@@ -665,7 +674,9 @@
           "Trg_EAAUse_g": null,
           "Trg_AbsEAA_g": null,
           "An_Grazing": null,
-          "En_OM": null
+          "En_OM": null,
+          "An_PrePartDay": null,
+          "An_PrePartWk": null
         },
         "feed_library": {
           "feed_data": null

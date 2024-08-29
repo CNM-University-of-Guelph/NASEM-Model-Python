@@ -10,7 +10,9 @@ def test_not_a_list():
 
 def test_not_a_dict_in_list():
     invalid_list = ["not a dict"]
-    with pytest.raises(TypeError, match="mPrt_coeff_list\\[0\\] must be a dict"):
+    with pytest.raises(
+        TypeError, match="mPrt_coeff_list\\[0\\] must be a dict"
+        ):
         validate_mPrt_coeff_list(invalid_list)
 
 
@@ -48,7 +50,11 @@ def test_non_numeric_value_raises_type_error():
             "mPrt_k_EAA2_coeff": -0.00215
         }
     ]
-    with pytest.raises(TypeError, match="Value for mPrt_k_DigNDF in mPrt_coeff_list\\[0\\] must be int or float"):
+    with pytest.raises(
+        TypeError, 
+        match="Value for mPrt_k_DigNDF in mPrt_coeff_list\\[0\\] "
+               "must be int or float"
+        ):
         validate_mPrt_coeff_list(invalid_list)
 
 

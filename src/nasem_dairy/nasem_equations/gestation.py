@@ -1,4 +1,8 @@
-# import nasem_dairy.nasem_equations.gestation as gestation
+"""Gestation-related calculations for fetal growth and uterine changes.
+
+This module covers the estimation of fetal growth, uterine weight changes, and 
+nutrient requirements during pregnancy.
+"""
 
 import math
 
@@ -22,13 +26,14 @@ def calculate_Uter_Wtpart(Fet_BWbrth: float, coeff_dict: dict) -> float:
     return Uter_Wtpart
 
 
-def calculate_Uter_Wt(An_Parity_rl: int, 
-                      An_AgeDay: int, 
-                      An_LactDay: int, 
-                      An_GestDay: int,
-                      An_GestLength: int, 
-                      Uter_Wtpart: float, 
-                      coeff_dict: dict
+def calculate_Uter_Wt(
+    An_Parity_rl: int, 
+    An_AgeDay: int, 
+    An_LactDay: int, 
+    An_GestDay: int,
+    An_GestLength: int, 
+    Uter_Wtpart: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -83,11 +88,12 @@ def calculate_GrUter_Wtpart(Fet_BWbrth: float, coeff_dict: dict) -> float:
     return GrUter_Wtpart
 
 
-def calculate_GrUter_Wt(An_GestDay: int, 
-                        An_GestLength: int, 
-                        Uter_Wt: float, 
-                        GrUter_Wtpart: float,
-                        coeff_dict: dict
+def calculate_GrUter_Wt(
+    An_GestDay: int, 
+    An_GestLength: int, 
+    Uter_Wt: float, 
+    GrUter_Wtpart: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -114,11 +120,12 @@ def calculate_GrUter_Wt(An_GestDay: int,
     return GrUter_Wt
 
 
-def calculate_Uter_BWgain(An_LactDay: int, 
-                          An_GestDay: int, 
-                          An_GestLength: int, 
-                          Uter_Wt: float,
-                          coeff_dict: dict
+def calculate_Uter_BWgain(
+    An_LactDay: int, 
+    An_GestDay: int, 
+    An_GestLength: int, 
+    Uter_Wt: float,
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -145,12 +152,13 @@ def calculate_Uter_BWgain(An_LactDay: int,
     return Uter_BWgain
 
 
-def calculate_GrUter_BWgain(An_LactDay: int, 
-                            An_GestDay: int, 
-                            An_GestLength: int, 
-                            GrUter_Wt: float,
-                            Uter_BWgain: float, 
-                            coeff_dict: dict
+def calculate_GrUter_BWgain(
+    An_LactDay: int, 
+    An_GestDay: int, 
+    An_GestLength: int, 
+    GrUter_Wt: float,
+    Uter_BWgain: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Equation 3-17a
@@ -178,8 +186,9 @@ def calculate_GrUter_BWgain(An_LactDay: int,
     return GrUter_BWgain
 
 
-def calculate_Gest_NCPgain_g(GrUter_BWgain: float, 
-                             coeff_dict: dict
+def calculate_Gest_NCPgain_g(
+    GrUter_BWgain: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -271,10 +280,11 @@ def calculate_An_Preg(An_GestDay: int, An_GestLength: int) -> int:
     return An_Preg
 
 
-def calculate_Fet_Wt(An_GestDay: int, 
-                     An_GestLength: int, 
-                     Fet_BWbrth: float,
-                     coeff_dict: dict
+def calculate_Fet_Wt(
+    An_GestDay: int, 
+    An_GestLength: int, 
+    Fet_BWbrth: float,
+    coeff_dict: dict
 ) -> float:
     """
     Fet_Wt: Fetal weight at any time (kg)
@@ -300,10 +310,11 @@ def calculate_Fet_Wt(An_GestDay: int,
     return Fet_Wt
 
 
-def calculate_Fet_BWgain(An_GestDay: int, 
-                         An_GestLength: int, 
-                         Fet_Wt: float,
-                         coeff_dict: dict
+def calculate_Fet_BWgain(
+    An_GestDay: int, 
+    An_GestLength: int, 
+    Fet_Wt: float,
+    coeff_dict: dict
 ) -> float:
     """
     Fet_BWgain: Fetal bodyweight gain (kg/d)
@@ -316,8 +327,9 @@ def calculate_Fet_BWgain(An_GestDay: int,
     return Fet_BWgain
 
 
-def calculate_Gest_AA_g(Gest_NPuse_g: float, 
-                        Body_AA_TP: np.ndarray
+def calculate_Gest_AA_g(
+    Gest_NPuse_g: float, 
+    Body_AA_TP: np.ndarray
 ) -> np.ndarray:
     """
     Gest_AA_g: AA deposited in gravid uterus (g/d)
@@ -334,8 +346,9 @@ def calculate_Gest_EAA_g(Gest_AA_g: pd.Series) -> float:
     return Gest_EAA_g
 
 
-def calculate_GestAA_AbsAA(Gest_AA_g: pd.Series,
-                           Abs_AA_g: pd.Series
+def calculate_GestAA_AbsAA(
+    Gest_AA_g: pd.Series,
+    Abs_AA_g: pd.Series
 ) -> pd.Series:
     """
     GestAA_AbsAA: AA debosited in gravid uterus as a fraction of absorbed AA 

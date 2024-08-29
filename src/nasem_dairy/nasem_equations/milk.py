@@ -1,13 +1,16 @@
-# All calculations related to milk production, milk components, and milk energy
-# import nasem_dairy.nasem_equations.milk as milk
+"""Milk production and composition calculations.
 
+This module covers calculations related to milk production, including the 
+estimation of milk energy content, protein, fat, and lactose yields.
+"""
 import numpy as np
 import pandas as pd
 
 
-def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float, 
-                              Trg_MilkTPp: float,
-                              Trg_MilkLacp: float
+def calculate_Trg_NEmilk_Milk(
+    Trg_MilkFatp: float, 
+    Trg_MilkTPp: float,
+    Trg_MilkLacp: float
 ) -> float:
     """
     *Calculate Target (Trg) Net Energy of Milk (NEmilk) per Kilogram of Milk*
@@ -65,23 +68,24 @@ def calculate_Trg_NEmilk_Milk(Trg_MilkFatp: float,
     return Trg_NEmilk_Milk
 
 
-def calculate_Mlk_NP_g(An_StatePhys: str, 
-                       mPrt_eqn: int,
-                       Trg_Mlk_NP_g: float,
-                       An_BW: float, 
-                       Abs_AA_g: pd.Series, 
-                       mPrt_k_AA: pd.Series, 
-                       Abs_neAA_g: float,
-                       Abs_OthAA_g: float, 
-                       Abs_EAA2b_g: float, 
-                       mPrt_k_EAA2: float, 
-                       An_DigNDF: float,
-                       An_DEInp: float, 
-                       An_DEStIn: float, 
-                       An_DEFAIn: float, 
-                       An_DErOMIn: float, 
-                       An_DENDFIn: float,
-                       mPrt_coeff: dict
+def calculate_Mlk_NP_g(
+    An_StatePhys: str, 
+    mPrt_eqn: int,
+    Trg_Mlk_NP_g: float,
+    An_BW: float, 
+    Abs_AA_g: pd.Series, 
+    mPrt_k_AA: pd.Series, 
+    Abs_neAA_g: float,
+    Abs_OthAA_g: float, 
+    Abs_EAA2b_g: float, 
+    mPrt_k_EAA2: float, 
+    An_DigNDF: float,
+    An_DEInp: float, 
+    An_DEStIn: float, 
+    An_DEFAIn: float, 
+    An_DErOMIn: float, 
+    An_DENDFIn: float,
+    mPrt_coeff: dict
 ) -> float:
     """
     Examples
@@ -168,13 +172,14 @@ def calculate_Trg_Mlk_Fat_g(Trg_Mlk_Fat: float) -> float:
     return Trg_Mlk_Fat_g
 
 
-def calculate_Mlk_Fatemp_g(An_StatePhys: str, 
-                           An_LactDay_MlkPred: int,
-                           Dt_DMIn: float, 
-                           Dt_FAIn: float, 
-                           Dt_DigC160In: float,
-                           Dt_DigC183In: float,
-                           Abs_AA_g: pd.Series 
+def calculate_Mlk_Fatemp_g(
+    An_StatePhys: str, 
+    An_LactDay_MlkPred: int,
+    Dt_DMIn: float, 
+    Dt_FAIn: float, 
+    Dt_DigC160In: float,
+    Dt_DigC183In: float,
+    Abs_AA_g: pd.Series 
 ) -> float:
     """
     Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
@@ -203,9 +208,10 @@ def calculate_Mlk_Fatemp_g(An_StatePhys: str,
     return Mlk_Fatemp_g
 
 
-def calculate_Mlk_Fat_g(mFat_eqn: int, 
-                        Trg_Mlk_Fat_g: float,
-                        Mlk_Fatemp_g: float
+def calculate_Mlk_Fat_g(
+    mFat_eqn: int, 
+    Trg_Mlk_Fat_g: float,
+    Mlk_Fatemp_g: float
 ) -> float:
     """
     Mlk_Fat_g: Predicted milk fat, g
@@ -233,12 +239,13 @@ def calculate_Mlk_NP(Mlk_NP_g: float) -> float:
     return Mlk_NP
 
 
-def calculate_Mlk_Prod_comp(An_Breed: str, 
-                            Mlk_NP: float, 
-                            Mlk_Fat: float,
-                            An_DEIn: float, 
-                            An_LactDay_MlkPred: int,
-                            An_Parity_rl: int
+def calculate_Mlk_Prod_comp(
+    An_Breed: str, 
+    Mlk_NP: float, 
+    Mlk_Fat: float,
+    An_DEIn: float, 
+    An_LactDay_MlkPred: int,
+    An_Parity_rl: int
 ) -> float:
     """
     Mlk_Prod_comp: Component based milk production prediciton, kg/d
@@ -263,9 +270,10 @@ def calculate_Mlk_Prod_comp(An_Breed: str,
     return Mlk_Prod_comp
 
 
-def calculate_An_MPavail_Milk_Trg(An_MPIn: float, 
-                                  An_MPuse_g_Trg: float,
-                                  Mlk_MPUse_g_Trg: float
+def calculate_An_MPavail_Milk_Trg(
+    An_MPIn: float, 
+    An_MPuse_g_Trg: float,
+    Mlk_MPUse_g_Trg: float
 ) -> float:
     """
     An_MPavail_Milk_Trg: Metabolizalbe protein available for milk production, kg MP
@@ -281,8 +289,9 @@ def calculate_An_MPavail_Milk_Trg(An_MPIn: float,
     return An_MPavail_Milk_Trg
 
 
-def calculate_Mlk_NP_MPalow_Trg_g(An_MPavail_Milk_Trg: float,
-                                  coeff_dict: dict
+def calculate_Mlk_NP_MPalow_Trg_g(
+    An_MPavail_Milk_Trg: float,
+    coeff_dict: dict
 ) -> float:
     """
     Mlk_NP_MPalow_Trg_g: net protein available for milk production, g milk NP/d
@@ -302,8 +311,9 @@ def calculate_Mlk_NP_MPalow_Trg_g(An_MPavail_Milk_Trg: float,
     return Mlk_NP_MPalow_Trg_g
 
 
-def calculate_Mlk_Prod_MPalow(Mlk_NP_MPalow_Trg_g: float,
-                              Trg_MilkTPp: float
+def calculate_Mlk_Prod_MPalow(
+    Mlk_NP_MPalow_Trg_g: float,
+    Trg_MilkTPp: float
 ) -> float:
     """
     Mlk_Prod_MPalow: Metabolizable protein allowable milk production, kg/d
@@ -316,10 +326,11 @@ def calculate_Mlk_Prod_MPalow(Mlk_NP_MPalow_Trg_g: float,
     return Mlk_Prod_MPalow
 
 
-def calculate_An_MEavail_Milk(An_MEIn: float, 
-                              An_MEgain: float,
-                              An_MEmUse: float, 
-                              Gest_MEuse: float
+def calculate_An_MEavail_Milk(
+    An_MEIn: float, 
+    An_MEgain: float,
+    An_MEmUse: float, 
+    Gest_MEuse: float
 ) -> float:
     """
     An_MEavail_Milk: Metabolisable energy available milk production, Mcal/d
@@ -328,9 +339,10 @@ def calculate_An_MEavail_Milk(An_MEIn: float,
     return An_MEavail_Milk
 
 
-def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float, 
-                              Trg_NEmilk_Milk: float,
-                              coeff_dict: dict
+def calculate_Mlk_Prod_NEalow(
+    An_MEavail_Milk: float, 
+    Trg_NEmilk_Milk: float,
+    coeff_dict: dict
 ) -> float:
     """
     Mlk_Prod_NEalow: Net energy allowable milk production, kg/d
@@ -353,9 +365,10 @@ def calculate_Mlk_Prod_NEalow(An_MEavail_Milk: float,
     return Mlk_Prod_NEalow
 
 
-def calculate_MlkNP_Milk(An_StatePhys: str, 
-                         Mlk_NP_g: float, 
-                         Mlk_Prod: float
+def calculate_MlkNP_Milk(
+    An_StatePhys: str, 
+    Mlk_NP_g: float, 
+    Mlk_Prod: float
 ) -> float:
     """
     MlkNP_Milk: Net protein content of milk, g/g
@@ -368,12 +381,13 @@ def calculate_MlkNP_Milk(An_StatePhys: str,
     return MlkNP_Milk
 
 
-def calculate_Mlk_Prod(An_StatePhys: str, 
-                       mProd_eqn: int, 
-                       Mlk_Prod_comp: float,
-                       Mlk_Prod_NEalow: float, 
-                       Mlk_Prod_MPalow: float,
-                       Trg_MilkProd: float
+def calculate_Mlk_Prod(
+    An_StatePhys: str, 
+    mProd_eqn: int, 
+    Mlk_Prod_comp: float,
+    Mlk_Prod_NEalow: float, 
+    Mlk_Prod_MPalow: float,
+    Trg_MilkProd: float
 ) -> float:
     """
     Mlk_Prod: Milk production, kg/d, can be user entered target or a prediction 
@@ -396,9 +410,10 @@ def calculate_Mlk_Prod(An_StatePhys: str,
     return Mlk_Prod
 
 
-def calculate_MlkFat_Milk(An_StatePhys: str, 
-                          Mlk_Fat: float,
-                          Mlk_Prod: float
+def calculate_MlkFat_Milk(
+    An_StatePhys: str, 
+    Mlk_Fat: float,
+    Mlk_Prod: float
 ) -> float:
     """
     MlkFat_Milk: Milk fat g/g 
@@ -410,9 +425,10 @@ def calculate_MlkFat_Milk(An_StatePhys: str,
     return MlkFat_Milk
 
 
-def calculate_MlkNE_Milk(MlkFat_Milk: float, 
-                         MlkNP_Milk: float,
-                         Trg_MilkLacp: float
+def calculate_MlkNE_Milk(
+    MlkFat_Milk: float, 
+    MlkNP_Milk: float,
+    Trg_MilkLacp: float
 ) -> float:
     """
     MlkNE_Milk: NE content of milk, NE/kg
@@ -449,13 +465,14 @@ def calculate_Mlk_MEout(Mlk_NEout: float, coeff_dict: dict) -> float:
     return Mlk_MEout
 
 
-def calculate_Mlk_NPmx(mPrtmx_AA2: pd.Series, 
-                       An_DEInp: float, 
-                       An_DigNDF: float,
-                       An_BW: float, 
-                       Abs_neAA_g: float, 
-                       Abs_OthAA_g: float,
-                       mPrt_coeff: dict
+def calculate_Mlk_NPmx(
+    mPrtmx_AA2: pd.Series, 
+    An_DEInp: float, 
+    An_DigNDF: float,
+    An_BW: float, 
+    Abs_neAA_g: float, 
+    Abs_OthAA_g: float,
+    mPrt_coeff: dict
 ) -> float:
     """
     Mlk_NPmx: Maximal milk protein output at the entered DE, DigNDF, and BW
@@ -499,8 +516,9 @@ def calculate_Mlk_AA_TP(aa_list: list, coeff_dict: dict) -> np.ndarray:
     return Mlk_AA_TP
 
 
-def calculate_Mlk_AA_g(Mlk_NP_g: float,
-                       Mlk_AA_TP: float
+def calculate_Mlk_AA_g(
+    Mlk_NP_g: float,
+    Mlk_AA_TP: float
 ) -> pd.Series:
     """
     Mlk_AA_g: aa output in milk protein 
@@ -525,8 +543,9 @@ def calculate_MlkNP_AnMP(Mlk_NP_g: float, An_MPIn_g: float) -> float:
     return MlkNP_AnMP
 
 
-def calculate_MlkAA_AbsAA(Mlk_AA_g: pd.Series,
-                          Abs_AA_g: pd.Series
+def calculate_MlkAA_AbsAA(
+    Mlk_AA_g: pd.Series,
+    Abs_AA_g: pd.Series
 ) -> pd.Series:
     """
     MlkAA_AbsAA: Milk aa efficiency as fraction of absorbed aa
@@ -551,8 +570,9 @@ def calculate_MlkNP_AnCP(Mlk_NP_g: float, An_CPIn: float) -> float:
     return MlkNP_AnCP
 
 
-def calculate_MlkAA_DtAA(Mlk_AA_g: pd.Series,
-                         Dt_AAIn: np.ndarray
+def calculate_MlkAA_DtAA(
+    Mlk_AA_g: pd.Series,
+    Dt_AAIn: np.ndarray
 ) -> float:
     """
     MlkAA_DtAA: Milk aa as a fraction of diet aa intake (g/g)
@@ -585,9 +605,10 @@ def calculate_Trg_NEmilk_DEIn(Trg_Mlk_NEout: float, An_DEIn: float) -> float:
     return Trg_NEmilk_DEIn
 
 
-def calculate_Trg_MilkProd_EPcor(Trg_MilkProd: float, 
-                                 Trg_MilkFatp: float,
-                                 Trg_MilkTPp: float
+def calculate_Trg_MilkProd_EPcor(
+    Trg_MilkProd: float, 
+    Trg_MilkFatp: float,
+    Trg_MilkTPp: float
 ) -> float:
     """
     Trg_MilkProd_EPcor: Energy and protein corrected milk (kg/d)
@@ -599,9 +620,10 @@ def calculate_Trg_MilkProd_EPcor(Trg_MilkProd: float,
     return Trg_MilkProd_EPcor
 
 
-def calculate_Mlk_Prod_NEalow_EPcor(Mlk_Prod_NEalow: float, 
-                                    Trg_MilkFatp: float,
-                                    Trg_MilkTPp: float
+def calculate_Mlk_Prod_NEalow_EPcor(
+    Mlk_Prod_NEalow: float, 
+    Trg_MilkFatp: float,
+    Trg_MilkTPp: float
 ) -> float:
     """
     Mlk_Prod_NEalow_EPcor: NE allowable energy and protein corrected milk production (kg/d)
@@ -619,8 +641,9 @@ def calculate_Mlk_Prod_NEalow_EPcor(Mlk_Prod_NEalow: float,
     return Mlk_Prod_NEalow_EPcor
 
 
-def calculate_Mlk_EPcorNEalow_DMIn(Mlk_Prod_NEalow_EPcor: float,
-                                   An_DMIn: float
+def calculate_Mlk_EPcorNEalow_DMIn(
+    Mlk_Prod_NEalow_EPcor: float,
+    An_DMIn: float
 ) -> float:
     """
     Mlk_EPcorNEalow_DMIn: NE allowable energy and protein corrected milk production as a proportion of DMI (kg/kg)
@@ -678,8 +701,9 @@ def calculate_MlkNP_NDF(An_DigNDF: float, mPrt_coeff: dict) -> float:
     return MlkNP_NDF
 
 
-def calculate_MlkNP_AbsAA(Abs_AA_g: pd.Series,
-                          mPrt_k_AA: pd.Series
+def calculate_MlkNP_AbsAA(
+    Abs_AA_g: pd.Series,
+    mPrt_k_AA: pd.Series
 ) -> pd.Series:
     """
     MlkNP_AbsAA: ?

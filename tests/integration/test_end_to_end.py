@@ -14,7 +14,8 @@ from nasem_dairy.model.nasem import nasem
 ####################
 # Define Functions
 ####################
-def read_test_json(file_path: str
+def read_test_json(
+    file_path: str
 ) -> Union[Dict, Dict, Dict, Dict, pd.DataFrame, Dict]:
     with open(file_path, 'r') as json_file:
         data = json.load(json_file)
@@ -51,18 +52,21 @@ def read_test_json(file_path: str
     )
 
 
-def assert_values(expected_output: dict,
-                  expected_AA_values: pd.DataFrame,
-                  expected_arrays: dict,
-                  model_output: dict,
-                  tolerance: float=1e-3
+def assert_values(
+    expected_output: dict,
+    expected_AA_values: pd.DataFrame,
+    expected_arrays: dict,
+    model_output: dict,
+    tolerance: float=1e-3
 ) -> None:
     for key, expected_value in expected_output.items():
         model_value = model_output[key]
         if not isinstance(model_value, str) and not isinstance(
                 expected_value, str):
-            assert math.isclose(model_value, expected_value, rel_tol=tolerance, abs_tol=tolerance), \
-                f"Mismatch for {key}: {model_value} != {expected_value}"
+            assert math.isclose(
+                model_value, expected_value, 
+                rel_tol=tolerance, abs_tol=tolerance
+                ), f"Mismatch for {key}: {model_value} != {expected_value}"
 
     model_aa_values = model_output['aa_values']
     pd.testing.assert_frame_equal(expected_AA_values,
@@ -71,8 +75,11 @@ def assert_values(expected_output: dict,
                                   atol=tolerance)
 
     for key, value in expected_arrays.items():
-        assert np.allclose(expected_arrays[key], model_output[key], rtol=tolerance, atol=tolerance), \
-            f"Mismatch for {key}: {model_output[key]} != {expected_arrays[key]}"
+        assert np.allclose(
+            expected_arrays[key], model_output[key], 
+            rtol=tolerance, atol=tolerance
+            ), \
+        f"Mismatch for {key}: {model_output[key]} != {expected_arrays[key]}"
 
 
 @pytest.mark.parametrize("json_file", glob.glob("tests/integration/*.json"))
@@ -85,15 +92,16 @@ def test_end_to_end(json_file: str) -> None:
     path_to_package_data = importlib_resources.files("nasem_dairy.data")
     feed_library_in = pd.read_csv(
         path_to_package_data.joinpath("feed_library/NASEM_feed_library.csv"))
-    output = nasem(user_diet=user_diet_in,
-                           animal_input=animal_input_in,
-                           equation_selection=equation_selection_in,
-                           feed_library_df=feed_library_in,
-                           coeff_dict=coeff_dict_in,
-                           infusion_input=infusion_input_in,
-                           MP_NP_efficiency=MP_NP_efficiency_in,
-                           mPrt_coeff_list=mPrt_coeff_list_in,
-                           f_Imb=f_Imb_in
-                           )
+    output = nasem(
+        user_diet=user_diet_in,
+        animal_input=animal_input_in,
+        equation_selection=equation_selection_in,
+        feed_library=feed_library_in,
+        coeff_dict=coeff_dict_in,
+        infusion_input=infusion_input_in,
+        MP_NP_efficiency=MP_NP_efficiency_in,
+        mPrt_coeff_list=mPrt_coeff_list_in,
+        f_Imb=f_Imb_in
+        )
     model_output = output.export_to_dict()
     assert_values(output_data, aa_values, arrays, model_output)
