@@ -18,9 +18,10 @@ def calculate_An_RDPIn(Dt_RDPIn: float, InfRum_RDPIn: float) -> float:
     return An_RDPIn
 
 
-def calculate_An_RDP(An_RDPIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float
+def calculate_An_RDP(
+    An_RDPIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float
 ) -> float:
     An_RDP = An_RDPIn / (Dt_DMIn + InfRum_DMIn) * 100
     return An_RDP
@@ -31,9 +32,10 @@ def calculate_An_RDPIn_g(An_RDPIn: float) -> float:
     return An_RDPIn_g
 
 
-def calculate_An_DigNDFIn(Dt_DigNDFIn: float, 
-                          InfRum_NDFIn: float, 
-                          TT_dcNDF: float
+def calculate_An_DigNDFIn(
+    Dt_DigNDFIn: float, 
+    InfRum_NDFIn: float, 
+    TT_dcNDF: float
 ) -> float:
     # Line 1063, should consider SI and LI infusions as well, but no predictions
     # of LI NDF digestion available.
@@ -57,9 +59,10 @@ def calculate_An_DENDFIn(An_DigNDFIn: float, coeff_dict: dict) -> float:
     return An_DENDFIn
 
 
-def calculate_An_DigStIn(Dt_DigStIn: float, 
-                         Inf_StIn: float, 
-                         Inf_ttdcSt: float
+def calculate_An_DigStIn(
+    Dt_DigStIn: float, 
+    Inf_StIn: float, 
+    Inf_ttdcSt: float
 ) -> float:
     # Line 1033, Glc considered as WSC and thus with rOM
     An_DigStIn = Dt_DigStIn + Inf_StIn * Inf_ttdcSt / 100
@@ -82,15 +85,16 @@ def calculate_An_DEStIn(An_DigStIn: float, coeff_dict: dict) -> float:
     return An_DEStIn
 
 
-def calculate_An_DigrOMaIn(Dt_DigrOMaIn: float, 
-                           InfRum_GlcIn: float, 
-                           InfRum_AcetIn: float,
-                           InfRum_PropIn: float, 
-                           InfRum_ButrIn: float, 
-                           InfSI_GlcIn: float,
-                           InfSI_AcetIn: float, 
-                           InfSI_PropIn: float, 
-                           InfSI_ButrIn: float
+def calculate_An_DigrOMaIn(
+    Dt_DigrOMaIn: float, 
+    InfRum_GlcIn: float, 
+    InfRum_AcetIn: float,
+    InfRum_PropIn: float, 
+    InfRum_ButrIn: float, 
+    InfSI_GlcIn: float,
+    InfSI_AcetIn: float, 
+    InfSI_PropIn: float, 
+    InfSI_ButrIn: float
 ) -> float:
     An_DigrOMaIn = (Dt_DigrOMaIn + InfRum_GlcIn + InfRum_AcetIn +
                     InfRum_PropIn + InfRum_ButrIn + InfSI_GlcIn + 
@@ -114,9 +118,10 @@ def calculate_An_DErOMIn(An_DigrOMaIn: float, coeff_dict: dict) -> float:
     return An_DErOMIn
 
 
-def calculate_An_idRUPIn(Dt_idRUPIn: float, 
-                         InfRum_idRUPIn: float, 
-                         InfSI_idTPIn: float
+def calculate_An_idRUPIn(
+    Dt_idRUPIn: float, 
+    InfRum_idRUPIn: float, 
+    InfSI_idTPIn: float
 ) -> float:
     # Line 1099, SI infusions considered here
     An_idRUPIn = Dt_idRUPIn + InfRum_idRUPIn + InfSI_idTPIn
@@ -138,32 +143,35 @@ def calculate_An_CPIn(Dt_CPIn: float, Inf_CPIn: float) -> float:
     return An_CPIn
 
 
-def calculate_An_DigNDF(An_DigNDFIn: float, 
-                        Dt_DMIn: float, 
-                        InfRum_DMIn: float, 
-                        InfSI_DMIn: float
+def calculate_An_DigNDF(
+    An_DigNDFIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float, 
+    InfSI_DMIn: float
 ) -> float:
     # Line 1066, should add LI infusions
     An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
     return An_DigNDF
 
 
-def calculate_An_GasEOut_Dry(Dt_DMIn: float, 
-                             Dt_FAIn: float, 
-                             InfRum_FAIn: float, 
-                             InfRum_DMIn: float,
-                             An_GEIn: float
+def calculate_An_GasEOut_Dry(
+    Dt_DMIn: float, 
+    Dt_FAIn: float, 
+    InfRum_FAIn: float, 
+    InfRum_DMIn: float,
+    An_GEIn: float
 ) -> float:
     An_GasEOut_Dry = (0.69 + 0.053 * An_GEIn - 0.07 * (Dt_FAIn + InfRum_FAIn) / 
                       (Dt_DMIn + InfRum_DMIn) * 100)   # Line 1407, Dry Cows
     return An_GasEOut_Dry
 
 
-def calculate_An_GasEOut_Lact(Dt_DMIn: float, 
-                              Dt_FAIn: float, 
-                              InfRum_FAIn: float, 
-                              InfRum_DMIn: float,
-                              An_DigNDF: float
+def calculate_An_GasEOut_Lact(
+    Dt_DMIn: float, 
+    Dt_FAIn: float, 
+    InfRum_FAIn: float, 
+    InfRum_DMIn: float,
+    An_DigNDF: float
 ) -> float:
     An_GasEOut_Lact = (0.294 * (Dt_DMIn + InfRum_DMIn) - 
                        (0.347 * (Dt_FAIn + InfRum_FAIn) / 
@@ -178,11 +186,12 @@ def calculate_An_GasEOut_Heif(An_GEIn: float, An_NDF: float) -> float:
     return An_GasEOut_Heif
 
 
-def calculate_An_GasEOut(An_StatePhys: str, 
-                         Monensin_eqn: int, 
-                         An_GasEOut_Dry: float,
-                         An_GasEOut_Lact: float, 
-                         An_GasEOut_Heif: float
+def calculate_An_GasEOut(
+    An_StatePhys: str, 
+    Monensin_eqn: int, 
+    An_GasEOut_Dry: float,
+    An_GasEOut_Lact: float, 
+    An_GasEOut_Heif: float
 ) -> float:
     if An_StatePhys == "Dry Cow":
         An_GasEOut = An_GasEOut_Dry
@@ -201,9 +210,10 @@ def calculate_An_GasEOut(An_StatePhys: str,
     return An_GasEOut
 
 
-def calculate_An_DigCPaIn(An_CPIn: float, 
-                          InfArt_CPIn: float, 
-                          Fe_CP: float
+def calculate_An_DigCPaIn(
+    An_CPIn: float, 
+    InfArt_CPIn: float, 
+    Fe_CP: float
 ) -> float:
     An_DigCPaIn = An_CPIn - InfArt_CPIn - Fe_CP  # apparent total tract
     return An_DigCPaIn
@@ -242,9 +252,10 @@ def calculate_An_DENPNCPIn(Dt_NPNCPIn: float, coeff_dict: dict) -> float:
     return An_DENPNCPIn
 
 
-def calculate_An_DETPIn(An_DECPIn: float, 
-                        An_DENPNCPIn: float, 
-                        coeff_dict: dict
+def calculate_An_DETPIn(
+    An_DECPIn: float, 
+    An_DENPNCPIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     Examples
@@ -285,19 +296,20 @@ def calculate_An_DEFAIn(An_DigFAIn: float, coeff_dict: dict) -> float:
     return An_DEFAIn
 
 
-def calculate_An_DEIn(An_StatePhys: str, 
-                      An_DENDFIn: float, 
-                      An_DEStIn: float, 
-                      An_DErOMIn: float,
-                      An_DETPIn: float, 
-                      An_DENPNCPIn: float, 
-                      An_DEFAIn: float, 
-                      Inf_DEAcetIn: float,
-                      Inf_DEPropIn: float, 
-                      Inf_DEButrIn: float, 
-                      Dt_DMIn_ClfLiq: float, 
-                      Dt_DEIn: float,
-                      Monensin_eqn: int
+def calculate_An_DEIn(
+    An_StatePhys: str, 
+    An_DENDFIn: float, 
+    An_DEStIn: float, 
+    An_DErOMIn: float,
+    An_DETPIn: float, 
+    An_DENPNCPIn: float, 
+    An_DEFAIn: float, 
+    Inf_DEAcetIn: float,
+    Inf_DEPropIn: float, 
+    Inf_DEButrIn: float, 
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DEIn: float,
+    Monensin_eqn: int
 ) -> float:
     An_DEIn = (An_DENDFIn + An_DEStIn + An_DErOMIn + An_DETPIn + An_DENPNCPIn +
                An_DEFAIn + Inf_DEAcetIn + Inf_DEPropIn + Inf_DEButrIn)
@@ -308,22 +320,24 @@ def calculate_An_DEIn(An_StatePhys: str,
     return An_DEIn
 
 
-def calculate_An_DEInp(An_DEIn: float, 
-                       An_DETPIn: float, 
-                       An_DENPNCPIn: float
+def calculate_An_DEInp(
+    An_DEIn: float, 
+    An_DETPIn: float, 
+    An_DENPNCPIn: float
 ) -> float:
     # Line 1385, Create a nonprotein DEIn for milk protein predictions.
     An_DEInp = An_DEIn - An_DETPIn - An_DENPNCPIn
     return An_DEInp
 
 
-def calculate_An_GutFill_BW(An_BW: float, 
-                            An_BW_mature: float, 
-                            An_StatePhys: str, 
-                            An_Parity_rl: int,
-                            Dt_DMIn_ClfLiq: float, 
-                            Dt_DMIn_ClfStrt: float, 
-                            coeff_dict: dict
+def calculate_An_GutFill_BW(
+    An_BW: float, 
+    An_BW_mature: float, 
+    An_StatePhys: str, 
+    An_Parity_rl: int,
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DMIn_ClfStrt: float, 
+    coeff_dict: dict
 ) -> float:
     """
     see page 34 for comments, gut fill is default 0.18 for cows
@@ -396,20 +410,22 @@ def calculate_An_BW_empty(An_BW: float, An_GutFill_Wt: float) -> float:
     return An_BW_empty
 
 
-def calculate_An_REgain_Calf(Body_Gain_empty: float, 
-                             An_BW_empty: float
+def calculate_An_REgain_Calf(
+    Body_Gain_empty: float, 
+    An_BW_empty: float
 ) -> float:
     An_REgain_Calf = Body_Gain_empty**1.10 * An_BW_empty**0.205  
     # Line 2445, calf RE gain needed here for fat gain, mcal/d
     return An_REgain_Calf
 
 
-def calculate_An_MEIn_approx(An_DEInp: float, 
-                             An_DENPNCPIn: float,
-                             An_DigTPaIn: float, 
-                             Body_NPgain: float,
-                             An_GasEOut: float, 
-                             coeff_dict: dict
+def calculate_An_MEIn_approx(
+    An_DEInp: float, 
+    An_DENPNCPIn: float,
+    An_DigTPaIn: float, 
+    Body_NPgain: float,
+    An_GasEOut: float, 
+    coeff_dict: dict
 ) -> float:
     """
     An_MEIn_approx: Approximate ME intake, see note:
@@ -424,15 +440,16 @@ def calculate_An_MEIn_approx(An_DEInp: float,
     return An_MEIn_approx
 
 
-def calculate_An_MEIn(An_StatePhys: str, 
-                      An_BW: float, 
-                      An_DEIn: float, 
-                      An_GasEOut: float, 
-                      Ur_DEout: float,
-                      Dt_DMIn_ClfLiq: float, 
-                      Dt_DEIn_base_ClfLiq: float, 
-                      Dt_DEIn_base_ClfDry: float,
-                      RumDevDisc_Clf: float
+def calculate_An_MEIn(
+    An_StatePhys: str, 
+    An_BW: float, 
+    An_DEIn: float, 
+    An_GasEOut: float, 
+    Ur_DEout: float,
+    Dt_DMIn_ClfLiq: float, 
+    Dt_DEIn_base_ClfLiq: float, 
+    Dt_DEIn_base_ClfDry: float,
+    RumDevDisc_Clf: float
 ) -> float:
     condition = ((An_StatePhys == "Calf") 
                  and (Dt_DMIn_ClfLiq > 0.015 * An_BW) 
@@ -473,9 +490,10 @@ def calculate_An_TPIn(Dt_TPIn: float, Inf_TPIn: float) -> float:
     return An_TPIn
 
 
-def calculate_An_DigTPaIn(An_TPIn: float, 
-                          InfArt_CPIn: float,
-                          Fe_CP: float
+def calculate_An_DigTPaIn(
+    An_TPIn: float, 
+    InfArt_CPIn: float,
+    Fe_CP: float
 ) -> float:
     """
     An_DigTPaIn: Total tract digestable true protein intake kg CP/d
@@ -494,9 +512,10 @@ def calculate_An_DMIn_MBW(An_DMIn: float, An_MBW: float) -> float:
     return An_DMIn_MBW
 
 
-def calculate_An_StIn(Dt_StIn: float, 
-                      InfRum_StIn: float,
-                      InfSI_StIn: float
+def calculate_An_StIn(
+    Dt_StIn: float, 
+    InfRum_StIn: float,
+    InfSI_StIn: float
 ) -> float:
     """
     An_StIn: Dietary + infused starch intake, kg
@@ -505,10 +524,11 @@ def calculate_An_StIn(Dt_StIn: float,
     return An_StIn
 
 
-def calculate_An_St(An_StIn: float, 
-                    Dt_DMIn: float, 
-                    InfRum_DMIn: float,
-                    InfSI_DMIn: float
+def calculate_An_St(
+    An_StIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_St: Starch % of diet + infusions
@@ -517,14 +537,15 @@ def calculate_An_St(An_StIn: float,
     return An_St
 
 
-def calculate_An_rOMIn(Dt_rOMIn: float, 
-                       InfRum_GlcIn: float,
-                       InfRum_AcetIn: float, 
-                       InfRum_PropIn: float,
-                       InfRum_ButrIn: float, 
-                       InfSI_AcetIn: float,
-                       InfSI_PropIn: float, 
-                       InfSI_ButrIn: float
+def calculate_An_rOMIn(
+    Dt_rOMIn: float, 
+    InfRum_GlcIn: float,
+    InfRum_AcetIn: float, 
+    InfRum_PropIn: float,
+    InfRum_ButrIn: float, 
+    InfSI_AcetIn: float,
+    InfSI_PropIn: float, 
+    InfSI_ButrIn: float
 ) -> float:
     """
     An_rOMIn: Residual organic matter intake from diet + infusions, kg
@@ -535,10 +556,11 @@ def calculate_An_rOMIn(Dt_rOMIn: float,
     return An_rOMIn
 
 
-def calculate_An_rOM(An_rOMIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float,
-                     InfSI_DMIn: float
+def calculate_An_rOM(
+    An_rOMIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_rOM: Residual organic matter % of diet + infusions
@@ -547,9 +569,10 @@ def calculate_An_rOM(An_rOMIn: float,
     return An_rOM
 
 
-def calculate_An_NDFIn(Dt_NDFIn: float, 
-                       InfRum_NDFIn: float,
-                       InfSI_NDFIn: float
+def calculate_An_NDFIn(
+    Dt_NDFIn: float, 
+    InfRum_NDFIn: float,
+    InfSI_NDFIn: float
 ) -> float:
     """
     An_NDFIn: NDF intake from diet and infusions, kg
@@ -566,10 +589,11 @@ def calculate_An_NDFIn_BW(An_NDFIn: float, An_BW: float) -> float:
     return An_NDFIn_BW
 
 
-def calculate_An_NDF(An_NDFIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float,
-                     InfSI_DMIn: float
+def calculate_An_NDF(
+    An_NDFIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_NDF: NDF % of diet + infusion intake
@@ -578,9 +602,10 @@ def calculate_An_NDF(An_NDFIn: float,
     return An_NDF
 
 
-def calculate_An_ADFIn(Dt_ADFIn: float, 
-                       InfRum_ADFIn: float,
-                       InfSI_ADFIn: float
+def calculate_An_ADFIn(
+    Dt_ADFIn: float, 
+    InfRum_ADFIn: float,
+    InfSI_ADFIn: float
 ) -> float:
     """
     An_ADFIn: ADF intake from diet + infusions, kg
@@ -589,10 +614,11 @@ def calculate_An_ADFIn(Dt_ADFIn: float,
     return An_ADFIn
 
 
-def calculate_An_ADF(An_ADFIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float,
-                     InfSI_DMIn: float
+def calculate_An_ADF(
+    An_ADFIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_ADF: ADF % of diet + infusion intake
@@ -609,10 +635,11 @@ def calculate_An_CPIn_g(An_CPIn: float) -> float:
     return An_CPIn_g
 
 
-def calculate_An_CP(An_CPIn: float, 
-                    Dt_DMIn: float, 
-                    InfRum_DMIn: float,
-                    InfSI_DMIn: float
+def calculate_An_CP(
+    An_CPIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_CP: Crude protein % of diet + infusion intake
@@ -636,10 +663,11 @@ def calculate_An_FAhydrIn(Dt_FAhydrIn: float, Inf_FAIn: float) -> float:
     return An_FAhydrIn
 
 
-def calculate_An_FA(An_FAIn: float, 
-                    Dt_DMIn: float, 
-                    InfRum_DMIn: float,
-                    InfSI_DMIn: float
+def calculate_An_FA(
+    An_FAIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_FA: Fatty acid % of diet + infusions
@@ -648,9 +676,10 @@ def calculate_An_FA(An_FAIn: float,
     return An_FA
 
 
-def calculate_An_AshIn(Dt_AshIn: float, 
-                       InfRum_AshIn: float,
-                       InfSI_AshIn: float
+def calculate_An_AshIn(
+    Dt_AshIn: float, 
+    InfRum_AshIn: float,
+    InfSI_AshIn: float
 ) -> float:
     """
     An_AshIn: Ash intake from diet + infusions, kg
@@ -659,10 +688,11 @@ def calculate_An_AshIn(Dt_AshIn: float,
     return An_AshIn
 
 
-def calculate_An_Ash(An_AshIn: float, 
-                     Dt_DMIn: float, 
-                     InfRum_DMIn: float,
-                     InfSI_DMIn: float
+def calculate_An_Ash(
+    An_AshIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_Ash: Ash % of diet + infusions intake
@@ -671,9 +701,10 @@ def calculate_An_Ash(An_AshIn: float,
     return An_Ash
 
 
-def calculate_An_DigStIn_Base(Dt_DigStIn_Base: float, 
-                              Inf_StIn: float,
-                              Inf_ttdcSt: float
+def calculate_An_DigStIn_Base(
+    Dt_DigStIn_Base: float, 
+    Inf_StIn: float,
+    Inf_ttdcSt: float
 ) -> float:
     """
     An_DigStIn_Base: 
@@ -683,9 +714,10 @@ def calculate_An_DigStIn_Base(Dt_DigStIn_Base: float,
     return An_DigStIn_Base
 
 
-def calculate_An_DigWSCIn(Dt_DigWSCIn: float, 
-                          InfRum_GlcIn: float,
-                          InfSI_GlcIn: float
+def calculate_An_DigWSCIn(
+    Dt_DigWSCIn: float, 
+    InfRum_GlcIn: float,
+    InfSI_GlcIn: float
 ) -> float:
     """
     Digestable water soluble carbohydrate intake, kg/d
@@ -694,15 +726,16 @@ def calculate_An_DigWSCIn(Dt_DigWSCIn: float,
     return An_DigWSCIn
 
 
-def calculate_An_DigrOMtIn(Dt_DigrOMtIn: float, 
-                           InfRum_GlcIn: float,
-                           InfRum_AcetIn: float, 
-                           InfRum_PropIn: float,
-                           InfRum_ButrIn: float, 
-                           InfSI_GlcIn: float,
-                           InfSI_AcetIn: float, 
-                           InfSI_PropIn: float,
-                           InfSI_ButrIn: float
+def calculate_An_DigrOMtIn(
+    Dt_DigrOMtIn: float, 
+    InfRum_GlcIn: float,
+    InfRum_AcetIn: float, 
+    InfRum_PropIn: float,
+    InfRum_ButrIn: float, 
+    InfSI_GlcIn: float,
+    InfSI_AcetIn: float, 
+    InfSI_PropIn: float,
+    InfSI_ButrIn: float
 ) -> float:
     """
     An_DigrOMtIn: truly digestable residual organic matter intake, kg/d
@@ -715,10 +748,11 @@ def calculate_An_DigrOMtIn(Dt_DigrOMtIn: float,
     return An_DigrOMtIn
 
 
-def calculate_An_DigSt(An_DigStIn: float, 
-                       Dt_DMIn: float, 
-                       InfRum_DMIn: float,
-                       InfSI_DMIn: float
+def calculate_An_DigSt(
+    An_DigStIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigSt: Digestable starch intake, kg/d
@@ -727,10 +761,11 @@ def calculate_An_DigSt(An_DigStIn: float,
     return An_DigSt
 
 
-def calculate_An_DigWSC(An_DigWSCIn: float, 
-                        Dt_DMIn: float, 
-                        InfRum_DMIn: float,
-                        InfSI_DMIn: float
+def calculate_An_DigWSC(
+    An_DigWSCIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigWSC: Digestable water soluble carbohydrates, % DM
@@ -740,10 +775,11 @@ def calculate_An_DigWSC(An_DigWSCIn: float,
     return An_DigWSC
 
 
-def calculate_An_DigrOMa(An_DigrOMaIn: float, 
-                         Dt_DMIn: float,
-                         InfRum_DMIn: float, 
-                         InfSI_DMIn: float
+def calculate_An_DigrOMa(
+    An_DigrOMaIn: float, 
+    Dt_DMIn: float,
+    InfRum_DMIn: float, 
+    InfSI_DMIn: float
 ) -> float:
     """
     Apparent digestable residual organic matter, % DM
@@ -753,10 +789,11 @@ def calculate_An_DigrOMa(An_DigrOMaIn: float,
     return An_DigrOMa
 
 
-def calculate_An_DigrOMt(An_DigrOMtIn: float, 
-                         Dt_DMIn: float,
-                         InfRum_DMIn: float, 
-                         InfSI_DMIn: float
+def calculate_An_DigrOMt(
+    An_DigrOMtIn: float, 
+    Dt_DMIn: float,
+    InfRum_DMIn: float, 
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigrOMt: Truly digestable residual organic matter, % DM
@@ -766,9 +803,10 @@ def calculate_An_DigrOMt(An_DigrOMtIn: float,
     return An_DigrOMt
 
 
-def calculate_An_DigNDFIn_Base(Dt_NDFIn: float, 
-                               InfRum_NDFIn: float,
-                               TT_dcNDF_Base: float
+def calculate_An_DigNDFIn_Base(
+    Dt_NDFIn: float, 
+    InfRum_NDFIn: float,
+    TT_dcNDF_Base: float
 ) -> float:
     """
     An_DigNDFIn_Base: Base Digestable NDF Intake, kg/d
@@ -786,9 +824,10 @@ def calculate_An_RDNPNCPIn(Dt_NPNCPIn: float, InfRum_NPNCPIn: float) -> float:
     return An_RDNPNCPIn
 
 
-def calculate_An_RUP(An_RUPIn: float, 
-                     Dt_DMIn: float,
-                     InfRum_DMIn: float
+def calculate_An_RUP(
+    An_RUPIn: float, 
+    Dt_DMIn: float,
+    InfRum_DMIn: float
 ) -> float:
     """
     An_RUP: Rumen undegradable protein from diet + infusions, % DM
@@ -797,9 +836,10 @@ def calculate_An_RUP(An_RUPIn: float,
     return An_RUP
 
 
-def calculate_An_RUP_CP(An_RUPIn: float, 
-                        Dt_CPIn: float,
-                        InfRum_CPIn: float
+def calculate_An_RUP_CP(
+    An_RUPIn: float, 
+    Dt_CPIn: float,
+    InfRum_CPIn: float
 ) -> float:
     """
     An_RUP_CP: Rumen undegradable protein % of crude protein
@@ -808,9 +848,10 @@ def calculate_An_RUP_CP(An_RUPIn: float,
     return An_RUP_CP
 
 
-def calculate_An_idRUCPIn(Dt_idRUPIn: float, 
-                          InfRum_idRUPIn: float,
-                          InfSI_idCPIn: float
+def calculate_An_idRUCPIn(
+    Dt_idRUPIn: float, 
+    InfRum_idRUPIn: float,
+    InfSI_idCPIn: float
 ) -> float:
     """
     An_idRUCPIn: Intestinally digested rumen undegradable crude protein intake, kg/d
@@ -819,10 +860,11 @@ def calculate_An_idRUCPIn(Dt_idRUPIn: float,
     return An_idRUCPIn
 
 
-def calculate_An_idRUP(An_idRUPIn: float, 
-                       Dt_DMIn: float, 
-                       InfRum_DMIn: float,
-                       InfSI_DMIn: float
+def calculate_An_idRUP(
+    An_idRUPIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_idRUP: Intestinally digestable rumen undegradable protein, % DM
@@ -831,10 +873,11 @@ def calculate_An_idRUP(An_idRUPIn: float,
     return An_idRUP
 
 
-def calculate_An_RDTPIn(Dt_RDTPIn: float, 
-                        InfRum_RDPIn: float,
-                        InfRum_NPNCPIn: float, 
-                        coeff_dict: dict
+def calculate_An_RDTPIn(
+    Dt_RDTPIn: float, 
+    InfRum_RDPIn: float,
+    InfRum_NPNCPIn: float, 
+    coeff_dict: dict
 ) -> float:
     """
     An_RDTPIn: Rumen degradable true protein intake, kg/d
@@ -856,9 +899,10 @@ def calculate_An_RDTPIn(Dt_RDTPIn: float,
     return An_RDTPIn
 
 
-def calculate_An_RDP_CP(An_RDPIn: float, 
-                        Dt_CPIn: float,
-                        InfRum_CPIn: float
+def calculate_An_RDP_CP(
+    An_RDPIn: float, 
+    Dt_CPIn: float,
+    InfRum_CPIn: float
 ) -> float:
     """
     An_RDP_CP: Rumen degradable protein % of crude protein
@@ -867,9 +911,10 @@ def calculate_An_RDP_CP(An_RDPIn: float,
     return An_RDP_CP
 
 
-def calculate_An_DigCPa(An_DigCPaIn: float, 
-                        An_DMIn: float,
-                        InfArt_DMIn: float
+def calculate_An_DigCPa(
+    An_DigCPaIn: float, 
+    An_DMIn: float,
+    InfArt_DMIn: float
 ) -> float:
     """
     An_DigCPa: Apparent total tract digested CP, % DM
@@ -878,9 +923,10 @@ def calculate_An_DigCPa(An_DigCPaIn: float,
     return An_DigCPa
 
 
-def calculate_TT_dcAnCPa(An_DigCPaIn: float, 
-                         An_CPIn: float,
-                         InfArt_CPIn: float
+def calculate_TT_dcAnCPa(
+    An_DigCPaIn: float, 
+    An_CPIn: float,
+    InfArt_CPIn: float
 ) -> float:
     """
     TT_dcAnCPa: Digestability coefficient apparent total tract CP, % CP
@@ -889,11 +935,12 @@ def calculate_TT_dcAnCPa(An_DigCPaIn: float,
     return TT_dcAnCPa
 
 
-def calculate_An_DigCPtIn(An_StatePhys: str, 
-                          Dt_DigCPtIn: float,
-                          Inf_idCPIn: float, 
-                          An_RDPIn: float,
-                          An_idRUPIn: float
+def calculate_An_DigCPtIn(
+    An_StatePhys: str, 
+    Dt_DigCPtIn: float,
+    Inf_idCPIn: float, 
+    An_RDPIn: float,
+    An_idRUPIn: float
 ) -> float:
     """
     An_DigCPtIn: True total tract digested CP intake, kg/d
@@ -915,10 +962,11 @@ def calculate_An_DigNtIn_g(An_DigCPtIn: float) -> float:
     return An_DigNtIn_g
 
 
-def calculate_An_DigTPtIn(An_RDTPIn: float, 
-                          Fe_MiTP: float, 
-                          An_idRUPIn: float,
-                          Fe_NPend: float
+def calculate_An_DigTPtIn(
+    An_RDTPIn: float, 
+    Fe_MiTP: float, 
+    An_idRUPIn: float,
+    Fe_NPend: float
 ) -> float:
     """
     An_DigTPtIn: True total tract digested true protein intake, kg/d
@@ -927,9 +975,10 @@ def calculate_An_DigTPtIn(An_RDTPIn: float,
     return An_DigTPtIn
 
 
-def calculate_An_DigCPt(An_DigCPtIn: float, 
-                        An_DMIn: float,
-                        InfArt_DMIn: float
+def calculate_An_DigCPt(
+    An_DigCPtIn: float, 
+    An_DMIn: float,
+    InfArt_DMIn: float
 ) -> float:
     """
     An_DigCPt: True total tract digested CP, % DMI
@@ -938,9 +987,10 @@ def calculate_An_DigCPt(An_DigCPtIn: float,
     return An_DigCPt
 
 
-def calculate_An_DigTPt(An_DigTPtIn: float, 
-                        An_DMIn: float,
-                        InfArt_DMIn: float
+def calculate_An_DigTPt(
+    An_DigTPtIn: float, 
+    An_DMIn: float,
+    InfArt_DMIn: float
 ) -> float:
     """
     An_DigTPt: True digested total tract true protein, % DMI
@@ -949,9 +999,10 @@ def calculate_An_DigTPt(An_DigTPtIn: float,
     return An_DigTPt
 
 
-def calculate_TT_dcAnCPt(An_DigCPtIn: float, 
-                         An_CPIn: float,
-                         InfArt_CPIn: float
+def calculate_TT_dcAnCPt(
+    An_DigCPtIn: float, 
+    An_CPIn: float,
+    InfArt_CPIn: float
 ) -> float:
     """
     TT_dcAnCPt: Digestability coefficient true total tract CP intake, % CP
@@ -960,11 +1011,12 @@ def calculate_TT_dcAnCPt(An_DigCPtIn: float,
     return TT_dcAnCPt
 
 
-def calculate_TT_dcAnTPt(An_DigTPtIn: float, 
-                         An_TPIn: float, 
-                         InfArt_CPIn: float, 
-                         InfRum_NPNCPIn: float, 
-                         InfSI_NPNCPIn: float
+def calculate_TT_dcAnTPt(
+    An_DigTPtIn: float, 
+    An_TPIn: float, 
+    InfArt_CPIn: float, 
+    InfRum_NPNCPIn: float, 
+    InfSI_NPNCPIn: float
 ) -> float:
     """
     TT_dcAnTPt: Digestabgility coefficient apparent total tract true protein, % TP
@@ -992,10 +1044,11 @@ def calculate_An_idCPIn(An_idRUPIn: float, Du_idMiCP: float) -> float:
     return An_idCPIn
 
 
-def calculate_An_DigFA(An_DigFAIn: float, 
-                       Dt_DMIn: float, 
-                       InfRum_DMIn: float,
-                       InfSI_DMIn: float
+def calculate_An_DigFA(
+    An_DigFAIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigFA: Digestable FA, dietary and infusions, % of DMI
@@ -1004,10 +1057,11 @@ def calculate_An_DigFA(An_DigFAIn: float,
     return An_DigFA
 
 
-def calculate_TT_dcAnFA(Dt_DigFAIn: float, 
-                        Inf_DigFAIn: float, 
-                        Dt_FAIn: float,
-                        Inf_FAIn: float
+def calculate_TT_dcAnFA(
+    Dt_DigFAIn: float, 
+    Inf_DigFAIn: float, 
+    Dt_FAIn: float,
+    Inf_FAIn: float
 ) -> float:
     """
     TT_dcAnFA: Digestability coefficient for total tract FA
@@ -1026,11 +1080,12 @@ def calculate_An_OMIn(Dt_OMIn: float, Inf_OMIn: float) -> float:
     return An_OMIn
 
 
-def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float, 
-                               An_DigStIn_Base: float,
-                               An_DigFAIn: float, 
-                               An_DigrOMaIn: float,
-                               An_DigCPaIn: float
+def calculate_An_DigOMaIn_Base(
+    An_DigNDFIn_Base: float, 
+    An_DigStIn_Base: float,
+    An_DigFAIn: float, 
+    An_DigrOMaIn: float,
+    An_DigCPaIn: float
 ) -> float:
     """
     An_DigOMaIn_Base: Base apparent digested organic matter intake? (kg/d) 
@@ -1040,11 +1095,12 @@ def calculate_An_DigOMaIn_Base(An_DigNDFIn_Base: float,
     return An_DigOMaIn_Base
 
 
-def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float, 
-                               An_DigStIn_Base: float,
-                               An_DigFAIn: float, 
-                               An_DigrOMtIn: float,
-                               An_DigCPtIn: float
+def calculate_An_DigOMtIn_Base(
+    An_DigNDFIn_Base: float, 
+    An_DigStIn_Base: float,
+    An_DigFAIn: float, 
+    An_DigrOMtIn: float,
+    An_DigCPtIn: float
 ) -> float:
     """
     An_DigOMtIn_Base: Base true digested organic matter intake? (kg/d)
@@ -1054,11 +1110,12 @@ def calculate_An_DigOMtIn_Base(An_DigNDFIn_Base: float,
     return An_DigOMtIn_Base
 
 
-def calculate_An_DigOMaIn(An_DigNDFIn: float, 
-                          An_DigStIn: float,
-                          An_DigFAIn: float, 
-                          An_DigrOMaIn: float,
-                          An_DigCPaIn: float
+def calculate_An_DigOMaIn(
+    An_DigNDFIn: float, 
+    An_DigStIn: float,
+    An_DigFAIn: float, 
+    An_DigrOMaIn: float,
+    An_DigCPaIn: float
 ) -> float:
     """
     An_DigOMaIn: Apparent digested organic matter intake (kg/d)
@@ -1068,11 +1125,12 @@ def calculate_An_DigOMaIn(An_DigNDFIn: float,
     return An_DigOMaIn
 
 
-def calculate_An_DigOMtIn(An_DigNDFIn: float, 
-                          An_DigStIn: float,
-                          An_DigFAIn: float, 
-                          An_DigrOMtIn: float,
-                          An_DigCPtIn: float
+def calculate_An_DigOMtIn(
+    An_DigNDFIn: float, 
+    An_DigStIn: float,
+    An_DigFAIn: float, 
+    An_DigrOMtIn: float,
+    An_DigCPtIn: float
 ) -> float:
     """
     An_DigOMtIn: True digested organic matter intake (kg/d)
@@ -1106,10 +1164,11 @@ def calculate_TT_dcOMt_Base(An_DigOMtIn_Base: float, An_OMIn: float) -> float:
     return TT_dcOMt_Base
 
 
-def calculate_An_DigOMa(An_DigOMaIn: float, 
-                        Dt_DMIn: float, 
-                        InfRum_DMIn: float,
-                        InfSI_DMIn: float
+def calculate_An_DigOMa(
+    An_DigOMaIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigOMa: Apparent digested organic matter, dietary + infusions, % DMI
@@ -1119,10 +1178,11 @@ def calculate_An_DigOMa(An_DigOMaIn: float,
     return An_DigOMa
 
 
-def calculate_An_DigOMt(An_DigOMtIn: float, 
-                        Dt_DMIn: float, 
-                        InfRum_DMIn: float,
-                        InfSI_DMIn: float
+def calculate_An_DigOMt(
+    An_DigOMtIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_DigOMt: True digested organic matter, dietary + infusions, % DMI
@@ -1132,16 +1192,17 @@ def calculate_An_DigOMt(An_DigOMtIn: float,
     return An_DigOMt
 
 
-def calculate_An_GEIn(Dt_GEIn: float, 
-                      Inf_NDFIn: float, 
-                      Inf_StIn: float,
-                      Inf_FAIn: float, 
-                      Inf_TPIn: float, 
-                      Inf_NPNCPIn: float,
-                      Inf_AcetIn: float, 
-                      Inf_PropIn: float, 
-                      Inf_ButrIn: float,
-                      coeff_dict: dict
+def calculate_An_GEIn(
+    Dt_GEIn: float, 
+    Inf_NDFIn: float, 
+    Inf_StIn: float,
+    Inf_FAIn: float, 
+    Inf_TPIn: float, 
+    Inf_NPNCPIn: float,
+    Inf_AcetIn: float, 
+    Inf_PropIn: float, 
+    Inf_ButrIn: float,
+    coeff_dict: dict
 ) -> float:
     """
     An_GEIn: Gross energy intake (Mcal/d)
@@ -1181,10 +1242,11 @@ def calculate_An_GE(An_GEIn: float, An_DMIn: float) -> float:
     return An_GE
 
 
-def calculate_An_DERDTPIn(An_RDTPIn: float, 
-                          Fe_DEMiCPend: float,
-                          Fe_DERDPend: float, 
-                          coeff_dict: dict
+def calculate_An_DERDTPIn(
+    An_RDTPIn: float, 
+    Fe_DEMiCPend: float,
+    Fe_DERDPend: float, 
+    coeff_dict: dict
 ) -> float:
     """
     An_DERDTPIn: Digestable energy in rumen degradable true protein (Mcal/d)
@@ -1205,9 +1267,10 @@ def calculate_An_DERDTPIn(An_RDTPIn: float,
     return An_DERDTPIn
 
 
-def calculate_An_DEidRUPIn(An_idRUPIn: float, 
-                           Fe_DERUPend: float,
-                           coeff_dict: dict
+def calculate_An_DEidRUPIn(
+    An_idRUPIn: float, 
+    Fe_DERUPend: float,
+    coeff_dict: dict
 ) -> float:
     """
     An_DEidRUPIn: Digestable energy in intestinally digested RUP (Mcal/d)
@@ -1289,9 +1352,10 @@ def calculate_An_MEIn_ClfDry(An_MEIn: float, Dt_MEIn_ClfLiq: float) -> float:
     return An_MEIn_ClfDry
 
 
-def calculate_An_ME_ClfDry(An_MEIn_ClfDry: float, 
-                           An_DMIn: float, 
-                           Dt_DMIn_ClfLiq: float
+def calculate_An_ME_ClfDry(
+    An_MEIn_ClfDry: float, 
+    An_DMIn: float, 
+    Dt_DMIn_ClfLiq: float
 ) -> float:
     An_ME_ClfDry = An_MEIn_ClfDry / (An_DMIn - Dt_DMIn_ClfLiq)
     return An_ME_ClfDry
@@ -1366,25 +1430,25 @@ def calculate_An_FAIn(Dt_FAIn: float, Inf_FAIn: float) -> float:
 ####################
 # Animal Warpper Functions
 ####################
-def calculate_an_data(an_data: dict,
-                      diet_data: dict, 
-                      infusion_data: dict,
-                      Monensin_eqn: int, 
-                      GrUter_Wt: float, 
-                      Dt_DMIn: float,
-                      Fe_CP: float,
-                      An_StatePhys: str,
-                      An_BW: float,
-                      An_BW_mature: float,
-                      An_Parity_rl: int,
-                      Fe_MiTP: float,
-                      Fe_NPend: float,
-                      Fe_DEMiCPend: float,
-                      Fe_DERDPend: float,
-                      Fe_DERUPend: float,
-                      Du_idMiCP: float,
-                      aa_list: list,
-                      coeff_dict: dict
+def calculate_an_data(
+    an_data: dict,
+    diet_data: dict, 
+    infusion_data: dict,
+    Monensin_eqn: int, 
+    GrUter_Wt: float, 
+    Dt_DMIn: float,
+    Fe_CP: float,
+    An_StatePhys: str,
+    An_BW: float,
+    An_BW_mature: float,
+    An_Parity_rl: int,
+    Fe_MiTP: float,
+    Fe_NPend: float,
+    Fe_DEMiCPend: float,
+    Fe_DERDPend: float,
+    Fe_DERUPend: float,
+    Du_idMiCP: float,
+    coeff_dict: dict
 ) -> dict:
     # Could use a better name, an_data for now
     an_data["An_RDPIn"] = calculate_An_RDPIn(
@@ -1787,11 +1851,12 @@ def calculate_an_data(an_data: dict,
 ####################
 # Animal Functions not in Wrapper
 ####################
-def calculate_An_MPIn(An_StatePhys: str,
-                      An_DigCPtIn: float,
-                      Dt_idRUPIn: float, 
-                      Du_idMiTP: float, 
-                      InfArt_TPIn: float
+def calculate_An_MPIn(
+    An_StatePhys: str,
+    An_DigCPtIn: float,
+    Dt_idRUPIn: float, 
+    Du_idMiTP: float, 
+    InfArt_TPIn: float
 ) -> float:
     if An_StatePhys == "Calf":
         An_MPIn = An_DigCPtIn # Line 1237
@@ -1827,10 +1892,11 @@ def calculate_An_MP_CP(An_MPIn: float, An_CPIn: float) -> float:
     return An_MP_CP
 
 
-def calculate_An_MP(An_MPIn: float, 
-                    Dt_DMIn: float, 
-                    InfRum_DMIn: float,
-                    InfSI_DMIn: float
+def calculate_An_MP(
+    An_MPIn: float, 
+    Dt_DMIn: float, 
+    InfRum_DMIn: float,
+    InfSI_DMIn: float
 ) -> float:
     """
     An_MP: Metabolizable protein, % DMI
@@ -1839,9 +1905,10 @@ def calculate_An_MP(An_MPIn: float,
     return An_MP
 
 
-def calculate_An_NPm_Use(Scrf_NP_g: float, 
-                         Fe_NPend_g: float,
-                         Ur_NPend_g: float
+def calculate_An_NPm_Use(
+    Scrf_NP_g: float, 
+    Fe_NPend_g: float,
+    Ur_NPend_g: float
 ) -> float:
     """
     An_NPm_Use: Net protein used for maintenance? (g/d)
@@ -1850,9 +1917,10 @@ def calculate_An_NPm_Use(Scrf_NP_g: float,
     return An_NPm_Use
 
 
-def calculate_An_CPm_Use(Scrf_CP_g: float, 
-                         Fe_CPend_g: float,
-                         Ur_NPend_g: float
+def calculate_An_CPm_Use(
+    Scrf_CP_g: float, 
+    Fe_CPend_g: float,
+    Ur_NPend_g: float
 ) -> float:
     """
     An_CPm_Use: Crude protein used for maintenance? (g/d)
