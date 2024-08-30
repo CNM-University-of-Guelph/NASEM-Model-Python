@@ -52,6 +52,18 @@ jobs:
         conda install -c conda-forge graph-tool
         poetry install
         poetry add importlib_resources
+
+        # Check graph-tool installation
+        python -c "import graph_tool.all as gt; print('graph-tool version:', gt.__version__)"
+
+        # Print environment details
+        echo "PYTHONPATH: $PYTHONPATH"
+        echo "PATH: $PATH"
+        echo "Which Python: $(which python)"
+        echo "Python version: $(python --version)"
+        echo "Conda environment: $(conda info | grep 'active environment')"
+        echo "Installed packages: $(conda list)"
+
         pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
         pip install coveralls
         coveralls
