@@ -49,7 +49,7 @@ jobs:
       if: runner.os != 'Windows'
       run: |
         source $CONDA/bin/activate base
-        conda install -c conda-forge graph-tool
+        conda install -c conda-forge graph-tool pytest pytest-cov
         poetry install
         poetry add importlib_resources
 
