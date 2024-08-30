@@ -62,11 +62,11 @@ jobs:
         echo "Which Python: $(which python)"
         echo "Python version: $(python --version)"
         echo "Conda environment: $(conda info | grep 'active environment')"
-        echo "Installed packages: $(conda list)"
+        echo "Installed packages: $(pip list)"
 
         # pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-        # $CONDA/bin/python -m pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-        poetry run pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
+        python -m pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
+        # poetry run pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
 
         pip install coveralls
         coveralls
