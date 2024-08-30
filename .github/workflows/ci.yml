@@ -39,9 +39,12 @@ jobs:
     - name: Install dependencies on Linux and macOS
       if: runner.os != 'Windows'
       run: |
+        echo "Activating conda..."
+        source ~/miniconda/etc/profile.d/conda.sh
+        conda activate base
+        conda install -c conda-forge graph-tool
         poetry install
         poetry add importlib_resources
-        conda install -c conda-forge graph-tool
       env:
         POETRY_VIRTUALENVS_CREATE: false
 
