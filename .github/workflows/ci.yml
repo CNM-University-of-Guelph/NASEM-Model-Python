@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   test:
@@ -37,6 +38,7 @@ jobs:
       run: |
         poetry install
         poetry add importlib_resources
+        conda install -c conda-forge graph-tool
       env:
         POETRY_VIRTUALENVS_CREATE: false
 
