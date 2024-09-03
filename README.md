@@ -35,25 +35,26 @@ We welcome contributions! Please read our [Contributing Guidelines](./CONTRIBUTI
 
 This package can be installed through a terminal using:
 
-    pip install git+https://github.com/CNM-University-of-Guelph/NASEM-Model-Python
+    pip install nasem_dairy
 
 The environment that this is installed into will require
 `python >= 3.10`. It will also install `pandas` and `numpy`
 automatically.
 
 The suggested way to install this is inside a virtual environment. For
-example, by using https://docs.conda.io/en/latest/miniconda.html.
+example, by using [Miniconda](https://docs.conda.io/en/latest/miniconda.html).
 
-1.  Open a terminal window e.g. Anaconda Prompt
+1.  Open a terminal window, e.g., Anaconda Prompt.
 
-2.  Create new conda environment with python installed
+2.  Create a new conda environment with Python installed:
 
         conda create --name myenvironment python>=3.10
 
         conda activate myenvironment
 
-3.  Install this package from github
-    `pip install git+https://github.com/CNM-University-of-Guelph/NASEM-Model-Python`
+3.  Install this package via pip:
+
+        pip install nasem_dairy
 
 ## Using the Model
 
