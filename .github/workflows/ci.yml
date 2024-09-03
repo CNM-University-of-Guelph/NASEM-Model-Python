@@ -85,7 +85,6 @@ jobs:
       if: runner.os == 'Windows'
       run: |
         C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
-        C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry add importlib_resources
         pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
         pip install coveralls
         coveralls
