@@ -35,21 +35,25 @@ jobs:
         python-version: ${{ matrix.python-version }}
         channels: conda-forge
 
-    - name: Create and activate Conda environment
-      if: runner.os != 'Windows'
+    - name: Create and Activate Conda Environment (Linux)
+      if: runner.os == 'ubuntu-latest'
       run: |
         conda init bash
         source ~/.bashrc
         conda create --name nasem_env python=${{ matrix.python-version }} -y
         echo "Conda environment created"
         conda activate nasem_env
-
-    - name: Install graph-tool
-      if: runner.os != 'Windows'
-      run: |
         conda install -c conda-forge graph-tool -y
-        echo "graph-tool installed"
-  
+
+    - name: Initialize Conda and Create Environment (MacOS)
+      if: runner.os == 'macos-latest'
+      run: |
+        conda init bash
+        source ~/.bash_profile 
+        conda create --name nasem_env python=${{ matrix.python-version }} -y
+        conda activate nasem_env
+        conda install -c conda-forge graph-tool -y
+
     - name: Install Poetry
       if: runner.os != 'Windows'
       run: |
@@ -61,6 +65,22 @@ jobs:
       run: |
         conda run -n nasem_env poetry install
         echo "Dependencies installed"
+
+    - name: Print Debug Information
+      if: runner.os != 'Windows'
+      run: |
+        echo "Conda Environment Info:"
+        conda info --envs
+        echo "Active Conda Environment:"
+        conda env list | grep "*"  # Shows the currently active conda environment
+        echo "Installed Packages in nasem_env:"
+        conda list -n nasem_env  # Lists packages installed in nasem_env
+        echo "Python Version in nasem_env:"
+        conda run -n nasem_env python --version  # Shows the Python version in nasem_env
+        echo "Installed Packages in Poetry Environment:"
+        conda run -n nasem_env poetry show
+        echo "Environment Variables:"
+        env
 
     - name: Run Tests
       if: runner.os != 'Windows'
