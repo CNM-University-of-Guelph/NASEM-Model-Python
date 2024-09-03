@@ -36,7 +36,7 @@ jobs:
         channels: conda-forge
 
     - name: Create and Activate Conda Environment (Linux)
-      if: runner.os == 'ubuntu-latest'
+      if: runner.os == 'Linux'
       run: |
         conda init bash
         source ~/.bashrc
@@ -46,7 +46,7 @@ jobs:
         conda install -c conda-forge graph-tool -y
 
     - name: Initialize Conda and Create Environment (MacOS)
-      if: runner.os == 'macos-latest'
+      if: runner.os == 'macOS'
       run: |
         conda init bash
         source ~/.bash_profile 
