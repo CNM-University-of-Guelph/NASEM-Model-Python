@@ -38,6 +38,8 @@ jobs:
     - name: Create and activate Conda environment
       if: runner.os != 'Windows'
       run: |
+        conda init bash
+        source ~/.bashrc
         conda create --name nasem_env python=${{ matrix.python-version }} -y
         echo "Conda environment created"
         conda activate nasem_env
@@ -51,26 +53,26 @@ jobs:
     - name: Install Poetry
       if: runner.os != 'Windows'
       run: |
-        curl -sSL https://install.python-poetry.org | python3 -
+        conda run -n nasem_env curl -sSL https://install.python-poetry.org | python3 -
         echo "Poetry installed"
 
     - name: Install Dependencies using Poetry
       if: runner.os != 'Windows'
       run: |
-        poetry install
+        conda run -n nasem_env poetry install
         echo "Dependencies installed"
 
     - name: Run Tests
       if: runner.os != 'Windows'
       run: |
-        pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
+        conda run -n nasem_env pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
         echo "Tests run successfully"
   
     - name: Report Coverage to Coveralls
       if: runner.os != 'Windows'
       run: |
-        pip install coveralls
-        coveralls
+        conda run -n nasem_env pip install coveralls
+        conda run -n nasem_env coveralls
       env:
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
