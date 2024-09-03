@@ -40,7 +40,7 @@ jobs:
       run: |
         conda create --name nasem_env python=${{ matrix.python-version }} -y
         echo "Conda environment created"
-        source activate nasem_env
+        conda activate nasem_env
 
     - name: Install graph-tool
       if: runner.os != 'Windows'
