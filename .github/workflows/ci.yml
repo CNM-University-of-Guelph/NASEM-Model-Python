@@ -35,45 +35,50 @@ jobs:
         python-version: ${{ matrix.python-version }}
         channels: conda-forge
 
-    - name: Install Poetry on Linux and macOS
+    - name: Create and activate Conda environment
+      if: runner.os != 'Windows'
+      run: |
+        conda create --name nasem_env python=${{ matrix.python-version }} -y
+        echo "Conda environment created"
+        source activate nasem_env
+
+    - name: Install graph-tool
+      if: runner.os != 'Windows'
+      run: |
+        conda install -c conda-forge graph-tool -y
+        echo "graph-tool installed"
+  
+    - name: Install Poetry
       if: runner.os != 'Windows'
       run: |
         curl -sSL https://install.python-poetry.org | python3 -
+        echo "Poetry installed"
+
+    - name: Install Dependencies using Poetry
+      if: runner.os != 'Windows'
+      run: |
+        poetry install
+        echo "Dependencies installed"
+
+    - name: Run Tests
+      if: runner.os != 'Windows'
+      run: |
+        pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
+        echo "Tests run successfully"
   
+    - name: Report Coverage to Coveralls
+      if: runner.os != 'Windows'
+      run: |
+        pip install coveralls
+        coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
     - name: Install Poetry on Windows
       if: runner.os == 'Windows'
       run: |
         (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
   
-    - name: Install Dependencies and Run Tests on Linux and MacOS
-      if: runner.os != 'Windows'
-      run: |
-        source $CONDA/bin/activate base
-        conda install -c conda-forge graph-tool pytest pytest-cov
-        poetry install
-        poetry add importlib_resources
-
-        # Check graph-tool installation
-        python -c "import graph_tool.all as gt; print('graph-tool version:', gt.__version__)"
-
-        # Print environment details
-        echo "PYTHONPATH: $PYTHONPATH"
-        echo "PATH: $PATH"
-        echo "Which Python: $(which python)"
-        echo "Python version: $(python --version)"
-        echo "Conda environment: $(conda info | grep 'active environment')"
-        echo "Installed packages: $(pip list)"
-
-        # pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-        python -m pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-        # poetry run pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-
-        pip install coveralls
-        coveralls
-      env:
-        POETRY_VIRTUALENVS_CREATE: false
-        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
-
     - name: Install Dependencies and Run Tests on Windows
       if: runner.os == 'Windows'
       run: |
@@ -85,3 +90,4 @@ jobs:
       env:
         POETRY_VIRTUALENVS_CREATE: false
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      
