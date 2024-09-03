@@ -1012,7 +1012,7 @@ def {generated_func_name}({func_args}):
     
     for const_dict_name in {constants}.keys():
         locals()[const_dict_name] = const_dict_name
-
+  
     # Step 2: Call each function in order and store the results
     for function_name in {functions_order}:
         func = getattr(nd, function_name)
@@ -1026,10 +1026,11 @@ def {generated_func_name}({func_args}):
                     }}
                 
         # Resolve arguments for the function call
-        func_call_args = {{
-            arg: locals()[arg] for arg in func_args if arg in locals()
-            }}
-
+        func_call_args = {{}}
+        for arg in func_args:
+            if arg in locals():
+                func_call_args[arg] = locals()[arg]
+                
         # Call the function and store the result with the correct name
         result = func(**func_call_args)
         result_name = {func_name_to_result_name}[function_name]

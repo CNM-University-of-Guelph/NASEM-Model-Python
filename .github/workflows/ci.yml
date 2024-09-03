@@ -22,39 +22,73 @@ jobs:
       with:
         python-version: ${{ matrix.python-version }}
 
-    - name: Install Poetry on Linux and macOS
+    - name: Set up Miniforge
+      if: runner.os != 'Windows'
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        miniforge-version: "latest"
+        auto-update-conda: true
+        python-version: ${{ matrix.python-version }}
+        channels: conda-forge
+
+    - name: Create and Activate Conda Environment (Linux)
+      if: runner.os == 'Linux'
+      run: |
+        conda init bash
+        source ~/.bashrc
+        conda create --name nasem_env python=${{ matrix.python-version }} -y
+        echo "Conda environment created"
+        conda activate nasem_env
+        conda install -c conda-forge graph-tool -y
+
+    - name: Initialize Conda and Create Environment (MacOS)
+      if: runner.os == 'macOS'
+      run: |
+        conda init bash
+        source ~/.bash_profile 
+        conda create --name nasem_env python=${{ matrix.python-version }} -y
+        conda activate nasem_env
+        conda install -c conda-forge graph-tool -y
+
+    - name: Install Poetry
       if: runner.os != 'Windows'
       run: |
-        curl -sSL https://install.python-poetry.org | python3 -
+        conda run -n nasem_env curl -sSL https://install.python-poetry.org | python3 -
+        echo "Poetry installed"
+
+    - name: Install Dependencies using Poetry
+      if: runner.os != 'Windows'
+      run: |
+        conda run -n nasem_env poetry install
+        echo "Dependencies installed"
+
+    - name: Run Tests
+      if: runner.os != 'Windows'
+      run: |
+        conda run -n nasem_env pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
+        echo "Tests run successfully"
+  
+    - name: Report Coverage to Coveralls
+      if: runner.os != 'Windows'
+      run: |
+        conda run -n nasem_env pip install coveralls
+        conda run -n nasem_env coveralls
+      env:
+        COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
     - name: Install Poetry on Windows
       if: runner.os == 'Windows'
       run: |
         (Invoke-WebRequest -Uri https://install.python-poetry.org -UseBasicParsing).Content | python -
-
-    - name: Install dependencies on Linux and macOS
-      if: runner.os != 'Windows'
-      run: |
-        poetry install
-        poetry add importlib_resources
-      env:
-        POETRY_VIRTUALENVS_CREATE: false
-
-    - name: Install dependencies on Windows
+  
+    - name: Install Dependencies and Run Tests on Windows
       if: runner.os == 'Windows'
       run: |
-          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
-          C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry add importlib_resources
-      env:
-          POETRY_VIRTUALENVS_CREATE: false
-
-    - name: Run tests with coverage
-      run: |
+        C:/Users/runneradmin/AppData/Roaming/Python/Scripts/poetry install
         pytest --cov=nasem_dairy --cov-report=xml --cov-report=term-missing
-
-    - name: Upload coverage to Coveralls
-      run: |
         pip install coveralls
         coveralls
       env:
+        POETRY_VIRTUALENVS_CREATE: false
         COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+      
