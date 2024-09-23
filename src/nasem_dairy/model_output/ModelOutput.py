@@ -620,7 +620,7 @@ class ModelOutput:
                 elif value is not None:
                     data[col_name].append(value)
                 else:
-                    data[col_name].append("")
+                    data[col_name].append(None)
 
         report_df = pd.DataFrame(data)     
 
