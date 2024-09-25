@@ -437,7 +437,7 @@ def calculate_Rsrv_NEgain(Rsrv_Fatgain: float, Rsrv_CPgain: float) -> float:
     return Rsrv_NEgain
 
 
-def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
+def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float, coeff_dict: dict) -> float:
     """
     *Calculate Kr (efficiency of converting) Metabolizable Energy (ME) to Retained Energy (RE)*
 
@@ -486,10 +486,10 @@ def calculate_Kr_ME_RE(Trg_MilkProd: float, Trg_RsrvGain: float) -> float:
     """
     if Trg_MilkProd > 0 and Trg_RsrvGain > 0:  
         # Efficiency of ME to Rsrv RE for lactating cows gaining Rsrv, Line 2836
-        Kr_ME_RE = 0.75
+        Kr_ME_RE = coeff_dict['Kr_ME_RE_Gain']
     elif Trg_RsrvGain <= 0:  
         # Line 2837, Efficiency of ME generated for cows losing Rsrv
-        Kr_ME_RE = 0.89
+        Kr_ME_RE = coeff_dict['Kr_ME_RE_Loss']
     else:
         # Efficiency of ME to RE for reserves gain, Heifers and dry cows, Line 2835
         Kr_ME_RE = 0.60
@@ -656,7 +656,7 @@ def calculate_Kf_ME_RE(
         Kf_ME_RE = (coeff_dict['Kf_ME_RE_ClfLiq'] * Dt_DMIn_ClfLiq / Dt_DMIn + 
                     Kf_ME_RE_ClfDry * (Dt_DMIn - Dt_DMIn_ClfLiq) / Dt_DMIn)
     else:
-        Kf_ME_RE = 0.4
+        Kf_ME_RE = coeff_dict ['Frame_Gain_Cow']
     return Kf_ME_RE
 
 
