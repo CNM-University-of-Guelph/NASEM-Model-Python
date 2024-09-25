@@ -21,7 +21,7 @@ def call_with_dict_args(func, args_dict):
 
 
 if __name__ == "__main__":
-    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("input")
+    user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("lactating_cow_test")
     
     output = nd.nasem(
         user_diet = user_diet_in, 
@@ -29,6 +29,8 @@ if __name__ == "__main__":
         equation_selection = equation_selection_in, 
         coeff_dict = nd.coeff_dict
         )
+    
+    print (nd.coeff_dict['Maintenance'])
 
     # Create subset of feed library
     feed_names = [
@@ -81,10 +83,10 @@ if __name__ == "__main__":
     # assert expected_output.equals(dynamic_func_output), "Values should be equal"
 
 
-    if nd.ModelDAG is None:
-        raise ImportError(
-            "ModelDAG requires the 'graph-tool' package. Please install it with `poetry run bash setup-dag.sh`."
-        )
-    dag = nd.ModelDAG()
+   # if nd.ModelDAG is None:
+       # raise ImportError(
+        #    "ModelDAG requires the 'graph-tool' package. Please install it with `poetry run bash setup-dag.sh`."
+        #)
+    # dag = nd.ModelDAG()
     
     

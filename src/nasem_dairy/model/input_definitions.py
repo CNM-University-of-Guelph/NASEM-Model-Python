@@ -288,6 +288,8 @@ class CoeffDict(TypedDict):
     Uter_Wt_coeff: float
     VmMiNInt: float
     VmMiNRDPSlp: float
+    Maintenance: float #PK added
+    Lact_Efficiency: float #PK added
 
 
 class InfusionDict(TypedDict):
