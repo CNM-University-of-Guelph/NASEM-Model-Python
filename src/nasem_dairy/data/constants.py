@@ -220,6 +220,10 @@ coeff_dict = {
     'Uter_Wt_coeff': 0.204,  # Line 2312-2318
     'VmMiNInt': 100.8,  # Line 1117
     'VmMiNRDPSlp': 81.56,  # Line 1118
+
+    #PK constants:
+    'Maintenance': 0.1, #Line 71 , 86
+    'Lact_Efficiency': 0.66, #Line 1428
 }
 
 # Dictionary to use when infusions are not provided to model

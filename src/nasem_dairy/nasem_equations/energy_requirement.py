@@ -9,7 +9,8 @@ def calculate_An_NEmUse_NS(
     An_BW: float, 
     An_BW_empty: float,
     An_Parity_rl: int, 
-    Dt_DMIn_ClfLiq: float
+    Dt_DMIn_ClfLiq: float,
+    coeff_dict: dict
 ) -> float:
     """
     *Calculate Animal (An) Net Energy (NE) of maintenance in unstressed (NS) dairy cows*
@@ -68,7 +69,7 @@ def calculate_An_NEmUse_NS(
 
     # Heifers, R code line 2777
     # R code note: 'Back calculated from MEm of 0.15 and Km_NE_ME = 0.66'
-    An_NEmUse_NS = 0.10 * An_BW**0.75
+    An_NEmUse_NS = coeff_dict['Maintenance'] * An_BW**0.75
     # Calves drinking milk or eating mixed diet
     # R code line 2779
     if An_StatePhys == "Calf" and Dt_DMIn_ClfLiq > 0:
@@ -82,7 +83,7 @@ def calculate_An_NEmUse_NS(
     elif An_Parity_rl > 0:
         # This recalculates what is already set as default for Heifers
         # Equation 20-272 says An_BW is An_BW NPr_3 i.e. Equation 20-246
-        An_NEmUse_NS = 0.10 * An_BW**0.75
+        An_NEmUse_NS = coeff_dict['Maintenance'] * An_BW**0.75
     return An_NEmUse_NS
 
 
@@ -1421,10 +1422,11 @@ def calculate_Km_ME_NE_Clf(
     return Km_ME_NE_Clf
 
 
-def calculate_Km_ME_NE(An_StatePhys: str) -> float:
+def calculate_Km_ME_NE(An_StatePhys: str ,
+                       coeff_dict: dict) -> float:
     """Conversion efficiency of ME to NE for maintenance"""
     if An_StatePhys == "Lactating Cow" or An_StatePhys == "Dry Cow":
-        Km_ME_NE = 0.66 # Km_ME_NE_Cow
+        Km_ME_NE = coeff_dict['Lact_Efficiency'] # Km_ME_NE_Cow
     else:
         Km_ME_NE = 0.63 # Km_ME_NE_Heif
     return Km_ME_NE
