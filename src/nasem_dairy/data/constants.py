@@ -224,6 +224,9 @@ coeff_dict = {
     #PK constants:
     'Maintenance': 0.1, #Line 71 , 86
     'Lact_Efficiency': 0.66, #Line 1428
+    'Frame_Gain_Cow': 0.4, #Line 659
+    'Kr_ME_RE_Gain': 0.75, #Line 489
+    'Kr_ME_RE_Loss' : 0.89, #Line 492
 }
 
 # Dictionary to use when infusions are not provided to model
