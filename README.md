@@ -73,7 +73,7 @@ There are several demo scenarios built into the app which can be used as input t
 model. These can be acessed using `nd.demo()`:
 
 ``` python
-user_diet, animal_input, equation_selection, infusion_input = nd.demo("input")
+user_diet, animal_input, equation_selection, infusion_input = nd.demo("lactating_cow_test")
 ```
 These 4 inputs can be modified to simulate different scenarios:
 - user_diet (pd.DataFrame): The name and kg/d to feed for each ingredient in the diet.
