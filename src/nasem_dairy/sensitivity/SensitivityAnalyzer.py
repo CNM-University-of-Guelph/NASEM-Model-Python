@@ -1,5 +1,7 @@
 import os
+import pickle
 from typing import Dict, Tuple, Union, List
+import warnings
 
 import numpy as np
 import pandas as pd
@@ -11,6 +13,8 @@ from nasem_dairy.data.constants import coeff_dict
 import nasem_dairy.model.input_validation as input_validation
 import nasem_dairy.model.utility as utility
 from nasem_dairy.sensitivity.DatabaseManager import DatabaseManager
+
+warnings.filterwarnings("ignore", category=FutureWarning, module="SALib")
 
 class SensitivityAnalyzer:
     """Class for running sensitivity analysis of NASEM model to the coefficients in coeff_dict.
@@ -169,7 +173,69 @@ class SensitivityAnalyzer:
             "Sensitivity Analysis is complete! "
             f"Results are stored as problem_id: {problem_id}"
             )
+
+    def analyze(self, problem_id: int, response_variable: str, method: str = 'Sobol') -> pd.DataFrame:
+        """
+        Perform sensitivity analysis using SALib and store the results in the database.
+
+        Args:
+            problem_id (int): The ID of the problem to analyze.
+            response_variable (str): The name of the response variable to analyze.
+            method (str): The sensitivity analysis method to use (default: 'Sobol').
+            **kwargs: Additional arguments to pass to the analysis method.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing the sensitivity analysis results.
+        """
+        # Step 1: Retrieve the problem definition
+        problem_df = self.get_problem_details(problem_id)
+        if problem_df.empty:
+            raise ValueError(f"No problem found with problem_id {problem_id}")
         
+        problem_definition = problem_df.at[0, 'problem']
+
+        # Step 2: Retrieve response variable data (outputs)
+        response_df = self.get_response_variables(problem_id, response_variable)
+        if response_df.empty:
+            raise ValueError(f"No response data found for variable '{response_variable}' in problem_id {problem_id}")
+        Y = response_df[response_variable].values
+
+        # Step 3: Perform sensitivity analysis
+        if method.lower() == 'sobol':
+            Si = sobol.analyze(problem_definition, Y)
+        else:
+            raise NotImplementedError(f"Method '{method}' is not implemented")
+
+        # Step 4: Store the results in the Results table
+        analysis_parameters = {'method': method}
+        results_data = {
+            'S1': pickle.dumps(Si['S1']),
+            'ST': pickle.dumps(Si['ST']),
+            'S2': pickle.dumps(Si['S2']),
+            'S1_conf': pickle.dumps(Si['S1_conf']),
+            'ST_conf': pickle.dumps(Si['ST_conf']),
+            'S2_conf': pickle.dumps(Si['S2_conf']),
+        }
+
+        self.db_manager.insert_results(
+            problem_id=problem_id,
+            response_variable=response_variable,
+            method=method,
+            analysis_parameters=pickle.dumps(analysis_parameters),
+            **results_data
+        )
+
+        # Step 5: Prepare output for user
+        indices_df = pd.DataFrame({
+            'Parameter': problem_definition['names'],
+            'S1': Si['S1'],
+            'S1_conf': Si['S1_conf'],
+            'ST': Si['ST'],
+            'ST_conf': Si['ST_conf']
+        })
+
+        return indices_df
+
     # Methods for data retrieval
     def get_all_problems(self) -> pd.DataFrame:
         """

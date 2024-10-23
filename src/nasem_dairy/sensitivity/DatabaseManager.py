@@ -93,16 +93,16 @@ class DatabaseManager:
             CREATE TABLE IF NOT EXISTS Results (
                 result_id INTEGER PRIMARY KEY AUTOINCREMENT,
                 problem_id INTEGER NOT NULL,
-                coeff_id INTEGER NOT NULL,
-                response_id INTEGER NOT NULL,
-                S1 REAL,
-                ST REAL,
-                S2 REAL,
+                response_variable TEXT NOT NULL,
+                S1 BLOB,
+                ST BLOB,
+                S2 BLOB,
+                S1_conf BLOB,
+                ST_conf BLOB,
+                S2_conf BLOB,
                 method TEXT NOT NULL,
                 analysis_parameters BLOB,
-                FOREIGN KEY(problem_id) REFERENCES Problems(problem_id),
-                FOREIGN KEY(coeff_id) REFERENCES Coefficients(coeff_id),
-                FOREIGN KEY(response_id) REFERENCES ResponseVariables(response_id)
+                FOREIGN KEY(problem_id) REFERENCES Problems(problem_id)
             )
         ''')
 
@@ -231,6 +231,35 @@ class DatabaseManager:
         self.close()
         return sample_id
     
+    def insert_results(self, problem_id: int, response_variable: str, method: str, analysis_parameters: bytes, **results_data):
+        """
+        Insert sensitivity analysis results into the Results table.
+
+        Args:
+            problem_id (int): The ID of the problem.
+            response_variable (str): The name of the response variable analyzed.
+            method (str): The sensitivity analysis method used.
+            analysis_parameters (bytes): Serialized analysis parameters.
+            **results_data: Serialized result arrays (S1, ST, S2, S1_conf, ST_conf, S2_conf).
+        """
+        self.connect()
+        self.cursor.execute('''
+            INSERT INTO Results (
+                problem_id, response_variable, S1, ST, S2, S1_conf, ST_conf, S2_conf, method, analysis_parameters
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            problem_id, response_variable,
+            results_data.get('S1'),
+            results_data.get('ST'),
+            results_data.get('S2'),
+            results_data.get('S1_conf'),
+            results_data.get('ST_conf'),
+            results_data.get('S2_conf'),
+            method, analysis_parameters
+        ))
+        self.conn.commit()
+        self.close()
+
     # Methods to query database
     def get_all_problems(self) -> pd.DataFrame:
         """

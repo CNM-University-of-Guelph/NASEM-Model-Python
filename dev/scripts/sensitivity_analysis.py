@@ -1,9 +1,11 @@
 import nasem_dairy as nd
 
 if __name__ == "__main__":
+    ### Run Analysis ###
     value_ranges = {
-        "CP_GrUtWt": [0.1, 0.5],
-        "K_305RHA_MlkTP": [0.1, 2]
+        # "CP_GrUtWt": [0.1, 0.5],
+        # "K_305RHA_MlkTP": [0.1, 2],
+        "Kl_ME_NE": [0.1, 5],
     }
     
     analyzer = nd.SensitivityAnalyzer("./dev/data/sensitivity.db")
@@ -15,8 +17,11 @@ if __name__ == "__main__":
     # )
     
 
+    ### View Outputs ###
+    problem_id = 3
+    response_variable = 'Mlk_Prod'
+
     # 1. View all problems
-    problem_id = 1
     # problems_df = analyzer.get_all_problems()
     # print(problems_df)
 
@@ -45,3 +50,13 @@ if __name__ == "__main__":
     # 7. List available response variables
     # available_variables = analyzer.list_response_variables()
     # print(available_variables)
+
+
+    ### Perform Analysis ###
+    results_df = analyzer.analyze(
+        problem_id,
+        response_variable
+    )
+
+    # View results
+    print(results_df)
