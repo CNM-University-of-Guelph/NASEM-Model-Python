@@ -589,6 +589,18 @@ class ModelOutput:
         with open(file_path, 'w') as json_file:
             json.dump(output_dict, json_file, indent=4, cls=CustomJSONEncoder)
 
+    def to_response_variables(self) -> List[Dict[str, Any]]:
+        """
+        Convert the ModelOutput instance into a list of response variables suitable for database storage.
+
+        Returns:
+            List[Dict[str, Any]]: A list of dictionaries containing 'variable_name' and 'value' keys.
+        """
+        data_dict = self.export_to_dict()
+        response_variables = {}
+        for name in RESPONSE_VARIABLE_NAMES:
+            response_variables[name] = (data_dict.get(name))
+        return response_variables
 
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:
