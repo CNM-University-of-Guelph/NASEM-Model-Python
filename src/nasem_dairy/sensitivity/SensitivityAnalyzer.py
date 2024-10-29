@@ -3,33 +3,62 @@ import pickle
 from typing import Dict, Tuple, Union, List
 import warnings
 
-import numpy as np
 import pandas as pd
 import SALib.sample.saltelli as saltelli
 import SALib.analyze.sobol as sobol
 
-from nasem_dairy.model.nasem import nasem
 from nasem_dairy.data.constants import coeff_dict
 import nasem_dairy.model.input_validation as input_validation
+from nasem_dairy.model.nasem import nasem
 import nasem_dairy.model.utility as utility
+from nasem_dairy.model_output.ModelOutput import ModelOutput
 from nasem_dairy.sensitivity.DatabaseManager import DatabaseManager
 
 warnings.filterwarnings("ignore", category=FutureWarning, module="SALib")
 
 class SensitivityAnalyzer:
-    """Class for running sensitivity analysis of NASEM model to the coefficients in coeff_dict.
+    """Class for running sensitivity analysis of NASEM model.
+
+    This class handles the setup, execution, and analysis of sensitivity 
+    experiments, including storage and retrieval of results from a database.
     """
     def __init__(self, db_path: str):
+        """Initializes the SensitivityAnalyzer with a database manager.
+
+        Args:
+            db_path (str): Path to the SQLite database file.
+        """
         self.db_manager = DatabaseManager(db_path)
 
-    def _validate_value_ranges(self, value_ranges, coeffs):
+    def _validate_value_ranges(
+        self, 
+        value_ranges: Dict[str, Tuple[float, float]], 
+        coeffs: List[str]
+    ) -> None:
+        """Validates the value ranges for sensitivity analysis.
+
+        Ensures that the provided ranges are numeric and that each range 
+        contains a minimum value that is less than the maximum value.
+
+        Args:
+            value_ranges (Dict[str, Tuple[float, float]]): Dictionary of 
+                coefficient names and their min/max ranges.
+            coeffs (List[str]): List of coefficient names in coeff_dict.
+
+        Raises:
+            ValueError: If any specified coefficients are missing from coeff_dict.
+            TypeError: If the min/max values are not numeric.
+            ValueError: If any min value is greater than or equal to its max value.
+        """
         df = pd.DataFrame.from_dict(
             value_ranges, orient='index', columns=['min', 'max']
             )
 
         missing_keys = set(df.index) - set(coeffs)
         if missing_keys:
-            raise ValueError(f"Keys not found in coefficients: {list(missing_keys)}")
+            raise ValueError(
+                f"Keys not found in coefficients: {list(missing_keys)}"
+                )
 
         if (not pd.api.types.is_numeric_dtype(df['min']) 
             or not pd.api.types.is_numeric_dtype(df['max'])
@@ -46,20 +75,60 @@ class SensitivityAnalyzer:
     def _create_problem(
         self, 
         value_ranges: Dict[str, Tuple[float, float]]
-    ) -> Dict:
+    ) -> Dict[str, Union[int, List[str], List[Tuple[float, float]]]]:
+        """Creates the problem definition for SALib package.
+
+        Args:
+            value_ranges (Dict[str, Tuple[float, float]]): Dictionary of 
+                coefficient names and their min/max ranges.
+
+        Returns:
+            Dict[str, Union[int, List[str], List[Tuple[float, float]]]]: 
+            A dictionary defining the number of variables, names, and bounds.
+        """
         return {
             "num_vars": len(value_ranges.keys()),
             "names": list(value_ranges.keys()),
             "bounds": [val for val in value_ranges.values()]
         }
 
-    def update_coeff_dict(self, param_array, coeff_dict, coeff_names):
+    def _update_coeff_dict(
+        self, 
+        param_array: List[float], 
+        coeff_dict: Dict[str, float], 
+        coeff_names: List[str]
+        ) -> Dict[str, float]:
+        """Updates the coefficient dictionary with values from a sample.
+
+        Args:
+            param_array (List[float]): List of parameter values for a sample.
+            coeff_dict (Dict[str, float]): The base coefficient dictionary to modify.
+            coeff_names (List[str]): List of coefficient names corresponding to param_array.
+
+        Returns:
+            Dict[str, float]: Updated coefficient dictionary.
+        """
         modified_coeff_dict = coeff_dict.copy()
         for name, value in zip(param_array, coeff_names):
             modified_coeff_dict[name] = value
         return modified_coeff_dict
 
-    def load_input(self, input_path):
+    def _load_input(
+        self, 
+        input_path: str
+    ) -> Tuple[pd.DataFrame, Dict, Dict, Dict]:
+        """Loads the input data from a specified file.
+
+        Args:
+            input_path (str): The path to the input file (CSV or JSON).
+
+        Returns:
+            Tuple[Dict, Dict, Dict, Dict]: Parsed data for user_diet, 
+                animal_input, equation_selection, and infusion_input.
+
+        Raises:
+            ValueError: If the file type is not supported.
+        """
         file_extension = os.path.splitext(input_path)[-1].lower()
 
         if file_extension == '.csv':
@@ -67,15 +136,34 @@ class SensitivityAnalyzer:
         elif file_extension == '.json':
             return utility.read_json_input(input_path)
         else:
-            raise ValueError(f"Unsupported file type: {file_extension}. Only CSV and JSON are supported.")
+            raise ValueError(
+                f"Unsupported file type: {file_extension}. "
+                "Only CSV and JSON are supported."
+                )
 
-    def _load_feed_library(self, feed_library_path: str):
+    def _load_feed_library(
+        self, 
+        feed_library_path: str
+    ) -> Union[pd.DataFrame, None]:
+        """Loads the feed library from a specified path.
+
+        Args:
+            feed_library_path (str): The path to the feed library file.
+
+        Returns:
+            Union[pd.DataFrame, None]: The loaded feed library as a 
+                DataFrame or None if no path is provided.
+        """
         if feed_library_path:
             return pd.read_csv(feed_library_path)
-        else:
-            return None
+        return None
 
-    def _save_full_model_output_JSON(self, problem_id: int, sample_index: int, model_output):
+    def _save_full_model_output_JSON(
+        self, 
+        problem_id: int, 
+        sample_index: int, 
+        model_output: ModelOutput
+    ) -> str:
         """
         Serialize and save the full model output to a JSON file.
 
@@ -96,16 +184,30 @@ class SensitivityAnalyzer:
 
     def _evaluate(
         self, 
-        param_values, 
-        coeff_dict, 
-        coeff_names, 
-        input_path, 
-        feed_library_path,
-        problem,
-        save_full_output
-    ):
-        user_diet, animal_input, equation_selection, infusion_input = self.load_input(
-            input_path
+        param_values: List[List[float]], 
+        coeff_dict: Dict[str, float],           
+        coeff_names: List[str], 
+        input_path: str, 
+        feed_library_path: str,           
+        problem: Dict, 
+        save_full_output: bool
+    ) -> int:
+        """Runs the model evaluation for each sample and stores results.
+
+        Args:
+            param_values (List[List[float]]): Parameter values for each sample.
+            coeff_dict (Dict[str, float]): Base coefficient dictionary.
+            coeff_names (List[str]): List of coefficient names.
+            input_path (str): Path to the input file.
+            feed_library_path (str): Path to the feed library file.
+            problem (Dict): Problem definition for the analysis.
+            save_full_output (bool): Whether to save full model output to JSON files.
+
+        Returns:
+            int: The problem_id of the newly created problem in the database.
+        """
+        user_diet, animal_input, equation_selection, infusion_input = (
+            self._load_input(input_path)
             )
         
         feed_library = self._load_feed_library(feed_library_path)
@@ -122,7 +224,7 @@ class SensitivityAnalyzer:
         )
 
         for index, param_array in enumerate(param_values):
-            modified_coeff_dict = self.update_coeff_dict(
+            modified_coeff_dict = self._update_coeff_dict(
                 param_array, coeff_dict, coeff_names
             )
 
@@ -162,7 +264,23 @@ class SensitivityAnalyzer:
         user_coeff_dict: Dict[str, Union[int, float]] = coeff_dict,
         calc_second_order: bool = True,
         save_full_output: bool = False
-    ):
+    ) -> None:
+        """Executes the sensitivity analysis for the specified value ranges.
+
+        Args:
+            value_ranges (Dict[str, Tuple[float, float]]): Dictionary of 
+                coefficient names and their min/max ranges.
+            num_samples (int): Number of samples to generate.
+            input_path (str): Path to the input file.
+            feed_library_path (str, optional): Path to the feed library file. 
+                Defaults to None.
+            user_coeff_dict (Dict[str, Union[int, float]], optional): 
+                User-specified coefficient dictionary. Defaults to None.
+            calc_second_order (bool, optional): Whether to calculate 
+                second-order indices. Defaults to True.
+            save_full_output (bool, optional): Whether to save full model 
+                outputs to JSON files. Defaults to False.
+        """
         validated_coeff_dict = input_validation.validate_coeff_dict(
             user_coeff_dict
             )
@@ -186,18 +304,22 @@ class SensitivityAnalyzer:
             f"Results are stored as problem_id: {problem_id}"
             )
 
-    def analyze(self, problem_id: int, response_variable: str, method: str = 'Sobol') -> pd.DataFrame:
-        """
-        Perform sensitivity analysis using SALib and store the results in the database.
+    def analyze(
+        self, 
+        problem_id: int, 
+        response_variable: str, 
+        method: str = 'Sobol'
+    ) -> Tuple[pd.DataFrame, pd.DataFrame]:
+        """Performs sensitivity analysis using SALib and stores results in the database.
 
         Args:
             problem_id (int): The ID of the problem to analyze.
             response_variable (str): The name of the response variable to analyze.
-            method (str): The sensitivity analysis method to use (default: 'Sobol').
-            **kwargs: Additional arguments to pass to the analysis method.
+            method (str, optional): The sensitivity analysis method to use. Defaults to 'Sobol'.
 
         Returns:
-            pd.DataFrame: A DataFrame containing the sensitivity analysis results.
+            Tuple[pd.DataFrame, pd.DataFrame]: 
+            Two DataFrames - first-order/total-order indices and second-order indices.
         """
         # Step 1: Retrieve the problem definition
         problem_df = self.get_problem_details(problem_id)
@@ -209,7 +331,10 @@ class SensitivityAnalyzer:
         # Step 2: Retrieve response variable data (outputs)
         response_df = self.get_response_variables(problem_id, response_variable)
         if response_df.empty:
-            raise ValueError(f"No response data found for variable '{response_variable}' in problem_id {problem_id}")
+            raise ValueError(
+                f"No response data found for variable '{response_variable}' in "
+                f"problem_id {problem_id}"
+                )
         Y = response_df[response_variable].values
 
         # Step 3: Perform sensitivity analysis
@@ -297,7 +422,11 @@ class SensitivityAnalyzer:
         """
         return self.db_manager.get_problem_details(problem_id)
 
-    def get_response_variables(self, problem_id: int, variable_names: List[str]) -> pd.DataFrame:
+    def get_response_variables(
+        self, 
+        problem_id: int, 
+        variable_names: List[str]
+    ) -> pd.DataFrame:
         """
         Retrieve multiple response variables for all samples in a problem.
 
