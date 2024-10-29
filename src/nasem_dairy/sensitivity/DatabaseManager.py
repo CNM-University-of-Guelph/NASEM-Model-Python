@@ -9,11 +9,14 @@ import pandas as pd
 from nasem_dairy.sensitivity.response_variables_config import RESPONSE_VARIABLE_NAMES
 
 class DatabaseManager:
-    def __init__(self, db_path: str):
-        """
-        Initialize the DatabaseManager with the path to the database file.
-        If the database does not exist, it will be created.
+    """Manages database operations for storing and retrieving sensitivity analysis data."""
 
+    def __init__(self, db_path: str):
+        """Initializes the DatabaseManager with the specified database file path.
+
+        Creates a new database if it does not exist; otherwise, it verifies 
+        the connection.
+        
         Args:
             db_path (str): Path to the SQLite database file.
         """
@@ -25,18 +28,18 @@ class DatabaseManager:
             self.connect()
             self.close()
 
-    def connect(self):
+    def connect(self) -> None:
         """Establish a connection to the SQLite database."""
         self.conn = sqlite3.connect(self.db_path)
         self.cursor = self.conn.cursor()
 
-    def create_database(self):
+    def create_database(self) -> None:
         """Create a new database with the necessary tables."""
         self.connect()
         self.create_tables()
         self.close()
 
-    def create_tables(self):
+    def create_tables(self) -> None:
         """Create tables in the database based on the schema."""
         # Create Coefficients Table
         self.cursor.execute('''
@@ -120,15 +123,14 @@ class DatabaseManager:
         # Commit changes to the database
         self.conn.commit()
 
-    def close(self):
+    def close(self) -> None:
         """Close the database connection."""
         if self.conn:
             self.conn.close()
 
     # Methods for inserting data
-    def insert_coefficients(self, coefficient_names: List[str]):
-        """
-        Insert coefficients into the Coefficients table.
+    def insert_coefficients(self, coefficient_names: List[str]) -> None:
+        """Insert coefficients into the Coefficients table.
 
         Args:
             coefficient_names (List[str]): List of coefficient names.
@@ -141,31 +143,39 @@ class DatabaseManager:
                     VALUES (?)
                 ''', (name,))
             except sqlite3.Error as e:
-                print(f"An error occurred while inserting coefficient '{name}': {e}")
+                print(
+                    f"An error occurred while inserting coefficient '{name}': {e}"
+                    )
         self.conn.commit()
         self.close()
 
-    def insert_problem(self, filename: str, user_diet: Any, animal_input: Any,
-                   equation_selection: Any, infusion_input: Any,
-                   problem: Dict[str, Tuple[float, float]], 
-                   coefficient_names: List[str]) -> int:
-        """
-        Insert a new problem into the Problems table.
+    def insert_problem(
+        self, 
+        filename: str, 
+        user_diet: Any, 
+        animal_input: Any,
+        equation_selection: Any, 
+        infusion_input: Any,
+        problem: Dict[str, Tuple[float, float]], 
+        coefficient_names: List[str]
+    ) -> int:
+        """Insert a new problem into the Problems table.
 
         Args:
             filename (str): Name of the input file used.
-            user_diet (Any): Data structure representing user diet.
-            animal_input (Any): Data structure representing animal input.
-            equation_selection (Any): Data structure representing equation selection.
-            infusion_input (Any): Data structure representing infusion input.
-            problem (Dict[str, Tuple[float, float]]): Coefficients and ranges used.
+            user_diet (Any): User diet data structure.
+            animal_input (Any): Animal input data structure.
+            equation_selection (Any): Equation selection data structure.
+            infusion_input (Any): Infusion input data structure.
+            problem (Dict[str, Tuple[float, float]]): Problem definition.
+            coefficient_names (List[str]): List of coefficient names used in 
+                the problem.
 
         Returns:
             int: The problem_id of the newly inserted problem.
         """
         self.connect()
         date_run = datetime.datetime.now()
-        # Serialize the inputs and problem
         user_diet_blob = pickle.dumps(user_diet)
         animal_input_blob = pickle.dumps(animal_input)
         equation_selection_blob = pickle.dumps(equation_selection)
@@ -206,14 +216,21 @@ class DatabaseManager:
         self.close()
         return problem_id
 
-    def insert_response_variables(self, problem_id: int, sample_id: int, response_variables: Dict[str, Any]):
-        """
-        Insert response variables into the ResponseVariables table.
+    def insert_response_variables(
+        self, 
+        problem_id: int, 
+        sample_id: int, 
+        response_variables: Dict[str, Any]
+    ) -> None:
+        """Insert response variables into the ResponseVariables table.
 
         Args:
-            problem_id (int): The problem_id associated with these response variables.
-            sample_id (int): The sample_id associated with these response variables.
-            response_variables (List[Dict[str, Any]]): A list of dictionaries containing response variable data.
+            problem_id (int): The problem_id associated with these 
+                response variables.
+            sample_id (int): The sample_id associated with these response 
+                variables.
+            response_variables (List[Dict[str, Any]]): A list of dictionaries 
+                containing response variable data.
         """
         self.connect()
         variable_columns = RESPONSE_VARIABLE_NAMES
@@ -224,24 +241,33 @@ class DatabaseManager:
                 {', '.join(columns)}
             ) VALUES ({placeholders})
         '''
-        values = [problem_id, sample_id] + [response_variables.get(col) for col in variable_columns]
+        values = [problem_id, sample_id] + [
+            response_variables.get(col) for col in variable_columns
+            ]
         self.cursor.execute(sql, values)
         self.conn.commit()
         self.close()
 
-    def insert_sample(self, problem_id: int, sample_index: int, parameter_values: Dict[str, float],
-                    result_file_path: Optional[str] = None) -> int:
+    def insert_sample(
+        self, 
+        problem_id: int, 
+        sample_index: int, 
+        parameter_values: Dict[str, float],
+        result_file_path: Optional[str] = None
+    ) -> int:
         """
         Insert a sample into the Samples table.
 
         Args:
             problem_id (int): The problem_id associated with this sample.
             sample_index (int): The index of the sample (from enumerate).
-            parameter_values (Dict[str, float]): The parameter values used in this sample.
-            result_file_path (Optional[str]): File path to the JSON file with the full model output.
+            parameter_values (Dict[str, float]): The parameter values used in 
+                this sample.
+            result_file_path (Optional[str]): File path to the JSON file with 
+                the full model output.
 
         Returns:
-            int: The sample_id of the newly inserted sample.
+            int: The ID of the newly inserted sample.
         """
         self.connect()
         parameter_values_blob = pickle.dumps(parameter_values)
@@ -260,21 +286,29 @@ class DatabaseManager:
         self.close()
         return sample_id
     
-    def insert_results(self, problem_id: int, response_variable: str, method: str, analysis_parameters: bytes, **results_data):
-        """
-        Insert sensitivity analysis results into the Results table.
+    def insert_results(
+        self, 
+        problem_id: int, 
+        response_variable: str, 
+        method: str, 
+        analysis_parameters: bytes, 
+        **results_data
+    ) -> None:
+        """Insert sensitivity analysis results into the Results table.
 
         Args:
             problem_id (int): The ID of the problem.
             response_variable (str): The name of the response variable analyzed.
             method (str): The sensitivity analysis method used.
             analysis_parameters (bytes): Serialized analysis parameters.
-            **results_data: Serialized result arrays (S1, ST, S2, S1_conf, ST_conf, S2_conf).
+            **results_data: Serialized result arrays 
+                (S1, ST, S2, S1_conf, ST_conf, S2_conf).
         """
         self.connect()
         self.cursor.execute('''
             INSERT INTO Results (
-                problem_id, response_variable, S1, ST, S2, S1_conf, ST_conf, S2_conf, method, analysis_parameters
+                problem_id, response_variable, S1, ST, S2, S1_conf, 
+                ST_conf, S2_conf, method, analysis_parameters
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         ''', (
             problem_id, response_variable,
@@ -291,8 +325,7 @@ class DatabaseManager:
 
     # Methods to query database
     def get_all_problems(self) -> pd.DataFrame:
-        """
-        Retrieve all problems in the database.
+        """Retrieve all problems in the database.
 
         Returns:
             pd.DataFrame: A DataFrame containing problem details.
@@ -307,8 +340,7 @@ class DatabaseManager:
         return df
 
     def get_samples_for_problem(self, problem_id: int) -> pd.DataFrame:
-        """
-        Retrieve all samples for a specific problem.
+        """Retrieve all samples for a specific problem.
 
         Args:
             problem_id (int): The ID of the problem.
@@ -332,8 +364,7 @@ class DatabaseManager:
         return df
 
     def get_problem_details(self, problem_id: int) -> pd.DataFrame:
-        """
-        Retrieve detailed information about a specific problem.
+        """Retrieve detailed information about a specific problem.
 
         Args:
             problem_id (int): The ID of the problem.
@@ -349,22 +380,29 @@ class DatabaseManager:
         ''', self.conn, params=(problem_id,))
         self.close()
 
-        pickled_columns = ['user_diet', 'animal_input', 'equation_selection', 'infusion_input', 'problem']
+        pickled_columns = [
+            'user_diet', 'animal_input', 'equation_selection', 'infusion_input',
+            'problem'
+            ]
         for col in pickled_columns:
             df[col] = df[col].apply(pickle.loads)
 
         return df
 
-    def get_response_variables(self, problem_id: int, variable_names: List[str]) -> pd.DataFrame:
-        """
-        Retrieve multiple response variables for all samples in a problem.
+    def get_response_variables(
+        self, 
+        problem_id: int, 
+        variable_names: List[str]
+    ) -> pd.DataFrame:
+        """Retrieve multiple response variables for all samples in a problem.
 
         Args:
             problem_id (int): The ID of the problem.
             variable_names (List[str]): List of variable names to retrieve.
 
         Returns:
-            pd.DataFrame: A DataFrame containing sample_index and the requested variables.
+            pd.DataFrame: A DataFrame containing sample_index and the 
+                requested variables.
         """
         self.connect()
         if isinstance(variable_names, str):
@@ -375,25 +413,29 @@ class DatabaseManager:
         columns_info = cursor.fetchall()
         column_names = [info[1] for info in columns_info]
         non_variable_columns = ['response_id', 'problem_id', 'sample_id']
-        valid_variable_names = [col for col in column_names if col not in non_variable_columns]
+        valid_variable_names = [
+            col for col in column_names if col not in non_variable_columns
+            ]
         for var in variable_names:
             if var not in valid_variable_names:
                 self.close()
-                raise ValueError(f"Variable '{var}' not found in ResponseVariables table.")
-        sql = f'''
-            SELECT rv.sample_id, s.sample_index, {', '.join(['rv.' + var for var in variable_names])}
-            FROM ResponseVariables rv
-            JOIN Samples s ON rv.sample_id = s.sample_id
-            WHERE rv.problem_id = ?
-            ORDER BY s.sample_index
-        '''
+                raise ValueError(
+                    f"Variable '{var}' not found in ResponseVariables table."
+                    )
+        sql = (
+            f"SELECT rv.sample_id, s.sample_index, "
+            f"{', '.join(['rv.' + var for var in variable_names])} "
+            "FROM ResponseVariables rv "
+            "JOIN Samples s ON rv.sample_id = s.sample_id "
+            "WHERE rv.problem_id = ? "
+            "ORDER BY s.sample_index"
+        )
         df = pd.read_sql_query(sql, self.conn, params=(problem_id,))
         self.close()
         return df
 
     def get_response_variable_summary(self, problem_id: int) -> pd.DataFrame:
-        """
-        Provide summary statistics for all response variables in a problem.
+        """Provide summary statistics for all response variables in a problem.
 
         Args:
             problem_id (int): The ID of the problem.
@@ -416,8 +458,7 @@ class DatabaseManager:
         return summary_df
 
     def list_response_variables(self) -> List[str]:
-        """
-        List all response variables recorded in the ResponseVariables table.
+        """List all response variables recorded in the ResponseVariables table.
 
         Returns:
             List[str]: A list of response variable names.
@@ -429,13 +470,14 @@ class DatabaseManager:
         column_names = [info[1] for info in columns_info]
         # Exclude non-variable columns
         non_variable_columns = ['response_id', 'problem_id', 'sample_id']
-        variable_names = [col for col in column_names if col not in non_variable_columns]
+        variable_names = [
+            col for col in column_names if col not in non_variable_columns
+            ]
         self.close()
         return variable_names
         
     def get_problems_by_coefficient(self, coefficient_name: str) -> pd.DataFrame:
-        """
-        Retrieve all problems that use a specific coefficient.
+        """Retrieve all problems that use a specific coefficient.
 
         Args:
             coefficient_name (str): The name of the coefficient.
@@ -464,8 +506,7 @@ class DatabaseManager:
         return df
 
     def get_coefficients_by_problem(self, problem_id: int) -> pd.DataFrame:
-        """
-        Retrieve all coefficients used in a specific problem.
+        """Retrieve all coefficients used in a specific problem.
 
         Args:
             problem_id (int): The ID of the problem.
