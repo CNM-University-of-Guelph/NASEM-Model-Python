@@ -108,7 +108,8 @@ class SensitivityAnalyzer:
             animal_input=animal_input,
             equation_selection=equation_selection,
             infusion_input=infusion_input,
-            problem=problem
+            problem=problem,
+            coefficient_names=coeff_names
         )
 
         for index, param_array in enumerate(param_values):
@@ -303,4 +304,28 @@ class SensitivityAnalyzer:
             List[str]: A list of response variable names.
         """
         return self.db_manager.list_response_variables()  
+
+    def get_problems_by_coefficient(self, coefficient_name: str) -> pd.DataFrame:
+        """
+        Retrieve all problems that use a specific coefficient.
+
+        Args:
+            coefficient_name (str): The name of the coefficient.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing problem details.
+        """
+        return self.db_manager.get_problems_by_coefficient(coefficient_name)
+
+    def get_coefficients_by_problem(self, problem_id: int) -> pd.DataFrame:
+        """
+        Retrieve all coefficients used in a specific problem.
+
+        Args:
+            problem_id (int): The ID of the problem.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing coefficient details.
+        """
+        return self.db_manager.get_coefficients_by_problem(problem_id)
     

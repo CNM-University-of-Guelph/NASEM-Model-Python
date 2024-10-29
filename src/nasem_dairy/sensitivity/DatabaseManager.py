@@ -60,6 +60,17 @@ class DatabaseManager:
             )
         ''')
 
+        # Create ProblemCoefficients Table
+        self.cursor.execute('''
+            CREATE TABLE IF NOT EXISTS ProblemCoefficients (
+                problem_id INTEGER NOT NULL,
+                coeff_id INTEGER NOT NULL,
+                PRIMARY KEY (problem_id, coeff_id),
+                FOREIGN KEY(problem_id) REFERENCES Problems(problem_id),
+                FOREIGN KEY(coeff_id) REFERENCES Coefficients(coeff_id)
+            )
+        ''') 
+
         # Create Samples Table
         self.cursor.execute('''
             CREATE TABLE IF NOT EXISTS Samples (
@@ -136,7 +147,8 @@ class DatabaseManager:
 
     def insert_problem(self, filename: str, user_diet: Any, animal_input: Any,
                    equation_selection: Any, infusion_input: Any,
-                   problem: Dict[str, Tuple[float, float]]) -> int:
+                   problem: Dict[str, Tuple[float, float]], 
+                   coefficient_names: List[str]) -> int:
         """
         Insert a new problem into the Problems table.
 
@@ -171,9 +183,26 @@ class DatabaseManager:
             equation_selection_blob, infusion_input_blob,
             problem_blob
         ))
-
         self.conn.commit()
         problem_id = self.cursor.lastrowid
+
+        for coeff_name in coefficient_names:
+            # Insert coefficient if not exists
+            self.cursor.execute('''
+                INSERT OR IGNORE INTO Coefficients (name)
+                VALUES (?)
+            ''', (coeff_name,))
+            # Get coeff_id
+            self.cursor.execute('''
+                SELECT coeff_id FROM Coefficients WHERE name = ?
+            ''', (coeff_name,))
+            coeff_id = self.cursor.fetchone()[0]
+            # Link problem and coefficient
+            self.cursor.execute('''
+                INSERT INTO ProblemCoefficients (problem_id, coeff_id)
+                VALUES (?, ?)
+            ''', (problem_id, coeff_id))
+        self.conn.commit()
         self.close()
         return problem_id
 
@@ -404,3 +433,53 @@ class DatabaseManager:
         self.close()
         return variable_names
         
+    def get_problems_by_coefficient(self, coefficient_name: str) -> pd.DataFrame:
+        """
+        Retrieve all problems that use a specific coefficient.
+
+        Args:
+            coefficient_name (str): The name of the coefficient.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing problem details.
+        """
+        self.connect()
+        self.cursor.execute('''
+            SELECT coeff_id FROM Coefficients WHERE name = ?
+        ''', (coefficient_name,))
+        result = self.cursor.fetchone()
+        if result is None:
+            self.close()
+            raise ValueError(f"Coefficient '{coefficient_name}' not found.")
+        coeff_id = result[0]
+
+        df = pd.read_sql_query('''
+            SELECT p.problem_id, p.date_run, p.filename
+            FROM Problems p
+            JOIN ProblemCoefficients pc ON p.problem_id = pc.problem_id
+            WHERE pc.coeff_id = ?
+            ORDER BY p.date_run DESC
+        ''', self.conn, params=(coeff_id,))
+        self.close()
+        return df
+
+    def get_coefficients_by_problem(self, problem_id: int) -> pd.DataFrame:
+        """
+        Retrieve all coefficients used in a specific problem.
+
+        Args:
+            problem_id (int): The ID of the problem.
+
+        Returns:
+            pd.DataFrame: A DataFrame containing coefficient details.
+        """
+        self.connect()
+        df = pd.read_sql_query('''
+            SELECT c.coeff_id, c.name
+            FROM Coefficients c
+            JOIN ProblemCoefficients pc ON c.coeff_id = pc.coeff_id
+            WHERE pc.problem_id = ?
+            ORDER BY c.name
+        ''', self.conn, params=(problem_id,))
+        self.close()
+        return df
