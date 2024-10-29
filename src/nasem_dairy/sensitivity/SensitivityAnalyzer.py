@@ -69,6 +69,12 @@ class SensitivityAnalyzer:
         else:
             raise ValueError(f"Unsupported file type: {file_extension}. Only CSV and JSON are supported.")
 
+    def _load_feed_library(self, feed_library_path: str):
+        if feed_library_path:
+            return pd.read_csv(feed_library_path)
+        else:
+            return None
+
     def _save_full_model_output_JSON(self, problem_id: int, sample_index: int, model_output):
         """
         Serialize and save the full model output to a JSON file.
@@ -94,12 +100,15 @@ class SensitivityAnalyzer:
         coeff_dict, 
         coeff_names, 
         input_path, 
+        feed_library_path,
         problem,
         save_full_output
     ):
         user_diet, animal_input, equation_selection, infusion_input = self.load_input(
             input_path
             )
+        
+        feed_library = self._load_feed_library(feed_library_path)
 
         # Store the problem information in the Problems table
         problem_id = self.db_manager.insert_problem(
@@ -119,7 +128,8 @@ class SensitivityAnalyzer:
 
             model_output = nasem(
                 user_diet, animal_input, equation_selection, 
-                infusion_input=infusion_input, coeff_dict=modified_coeff_dict
+                feed_library=feed_library, infusion_input=infusion_input, 
+                coeff_dict=modified_coeff_dict
             )
 
             if save_full_output:
@@ -148,6 +158,7 @@ class SensitivityAnalyzer:
         value_ranges: Dict[str, Tuple[float, float]], 
         num_samples: int,
         input_path: str,
+        feed_library_path: str = None,
         user_coeff_dict: Dict[str, Union[int, float]] = coeff_dict,
         calc_second_order: bool = True,
         save_full_output: bool = False
@@ -168,7 +179,7 @@ class SensitivityAnalyzer:
             )
         problem_id = self._evaluate(
             param_values, validated_coeff_dict, list(value_ranges.keys()), 
-            input_path, problem, save_full_output
+            input_path, feed_library_path, problem, save_full_output
             )
         print(
             "Sensitivity Analysis is complete! "

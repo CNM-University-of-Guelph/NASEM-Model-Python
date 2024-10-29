@@ -9,12 +9,13 @@ if __name__ == "__main__":
     }
     
     analyzer = nd.SensitivityAnalyzer("./dev/data/new_sensitivity.db")
-    # analyzer.run_sensitivity(
-    #     value_ranges=value_ranges, 
-    #     num_samples=4, 
-    #     input_path="./src/nasem_dairy/data/demo/lactating_cow_test.json",
-    #     # save_full_output=True
-    # )
+    analyzer.run_sensitivity(
+        value_ranges=value_ranges, 
+        num_samples=4, 
+        input_path="./src/nasem_dairy/data/demo/lactating_cow_test.json",
+        feed_library_path="./src/nasem_dairy/data/feed_library/NASEM_feed_library.csv"
+        # save_full_output=True
+    )
     
 
     ### View Outputs ###
@@ -22,8 +23,8 @@ if __name__ == "__main__":
     response_variable = 'Mlk_Prod'
 
     # # 1. View all problems
-    # problems_df = analyzer.get_all_problems()
-    # print(problems_df)
+    problems_df = analyzer.get_all_problems()
+    print(problems_df)
 
     # # 2. Get samples for a specific problem
     # samples_df = analyzer.get_samples_for_problem(problem_id)
@@ -52,10 +53,10 @@ if __name__ == "__main__":
     # print(available_variables)
 
     # 8. Get problems that use a given coefficient
-    print(analyzer.get_problems_by_coefficient("K_305RHA_MlkTP"))
+    # print(analyzer.get_problems_by_coefficient("K_305RHA_MlkTP"))
 
     # 9. Get the coefficients used for a given problem
-    print(analyzer.get_coefficients_by_problem(problem_id))
+    # print(analyzer.get_coefficients_by_problem(problem_id))
 
     ### Perform Analysis ###
     # results_df = analyzer.analyze(
