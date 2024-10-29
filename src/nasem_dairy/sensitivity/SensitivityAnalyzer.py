@@ -246,7 +246,22 @@ class SensitivityAnalyzer:
             'ST_conf': Si['ST_conf']
         })
 
-        return indices_df
+        param_names = problem_definition['names']
+        num_params = len(param_names)
+        s2_records = []
+        for i in range(num_params):
+            for j in range(i + 1, num_params):
+                s2_record = {
+                    'Parameter_1': param_names[i],
+                    'Parameter_2': param_names[j],
+                    'S2': Si['S2'][i, j],
+                    'S2_conf': Si['S2_conf'][i, j]
+                }
+                s2_records.append(s2_record)
+
+        s2_df = pd.DataFrame(s2_records)
+
+        return indices_df, s2_df
 
     # Methods for data retrieval
     def get_all_problems(self) -> pd.DataFrame:

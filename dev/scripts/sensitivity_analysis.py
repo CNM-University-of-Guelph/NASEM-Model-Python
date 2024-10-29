@@ -23,8 +23,8 @@ if __name__ == "__main__":
     response_variable = 'Mlk_Prod'
 
     # # 1. View all problems
-    problems_df = analyzer.get_all_problems()
-    print(problems_df)
+    # problems_df = analyzer.get_all_problems()
+    # print(problems_df)
 
     # # 2. Get samples for a specific problem
     # samples_df = analyzer.get_samples_for_problem(problem_id)
@@ -59,10 +59,11 @@ if __name__ == "__main__":
     # print(analyzer.get_coefficients_by_problem(problem_id))
 
     ### Perform Analysis ###
-    # results_df = analyzer.analyze(
-    #     problem_id,
-    #     response_variable
-    # )
+    S1_results, S2_results = analyzer.analyze(
+        problem_id,
+        response_variable
+    )
 
     # View results
-    # print(results_df)
+    print(S1_results)
+    print(S2_results)
