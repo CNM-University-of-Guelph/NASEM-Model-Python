@@ -22,7 +22,9 @@ class DatabaseManager:
         """
         self.db_path = db_path
         if not os.path.exists(db_path):
-            self.create_database()
+            self.connect()
+            self.create_tables()
+            self.close()
         else:
             # Verify the database by trying to connect
             self.connect()
@@ -32,12 +34,6 @@ class DatabaseManager:
         """Establish a connection to the SQLite database."""
         self.conn = sqlite3.connect(self.db_path)
         self.cursor = self.conn.cursor()
-
-    def create_database(self) -> None:
-        """Create a new database with the necessary tables."""
-        self.connect()
-        self.create_tables()
-        self.close()
 
     def create_tables(self) -> None:
         """Create tables in the database based on the schema."""
