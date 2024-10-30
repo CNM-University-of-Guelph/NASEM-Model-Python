@@ -11,12 +11,15 @@ Class:
 """
 
 import json
+import logging
 import os
 import re
 from typing import Any, Dict, List, Union
 
 import numpy as np
 import pandas as pd
+
+from nasem_dairy.sensitivity.response_variables_config import RESPONSE_VARIABLE_NAMES
 
 
 class ModelOutput:
@@ -575,6 +578,30 @@ class ModelOutput:
                 variable_names.append(key)
         return list(set(variable_names))
 
+    def export_to_JSON(self, file_path: str):
+        """
+        Export the entire ModelOutput instance to a JSON file.
+
+        Args:
+            file_path (str): The path where the JSON file will be saved.
+        """
+        output_dict = self.export_to_dict()
+        with open(file_path, 'w') as json_file:
+            json.dump(output_dict, json_file, indent=4, cls=CustomJSONEncoder)
+
+    def to_response_variables(self) -> List[Dict[str, Any]]:
+        """
+        Convert the ModelOutput instance into a list of response variables suitable for database storage.
+
+        Returns:
+            List[Dict[str, Any]]: A list of dictionaries containing 'variable_name' and 'value' keys.
+        """
+        data_dict = self.export_to_dict()
+        response_variables = {}
+        for name in RESPONSE_VARIABLE_NAMES:
+            response_variables[name] = (data_dict.get(name))
+        return response_variables
+
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:
         """
@@ -643,3 +670,41 @@ class ModelOutput:
                 footnote_row = [key, footnote] + [""]*(len(report_df.columns)-2)
                 report_df.loc[len(report_df)] = footnote_row
         return report_df
+
+
+class CustomJSONEncoder(json.JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, np.ndarray):
+            return obj.tolist()
+        elif isinstance(obj, (np.integer, np.int_, np.intc, np.intp, 
+                              np.int8, np.int16, np.int32, np.int64)):
+            return int(obj)
+        elif isinstance(obj, (np.floating, np.float_, np.float16, 
+                              np.float32, np.float64)):
+            return float(obj)
+        elif isinstance(obj, (np.bool_, bool)):
+            return bool(obj)
+        elif isinstance(obj, np.dtype):
+            return str(obj)
+        elif isinstance(obj, pd.DataFrame):
+            return obj.to_dict(orient='records')
+        elif isinstance(obj, pd.Series):
+            return obj.to_dict()
+        elif isinstance(obj, pd.Timestamp):
+            return obj.isoformat()
+        elif isinstance(obj, pd.Timedelta):
+            return str(obj)
+        elif isinstance(obj, complex):
+            return {'real': obj.real, 'imag': obj.imag}
+        elif isinstance(obj, (bytes, bytearray)):
+            return obj.decode('utf-8', errors='replace')
+        elif isinstance(obj, set):
+            return list(obj)
+        elif hasattr(obj, '__dict__'):
+            return self.default(vars(obj))
+        elif callable(obj):
+            return None  
+        else:
+            logging.warning(f"Encountered non-serializable object of type {type(obj)}: {repr(obj)}")
+            return str(obj)
+        

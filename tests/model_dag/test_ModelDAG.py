@@ -365,8 +365,9 @@ class TestModelDAG():
         target_variable = "Du_MiCP" 
         generated_function = nasem_dag.create_function(target_variable)
 
-        assert (callable(generated_function), 
-                "The generated function is not callable.")
+        assert callable(generated_function), (
+            "The generated function is not callable."
+        )
 
         # Check the function's docstring to ensure it's correctly generated
         docstring = generated_function.__doc__
