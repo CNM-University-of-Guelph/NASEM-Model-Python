@@ -57,12 +57,10 @@ EXPECTED_SCHEMAS = {
 
 @pytest.fixture
 def temp_db():
-    with tempfile.NamedTemporaryFile(suffix=".db") as temp_file:
-        db_manager = DatabaseManager(temp_file.name)
-        db_manager.connect()
-        db_manager.create_tables()
+    with tempfile.TemporaryDirectory() as temp_dir:
+        db_path = f"{temp_dir}/test.db"
+        db_manager = DatabaseManager(db_path)
         yield db_manager
-        db_manager.close()
 
 
 def test_create_tables(temp_db):
