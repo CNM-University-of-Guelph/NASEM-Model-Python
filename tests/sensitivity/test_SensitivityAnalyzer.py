@@ -120,12 +120,14 @@ def test_save_full_model_output_JSON_correct(mock_export_to_JSON, mock_makedirs)
 
     problem_id = 1
     sample_index = 0
+    expected_dir = os.path.join('model_outputs', f'problem_{problem_id}')
+    expected_file_path = os.path.join(expected_dir, f'sample_{sample_index}.json')
 
     file_path = analyzer._save_full_model_output_JSON(problem_id, sample_index, mock_model_output)
 
-    mock_makedirs.assert_called_once_with('model_outputs/problem_1', exist_ok=True)
-    mock_export_to_JSON.assert_called_once_with('model_outputs/problem_1/sample_0.json')
-    assert file_path == 'model_outputs/problem_1/sample_0.json', "File path is incorrect."
+    mock_makedirs.assert_called_once_with(expected_dir, exist_ok=True)
+    mock_export_to_JSON.assert_called_once_with(expected_file_path)
+    assert file_path == expected_file_path, "File path is incorrect."
 
 
 @patch('nasem_dairy.sensitivity.SensitivityAnalyzer.SensitivityAnalyzer._load_input')
