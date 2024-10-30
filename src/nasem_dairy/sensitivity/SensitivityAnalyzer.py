@@ -109,7 +109,7 @@ class SensitivityAnalyzer:
             Dict[str, float]: Updated coefficient dictionary.
         """
         modified_coeff_dict = coeff_dict.copy()
-        for name, value in zip(param_array, coeff_names):
+        for name, value in zip(coeff_names, param_array):
             modified_coeff_dict[name] = value
         return modified_coeff_dict
 
