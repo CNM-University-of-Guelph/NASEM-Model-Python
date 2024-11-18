@@ -1,0 +1,33 @@
+name: 🔧 Refactor
+description: Code improvements without feature changes
+title: "refactor: "
+labels: ["type: refactor"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Refactor Description
+      description: What needs to be refactored and why?
+      placeholder: Describe the code that needs improvement...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Expected Benefits
+      description: What improvements will this refactor bring?
+      placeholder: e.g., Better performance, cleaner code, easier maintenance...
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p3 (Nice to have)"
+        - "priority: p2 (Important)"
+        - "priority: p1 (Critical/Urgent)"
+    validations:
+      required: true 

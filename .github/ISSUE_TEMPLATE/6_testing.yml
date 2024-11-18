@@ -1,0 +1,47 @@
+name: 🧪 Testing
+description: Adding or updating tests
+title: "test: "
+labels: ["type: testing"]
+body:
+  - type: dropdown
+    id: test-type
+    attributes:
+      label: Test Type
+      options:
+        - Unit Tests
+        - Integration Tests
+        - E2E Tests
+        - Performance Tests
+    validations:
+      required: true
+      
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What needs to be tested?
+      placeholder: Describe the testing requirements...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance Criteria
+      description: What conditions need to be met?
+      placeholder: |
+        - [ ] Test case 1
+        - [ ] Test case 2
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p3 (Nice to have)"
+        - "priority: p2 (Important)"
+        - "priority: p1 (Critical/Urgent)"
+    validations:
+      required: true 

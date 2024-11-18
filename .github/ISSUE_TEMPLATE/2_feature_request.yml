@@ -1,0 +1,33 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: "feat: "
+labels: ["type: feature"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: What would you like to add or change?
+      placeholder: Clear description of the feature...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: Why is this feature needed?
+      placeholder: Explain the benefits...
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p3 (Nice to have)"
+        - "priority: p2 (Important)"
+        - "priority: p1 (Critical/Urgent)"
+    validations:
+      required: true 
