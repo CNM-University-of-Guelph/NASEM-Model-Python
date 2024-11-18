@@ -1,0 +1,24 @@
+name: 📚 Documentation
+description: Updates to documentation
+title: "docs: "
+labels: ["type: docs"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Documentation Changes
+      description: What needs to be documented?
+      placeholder: Describe the documentation changes needed...
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p3 (Nice to have)"
+        - "priority: p2 (Important)"
+        - "priority: p1 (Critical/Urgent)"
+    validations:
+      required: true 

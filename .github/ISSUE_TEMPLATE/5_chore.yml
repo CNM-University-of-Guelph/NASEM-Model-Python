@@ -1,0 +1,36 @@
+name: 🧹 Chore
+description: General maintenance tasks
+title: "chore: "
+labels: ["type: chore"]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Task Description
+      description: What maintenance needs to be done?
+      placeholder: Describe the maintenance task...
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: chore-type
+    attributes:
+      label: Maintenance Type
+      options:
+        - Dependencies
+        - Configuration
+        - Clean-up
+        - Other
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p3 (Nice to have)"
+        - "priority: p2 (Important)"
+        - "priority: p1 (Critical/Urgent)"
+    validations:
+      required: true 

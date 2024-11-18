@@ -1,0 +1,41 @@
+name: 🐛 Bug Report
+description: Report a problem that needs fixing
+title: "bug: "
+labels: ["type: bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this bug!
+  
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: What's not working as expected?
+      placeholder: Clear description of the problem...
+    validations:
+      required: true
+      
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: How can you reproduce this issue?
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. See error
+    validations:
+      required: true
+      
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - "priority: p1 (Critical/Urgent)"
+        - "priority: p2 (Important)"
+        - "priority: p3 (Nice to have)"
+    validations:
+      required: true 
