@@ -293,6 +293,7 @@ class CoeffDict(TypedDict):
     Frame_Gain_Cow: float #PK added
     Kr_ME_RE_Gain: float #PK added
     Kr_ME_RE_Loss: float #PK added
+    multiplier_MlkTP: float #PK added
 
 
 class InfusionDict(TypedDict):

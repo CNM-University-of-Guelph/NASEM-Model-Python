@@ -227,6 +227,7 @@ coeff_dict = {
     'Frame_Gain_Cow': 0.4, #Line 659
     'Kr_ME_RE_Gain': 0.75, #Line 489
     'Kr_ME_RE_Loss' : 0.89, #Line 492
+    'multiplier_MlkTP' : 1, #Line 130, 132
 }
 
 # Dictionary to use when infusions are not provided to model

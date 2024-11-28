@@ -674,7 +674,7 @@ def nasem(
         aa_values["mPrt_k_AA"], Abs_neAA_g, Abs_OthAA_g, Abs_EAA2b_g, 
         mPrt_k_EAA2, an_data["An_DigNDF"], an_data["An_DEInp"],
         an_data["An_DEStIn"], an_data["An_DEFAIn"], an_data["An_DErOMIn"],
-        an_data["An_DENDFIn"], mPrt_coeff
+        an_data["An_DENDFIn"], mPrt_coeff, coeff_dict
         )
     aa_values["Mlk_AA_g"] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
     aa_values["MlkAA_AbsAA"] = milk.calculate_MlkAA_AbsAA(
