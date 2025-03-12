@@ -59,11 +59,19 @@ if __name__ == "__main__":
             "Feedstuff": [],
             "kg_user": []
         }
-
+        index = 0
+        feed_options = {
+            "Silage": (0.3, 0.6), #this is a range 30%-60 ; example)
+            "Hay": 0.2,
+            "Energy": 0.2,
+            "Fat Supp.": 0.05,
+            "Protein Supp.": 0.1
+        }
         while sum(diet_data["kg_user"]) < total_intake:
             random_feed = feed_library["Fd_Name"]. sample(n=1).values[0]
             diet_data["Feedstuff"].append(random_feed)
-            diet_data["kg_user"].append(5)
+            diet_data["kg_user"].append(total_intake * feed_options [index]) #edit this to make sure it doesnt go over total intake
+            index += 1
 
 
         diet = pd.DataFrame(diet_data)
