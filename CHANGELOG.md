@@ -23,3 +23,8 @@
 
 ### Known Issues
 - `graph-tool` dependency requires a Linux or macOS environment; not available on Windows.
+
+
+## v1.0.2 - (20/03/2025)
+### New Features
+- Add adjust_nutrient and and adjust_diet functions
