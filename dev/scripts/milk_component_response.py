@@ -52,8 +52,7 @@ def get_feed_types(number_of_feeds: dict) -> list:
 
         # TODO How do we select a random value from a list?
         # Need to pick selcted_nunmber randomly 
-        selected_number = number_of_feeds[feed_type][1]
-
+        selected_number = random.choice(number_of_feeds[feed_type])
 
         for _ in range(0, selected_number):
             feeds_to_choose_from.append(feed_type)
@@ -187,22 +186,40 @@ if __name__ == "__main__":
     feed_options = {
         "Silage": (0.3, 0.6), 
         "Hay": (0.2, 0.3),
-        "Straw": (0.2, 0.3), #added straw here but it made my code stop working so i uncommented it
+        "Straw": (0.2, 0.3), 
         "Energy": (0.2, 0.3),
         "Fat Supp.": (0.05, 0.1),
         "Protein Supp.": (0.1, 0.2)
     }
 
-
     # TODO loop this multiple times
     # set a variable for the number of iterations ex. 10
-    diet = create_diet(feed_library, feed_options, 30)
-    output = nd.nasem(diet, animal_input, equation_selection)
-    
-    print(f"Created Diet: {diet}")
-    print(f"Sum of Diet: {sum(diet['kg_user'])}")
+
+num_iterations = 10  
+
+all_diets = []
+all_outputs = []
+
+for _ in range(num_iterations):
+    diet = create_diet(feed_library, feed_options, 30)  
+    output = nd.nasem(diet, animal_input, equation_selection)  
+
+    all_diets.append(diet.to_dict(orient='list'))  
+    all_outputs.append(output)
+
+
+for i, (diet, output) in enumerate(zip(all_diets, all_outputs)):
+    print(f"Iteration {i+1}:")
+    print(f"Created Diet: {diet}")  
+    print(f"Sum of Diet: {sum(diet['kg_user'])}")  
     print(f"Milk Fat: {output.get_value('MlkFat_Milk') * 100}%")
     print(f"Milk Protein: {output.get_value('MlkNP_Milk') * 100}%")
+    print("=" * 50)
+
+# NOTE: for converting to csv
+# df_diets = pd.DataFrame(all_diets)
+# df_diets.to_csv("simulated_diets.csv", index=False)
+
 
     # diet, animal, equations, _ = nd.demo("lactating_cow_test")
     # output = nd.nasem(
@@ -213,4 +230,4 @@ if __name__ == "__main__":
     # print(output.export_to_JSON("demo_diet.json"))
     # print(output.get_value("Mlk_Fat_g"))
 
-    print("Script finished running")
+print("Script finished running")
