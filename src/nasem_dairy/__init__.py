@@ -8,7 +8,7 @@ try:
 except ImportError: # pragma: no cover
     ModelDAG = None 
 
-from nasem_dairy.model.utility import read_csv_input, read_json_input, demo, get_feed_data, select_feeds
+from nasem_dairy.model.utility import read_csv_input, read_json_input, demo, get_feed_data, select_feeds, adjust_nutrient, adjust_diet
 from nasem_dairy.model_output.ModelOutput import ModelOutput
 from nasem_dairy.model.nasem import nasem
 from nasem_dairy.data.constants import coeff_dict, infusion_dict, MP_NP_efficiency_dict, mPrt_coeff_list, f_Imb
