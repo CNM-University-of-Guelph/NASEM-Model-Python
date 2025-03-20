@@ -42,10 +42,17 @@ equation_selection = {
     "mFat_eqn": 1,
     "RumDevDisc_Clf": 0
     }
+    
+
+feeds_to_choose_from = ["Silage", "Energy", "Fat Supp.", "Protein Supp."] #do i add hay or straw in here?
+if random.choice([True, False]):  
+        feeds_to_choose_from.append("Hay")
+else:
+        feeds_to_choose_from.append("Straw")
 
 def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict:
     # NOTE: Change the feeds_to_choose_from list to change number of feeds
-    # feeds_to_choose_from = ["Silage", "Hay", "Hay", "Energy", "Fat Supp.", "Protein Supp."]
+
     # Need to check feeds aren't chosen twice
     select_feeds = {}
 
@@ -73,7 +80,7 @@ def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict
                 (feed_library["Fd_Type"] == "Forage") & 
                 (feed_library["Fd_Name"].str.contains("Straw", case=False, na=False))
             ]
-            forage_options = pd.concat([hay_options, straw_options])
+            forage_options = pd.concat([hay_options, straw_options]) #i think to fix the error being raised by straw in the feed options this has to not be concat
             forage = forage_options.sample(1)
             feed_name = forage["Fd_Name"].values[0]
             select_feeds[feed_name] = "Hay"
@@ -120,7 +127,7 @@ def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict
     return select_feeds
 
 
-def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int) -> dict:
+def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int = 25) -> dict: #added =25 is that right?
     diet_data = { 
         "Feedstuff": [],
         "kg_user": []
@@ -129,7 +136,7 @@ def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int) 
         diet_data["Feedstuff"].append(feed_name)
         feed_weight = random.uniform(feed_options[feed_type][0], feed_options[feed_type][1]) * total_intake
         diet_data["kg_user"].append(feed_weight)
-    
+
         # NOTE: Need to scale the kg_user column, see the notes below
         # diet_data["kg_user"] = diet_data["kg_user"] * x
 
@@ -140,6 +147,12 @@ def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int) 
 
         # what is x?
         # (5 * x) + (10*x) + (5*x) = 25
+    
+    total_kg = sum(diet_data["kg_user"])  
+    if total_kg > 0:  # i think this is necessary to prevent division by 0?
+        scaling_factor = 25 / total_kg  
+        diet_data["kg_user"] = [weight * scaling_factor for weight in diet_data["kg_user"]]
+
     return diet_data
 
 
@@ -161,8 +174,9 @@ if __name__ == "__main__":
     # print(feed_library)  
 
     feed_options = {
-        "Silage": (0.3, 0.6), #this is a range 30%-60 ; example
+        "Silage": (0.3, 0.6), 
         "Hay": (0.2, 0.3),
+        # "Straw": (0.2, 0.3), #added straw here but it made my code stop working so i uncommented it
         "Energy": (0.2, 0.3),
         "Fat Supp.": (0.05, 0.1),
         "Protein Supp.": (0.1, 0.2)
