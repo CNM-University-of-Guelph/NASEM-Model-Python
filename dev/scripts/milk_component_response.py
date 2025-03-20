@@ -44,15 +44,25 @@ equation_selection = {
     }
     
 
-feeds_to_choose_from = ["Silage", "Energy", "Fat Supp.", "Protein Supp."] #do i add hay or straw in here?
-if random.choice([True, False]):  
-        feeds_to_choose_from.append("Hay")
-else:
-        feeds_to_choose_from.append("Straw")
+def get_feed_types(number_of_feeds: dict) -> list:
+    feeds_to_choose_from = []
+    for feed_type in number_of_feeds.keys():
+        # print(feed_type)
+        # print(number_of_feeds[feed_type])
+
+        # TODO How do we select a random value from a list?
+        # Need to pick selcted_nunmber randomly 
+        selected_number = number_of_feeds[feed_type][1]
+
+
+        for _ in range(0, selected_number):
+            feeds_to_choose_from.append(feed_type)
+
+    print(feeds_to_choose_from)
+    return feeds_to_choose_from
+
 
 def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict:
-    # NOTE: Change the feeds_to_choose_from list to change number of feeds
-
     # Need to check feeds aren't chosen twice
     select_feeds = {}
 
@@ -76,13 +86,8 @@ def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict
                 (feed_library["Fd_Type"] == "Forage") & 
                 (feed_library["Fd_Name"].str.contains("Hay", case=False, na=False))
             ]
-            straw_options = feed_library[
-                (feed_library["Fd_Type"] == "Forage") & 
-                (feed_library["Fd_Name"].str.contains("Straw", case=False, na=False))
-            ]
-            forage_options = pd.concat([hay_options, straw_options]) #i think to fix the error being raised by straw in the feed options this has to not be concat
-            forage = forage_options.sample(1)
-            feed_name = forage["Fd_Name"].values[0]
+            hay = hay_options.sample(1)
+            feed_name = hay["Fd_Name"].values[0]
             select_feeds[feed_name] = "Hay"
             # if not hay_options.empty and not straw_options.empty:
                 # second_forage = hay_options.sample(n=1) if random.choice([True, False]) else straw_options.sample(n=1)
@@ -92,6 +97,16 @@ def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict
             #     second_forage = straw_options.sample(n=1)
             # else:
             #     second_forage = pd.DataFrame()  # fallback in case both are missing
+
+
+        elif feed_type == "Straw":
+            straw_options = feed_library[
+                (feed_library["Fd_Type"] == "Forage") & 
+                (feed_library["Fd_Name"].str.contains("Straw", case=False, na=False))
+            ]
+            straw = straw_options.sample(1)
+            feed_name = straw["Fd_Name"].values[0]
+            select_feeds[feed_name] = "Straw"
 
 
         elif feed_type == "Energy":
@@ -127,7 +142,7 @@ def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict
     return select_feeds
 
 
-def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int = 25) -> dict: #added =25 is that right?
+def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int = 25) -> dict:
     diet_data = { 
         "Feedstuff": [],
         "kg_user": []
@@ -136,30 +151,26 @@ def assign_weights(selected_feeds: dict, feed_options: dict, total_intake: int =
         diet_data["Feedstuff"].append(feed_name)
         feed_weight = random.uniform(feed_options[feed_type][0], feed_options[feed_type][1]) * total_intake
         diet_data["kg_user"].append(feed_weight)
-
-        # NOTE: Need to scale the kg_user column, see the notes below
-        # diet_data["kg_user"] = diet_data["kg_user"] * x
-
-        # values = [5, 10 , 5]
-
-        # expected_total = 25
-        # actual_total = sum(values) = 20
-
-        # what is x?
-        # (5 * x) + (10*x) + (5*x) = 25
     
     total_kg = sum(diet_data["kg_user"])  
-    if total_kg > 0:  # i think this is necessary to prevent division by 0?
-        scaling_factor = 25 / total_kg  
+    if total_kg > 0:
+        scaling_factor = total_intake / total_kg  
         diet_data["kg_user"] = [weight * scaling_factor for weight in diet_data["kg_user"]]
 
     return diet_data
 
 
 def create_diet(feed_library: pd.DataFrame, feed_options: dict, total_intake: float = 25):
-    feeds_to_choose_from = feed_options.keys()
+    number_of_feeds = {
+        "Silage": [1, 2],
+        "Hay": [0, 1, 2],
+        "Straw": [0, 1],
+        "Energy": [1, 2],
+        "Fat Supp.": [0, 1],
+        "Protein Supp.": [1, 2]
+    }
+    feeds_to_choose_from = get_feed_types(number_of_feeds)
     selected_feeds = select_feeds(feed_library, feeds_to_choose_from)
-    # print(selected_feeds)
     diet_data = assign_weights(selected_feeds, feed_options, total_intake)
     diet = pd.DataFrame(diet_data)
     return diet
@@ -176,13 +187,18 @@ if __name__ == "__main__":
     feed_options = {
         "Silage": (0.3, 0.6), 
         "Hay": (0.2, 0.3),
-        # "Straw": (0.2, 0.3), #added straw here but it made my code stop working so i uncommented it
+        "Straw": (0.2, 0.3), #added straw here but it made my code stop working so i uncommented it
         "Energy": (0.2, 0.3),
         "Fat Supp.": (0.05, 0.1),
         "Protein Supp.": (0.1, 0.2)
     }
-    diet = create_diet(feed_library, feed_options, 25.0)
+
+
+    # TODO loop this multiple times
+    # set a variable for the number of iterations ex. 10
+    diet = create_diet(feed_library, feed_options, 30)
     output = nd.nasem(diet, animal_input, equation_selection)
+    
     print(f"Created Diet: {diet}")
     print(f"Sum of Diet: {sum(diet['kg_user'])}")
     print(f"Milk Fat: {output.get_value('MlkFat_Milk') * 100}%")
