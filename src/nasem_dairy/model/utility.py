@@ -18,11 +18,12 @@ Functions:
 """
 import importlib
 import json
-from typing import Dict, Tuple, Union
+from typing import Dict, Tuple, Union, Optional, List
 
 import pandas as pd
 
 import nasem_dairy.nasem_equations.nutrient_intakes as diet
+from nasem_dairy.model.nasem import nasem
 
 def get_feed_data(
     Trg_Dt_DMIn: float,
@@ -284,3 +285,84 @@ def select_feeds(names: list) -> pd.DataFrame:
         )
     selected_feeds = selected_feeds.sort_values("Fd_Name").reset_index(drop=True)
     return selected_feeds
+
+
+def adjust_nutrient(
+        feed_column: str,
+        feed_library: pd.DataFrame,
+        expected_value: float,
+        observed_value: float,
+    ) -> Tuple[pd.Series, float]:
+    """Adjust a feed column so that the output value matches the expected value.
+
+    Implements the method described in Li et al., 2018 (doi: https://doi.org/10.3168/jds.2017-14182)
+    
+    Args:
+    ----
+    feed_column: str
+        The name of the feed column to adjust.
+    feed_library: pd.DataFrame
+        The diet to adjust, with proportions of feeds in kg DM.
+    expected_value: float
+        The expected % DM of the nutrient in the diet.
+    observed_value: float
+        The observed % DM of the nutrient in the diet.
+
+    Returns:
+    -------
+    Tuple[pd.Series, float]
+        The adjusted feed column and the adjustment factor.
+    """    
+    bias = observed_value - expected_value
+    adjustment = bias / observed_value
+    adjusted_nutrient = feed_library[feed_column] * (1 - adjustment) 
+    return (adjusted_nutrient, adjustment)
+
+
+def adjust_diet(
+        animal_input: dict,
+        equation_selection: dict,
+        diet: pd.DataFrame,
+        expected_nutrients: dict,
+        nutrients_to_adjust: List[Tuple[str, str]],
+        feed_library: Optional[pd.DataFrame] = None
+    ) -> pd.DataFrame:
+    """
+    Adjust the diet to match the expected nutrient values.
+
+    Args:
+    ----
+    animal_input: dict
+        The animal input data.
+    equation_selection: dict
+        The equation selection data.
+    diet: pd.DataFrame
+        The diet to adjust.
+    expected_nutrients: dict
+        The expected nutrient values.
+    nutrients_to_adjust: List[Tuple[str, str]]
+        The nutrients to adjust.
+    feed_library: Optional[pd.DataFrame]
+        The feed library to use.
+
+    Returns:
+    -------
+    Tuple[pd.DataFrame, dict]
+        The adjusted feed library and the adjustment factors.
+    """
+    if feed_library is None:
+        feed_library = select_feeds(list(diet["Feedstuff"]))
+
+    adjusted_feed_library = feed_library.copy(deep=True)
+    adjustment_dict = {}
+
+    for feed_column, output_name in nutrients_to_adjust:
+        output = nasem(diet, animal_input, equation_selection, feed_library)
+        adjusted_nutrient, adjustment = adjust_nutrient(
+            feed_column, feed_library, expected_nutrients[output_name], 
+            output.get_value(output_name)
+        )
+        adjusted_feed_library[feed_column] = adjusted_nutrient
+        adjustment_dict[feed_column] = adjustment
+
+    return adjusted_feed_library, adjustment_dict

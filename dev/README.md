@@ -23,6 +23,10 @@ Runs the NASEM model and allows users to interact with the outputs.
 
 This script is used to test and develop the SensitivityAnalyzer class.
 
+### `adjust_feeds.py`
+
+Script to adjust the feed library to match the expected nutrient values.
+
 ## Notebooks
 ### `dev_iterate_diets.ipynb`
 Uses the package to calculate energy and protein requirements for different animals and diets.
