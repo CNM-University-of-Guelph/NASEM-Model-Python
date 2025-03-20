@@ -46,3 +46,62 @@ infusion_input,Inf_DM_g,0.0
     assert animal_input == expected_animal_input
     assert equation_selection == expected_equation_selection
     assert infusion_input == expected_infusion_input
+
+
+def test_adjust_diet():
+    diet1 = pd.DataFrame({
+        "Feedstuff": [
+            "Alfalfa meal", "Blood meal, low dRUP", "Corn and cob meal, dry", 
+            "Wheat bran"
+        ],
+        "kg_user": [6.5, 3.0, 4.7, 5.1]
+    })
+    
+    diet2 = pd.DataFrame({
+        "Feedstuff": [
+            "Selenium yeast, generic", "Manganese chloride (4H2O)", "Beet pulp, dry",
+            "Barley grain, dry, ground", "Millet silage"
+        ],
+        "kg_user": [1.0, 1.0, 3.0, 4.94, 5.6]
+    })
+    
+    diet3 = pd.DataFrame({
+        "Feedstuff": [
+            "Triticale grain", "Whey, wet", "Rumen Protected Thr", "Oat hulls",
+            "Flaxseed", "Copper oxide"
+        ],
+        "kg_user": [4.3, 3.534, 2, 4.76, 3.4, 3.1]
+    })
+    nutrients_to_adjust = [
+        ("Fd_CP", "Dt_CP"), 
+        ("Fd_NDF", "Dt_NDF")
+    ]
+    expected_values_1 = {
+        "Dt_CP": 19.57,
+        "Dt_NDF": 29.0,
+    }
+    expected_values_2 = {
+        "Dt_CP": 24.7,
+        "Dt_NDF": 19.2,
+    }
+    expected_values_3 = {
+        "Dt_CP": 26,
+        "Dt_NDF": 30,
+    }
+    diets = [
+        (diet1, expected_values_1),
+        (diet2, expected_values_2),
+        (diet3, expected_values_3)
+    ]
+    _, animal, equation, _ = nd.demo("lactating_cow_test")
+    for diet, expected_values in diets:
+        adjusted_feed_library, _ = nd.adjust_diet(
+            animal, equation, diet, expected_values, nutrients_to_adjust
+        )
+        adjusted_output = nd.nasem(
+            diet, animal, equation, feed_library=adjusted_feed_library
+        )
+        for nutrient, expected_value in expected_values.items():
+            assert adjusted_output.get_value(nutrient) == pytest.approx(
+                expected_value, rel=1e-2
+            )
