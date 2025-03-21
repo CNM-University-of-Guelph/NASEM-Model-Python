@@ -5,7 +5,6 @@ import time
 import pandas as pd
 import nasem_dairy as nd
 
-# TODO: Animal inputs for experiment?
 animal_input = {
     "An_Parity_rl": 1,
     "Trg_MilkProd": 25.062,
@@ -36,11 +35,11 @@ animal_input = {
 equation_selection = {
     "Use_DNDF_IV": 0,
     "DMIn_eqn": 0,
-    "mProd_eqn": 4, # NOTE: Which Mlk_Prod to use? Ask John
+    "mProd_eqn": 1,
     "MiN_eqn": 1,
     "NonMilkCP_ClfLiq": 0,
     "Monensin_eqn": 0,
-    "mPrt_eqn": 1, # NOTE have Melanie change this to 1
+    "mPrt_eqn": 1,
     "mFat_eqn": 1,
     "RumDevDisc_Clf": 0
     }
@@ -57,7 +56,6 @@ def get_feed_types(number_of_feeds: dict) -> list:
     return feeds_to_choose_from
 
 
-# TODO: Add feed column to make this more explicit isntead of matching on feed name?
 def select_feeds(feed_library: pd.DataFrame, feeds_to_choose_from: list) -> dict:
     # Need to check feeds aren't chosen twice
     select_feeds = {}
@@ -233,17 +231,14 @@ if __name__ == "__main__":
         "Protein Supp.": [1, 2]
     }
 
-    num_iterations = 100
+    # num_iterations = 100000
+    num_iterations = 2
     all_diets = []
     all_outputs = []
 
     for _ in range(num_iterations):
-        diet = create_diet(feed_library, feed_options, number_of_feeds, 15)  
+        diet = create_diet(feed_library, feed_options, number_of_feeds, 25)  
         output = nd.nasem(diet, animal_input, equation_selection)  
-
-        # TODO: Should there be some evaluation of the diet to decide if we keep results
-        # Ex. If a diet has 50% starch do we ignore it and keep sampling until we have n valid diets
-
         all_diets.append(diet.to_dict(orient='list'))  
         all_outputs.append(output)
 
@@ -257,9 +252,23 @@ if __name__ == "__main__":
     #     print(f"Milk Protein: {output.get_value('MlkNP_Milk') * 100}%")
     #     print("=" * 50)
 
-    output_variables = ["Mlk_Prod", "MlkFat_Milk", "MlkNP_Milk"]
+    # NOTE: Units for Variables
+    # Mlk_Fat_g: Predicted Milk Fat (g/d)
+    # Mlk_NP_g: Predicted Milk Protein (g/d)
+    # Dt_CP: Crude Protein (% of DM)
+    # Dt_RDP_CP: Rumen Degradable Protein (% of CP)
+    # Dt_RUP_CP: Rumen Undegradable Protein (% of CP)
+    # Dt_NDF: Neutral Detergent Fiber (% of DM)
+    # Dt_ADF: Acid Detergent Fiber (% of DM)
+    # Dt_St: Starch (% of DM)
+    # Dt_CFat: Crude Fat (% of DM)
+
+    output_variables = [
+        "Mlk_Fat_g", "Mlk_NP_g", "Dt_CP", "Dt_RDP_CP", "Dt_RUP_CP", "Dt_NDF",
+        "Dt_ADF", "Dt_St", "Dt_CFat"
+        ]
     wide_diets = create_wide_diet_dataframe(all_diets, all_outputs, number_of_feeds, output_variables)
-    wide_diets.to_csv("test_100.csv", index=False)
+    wide_diets.to_csv("100000_diets.csv", index=False)
 
     end_time = time.time()
     print(f"Script finished running in {end_time - start_time} seconds")
