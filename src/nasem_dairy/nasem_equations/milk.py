@@ -85,7 +85,8 @@ def calculate_Mlk_NP_g(
     An_DEFAIn: float, 
     An_DErOMIn: float, 
     An_DENDFIn: float,
-    mPrt_coeff: dict
+    mPrt_coeff: dict,
+    coeff_dict: float,
 ) -> float:
     """
     Examples
@@ -127,9 +128,9 @@ def calculate_Mlk_NP_g(
                     Abs_AA_g['Trp'] * mPrt_k_AA['Trp'] + 
                     Abs_AA_g['Val'] * mPrt_k_AA['Val'] + 
                     Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
-                    Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA'] + 
+                    Abs_OthAA_g * (mPrt_coeff['mPrt_k_OthAA'] * coeff_dict['multiplier_MlkTP']) + 
                     Abs_EAA2b_g * mPrt_k_EAA2 + 
-                    An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
+                    An_DEInp * (mPrt_coeff['mPrt_k_DEInp'] * coeff_dict['multiplier_MlkTP']) + 
                     (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
                     (An_DEStIn + An_DEFAIn + 
                      An_DErOMIn) * mPrt_coeff['mPrt_k_DEIn_StFA'] + 
