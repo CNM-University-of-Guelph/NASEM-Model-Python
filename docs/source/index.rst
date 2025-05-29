@@ -26,12 +26,12 @@ Follow the :ref:`quickstart guide <getting_started>` to learn how to run the NAS
 User Guide
 ==========
 
-The :ref:`user guide <user_guide>` includes more detailed tutorials and examples.
+The :ref:`user guide <user_guide>` includes more details about the package and how to use it.
 
 API
 ===
 
-The :ref:`API <api>` documentation can be found here.
+The :ref:`API <api>` section contains documentation for individual functions and classes.
 
 Contribute
 ==========

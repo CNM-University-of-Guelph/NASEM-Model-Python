@@ -35,7 +35,10 @@ exclude_patterns = []
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
-html_title = "NASEM Dairy (2021) Documentation"
+html_title = "NASEM Dairy Documentation"
+html_css_files = [
+    "css/nasem.css",
+]
 html_theme = 'pydata_sphinx_theme'
 html_static_path = ['_static']
 html_context = {
@@ -50,7 +53,7 @@ html_theme_options = {
         {
             "name": "GitHub",
             "url": "https://github.com/CNM-University-of-Guelph/NASEM-Model-Python",
-            "icon": "fab fa-github-square",
+            "icon": "fa-brands fa-github",
         }
     ],
     "navbar_center": ["nasem_navbar.html"]
