@@ -72,43 +72,52 @@ def nasem(
     The function returns a ModelOutput object containing the results of the 
     calculations.
 
-    Args:
-        user_diet: A pandas DataFrame representing the user's diet input.
-        animal_input: A dictionary containing the animal's input data, such as 
-                      body weight, milk production, and other physiological parameters.
-        equation_selection: A dictionary specifying the equations to be used in 
-                            the model.
-        feed_library: An optional pandas DataFrame representing the feed library. 
-                      If not provided, the standard feed library is used.
-        coeff_dict: A dictionary of coefficients used throughout the model. Defaults 
-                    to the standard coefficients from the NASEM constants.
-        infusion_input: An optional dictionary of nutrient infusion rates and 
-                        locations. If not provided, default values are used.
-        MP_NP_efficiency_dict: A dictionary containing the MP to NP efficiency 
-                               coefficients for various amino acids. Defaults to the 
-                               standard dictionary from NASEM constants.
-        mPrt_coeff_list: A list of dictionaries containing microbial protein equation 
-                         coefficients. Defaults to the standard list from NASEM constants.
-        f_Imb: An optional pandas Series representing imbalance factors for amino 
-               acids. If not provided, default values are used.
+    Parameters
+    ----------
+    user_diet : pd.DataFrame
+        The diet with 2 columns: Fd_Name and kg_user
+    animal_input : Dict[str, Any]
+        Dictionary containing the animal input data
+    equation_selection : Dict[str, Any]
+        Dictionary specifying the equations to be used in the model
+    feed_library : pd.DataFrame, optional
+        Feed library dataframe. If not provided, the standard feed library is used
+    coeff_dict : Dict[str, float], optional
+        Dictionary of coefficients used throughout the model. Defaults to the
+        standard coefficients from NASEM constants
+    infusion_input : Dict[str, float], optional
+        Dictionary of nutrient infusion rates and locations. By default no infusion
+        is used
+    MP_NP_efficiency : Dict[str, float], optional
+        Dictionary containing the MP to NP efficiency coefficients for various
+        amino acids. Defaults to the standard dictionary from NASEM constants
+    mPrt_coeff_list : List[Dict[str, float]], optional
+        List of dictionaries containing microbial protein equation coefficients.
+        Defaults to the standard list from NASEM constants
+    f_Imb : pd.Series, optional
+        Series representing imbalance factors for amino acids. If not provided,
+        default values are used
 
-    Returns:
-        ModelOutput: An object containing the results of the NASEM dairy model.
+    Returns
+    -------
+    ModelOutput
+        Object containing the results of the NASEM dairy model
 
-    Raises:
-        ValueError: If any input validation checks fail or if required data is 
-                    missing from the inputs.
-        TypeError: If any input is not of the expected type.
+    Raises
+    ------
+    ValueError
+        If any input validation checks fail or if required data is missing
+    TypeError
+        If any input is not of the expected type
 
-    Example:
-        user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("lactating_cow_test")
-        
-        output = nd.nasem(
-            user_diet=user_diet_in, 
-            animal_input=animal_input_in, 
-            equation_selection=equation_selection_in, 
-            coeff_dict=nd.coeff_dict
-        )
+    Examples
+    --------
+    >>> user_diet_in, animal_input_in, equation_selection_in, infusion_input = nd.demo("lactating_cow_test")
+    >>> output = nd.nasem(
+    ...     user_diet=user_diet_in,
+    ...     animal_input=animal_input_in,
+    ...     equation_selection=equation_selection_in,
+    ... )
     """
     ####################
     # Validate Inputs  

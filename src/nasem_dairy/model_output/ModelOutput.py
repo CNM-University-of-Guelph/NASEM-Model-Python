@@ -23,6 +23,58 @@ from nasem_dairy.sensitivity.response_variables_config import RESPONSE_VARIABLE_
 
 
 class ModelOutput:
+    """
+    Handles the organization, retrieval, and reporting of NASEM model outputs.
+
+    The `ModelOutput` class loads output structures from JSON configuration files,
+    categorizes model outputs into logical groups, and provides various methods for
+    retrieving, searching, displaying, and exporting model results.
+
+    Parameters
+    ----------
+    locals_input : dict
+        Dictionary of local input data containing all model output variables.
+    config_path : str, optional
+        Path to the JSON file containing the model output structure, by default
+        "./model_output_structure.json"
+    report_config_path : str, optional
+        Path to the JSON file containing the report structure, by default
+        "./report_structure.json"
+
+    Attributes
+    ----------
+    categories : List[str]
+        List of category names that organize the model outputs.
+    skip_attrs : List[str]
+        List of internal attributes to skip when processing categories.
+    locals_input : dict
+        Original input dictionary (cleared after processing).
+    dev_out : dict
+        Dictionary containing development/internal variables filtered from input.
+    categories_structure : dict
+        Structure loaded from the model output configuration file.
+    report_structure : dict
+        Structure loaded from the report configuration file.
+
+    Examples
+    --------
+    Create a ModelOutput instance from NASEM model results:
+
+    >>> # Assuming you have model output data in locals_dict
+    >>> output = ModelOutput(locals_dict)
+    >>> 
+    >>> # Access a specific category
+    >>> production_data = output.Production
+    >>> 
+    >>> # Search for variables containing "Milk"
+    >>> milk_vars = output.search("Milk")
+    >>> 
+    >>> # Get a specific value
+    >>> milk_production = output.get_value("Mlk_Prod_comp")
+    >>> 
+    >>> # Generate a report
+    >>> summary_report = output.get_report("summary")
+    """
     def __init__(
         self, 
         locals_input: dict, 
@@ -302,18 +354,21 @@ class ModelOutput:
         self, 
         name: str
     ) -> Union[str, int, float, dict, pd.DataFrame, None]:
-        """
-        Retrieve a value, dictionary, or dataframe with a given name.
+        """Retrieve a value, dictionary, or dataframe by name.
 
-        This method searches through the ModelOutput instance to find a specific
-        value, dictionary, or dataframe by name.
+        Searches through all categories in the ModelOutput instance to find a 
+        specific value, dictionary, or dataframe by its exact name.
 
-        Args:
-            name (str): The name of the group to retrieve.
+        Parameters
+        ----------
+        name : str
+            The exact name of the variable, dictionary, or dataframe to retrieve.
 
-        Returns:
-            Union[str, int, float, dict, pd.DataFrame, None]: The object with the
-            given name, or None if not found.
+        Returns
+        -------
+        Union[str, int, float, dict, pd.DataFrame, None]
+            The object with the given name, or None if not found. Can be a scalar
+            value, dictionary, DataFrame, or other data structure.
         """
         def _recursive_search_get_value(
             dictionary: dict, 
@@ -359,20 +414,29 @@ class ModelOutput:
         case_sensitive: bool = False
     ) -> pd.DataFrame:
         """
-        Search for a string in the ModelOutput instance and return matching results.
+        Search for variables containing a specific string pattern.
 
-        This method searches for a given string within the specified dictionaries
-        in the ModelOutput instance and returns the matching results in a DataFrame.
+        Performs a pattern search across all or specified categories and returns
+        matching results in a structured DataFrame with location information.
 
-        Args:
-            search_string (str): The string to search for.
-            dictionaries_to_search (Union[None, List[str]]): The list of dictionaries
-                to search within. If None, all relevant dictionaries are searched.
-            case_sensitive (bool): Whether the search should be case-sensitive.
-                Default is False.
+        Parameters
+        ----------
+        search_string : str
+            The string pattern to search for in variable names.
+        dictionaries_to_search : Union[None, List[str]], optional
+            List of category names to search within. If None, searches all
+            categories, by default None
+        case_sensitive : bool, optional
+            Whether the search should be case-sensitive, by default False
 
-        Returns:
-            pd.DataFrame: A DataFrame containing the search results.
+        Returns
+        -------
+        pd.DataFrame
+            DataFrame containing search results with columns:
+            - 'Name': Variable name
+            - 'Value': Variable value or type description
+            - 'Category': Top-level category name
+            - 'Level 1', 'Level 2', etc.: Nested location information
         """
         def _recursive_search_search(
             dict_to_search: Dict[str, Any], 
@@ -498,14 +562,16 @@ class ModelOutput:
 
     def export_to_dict(self) -> Dict[str, Any]:
         """
-        Export the ModelOutput instance to a dictionary.
+        Export all model outputs to a flat dictionary.
 
-        This method extracts all values from the ModelOutput instance and organizes
-        them into a dictionary.
+        Extracts all values from the ModelOutput instance and organizes them
+        into a single-level dictionary with variable names as keys.
 
-        Returns:
-            Dict[str, Any]: A dictionary containing all the values from the
-            ModelOutput instance.
+        Returns
+        -------
+        Dict[str, Any]
+            Dictionary containing all model output variables as key-value pairs.
+            Nested structures are flattened using the final variable names as keys.
         """
         def _recursive_extract(value: Any, parent_key: str = "") -> None:
             """
@@ -562,11 +628,15 @@ class ModelOutput:
 
     def export_variable_names(self) -> List[str]: 
         """
-        Extract a list of variable names stored in the class.
-        If a value is a DataFrame, replace the DataFrame name with its column names.
+        Extract a list of all variable names in the model output.
 
-        Returns:
-            List[str]: A list of variable names including DataFrame column names.
+        Returns all variable names, including DataFrame column names. If a value
+        is a DataFrame, the DataFrame name is replaced with its individual column names.
+
+        Returns
+        -------
+        List[str]
+            Unique list of all variable names including DataFrame columns.
         """
         variables_dict = self.export_to_dict()
         variable_names = []
@@ -582,8 +652,13 @@ class ModelOutput:
         """
         Export the entire ModelOutput instance to a JSON file.
 
-        Args:
-            file_path (str): The path where the JSON file will be saved.
+        Saves all model outputs to a JSON file using a custom encoder that
+        handles NumPy arrays, pandas DataFrames, and other specialized data types.
+
+        Parameters
+        ----------
+        file_path : str
+            The file path where the JSON file will be saved.
         """
         output_dict = self.export_to_dict()
         with open(file_path, 'w') as json_file:
@@ -591,10 +666,21 @@ class ModelOutput:
 
     def to_response_variables(self) -> List[Dict[str, Any]]:
         """
-        Convert the ModelOutput instance into a list of response variables suitable for database storage.
+        Convert model outputs to response variables for database storage.
 
-        Returns:
-            List[Dict[str, Any]]: A list of dictionaries containing 'variable_name' and 'value' keys.
+        Extracts only the variables specified in the response variables configuration,
+        making it suitable for database storage or analysis workflows.
+
+        Returns
+        -------
+        Dict[str, Any]
+            Dictionary containing only the specified response variables with their
+            values. Variables not found in the model output will have None values.
+
+        Notes
+        -----
+        This method uses the RESPONSE_VARIABLE_NAMES configuration to determine
+        which variables to include in the output.
         """
         data_dict = self.export_to_dict()
         response_variables = {}
@@ -605,16 +691,27 @@ class ModelOutput:
     ### Report Creation ###
     def get_report(self, report_name: str) -> pd.DataFrame:
         """
-        Generate a report based on the report structure defined in JSON.
+        Generate a formatted report based on predefined report structure.
 
-        Args:
-            report_name (str): The name of the report to generate.
+        Creates a structured report using the report configuration JSON file,
+        organizing related variables into a readable table format with descriptions.
 
-        Returns:
-            pd.DataFrame: The generated report as a DataFrame.
+        Parameters
+        ----------
+        report_name : str
+            The name of the report to generate. Must match a report defined in
+            the report structure configuration file.
 
-        Raises:
-            ValueError: If the report name is not found in the report structure.
+        Returns
+        -------
+        pd.DataFrame
+            Formatted report as a DataFrame with appropriate columns, totals,
+            and footnotes as specified in the report configuration.
+
+        Raises
+        ------
+        ValueError
+            If the report name is not found in the report structure configuration.
         """
         if report_name not in self.report_structure:
             raise ValueError(

@@ -3,7 +3,9 @@ ModelOutput
 
 .. _model_output:
 
-.. .. automodule:: nasem_dairy.model_output
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
+.. currentmodule:: nasem_dairy.model_output.ModelOutput
+
+.. autoclass:: ModelOutput
+    :members:
+    :undoc-members:
+    :show-inheritance:

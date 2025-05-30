@@ -11,3 +11,7 @@
 .reference.internal.nav-link {
     font-size: 1.1em;
 }
+
+.bd-sidebar {
+    width: 250px !important;
+}

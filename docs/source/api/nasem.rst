@@ -1,10 +1,7 @@
 nasem
 ======
-
 .. _nasem:
 
-.. .. automodule:: nasem_dairy.nasem
-..    :members:
-..    :undoc-members:
-..    :show-inheritance:
-.. :
+.. currentmodule:: nasem_dairy.model.nasem
+
+.. autofunction:: nasem

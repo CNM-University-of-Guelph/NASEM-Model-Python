@@ -4,10 +4,7 @@ API
 .. _api:
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
+   :maxdepth: 1
 
    nasem
    model_output
-
-The API wil go here.

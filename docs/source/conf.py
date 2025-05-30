@@ -58,3 +58,4 @@ html_theme_options = {
     ],
     "navbar_center": ["nasem_navbar.html"]
 }
+autodoc_preserve_defaults = True
