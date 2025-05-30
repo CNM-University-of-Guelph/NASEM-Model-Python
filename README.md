@@ -4,18 +4,23 @@
 [![Coverage Status](https://coveralls.io/repos/github/CNM-University-of-Guelph/NASEM-Model-Python/badge.svg?branch=main)](https://coveralls.io/github/CNM-University-of-Guelph/NASEM-Model-Python?branch=main)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/CNM-University-of-Guelph/NASEM-Model-Python/blob/main/LICENSE)
 
+This is a python version of the Nutrient Requirments of Dairy Cattle 8th
+revisied edition (NASEM
+2021)\[https://nap.nationalacademies.org/catalog/25806/nutrient-requirements-of-dairy-cattle-eighth-revised-edition\]
+model. The equations have been copied from the R functions released with the official NASEM software:
+https://nap.nationalacademies.org/resource/25806/Installation_Instructions_NASEM_Dairy8.pdf
+
+## Documentation
+
+Documentation is available on [Read the Docs](https://nasem-model-python.readthedocs.io/en/latest/).
+
+Brief instructions for using the model can be found below. For more details visit the readthedocs page.
 
 - [Installation](#installation)
 - [Using the Model](#using-the-model)
   - [Import package](#import-package)
   - [Get input data](#get-input-data)
   - [Execute Model](#execute-model)
-
-This is a python version of the Nutrient Requirments of Dairy Cattle 8th
-revisied edition (NASEM
-2021)\[https://nap.nationalacademies.org/catalog/25806/nutrient-requirements-of-dairy-cattle-eighth-revised-edition\]
-model. The equations have been copied from the R functions released with the official NASEM software:
-https://nap.nationalacademies.org/resource/25806/Installation_Instructions_NASEM_Dairy8.pdf
 
 ## License
 
