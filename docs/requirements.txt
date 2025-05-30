@@ -1,0 +1,9 @@
+sphinx
+pydata-sphinx-theme
+sphinx-copybutton
+sphinx-design
+sphinx-autodoc-typehints
+myst-parser
+pandas
+numpy
+importlib-resources
