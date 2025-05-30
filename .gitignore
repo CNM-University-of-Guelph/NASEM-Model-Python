@@ -1,5 +1,4 @@
-docs/reference/
-docs/_site/
+docs/build/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

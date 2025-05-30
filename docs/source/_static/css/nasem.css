@@ -1,0 +1,17 @@
+/* Navbar */
+#navbar-main-elements .nav-link:hover {
+    color: #348fc3 !important;
+}
+
+#navbar-main-elements .active-nav-link {
+    color: #348fc3 !important;
+    font-weight: bold;
+}
+
+.reference.internal.nav-link {
+    font-size: 1.1em;
+}
+
+.bd-sidebar {
+    width: 250px !important;
+}
