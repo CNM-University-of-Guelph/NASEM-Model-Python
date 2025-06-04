@@ -286,7 +286,7 @@ def nasem(
         animal_input["An_BW"], animal_input["Env_Topo"]
         )
     Kr_ME_RE = energy_req.calculate_Kr_ME_RE(
-        animal_input["Trg_MilkProd"], animal_input["Trg_RsrvGain"]
+        animal_input["Trg_MilkProd"], animal_input["Trg_RsrvGain"], coeff_dict
         )
     Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input["An_BW"])
     Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input["An_BW"])
@@ -683,7 +683,7 @@ def nasem(
         aa_values["mPrt_k_AA"], Abs_neAA_g, Abs_OthAA_g, Abs_EAA2b_g, 
         mPrt_k_EAA2, an_data["An_DigNDF"], an_data["An_DEInp"],
         an_data["An_DEStIn"], an_data["An_DEFAIn"], an_data["An_DErOMIn"],
-        an_data["An_DENDFIn"], mPrt_coeff
+        an_data["An_DENDFIn"], mPrt_coeff, coeff_dict
         )
     aa_values["Mlk_AA_g"] = milk.calculate_Mlk_AA_g(Mlk_NP_g, Mlk_AA_TP)
     aa_values["MlkAA_AbsAA"] = milk.calculate_MlkAA_AbsAA(
@@ -861,7 +861,7 @@ def nasem(
     An_NEmUse_NS = energy_req.calculate_An_NEmUse_NS(
         animal_input["An_StatePhys"], animal_input["An_BW"], 
         an_data["An_BW_empty"], animal_input["An_Parity_rl"], 
-        diet_data["Dt_DMIn_ClfLiq"]
+        diet_data["Dt_DMIn_ClfLiq"], coeff_dict 
         )
     An_NEm_Act_Graze = energy_req.calculate_An_NEm_Act_Graze(
         diet_data["Dt_PastIn"], Dt_DMIn, 
@@ -879,7 +879,7 @@ def nasem(
             diet_data["Dt_DMIn_ClfLiq"], diet_data["Dt_DMIn_ClfStrt"]
             )
     else:
-        Km_ME_NE = energy_req.calculate_Km_ME_NE(animal_input["An_StatePhys"])
+        Km_ME_NE = energy_req.calculate_Km_ME_NE(animal_input["An_StatePhys"], coeff_dict )
     An_MEmUse = energy_req.calculate_An_MEmUse(An_NEmUse, Km_ME_NE)
     Rsrv_NEgain = energy_req.calculate_Rsrv_NEgain(Rsrv_Fatgain, Rsrv_CPgain)
     Rsrv_MEgain = energy_req.calculate_Rsrv_MEgain(Rsrv_NEgain, Kr_ME_RE)
