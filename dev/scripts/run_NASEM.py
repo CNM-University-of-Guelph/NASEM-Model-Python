@@ -30,8 +30,8 @@ if __name__ == "__main__":
         coeff_dict = nd.coeff_dict
         )
     
-    print (nd.coeff_dict['Kr_ME_RE_Gain'])
-    print (nd.coeff_dict['Kr_ME_RE_Loss'])
+    print (nd.coeff_dict['Rum_dcNDF_Var1'])
+   
 
     # Create subset of feed library
     feed_names = [

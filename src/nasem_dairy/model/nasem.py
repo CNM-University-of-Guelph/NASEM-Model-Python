@@ -387,7 +387,7 @@ def nasem(
     an_data["An_RDPIn_g"] = animal.calculate_An_RDPIn_g(an_data["An_RDPIn"])
     Rum_dcNDF = rumen.calculate_Rum_dcNDF(
         Dt_DMIn, diet_data["Dt_NDFIn"], diet_data["Dt_StIn"], 
-        diet_data["Dt_CPIn"], diet_data["Dt_ADFIn"], diet_data["Dt_ForWet"]
+        diet_data["Dt_CPIn"], diet_data["Dt_ADFIn"], diet_data["Dt_ForWet"], coeff_dict
         ) 
     Rum_dcSt = rumen.calculate_Rum_dcSt(
         Dt_DMIn, diet_data["Dt_ForNDF"], diet_data["Dt_StIn"], 

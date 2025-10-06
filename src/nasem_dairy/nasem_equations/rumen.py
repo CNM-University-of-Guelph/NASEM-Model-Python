@@ -12,9 +12,10 @@ def calculate_Rum_dcNDF(
     Dt_StIn: float, 
     Dt_CPIn: float, 
     Dt_ADFIn: float,
-    Dt_ForWet: float
+    Dt_ForWet: float,
+    coeff_dict: float
 ) -> float:
-    Rum_dcNDF = (-31.9 + 0.721 * Dt_NDFIn / 
+    Rum_dcNDF = ( coeff_dict['Rum_dcNDF_Var1'] + 0.721 * Dt_NDFIn / 
                  Dt_DMIn * 100 - 0.247 * Dt_StIn / 
                  Dt_DMIn * 100 + 6.63 * Dt_CPIn / 
                  Dt_DMIn * 100 - 0.211 * (Dt_CPIn / Dt_DMIn * 100)**2 - 
