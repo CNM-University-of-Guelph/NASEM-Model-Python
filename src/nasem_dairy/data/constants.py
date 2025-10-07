@@ -230,7 +230,14 @@ coeff_dict = {
     'multiplier_MlkTP' : 1, #Line 130, 132
 
     #Rumen.py
-    'Rum_dcNDF_Var1': -31.9, #Line 17
+    'Rum_dcNDF_Var1': -31.9, #Line 18
+    'Rum_dcNDF_Var2': 0.721, #Line 18
+    'Rum_dcNDF_Var3': 0.247, #Line 19
+    'Rum_dcNDF_Var4': 6.63, #Line 20
+    'Rum_dcNDF_Var5': 0.211, #Line 21
+    'Rum_dcNDF_Var6': 0.387, #Line 22
+    'Rum_dcNDF_Var7': 0.121, #Line 23
+    'Rum_dcNDF_Var8': 1.51, #Line 23
 }
 
 # Dictionary to use when infusions are not provided to model

@@ -13,14 +13,14 @@ def calculate_Rum_dcNDF(
     Dt_CPIn: float, 
     Dt_ADFIn: float,
     Dt_ForWet: float,
-    coeff_dict: float
+    coeff_dict: dict
 ) -> float:
-    Rum_dcNDF = ( coeff_dict['Rum_dcNDF_Var1'] + 0.721 * Dt_NDFIn / 
-                 Dt_DMIn * 100 - 0.247 * Dt_StIn / 
-                 Dt_DMIn * 100 + 6.63 * Dt_CPIn / 
-                 Dt_DMIn * 100 - 0.211 * (Dt_CPIn / Dt_DMIn * 100)**2 - 
-                 0.387 * Dt_ADFIn / Dt_DMIn / (Dt_NDFIn / Dt_DMIn) * 100 - 
-                 0.121 * Dt_ForWet + 1.51 * Dt_DMIn)
+    Rum_dcNDF = ( coeff_dict['Rum_dcNDF_Var1'] + coeff_dict['Rum_dcNDF_Var2'] * Dt_NDFIn / 
+                 Dt_DMIn * 100 - coeff_dict['Rum_dcNDF_Var3'] * Dt_StIn / 
+                 Dt_DMIn * 100 + coeff_dict['Rum_dcNDF_Var4'] * Dt_CPIn / 
+                 Dt_DMIn * 100 - coeff_dict['Rum_dcNDF_Var5'] * (Dt_CPIn / Dt_DMIn * 100)**2 - 
+                 coeff_dict['Rum_dcNDF_Var6'] * Dt_ADFIn / Dt_DMIn / (Dt_NDFIn / Dt_DMIn) * 100 - 
+                 coeff_dict['Rum_dcNDF_Var7'] * Dt_ForWet + coeff_dict['Rum_dcNDF_Var8'] * Dt_DMIn)
 
     if Rum_dcNDF < 0.1 or Rum_dcNDF is None:  # Line 984
         Rum_dcNDF = 0.1

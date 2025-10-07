@@ -294,6 +294,15 @@ class CoeffDict(TypedDict):
     Kr_ME_RE_Gain: float #PK added
     Kr_ME_RE_Loss: float #PK added
     multiplier_MlkTP: float #PK added
+    Rum_dcNDF_Var1: float #PK added
+    Rum_dcNDF_Var2: float #PK added
+    Rum_dcNDF_Var3: float #PK added
+    Rum_dcNDF_Var4: float #PK added
+    Rum_dcNDF_Var5: float #PK added
+    Rum_dcNDF_Var6: float #PK added
+    Rum_dcNDF_Var7: float #PK added
+    Rum_dcNDF_Var8: float #PK added
+    
 
 
 class InfusionDict(TypedDict):
