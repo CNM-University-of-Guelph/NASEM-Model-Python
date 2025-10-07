@@ -31,11 +31,12 @@ def calculate_Rum_dcSt(
     Dt_DMIn: float, 
     Dt_ForNDF: float, 
     Dt_StIn: float, 
-    Dt_ForWet: float
+    Dt_ForWet: float,
+    coeff_dict: dict
 ) -> float:
-    Rum_dcSt = (70.6 - 1.45 * Dt_DMIn + 0.424 * Dt_ForNDF + 1.39 * Dt_StIn / 
-                Dt_DMIn * 100 - 0.0219 * (Dt_StIn / Dt_DMIn * 100)**2 - 
-                0.154 * Dt_ForWet)
+    Rum_dcSt = ( coeff_dict['Rum_dcSt_Var1'] - coeff_dict['Rum_dcSt_Var2'] * Dt_DMIn + coeff_dict['Rum_dcSt_Var3'] * Dt_ForNDF + coeff_dict['Rum_dcSt_Var4'] * Dt_StIn / 
+                Dt_DMIn * 100 - coeff_dict['Rum_dcSt_Var5'] * (Dt_StIn / Dt_DMIn * 100)**2 - 
+                coeff_dict['Rum_dcSt_Var6'] * Dt_ForWet)
     if Rum_dcSt < 0.1:  # Line 992
         Rum_dcSt = 0.1
     elif Rum_dcSt > 100:  # Line 993

@@ -238,6 +238,13 @@ coeff_dict = {
     'Rum_dcNDF_Var6': 0.387, #Line 22
     'Rum_dcNDF_Var7': 0.121, #Line 23
     'Rum_dcNDF_Var8': 1.51, #Line 23
+
+    'Rum_dcSt_Var1': 70.6, #Line 37
+    'Rum_dcSt_Var2': 1.45, #Line 37
+    'Rum_dcSt_Var3': 0.424, #Line 37
+    'Rum_dcSt_Var4': 1.39, #Line 37
+    'Rum_dcSt_Var5': 0.0219, #Line 38
+    'Rum_dcSt_Var6': 0.154, #Line 38
 }
 
 # Dictionary to use when infusions are not provided to model

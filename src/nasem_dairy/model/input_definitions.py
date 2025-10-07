@@ -288,12 +288,14 @@ class CoeffDict(TypedDict):
     Uter_Wt_coeff: float
     VmMiNInt: float
     VmMiNRDPSlp: float
+    
     Maintenance: float #PK added
     Lact_Efficiency: float #PK added
     Frame_Gain_Cow: float #PK added
     Kr_ME_RE_Gain: float #PK added
     Kr_ME_RE_Loss: float #PK added
     multiplier_MlkTP: float #PK added
+    
     Rum_dcNDF_Var1: float #PK added
     Rum_dcNDF_Var2: float #PK added
     Rum_dcNDF_Var3: float #PK added
@@ -303,6 +305,12 @@ class CoeffDict(TypedDict):
     Rum_dcNDF_Var7: float #PK added
     Rum_dcNDF_Var8: float #PK added
     
+    Rum_dcSt_Var1: float #PK added
+    Rum_dcSt_Var2: float #PK added
+    Rum_dcSt_Var3: float #PK added
+    Rum_dcSt_Var4: float #PK added
+    Rum_dcSt_Var5: float #PK added
+    Rum_dcSt_Var6: float #PK added
 
 
 class InfusionDict(TypedDict):

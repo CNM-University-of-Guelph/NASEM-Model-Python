@@ -391,7 +391,7 @@ def nasem(
         ) 
     Rum_dcSt = rumen.calculate_Rum_dcSt(
         Dt_DMIn, diet_data["Dt_ForNDF"], diet_data["Dt_StIn"], 
-        diet_data["Dt_ForWet"]
+        diet_data["Dt_ForWet"], coeff_dict
         )
     Rum_DigNDFIn = rumen.calculate_Rum_DigNDFIn(
         Rum_dcNDF, diet_data["Dt_NDFIn"]
