@@ -539,7 +539,7 @@ def nasem(
     # Ruminal N Flow and Microbial Crude Protein
     ####################
     Du_EndCP_g = micp.calculate_Du_EndCP_g(
-        Dt_DMIn, infusion_data["InfRum_DMIn"]
+        Dt_DMIn, infusion_data["InfRum_DMIn"], coeff_dict
         )
     Du_EndN_g = micp.calculate_Du_EndN_g(Dt_DMIn, infusion_data["InfRum_DMIn"])
     Du_EndCP = micp.calculate_Du_EndCP(Du_EndCP_g)

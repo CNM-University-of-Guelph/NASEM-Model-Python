@@ -199,11 +199,11 @@ def calculate_Du_MiTP(Du_MiTP_g: float) -> float:
     return Du_MiTP
 
 
-def calculate_Du_EndCP_g(Dt_DMIn: float, InfRum_DMIn: float) -> float:
+def calculate_Du_EndCP_g(Dt_DMIn: float, InfRum_DMIn: float, coeff_dict: dict) -> float:
     """
     Du_EndCP_g: Duodenal endogenous flow of crude protein, g/d
     """
-    Du_EndCP_g = 96.1 + 7.54 * (Dt_DMIn + InfRum_DMIn)  # Line 1170
+    Du_EndCP_g = coeff_dict['Du_EndCP_g_Var1'] + coeff_dict['Du_EndCP_g_Var2'] * (Dt_DMIn + InfRum_DMIn)  # Line 1170
     return Du_EndCP_g
 
 

@@ -81,7 +81,7 @@ coeff_dict = {
     'Fet_Wt': 0,
     'Fd_dcrOM': 96,  # Line 1005, this is a true digestibility. 
                      # There is a neg intercept of -3.43% of DM
-    'fCPAdu': 0.064,
+    'fCPAdu': 0.064,  #PK look at
     'fMiTP_MiCP': 0.824,  # Line 1120, Fraction of MiCP that is True Protein; 
                           # from Lapierre or Firkins
     'fN_3MH': (3 * 14) / 169,
@@ -108,6 +108,7 @@ coeff_dict = {
     'HydrTrp': 0.9118,
     'HydrVal': 0.8464,
     'IntRUP': -0.086,  # Intercept, kg/d
+                       #PK look at                 
     'Int_MiN_VT': 18.686,  # Line 1134
     'K_305RHA_MlkTP': 1.0,
     'Ka_LateGest_DMIn': 1.47,
@@ -117,11 +118,15 @@ coeff_dict = {
     'Kl_ME_NE': 0.66,
     'Kl_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2654
     'KmMiNRDNDF': 0.0939,  # Line 1119
+                           #PK look at
     'KmMiNRDSt': 0.0274,  # Line 1120
+                          #PK Look at
     'Km_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2652
     'KpConc': 5.28,  # From Bayesian fit to Digesta Flow data with Seo Kp as 
                      # priors, eqn. 26 in Hanigan et al.
-    'KpFor': 4.87,  # %/h
+                    #PK look at 
+    'KpFor': 4.87,  # %/h  
+                    #PK look at
     'KrdNDF_MiN_VT': 28.976,  # Line 1136
     'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
     'KrdSt_MiN_VT': 10.214,  # Line 1135
@@ -219,7 +224,9 @@ coeff_dict = {
     'Uter_KsynDecay': 3.53e-5,  # Line 2307
     'Uter_Wt_coeff': 0.204,  # Line 2312-2318
     'VmMiNInt': 100.8,  # Line 1117
+                        #PK look at
     'VmMiNRDPSlp': 81.56,  # Line 1118
+                           #PK look at
 
     #PK constants:
     'Maintenance': 0.1, #Line 71 , 86
@@ -245,6 +252,10 @@ coeff_dict = {
     'Rum_dcSt_Var4': 1.39, #Line 37
     'Rum_dcSt_Var5': 0.0219, #Line 38
     'Rum_dcSt_Var6': 0.154, #Line 38
+
+    #Microbial_protein.py
+    'Du_EndCP_g_Var1': 96.1, #Line 206
+    'Du_EndCP_g_Var2': 7.54, #Line 206
 }
 
 # Dictionary to use when infusions are not provided to model
