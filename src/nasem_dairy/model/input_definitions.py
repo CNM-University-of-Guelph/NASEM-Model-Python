@@ -314,6 +314,9 @@ class CoeffDict(TypedDict):
 
     Du_EndCP_g_Var1: float #PK added
     Du_EndCP_g_Var2: float #PK added
+
+    TT_dcFdNDF_Lg_Var1: float #PK added
+    TT_dcFdNDF_Lg_Var2: float #PK added
     
 
 

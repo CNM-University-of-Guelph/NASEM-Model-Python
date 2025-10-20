@@ -13,10 +13,10 @@ import pandas as pd
 ####################
 # Functions for Feed Intakes
 ####################
-def calculate_TT_dcFdNDF_Lg(Fd_NDF: pd.Series, Fd_Lg: pd.Series) -> pd.Series:
+def calculate_TT_dcFdNDF_Lg(Fd_NDF: pd.Series, Fd_Lg: pd.Series, coeff_dict: dict) -> pd.Series:
     Fd_NFD_check = np.where(Fd_NDF == 0, 1e-6, Fd_NDF)
-    TT_dcFdNDF_Lg = (0.75 * (Fd_NDF - Fd_Lg) * 
-                     (1 - (Fd_Lg / Fd_NFD_check)**0.667) / Fd_NFD_check * 100)  
+    TT_dcFdNDF_Lg = (coeff_dict['TT_dcFdNDF_Lg_Var1'] * (Fd_NDF - Fd_Lg) * 
+                     (1 - (Fd_Lg / Fd_NFD_check)**coeff_dict['TT_dcFdNDF_Lg_Var2']) / Fd_NFD_check * 100)  
     # Line 235-236
     return TT_dcFdNDF_Lg
 
@@ -4140,7 +4140,7 @@ def calculate_feed_data(
         )
     # Calculate nutrient intakes for each feed
     new_columns['TT_dcFdNDF_Lg'] = calculate_TT_dcFdNDF_Lg(
-        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg']
+        complete_feed_data['Fd_NDF'], complete_feed_data['Fd_Lg'], coeff_dict
         )
     new_columns['Fd_DNDF48'] = calculate_Fd_DNDF48(
         complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DNDF48_input']

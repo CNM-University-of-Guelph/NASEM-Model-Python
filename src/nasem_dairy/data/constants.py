@@ -256,6 +256,11 @@ coeff_dict = {
     #Microbial_protein.py
     'Du_EndCP_g_Var1': 96.1, #Line 206
     'Du_EndCP_g_Var2': 7.54, #Line 206
+
+    #Nutrient_intakes.py
+    'TT_dcFdNDF_Lg_Var1':0.75, #Line 18
+    'TT_dcFdNDF_Lg_Var2':0.667, #Line 19
+    
 }
 
 # Dictionary to use when infusions are not provided to model
