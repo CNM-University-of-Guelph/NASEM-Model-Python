@@ -36,8 +36,8 @@ def calculate_Fd_DNDF48(Fd_Conc: pd.Series, Fd_DNDF48_input: pd.Series) -> pd.Se
     return Fd_DNDF48
 
 
-def calculate_TT_dcFdNDF_48h(Fd_DNDF48: pd.Series) -> pd.Series:
-    TT_dcFdNDF_48h = 12 + 0.61 * Fd_DNDF48  # Line 245
+def calculate_TT_dcFdNDF_48h(Fd_DNDF48: pd.Series, coeff_dict: dict) -> pd.Series:
+    TT_dcFdNDF_48h = coeff_dict['TT_dcFdNDF_48h_Var1'] + coeff_dict['TT_dcFdNDF_48h_Var2'] * Fd_DNDF48  # Line 245
     return TT_dcFdNDF_48h
 
 
@@ -4146,7 +4146,7 @@ def calculate_feed_data(
         complete_feed_data['Fd_Conc'], complete_feed_data['Fd_DNDF48_input']
         )
     new_columns['TT_dcFdNDF_48h'] = calculate_TT_dcFdNDF_48h(
-        new_columns['Fd_DNDF48']
+        new_columns['Fd_DNDF48'], coeff_dict
         )
     new_columns['TT_dcFdNDF_Base'] = calculate_TT_dcFdNDF_Base(
         Use_DNDF_IV, complete_feed_data['Fd_Conc'], 

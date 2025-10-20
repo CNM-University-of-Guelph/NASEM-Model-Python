@@ -260,6 +260,9 @@ coeff_dict = {
     #Nutrient_intakes.py
     'TT_dcFdNDF_Lg_Var1':0.75, #Line 18
     'TT_dcFdNDF_Lg_Var2':0.667, #Line 19
+
+    'TT_dcFdNDF_48h_Var1': 12, #Line 40
+    'TT_dcFdNDF_48h_Var2': 0.61, #Line 40 
     
 }
 
