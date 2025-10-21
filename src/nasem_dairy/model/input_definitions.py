@@ -325,6 +325,9 @@ class CoeffDict(TypedDict):
     TT_dcNDF_Var2: float #PK added
     TT_dcNDF_Var3: float #PK added
     TT_dcNDF_Var4: float #PK added
+
+    Fe_Cpend_g_Var1: float #PK added
+    Fe_Cpend_g_Var2: float #PK added
     
 
 

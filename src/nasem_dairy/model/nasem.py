@@ -420,7 +420,7 @@ def nasem(
     Fe_RumMiCP = fecal.calculate_Fe_RumMiCP(Du_MiCP, Du_idMiCP)
     Fe_CPend_g = fecal.calculate_Fe_CPend_g(
         animal_input["An_StatePhys"], an_data["An_DMIn"], an_data["An_NDF"], 
-        Dt_DMIn, diet_data["Dt_DMIn_ClfLiq"], K_FeCPend_ClfLiq
+        Dt_DMIn, diet_data["Dt_DMIn_ClfLiq"], K_FeCPend_ClfLiq, coeff_dict
         )
     Fe_CPend = fecal.calculate_Fe_CPend(Fe_CPend_g)
     Fe_NPend = fecal.calculate_Fe_NPend(Fe_CPend)

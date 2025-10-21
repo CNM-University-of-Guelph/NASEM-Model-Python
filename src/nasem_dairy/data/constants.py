@@ -268,6 +268,10 @@ coeff_dict = {
     'TT_dcNDF_Var2': 0.035, #Line 3703
     'TT_dcNDF_Var3': 0.59, #Line 3702
     'TT_dcNDF_Var4': 0.26, #Line 3702
+
+    #fecal.py
+    'Fe_Cpend_g_Var1': 12, #Line 71
+    'Fe_Cpend_g_Var2': 0.12, #Line 72
     
 }
 
