@@ -92,11 +92,11 @@ def calculate_Ur_Nend_PD_g(An_BW: float, coeff_dict: dict) -> float:
     return Ur_Nend_PD_g
 
 
-def calculate_Ur_NPend_3MH_g(An_BW: float, ) -> float:
+def calculate_Ur_NPend_3MH_g(An_BW: float, coeff_dict:dict, ) -> float:
     """
     Ur_NPend_3MH_g: endogenous 3-methyl-histidine NP (g/d)
     """
-    Ur_NPend_3MH_g = (7.84 + 0.55 * An_BW) / 1000  
+    Ur_NPend_3MH_g = (coeff_dict['Ur_NPend_3MH_g_Var1'] + coeff_dict['Ur_NPend_3MH_g_Var2'] * An_BW) / 1000  
     # endogenous 3-methyl-histidine NP, g/d, Line 2023
     return Ur_NPend_3MH_g
 
