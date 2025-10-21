@@ -58,15 +58,15 @@ def calculate_Ur_MPendUse_g(Ur_NPend_g: float) -> float:
     return Ur_MPendUse_g
 
 
-def calculate_Ur_Nend_Urea_g(An_BW: float) -> float:
+def calculate_Ur_Nend_Urea_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_Urea_g: endogenous urea N (g/d)
     """
-    Ur_Nend_Urea_g = 0.010 * An_BW  # endogenous urea N, g/d, Line 2018
+    Ur_Nend_Urea_g = coeff_dict['Ur_Nend_Urea_g_Var1'] * An_BW  # endogenous urea N, g/d, Line 2018
     return Ur_Nend_Urea_g
 
 
-def calculate_Ur_Nend_Creatn_g(An_BW: float) -> float:
+def calculate_Ur_Nend_Creatn_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_Creatn_g: ndogenous creatinine N (g/d)
     """
@@ -83,7 +83,7 @@ def calculate_Ur_Nend_Creat_g(Ur_Nend_Creatn_g: float) -> float:
     return Ur_Nend_Creat_g
 
 
-def calculate_Ur_Nend_PD_g(An_BW: float) -> float:
+def calculate_Ur_Nend_PD_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_PD_g: endogenous purine derivative N g/d
     """
@@ -92,7 +92,7 @@ def calculate_Ur_Nend_PD_g(An_BW: float) -> float:
     return Ur_Nend_PD_g
 
 
-def calculate_Ur_NPend_3MH_g(An_BW: float) -> float:
+def calculate_Ur_NPend_3MH_g(An_BW: float, ) -> float:
     """
     Ur_NPend_3MH_g: endogenous 3-methyl-histidine NP (g/d)
     """

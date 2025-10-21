@@ -297,6 +297,9 @@ coeff_dict = {
 
     #Protein.py
     'Scrf_CP_g_Var1': 0.2, #Line 56
+
+    #Urine.py
+    'Ur_Nend_Urea_g_Var1': 0.01, #Line 65
 }
 
 # Dictionary to use when infusions are not provided to model

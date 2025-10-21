@@ -280,10 +280,10 @@ def nasem(
         animal_input["Trg_MilkProd"], animal_input["Trg_RsrvGain"], coeff_dict
         )
     Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input["An_BW"])
-    Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input["An_BW"])
-    Ur_Nend_Creatn_g = urine.calculate_Ur_Nend_Creatn_g(animal_input["An_BW"])
-    Ur_Nend_PD_g = urine.calculate_Ur_Nend_PD_g(animal_input["An_BW"])
-    Ur_NPend_3MH_g = urine.calculate_Ur_NPend_3MH_g(animal_input["An_BW"])
+    Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input["An_BW"], coeff_dict)
+    Ur_Nend_Creatn_g = urine.calculate_Ur_Nend_Creatn_g(animal_input["An_BW"], coeff_dict)
+    Ur_Nend_PD_g = urine.calculate_Ur_Nend_PD_g(animal_input["An_BW"], coeff_dict)
+    Ur_NPend_3MH_g = urine.calculate_Ur_NPend_3MH_g(animal_input["An_BW"], )
     Ur_EAAend_g = urine.calculate_Ur_EAAend_g(animal_input["An_BW"])
     An_LactDay_MlkPred = milk.calculate_An_LactDay_MlkPred(
         animal_input["An_LactDay"]
