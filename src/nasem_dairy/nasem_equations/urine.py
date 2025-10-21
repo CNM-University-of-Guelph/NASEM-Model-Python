@@ -70,7 +70,7 @@ def calculate_Ur_Nend_Creatn_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_Creatn_g: ndogenous creatinine N (g/d)
     """
-    Ur_Nend_Creatn_g = 0.00946 * An_BW # endogenous creatinine N, g/d, Line 2019
+    Ur_Nend_Creatn_g = coeff_dict['Ur_Nend_Creatn_g_Var1'] * An_BW # endogenous creatinine N, g/d, Line 2019
     return Ur_Nend_Creatn_g
 
 

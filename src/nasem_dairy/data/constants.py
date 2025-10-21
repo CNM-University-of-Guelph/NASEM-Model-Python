@@ -300,6 +300,8 @@ coeff_dict = {
 
     #Urine.py
     'Ur_Nend_Urea_g_Var1': 0.01, #Line 65
+
+    'Ur_Nend_Creatn_g_Var1': 0.00946, #Line 73
 }
 
 # Dictionary to use when infusions are not provided to model

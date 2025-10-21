@@ -354,6 +354,8 @@ class CoeffDict(TypedDict):
 
     Ur_Nend_Urea_g_Var1: float #PK added
 
+    Ur_Nend_Creatn_g_Var1: float #PK added
+
 class InfusionDict(TypedDict):
     Inf_Acet_g: float
     Inf_ADF_g: float
