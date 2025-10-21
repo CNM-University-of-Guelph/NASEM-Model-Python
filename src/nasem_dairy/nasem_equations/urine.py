@@ -87,7 +87,7 @@ def calculate_Ur_Nend_PD_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_PD_g: endogenous purine derivative N g/d
     """
-    Ur_Nend_PD_g = 0.0271 * An_BW**0.75  
+    Ur_Nend_PD_g = coeff_dict['Ur_Nend_PD_g_Var1'] * An_BW**0.75  
     # endogenous purine derivative N, g/d, Line 2021
     return Ur_Nend_PD_g
 
