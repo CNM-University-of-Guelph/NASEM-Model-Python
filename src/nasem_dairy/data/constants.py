@@ -276,6 +276,16 @@ coeff_dict = {
     #milk.py
     'Mlk_NP_g_Var1': 17.06, #Line 134
     'Mlk_NP_g_Var2': 612, #Line 138
+
+    'Mlk_Fatemp_g_Var1': 453, #Line 201
+    'Mlk_Fatemp_g_Var2': 1.42, #Line 201
+    'Mlk_Fatemp_g_Var3': 24.52, #Line 203
+    'Mlk_Fatemp_g_Var4': 0.41, #Line 204
+    'Mlk_Fatemp_g_Var5': 1.8, #Line 205
+    'Mlk_Fatemp_g_Var6': 1.45, #Line 206
+    'Mlk_Fatemp_g_Var7': 1.34, #Line 207
+
+
     
 }
 

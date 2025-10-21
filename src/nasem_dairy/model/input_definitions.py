@@ -332,7 +332,13 @@ class CoeffDict(TypedDict):
     Mlk_NP_g_Var1: float #PK added
     Mlk_NP_g_Var2: float #PK added
 
-    
+    Mlk_Fatemp_g_Var1: float #PK added
+    Mlk_Fatemp_g_Var2: float #PK added
+    Mlk_Fatemp_g_Var3: float #PK added
+    Mlk_Fatemp_g_Var4: float #PK added
+    Mlk_Fatemp_g_Var5: float #PK added
+    Mlk_Fatemp_g_Var6: float #PK added
+    Mlk_Fatemp_g_Var7: float #PK added
 
 
 class InfusionDict(TypedDict):

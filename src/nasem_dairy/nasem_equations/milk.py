@@ -180,7 +180,8 @@ def calculate_Mlk_Fatemp_g(
     Dt_FAIn: float, 
     Dt_DigC160In: float,
     Dt_DigC183In: float,
-    Abs_AA_g: pd.Series 
+    Abs_AA_g: pd.Series,
+    coeff_dict: dict, 
 ) -> float:
     """
     Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
@@ -198,12 +199,12 @@ def calculate_Mlk_Fatemp_g(
     """
     if An_StatePhys == "Lactating Cow":
         # Line 2259, (Equation 20-215, p. 440)
-        Mlk_Fatemp_g = (453 - 1.42 * An_LactDay_MlkPred + 
-                        24.52 * (Dt_DMIn - Dt_FAIn) + 
-                        0.41 * Dt_DigC160In * 1000 + 
-                        1.80 * Dt_DigC183In * 1000 + 
-                        1.45 * Abs_AA_g["Ile"] + 
-                        1.34 * Abs_AA_g["Met"])
+        Mlk_Fatemp_g = (coeff_dict['Mlk_Fatemp_g_Var1'] - coeff_dict['Mlk_Fatemp_g_Var2'] * An_LactDay_MlkPred + 
+                        coeff_dict['Mlk_Fatemp_g_Var3'] * (Dt_DMIn - Dt_FAIn) + 
+                        coeff_dict['Mlk_Fatemp_g_Var4'] * Dt_DigC160In * 1000 + 
+                        coeff_dict['Mlk_Fatemp_g_Var5'] * Dt_DigC183In * 1000 + 
+                        coeff_dict['Mlk_Fatemp_g_Var6'] * Abs_AA_g["Ile"] + 
+                        coeff_dict['Mlk_Fatemp_g_Var7'] * Abs_AA_g["Met"])
     else:
         Mlk_Fatemp_g = 0  # Line 2261
     return Mlk_Fatemp_g

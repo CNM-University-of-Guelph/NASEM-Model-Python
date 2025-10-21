@@ -1080,7 +1080,7 @@ def nasem(
     Mlk_Fatemp_g = milk.calculate_Mlk_Fatemp_g(
         animal_input["An_StatePhys"], An_LactDay_MlkPred, Dt_DMIn,
         diet_data["Dt_FAIn"], diet_data["Dt_DigC160In"],
-        diet_data["Dt_DigC183In"], aa_values["Abs_AA_g"]
+        diet_data["Dt_DigC183In"], aa_values["Abs_AA_g"], coeff_dict
         )
     Mlk_Fat_g = milk.calculate_Mlk_Fat_g(
         equation_selection["mFat_eqn"], Trg_Mlk_Fat_g, Mlk_Fatemp_g
