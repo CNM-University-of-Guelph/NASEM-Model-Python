@@ -211,7 +211,7 @@ def nasem(
         animal_input["An_305RHA_MlkTP"], coeff_dict
         )
     Scrf_CP_g = protein.calculate_Scrf_CP_g(animal_input["An_StatePhys"],
-                                            animal_input["An_BW"]
+                                            animal_input["An_BW"], coeff_dict
                                             )
     CPGain_FrmGain = body_comp.calculate_CPGain_FrmGain(
         animal_input["An_BW"], animal_input["An_BW_mature"]

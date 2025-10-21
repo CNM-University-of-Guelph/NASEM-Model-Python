@@ -350,7 +350,7 @@ class CoeffDict(TypedDict):
     Mlk_Prod_comp_Var8: float #PK added
     Mlk_Prod_comp_Var9: float #PK added
 
-
+    Scrf_CP_g_Var1: float #PK added
 
 class InfusionDict(TypedDict):
     Inf_Acet_g: float

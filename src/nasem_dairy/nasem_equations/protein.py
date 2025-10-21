@@ -46,14 +46,14 @@ def calculate_Du_MiTP_g(Du_MiCP_g: float, coeff_dict: dict) -> float:
     return Du_MiTP_g
 
 
-def calculate_Scrf_CP_g(An_StatePhys: str, An_BW: float) -> float:
+def calculate_Scrf_CP_g(An_StatePhys: str, An_BW: float, coeff_dict: dict) -> float:
     """
     Scrf_CP_g: Scurf CP, g
     """
     if An_StatePhys == "Calf":
         Scrf_CP_g = 0.219 * An_BW**0.60  # Line 1965
     else:
-        Scrf_CP_g = 0.20 * An_BW**0.60  # Line 1964
+        Scrf_CP_g = coeff_dict['Scrf_CP_g_Var1'] * An_BW**0.60  # Line 1964
     return Scrf_CP_g
 
 

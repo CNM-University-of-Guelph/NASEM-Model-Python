@@ -295,7 +295,8 @@ coeff_dict = {
     'Mlk_Prod_comp_Var8': 7.397e-9, #Line 267
     'Mlk_Prod_comp_Var9': 1.567, #Line 268
 
-    
+    #Protein.py
+    'Scrf_CP_g_Var1': 0.2, #Line 56
 }
 
 # Dictionary to use when infusions are not provided to model
