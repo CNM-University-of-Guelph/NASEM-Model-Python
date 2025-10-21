@@ -473,7 +473,8 @@ def calculate_Mlk_NPmx(
     An_BW: float, 
     Abs_neAA_g: float, 
     Abs_OthAA_g: float,
-    mPrt_coeff: dict
+    mPrt_coeff: dict,
+    coeff_dict: dict,
 ) -> float:
     """
     Mlk_NPmx: Maximal milk protein output at the entered DE, DigNDF, and BW
@@ -485,8 +486,8 @@ def calculate_Mlk_NPmx(
                 mPrtmx_AA2['Met'] + mPrtmx_AA2['Thr'] + 
                 mPrtmx_AA2['Val'] + 
                 An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
-                (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
-                (An_BW - 612) * mPrt_coeff['mPrt_k_BW'] + 
+                (An_DigNDF - coeff_dict['Mlk_NP_g_Var1']) * mPrt_coeff['mPrt_k_DigNDF'] + 
+                (An_BW - coeff_dict['Mlk_NP_g_Var2']) * mPrt_coeff['mPrt_k_BW'] + 
                 Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
                 Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA']) # Line 2195-2197
     return Mlk_NPmx

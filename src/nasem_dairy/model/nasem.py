@@ -666,7 +666,7 @@ def nasem(
     Trg_Mlk_NP = milk.calculate_Trg_Mlk_NP(Trg_Mlk_NP_g)
     Mlk_NPmx = milk.calculate_Mlk_NPmx(
         aa_values["mPrtmx_AA2"], an_data["An_DEInp"], an_data["An_DigNDF"], 
-        animal_input["An_BW"], Abs_neAA_g, Abs_OthAA_g, mPrt_coeff
+        animal_input["An_BW"], Abs_neAA_g, Abs_OthAA_g, mPrt_coeff, coeff_dict
         )
     Mlk_NP_g = milk.calculate_Mlk_NP_g(
         animal_input["An_StatePhys"], equation_selection["mPrt_eqn"],
