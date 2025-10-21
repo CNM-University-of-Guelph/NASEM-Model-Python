@@ -131,11 +131,11 @@ def calculate_Mlk_NP_g(
                     Abs_OthAA_g * (mPrt_coeff['mPrt_k_OthAA'] * coeff_dict['multiplier_MlkTP']) + 
                     Abs_EAA2b_g * mPrt_k_EAA2 + 
                     An_DEInp * (mPrt_coeff['mPrt_k_DEInp'] * coeff_dict['multiplier_MlkTP']) + 
-                    (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
+                    (An_DigNDF - coeff_dict['Mlk_NP_g_Var1']) * mPrt_coeff['mPrt_k_DigNDF'] + 
                     (An_DEStIn + An_DEFAIn + 
                      An_DErOMIn) * mPrt_coeff['mPrt_k_DEIn_StFA'] + 
                     An_DENDFIn * mPrt_coeff['mPrt_k_DEIn_NDF'] + 
-                    (An_BW - 612) * mPrt_coeff['mPrt_k_BW'])
+                    (An_BW - coeff_dict['Mlk_NP_g_Var2']) * mPrt_coeff['mPrt_k_BW'])
     return Mlk_NP_g
 
 

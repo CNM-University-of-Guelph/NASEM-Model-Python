@@ -328,6 +328,10 @@ class CoeffDict(TypedDict):
 
     Fe_Cpend_g_Var1: float #PK added
     Fe_Cpend_g_Var2: float #PK added
+
+    Mlk_NP_g_Var1: float #PK added
+    Mlk_NP_g_Var2: float #PK added
+
     
 
 

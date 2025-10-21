@@ -272,6 +272,10 @@ coeff_dict = {
     #fecal.py
     'Fe_Cpend_g_Var1': 12, #Line 71
     'Fe_Cpend_g_Var2': 0.12, #Line 72
+
+    #milk.py
+    'Mlk_NP_g_Var1': 17.06, #Line 134
+    'Mlk_NP_g_Var2': 612, #Line 138
     
 }
 
@@ -326,25 +330,25 @@ MP_NP_efficiency_dict = {
 
 mPrt_coeff_list = [
     {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
-        "mPrt_Int": -97.0,
-        "mPrt_k_BW": -0.4201,
-        "mPrt_k_DEInp": 10.79,
-        "mPrt_k_DigNDF": -4.595,
+        "mPrt_Int": -97.0, #PK look at
+        "mPrt_k_BW": -0.4201, #PK lookat 
+        "mPrt_k_DEInp": 10.79, #PK look at
+        "mPrt_k_DigNDF": -4.595, #PK look at
         "mPrt_k_DEIn_StFA": 0,
         "mPrt_k_DEIn_NDF": 0,
         "mPrt_k_Arg": 0,
-        "mPrt_k_His": 1.675,
-        "mPrt_k_Ile": 0.885,
-        "mPrt_k_Leu": 0.466,
-        "mPrt_k_Lys": 1.153,
-        "mPrt_k_Met": 1.839,
+        "mPrt_k_His": 1.675, #PK look at
+        "mPrt_k_Ile": 0.885, #PK look at
+        "mPrt_k_Leu": 0.466, #PK look at
+        "mPrt_k_Lys": 1.153, #PK look at
+        "mPrt_k_Met": 1.839, #PK look at
         "mPrt_k_Phe": 0,
         "mPrt_k_Thr": 0,
         "mPrt_k_Trp": 0.0,
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0,
-        "mPrt_k_OthAA": 0.0773,
-        "mPrt_k_EAA2_coeff": -0.00215
+        "mPrt_k_OthAA": 0.0773, #PK look at
+        "mPrt_k_EAA2_coeff": -0.00215 #PK look at
     },
     {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
         "mPrt_Int": -141,
