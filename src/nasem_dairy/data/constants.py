@@ -307,6 +307,8 @@ coeff_dict = {
 
     'Ur_NPend_3MH_g_Var1': 7.82, #Line 99
     'Ur_NPend_3MH_g_Var2': 0.55, #Line 99
+
+    'Ur_Nend_g_Var1': 0.053, #Line 34
 }
 
 # Dictionary to use when infusions are not provided to model

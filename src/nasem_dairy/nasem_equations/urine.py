@@ -27,11 +27,11 @@ def calculate_Ur_DEout(Ur_Nout_g: float) -> float:
     return Ur_DEout
 
 
-def calculate_Ur_Nend_g(An_BW: float) -> float:
+def calculate_Ur_Nend_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_g: Urinary endogenous N, g
     """
-    Ur_Nend_g = 0.053 * An_BW  # approximates Ur_Nend_sum, Line 2029
+    Ur_Nend_g = coeff_dict['Ur_Nend_g_Var1'] * An_BW  # approximates Ur_Nend_sum, Line 2029
     return Ur_Nend_g
 
 

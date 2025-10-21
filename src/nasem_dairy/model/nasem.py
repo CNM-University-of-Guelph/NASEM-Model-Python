@@ -279,7 +279,7 @@ def nasem(
     Kr_ME_RE = energy_req.calculate_Kr_ME_RE(
         animal_input["Trg_MilkProd"], animal_input["Trg_RsrvGain"], coeff_dict
         )
-    Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input["An_BW"])
+    Ur_Nend_g = urine.calculate_Ur_Nend_g(animal_input["An_BW"], coeff_dict)
     Ur_Nend_Urea_g = urine.calculate_Ur_Nend_Urea_g(animal_input["An_BW"], coeff_dict)
     Ur_Nend_Creatn_g = urine.calculate_Ur_Nend_Creatn_g(animal_input["An_BW"], coeff_dict)
     Ur_Nend_PD_g = urine.calculate_Ur_Nend_PD_g(animal_input["An_BW"], coeff_dict)
