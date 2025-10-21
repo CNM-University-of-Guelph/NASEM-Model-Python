@@ -122,6 +122,7 @@ coeff_dict = {
     'KmMiNRDSt': 0.0274,  # Line 1120
                           #PK Look at
     'Km_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2652
+                           #PK look at
     'KpConc': 5.28,  # From Bayesian fit to Digesta Flow data with Seo Kp as 
                      # priors, eqn. 26 in Hanigan et al.
                     #PK look at 
@@ -309,6 +310,12 @@ coeff_dict = {
     'Ur_NPend_3MH_g_Var2': 0.55, #Line 99
 
     'Ur_Nend_g_Var1': 0.053, #Line 34
+
+    #Animal.py
+    'An_GasEOut_Lact_Var1': 0.294, #Line 177
+    'An_GasEOut_Lact_Var2': 0.347, #Line 178
+    'An_GasEOut_Lact_Var3': 0.0409, #Line 179
+    
 }
 
 # Dictionary to use when infusions are not provided to model

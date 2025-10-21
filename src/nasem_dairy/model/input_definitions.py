@@ -363,6 +363,10 @@ class CoeffDict(TypedDict):
 
     Ur_Nend_g_Var1: float #PK added
 
+    An_GasEOut_Lact_Var1: float #PK added
+    An_GasEOut_Lact_Var2: float #PK added
+    An_GasEOut_Lact_Var3: float #PK added
+
 class InfusionDict(TypedDict):
     Inf_Acet_g: float
     Inf_ADF_g: float
