@@ -3692,14 +3692,15 @@ def calculate_TT_dcNDF(
     TT_dcNDF_Base: float, 
     Dt_StIn: float, 
     Dt_DMIn: float, 
-    An_DMIn_BW: float
+    An_DMIn_BW: float,
+    coeff_dict: dict
 ) -> float:
     if TT_dcNDF_Base == 0: 
         TT_dcNDF = 0.0
     else:
         TT_dcNDF = (TT_dcNDF_Base / 100 - 
-                    0.59 * (Dt_StIn / Dt_DMIn - 0.26) - 
-                    1.1 * (An_DMIn_BW - 0.035)) * 100
+                    coeff_dict['TT_dcNDF_Var3'] * (Dt_StIn / Dt_DMIn - coeff_dict['TT_dcNDF_Var4']) - 
+                    coeff_dict['TT_dcNDF_Var1'] * (An_DMIn_BW - coeff_dict['TT_dcNDF_Var2'])) * 100
     return TT_dcNDF
 
 
@@ -5238,7 +5239,7 @@ def calculate_diet_data(
         diet_data['Dt_DigNDFIn_Base'], diet_data['Dt_NDFIn']
         )
     diet_data['TT_dcNDF'] = calculate_TT_dcNDF(
-        diet_data['TT_dcNDF_Base'], diet_data['Dt_StIn'], Dt_DMIn, An_DMIn_BW
+        diet_data['TT_dcNDF_Base'], diet_data['Dt_StIn'], Dt_DMIn, An_DMIn_BW, coeff_dict
         )
     diet_data['TT_dcSt_Base'] = calculate_TT_dcSt_Base(
         diet_data['Dt_DigStIn_Base'], diet_data['Dt_StIn']

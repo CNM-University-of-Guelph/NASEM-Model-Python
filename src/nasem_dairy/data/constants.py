@@ -263,6 +263,11 @@ coeff_dict = {
 
     'TT_dcFdNDF_48h_Var1': 12, #Line 40
     'TT_dcFdNDF_48h_Var2': 0.61, #Line 40 
+
+    'TT_dcNDF_Var1': 1.1, #Line 3703
+    'TT_dcNDF_Var2': 0.035, #Line 3703
+    'TT_dcNDF_Var3': 0.59, #Line 3702
+    'TT_dcNDF_Var4': 0.26, #Line 3702
     
 }
 

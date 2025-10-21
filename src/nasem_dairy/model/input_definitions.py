@@ -320,6 +320,11 @@ class CoeffDict(TypedDict):
 
     TT_dcFdNDF_48h_Var1: float #PK added
     TT_dcFdNDF_48h_Var2: float #PK added
+
+    TT_dcNDF_Var1: float #PK added
+    TT_dcNDF_Var2: float #PK added
+    TT_dcNDF_Var3: float #PK added
+    TT_dcNDF_Var4: float #PK added
     
 
 
