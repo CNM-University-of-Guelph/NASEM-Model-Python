@@ -1092,7 +1092,7 @@ def nasem(
     ####################
     Mlk_Prod_comp = milk.calculate_Mlk_Prod_comp(
         animal_input["An_Breed"], Mlk_NP, Mlk_Fat, an_data["An_DEIn"], 
-        An_LactDay_MlkPred, animal_input["An_Parity_rl"]
+        An_LactDay_MlkPred, animal_input["An_Parity_rl"], coeff_dict
         )
     An_MPavail_Milk_Trg = milk.calculate_An_MPavail_Milk_Trg(
         An_MPIn, An_MPuse_g_Trg, Mlk_MPUse_g_Trg

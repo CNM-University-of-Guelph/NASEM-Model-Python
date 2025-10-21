@@ -340,6 +340,17 @@ class CoeffDict(TypedDict):
     Mlk_Fatemp_g_Var6: float #PK added
     Mlk_Fatemp_g_Var7: float #PK added
 
+    Mlk_Prod_comp_Var1: float #PK added
+    Mlk_Prod_comp_Var2: float #PK added
+    Mlk_Prod_comp_Var3: float #PK added
+    Mlk_Prod_comp_Var4: float #PK added
+    Mlk_Prod_comp_Var5: float #PK added
+    Mlk_Prod_comp_Var6: float #PK added
+    Mlk_Prod_comp_Var7: float #PK added
+    Mlk_Prod_comp_Var8: float #PK added
+    Mlk_Prod_comp_Var9: float #PK added
+
+
 
 class InfusionDict(TypedDict):
     Inf_Acet_g: float

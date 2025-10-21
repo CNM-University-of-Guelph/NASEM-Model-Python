@@ -247,7 +247,8 @@ def calculate_Mlk_Prod_comp(
     Mlk_Fat: float,
     An_DEIn: float, 
     An_LactDay_MlkPred: int,
-    An_Parity_rl: int
+    An_Parity_rl: int,
+    coeff_dict: dict,
 ) -> float:
     """
     Mlk_Prod_comp: Component based milk production prediciton, kg/d
@@ -257,14 +258,14 @@ def calculate_Mlk_Prod_comp(
     """
     # Component based milk production prediction; derived by regression from predicted milk protein and milk fat
     # Holstein equation, Line 2275
-    Mlk_Prod_comp = (4.541 + 11.13 * Mlk_NP + 
-                     2.648 * Mlk_Fat + 
-                     0.1829 * An_DEIn - 
-                     0.06257 * (An_LactDay_MlkPred - 137.1) + 
-                     2.766e-4 * (An_LactDay_MlkPred - 137.1)**2 + 
-                     1.603e-6 * (An_LactDay_MlkPred - 137.1)**3 - 
-                     7.397e-9 * (An_LactDay_MlkPred - 137.1)**4 + 
-                     1.567 * (An_Parity_rl - 1))
+    Mlk_Prod_comp = (coeff_dict['Mlk_Prod_comp_Var1'] + coeff_dict['Mlk_Prod_comp_Var2'] * Mlk_NP + 
+                     coeff_dict['Mlk_Prod_comp_Var3'] * Mlk_Fat + 
+                     coeff_dict['Mlk_Prod_comp_Var4'] * An_DEIn - 
+                     coeff_dict['Mlk_Prod_comp_Var5'] * (An_LactDay_MlkPred - 137.1) + 
+                     coeff_dict['Mlk_Prod_comp_Var6'] * (An_LactDay_MlkPred - 137.1)**2 + 
+                     coeff_dict['Mlk_Prod_comp_Var7'] * (An_LactDay_MlkPred - 137.1)**3 - 
+                     coeff_dict['Mlk_Prod_comp_Var8'] * (An_LactDay_MlkPred - 137.1)**4 + 
+                     coeff_dict['Mlk_Prod_comp_Var9'] * (An_Parity_rl - 1))
     if An_Breed == "Jersey":
         Mlk_Prod_comp = Mlk_Prod_comp - 3.400  # Line 2278
     elif (An_Breed != "Jersey") & (An_Breed != "Holstein"):

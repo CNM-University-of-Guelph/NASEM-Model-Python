@@ -285,6 +285,15 @@ coeff_dict = {
     'Mlk_Fatemp_g_Var6': 1.45, #Line 206
     'Mlk_Fatemp_g_Var7': 1.34, #Line 207
 
+    'Mlk_Prod_comp_Var1': 4.541, #Line 261
+    'Mlk_Prod_comp_Var2': 11.13, #Line 261
+    'Mlk_Prod_comp_Var3': 2.65, #Line 262
+    'Mlk_Prod_comp_Var4': 0.1829, #Line 263
+    'Mlk_Prod_comp_Var5': 0.06257, #Line 264
+    'Mlk_Prod_comp_Var6': 2.766e-4, #Line 265
+    'Mlk_Prod_comp_Var7': 1.603e-6, #Line 266
+    'Mlk_Prod_comp_Var8': 7.397e-9, #Line 267
+    'Mlk_Prod_comp_Var9': 1.567, #Line 268
 
     
 }
