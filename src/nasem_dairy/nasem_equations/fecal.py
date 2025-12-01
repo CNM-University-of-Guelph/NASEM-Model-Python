@@ -50,7 +50,8 @@ def calculate_Fe_CPend_g(
     An_NDF: float, 
     Dt_DMIn: float, 
     Dt_DMIn_ClfLiq: float, 
-    K_FeCPend_ClfLiq: float
+    K_FeCPend_ClfLiq: float,
+    coeff_dict: dict,
 ) -> float:
     '''
     An_DMIn = DMI + Infusion from calculate_An_DMIn()
@@ -68,7 +69,7 @@ def calculate_Fe_CPend_g(
     else:
         #g/d, endogen secretions plus urea capture in microbies in rumen and LI
         # Line 1187
-        Fe_CPend_g = (12 + 0.12 * An_NDF) * Dt_DMIn
+        Fe_CPend_g = (coeff_dict['Fe_Cpend_g_Var1'] + coeff_dict['Fe_Cpend_g_Var2']  * An_NDF) * Dt_DMIn
     return Fe_CPend_g
 
 

@@ -85,7 +85,8 @@ def calculate_Mlk_NP_g(
     An_DEFAIn: float, 
     An_DErOMIn: float, 
     An_DENDFIn: float,
-    mPrt_coeff: dict
+    mPrt_coeff: dict,
+    coeff_dict: float,
 ) -> float:
     """
     Examples
@@ -127,14 +128,14 @@ def calculate_Mlk_NP_g(
                     Abs_AA_g['Trp'] * mPrt_k_AA['Trp'] + 
                     Abs_AA_g['Val'] * mPrt_k_AA['Val'] + 
                     Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
-                    Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA'] + 
+                    Abs_OthAA_g * (mPrt_coeff['mPrt_k_OthAA'] * coeff_dict['multiplier_MlkTP']) + 
                     Abs_EAA2b_g * mPrt_k_EAA2 + 
-                    An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
-                    (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
+                    An_DEInp * (mPrt_coeff['mPrt_k_DEInp'] * coeff_dict['multiplier_MlkTP']) + 
+                    (An_DigNDF - coeff_dict['Mlk_NP_g_Var1']) * mPrt_coeff['mPrt_k_DigNDF'] + 
                     (An_DEStIn + An_DEFAIn + 
                      An_DErOMIn) * mPrt_coeff['mPrt_k_DEIn_StFA'] + 
                     An_DENDFIn * mPrt_coeff['mPrt_k_DEIn_NDF'] + 
-                    (An_BW - 612) * mPrt_coeff['mPrt_k_BW'])
+                    (An_BW - coeff_dict['Mlk_NP_g_Var2']) * mPrt_coeff['mPrt_k_BW'])
     return Mlk_NP_g
 
 
@@ -179,7 +180,8 @@ def calculate_Mlk_Fatemp_g(
     Dt_FAIn: float, 
     Dt_DigC160In: float,
     Dt_DigC183In: float,
-    Abs_AA_g: pd.Series 
+    Abs_AA_g: pd.Series,
+    coeff_dict: dict, 
 ) -> float:
     """
     Mlk_Fatemp_g: Milk fat prediciton, g, from Daley et al. no year given 
@@ -197,12 +199,12 @@ def calculate_Mlk_Fatemp_g(
     """
     if An_StatePhys == "Lactating Cow":
         # Line 2259, (Equation 20-215, p. 440)
-        Mlk_Fatemp_g = (453 - 1.42 * An_LactDay_MlkPred + 
-                        24.52 * (Dt_DMIn - Dt_FAIn) + 
-                        0.41 * Dt_DigC160In * 1000 + 
-                        1.80 * Dt_DigC183In * 1000 + 
-                        1.45 * Abs_AA_g["Ile"] + 
-                        1.34 * Abs_AA_g["Met"])
+        Mlk_Fatemp_g = (coeff_dict['Mlk_Fatemp_g_Var1'] - coeff_dict['Mlk_Fatemp_g_Var2'] * An_LactDay_MlkPred + 
+                        coeff_dict['Mlk_Fatemp_g_Var3'] * (Dt_DMIn - Dt_FAIn) + 
+                        coeff_dict['Mlk_Fatemp_g_Var4'] * Dt_DigC160In * 1000 + 
+                        coeff_dict['Mlk_Fatemp_g_Var5'] * Dt_DigC183In * 1000 + 
+                        coeff_dict['Mlk_Fatemp_g_Var6'] * Abs_AA_g["Ile"] + 
+                        coeff_dict['Mlk_Fatemp_g_Var7'] * Abs_AA_g["Met"])
     else:
         Mlk_Fatemp_g = 0  # Line 2261
     return Mlk_Fatemp_g
@@ -245,7 +247,8 @@ def calculate_Mlk_Prod_comp(
     Mlk_Fat: float,
     An_DEIn: float, 
     An_LactDay_MlkPred: int,
-    An_Parity_rl: int
+    An_Parity_rl: int,
+    coeff_dict: dict,
 ) -> float:
     """
     Mlk_Prod_comp: Component based milk production prediciton, kg/d
@@ -255,14 +258,14 @@ def calculate_Mlk_Prod_comp(
     """
     # Component based milk production prediction; derived by regression from predicted milk protein and milk fat
     # Holstein equation, Line 2275
-    Mlk_Prod_comp = (4.541 + 11.13 * Mlk_NP + 
-                     2.648 * Mlk_Fat + 
-                     0.1829 * An_DEIn - 
-                     0.06257 * (An_LactDay_MlkPred - 137.1) + 
-                     2.766e-4 * (An_LactDay_MlkPred - 137.1)**2 + 
-                     1.603e-6 * (An_LactDay_MlkPred - 137.1)**3 - 
-                     7.397e-9 * (An_LactDay_MlkPred - 137.1)**4 + 
-                     1.567 * (An_Parity_rl - 1))
+    Mlk_Prod_comp = (coeff_dict['Mlk_Prod_comp_Var1'] + coeff_dict['Mlk_Prod_comp_Var2'] * Mlk_NP + 
+                     coeff_dict['Mlk_Prod_comp_Var3'] * Mlk_Fat + 
+                     coeff_dict['Mlk_Prod_comp_Var4'] * An_DEIn - 
+                     coeff_dict['Mlk_Prod_comp_Var5'] * (An_LactDay_MlkPred - 137.1) + 
+                     coeff_dict['Mlk_Prod_comp_Var6'] * (An_LactDay_MlkPred - 137.1)**2 + 
+                     coeff_dict['Mlk_Prod_comp_Var7'] * (An_LactDay_MlkPred - 137.1)**3 - 
+                     coeff_dict['Mlk_Prod_comp_Var8'] * (An_LactDay_MlkPred - 137.1)**4 + 
+                     coeff_dict['Mlk_Prod_comp_Var9'] * (An_Parity_rl - 1))
     if An_Breed == "Jersey":
         Mlk_Prod_comp = Mlk_Prod_comp - 3.400  # Line 2278
     elif (An_Breed != "Jersey") & (An_Breed != "Holstein"):
@@ -472,7 +475,8 @@ def calculate_Mlk_NPmx(
     An_BW: float, 
     Abs_neAA_g: float, 
     Abs_OthAA_g: float,
-    mPrt_coeff: dict
+    mPrt_coeff: dict,
+    coeff_dict: dict,
 ) -> float:
     """
     Mlk_NPmx: Maximal milk protein output at the entered DE, DigNDF, and BW
@@ -484,8 +488,8 @@ def calculate_Mlk_NPmx(
                 mPrtmx_AA2['Met'] + mPrtmx_AA2['Thr'] + 
                 mPrtmx_AA2['Val'] + 
                 An_DEInp * mPrt_coeff['mPrt_k_DEInp'] + 
-                (An_DigNDF - 17.06) * mPrt_coeff['mPrt_k_DigNDF'] + 
-                (An_BW - 612) * mPrt_coeff['mPrt_k_BW'] + 
+                (An_DigNDF - coeff_dict['Mlk_NP_g_Var1']) * mPrt_coeff['mPrt_k_DigNDF'] + 
+                (An_BW - coeff_dict['Mlk_NP_g_Var2']) * mPrt_coeff['mPrt_k_BW'] + 
                 Abs_neAA_g * mPrt_coeff['mPrt_k_NEAA'] + 
                 Abs_OthAA_g * mPrt_coeff['mPrt_k_OthAA']) # Line 2195-2197
     return Mlk_NPmx

@@ -147,7 +147,7 @@ def calculate_An_DigNDF(
     An_DigNDFIn: float, 
     Dt_DMIn: float, 
     InfRum_DMIn: float, 
-    InfSI_DMIn: float
+    InfSI_DMIn: float,
 ) -> float:
     # Line 1066, should add LI infusions
     An_DigNDF = An_DigNDFIn / (Dt_DMIn + InfRum_DMIn + InfSI_DMIn) * 100
@@ -159,7 +159,7 @@ def calculate_An_GasEOut_Dry(
     Dt_FAIn: float, 
     InfRum_FAIn: float, 
     InfRum_DMIn: float,
-    An_GEIn: float
+    An_GEIn: float,
 ) -> float:
     An_GasEOut_Dry = (0.69 + 0.053 * An_GEIn - 0.07 * (Dt_FAIn + InfRum_FAIn) / 
                       (Dt_DMIn + InfRum_DMIn) * 100)   # Line 1407, Dry Cows
@@ -171,11 +171,12 @@ def calculate_An_GasEOut_Lact(
     Dt_FAIn: float, 
     InfRum_FAIn: float, 
     InfRum_DMIn: float,
-    An_DigNDF: float
+    An_DigNDF: float,
+    coeff_dict: dict,
 ) -> float:
-    An_GasEOut_Lact = (0.294 * (Dt_DMIn + InfRum_DMIn) - 
-                       (0.347 * (Dt_FAIn + InfRum_FAIn) / 
-                        (Dt_DMIn + InfRum_DMIn)) * 100 + 0.0409 * An_DigNDF)
+    An_GasEOut_Lact = (coeff_dict['An_GasEOut_Lact_Var1'] * (Dt_DMIn + InfRum_DMIn) - 
+                       (coeff_dict['An_GasEOut_Lact_Var2'] * (Dt_FAIn + InfRum_FAIn) / 
+                        (Dt_DMIn + InfRum_DMIn)) * 100 + coeff_dict['An_GasEOut_Lact_Var3'] * An_DigNDF)
     # Line 1404-1405
     return An_GasEOut_Lact
 
@@ -1521,7 +1522,7 @@ def calculate_an_data(
         )
     An_GasEOut_Lact = calculate_An_GasEOut_Lact(
         Dt_DMIn, diet_data["Dt_FAIn"], infusion_data["InfRum_FAIn"], 
-        infusion_data["InfRum_DMIn"], an_data["An_DigNDF"]
+        infusion_data["InfRum_DMIn"], an_data["An_DigNDF"], coeff_dict
         )
     An_GasEOut_Heif = calculate_An_GasEOut_Heif(
         an_data["An_GEIn"], an_data["An_NDF"]

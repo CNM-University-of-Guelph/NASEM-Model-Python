@@ -27,11 +27,11 @@ def calculate_Ur_DEout(Ur_Nout_g: float) -> float:
     return Ur_DEout
 
 
-def calculate_Ur_Nend_g(An_BW: float) -> float:
+def calculate_Ur_Nend_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_g: Urinary endogenous N, g
     """
-    Ur_Nend_g = 0.053 * An_BW  # approximates Ur_Nend_sum, Line 2029
+    Ur_Nend_g = coeff_dict['Ur_Nend_g_Var1'] * An_BW  # approximates Ur_Nend_sum, Line 2029
     return Ur_Nend_g
 
 
@@ -58,19 +58,19 @@ def calculate_Ur_MPendUse_g(Ur_NPend_g: float) -> float:
     return Ur_MPendUse_g
 
 
-def calculate_Ur_Nend_Urea_g(An_BW: float) -> float:
+def calculate_Ur_Nend_Urea_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_Urea_g: endogenous urea N (g/d)
     """
-    Ur_Nend_Urea_g = 0.010 * An_BW  # endogenous urea N, g/d, Line 2018
+    Ur_Nend_Urea_g = coeff_dict['Ur_Nend_Urea_g_Var1'] * An_BW  # endogenous urea N, g/d, Line 2018
     return Ur_Nend_Urea_g
 
 
-def calculate_Ur_Nend_Creatn_g(An_BW: float) -> float:
+def calculate_Ur_Nend_Creatn_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_Creatn_g: ndogenous creatinine N (g/d)
     """
-    Ur_Nend_Creatn_g = 0.00946 * An_BW # endogenous creatinine N, g/d, Line 2019
+    Ur_Nend_Creatn_g = coeff_dict['Ur_Nend_Creatn_g_Var1'] * An_BW # endogenous creatinine N, g/d, Line 2019
     return Ur_Nend_Creatn_g
 
 
@@ -83,20 +83,20 @@ def calculate_Ur_Nend_Creat_g(Ur_Nend_Creatn_g: float) -> float:
     return Ur_Nend_Creat_g
 
 
-def calculate_Ur_Nend_PD_g(An_BW: float) -> float:
+def calculate_Ur_Nend_PD_g(An_BW: float, coeff_dict: dict) -> float:
     """
     Ur_Nend_PD_g: endogenous purine derivative N g/d
     """
-    Ur_Nend_PD_g = 0.0271 * An_BW**0.75  
+    Ur_Nend_PD_g = coeff_dict['Ur_Nend_PD_g_Var1'] * An_BW**0.75  
     # endogenous purine derivative N, g/d, Line 2021
     return Ur_Nend_PD_g
 
 
-def calculate_Ur_NPend_3MH_g(An_BW: float) -> float:
+def calculate_Ur_NPend_3MH_g(An_BW: float, coeff_dict:dict, ) -> float:
     """
     Ur_NPend_3MH_g: endogenous 3-methyl-histidine NP (g/d)
     """
-    Ur_NPend_3MH_g = (7.84 + 0.55 * An_BW) / 1000  
+    Ur_NPend_3MH_g = (coeff_dict['Ur_NPend_3MH_g_Var1'] + coeff_dict['Ur_NPend_3MH_g_Var2'] * An_BW) / 1000  
     # endogenous 3-methyl-histidine NP, g/d, Line 2023
     return Ur_NPend_3MH_g
 

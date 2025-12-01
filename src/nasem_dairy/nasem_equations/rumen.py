@@ -12,14 +12,15 @@ def calculate_Rum_dcNDF(
     Dt_StIn: float, 
     Dt_CPIn: float, 
     Dt_ADFIn: float,
-    Dt_ForWet: float
+    Dt_ForWet: float,
+    coeff_dict: dict
 ) -> float:
-    Rum_dcNDF = (-31.9 + 0.721 * Dt_NDFIn / 
-                 Dt_DMIn * 100 - 0.247 * Dt_StIn / 
-                 Dt_DMIn * 100 + 6.63 * Dt_CPIn / 
-                 Dt_DMIn * 100 - 0.211 * (Dt_CPIn / Dt_DMIn * 100)**2 - 
-                 0.387 * Dt_ADFIn / Dt_DMIn / (Dt_NDFIn / Dt_DMIn) * 100 - 
-                 0.121 * Dt_ForWet + 1.51 * Dt_DMIn)
+    Rum_dcNDF = ( coeff_dict['Rum_dcNDF_Var1'] + coeff_dict['Rum_dcNDF_Var2'] * Dt_NDFIn / 
+                 Dt_DMIn * 100 - coeff_dict['Rum_dcNDF_Var3'] * Dt_StIn / 
+                 Dt_DMIn * 100 + coeff_dict['Rum_dcNDF_Var4'] * Dt_CPIn / 
+                 Dt_DMIn * 100 - coeff_dict['Rum_dcNDF_Var5'] * (Dt_CPIn / Dt_DMIn * 100)**2 - 
+                 coeff_dict['Rum_dcNDF_Var6'] * Dt_ADFIn / Dt_DMIn / (Dt_NDFIn / Dt_DMIn) * 100 - 
+                 coeff_dict['Rum_dcNDF_Var7'] * Dt_ForWet + coeff_dict['Rum_dcNDF_Var8'] * Dt_DMIn)
 
     if Rum_dcNDF < 0.1 or Rum_dcNDF is None:  # Line 984
         Rum_dcNDF = 0.1
@@ -30,11 +31,12 @@ def calculate_Rum_dcSt(
     Dt_DMIn: float, 
     Dt_ForNDF: float, 
     Dt_StIn: float, 
-    Dt_ForWet: float
+    Dt_ForWet: float,
+    coeff_dict: dict
 ) -> float:
-    Rum_dcSt = (70.6 - 1.45 * Dt_DMIn + 0.424 * Dt_ForNDF + 1.39 * Dt_StIn / 
-                Dt_DMIn * 100 - 0.0219 * (Dt_StIn / Dt_DMIn * 100)**2 - 
-                0.154 * Dt_ForWet)
+    Rum_dcSt = ( coeff_dict['Rum_dcSt_Var1'] - coeff_dict['Rum_dcSt_Var2'] * Dt_DMIn + coeff_dict['Rum_dcSt_Var3'] * Dt_ForNDF + coeff_dict['Rum_dcSt_Var4'] * Dt_StIn / 
+                Dt_DMIn * 100 - coeff_dict['Rum_dcSt_Var5'] * (Dt_StIn / Dt_DMIn * 100)**2 - 
+                coeff_dict['Rum_dcSt_Var6'] * Dt_ForWet)
     if Rum_dcSt < 0.1:  # Line 992
         Rum_dcSt = 0.1
     elif Rum_dcSt > 100:  # Line 993

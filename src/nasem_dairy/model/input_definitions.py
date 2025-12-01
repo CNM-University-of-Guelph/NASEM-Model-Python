@@ -288,7 +288,84 @@ class CoeffDict(TypedDict):
     Uter_Wt_coeff: float
     VmMiNInt: float
     VmMiNRDPSlp: float
+    
+    Maintenance: float #PK added
+    Lact_Efficiency: float #PK added
+    Frame_Gain_Cow: float #PK added
+    Kr_ME_RE_Gain: float #PK added
+    Kr_ME_RE_Loss: float #PK added
+    multiplier_MlkTP: float #PK added
+    
+    Rum_dcNDF_Var1: float #PK added
+    Rum_dcNDF_Var2: float #PK added
+    Rum_dcNDF_Var3: float #PK added
+    Rum_dcNDF_Var4: float #PK added
+    Rum_dcNDF_Var5: float #PK added
+    Rum_dcNDF_Var6: float #PK added
+    Rum_dcNDF_Var7: float #PK added
+    Rum_dcNDF_Var8: float #PK added
+    
+    Rum_dcSt_Var1: float #PK added
+    Rum_dcSt_Var2: float #PK added
+    Rum_dcSt_Var3: float #PK added
+    Rum_dcSt_Var4: float #PK added
+    Rum_dcSt_Var5: float #PK added
+    Rum_dcSt_Var6: float #PK added
 
+    Du_EndCP_g_Var1: float #PK added
+    Du_EndCP_g_Var2: float #PK added
+
+    TT_dcFdNDF_Lg_Var1: float #PK added
+    TT_dcFdNDF_Lg_Var2: float #PK added
+
+    TT_dcFdNDF_48h_Var1: float #PK added
+    TT_dcFdNDF_48h_Var2: float #PK added
+
+    TT_dcNDF_Var1: float #PK added
+    TT_dcNDF_Var2: float #PK added
+    TT_dcNDF_Var3: float #PK added
+    TT_dcNDF_Var4: float #PK added
+
+    Fe_Cpend_g_Var1: float #PK added
+    Fe_Cpend_g_Var2: float #PK added
+
+    Mlk_NP_g_Var1: float #PK added
+    Mlk_NP_g_Var2: float #PK added
+
+    Mlk_Fatemp_g_Var1: float #PK added
+    Mlk_Fatemp_g_Var2: float #PK added
+    Mlk_Fatemp_g_Var3: float #PK added
+    Mlk_Fatemp_g_Var4: float #PK added
+    Mlk_Fatemp_g_Var5: float #PK added
+    Mlk_Fatemp_g_Var6: float #PK added
+    Mlk_Fatemp_g_Var7: float #PK added
+
+    Mlk_Prod_comp_Var1: float #PK added
+    Mlk_Prod_comp_Var2: float #PK added
+    Mlk_Prod_comp_Var3: float #PK added
+    Mlk_Prod_comp_Var4: float #PK added
+    Mlk_Prod_comp_Var5: float #PK added
+    Mlk_Prod_comp_Var6: float #PK added
+    Mlk_Prod_comp_Var7: float #PK added
+    Mlk_Prod_comp_Var8: float #PK added
+    Mlk_Prod_comp_Var9: float #PK added
+
+    Scrf_CP_g_Var1: float #PK added
+
+    Ur_Nend_Urea_g_Var1: float #PK added
+
+    Ur_Nend_Creatn_g_Var1: float #PK added
+
+    Ur_Nend_PD_g_Var1: float #PK added
+
+    Ur_NPend_3MH_g_Var1: float #PK added
+    Ur_NPend_3MH_g_Var2: float #PK added
+
+    Ur_Nend_g_Var1: float #PK added
+
+    An_GasEOut_Lact_Var1: float #PK added
+    An_GasEOut_Lact_Var2: float #PK added
+    An_GasEOut_Lact_Var3: float #PK added
 
 class InfusionDict(TypedDict):
     Inf_Acet_g: float

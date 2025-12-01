@@ -81,7 +81,7 @@ coeff_dict = {
     'Fet_Wt': 0,
     'Fd_dcrOM': 96,  # Line 1005, this is a true digestibility. 
                      # There is a neg intercept of -3.43% of DM
-    'fCPAdu': 0.064,
+    'fCPAdu': 0.064,  #PK look at
     'fMiTP_MiCP': 0.824,  # Line 1120, Fraction of MiCP that is True Protein; 
                           # from Lapierre or Firkins
     'fN_3MH': (3 * 14) / 169,
@@ -108,6 +108,7 @@ coeff_dict = {
     'HydrTrp': 0.9118,
     'HydrVal': 0.8464,
     'IntRUP': -0.086,  # Intercept, kg/d
+                       #PK look at                 
     'Int_MiN_VT': 18.686,  # Line 1134
     'K_305RHA_MlkTP': 1.0,
     'Ka_LateGest_DMIn': 1.47,
@@ -117,11 +118,16 @@ coeff_dict = {
     'Kl_ME_NE': 0.66,
     'Kl_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2654
     'KmMiNRDNDF': 0.0939,  # Line 1119
+                           #PK look at
     'KmMiNRDSt': 0.0274,  # Line 1120
+                          #PK Look at
     'Km_MP_NP_Trg': 0.69,  # Line 54, 2596, 2651, 2652
+                           #PK look at
     'KpConc': 5.28,  # From Bayesian fit to Digesta Flow data with Seo Kp as 
                      # priors, eqn. 26 in Hanigan et al.
-    'KpFor': 4.87,  # %/h
+                    #PK look at 
+    'KpFor': 4.87,  # %/h  
+                    #PK look at
     'KrdNDF_MiN_VT': 28.976,  # Line 1136
     'KrdNDFxForNDF_MiN_VT': -2.22,  # Line 1142
     'KrdSt_MiN_VT': 10.214,  # Line 1135
@@ -219,7 +225,97 @@ coeff_dict = {
     'Uter_KsynDecay': 3.53e-5,  # Line 2307
     'Uter_Wt_coeff': 0.204,  # Line 2312-2318
     'VmMiNInt': 100.8,  # Line 1117
+                        #PK look at
     'VmMiNRDPSlp': 81.56,  # Line 1118
+                           #PK look at
+
+    #PK constants:
+    'Maintenance': 0.1, #Line 71 , 86
+    'Lact_Efficiency': 0.66, #Line 1428
+    'Frame_Gain_Cow': 0.4, #Line 659
+    'Kr_ME_RE_Gain': 0.75, #Line 489
+    'Kr_ME_RE_Loss' : 0.89, #Line 492
+    'multiplier_MlkTP' : 1, #Line 130, 132
+
+    #Rumen.py
+    'Rum_dcNDF_Var1': -31.9, #Line 18
+    'Rum_dcNDF_Var2': 0.721, #Line 18
+    'Rum_dcNDF_Var3': 0.247, #Line 19
+    'Rum_dcNDF_Var4': 6.63, #Line 20
+    'Rum_dcNDF_Var5': 0.211, #Line 21
+    'Rum_dcNDF_Var6': 0.387, #Line 22
+    'Rum_dcNDF_Var7': 0.121, #Line 23
+    'Rum_dcNDF_Var8': 1.51, #Line 23
+
+    'Rum_dcSt_Var1': 70.6, #Line 37
+    'Rum_dcSt_Var2': 1.45, #Line 37
+    'Rum_dcSt_Var3': 0.424, #Line 37
+    'Rum_dcSt_Var4': 1.39, #Line 37
+    'Rum_dcSt_Var5': 0.0219, #Line 38
+    'Rum_dcSt_Var6': 0.154, #Line 38
+
+    #Microbial_protein.py
+    'Du_EndCP_g_Var1': 96.1, #Line 206
+    'Du_EndCP_g_Var2': 7.54, #Line 206
+
+    #Nutrient_intakes.py
+    'TT_dcFdNDF_Lg_Var1':0.75, #Line 18
+    'TT_dcFdNDF_Lg_Var2':0.667, #Line 19
+
+    'TT_dcFdNDF_48h_Var1': 12, #Line 40
+    'TT_dcFdNDF_48h_Var2': 0.61, #Line 40 
+
+    'TT_dcNDF_Var1': 1.1, #Line 3703
+    'TT_dcNDF_Var2': 0.035, #Line 3703
+    'TT_dcNDF_Var3': 0.59, #Line 3702
+    'TT_dcNDF_Var4': 0.26, #Line 3702
+
+    #fecal.py
+    'Fe_Cpend_g_Var1': 12, #Line 71
+    'Fe_Cpend_g_Var2': 0.12, #Line 72
+
+    #milk.py
+    'Mlk_NP_g_Var1': 17.06, #Line 134
+    'Mlk_NP_g_Var2': 612, #Line 138
+
+    'Mlk_Fatemp_g_Var1': 453, #Line 201
+    'Mlk_Fatemp_g_Var2': 1.42, #Line 201
+    'Mlk_Fatemp_g_Var3': 24.52, #Line 203
+    'Mlk_Fatemp_g_Var4': 0.41, #Line 204
+    'Mlk_Fatemp_g_Var5': 1.8, #Line 205
+    'Mlk_Fatemp_g_Var6': 1.45, #Line 206
+    'Mlk_Fatemp_g_Var7': 1.34, #Line 207
+
+    'Mlk_Prod_comp_Var1': 4.541, #Line 261
+    'Mlk_Prod_comp_Var2': 11.13, #Line 261
+    'Mlk_Prod_comp_Var3': 2.65, #Line 262
+    'Mlk_Prod_comp_Var4': 0.1829, #Line 263
+    'Mlk_Prod_comp_Var5': 0.06257, #Line 264
+    'Mlk_Prod_comp_Var6': 2.766e-4, #Line 265
+    'Mlk_Prod_comp_Var7': 1.603e-6, #Line 266
+    'Mlk_Prod_comp_Var8': 7.397e-9, #Line 267
+    'Mlk_Prod_comp_Var9': 1.567, #Line 268
+
+    #Protein.py
+    'Scrf_CP_g_Var1': 0.2, #Line 56
+
+    #Urine.py
+    'Ur_Nend_Urea_g_Var1': 0.01, #Line 65
+
+    'Ur_Nend_Creatn_g_Var1': 0.00946, #Line 73
+
+    'Ur_Nend_PD_g_Var1': 0.0271, #Line 90
+
+    'Ur_NPend_3MH_g_Var1': 7.82, #Line 99
+    'Ur_NPend_3MH_g_Var2': 0.55, #Line 99
+
+    'Ur_Nend_g_Var1': 0.053, #Line 34
+
+    #Animal.py
+    'An_GasEOut_Lact_Var1': 0.294, #Line 177
+    'An_GasEOut_Lact_Var2': 0.347, #Line 178
+    'An_GasEOut_Lact_Var3': 0.0409, #Line 179
+    
 }
 
 # Dictionary to use when infusions are not provided to model
@@ -273,25 +369,25 @@ MP_NP_efficiency_dict = {
 
 mPrt_coeff_list = [
     {  # NRC derived Coefficients from Dec. 20, 2020 solutions. AIC=10,631, mPrt_eqn == 0
-        "mPrt_Int": -97.0,
-        "mPrt_k_BW": -0.4201,
-        "mPrt_k_DEInp": 10.79,
-        "mPrt_k_DigNDF": -4.595,
+        "mPrt_Int": -97.0, #PK look at
+        "mPrt_k_BW": -0.4201, #PK lookat 
+        "mPrt_k_DEInp": 10.79, #PK look at
+        "mPrt_k_DigNDF": -4.595, #PK look at
         "mPrt_k_DEIn_StFA": 0,
         "mPrt_k_DEIn_NDF": 0,
         "mPrt_k_Arg": 0,
-        "mPrt_k_His": 1.675,
-        "mPrt_k_Ile": 0.885,
-        "mPrt_k_Leu": 0.466,
-        "mPrt_k_Lys": 1.153,
-        "mPrt_k_Met": 1.839,
+        "mPrt_k_His": 1.675, #PK look at
+        "mPrt_k_Ile": 0.885, #PK look at
+        "mPrt_k_Leu": 0.466, #PK look at
+        "mPrt_k_Lys": 1.153, #PK look at
+        "mPrt_k_Met": 1.839, #PK look at
         "mPrt_k_Phe": 0,
         "mPrt_k_Thr": 0,
         "mPrt_k_Trp": 0.0,
         "mPrt_k_Val": 0,
         "mPrt_k_NEAA": 0,
-        "mPrt_k_OthAA": 0.0773,
-        "mPrt_k_EAA2_coeff": -0.00215
+        "mPrt_k_OthAA": 0.0773, #PK look at
+        "mPrt_k_EAA2_coeff": -0.00215 #PK look at
     },
     {  # VT1 derived Coefficients from Dec. 20, 2020 solutions. AIC=10,629, mPrt_eqn == 1
         "mPrt_Int": -141,
