@@ -27,6 +27,8 @@ def calculate_f_mPrt_max(An_305RHA_MlkTP: float, coeff_dict: dict) -> float:
 
 def calculate_Du_MiCP_g(Du_MiN_g: float) -> float:
     Du_MiCP_g = Du_MiN_g * 6.25  # Line 1163
+    # Truncate to 10 to prevent negative values
+    Du_MiCP_g = np.maximum(Du_MiCP_g, 10)  # Line 1165
     return Du_MiCP_g
 
 
