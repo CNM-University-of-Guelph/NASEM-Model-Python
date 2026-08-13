@@ -197,7 +197,7 @@ def calculate_Fd_NFC(
 ) -> pd.Series:
     Fd_NFC = 100 - Fd_Ash - Fd_NDF - Fd_TP - Fd_NPNDM - Fd_FAhydr  # Line 465
     # Forces any values below 0 to =0           # Line 466
-    Fd_NFC.clip(lower=0)
+    Fd_NFC = Fd_NFC.clip(lower=0)
     return Fd_NFC
 
 
