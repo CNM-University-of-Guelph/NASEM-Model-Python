@@ -101,8 +101,8 @@
       },
       {
         "Name": "calculate_Fd_NFC",
-        "Input": { "Fd_NDF_series": [5.6, 7.0, 2.3], "Fd_TP_series": [4.5, 6.7, 2.0], "Fd_Ash_series": [3.4, 0.7, 2.3], "Fd_FAhydr_series": [4.8, 3.4, 2.1], "Fd_NPNDM_series": [0.9, 8.4, 3.2] },
-        "Output": [80.8, 73.79999999999998, 88.10000000000001]
+        "Input": { "Fd_NDF_series": [5.6, 7.0, 2.3, 60.0], "Fd_TP_series": [4.5, 6.7, 2.0, 25.0], "Fd_Ash_series": [3.4, 0.7, 2.3, 10.0], "Fd_FAhydr_series": [4.8, 3.4, 2.1, 4.0], "Fd_NPNDM_series": [0.9, 8.4, 3.2, 11.0] },
+        "Output": [80.8, 73.79999999999998, 88.10000000000001, 0.0]
       },
       {
         "Name": "calculate_Fd_rOM",
